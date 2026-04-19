@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jarvis</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #080c10;
+      color: #c9d4e0;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      flex-direction: column;
+      height: 100dvh;
+    }
+
+    /* --- CHIPS ROW --- */
+    #chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 8px 12px;
+      border-bottom: 1px solid #1a2332;
+      flex-shrink: 0;
+      align-items: center;
+    }
+    .chip {
+      font-family: 'Courier New', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      padding: 3px 8px;
+      border-radius: 2px;
+      border: 1px solid #1a2332;
+      color: #4a5568;
+    }
+    #chip-mode { cursor: pointer; }
+    #chip-mode.off   { color: #4a5568; border-color: #1a2332; }
+    #chip-mode.paper { color: #e2b96a; border-color: #4a3a00; background: #0d0900; }
+    #chip-mode.live  { color: #4ade80; border-color: #1a3a1a; background: #090d09; }
+    #chip-pnl.pos { color: #4ade80; border-color: #1a3a1a; }
+    #chip-pnl.neg { color: #f87171; border-color: #4a1a1a; }
+    #chip-pos      { color: #c9d4e0; }
+    #chip-pos.flat { color: #4a5568; }
+    #chip-apex { color: #60a5fa; border-color: #1a2a4a; }
+    .kill-btn {
+      font-family: 'Courier New', monospace;
+      font-size: 9px;
+      letter-spacing: 1px;
+      padding: 3px 7px;
+      border-radius: 2px;
+      cursor: pointer;
+      background: transparent;
+    }
+    #kill-day-btn  { border: 1px solid #4a2a00; color: #e2b96a; }
+    #kill-day-btn:hover  { background: #4a2a00; }
+    #kill-week-btn { border: 1px solid #4a1a1a; color: #f87171; }
+    #kill-week-btn:hover { background: #4a1a1a; }
+
+    /* --- MINI CONTROLS --- */
+    #controls {
+      display: flex;
+      gap: 6px;
+      padding: 5px 12px;
+      border-bottom: 1px solid #1a2332;
+      flex-shrink: 0;
+      align-items: center;
+    }
+    #controls button {
+      background: transparent;
+      border: 1px solid #1a2332;
+      color: #60a5fa;
+      padding: 3px 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+    #intraday-btn.active { color: #4ade80; border-color: #1a3a1a; }
+    #state-indicator {
+      font-size: 8px;
+      letter-spacing: 3px;
+      padding: 3px 8px;
+      border-radius: 2px;
+      border: 1px solid #1a2332;
+      color: #4a5568;
+      margin-left: auto;
+    }
+    #state-indicator.regulated  { color: #4ade80; border-color: #1a3a1a; }
+    #state-indicator.stressed   { color: #e2b96a; border-color: #4a3a00; }
+    #state-indicator.spiraling  { color: #f87171; border-color: #4a1a1a; }
+    #state-indicator.rule_break { color: #f87171; border-color: #4a1a1a; }
+
+    /* --- STAGED TRADE CARD --- */
+    #pending-trade {
+      display: none;
+      flex-shrink: 0;
+      border-bottom: 1px solid #4a3a00;
+      background: #0a0800;
+    }
+    #pending-trade.visible { display: block; }
+
+    #pt-chart-wrapper {
+      position: relative;
+      height: 240px;
+      overflow: hidden;
+      border-bottom: 1px solid #1a1200;
+    }
+    #pt-chart { height: 240px; }
+    .tradingview-widget-container,
+    .tradingview-widget-container__widget { height: 240px; }
+
+    #pt-price-labels {
+      position: absolute;
+      right: 6px;
+      top: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px 0 28px;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .price-label {
+      font-family: 'Courier New', monospace;
+      font-size: 9px;
+      letter-spacing: 1px;
+      padding: 2px 5px;
+      border-radius: 2px;
+    }
+    .price-label.target { color: #4ade80; background: rgba(10,30,10,0.85);  border: 1px solid #1a3a1a; }
+    .price-label.entry  { color: #e2e8f0; background: rgba(10,15,25,0.85);  border: 1px solid #2a3a4a; }
+    .price-label.stop   { color: #f87171; background: rgba(30,10,10,0.85);  border: 1px solid #4a1a1a; }
+
+    #pt-body { padding: 9px 12px 8px; }
+    #pt-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    .pt-label  { font-size: 8px; letter-spacing: 3px; color: #e2b96a; }
+    #pt-signal { font-size: 13px; color: #f5dfa0; letter-spacing: 1px; margin-bottom: 3px; }
+    #pt-meta   { font-size: 10px; color: #8a7a4a; letter-spacing: 1px; margin-bottom: 5px; }
+    #pt-reason { font-size: 11px; color: #a09060; margin-bottom: 7px; line-height: 1.4; }
+    #pt-actions { display: flex; gap: 8px; align-items: center; }
+
+    /* Countdown ring */
+    .countdown-svg { width: 40px; height: 40px; }
+    .ring-bg {
+      fill: none;
+      stroke: #1a2332;
+      stroke-width: 3.5;
+    }
+    .ring-progress {
+      fill: none;
+      stroke: #e2b96a;
+      stroke-width: 3.5;
+      stroke-dasharray: 100 100;
+      stroke-dashoffset: 25;
+      stroke-linecap: round;
+      transition: stroke-dasharray 1s linear;
+    }
+    .ring-text {
+      font-size: 8px;
+      font-family: 'Courier New', monospace;
+      fill: #c9d4e0;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    #execute-btn {
+      background: #1a3a1a;
+      border: 1px solid #4ade80;
+      color: #4ade80;
+      padding: 7px 18px;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+    #execute-btn:hover    { background: #4ade80; color: #080c10; }
+    #execute-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    #skip-btn {
+      background: transparent;
+      border: 1px solid #4a2a2a;
+      color: #f87171;
+      padding: 7px 12px;
+      font-family: 'Courier New', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+    #skip-btn:hover { border-color: #f87171; }
+
+    /* --- MESSAGES --- */
+    #messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .wrapper { display: flex; flex-direction: column; }
+    .wrapper.user   { align-items: flex-end; }
+    .wrapper.jarvis { align-items: flex-start; }
+    .label { font-size: 8px; letter-spacing: 3px; color: #4a5568; margin-bottom: 4px; }
+    .msg {
+      max-width: 85%;
+      padding: 10px 14px;
+      border-radius: 2px;
+      font-size: 13px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+    .msg.user   { background: #0d1a0d; border: 1px solid #1a3a1a; color: #4ade80; }
+    .msg.jarvis { background: #0d1117; border: 1px solid #1a2332; color: #c9d4e0; }
+    .msg.vision { background: #0a0d1a; border: 1px solid #1a2a4a; color: #c9d4e0; }
+    .msg.alert  { background: #1a0d00; border: 1px solid #4a2a00; color: #e2b96a; }
+    .thinking { color: #4a5568; font-size: 11px; letter-spacing: 2px; padding: 8px 0; }
+
+    /* --- INPUT --- */
+    #input-area {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      border-top: 1px solid #1a2332;
+      flex-shrink: 0;
+      background: #080c10;
+    }
+    #input {
+      flex: 1;
+      background: #0d1117;
+      border: 1px solid #1a2332;
+      color: #c9d4e0;
+      padding: 12px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      outline: none;
+      border-radius: 2px;
+      min-width: 0;
+    }
+    #send {
+      background: #e2b96a;
+      border: none;
+      color: #080c10;
+      padding: 12px 16px;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      cursor: pointer;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. Status chips -->
+  <div id="chips">
+    <span id="chip-mode" class="chip off" title="Click to start/stop 02B">OFF</span>
+    <span id="chip-pnl"  class="chip">P&L —</span>
+    <span id="chip-pos"  class="chip flat">flat</span>
+    <span id="chip-apex" class="chip" style="display:none"></span>
+    <button id="kill-day-btn"  class="kill-btn">KILL:D</button>
+    <button id="kill-week-btn" class="kill-btn">KILL:W</button>
+  </div>
+
+  <!-- 2. Mini controls -->
+  <div id="controls">
+    <button id="intraday-btn">MARKET OFF</button>
+    <button id="see-btn">LOOK</button>
+    <span id="state-indicator">ONLINE</span>
+  </div>
+
+  <!-- 3. Staged trade card (hidden until pending) -->
+  <div id="pending-trade">
+    <div id="pt-chart-wrapper">
+      <div id="pt-chart"></div>
+      <div id="pt-price-labels">
+        <span class="price-label target" id="lbl-target"></span>
+        <span class="price-label entry"  id="lbl-entry"></span>
+        <span class="price-label stop"   id="lbl-stop"></span>
+      </div>
+    </div>
+    <div id="pt-body">
+      <div id="pt-header-row">
+        <div class="pt-label">&#9889; 02B SIGNAL &#8212; CONFIRM ENTRY</div>
+        <svg class="countdown-svg" viewBox="0 0 36 36">
+          <circle class="ring-bg"       cx="18" cy="18" r="15.9155"/>
+          <circle class="ring-progress" cx="18" cy="18" r="15.9155" id="pt-ring"/>
+          <text class="ring-text" x="18" y="18" id="pt-countdown-text">5:00</text>
+        </svg>
+      </div>
+      <div id="pt-signal"></div>
+      <div id="pt-meta"></div>
+      <div id="pt-reason"></div>
+      <div id="pt-actions">
+        <button id="execute-btn">EXECUTE</button>
+        <button id="skip-btn">SKIP</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Chat -->
+  <div id="messages"></div>
+  <div id="input-area">
+    <input id="input" type="text" placeholder="Current state..." />
+    <button id="send">SEND</button>
+  </div>
+
+  <script>
+    const BASE = window.location.origin.startsWith("http") ? window.location.origin : "http://localhost:3000";
+    const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    const wsHost = window.location.host || "localhost:3000";
+    const ws = new WebSocket(wsProtocol + "//" + wsHost);
+
+    const messages       = document.getElementById("messages");
+    const input          = document.getElementById("input");
+    const sendBtn        = document.getElementById("send");
+    const seeBtn         = document.getElementById("see-btn");
+    const stateIndicator = document.getElementById("state-indicator");
+    const intradayBtn    = document.getElementById("intraday-btn");
+    let history = [];
+    let intradayActive = false;
+
+    // ── STATUS CHIPS ──────────────────────────────────────────────
+
+    async function syncStatus() {
+      try {
+        const res = await fetch(BASE + "/agent/autonomous/status");
+        updateChips(await res.json());
+      } catch {}
+    }
+
+    function updateChips(data) {
+      const modeChip = document.getElementById("chip-mode");
+      if (data.running) {
+        modeChip.textContent = data.mode === "live" ? "LIVE" : "PAPER";
+        modeChip.className = "chip " + (data.mode === "live" ? "live" : "paper");
+      } else {
+        modeChip.textContent = "OFF";
+        modeChip.className = "chip off";
+      }
+
+      const pnl = data.daily_pnl || 0;
+      const pnlChip = document.getElementById("chip-pnl");
+      pnlChip.textContent = (pnl >= 0 ? "+" : "") + "$" + Math.abs(pnl).toFixed(0);
+      pnlChip.className = "chip chip-pnl " + (pnl >= 0 ? "pos" : "neg");
+
+      const posChip = document.getElementById("chip-pos");
+      if (data.open_position) {
+        const p = data.open_position;
+        posChip.textContent = p.ticker + " " + p.direction[0] + (p.size || 1) + " @ " + p.entry;
+        posChip.className = "chip chip-pos";
+      } else {
+        posChip.textContent = "flat";
+        posChip.className = "chip chip-pos flat";
+      }
+
+      const apexChip = document.getElementById("chip-apex");
+      if (data.apex && data.apex.enabled) {
+        apexChip.textContent = "APEX " + data.apex.pct_to_target;
+        apexChip.style.display = "";
+      } else {
+        apexChip.style.display = "none";
+      }
+    }
+
+    document.getElementById("chip-mode").addEventListener("click", async () => {
+      const modeChip = document.getElementById("chip-mode");
+      if (modeChip.classList.contains("off")) {
+        modeChip.textContent = "LAUNCHING...";
+        try {
+          const startRes = await fetch(BASE + "/agent/autonomous/start", {
+            method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({})
+          });
+          const startData = await startRes.json();
+          if (startData.started === false) {
+            addMessage("assistant", "02B blocked: " + startData.reason);
+            await syncStatus();
+            return;
+          }
+          await fetch(BASE + "/agent/autonomous/launch", {
+            method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({})
+          });
+          addMessage("assistant", "02B running in PAPER mode. Trading windows launching.");
+        } catch {
+          addMessage("assistant", "02B failed to start.");
+        }
+      } else {
+        try {
+          await fetch(BASE + "/agent/autonomous/stop", {
+            method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({})
+          });
+          addMessage("assistant", "02B stopped.");
+        } catch {
+          addMessage("assistant", "Failed to stop 02B.");
+        }
+      }
+      await syncStatus();
+    });
+
+    document.getElementById("kill-day-btn").addEventListener("click", async () => {
+      try {
+        await fetch(BASE + "/agent/autonomous/kill", {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({})
+        });
+        addMessage("assistant", "Daily kill activated.", "alert");
+        await syncStatus();
+      } catch {}
+    });
+
+    document.getElementById("kill-week-btn").addEventListener("click", async () => {
+      try {
+        await fetch(BASE + "/agent/autonomous/kill-week", {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({})
+        });
+        addMessage("assistant", "Weekly kill activated.", "alert");
+        await syncStatus();
+      } catch {}
+    });
+
+    syncStatus();
+    setInterval(syncStatus, 30000);
+
+    // ── STAGED TRADE CARD ─────────────────────────────────────────
+
+    const pendingTrade = document.getElementById("pending-trade");
+    const executeBtn   = document.getElementById("execute-btn");
+    const skipBtn      = document.getElementById("skip-btn");
+    let countdownInterval = null;
+
+    function showPending(data) {
+      const s = data.signal;
+      const ticker = s.ticker || "MNQ";
+
+      document.getElementById("pt-signal").textContent =
+        s.direction + " " + ticker + "  \xB7  Entry: " + s.entry + "  \xB7  Stop: " + s.stop + "  \xB7  Target: " + s.target;
+      document.getElementById("pt-meta").textContent =
+        "Risk: $" + data.risk_dollars + "  \xB7  R:R " + data.rr + ":1";
+      document.getElementById("pt-reason").textContent = s.reason || "";
+
+      document.getElementById("lbl-target").textContent = "T " + s.target;
+      document.getElementById("lbl-entry").textContent  = "E " + s.entry;
+      document.getElementById("lbl-stop").textContent   = "S " + s.stop;
+
+      pendingTrade.classList.add("visible");
+      loadTVWidget(ticker);
+      startCountdown(data.seconds_left);
+    }
+
+    function hidePending() {
+      pendingTrade.classList.remove("visible");
+      if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
+      document.getElementById("pt-chart").innerHTML = "";
+    }
+
+    function loadTVWidget(ticker) {
+      const container = document.getElementById("pt-chart");
+      container.innerHTML = "";
+      const wrapper = document.createElement("div");
+      wrapper.className = "tradingview-widget-container";
+      const inner = document.createElement("div");
+      inner.className = "tradingview-widget-container__widget";
+      wrapper.appendChild(inner);
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+      script.async = true;
+      script.text = JSON.stringify({
+        autosize: false,
+        width: "100%",
+        height: 240,
+        symbol: ticker === "MES" ? "CME_MINI:MES1!" : "CME_MINI:MNQ1!",
+        interval: "5",
+        timezone: "America/New_York",
+        theme: "dark",
+        style: "1",
+        locale: "en",
+        hide_top_toolbar: true,
+        hide_legend: true,
+        allow_symbol_change: false,
+        calendar: false,
+        hide_volume: true,
+        support_host: "https://www.tradingview.com"
+      });
+      wrapper.appendChild(script);
+      container.appendChild(wrapper);
+    }
+
+    function startCountdown(seconds) {
+      if (countdownInterval) clearInterval(countdownInterval);
+      const total = 300;
+      let s = seconds;
+      const textEl = document.getElementById("pt-countdown-text");
+      const ringEl = document.getElementById("pt-ring");
+
+      function tick() {
+        if (s <= 0) { hidePending(); return; }
+        const m = Math.floor(s / 60);
+        const sec = s % 60;
+        textEl.textContent = m + ":" + sec.toString().padStart(2, "0");
+        const pct = (s / total) * 100;
+        ringEl.style.strokeDasharray = pct + " 100";
+        ringEl.style.stroke = s < 60 ? "#f87171" : "#e2b96a";
+        s--;
+      }
+      tick();
+      countdownInterval = setInterval(tick, 1000);
+    }
+
+    async function checkPendingSignal() {
+      try {
+        const res = await fetch(BASE + "/agent/autonomous/pending");
+        const data = await res.json();
+        if (data.pending) showPending(data);
+        else hidePending();
+      } catch {}
+    }
+
+    checkPendingSignal();
+    setInterval(checkPendingSignal, 15000);
+
+    executeBtn.addEventListener("click", async () => {
+      executeBtn.disabled = true;
+      executeBtn.textContent = "EXECUTING...";
+      try {
+        const res = await fetch(BASE + "/agent/autonomous/execute-staged", {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({})
+        });
+        const data = await res.json();
+        hidePending();
+        if (data.executed === false) addMessage("assistant", "Execute failed: " + data.reason, "alert");
+      } catch {
+        addMessage("assistant", "Execute error.", "alert");
+      }
+      executeBtn.disabled = false;
+      executeBtn.textContent = "EXECUTE";
+    });
+
+    skipBtn.addEventListener("click", async () => {
+      try {
+        await fetch(BASE + "/agent/autonomous/skip-staged", {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({})
+        });
+      } catch {}
+      hidePending();
+    });
+
+    document.addEventListener("keydown", e => {
+      if (!pendingTrade.classList.contains("visible")) return;
+      if ((e.key === "e" || e.key === "E") && !executeBtn.disabled) executeBtn.click();
+      if (e.key === "s" || e.key === "S") skipBtn.click();
+    });
+
+    // ── WEBSOCKET ─────────────────────────────────────────────────
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === "staged_trade") {
+        showPending(data);
+      } else if (data.type === "status_update") {
+        updateChips(data);
+      } else if (data.type === "notification") {
+        addMessage("assistant", data.message, "alert");
+        if (data.message && data.message.includes("02B SIGNAL")) checkPendingSignal();
+        if (data.message && /02B|KILL|PAPER|LIVE|CLOSED/.test(data.message)) syncStatus();
+      }
+    };
+
+    // ── STATE INDICATOR ───────────────────────────────────────────
+
+    function updateStateIndicator(state) {
+      if (!state) return;
+      stateIndicator.className = state;
+      const labels = { regulated: "REGULATED", stressed: "STRESSED", spiraling: "SPIRALING", rule_break: "RULE BREAK" };
+      stateIndicator.textContent = labels[state] || "ONLINE";
+    }
+
+    // ── MESSAGE RENDERING ─────────────────────────────────────────
+
+    function addMessage(role, text, type) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "wrapper " + (role === "user" ? "user" : "jarvis");
+      if (role === "assistant") {
+        const label = document.createElement("div");
+        label.className = "label";
+        label.textContent = type === "vision" ? "JARVIS - VISION" : type === "alert" ? "JARVIS - ALERT" : "JARVIS";
+        wrapper.appendChild(label);
+      }
+      const msg = document.createElement("div");
+      msg.className = "msg " + (role === "user" ? "user" : type === "vision" ? "vision" : type === "alert" ? "alert" : "jarvis");
+      msg.textContent = text;
+      wrapper.appendChild(msg);
+      messages.appendChild(wrapper);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function showThinking(text) {
+      const div = document.createElement("div");
+      div.className = "thinking";
+      div.id = "thinking";
+      div.textContent = text || "THINKING...";
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function hideThinking() {
+      const t = document.getElementById("thinking");
+      if (t) t.remove();
+    }
+
+    // ── INTRADAY ──────────────────────────────────────────────────
+
+    intradayBtn.addEventListener("click", async () => {
+      if (!intradayActive) {
+        try {
+          const res = await fetch(BASE + "/intraday/start", {
+            method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({})
+          });
+          const data = await res.json();
+          if (data.started) {
+            intradayActive = true;
+            intradayBtn.textContent = "MARKET ON";
+            intradayBtn.classList.add("active");
+            addMessage("assistant", "Intraday scraper started. Monitoring ximes + bobby every 90 seconds.");
+          }
+        } catch { addMessage("assistant", "Failed to start intraday scraper."); }
+      } else {
+        try {
+          await fetch(BASE + "/intraday/stop", {
+            method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({})
+          });
+          intradayActive = false;
+          intradayBtn.textContent = "MARKET OFF";
+          intradayBtn.classList.remove("active");
+          addMessage("assistant", "Intraday scraper stopped.");
+        } catch { addMessage("assistant", "Failed to stop intraday scraper."); }
+      }
+    });
+
+    // ── SEND / CHAT ───────────────────────────────────────────────
+
+    async function doAction(text) {
+      showThinking("DOING...");
+      sendBtn.disabled = true;
+      const parts = text.split(" ");
+      const action = parts[0].toLowerCase();
+      const value = parts.slice(1).join(" ");
+      try {
+        const res = await fetch(BASE + "/do", {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action, value })
+        });
+        const data = await res.json();
+        hideThinking();
+        addMessage("assistant", data.reply || "Done.", "vision");
+      } catch {
+        hideThinking();
+        addMessage("assistant", "Action error. Is Jarvis running?");
+      }
+      sendBtn.disabled = false;
+      input.focus();
+    }
+
+    async function chat(text) {
+      showThinking("THINKING...");
+      sendBtn.disabled = true;
+      try {
+        const res = await fetch(BASE + "/chat", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text, history })
+        });
+        const data = await res.json();
+        hideThinking();
+        addMessage("assistant", data.reply);
+        if (data.state) updateStateIndicator(data.state);
+        history = data.history;
+      } catch {
+        hideThinking();
+        addMessage("assistant", "Connection error. Is Jarvis running?");
+      }
+      sendBtn.disabled = false;
+      input.focus();
+    }
+
+    async function look(question) {
+      showThinking("LOOKING...");
+      sendBtn.disabled = true;
+      seeBtn.disabled = true;
+      try {
+        const res = await fetch(BASE + "/see", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: question || "What do you see on this screen?" })
+        });
+        const data = await res.json();
+        hideThinking();
+        addMessage("assistant", data.reply, "vision");
+      } catch {
+        hideThinking();
+        addMessage("assistant", "Vision error. Is Jarvis running?");
+      }
+      sendBtn.disabled = false;
+      seeBtn.disabled = false;
+      input.focus();
+    }
+
+    async function send() {
+      const text = input.value.trim();
+      if (!text) return;
+      const isAction = /^(open|type|click|scroll|press)\s/i.test(text);
+      const isVision = /(screen|look|what's open|what do you see)/i.test(text);
+      input.value = "";
+      addMessage("user", text);
+      if (isAction) await doAction(text);
+      else if (isVision) await look(text);
+      else await chat(text);
+    }
+
+    sendBtn.addEventListener("click", send);
+    seeBtn.addEventListener("click", () => look());
+    input.addEventListener("keydown", e => { if (e.key === "Enter") send(); });
+  </script>
+</body>
+</html>

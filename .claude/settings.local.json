@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pm2 restart *)",
+      "Bash(pm2 list *)",
+      "Bash(curl -s http://localhost:3000/agent/autonomous/status)",
+      "Bash(python -m json.tool)",
+      "Bash(curl -s http://localhost:3000/health)",
+      "Bash(curl -s http://localhost:3000/agent/opportunity/pipeline)",
+      "Bash(curl -s http://localhost:3000/agent/autonomous/assess)",
+      "Bash(curl -s http://localhost:3000/agent/health/assess)",
+      "Bash(curl -s http://localhost:3000/agent/finance/assess)",
+      "Bash(curl -s -X POST http://localhost:3000/agent/autonomous/test-connection)",
+      "Bash(grep -E \"\\\\.js$|agents|index\")"
+    ]
+  }
+}

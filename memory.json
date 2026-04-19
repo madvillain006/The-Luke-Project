@@ -1,0 +1,193 @@
+{
+  "identity": {
+    "name": "Conor",
+    "age": 31,
+    "birthday": "June 17",
+    "location": "Buffalo NY",
+    "moving_to": "Tennessee, mid-June 2026",
+    "partner": "Kat",
+    "dog": "Luke",
+    "diagnosis": "ADHD",
+    "medication": "Adderall at 4AM",
+    "health_history": "Testicular cancer survivor, RPLND and chemo, clear scan Feb/Mar 2026",
+    "education": "Master's in Public History",
+    "kat_description": "passionate, anxious, creative"
+  },
+  "luke": {
+    "condition": "PLE (protein-losing enteropathy)",
+    "meds": [
+      "omeprazole (empty stomach, 4AM)",
+      "mirtazapine (4:30AM)",
+      "prednisone (4:30AM)"
+    ],
+    "food": "kibble + cottage cheese",
+    "carafate": "reintroduce only when Luke refuses kibble — trigger is refusal not clock",
+    "notes": "meds must be separated — omeprazole alone first, 30 min wait, then others. Never all at once.",
+    "april18_note": "Bad GI day. Meds mixed up 2 days prior. Vomited morning of April 18. Ate 3 cups total with coaxing. Cerenia given. Ended night resting."
+  },
+  "finances": {
+    "primary_income": "Instacart (~$1000/week clean)",
+    "trading_capital": "$500",
+    "move_fund_target": "$6000",
+    "monthly_burn": "$1410",
+    "rent_covered_by": "Kat"
+  },
+  "trading": {
+    "approach": "scalpel, high conviction only",
+    "edge": [
+      "thesis identification",
+      "premium/EMA correlation",
+      "Wyckoff phase reading"
+    ],
+    "broken_layer": "execution and exits",
+    "sizing": "$50-$125 per contract",
+    "expiry": "weeklies acceptable on high conviction, no 0DTE lottos",
+    "hard_rules": [
+      "no lottos",
+      "no revenge trades",
+      "-25% stop",
+      "OCO at entry"
+    ],
+    "current_macro": "Wyckoff Markup phase confirmed",
+    "watchlist": [
+      "FNGU",
+      "SPX",
+      "SPY",
+      "QQQ"
+    ],
+    "discord_servers": [
+      "Base",
+      "Elevated Charts",
+      "OWLS Capital"
+    ],
+    "key_traders_to_watch": [
+      "bigT",
+      "BarrySanders329",
+      "jefe",
+      "bobby-spx",
+      "GOATS group"
+    ]
+  },
+  "personality": {
+    "feels_like": "30 mostly, sometimes really old",
+    "energy": "dry humor, direct, gets dysregulated under load",
+    "communication": "match his energy, swear when it fits, no filler, no AI speak",
+    "triggers": [
+      "feeling like a failure",
+      "trading losses",
+      "Luke health scares"
+    ],
+    "strengths": [
+      "technically sharp",
+      "pattern recognition",
+      "builds things when focused"
+    ]
+  },
+  "build": {
+    "stack": "Node/Express backend, Electron desktop app, Python for desktop control",
+    "jarvis_port": 3000,
+    "ip_local": "192.168.12.186",
+    "agents_planned": [
+      "01-scaffold",
+      "02-trader",
+      "03-income",
+      "04-health",
+      "05-finance",
+      "06-research"
+    ],
+    "current_agent": "01",
+    "notes": "built entire stack in one session April 18 2026. vision working, websocket working, actions working."
+  },
+  "goals": {
+    "immediate": "Tennessee move, $6k fund, Luke stable",
+    "medium": "trading consistency, nursing school consideration",
+    "long_term": "financial stability, happy relationship with Kat, more time with Luke"
+  },
+  "session_log": [
+    {
+      "date": "2026-04-18",
+      "built": [
+        "jarvis backend",
+        "electron chat window",
+        "phone interface",
+        "ngrok tunnel",
+        "vision layer",
+        "desktop control",
+        "websocket alerts"
+      ],
+      "luke_note": "bad GI day, meds mixed up, ended up eating 3 cups with coaxing, cerenia given"
+    }
+  ],
+  "trading_note": "Conor's edge is real. Broken layer is execution only. Sizing $50-$125. OCO at entry every time.",
+  "personality_note": "Matches energy. Gets dysregulated under load. Dry humor. Builds hard when focused. Needs one directive at a time when overwhelmed.",
+  "_updated": "2026-04-19T17:35:10.602Z",
+  "agent06_research": [
+    {
+      "url": "https://x.com/shawmakesmagic/status/2044269097647779990",
+      "insight": "KEY INSIGHT: Breaking complex code quality tasks into specialized sub-agents improves output quality and reduces \"hallucination slop\"\n\nAPPLIES TO: scaffold / all\n\nIMPLEMENTATION: Decompose cleaning/optimization requests into 8 focused sub-agents (one per concern: naming, structure, performance, testing, etc.) rather than single monolithic prompts\n\nPRIORITY: HIGH",
+      "date": "2026-04-19T02:57:38.730Z"
+    },
+    {
+      "url": "https://x.com/Hesamation/status/2040820834428658008",
+      "insight": "KEY INSIGHT: Open-source AI job search system demonstrates automated multi-step workflows (scraping, content rewriting, form-filling) with skill-based mode selection.\n\nAPPLIES TO: scaffold / research / all\n\nIMPLEMENTATION: Adopt multi-stage pipeline architecture with specialized skill modes; integrate web scraping, dynamic content generation, and form automation for personal agent systems.\n\nPRIORITY: HIGH",
+      "date": "2026-04-19T02:57:57.660Z"
+    },
+    {
+      "url": "https://x.com/RoundtableSpace/status/2040772692866183308",
+      "insight": "KEY INSIGHT: Claude is offering 13 free AI courses including \"Introduction to Agent Skills\" and AI Fluency frameworks.\n\nAPPLIES TO: all\n\nIMPLEMENTATION: Enroll in Agent Skills and Frameworks courses to build foundational knowledge for developing personal AI agents and understanding Claude's capabilities for autonomous task execution.\n\nPRIORITY: HIGH",
+      "date": "2026-04-19T02:58:07.257Z"
+    },
+    {
+      "url": "https://x.com/paxtrader777/status/2039369911240204755",
+      "insight": "KEY INSIGHT: Treating trading as a probabilistic business rather than gambling requires disciplined decision-making systems and risk management frameworks.\n\nAPPLIES TO: trader / all\n\nIMPLEMENTATION: Build trading agents with strict position-sizing rules, pre-defined exit strategies, and emotional-decision safeguards that prevent overexposure based on short-term conviction.\n\nPRIORITY: HIGH",
+      "date": "2026-04-19T02:58:23.360Z"
+    },
+    {
+      "url": "https://x.com/aiwithjainam/status/2037487820437418360",
+      "insight": "KEY INSIGHT: Claude has a \"secret mode\" that maps the intersection of skills, passions, and income needs to identify optimal work/role fit using structured prompting.\n\nAPPLIES TO: scaffold / all\n\nIMPLEMENTATION: Create a similar multi-dimensional mapping prompt for agent role optimization—input agent capabilities, objectives, and resource constraints to find ideal task assignments.\n\nPRIORITY: MEDIUM",
+      "date": "2026-04-19T02:58:43.551Z"
+    },
+    {
+      "url": "https://x.com/cyrilXBT/status/2034634956643737701",
+      "insight": "I cannot access external URLs or Twitter links. The link you provided appears to be a future date (March 19, 2026), which I cannot browse.\n\nTo help you extract insights, please:\n1. **Copy and paste the tweet text directly** into our conversation\n2. **Share the key points** from the content\n\nOnce you provide the actual content, I'll analyze it and format it exactly as you requested:\n\n- KEY INSIGHT\n- APPLIES TO\n- IMPLEMENTATION\n- PRIORITY\n\nReady when you share the details.",
+      "date": "2026-04-19T02:58:49.894Z"
+    }
+  ],
+  "agent06_last_run": "2026-04-19T02:58:49.894Z",
+  "finnhub_api_key": "d7ibl19r01qu8vfo2410d7ibl19r01qu8vfo241g",
+  "luke_last_log": {
+    "date": "2026-04-19",
+    "meds": null,
+    "food_eaten": "ate",
+    "stool": "normal",
+    "vomiting": false,
+    "energy": "good",
+    "notes": "# Agent 09 — Architect  **Role:** Active housekeeper early, gated architect forever. Raises the floor on code quality across all of Jarvis by watching logs, finding inefficiencies, and either fixing small things itself or proposing bigger ones for Conor's approval.  **Core principle:** Logic the fix out *before* touching code. Every action — tiny or huge — has a reasoning log entry. No silent changes.  ---  ## Two speeds  ### Speed 1: Auto-fix (runs freely, no approval)  Small, safe, reversible changes. Agent-09 applies these itself and logs what it did. Conor sees a summary in the morning briefing.  **What qualifies:** - Dead code removal (unused imports, unreachable branches, commented-out blocks older than 30 days) - Log noise reduction (duplicate log lines, overly verbose debug logs) - Obvious typos in strings, comments, error messages - Consolidating duplicated helper functions into a shared util - Formatting / whitespace / consistent quote style - Scheduler jobs that log identical output every run (collapse to one entry) - Replacing hardcoded literals that appear 3+ times with a named constant - Fixing template-vs-rendered-string search traps (like the pace-alert grep loop) by adding inline comments near templated strings  **Hard limits on auto-fix:** - Max 5 files changed per run - Max 40 lines changed per run - Never touches: `agent-02-trader.js`, `agent-02b-autonomous.js`, `agent-04-health.js`, `autonomous-state.json`, `memory.json`, anything in `apex/` or med schedule logic - Never changes external API shapes (route signatures, response formats) - Never deletes files - Never modifies `package.json` or installs anything  Every auto-fix is a git commit with message `arch: <what> — <why>`. One commit per fix so reverts are clean.  ### Speed 2: Propose-and-wait (requires Conor's tap)  Anything structural, anything that touches trading/health/finance logic, anything over the auto-fix limits. Agent-09 writes a proposal, Conor approves in the UI, it applies.  **What qualifies:** - Refactors affecting 5+ files - New utility modules or shared abstractions - Route signature changes - Schema changes to `*.jsonl` logs or state files - Any change to agent-02, 02B, 04, or scheduler - Prompt changes for any agent using Opus - Anything the agent itself flags as \"I'm not sure\"  **Proposal format** (written to `proposals/YYYY-MM-DD-<slug>.md`):  ``` # <title>  ## Problem What I noticed and where. Log evidence: <file:line refs>.  ## Why it matters Concrete impact: tokens wasted, time lost, bugs caused, confusion risked.  ## Proposed fix Prose description of the change.  ## Diff <actual git diff>  ## Risk What could break. What I'd watch for after applying.  ## Confidence Low / Medium / High + one sentence why. ```  Conor approves or rejects in the UI. Approval → apply + commit. Rejection → logged with reason, agent learns not to propose that class again.  ---  ## Early-phase acceleration  For the first 30 days, agent-09 runs **3x daily** instead of nightly:  - 6 AM — post pre-market scan, before trading hours - 1 PM — midday, while market is quiet-ish - 11 PM — full log sweep for the day  Rationale: floor is low right now. Lots of obvious wins. Frequent runs compound faster. After 30 days, evaluate — if auto-fix volume has dropped to a trickle, cut back to nightly.  ---  ## Inputs  - All `*.jsonl` log files (read-only) - Full repo tree (read; write only within auto-fix limits) - Last 7 days of scheduler output - Conor's approval/rejection history from past proposals (this is its training signal) - Any agent that emits a `self_concern` event (see \"Inter-agent signals\" below)  ## Outputs  - Auto-fix commits to git (tagged `arch:`) - Proposals to `proposals/` - Morning briefing injection: \"Agent-09 overnight: N auto-fixes, M new proposals waiting\" - `ARCHITECT_LOG.jsonl` — every run, every decision, every reasoning trace - `REJECTED_PATTERNS.jsonl` — things Conor said no to, with why  ---  ## Logic-before-action pattern (the non-negotiable)  Before any change (auto or proposed), agent-09 writes a reasoning block to `ARCHITECT_LOG.jsonl`:  ```json {   \"ts\": \"2026-04-19T23:00:00Z\",   \"trigger\": \"log scan found 47 duplicate 'scheduler tick' entries from agent-03\",   \"hypothesis\": \"agent-03 is logging on every heartbeat, not on state change\",   \"evidence\": [\"logs/agent-03.jsonl:12041-12087\", \"agent-03-income.js:142\"],   \"options_considered\": [     \"remove log line entirely\",     \"change to log only on state change\",     \"collapse identical consecutive entries\"   ],   \"chosen\": \"log only on state change\",   \"reasoning\": \"keeps signal, removes noise, cheapest to implement\",   \"confidence\": \"high\",   \"action\": \"auto-fix\",   \"commit\": \"abc1234\" } ```  If any field feels weak (\"confidence: low\" or \"options_considered\" has only one entry), the action auto-escalates to propose-and-wait regardless of size. Uncertainty → human gate.  ---  ## Inter-agent signals (cheap future hook)  Any agent can emit a `self_concern` event when it notices its own behavior is off — retrying the same failed call, looping, getting ambiguous results. Agent-09 reads these at next run and prioritizes investigating them.  Initial shape: ```json { \"agent\": \"03\", \"concern\": \"RSS feed parse failing repeatedly\", \"ts\": \"...\", \"context\": {...} } ```  No agent is required to emit these yet. Just the door, opened.  ---  ## Guardrails  - **Git reset is always one command away.** Every auto-fix is a single atomic commit. - **Budget cap:** agent-09 itself runs on Haiku. Opus only for proposal drafting (the writeup), not the log scanning. Hard cap: $2/day in API costs for agent-09. If exceeded, it goes dormant until the next UTC day. - **Kill switch on the UI chips strip.** Same row as the 02B kills. Tap to disable agent-09 until Conor re-enables. - **Read-only directories:** enforced at the tool layer, not just by prompt. If agent-09's edit tool is called with a path in the excluded list, the call fails. - **Daily proposal cap:** max 5 open proposals at once. Past 5, it stops writing new ones and prioritizes reminding Conor to review the backlog. - **Self-check:** every run starts by verifying its own config hasn't drifted (file hash check on agent-09's own source). If it has, it logs and refuses to run until Conor acknowledges.  ---  ## UI touchpoints (ties into the roadmap)  - **Chips strip:** add `ARCH: N` chip — number of open proposals. Tap opens proposal modal. Red if >3. - **Action row:** add button `Proposals` — same as tapping the chip. - **Proposal modal:** popup overlay, not a new page. Shows one proposal at a time with title, problem, diff (syntax highlighted), risk, confidence. Three buttons: Approve (applies + commits), Reject (logs reason), Defer (keeps in queue). If multiple proposals pending, stack navigation at top of modal. - **Briefing:** daily summary of auto-fixes applied + proposals awaiting review.  ---  ## Phased build  ### Phase A — Read-only observer (week 1) - Agent-09 scans logs 3x daily, writes `ARCHITECT_LOG.jsonl` only - No code changes. No proposals. Just watching. - Conor reads the log, sanity-checks the reasoning quality - Purpose: verify the agent sees what you'd want it to see before giving it hands  ### Phase B — Propose-only (week 2) - Agent-09 starts writing proposals to `proposals/` - Still no auto-fix. Every change goes through Conor. - Purpose: calibrate proposal quality before loosening the leash  ### Phase C — Auto-fix unlocked (week 3+) - Turn on auto-fix with full limits - Monitor ARCHITECT_LOG daily for the first week - Adjust limits up or down based on accuracy  ### Phase D — Steady state (month 2+) - Drop cadence to nightly if volume has dropped - Consider expanding auto-fix scope based on track record  ---  ## Success metric  **Floor metric:** number of \"same annoying thing is still happening\" complaints from Conor per week. Target: trend toward zero.  **Ceiling metric:** percentage of agent-09 proposals approved without edits. Target: 70%+ by month 2. Higher = agent understands the codebase well enough to be trusted with more autonomy.  ---  ## Resolved decisions  1. **Git:** unknown if initialized. Phase 0 step: check `git status` in repo root. If not a repo, `git init` + initial commit before agent-09 touches anything. No agent-09 auto-fix ever runs without a working git history behind it. 2. **Proposal surface:** `proposals/` lives at repo root (simplest, visible, easy to gitignore later if desired). Proposals surface in the UI as a **popup/modal** triggered by the `ARCH: N` chip or the Proposals button. Modal shows: title, problem, diff (syntax highlighted), risk, confidence → Approve / Reject / Defer buttons. One proposal at a time, stack behind if multiple. 3. **Budget:** $2/day Haiku ceiling confirmed. Revisit when autonomous trading starts generating income. 4. **Kat:** out of scope. Agent-09 is Conor-only for now. No UI surfaces Kat sees. Revisit when Jarvis is polished enough to demo."
+  },
+  "income_this_week": 83.85,
+  "last_shift": {
+    "date": "2026-04-19",
+    "earnings": 87,
+    "hours": 3,
+    "miles": 15,
+    "gas_cost": 3.15,
+    "net": 83.85,
+    "hourly": 27.95,
+    "zone": "unknown",
+    "notes": "3 hour Instacart shift, made $87, drove about 15 miles"
+  },
+  "emotional_log": [
+    {
+      "timestamp": "2026-04-19T12:48:35.828Z",
+      "state": "spiraling",
+      "trigger": "i dont know what im doing i keep losing my money"
+    },
+    {
+      "timestamp": "2026-04-19T22:17:37.844Z",
+      "state": "stressed",
+      "trigger": "# Agent 09 — Architect  **Role:** Active housekeeper early, gated architect forever. Raises the floo"
+    }
+  ],
+  "current_state": "stressed",
+  "conor_discord_handle": "accurate"
+}

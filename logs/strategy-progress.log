@@ -36,3 +36,4 @@
 [2026-04-20T21:13:08Z] [fix] status market-closed state + levels parser fix
 [layout] discord scroll + tradovate login check added
 [layout] discord scroll + tradovate login check added
+[UI] compact terminal UI with tooltips

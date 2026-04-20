@@ -4,23 +4,12 @@ const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
 const path = require("path");
 
+const { log } = require("../lib/logger");
+const { loadMemory, saveMemory } = require("../lib/memory");
+
 const client = new Anthropic();
-const MEMORY_FILE = path.join(__dirname, "../memory.json");
-const LOG_FILE = path.join(__dirname, "../jarvis-log.jsonl");
 const TRADES_FILE = path.join(__dirname, "../trades.jsonl");
-const FINNHUB_KEY = "d7ibl19r01qu8vfo2410d7ibl19r01qu8vfo241g";
-
-function loadMemory() {
-  try { return JSON.parse(fs.readFileSync(MEMORY_FILE, "utf8")); } catch { return {}; }
-}
-
-function saveMemory(mem) {
-  fs.writeFileSync(MEMORY_FILE, JSON.stringify(mem, null, 2));
-}
-
-function log(type, data) {
-  fs.appendFileSync(LOG_FILE, JSON.stringify({ timestamp: new Date().toISOString(), type, data }) + "\n");
-}
+const FINNHUB_KEY = process.env.FINNHUB_KEY || "d7ibl19r01qu8vfo2410d7ibl19r01qu8vfo241g";
 
 function logTrade(trade) {
   fs.appendFileSync(TRADES_FILE, JSON.stringify({ timestamp: new Date().toISOString(), ...trade }) + "\n");

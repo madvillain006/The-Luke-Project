@@ -2,37 +2,61 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jarvis</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       background: #080c10;
       color: #c9d4e0;
-      font-family: 'Courier New', monospace;
+      font-family: -apple-system, "Segoe UI", sans-serif;
       display: flex;
       flex-direction: column;
       height: 100dvh;
+      overflow: hidden;
+      position: relative;
     }
 
-    /* --- CHIPS ROW --- */
-    #chips {
+    /* ── STATUS PANEL ── */
+    #status-panel {
       display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-      padding: 8px 12px;
+      flex-wrap: nowrap;
+      gap: 6px;
+      padding: 3px 8px;
       border-bottom: 1px solid #1a2332;
       flex-shrink: 0;
       align-items: center;
+      height: 22px;
+      font-size: 9px;
+      letter-spacing: 0.5px;
+      color: #4a5568;
+      overflow: hidden;
+    }
+    .sp-item { white-space: nowrap; }
+    .sp-item.ok   { color: #4ade80; }
+    .sp-item.warn { color: #fbbf24; }
+    .sp-item.err  { color: #f87171; }
+    .sp-item.info { color: #60a5fa; }
+    .sp-sep { color: #1a2332; }
+
+    /* ── CHIPS ROW ── */
+    #chips {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 4px;
+      padding: 4px 8px;
+      border-bottom: 1px solid #1a2332;
+      flex-shrink: 0;
+      align-items: center;
+      height: 26px;
     }
     .chip {
-      font-family: 'Courier New', monospace;
-      font-size: 9px;
-      letter-spacing: 2px;
-      padding: 3px 8px;
-      border-radius: 2px;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      padding: 1px 5px;
+      border-radius: 4px;
       border: 1px solid #1a2332;
       color: #4a5568;
+      white-space: nowrap;
     }
     #chip-mode { cursor: pointer; }
     #chip-mode.off   { color: #4a5568; border-color: #1a2332; }
@@ -40,15 +64,15 @@
     #chip-mode.live  { color: #4ade80; border-color: #1a3a1a; background: #090d09; }
     #chip-pnl.pos { color: #4ade80; border-color: #1a3a1a; }
     #chip-pnl.neg { color: #f87171; border-color: #4a1a1a; }
-    #chip-pos      { color: #c9d4e0; }
     #chip-pos.flat { color: #4a5568; }
     #chip-apex { color: #60a5fa; border-color: #1a2a4a; }
+    #chip-arch  { color: #8b7cf8; border-color: #2a1a4a; cursor: default; }
+    #chip-sweep { color: #f59e0b; border-color: #3a2500; cursor: default; }
     .kill-btn {
-      font-family: 'Courier New', monospace;
       font-size: 9px;
       letter-spacing: 1px;
-      padding: 3px 7px;
-      border-radius: 2px;
+      padding: 1px 5px;
+      border-radius: 4px;
       cursor: pointer;
       background: transparent;
     }
@@ -56,234 +80,471 @@
     #kill-day-btn:hover  { background: #4a2a00; }
     #kill-week-btn { border: 1px solid #4a1a1a; color: #f87171; }
     #kill-week-btn:hover { background: #4a1a1a; }
-
-    /* --- MINI CONTROLS --- */
-    #controls {
-      display: flex;
-      gap: 6px;
-      padding: 5px 12px;
-      border-bottom: 1px solid #1a2332;
-      flex-shrink: 0;
-      align-items: center;
-    }
-    #controls button {
+    #look-btn {
+      margin-left: auto;
+      font-size: 9px;
+      letter-spacing: 1px;
+      padding: 1px 6px;
+      border-radius: 4px;
+      cursor: pointer;
       background: transparent;
       border: 1px solid #1a2332;
       color: #60a5fa;
-      padding: 3px 8px;
-      font-family: 'Courier New', monospace;
-      font-size: 9px;
-      letter-spacing: 2px;
-      cursor: pointer;
-      border-radius: 2px;
-    }
-    #intraday-btn.active { color: #4ade80; border-color: #1a3a1a; }
-    #state-indicator {
-      font-size: 8px;
-      letter-spacing: 3px;
-      padding: 3px 8px;
-      border-radius: 2px;
-      border: 1px solid #1a2332;
-      color: #4a5568;
-      margin-left: auto;
-    }
-    #state-indicator.regulated  { color: #4ade80; border-color: #1a3a1a; }
-    #state-indicator.stressed   { color: #e2b96a; border-color: #4a3a00; }
-    #state-indicator.spiraling  { color: #f87171; border-color: #4a1a1a; }
-    #state-indicator.rule_break { color: #f87171; border-color: #4a1a1a; }
-
-    /* --- STAGED TRADE CARD --- */
-    #pending-trade {
-      display: none;
       flex-shrink: 0;
-      border-bottom: 1px solid #4a3a00;
-      background: #0a0800;
     }
-    #pending-trade.visible { display: block; }
+    #look-btn:hover { background: #0d1a2a; }
 
-    #pt-chart-wrapper {
-      position: relative;
-      height: 240px;
-      overflow: hidden;
-      border-bottom: 1px solid #1a1200;
-    }
-    #pt-chart { height: 240px; }
-    .tradingview-widget-container,
-    .tradingview-widget-container__widget { height: 240px; }
-
-    #pt-price-labels {
-      position: absolute;
-      right: 6px;
-      top: 0;
-      bottom: 0;
+    /* ── ACTION ROW ── */
+    #actions {
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 24px 0 28px;
-      pointer-events: none;
-      z-index: 10;
+      gap: 3px;
+      padding: 3px 8px;
+      border-bottom: 1px solid #1a2332;
+      flex-shrink: 0;
+      height: 24px;
     }
-    .price-label {
-      font-family: 'Courier New', monospace;
-      font-size: 9px;
-      letter-spacing: 1px;
-      padding: 2px 5px;
-      border-radius: 2px;
-    }
-    .price-label.target { color: #4ade80; background: rgba(10,30,10,0.85);  border: 1px solid #1a3a1a; }
-    .price-label.entry  { color: #e2e8f0; background: rgba(10,15,25,0.85);  border: 1px solid #2a3a4a; }
-    .price-label.stop   { color: #f87171; background: rgba(30,10,10,0.85);  border: 1px solid #4a1a1a; }
-
-    #pt-body { padding: 9px 12px 8px; }
-    #pt-header-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 5px;
-    }
-    .pt-label  { font-size: 8px; letter-spacing: 3px; color: #e2b96a; }
-    #pt-signal { font-size: 13px; color: #f5dfa0; letter-spacing: 1px; margin-bottom: 3px; }
-    #pt-meta   { font-size: 10px; color: #8a7a4a; letter-spacing: 1px; margin-bottom: 5px; }
-    #pt-reason { font-size: 11px; color: #a09060; margin-bottom: 7px; line-height: 1.4; }
-    #pt-actions { display: flex; gap: 8px; align-items: center; }
-
-    /* Countdown ring */
-    .countdown-svg { width: 40px; height: 40px; }
-    .ring-bg {
-      fill: none;
-      stroke: #1a2332;
-      stroke-width: 3.5;
-    }
-    .ring-progress {
-      fill: none;
-      stroke: #e2b96a;
-      stroke-width: 3.5;
-      stroke-dasharray: 100 100;
-      stroke-dashoffset: 25;
-      stroke-linecap: round;
-      transition: stroke-dasharray 1s linear;
-    }
-    .ring-text {
-      font-size: 8px;
-      font-family: 'Courier New', monospace;
-      fill: #c9d4e0;
-      text-anchor: middle;
-      dominant-baseline: middle;
-    }
-
-    #execute-btn {
-      background: #1a3a1a;
-      border: 1px solid #4ade80;
-      color: #4ade80;
-      padding: 7px 18px;
-      font-family: 'Courier New', monospace;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      cursor: pointer;
-      border-radius: 2px;
-    }
-    #execute-btn:hover    { background: #4ade80; color: #080c10; }
-    #execute-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-    #skip-btn {
+    #actions button {
+      flex: 1;
       background: transparent;
-      border: 1px solid #4a2a2a;
-      color: #f87171;
-      padding: 7px 12px;
-      font-family: 'Courier New', monospace;
-      font-size: 10px;
-      letter-spacing: 2px;
+      border: 1px solid #1a2332;
+      color: #5a6a7a;
+      padding: 0;
+      font-size: 9px;
+      letter-spacing: 0.5px;
       cursor: pointer;
-      border-radius: 2px;
+      border-radius: 4px;
+      white-space: nowrap;
+      overflow: hidden;
     }
-    #skip-btn:hover { border-color: #f87171; }
+    #actions button:hover  { background: #0d1520; color: #c9d4e0; border-color: #2a3a4a; }
+    #actions button.active { color: #4ade80; border-color: #1a3a1a; background: #090d09; }
+    #actions button:disabled { opacity: 0.4; cursor: wait; }
 
-    /* --- MESSAGES --- */
+    /* ── TODAY RIBBON ── */
+    #ribbon {
+      display: flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-bottom: 1px solid #1a2332;
+      flex-shrink: 0;
+      height: 18px;
+      font-size: 10px;
+      color: #4a5568;
+      gap: 6px;
+      letter-spacing: 0.3px;
+    }
+    #ribbon-move  { color: #60a5fa; }
+    #ribbon-luke  { color: #8b7cf8; }
+    #ribbon-wtd   { color: #4ade80; }
+    .rsep         { color: #1a2332; }
+    #ribbon-state {
+      margin-left: auto;
+      font-size: 8px;
+      letter-spacing: 2px;
+      color: #4a5568;
+    }
+    #ribbon-state.stressed   { color: #e2b96a; }
+    #ribbon-state.spiraling  { color: #f87171; }
+    #ribbon-state.rule_break { color: #f87171; }
+
+    /* ── MESSAGES ── */
     #messages {
       flex: 1;
       overflow-y: auto;
-      padding: 16px;
+      padding: 8px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 6px;
+      min-height: 0;
     }
     .wrapper { display: flex; flex-direction: column; }
     .wrapper.user   { align-items: flex-end; }
     .wrapper.jarvis { align-items: flex-start; }
-    .label { font-size: 8px; letter-spacing: 3px; color: #4a5568; margin-bottom: 4px; }
+    .label { font-size: 9px; letter-spacing: 2px; color: #4a5568; margin-bottom: 2px; }
     .msg {
-      max-width: 85%;
-      padding: 10px 14px;
-      border-radius: 2px;
+      max-width: 88%;
+      padding: 7px 10px;
+      border-radius: 6px;
       font-size: 13px;
-      line-height: 1.7;
+      line-height: 1.6;
       white-space: pre-wrap;
+      word-break: break-word;
     }
     .msg.user   { background: #0d1a0d; border: 1px solid #1a3a1a; color: #4ade80; }
     .msg.jarvis { background: #0d1117; border: 1px solid #1a2332; color: #c9d4e0; }
     .msg.vision { background: #0a0d1a; border: 1px solid #1a2a4a; color: #c9d4e0; }
     .msg.alert  { background: #1a0d00; border: 1px solid #4a2a00; color: #e2b96a; }
-    .thinking { color: #4a5568; font-size: 11px; letter-spacing: 2px; padding: 8px 0; }
+    .msg img    { max-width: 200px; max-height: 140px; display: block; border-radius: 2px; border: 1px solid #1a2332; }
+    .thinking   { color: #4a5568; font-size: 10px; letter-spacing: 2px; padding: 4px 0; align-self: flex-start; }
 
-    /* --- INPUT --- */
+    /* ── INPUT ── */
     #input-area {
       display: flex;
-      gap: 8px;
-      padding: 12px 16px;
+      gap: 6px;
+      padding: 6px 8px;
       border-top: 1px solid #1a2332;
       flex-shrink: 0;
       background: #080c10;
+      height: 38px;
     }
     #input {
       flex: 1;
       background: #0d1117;
       border: 1px solid #1a2332;
       color: #c9d4e0;
-      padding: 12px;
-      font-family: 'Courier New', monospace;
-      font-size: 14px;
+      padding: 5px 10px;
+      font-family: inherit;
+      font-size: 13px;
       outline: none;
-      border-radius: 2px;
+      border-radius: 4px;
       min-width: 0;
     }
+    #input:focus { border-color: #2a3a4a; }
     #send {
       background: #e2b96a;
       border: none;
       color: #080c10;
-      padding: 12px 16px;
-      font-family: 'Courier New', monospace;
+      padding: 0 12px;
+      font-family: inherit;
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
       cursor: pointer;
-      border-radius: 2px;
+      border-radius: 4px;
       flex-shrink: 0;
     }
+    #send:disabled { opacity: 0.5; cursor: wait; }
+
+    /* ── STAGED TRADE OVERLAY ── */
+    #pending-trade {
+      position: absolute;
+      top: 26px;
+      left: 0; right: 0; bottom: 0;
+      z-index: 100;
+      background: #0a0800;
+      display: none;
+      flex-direction: column;
+    }
+    #pending-trade.visible { display: flex; }
+
+    #pt-chart {
+      height: 162px;
+      flex-shrink: 0;
+      border-bottom: 1px solid #1a1200;
+      position: relative;
+      overflow: hidden;
+    }
+    #pt-chart-inner { height: 162px; }
+    .tradingview-widget-container,
+    .tradingview-widget-container__widget { height: 162px; }
+
+    #pt-price-labels {
+      position: absolute;
+      right: 6px; top: 0; bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 18px 0 20px;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .price-label {
+      font-size: 9px;
+      letter-spacing: 1px;
+      padding: 2px 4px;
+      border-radius: 2px;
+    }
+    .price-label.target { color: #4ade80; background: rgba(10,30,10,0.85); border: 1px solid #1a3a1a; }
+    .price-label.entry  { color: #e2e8f0; background: rgba(10,15,25,0.85); border: 1px solid #2a3a4a; }
+    .price-label.stop   { color: #f87171; background: rgba(30,10,10,0.85); border: 1px solid #4a1a1a; }
+
+    #pt-body {
+      padding: 8px 10px 6px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    #pt-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .pt-label  { font-size: 8px; letter-spacing: 2px; color: #e2b96a; }
+    #pt-signal { font-size: 12px; color: #f5dfa0; letter-spacing: 0.5px; margin-bottom: 2px; }
+    #pt-meta   { font-size: 10px; color: #8a7a4a; margin-bottom: 3px; }
+    #pt-reason { font-size: 10px; color: #a09060; line-height: 1.4; margin-bottom: 6px; }
+    #pt-actions { display: flex; gap: 8px; align-items: center; }
+
+    .countdown-svg { width: 34px; height: 34px; }
+    .ring-bg       { fill: none; stroke: #1a2332; stroke-width: 3.5; }
+    .ring-progress {
+      fill: none; stroke: #e2b96a; stroke-width: 3.5;
+      stroke-dasharray: 100 100; stroke-dashoffset: 25;
+      stroke-linecap: round; transition: stroke-dasharray 1s linear;
+    }
+    .ring-text { font-size: 8px; font-family: inherit; fill: #c9d4e0; text-anchor: middle; dominant-baseline: middle; }
+
+    #execute-btn {
+      background: #1a3a1a; border: 1px solid #4ade80; color: #4ade80;
+      padding: 6px 16px; font-family: inherit; font-size: 10px; font-weight: 700;
+      letter-spacing: 2px; cursor: pointer; border-radius: 4px;
+    }
+    #execute-btn:hover    { background: #4ade80; color: #080c10; }
+    #execute-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    #skip-btn {
+      background: transparent; border: 1px solid #4a2a2a; color: #f87171;
+      padding: 6px 10px; font-family: inherit; font-size: 10px;
+      letter-spacing: 1.5px; cursor: pointer; border-radius: 4px;
+    }
+    #skip-btn:hover { border-color: #f87171; }
+
+    /* ── TOAST ── */
+    #toast {
+      position: absolute;
+      bottom: 44px; left: 8px; right: 8px;
+      background: #0d1520;
+      border: 1px solid #1a3a5a;
+      color: #c9d4e0;
+      font-size: 10px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      z-index: 200;
+      display: none;
+      white-space: pre-wrap;
+      max-height: 80px;
+      overflow: hidden;
+    }
+    #toast.show { display: block; }
+
+    /* ── DRAG OVERLAY ── */
+    #drag-overlay {
+      position: absolute; inset: 0; z-index: 300;
+      background: rgba(8,12,16,0.88);
+      display: none;
+      align-items: center; justify-content: center;
+      font-size: 16px; letter-spacing: 3px; color: #60a5fa;
+      border: 2px dashed #60a5fa;
+      pointer-events: none;
+    }
+    #drag-overlay.show { display: flex; }
+
+    #chip-conn { cursor: default; }
+    #chip-conn.ok  { color: #4ade80; border-color: #1a3a1a; }
+    #chip-conn.err { color: #f87171; border-color: #4a1a1a; }
+    #chip-canary { color: #f59e0b; border-color: #3a2500; cursor: default; }
+
+    #boot-modal {
+      position: absolute; inset: 0; z-index: 500;
+      background: rgba(8,12,16,0.95);
+      display: none; flex-direction: column;
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    #boot-modal.show { display: flex; }
+    #boot-modal-inner { background: #0d1117; border: 1px solid #4a1a1a; border-radius: 6px; padding: 16px; width: 100%; max-width: 340px; }
+    #boot-modal h3 { font-size: 11px; letter-spacing: 2px; color: #f87171; margin-bottom: 10px; }
+    #boot-modal ul { list-style: none; font-size: 10px; line-height: 1.8; }
+    #boot-modal li.red    { color: #f87171; }
+    #boot-modal li.yellow { color: #e2b96a; }
+    #boot-modal li.green  { color: #4ade80; }
+    #boot-modal-close { margin-top: 12px; background: transparent; border: 1px solid #2a3a4a; color: #c9d4e0; padding: 4px 12px; font-family: inherit; font-size: 10px; letter-spacing: 1px; cursor: pointer; border-radius: 4px; }
+
+    #panic-modal { position: absolute; inset: 0; z-index: 600; background: rgba(8,12,16,0.95); display: none; align-items: center; justify-content: center; }
+    #panic-modal.show { display: flex; }
+    #panic-inner { background: #1a0000; border: 1px solid #f87171; border-radius: 6px; padding: 16px; max-width: 260px; text-align: center; }
+    #panic-inner p { font-size: 11px; letter-spacing: 1px; color: #f87171; margin-bottom: 12px; }
+    #panic-confirm { background: #f87171; border: none; color: #080c10; padding: 6px 16px; font-family: inherit; font-size: 10px; font-weight: 700; letter-spacing: 2px; cursor: pointer; border-radius: 4px; margin-right: 8px; }
+    #panic-cancel  { background: transparent; border: 1px solid #2a3a4a; color: #c9d4e0; padding: 6px 12px; font-family: inherit; font-size: 10px; cursor: pointer; border-radius: 4px; letter-spacing: 1px; }
+
+    /* ── METRICS PANEL ── */
+    #metrics-panel {
+      position: absolute;
+      top: 26px; left: 0; right: 0; bottom: 0;
+      z-index: 91;
+      background: #080c10;
+      display: none;
+      flex-direction: column;
+    }
+    #metrics-panel.visible { display: flex; }
+    #mp-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 5px 10px; border-bottom: 1px solid #1a2332; flex-shrink: 0;
+    }
+    #mp-title { font-size: 10px; letter-spacing: 2px; color: #38bdf8; }
+    #mp-close {
+      background: transparent; border: 1px solid #1a2332;
+      color: #4a5568; font-size: 11px; padding: 1px 6px;
+      border-radius: 4px; cursor: pointer;
+    }
+    #mp-close:hover { color: #c9d4e0; border-color: #2a3a4a; }
+    #mp-controls {
+      display: flex; gap: 6px; align-items: center;
+      padding: 5px 10px; border-bottom: 1px solid #1a2332; flex-shrink: 0;
+    }
+    #mp-hours-input {
+      width: 44px; background: #0d1117; border: 1px solid #1a2332;
+      color: #c9d4e0; padding: 2px 5px; font-family: inherit; font-size: 10px;
+      border-radius: 4px; outline: none; text-align: center;
+    }
+    #mp-load-btn, #mp-copy-btn {
+      background: #0d1a2a; border: 1px solid #38bdf8; color: #38bdf8;
+      padding: 2px 10px; font-family: inherit; font-size: 9px;
+      font-weight: 700; letter-spacing: 1.5px; cursor: pointer; border-radius: 4px;
+    }
+    #mp-load-btn:hover, #mp-copy-btn:hover { background: #38bdf8; color: #080c10; }
+    #mp-load-btn:disabled { opacity: 0.4; cursor: wait; }
+    #mp-copy-btn { border-color: #64748b; color: #64748b; }
+    #mp-copy-btn:hover { background: #64748b; color: #080c10; }
+    #mp-body { flex: 1; overflow-y: auto; padding: 8px 10px; }
+    .mp-section { margin-bottom: 12px; }
+    .mp-section-label { font-size: 9px; letter-spacing: 2px; color: #4a5568; margin-bottom: 5px; }
+    .mp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 14px; }
+    .mp-row { display: flex; justify-content: space-between; align-items: baseline; padding: 2px 0; border-bottom: 1px solid #0d1117; }
+    .mp-key { font-size: 9px; letter-spacing: 1px; color: #4a5568; }
+    .mp-val { font-size: 11px; color: #c9d4e0; font-variant-numeric: tabular-nums; }
+    .mp-val.pos { color: #4ade80; }
+    .mp-val.neg { color: #f87171; }
+    .mp-val.warn { color: #fbbf24; }
+    .mp-critical-item { font-size: 9px; color: #f87171; letter-spacing: 0.5px; padding: 2px 0; border-bottom: 1px solid #0d1117; }
+    .mp-critical-ts { color: #4a5568; margin-right: 6px; }
+    #mp-status { font-size: 9px; color: #4a5568; letter-spacing: 1px; padding: 2px 0; min-height: 13px; }
+
+    /* ── LUKE PANEL ── */
+    #luke-panel {
+      position: absolute;
+      top: 26px; left: 0; right: 0; bottom: 0;
+      z-index: 90;
+      background: #080c10;
+      display: none;
+      flex-direction: column;
+    }
+    #luke-panel.visible { display: flex; }
+    #lp-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 10px;
+      border-bottom: 1px solid #1a2332;
+      flex-shrink: 0;
+    }
+    #lp-title { font-size: 10px; letter-spacing: 2px; color: #8b7cf8; }
+    #lp-close {
+      background: transparent; border: 1px solid #1a2332;
+      color: #4a5568; font-size: 11px; padding: 1px 6px;
+      border-radius: 4px; cursor: pointer;
+    }
+    #lp-close:hover { color: #c9d4e0; border-color: #2a3a4a; }
+    #lp-body { flex: 1; overflow-y: auto; padding: 8px 10px; display: flex; flex-direction: column; gap: 12px; }
+    .lp-section-label { font-size: 9px; letter-spacing: 2px; color: #4a5568; margin-bottom: 5px; }
+    .lp-draft {
+      background: #0d1117; border: 1px solid #1a2332;
+      border-radius: 6px; padding: 7px 10px; margin-bottom: 4px;
+    }
+    .lp-draft-meta { color: #4a5568; font-size: 9px; letter-spacing: 0.5px; margin-bottom: 3px; }
+    .lp-draft-values { color: #c9d4e0; font-size: 11px; margin-bottom: 5px; line-height: 1.6; }
+    .lp-draft-btns { display: flex; gap: 6px; }
+    .lp-confirm-btn {
+      background: #0d1a0d; border: 1px solid #1a3a1a; color: #4ade80;
+      padding: 2px 10px; font-family: inherit; font-size: 9px;
+      letter-spacing: 1.5px; cursor: pointer; border-radius: 4px;
+    }
+    .lp-confirm-btn:hover { background: #4ade80; color: #080c10; }
+    .lp-confirm-btn:disabled { opacity: 0.4; cursor: wait; }
+    .lp-reject-btn {
+      background: transparent; border: 1px solid #4a2a2a; color: #f87171;
+      padding: 2px 10px; font-family: inherit; font-size: 9px;
+      letter-spacing: 1.5px; cursor: pointer; border-radius: 4px;
+    }
+    .lp-reject-btn:hover { border-color: #f87171; }
+    .lp-reject-btn:disabled { opacity: 0.4; cursor: wait; }
+    .lp-empty { color: #4a5568; font-size: 10px; letter-spacing: 1px; padding: 2px 0; }
+    .lp-flags { color: #f87171; font-size: 9px; letter-spacing: 1px; margin-top: 4px; }
+    .lp-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+    .lp-label { font-size: 9px; letter-spacing: 1.5px; color: #4a5568; width: 44px; flex-shrink: 0; }
+    .lp-input {
+      flex: 1; background: #0d1117; border: 1px solid #1a2332;
+      color: #c9d4e0; padding: 3px 7px; font-family: inherit;
+      font-size: 11px; border-radius: 4px; outline: none; min-width: 0;
+    }
+    .lp-input:focus { border-color: #2a3a4a; }
+    .lp-select {
+      flex: 1; background: #0d1117; border: 1px solid #1a2332;
+      color: #c9d4e0; padding: 3px 7px; font-family: inherit;
+      font-size: 11px; border-radius: 4px; outline: none; min-width: 0;
+    }
+    #lp-submit {
+      margin-top: 4px;
+      background: #1a1a3a; border: 1px solid #8b7cf8; color: #8b7cf8;
+      padding: 4px 14px; font-family: inherit; font-size: 9px;
+      font-weight: 700; letter-spacing: 2px; cursor: pointer; border-radius: 4px;
+    }
+    #lp-submit:hover { background: #8b7cf8; color: #080c10; }
+    #lp-submit:disabled { opacity: 0.4; cursor: wait; }
+    #lp-form-result { font-size: 10px; margin-top: 5px; min-height: 14px; }
   </style>
 </head>
 <body>
 
-  <!-- 1. Status chips -->
+  <!-- 0. Status panel -->
+  <div id="status-panel">
+    <span class="sp-item" id="sp-levels">LEVELS: —</span>
+    <span class="sp-sep">·</span>
+    <span class="sp-item" id="sp-confluence">ZONE: —</span>
+    <span class="sp-sep">·</span>
+    <span class="sp-item" id="sp-trades">TODAY: —</span>
+    <span class="sp-sep">·</span>
+    <span class="sp-item" id="sp-state">STATE: —</span>
+    <span class="sp-sep">·</span>
+    <span class="sp-item" id="sp-meds">MEDS: —</span>
+  </div>
+
+  <!-- 1. Chips row -->
   <div id="chips">
-    <span id="chip-mode" class="chip off" title="Click to start/stop 02B">OFF</span>
+    <span id="chip-mode" class="chip off">OFF</span>
     <span id="chip-pnl"  class="chip">P&L —</span>
     <span id="chip-pos"  class="chip flat">flat</span>
     <span id="chip-apex" class="chip" style="display:none"></span>
+    <span id="chip-arch"  class="chip" style="display:none">ARCH:0</span>
+    <span id="chip-sweep" class="chip" style="display:none">SWEEP:0</span>
+    <span id="chip-conn"  class="chip">CONN</span>
+    <span id="chip-canary" class="chip" style="display:none">CANARY</span>
     <button id="kill-day-btn"  class="kill-btn">KILL:D</button>
     <button id="kill-week-btn" class="kill-btn">KILL:W</button>
+    <button id="look-btn">LOOK</button>
   </div>
 
-  <!-- 2. Mini controls -->
-  <div id="controls">
-    <button id="intraday-btn">MARKET OFF</button>
-    <button id="see-btn">LOOK</button>
-    <span id="state-indicator">ONLINE</span>
+  <!-- 2. Action row -->
+  <div id="actions">
+    <button id="btn-mkt">MKT</button>
+    <button id="btn-audit">AUDIT</button>
+    <button id="btn-replay">REPLAY</button>
+    <button id="btn-sienna">SIENNA</button>
+    <button id="btn-premarket">PRE-MKT</button>
+    <button id="btn-eod">EOD</button>
+    <button id="btn-shift">SHIFT</button>
+    <button id="btn-luke">LUKE</button>
+    <button id="btn-metrics">METRICS</button>
   </div>
 
-  <!-- 3. Staged trade card (hidden until pending) -->
+  <!-- 3. Today ribbon -->
+  <div id="ribbon">
+    <span id="ribbon-move">MOVE: —</span>
+    <span class="rsep">·</span>
+    <span id="ribbon-luke">LUKE: —</span>
+    <span class="rsep">·</span>
+    <span id="ribbon-wtd">WTD: —</span>
+    <span id="ribbon-state">ONLINE</span>
+  </div>
+
+  <!-- 4. Messages -->
+  <div id="messages"></div>
+
+  <!-- 5. Input -->
+  <div id="input-area">
+    <input id="input" type="text" placeholder="..." autocomplete="off" />
+    <button id="send">SEND</button>
+  </div>
+
+  <!-- Staged trade overlay -->
   <div id="pending-trade">
-    <div id="pt-chart-wrapper">
-      <div id="pt-chart"></div>
+    <div id="pt-chart">
+      <div id="pt-chart-inner"></div>
       <div id="pt-price-labels">
         <span class="price-label target" id="lbl-target"></span>
         <span class="price-label entry"  id="lbl-entry"></span>
@@ -291,17 +552,19 @@
       </div>
     </div>
     <div id="pt-body">
-      <div id="pt-header-row">
-        <div class="pt-label">&#9889; 02B SIGNAL &#8212; CONFIRM ENTRY</div>
-        <svg class="countdown-svg" viewBox="0 0 36 36">
-          <circle class="ring-bg"       cx="18" cy="18" r="15.9155"/>
-          <circle class="ring-progress" cx="18" cy="18" r="15.9155" id="pt-ring"/>
-          <text class="ring-text" x="18" y="18" id="pt-countdown-text">5:00</text>
-        </svg>
+      <div>
+        <div id="pt-header-row">
+          <div class="pt-label">⚡ 02B SIGNAL — CONFIRM</div>
+          <svg class="countdown-svg" viewBox="0 0 36 36">
+            <circle class="ring-bg"       cx="18" cy="18" r="15.9155"/>
+            <circle class="ring-progress" cx="18" cy="18" r="15.9155" id="pt-ring"/>
+            <text class="ring-text" x="18" y="18" id="pt-countdown-text">5:00</text>
+          </svg>
+        </div>
+        <div id="pt-signal"></div>
+        <div id="pt-meta"></div>
+        <div id="pt-reason"></div>
       </div>
-      <div id="pt-signal"></div>
-      <div id="pt-meta"></div>
-      <div id="pt-reason"></div>
       <div id="pt-actions">
         <button id="execute-btn">EXECUTE</button>
         <button id="skip-btn">SKIP</button>
@@ -309,11 +572,104 @@
     </div>
   </div>
 
-  <!-- 4. Chat -->
-  <div id="messages"></div>
-  <div id="input-area">
-    <input id="input" type="text" placeholder="Current state..." />
-    <button id="send">SEND</button>
+  <!-- Toast -->
+  <div id="toast"></div>
+
+  <!-- Drag overlay -->
+  <div id="drag-overlay">DROP IMAGE</div>
+
+  <!-- Metrics Panel -->
+  <div id="metrics-panel">
+    <div id="mp-header">
+      <span id="mp-title">METRICS</span>
+      <button id="mp-close">✕</button>
+    </div>
+    <div id="mp-controls">
+      <input id="mp-hours-input" type="number" min="1" max="720" value="24" />
+      <span style="font-size:9px;color:#4a5568;letter-spacing:1px">hrs</span>
+      <button id="mp-load-btn">LOAD</button>
+      <button id="mp-copy-btn">COPY SUMMARY</button>
+      <span id="mp-status"></span>
+    </div>
+    <div id="mp-body">
+      <div id="mp-content"><span style="font-size:10px;color:#4a5568;letter-spacing:1px">press LOAD to fetch metrics</span></div>
+    </div>
+  </div>
+
+  <!-- Luke Panel -->
+  <div id="luke-panel">
+    <div id="lp-header">
+      <span id="lp-title">LUKE</span>
+      <button id="lp-close">✕</button>
+    </div>
+    <div id="lp-body">
+      <div id="lp-drafts-section">
+        <div class="lp-section-label">PENDING DRAFTS</div>
+        <div id="lp-drafts-list"><span class="lp-empty">loading...</span></div>
+      </div>
+      <div id="lp-form-section">
+        <div class="lp-section-label">LOG ENTRY</div>
+        <form id="lp-form">
+          <div class="lp-row">
+            <label class="lp-label">MEDS</label>
+            <input id="lp-meds" class="lp-input" type="text" placeholder="omeprazole / mirtazapine+prednisone / carafate" />
+          </div>
+          <div class="lp-row">
+            <label class="lp-label">FOOD</label>
+            <select id="lp-food" class="lp-select">
+              <option value="">—</option>
+              <option value="ate">ate</option>
+              <option value="refused">refused</option>
+              <option value="half">half</option>
+            </select>
+          </div>
+          <div class="lp-row">
+            <label class="lp-label">STOOL</label>
+            <select id="lp-stool" class="lp-select">
+              <option value="">—</option>
+              <option value="normal">normal</option>
+              <option value="loose">loose</option>
+              <option value="diarrhea">diarrhea</option>
+            </select>
+          </div>
+          <div class="lp-row">
+            <label class="lp-label">ENERGY</label>
+            <select id="lp-energy" class="lp-select">
+              <option value="">—</option>
+              <option value="good">good</option>
+              <option value="normal">normal</option>
+              <option value="low">low</option>
+            </select>
+          </div>
+          <div class="lp-row">
+            <label class="lp-label">VOMIT</label>
+            <input id="lp-vomit" type="checkbox" />
+          </div>
+          <div class="lp-row">
+            <label class="lp-label">NOTES</label>
+            <input id="lp-notes" class="lp-input" type="text" placeholder="..." />
+          </div>
+          <button type="submit" id="lp-submit">LOG</button>
+        </form>
+        <div id="lp-form-result"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="boot-modal">
+    <div id="boot-modal-inner">
+      <h3>BOOT CHECK — ISSUES DETECTED</h3>
+      <ul id="boot-check-list"></ul>
+      <button id="boot-modal-close">DISMISS</button>
+    </div>
+  </div>
+
+  <div id="panic-modal">
+    <div id="panic-inner">
+      <p>CONFIRM PANIC — kills 02B and intraday</p>
+      <button id="panic-confirm">PANIC</button>
+      <button id="panic-cancel">CANCEL</button>
+    </div>
   </div>
 
   <script>
@@ -322,21 +678,77 @@
     const wsHost = window.location.host || "localhost:3000";
     const ws = new WebSocket(wsProtocol + "//" + wsHost);
 
-    const messages       = document.getElementById("messages");
-    const input          = document.getElementById("input");
-    const sendBtn        = document.getElementById("send");
-    const seeBtn         = document.getElementById("see-btn");
-    const stateIndicator = document.getElementById("state-indicator");
-    const intradayBtn    = document.getElementById("intraday-btn");
+    const messages = document.getElementById("messages");
+    const input    = document.getElementById("input");
+    const sendBtn  = document.getElementById("send");
     let history = [];
     let intradayActive = false;
+    let toastTimer = null;
+    let executeFirstTap = 0;
 
-    // ── STATUS CHIPS ──────────────────────────────────────────────
+    // ── TOAST ─────────────────────────────────────────────
+
+    function toast(text, ms = 3500) {
+      const el = document.getElementById("toast");
+      el.textContent = String(text).slice(0, 300);
+      el.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove("show"), ms);
+    }
+
+    // ── RIBBON ────────────────────────────────────────────
+
+    function nextLukeDose() {
+      const now = new Date();
+      const mins = now.getHours() * 60 + now.getMinutes();
+      if (mins < 240) return "4:00AM";
+      if (mins < 270) return "4:30AM";
+      const mUntil = 1440 - mins + 240;
+      return "4AM +" + Math.floor(mUntil / 60) + "h";
+    }
+
+    async function syncRibbon() {
+      document.getElementById("ribbon-luke").textContent = "LUKE: " + nextLukeDose();
+      try {
+        const r = await fetch(BASE + "/agent/finance/fund-status");
+        const d = await r.json();
+        const bal = typeof d.balance === "number" ? d.balance.toFixed(0) : (d.balance || "—");
+        document.getElementById("ribbon-move").textContent = "MOVE: $" + bal + "/$6k";
+      } catch {}
+      try {
+        const r = await fetch(BASE + "/agent/income/income-summary");
+        const d = await r.json();
+        const wtd = d.week_total ?? d.weekly_income ?? d.wtd ?? null;
+        document.getElementById("ribbon-wtd").textContent =
+          "WTD: " + (wtd !== null ? "$" + (typeof wtd === "number" ? wtd.toFixed(0) : wtd) : "—");
+      } catch {}
+    }
+
+    syncRibbon();
+    setInterval(syncRibbon, 5 * 60 * 1000);
+
+    // ── STATUS CHIPS ──────────────────────────────────────
 
     async function syncStatus() {
       try {
-        const res = await fetch(BASE + "/agent/autonomous/status");
-        updateChips(await res.json());
+        const r = await fetch(BASE + "/agent/autonomous/status");
+        updateChips(await r.json());
+      } catch {}
+      try {
+        const r = await fetch(BASE + "/agent/architect/status");
+        const d = await r.json();
+        const chip = document.getElementById("chip-arch");
+        chip.textContent = "ARCH:" + (d.last_observations || 0);
+        chip.style.display = "";
+        chip.style.color = d.zero_streak >= 3 ? "#f87171" : "";
+      } catch {}
+      try {
+        const r = await fetch(BASE + "/agent/sweeper/status");
+        const d = await r.json();
+        const chip = document.getElementById("chip-sweep");
+        const n = d.open_sweep_proposals || 0;
+        chip.textContent = "SWEEP:" + n;
+        chip.style.display = n > 0 || d.inventory_done ? "" : "none";
       } catch {}
     }
 
@@ -353,16 +765,16 @@
       const pnl = data.daily_pnl || 0;
       const pnlChip = document.getElementById("chip-pnl");
       pnlChip.textContent = (pnl >= 0 ? "+" : "") + "$" + Math.abs(pnl).toFixed(0);
-      pnlChip.className = "chip chip-pnl " + (pnl >= 0 ? "pos" : "neg");
+      pnlChip.className = "chip" + (pnl >= 0 ? " pos" : " neg");
 
       const posChip = document.getElementById("chip-pos");
       if (data.open_position) {
         const p = data.open_position;
-        posChip.textContent = p.ticker + " " + p.direction[0] + (p.size || 1) + " @ " + p.entry;
-        posChip.className = "chip chip-pos";
+        posChip.textContent = p.ticker + " " + p.direction[0] + (p.size || 1) + "@" + p.entry;
+        posChip.className = "chip";
       } else {
         posChip.textContent = "flat";
-        posChip.className = "chip chip-pos flat";
+        posChip.className = "chip flat";
       }
 
       const apexChip = document.getElementById("chip-apex");
@@ -377,42 +789,26 @@
     document.getElementById("chip-mode").addEventListener("click", async () => {
       const modeChip = document.getElementById("chip-mode");
       if (modeChip.classList.contains("off")) {
-        modeChip.textContent = "LAUNCHING...";
+        modeChip.textContent = "...";
         try {
-          const startRes = await fetch(BASE + "/agent/autonomous/start", {
-            method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({})
-          });
-          const startData = await startRes.json();
-          if (startData.started === false) {
-            addMessage("assistant", "02B blocked: " + startData.reason);
-            await syncStatus();
-            return;
-          }
-          await fetch(BASE + "/agent/autonomous/launch", {
-            method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({})
-          });
-          addMessage("assistant", "02B running in PAPER mode. Trading windows launching.");
-        } catch {
-          addMessage("assistant", "02B failed to start.");
-        }
+          const sr = await fetch(BASE + "/agent/autonomous/start", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+          const sd = await sr.json();
+          if (sd.started === false) { addMessage("assistant", "02B blocked: " + sd.reason); await syncStatus(); return; }
+          await fetch(BASE + "/agent/autonomous/launch", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+          addMessage("assistant", "02B running in PAPER mode.");
+        } catch { addMessage("assistant", "02B failed to start."); }
       } else {
         try {
-          await fetch(BASE + "/agent/autonomous/stop", {
-            method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({})
-          });
+          await fetch(BASE + "/agent/autonomous/stop", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
           addMessage("assistant", "02B stopped.");
-        } catch {
-          addMessage("assistant", "Failed to stop 02B.");
-        }
+        } catch {}
       }
       await syncStatus();
     });
 
     document.getElementById("kill-day-btn").addEventListener("click", async () => {
       try {
-        await fetch(BASE + "/agent/autonomous/kill", {
-          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({})
-        });
+        await fetch(BASE + "/agent/autonomous/kill", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
         addMessage("assistant", "Daily kill activated.", "alert");
         await syncStatus();
       } catch {}
@@ -420,9 +816,7 @@
 
     document.getElementById("kill-week-btn").addEventListener("click", async () => {
       try {
-        await fetch(BASE + "/agent/autonomous/kill-week", {
-          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({})
-        });
+        await fetch(BASE + "/agent/autonomous/kill-week", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
         addMessage("assistant", "Weekly kill activated.", "alert");
         await syncStatus();
       } catch {}
@@ -431,7 +825,82 @@
     syncStatus();
     setInterval(syncStatus, 30000);
 
-    // ── STAGED TRADE CARD ─────────────────────────────────────────
+    // ── ACTION ROW ────────────────────────────────────────
+
+    async function withBtn(btnId, fn) {
+      const btn = document.getElementById(btnId);
+      btn.disabled = true;
+      try { await fn(btn); } catch (e) { toast("Error: " + e.message); }
+      btn.disabled = false;
+    }
+
+    document.getElementById("btn-mkt").addEventListener("click", () => withBtn("btn-mkt", async (btn) => {
+      if (!intradayActive) {
+        const r = await fetch(BASE + "/intraday/start", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+        const d = await r.json();
+        if (d.started) { intradayActive = true; btn.classList.add("active"); toast("Intraday started."); }
+      } else {
+        await fetch(BASE + "/intraday/stop", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+        intradayActive = false; btn.classList.remove("active"); toast("Intraday stopped.");
+      }
+    }));
+
+    document.getElementById("btn-audit").addEventListener("click", () => withBtn("btn-audit", async () => {
+      const r = await fetch(BASE + "/agent/autonomous/status");
+      const d = await r.json();
+      toast(
+        "02B: " + (d.running ? d.mode.toUpperCase() : "OFF") +
+        " | P&L: $" + (d.daily_pnl || 0).toFixed(0) +
+        " | Trades: " + (d.paper_trades || 0) + "/25" +
+        (d.open_position ? "\nOpen: " + d.open_position.direction + " " + d.open_position.ticker + " @" + d.open_position.entry : "\nFlat")
+      , 5000);
+      updateChips(d);
+    }));
+
+    document.getElementById("btn-replay").addEventListener("click", () => withBtn("btn-replay", async () => {
+      const r = await fetch(BASE + "/agent/trader/assess");
+      const d = await r.json();
+      toast((d.assessment || JSON.stringify(d)).slice(0, 250), 6000);
+    }));
+
+    document.getElementById("btn-sienna").addEventListener("click", () => withBtn("btn-sienna", async () => {
+      const r = await fetch(BASE + "/agent/sienna/model");
+      const d = await r.json();
+      toast(JSON.stringify(d).slice(0, 250), 5000);
+    }));
+
+    document.getElementById("btn-premarket").addEventListener("click", () => withBtn("btn-premarket", async () => {
+      const r = await fetch(BASE + "/premarket", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+      const d = await r.json();
+      toast(d.started ? "Pre-market scan started." : JSON.stringify(d).slice(0, 150));
+    }));
+
+    document.getElementById("btn-eod").addEventListener("click", () => withBtn("btn-eod", async () => {
+      const r = await fetch(BASE + "/agent/autonomous/eod-update", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+      const d = await r.json();
+      toast(d.updated
+        ? (d.new_high ? "New high! Floor: $" + d.eod_threshold : "Floor: $" + d.eod_threshold + " | Balance: $" + d.closing_balance)
+        : JSON.stringify(d).slice(0, 150)
+      , 5000);
+    }));
+
+    document.getElementById("btn-shift").addEventListener("click", () => withBtn("btn-shift", async () => {
+      const r = await fetch(BASE + "/agent/income/income-summary");
+      const d = await r.json();
+      toast(JSON.stringify(d).slice(0, 250), 5000);
+    }));
+
+    document.getElementById("btn-luke").addEventListener("click", () => {
+      const panel = document.getElementById("luke-panel");
+      if (panel.classList.contains("visible")) closeLukePanel();
+      else openLukePanel();
+    });
+
+    // ── LOOK ──────────────────────────────────────────────
+
+    document.getElementById("look-btn").addEventListener("click", () => look());
+
+    // ── STAGED TRADE ──────────────────────────────────────
 
     const pendingTrade = document.getElementById("pending-trade");
     const executeBtn   = document.getElementById("execute-btn");
@@ -441,17 +910,20 @@
     function showPending(data) {
       const s = data.signal;
       const ticker = s.ticker || "MNQ";
-
       document.getElementById("pt-signal").textContent =
-        s.direction + " " + ticker + "  \xB7  Entry: " + s.entry + "  \xB7  Stop: " + s.stop + "  \xB7  Target: " + s.target;
+        s.direction + " " + ticker + "  ·  E:" + s.entry + "  S:" + s.stop + "  T:" + s.target;
+      const confluencePart = s.confluence_score != null
+        ? "  ·  CONF:" + s.confluence_score + " [" + (s.confluence_confidence || "?") + "]"
+        : "";
+      const sourcesPart = s.confluence_sources && s.confluence_sources.length
+        ? "  src:" + s.confluence_sources.join("+")
+        : "";
       document.getElementById("pt-meta").textContent =
-        "Risk: $" + data.risk_dollars + "  \xB7  R:R " + data.rr + ":1";
+        "Risk: $" + data.risk_dollars + "  ·  R:R " + data.rr + ":1" + confluencePart + sourcesPart;
       document.getElementById("pt-reason").textContent = s.reason || "";
-
       document.getElementById("lbl-target").textContent = "T " + s.target;
       document.getElementById("lbl-entry").textContent  = "E " + s.entry;
       document.getElementById("lbl-stop").textContent   = "S " + s.stop;
-
       pendingTrade.classList.add("visible");
       loadTVWidget(ticker);
       startCountdown(data.seconds_left);
@@ -460,11 +932,11 @@
     function hidePending() {
       pendingTrade.classList.remove("visible");
       if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
-      document.getElementById("pt-chart").innerHTML = "";
+      document.getElementById("pt-chart-inner").innerHTML = "";
     }
 
     function loadTVWidget(ticker) {
-      const container = document.getElementById("pt-chart");
+      const container = document.getElementById("pt-chart-inner");
       container.innerHTML = "";
       const wrapper = document.createElement("div");
       wrapper.className = "tradingview-widget-container";
@@ -476,21 +948,11 @@
       script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
       script.async = true;
       script.text = JSON.stringify({
-        autosize: false,
-        width: "100%",
-        height: 240,
+        autosize: false, width: "100%", height: 162,
         symbol: ticker === "MES" ? "CME_MINI:MES1!" : "CME_MINI:MNQ1!",
-        interval: "5",
-        timezone: "America/New_York",
-        theme: "dark",
-        style: "1",
-        locale: "en",
-        hide_top_toolbar: true,
-        hide_legend: true,
-        allow_symbol_change: false,
-        calendar: false,
-        hide_volume: true,
-        support_host: "https://www.tradingview.com"
+        interval: "5", timezone: "America/New_York", theme: "dark", style: "1", locale: "en",
+        hide_top_toolbar: true, hide_legend: true, allow_symbol_change: false,
+        calendar: false, hide_volume: true, support_host: "https://www.tradingview.com"
       });
       wrapper.appendChild(script);
       container.appendChild(wrapper);
@@ -502,14 +964,10 @@
       let s = seconds;
       const textEl = document.getElementById("pt-countdown-text");
       const ringEl = document.getElementById("pt-ring");
-
       function tick() {
         if (s <= 0) { hidePending(); return; }
-        const m = Math.floor(s / 60);
-        const sec = s % 60;
-        textEl.textContent = m + ":" + sec.toString().padStart(2, "0");
-        const pct = (s / total) * 100;
-        ringEl.style.strokeDasharray = pct + " 100";
+        textEl.textContent = Math.floor(s / 60) + ":" + (s % 60).toString().padStart(2, "0");
+        ringEl.style.strokeDasharray = ((s / total) * 100) + " 100";
         ringEl.style.stroke = s < 60 ? "#f87171" : "#e2b96a";
         s--;
       }
@@ -519,39 +977,48 @@
 
     async function checkPendingSignal() {
       try {
-        const res = await fetch(BASE + "/agent/autonomous/pending");
-        const data = await res.json();
-        if (data.pending) showPending(data);
+        const r = await fetch(BASE + "/agent/autonomous/pending");
+        const d = await r.json();
+        if (d.pending) showPending(d);
         else hidePending();
       } catch {}
     }
-
     checkPendingSignal();
     setInterval(checkPendingSignal, 15000);
 
     executeBtn.addEventListener("click", async () => {
-      executeBtn.disabled = true;
-      executeBtn.textContent = "EXECUTING...";
-      try {
-        const res = await fetch(BASE + "/agent/autonomous/execute-staged", {
-          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({})
-        });
-        const data = await res.json();
-        hidePending();
-        if (data.executed === false) addMessage("assistant", "Execute failed: " + data.reason, "alert");
-      } catch {
-        addMessage("assistant", "Execute error.", "alert");
+      const stateClass = document.getElementById("ribbon-state").className || "regulated";
+      if (stateClass === "rule_break") {
+        logIntervention("rule_break", "execute blocked");
+        toast("Rule break detected — execute disabled.", 4000);
+        return;
       }
-      executeBtn.disabled = false;
-      executeBtn.textContent = "EXECUTE";
+      if (stateClass === "spiraling") {
+        const now = Date.now();
+        if (now - executeFirstTap < 1000) {
+          logIntervention("spiraling", "double-confirmed execute");
+        } else {
+          executeFirstTap = now;
+          toast("Spiraling — tap EXECUTE again within 1s to confirm.", 3000);
+          return;
+        }
+      }
+      executeBtn.disabled = true; executeBtn.textContent = "...";
+      try {
+        const r = await fetch(BASE + "/agent/autonomous/execute-staged", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+        const d = await r.json();
+        hidePending();
+        if (d.executed === false) addMessage("assistant", "Execute failed: " + d.reason, "alert");
+      } catch { addMessage("assistant", "Execute error.", "alert"); }
+      executeBtn.disabled = false; executeBtn.textContent = "EXECUTE";
     });
 
+    async function logIntervention(state, action) {
+      try { await fetch(BASE + "/jarvis/log-intervention", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ state, action }) }); } catch {}
+    }
+
     skipBtn.addEventListener("click", async () => {
-      try {
-        await fetch(BASE + "/agent/autonomous/skip-staged", {
-          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({})
-        });
-      } catch {}
+      try { await fetch(BASE + "/agent/autonomous/skip-staged", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" }); } catch {}
       hidePending();
     });
 
@@ -561,39 +1028,53 @@
       if (e.key === "s" || e.key === "S") skipBtn.click();
     });
 
-    // ── WEBSOCKET ─────────────────────────────────────────────────
+    // ── WEBSOCKET ─────────────────────────────────────────
 
     ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === "staged_trade") {
-        showPending(data);
-      } else if (data.type === "status_update") {
-        updateChips(data);
-      } else if (data.type === "notification") {
-        addMessage("assistant", data.message, "alert");
-        if (data.message && data.message.includes("02B SIGNAL")) checkPendingSignal();
-        if (data.message && /02B|KILL|PAPER|LIVE|CLOSED/.test(data.message)) syncStatus();
-      }
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === "staged_trade") {
+          showPending(data);
+          if (data.canary) {
+            const chip = document.getElementById("chip-canary");
+            chip.textContent = "CANARY";
+            chip.style.display = "";
+            setTimeout(() => { chip.style.display = "none"; }, 35000);
+          }
+        }
+        else if (data.type === "status_update") updateChips(data);
+        else if (data.type === "levels_warning") {
+          addMessage("assistant", data.message, "alert");
+          const sp = document.getElementById("sp-levels");
+          if (sp) { sp.textContent = "LEVELS: NONE"; sp.className = "sp-item err"; }
+          refreshStatusPanel();
+        }
+        else if (data.type === "notification") {
+          addMessage("assistant", data.message, "alert");
+          if (/02B|KILL|PAPER|LIVE|CLOSED/.test(data.message)) syncStatus();
+        }
+      } catch {}
     };
 
-    // ── STATE INDICATOR ───────────────────────────────────────────
+    // ── STATE INDICATOR ───────────────────────────────────
 
     function updateStateIndicator(state) {
       if (!state) return;
-      stateIndicator.className = state;
-      const labels = { regulated: "REGULATED", stressed: "STRESSED", spiraling: "SPIRALING", rule_break: "RULE BREAK" };
-      stateIndicator.textContent = labels[state] || "ONLINE";
+      const el = document.getElementById("ribbon-state");
+      el.className = state === "regulated" ? "" : state;
+      const labels = { regulated: "ONLINE", stressed: "STRESSED", spiraling: "SPIRALING", rule_break: "RULE BREAK" };
+      el.textContent = labels[state] || "ONLINE";
     }
 
-    // ── MESSAGE RENDERING ─────────────────────────────────────────
+    // ── MESSAGES ─────────────────────────────────────────
 
     function addMessage(role, text, type) {
       const wrapper = document.createElement("div");
       wrapper.className = "wrapper " + (role === "user" ? "user" : "jarvis");
-      if (role === "assistant") {
+      if (role !== "user") {
         const label = document.createElement("div");
         label.className = "label";
-        label.textContent = type === "vision" ? "JARVIS - VISION" : type === "alert" ? "JARVIS - ALERT" : "JARVIS";
+        label.textContent = type === "vision" ? "JARVIS — VISION" : type === "alert" ? "JARVIS — ALERT" : "JARVIS";
         wrapper.appendChild(label);
       }
       const msg = document.createElement("div");
@@ -604,10 +1085,22 @@
       messages.scrollTop = messages.scrollHeight;
     }
 
+    function addImageMessage(dataUrl) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "wrapper user";
+      const msg = document.createElement("div");
+      msg.className = "msg user";
+      const img = document.createElement("img");
+      img.src = dataUrl;
+      msg.appendChild(img);
+      wrapper.appendChild(msg);
+      messages.appendChild(wrapper);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
     function showThinking(text) {
       const div = document.createElement("div");
-      div.className = "thinking";
-      div.id = "thinking";
+      div.className = "thinking"; div.id = "thinking";
       div.textContent = text || "THINKING...";
       messages.appendChild(div);
       messages.scrollTop = messages.scrollHeight;
@@ -618,53 +1111,96 @@
       if (t) t.remove();
     }
 
-    // ── INTRADAY ──────────────────────────────────────────────────
+    // ── IMAGE PASTE / DROP ────────────────────────────────
 
-    intradayBtn.addEventListener("click", async () => {
-      if (!intradayActive) {
+    async function handleImageBlob(blob, mimeType) {
+      const reader = new FileReader();
+      reader.onload = async (evt) => {
+        const dataUrl = evt.target.result;
+        const base64  = dataUrl.split(",")[1];
+        addImageMessage(dataUrl);
+        const question = input.value.trim() || "What's in this image?";
+        input.value = "";
+        showThinking("ANALYZING...");
+        sendBtn.disabled = true;
         try {
-          const res = await fetch(BASE + "/intraday/start", {
-            method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({})
+          const r = await fetch(BASE + "/see-image", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ image: base64, mime_type: mimeType, question })
           });
-          const data = await res.json();
-          if (data.started) {
-            intradayActive = true;
-            intradayBtn.textContent = "MARKET ON";
-            intradayBtn.classList.add("active");
-            addMessage("assistant", "Intraday scraper started. Monitoring ximes + bobby every 90 seconds.");
-          }
-        } catch { addMessage("assistant", "Failed to start intraday scraper."); }
-      } else {
-        try {
-          await fetch(BASE + "/intraday/stop", {
-            method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({})
-          });
-          intradayActive = false;
-          intradayBtn.textContent = "MARKET OFF";
-          intradayBtn.classList.remove("active");
-          addMessage("assistant", "Intraday scraper stopped.");
-        } catch { addMessage("assistant", "Failed to stop intraday scraper."); }
-      }
+          const d = await r.json();
+          hideThinking();
+          addMessage("assistant", d.reply || d.error || "No response.", "vision");
+        } catch {
+          hideThinking();
+          addMessage("assistant", "Image analysis failed.");
+        }
+        sendBtn.disabled = false;
+        input.focus();
+      };
+      reader.readAsDataURL(blob);
+    }
+
+    document.addEventListener("paste", (e) => {
+      const items = Array.from(e.clipboardData?.items || []);
+      const imageItem = items.find(item => item.type.startsWith("image/"));
+      if (!imageItem) return;
+      e.preventDefault();
+      handleImageBlob(imageItem.getAsFile(), imageItem.type);
     });
 
-    // ── SEND / CHAT ───────────────────────────────────────────────
+    let dragDepth = 0;
+    const dragOverlay = document.getElementById("drag-overlay");
+    document.addEventListener("dragenter", (e) => {
+      if (Array.from(e.dataTransfer?.items || []).some(i => i.kind === "file" && i.type.startsWith("image/"))) {
+        dragDepth++;
+        dragOverlay.classList.add("show");
+      }
+    });
+    document.addEventListener("dragleave", () => {
+      dragDepth--;
+      if (dragDepth <= 0) { dragDepth = 0; dragOverlay.classList.remove("show"); }
+    });
+    document.addEventListener("dragover", (e) => e.preventDefault());
+    document.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dragDepth = 0;
+      dragOverlay.classList.remove("show");
+      const file = e.dataTransfer?.files[0];
+      if (file && file.type.startsWith("image/")) handleImageBlob(file, file.type);
+    });
+
+    // ── CHAT ─────────────────────────────────────────────
+
+    async function look(question) {
+      showThinking("LOOKING...");
+      sendBtn.disabled = true;
+      try {
+        const r = await fetch(BASE + "/see", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question: question || "What's on this screen? Be brief." }) });
+        const d = await r.json();
+        hideThinking();
+        addMessage("assistant", d.reply, "vision");
+      } catch {
+        hideThinking();
+        addMessage("assistant", "Vision error.");
+      }
+      sendBtn.disabled = false;
+      input.focus();
+    }
 
     async function doAction(text) {
       showThinking("DOING...");
       sendBtn.disabled = true;
       const parts = text.split(" ");
-      const action = parts[0].toLowerCase();
-      const value = parts.slice(1).join(" ");
       try {
-        const res = await fetch(BASE + "/do", {
-          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action, value })
-        });
-        const data = await res.json();
+        const r = await fetch(BASE + "/do", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: parts[0].toLowerCase(), value: parts.slice(1).join(" ") }) });
+        const d = await r.json();
         hideThinking();
-        addMessage("assistant", data.reply || "Done.", "vision");
+        addMessage("assistant", d.reply || "Done.", "vision");
       } catch {
         hideThinking();
-        addMessage("assistant", "Action error. Is Jarvis running?");
+        addMessage("assistant", "Action error.");
       }
       sendBtn.disabled = false;
       input.focus();
@@ -674,59 +1210,409 @@
       showThinking("THINKING...");
       sendBtn.disabled = true;
       try {
-        const res = await fetch(BASE + "/chat", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: text, history })
-        });
-        const data = await res.json();
+        const r = await fetch(BASE + "/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: text, history }) });
+        const d = await r.json();
         hideThinking();
-        addMessage("assistant", data.reply);
-        if (data.state) updateStateIndicator(data.state);
-        history = data.history;
+        addMessage("assistant", d.reply);
+        if (d.state) updateStateIndicator(d.state);
+        history = d.history;
       } catch {
         hideThinking();
-        addMessage("assistant", "Connection error. Is Jarvis running?");
+        addMessage("assistant", "Connection error.");
       }
       sendBtn.disabled = false;
-      input.focus();
-    }
-
-    async function look(question) {
-      showThinking("LOOKING...");
-      sendBtn.disabled = true;
-      seeBtn.disabled = true;
-      try {
-        const res = await fetch(BASE + "/see", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ question: question || "What do you see on this screen?" })
-        });
-        const data = await res.json();
-        hideThinking();
-        addMessage("assistant", data.reply, "vision");
-      } catch {
-        hideThinking();
-        addMessage("assistant", "Vision error. Is Jarvis running?");
-      }
-      sendBtn.disabled = false;
-      seeBtn.disabled = false;
       input.focus();
     }
 
     async function send() {
       const text = input.value.trim();
       if (!text) return;
-      const isAction = /^(open|type|click|scroll|press)\s/i.test(text);
-      const isVision = /(screen|look|what's open|what do you see)/i.test(text);
       input.value = "";
+      if (/^panic$/i.test(text)) {
+        document.getElementById("panic-modal").classList.add("show");
+        return;
+      }
+      const overrideMatch = text.match(/^override\s+(.+)$/i);
+      if (overrideMatch) {
+        addMessage("user", text);
+        logIntervention(document.getElementById("ribbon-state").className || "regulated", "override: " + overrideMatch[1]);
+        await chat(overrideMatch[1]);
+        return;
+      }
       addMessage("user", text);
-      if (isAction) await doAction(text);
-      else if (isVision) await look(text);
+      if (/^(open|type|click|scroll|press)\s/i.test(text))      await doAction(text);
+      else if (/(screen|look|what's open|what do you see)/i.test(text)) await look(text);
       else await chat(text);
     }
 
     sendBtn.addEventListener("click", send);
-    seeBtn.addEventListener("click", () => look());
     input.addEventListener("keydown", e => { if (e.key === "Enter") send(); });
+
+    const connChip = document.getElementById("chip-conn");
+    async function checkConn() {
+      try {
+        await fetch(BASE + "/health");
+        connChip.className = "chip ok";
+        connChip.textContent = "CONN";
+        document.getElementById("actions").style.opacity = "";
+        document.getElementById("actions").style.pointerEvents = "";
+      } catch {
+        connChip.className = "chip err";
+        connChip.textContent = "CONN ERR";
+        document.getElementById("actions").style.opacity = "0.3";
+        document.getElementById("actions").style.pointerEvents = "none";
+        toast("Server connection lost.");
+      }
+    }
+    checkConn();
+    setInterval(checkConn, 10000);
+
+    (async () => {
+      try {
+        const r = await fetch(BASE + "/jarvis/boot-check");
+        const d = await r.json();
+        if (d.overall === "red") {
+          const ul = document.getElementById("boot-check-list");
+          ul.innerHTML = d.checks.map(c =>
+            `<li class="${c.status}">${c.status === "green" ? "✓" : c.status === "yellow" ? "⚠" : "✗"} ${c.name}: ${c.detail}</li>`
+          ).join("");
+          document.getElementById("boot-modal").classList.add("show");
+        }
+      } catch {}
+    })();
+
+    document.getElementById("boot-modal-close").addEventListener("click", () => {
+      document.getElementById("boot-modal").classList.remove("show");
+    });
+
+    document.getElementById("panic-confirm").addEventListener("click", async () => {
+      document.getElementById("panic-modal").classList.remove("show");
+      try {
+        await fetch(BASE + "/panic", { method: "POST" });
+        addMessage("assistant", "PANIC executed — 02B killed, intraday stopped.", "alert");
+      } catch { addMessage("assistant", "PANIC endpoint failed.", "alert"); }
+    });
+    document.getElementById("panic-cancel").addEventListener("click", () => {
+      document.getElementById("panic-modal").classList.remove("show");
+    });
+
+    // ── METRICS PANEL ─────────────────────────────────────
+
+    let metricsTextSummary = "";
+
+    document.getElementById("btn-metrics").addEventListener("click", () => {
+      const panel = document.getElementById("metrics-panel");
+      if (panel.classList.contains("visible")) closeMetricsPanel();
+      else openMetricsPanel();
+    });
+
+    function openMetricsPanel() {
+      document.getElementById("metrics-panel").classList.add("visible");
+      document.getElementById("btn-metrics").classList.add("active");
+      loadMetrics();
+    }
+
+    function closeMetricsPanel() {
+      document.getElementById("metrics-panel").classList.remove("visible");
+      document.getElementById("btn-metrics").classList.remove("active");
+    }
+
+    document.getElementById("mp-close").addEventListener("click", closeMetricsPanel);
+
+    document.getElementById("mp-load-btn").addEventListener("click", loadMetrics);
+
+    document.getElementById("mp-copy-btn").addEventListener("click", () => {
+      if (!metricsTextSummary) { toast("No metrics loaded yet."); return; }
+      navigator.clipboard.writeText(metricsTextSummary)
+        .then(() => toast("Summary copied to clipboard."))
+        .catch(() => {
+          const ta = document.createElement("textarea");
+          ta.value = metricsTextSummary;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          ta.remove();
+          toast("Summary copied.");
+        });
+    });
+
+    async function loadMetrics() {
+      const loadBtn  = document.getElementById("mp-load-btn");
+      const statusEl = document.getElementById("mp-status");
+      const content  = document.getElementById("mp-content");
+      const hours    = parseInt(document.getElementById("mp-hours-input").value) || 24;
+      loadBtn.disabled = true;
+      statusEl.textContent = "loading...";
+      try {
+        const r = await fetch(BASE + "/agent/autonomous/metrics?hours=" + hours);
+        const m = await r.json();
+        if (m.error) { statusEl.textContent = "error: " + m.error; loadBtn.disabled = false; return; }
+        metricsTextSummary = m.text_summary || "";
+        statusEl.textContent = "since " + (m.since || "").slice(0, 16).replace("T", " ") + " UTC";
+        content.innerHTML = renderMetrics(m);
+      } catch (err) {
+        statusEl.textContent = "fetch failed";
+      }
+      loadBtn.disabled = false;
+    }
+
+    function renderMetrics(m) {
+      function row(key, val, cls) {
+        return `<div class="mp-row"><span class="mp-key">${key}</span><span class="mp-val${cls ? " " + cls : ""}">${val}</span></div>`;
+      }
+      function section(label, rows) {
+        return `<div class="mp-section"><div class="mp-section-label">${label}</div>${rows.join("")}</div>`;
+      }
+
+      const pnlCls = m.paper_pnl_total > 0 ? "pos" : m.paper_pnl_total < 0 ? "neg" : "";
+      const avgCls = m.paper_pnl_avg_per_trade > 0 ? "pos" : m.paper_pnl_avg_per_trade < 0 ? "neg" : "";
+      const rejectTotal = Object.values(m.rejects_by_reason || {}).reduce((a, b) => a + b, 0);
+      const rejectStr = rejectTotal === 0 ? "0" :
+        rejectTotal + " — " + Object.entries(m.rejects_by_reason)
+          .sort((a, b) => b[1] - a[1])
+          .map(([k, v]) => k.replace(/_/g, " ") + "×" + v)
+          .join(", ");
+
+      const signalsHtml = section("SIGNALS", [
+        row("evaluated", m.signals_evaluated),
+        row("staged", m.signals_staged),
+        row("gate rejections", rejectStr, rejectTotal > 0 ? "warn" : ""),
+      ]);
+
+      const tradesHtml = section("TRADES", [
+        row("opened", m.paper_trades_opened),
+        row("closed", m.paper_trades_closed),
+        row("total P&L", "$" + m.paper_pnl_total, pnlCls),
+        row("avg/trade", "$" + m.paper_pnl_avg_per_trade, avgCls),
+        m.avg_time_to_protection_confirmed_ms !== null
+          ? row("entry→protected", (m.avg_time_to_protection_confirmed_ms / 1000).toFixed(1) + "s")
+          : row("entry→protected", "N/A (no live execs)"),
+      ]);
+
+      const systemHtml = section("SYSTEM", [
+        row("reconcile mismatches", m.reconciliation_mismatches_count, m.reconciliation_mismatches_count > 0 ? "warn" : ""),
+        row("scheduler jobs failed", m.scheduler_jobs_failed_count, m.scheduler_jobs_failed_count > 0 ? "warn" : ""),
+        row("critical events", m.critical_events.length, m.critical_events.length > 0 ? "neg" : ""),
+      ]);
+
+      let criticalHtml = "";
+      if (m.critical_events && m.critical_events.length > 0) {
+        const items = m.critical_events.map(e =>
+          `<div class="mp-critical-item"><span class="mp-critical-ts">${(e.timestamp || "").slice(11, 16)}</span>${e.type} — ${e.summary || ""}</div>`
+        ).join("");
+        criticalHtml = `<div class="mp-section"><div class="mp-section-label">CRITICAL LOG</div>${items}</div>`;
+      }
+
+      return signalsHtml + tradesHtml + systemHtml + criticalHtml;
+    }
+
+    // ── LUKE PANEL ────────────────────────────────────────
+
+    let lukePollInterval = null;
+
+    function openLukePanel() {
+      document.getElementById("luke-panel").classList.add("visible");
+      document.getElementById("btn-luke").classList.add("active");
+      loadLukeDrafts();
+      lukePollInterval = setInterval(loadLukeDrafts, 30000);
+    }
+
+    function closeLukePanel() {
+      document.getElementById("luke-panel").classList.remove("visible");
+      document.getElementById("btn-luke").classList.remove("active");
+      clearInterval(lukePollInterval);
+      lukePollInterval = null;
+    }
+
+    document.getElementById("lp-close").addEventListener("click", closeLukePanel);
+
+    function formatDraftValues(entry) {
+      const parts = [];
+      if (entry.meds)       parts.push("meds: " + entry.meds);
+      if (entry.food_eaten) parts.push("food: " + entry.food_eaten);
+      if (entry.stool)      parts.push("stool: " + entry.stool);
+      if (entry.vomiting)   parts.push("VOMITING");
+      if (entry.energy)     parts.push("energy: " + entry.energy);
+      if (entry.notes)      parts.push("notes: " + String(entry.notes).slice(0, 80));
+      return parts.join("  ·  ") || "(empty entry)";
+    }
+
+    async function loadLukeDrafts() {
+      const list = document.getElementById("lp-drafts-list");
+      try {
+        const r = await fetch(BASE + "/agent/health/drafts-luke");
+        const d = await r.json();
+        const drafts = d.drafts || [];
+        if (drafts.length === 0) {
+          list.innerHTML = '<span class="lp-empty">no pending drafts</span>';
+          return;
+        }
+        list.innerHTML = "";
+        for (const draft of drafts) {
+          const el = document.createElement("div");
+          el.className = "lp-draft";
+          el.dataset.id = draft.id;
+          const ts = draft.created_at ? new Date(draft.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "";
+          el.innerHTML = `
+            <div class="lp-draft-meta">${draft.id}  ·  ${ts}</div>
+            <div class="lp-draft-values">${formatDraftValues(draft.entry)}</div>
+            <div class="lp-draft-btns">
+              <button class="lp-confirm-btn" data-id="${draft.id}">CONFIRM</button>
+              <button class="lp-reject-btn"  data-id="${draft.id}">REJECT</button>
+            </div>
+            <div class="lp-flags" id="lp-flags-${draft.id}"></div>`;
+          list.appendChild(el);
+        }
+        list.querySelectorAll(".lp-confirm-btn").forEach(btn => btn.addEventListener("click", () => confirmLukeDraft(btn.dataset.id)));
+        list.querySelectorAll(".lp-reject-btn").forEach(btn => btn.addEventListener("click", () => rejectLukeDraft(btn.dataset.id)));
+      } catch {
+        list.innerHTML = '<span class="lp-empty">failed to load drafts</span>';
+      }
+    }
+
+    async function confirmLukeDraft(id) {
+      const el = document.querySelector(`.lp-draft[data-id="${id}"]`);
+      if (!el) return;
+      el.querySelectorAll("button").forEach(b => b.disabled = true);
+      try {
+        const r = await fetch(BASE + "/agent/health/confirm-luke", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id })
+        });
+        const d = await r.json();
+        const flagEl = document.getElementById("lp-flags-" + id);
+        if (d.confirmed_id) {
+          el.style.opacity = "0.4";
+          el.style.pointerEvents = "none";
+          if (flagEl && d.reply) flagEl.textContent = d.reply;
+          setTimeout(() => { el.remove(); }, 1200);
+        } else {
+          if (flagEl) flagEl.textContent = d.error || "confirm failed";
+          el.querySelectorAll("button").forEach(b => b.disabled = false);
+        }
+      } catch {
+        el.querySelectorAll("button").forEach(b => b.disabled = false);
+        toast("Confirm failed.");
+      }
+    }
+
+    async function rejectLukeDraft(id) {
+      const el = document.querySelector(`.lp-draft[data-id="${id}"]`);
+      if (!el) return;
+      el.querySelectorAll("button").forEach(b => b.disabled = true);
+      try {
+        const r = await fetch(BASE + "/agent/health/draft-luke/" + encodeURIComponent(id), { method: "DELETE" });
+        if (r.ok || r.status === 404) {
+          el.style.opacity = "0.4";
+          el.style.pointerEvents = "none";
+          setTimeout(() => { el.remove(); }, 1200);
+        } else {
+          const d = await r.json().catch(() => ({}));
+          toast("Reject failed: " + (d.error || r.status));
+          el.querySelectorAll("button").forEach(b => b.disabled = false);
+        }
+      } catch {
+        el.querySelectorAll("button").forEach(b => b.disabled = false);
+        toast("Reject failed.");
+      }
+    }
+
+    document.getElementById("lp-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById("lp-submit");
+      const resultEl = document.getElementById("lp-form-result");
+      submitBtn.disabled = true;
+      resultEl.textContent = "";
+      const body = {
+        meds:       document.getElementById("lp-meds").value.trim() || null,
+        food_eaten: document.getElementById("lp-food").value || null,
+        stool:      document.getElementById("lp-stool").value || null,
+        energy:     document.getElementById("lp-energy").value || null,
+        vomiting:   document.getElementById("lp-vomit").checked,
+        notes:      document.getElementById("lp-notes").value.trim() || null
+      };
+      try {
+        const r = await fetch(BASE + "/agent/health/log-luke", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+        const d = await r.json();
+        resultEl.style.color = "#4ade80";
+        resultEl.textContent = d.reply || "logged";
+        document.getElementById("lp-meds").value = "";
+        document.getElementById("lp-food").value = "";
+        document.getElementById("lp-stool").value = "";
+        document.getElementById("lp-energy").value = "";
+        document.getElementById("lp-vomit").checked = false;
+        document.getElementById("lp-notes").value = "";
+      } catch {
+        resultEl.style.color = "#f87171";
+        resultEl.textContent = "log failed";
+      }
+      submitBtn.disabled = false;
+    });
+
+  // ── STATUS PANEL AUTO-REFRESH ──────────────────────────────────────────────
+  function parseStatusReply(text) {
+    const el = (id, val, cls) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = val;
+      el.className = "sp-item" + (cls ? " " + cls : "");
+    };
+
+    const levelsMatch = text.match(/Levels:\s*(✅[^\n]*|❌[^\n]*)/i);
+    if (levelsMatch) {
+      const ok = levelsMatch[1].startsWith("✅");
+      el("sp-levels", "LEVELS: " + (ok ? "YES" : "NO"), ok ? "ok" : "err");
+    }
+
+    const zoneMatch = text.match(/Zone:\s*([^\n|]+)/i) || text.match(/📍\s*([\d.]+)\s+(\S+)\s+(\S+)/);
+    if (zoneMatch) {
+      el("sp-confluence", "ZONE: " + (zoneMatch[1] || "").trim().slice(0, 30), "info");
+    } else if (/no HIGH confluence/i.test(text)) {
+      el("sp-confluence", "ZONE: none", "warn");
+    }
+
+    const tradeMatch = text.match(/(\d+)\s+trades\s*\|\s*(\d+)W\s+(\d+)L\s*\|\s*Net:\s*([+\-][\d.]+)/i);
+    if (tradeMatch) {
+      const net = parseFloat(tradeMatch[4]);
+      el("sp-trades", `TODAY: ${tradeMatch[1]}t ${tradeMatch[2]}W/${tradeMatch[3]}L ${tradeMatch[4]}pts`, net >= 0 ? "ok" : "err");
+    } else if (/No trades logged/i.test(text)) {
+      el("sp-trades", "TODAY: 0 trades", "");
+    }
+
+    const stateMatch = text.match(/Emotional state:\s*([^\n]+)/i);
+    if (stateMatch) {
+      const s = stateMatch[1];
+      const cls = /❌/.test(s) ? "err" : /⚠/.test(s) ? "warn" : "ok";
+      el("sp-state", "STATE: " + (cls === "ok" ? "🟢" : cls === "warn" ? "🟡" : "🔴"), cls);
+    }
+
+    const medMatch = text.match(/4:30 AM mirtazapine.*(✅|⏰)/);
+    if (medMatch) {
+      const due = medMatch[1] === "✅";
+      el("sp-meds", "MEDS: " + (due ? "DUE" : "OK"), due ? "warn" : "ok");
+    }
+  }
+
+  async function refreshStatusPanel() {
+    try {
+      const r = await fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: "/status" })
+      });
+      const d = await r.json();
+      if (d.reply) parseStatusReply(d.reply);
+    } catch {}
+  }
+
+  refreshStatusPanel();
+  setInterval(refreshStatusPanel, 60000);
+
   </script>
 </body>
 </html>

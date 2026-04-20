@@ -1,0 +1,29 @@
+name: tradovate-flatten-all
+version: 1
+description: Flatten all open positions immediately
+dry_run: false
+required_dry_runs: 10
+timeout_seconds: 30
+
+preflight:
+  - backend_heartbeat
+  - tradovate_connected
+  - mouse_still_2s
+
+steps:
+  - id: verify_interface
+    action: screenshot
+    verify_hint: "Tradovate interface visible"
+    checkpoint: true
+
+  - id: click_flatten
+    action: click
+    value: "{{FLATTEN_BTN_X}},{{FLATTEN_BTN_Y}}"
+    verify_hint: "flatten confirmation dialog or positions cleared"
+    checkpoint: true
+
+  - id: confirm_flatten
+    action: press
+    value: "enter"
+    verify_hint: "no open positions, flat"
+    checkpoint: true

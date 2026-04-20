@@ -186,6 +186,11 @@ async function runScraper(priorityFilter = ["HIGH"]) {
   }
 
   console.log(`\n=== Scrape complete. ${session.channels.length} channels processed ===`);
+  const expected = targets.length;
+  const received = session.channels.filter(c => c.results && c.results.length > 0).length;
+  const missing = targets.filter(t => !session.channels.find(c => c.channel === t.name)).map(t => t.name);
+  const completeness = expected > 0 ? Math.round(received / expected * 100) : 100;
+  try { fs.writeFileSync(path.join(__dirname, "scrape-result.json"), JSON.stringify({ ts: new Date().toISOString(), expected, received, missing, completeness }, null, 2)); } catch {}
   return session;
 }
 

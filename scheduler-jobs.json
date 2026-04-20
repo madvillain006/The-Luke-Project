@@ -1,0 +1,16 @@
+{
+  "rss-scan": {
+    "state": "succeeded",
+    "last_started": "2026-04-20T12:04:08.738Z",
+    "last_succeeded": "2026-04-20T12:04:23.570Z",
+    "duration_ms": 14832,
+    "result": "0 found"
+  },
+  "autonomous-daily-reset": {
+    "state": "succeeded",
+    "last_started": "2026-04-20T13:04:08.798Z",
+    "last_succeeded": "2026-04-20T13:04:09.073Z",
+    "duration_ms": 275,
+    "result": "reset"
+  }
+}

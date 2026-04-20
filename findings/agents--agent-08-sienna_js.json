@@ -1,0 +1,38 @@
+{
+  "file": "agents\\agent-08-sienna.js",
+  "scanned": "2026-04-19T23:11:19.357Z",
+  "findings": [
+    {
+      "line": 108,
+      "category": "token_waste",
+      "severity": "high",
+      "issue": "Synthesis request sends 14000 char slice of combined data but no pagination — could truncate critical trader profiles mid-sentence",
+      "suggestion": "Implement chunked synthesis with multiple API calls, or use text summarization before the final synthesis call to preserve full context",
+      "est_impact": "Lost trader methodology data, incomplete SIENNA_PROFILE.md output"
+    },
+    {
+      "line": 88,
+      "category": "token_waste",
+      "severity": "med",
+      "issue": "Haiku model loops up to 12 chunks per file with 400ms delay between calls — no batching or concurrent requests",
+      "suggestion": "Use Promise.all() to parallelize requests (respecting rate limits), or batch chunks into single larger requests",
+      "est_impact": "Slow analysis, high API costs, unnecessary latency"
+    },
+    {
+      "line": 150,
+      "category": "error_gap",
+      "severity": "med",
+      "issue": "POST /score-signal slices profile to 1500 chars without warning — may cut off critical trader context needed for scoring",
+      "suggestion": "Load full profile or add logging when truncation occurs; consider separate endpoint for large profiles",
+      "est_impact": "Inaccurate signal scoring against incomplete trader model"
+    },
+    {
+      "line": 42,
+      "category": "dead_code",
+      "severity": "low",
+      "issue": "loadAllHistorySignals() filters insights for 'NO_ACTIONABLE' string but this string is never set by analysis endpoints",
+      "suggestion": "Remove 'NO_ACTIONABLE' check or ensure consistency across where insights are generated",
+      "est_impact": "Unused conditional logic"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+name: tradovate-login
+version: 1
+description: Open Tradovate and log in
+dry_run: false
+required_dry_runs: 10
+timeout_seconds: 60
+
+preflight:
+  - backend_heartbeat
+  - boot_check
+  - mouse_still_2s
+
+steps:
+  - id: open_browser
+    action: open
+    value: "https://trader.tradovate.com"
+    verify_hint: "browser opened, Tradovate login page visible"
+    checkpoint: true
+
+  - id: wait_load
+    action: wait
+    value: "4"
+
+  - id: screenshot_check
+    action: screenshot
+    verify_hint: "Tradovate login form with email and password fields visible"
+    checkpoint: true
+
+  - id: click_email
+    action: click
+    value: "760,400"
+    verify_hint: "email field focused"
+
+  - id: type_email
+    action: type
+    value: "{{TRADOVATE_USER}}"
+    verify_hint: "email address typed in field"
+
+  - id: click_password
+    action: click
+    value: "760,460"
+
+  - id: type_password
+    action: type
+    value: "{{TRADOVATE_PASS}}"
+
+  - id: press_enter
+    action: press
+    value: "enter"
+    verify_hint: "logged in, trading interface visible"
+    checkpoint: true

@@ -1,0 +1,62 @@
+{
+  "file": "research-agent.py",
+  "scanned": "2026-04-19T23:12:13.945Z",
+  "findings": [
+    {
+      "line": 14,
+      "category": "error_gap",
+      "severity": "high",
+      "issue": "Bare except clause in load_memory() silently swallows all errors including corrupt JSON, file permission issues, and disk errors.",
+      "suggestion": "Catch specific exceptions: except (FileNotFoundError, json.JSONDecodeError) to distinguish real failures from missing file.",
+      "est_impact": "Silent corruption of memory state; hard to debug agent failures"
+    },
+    {
+      "line": 22,
+      "category": "error_gap",
+      "severity": "med",
+      "issue": "Bare except in notify() masks network failures, timeouts, and Jarvis service unavailability with no logging.",
+      "suggestion": "Log the exception or return success/failure boolean so caller knows notification failed.",
+      "est_impact": "Agent believes notifications sent when Jarvis is down; operational blindness"
+    },
+    {
+      "line": 37,
+      "category": "token_waste",
+      "severity": "med",
+      "issue": "Full article text truncated to 3000 chars in prompt, but text extraction loop already limits to 4000 chars—redundant truncation wastes tokens in prompt overhead.",
+      "suggestion": "Standardize to single truncation point (e.g., 3000) before sending to /chat endpoint.",
+      "est_impact": "~200-400 tokens wasted per analysis call across 10+ articles"
+    },
+    {
+      "line": 63,
+      "category": "error_gap",
+      "severity": "med",
+      "issue": "Page navigation timeout exception caught but only printed; if login page reached, function returns silently without recording failure state.",
+      "suggestion": "Explicitly track and log authentication failures separately to avoid repeated login-wall attempts on next run.",
+      "est_impact": "Agent loops futilely on login failures; wastes compute and time"
+    },
+    {
+      "line": 87,
+      "category": "error_gap",
+      "severity": "med",
+      "issue": "Bare except in requests.head() redirect chain silently skips malformed URLs, timeouts, and SSL errors without distinction.",
+      "suggestion": "Catch (requests.Timeout, requests.ConnectionError, requests.InvalidURL) separately to log genuine network issues.",
+      "est_impact": "Silent data loss; legitimate articles marked as unreachable without evidence"
+    },
+    {
+      "line": 125,
+      "category": "search_trap",
+      "severity": "low",
+      "issue": "Hard-coded keyword list 'ai_keywords' filters but misses common agent patterns: 'agent framework', 'system prompt', 'tool calling'—over-filters relevant articles.",
+      "suggestion": "Move keywords to memory.json config so Agent 06 can update its own filters based on what Conor finds useful.",
+      "est_impact": "Miss 10-20% of actionable research articles; dead ends in discovery loop"
+    },
+    {
+      "line": 156,
+      "category": "error_gap",
+      "severity": "med",
+      "issue": "Page.goto() exception caught but passes silently; stale page content may be analyzed as fresh article without warning.",
+      "suggestion": "Log or flag partial-load states; track failed URLs to prevent re-processing.",
+      "est_impact": "Duplicate/corrupted insights saved to memory; pollutes research feed"
+    }
+  ]
+}

@@ -13,7 +13,7 @@ const SELF_KNOWLEDGE_FILE = path.join(__dirname, "../JARVIS_SELF_KNOWLEDGE.md");
 const SKILLS_DIR = path.join(__dirname, "../skills");
 const SUGGESTIONS_FILE = path.join(__dirname, "../suggestions.md");
 const DOCS_DIR = path.join(__dirname, "..");
-const FINNHUB_KEY = "d7ibl19r01qu8vfo2410d7ibl19r01qu8vfo241g";
+const FINNHUB_KEY = process.env.FINNHUB_KEY || "d7ibl19r01qu8vfo2410d7ibl19r01qu8vfo241g";
 
 function loadMemory() {
   try { return JSON.parse(fs.readFileSync(MEMORY_FILE, "utf8")); } catch { return {}; }

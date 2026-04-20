@@ -1,0 +1,44 @@
+name: tradovate-place-bracket
+version: 1
+description: Place OCO bracket order from staged signal
+dry_run: true
+required_dry_runs: 10
+timeout_seconds: 45
+
+preflight:
+  - backend_heartbeat
+  - boot_check
+  - tradovate_connected
+  - no_open_position
+  - mouse_still_2s
+
+steps:
+  - id: verify_interface
+    action: screenshot
+    verify_hint: "Tradovate trading interface visible, DOM or chart active"
+    checkpoint: true
+
+  - id: focus_order_entry
+    action: click
+    value: "{{ORDER_ENTRY_X}},{{ORDER_ENTRY_Y}}"
+    verify_hint: "order entry panel focused"
+
+  - id: set_quantity
+    action: click
+    value: "{{QTY_FIELD_X}},{{QTY_FIELD_Y}}"
+
+  - id: type_quantity
+    action: type
+    value: "{{CONTRACTS}}"
+
+  - id: set_direction
+    action: click
+    value: "{{DIRECTION_BTN_X}},{{DIRECTION_BTN_Y}}"
+    verify_hint: "{{DIRECTION}} button highlighted"
+    checkpoint: true
+
+  - id: place_order
+    action: click
+    value: "{{PLACE_BTN_X}},{{PLACE_BTN_Y}}"
+    verify_hint: "order confirmation or position opened"
+    checkpoint: true

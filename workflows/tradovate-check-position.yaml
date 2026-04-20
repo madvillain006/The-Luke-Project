@@ -1,0 +1,16 @@
+name: tradovate-check-position
+version: 1
+description: Screenshot and read current position from Tradovate
+dry_run: false
+required_dry_runs: 3
+timeout_seconds: 20
+
+preflight:
+  - backend_heartbeat
+  - tradovate_connected
+
+steps:
+  - id: screenshot
+    action: screenshot
+    verify_hint: "Tradovate interface showing position panel"
+    checkpoint: true

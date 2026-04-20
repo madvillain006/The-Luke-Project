@@ -1,0 +1,38 @@
+{
+  "file": "agents\\agent-05-finance.js",
+  "scanned": "2026-04-19T23:07:35.364Z",
+  "findings": [
+    {
+      "line": 115,
+      "category": "token_waste",
+      "severity": "med",
+      "issue": "Redundant API call in /forecast endpoint — same financial snapshot already computed in memory without needing Claude for basic math.",
+      "suggestion": "Pre-calculate on-track status locally (remaining / weeks <= 900), only call Claude if timeline is at risk or for narrative suggestions.",
+      "est_impact": "~30-40 tokens per forecast request; reduces unnecessary API calls"
+    },
+    {
+      "line": 135,
+      "category": "token_waste",
+      "severity": "med",
+      "issue": "/assess endpoint repeats deadline and on-track calculation that /fund-status already performs, then calls Claude for obvious yes/no.",
+      "suggestion": "Return pre-computed status with concern flag; only invoke Claude if weeks < 4 or weekly_needed > 1200 (escalation case).",
+      "est_impact": "~25-35 tokens per assess call; high-frequency endpoint"
+    },
+    {
+      "line": 30,
+      "category": "dead_code",
+      "severity": "low",
+      "issue": "AGENT_05_SYSTEM prompt includes 'TONE: Numbers first...' but /forecast and /assess both already enforce single-sentence responses in the user prompt.",
+      "suggestion": "Remove redundant tone guidance from system prompt; let user message directives control output format.",
+      "est_impact": "~10 tokens saved per API call"
+    },
+    {
+      "line": 73,
+      "category": "schema_drift",
+      "severity": "med",
+      "issue": "Fund log stores delta, balance, and notes, but /fund-status never uses fund_log history — only current balance. Historical data accumulates unused.",
+      "suggestion": "Either remove fund_log from memory writes or add a /history endpoint. Document the intent.",
+      "est_impact": "Memory bloat over time; unclear schema purpose"
+    }
+  ]
+}

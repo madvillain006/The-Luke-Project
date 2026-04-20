@@ -1,0 +1,38 @@
+[phase1.1] ingestion-audit complete — 2026-04-20 — 12 entry points mapped, 4 flags raised (SSRF, memory poisoning, hardcoded key, unvalidated WS broadcast)
+[phase1.2] structured-extraction complete — lib/parse-signal.js | parseSignal(rawText, source) → {bias, level, confidence, source, raw, passToPipeline} | LOW confidence gates pipeline | 2026-04-20T14:14:25Z
+[phase1.3] replay-sufficiency complete — INSUFFICIENT | logs/discord-history.jsonl missing (0 entries, need 50+) | parse-signal.js ready | blocker: run discord-scraper to populate history | 2026-04-20
+[phase1.4] replay-alignment complete — 2026-04-20 — 128 results from 100 entries | passToPipeline=1/128 (0.8%) | BUGS: bold markdown breaks regexes, dollar-prefix strike notation unrecognized | verdict: NOT fit for replay — 2 targeted fixes needed | logs/replay-alignment.md
+[phase1.5] ximes+bobby+vision parsers built — lib/parse-ximes.js (parseXimes), lib/parse-bobby.js (parseBobby/parseBobbyImage/mergeBobby), lib/bobby-heatmap-rules.js (BOBBY_HEATMAP_RULES) — 2026-04-20
+[2026-04-20T15:33:08.132Z] [phase1.6] ingest rewired to new parsers
+[2026-04-20T15:35:50.863Z] [phase1.6] ingest rewired to new parsers
+[2026-04-20T16:06:38.274Z] [phase1.6] ingest rewired to new parsers
+[phase1.5b] parse-ximes rebuilt — 302 signals: MANAGEMENT:184 SIZING_NOTE:50 CONTEXT:31 LIVE_ENTRY:32 PRE_MARKET_SETUP:5 2026-04-20T16:07:49Z
+[phase1.7] confluence detector built
+[2026-04-20T16:27:26.831Z] [phase1.6] ingest rewired to new parsers
+[2026-04-20T16:28:38.014Z] [phase1.6] ingest rewired to new parsers
+[ops] DAILY_OPS.md created
+[phase1.8] slash commands wired — /levels /heatmap /confluence /alert added to /chat route 2026-04-20T16:41:29Z
+[phase1.9a] confluence fixes applied — today-only guard, ticker bleed by magnitude (ES_NQ/>3000, SPX/500-3000, SPY_QQQ/100-500), instrument field on zones, /alert shows instrument label
+[phase1.9] emotional exits wired — lib/emotional-exits.js, /alert handler gated with hard blocks + soft warnings, trade state from trades.jsonl
+[phase1.10] trade logging + review wired — /trade [LONG/SHORT] [ticker] [entry] [exit] [WIN/LOSS/SCRATCH], /review with emotional state, emotional-exits updated for dual schema
+[phase1.11] status command + startup display
+[review] full self-review complete — 2026-04-20 — docs/SELF_REVIEW.md written — 9 sections, 2 P0 bugs found (flattenResult ReferenceError in execution-live.js:126, zero Luke med notifications), test hooks always active, 02B paper mode blocked by disabled intraday scraper
+[P0] execution-live crash fix applied
+[P1] analyst map + signal source + tickers + NODE_ENV fixed
+[refactor] duplicate emotional state removed
+[signals] loadRecentSignals rewired to new parsers
+[02B] confluence wired into evaluate
+[UI] live status panel added
+[safety] memory.json atomic writes fixed
+[security] Finnhub key moved to env
+[P1] all P1 fixes verified
+[session] gym session complete — tasks 1-8
+[session2] tasks 1-7 complete — 2026-04-20 — boot-warning, alert auto-username+stop/target+edge, confluence display, /reset, 02B paper test (SKIP: instrument mismatch SPY vs NQ filter)
+[refactor] index.js split complete
+[session3] token efficiency complete — ack overhead fixed (minimal ACK_SYSTEM), signals capped 5x100chars, session history capped 5x150chars, simple messages routed to Haiku
+[session4] 02B paper mode tasks complete — signal window 7 days, paper mode skips price sanity, confluence attached to staged signals, overlay shows confluence score+sources
+[phase1.11] Sienna regime lane wired — lib/sienna-regime.js created, getSiennaRegime() exports RISK_ON/RISK_OFF/NEUTRAL with selectivity+max_trades. Wired into /alert (max trades block + regime line), /evaluate (regime gate blocks RISK_OFF non-HIGH + daily max), /status (regime display line). Tested: getSiennaRegime() returns RISK_OFF/MANAGEMENT choppy. Both modified modules load clean.
+[market-hours] trading hours gate wired
+[2026-04-20T21:13:08Z] [fix] status market-closed state + levels parser fix
+[layout] discord scroll + tradovate login check added
+[layout] discord scroll + tradovate login check added

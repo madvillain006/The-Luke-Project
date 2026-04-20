@@ -1,0 +1,30 @@
+{
+  "file": "MEMORY_SUMMARY.md",
+  "scanned": "2026-04-19T23:14:09.161Z",
+  "findings": [
+    {
+      "line": 1,
+      "category": "token_waste",
+      "severity": "med",
+      "issue": "Timestamp in markdown header is redundant—metadata should live in frontmatter or separate config, not document body.",
+      "suggestion": "Move '*Generated 2026-04-19T18:17:47.141Z*' to YAML frontmatter or remove if auto-generated on read.",
+      "est_impact": "Reduces re-parsing overhead in memory retrieval systems; ~5-10 tokens saved per read."
+    },
+    {
+      "line": 18,
+      "category": "error_gap",
+      "severity": "high",
+      "issue": "Incomplete sentence: 'Cancer-clear (Feb/Mar 2' cuts off mid-thought—no closure or date.",
+      "suggestion": "Complete the sentence with full date range and status: 'Cancer-clear (Feb/Mar 2026)'.",
+      "est_impact": "Prevents ambiguity in health context retrieval; blocks misinterpretation in agent decision-making."
+    },
+    {
+      "line": 8,
+      "category": "schema_drift",
+      "severity": "med",
+      "issue": "Luke health entry mixes medication names, times, and recent incidents without consistent structure—no clear schema for recurring health logs.",
+      "suggestion": "Formalize as nested object: {medications: [{name, time, dosage}], diet: [], recent_incidents: [{date, event, resolution}]}.",
+      "est_impact": "Enables reliable parsing by health-monitoring agents; prevents mis-dosing on retrieval."
+    }
+  ]
+}

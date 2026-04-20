@@ -57,6 +57,30 @@ def get_screen_size():
     size = pyautogui.size()
     return f"{size.width},{size.height}"
 
+def get_mouse_pos():
+    pos = pyautogui.position()
+    return f"{pos.x},{pos.y}"
+
+def wait_seconds(n):
+    time.sleep(float(n))
+    return f"Waited {n}s"
+
+def find_text_click(text):
+    try:
+        import pytesseract
+        import numpy as np
+        screenshot = pyautogui.screenshot()
+        data = pytesseract.image_to_data(screenshot, output_type=pytesseract.Output.DICT)
+        for i, word in enumerate(data["text"]):
+            if text.lower() in word.lower() and int(data["conf"][i]) > 50:
+                x = data["left"][i] + data["width"][i] // 2
+                y = data["top"][i] + data["height"][i] // 2
+                pyautogui.click(x, y)
+                return f"Found and clicked '{text}' at {x},{y}"
+        return f"Text not found: {text}"
+    except Exception as e:
+        return f"Find failed: {e}"
+
 if __name__ == "__main__":
     command = sys.argv[1] if len(sys.argv) > 1 else "screenshot"
 
@@ -81,5 +105,11 @@ if __name__ == "__main__":
         print(hotkey(*sys.argv[2:]))
     elif command == "size":
         print(get_screen_size())
+    elif command == "mousepos":
+        print(get_mouse_pos())
+    elif command == "wait" and len(sys.argv) > 2:
+        print(wait_seconds(sys.argv[2]))
+    elif command == "find" and len(sys.argv) > 2:
+        print(find_text_click(sys.argv[2]))
     else:
         print(f"Unknown command: {command}")

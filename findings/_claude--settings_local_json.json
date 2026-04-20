@@ -1,0 +1,22 @@
+{
+  "file": ".claude\\settings.local.json",
+  "scanned": "2026-04-19T23:12:22.246Z",
+  "findings": [
+    {
+      "line": 10,
+      "category": "search_trap",
+      "severity": "high",
+      "issue": "grep pattern is overly broad and will match unintended files across the codebase",
+      "suggestion": "Replace with specific path pattern like 'grep -E \"src/agents/.*\\.js$\"' to constrain matches",
+      "est_impact": "Reduces false positives in file searches and improves scanning accuracy"
+    },
+    {
+      "line": 3,
+      "category": "config_sprawl",
+      "severity": "med",
+      "issue": "Multiple localhost:3000 endpoints hardcoded with no environment variable abstraction",
+      "suggestion": "Extract to environment variables (e.g., AGENT_BASE_URL) to support different environments",
+      "est_impact": "Improves configuration portability and reduces manual edits for environment changes"
+    }
+  ]
+}

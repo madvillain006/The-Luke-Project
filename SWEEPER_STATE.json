@@ -1,0 +1,37 @@
+{
+  "inventory_done": true,
+  "scan_queue": [
+    "C:\\Users\\conor\\jarvis\\suggestions.md",
+    "C:\\Users\\conor\\jarvis\\TRADER_PROFILES.md"
+  ],
+  "scanned_this_pass": [
+    "agents\\agent-06-research.js",
+    "agents\\agent-10-sweeper.js",
+    "chat.html",
+    "index.js",
+    "agents\\agent-05-finance.js",
+    "agents\\agent-07-opportunity.js",
+    "agents\\agent-08-sienna.js",
+    "agents\\agent-09-architect.js",
+    "discord-scraper.js",
+    "intraday-scraper.js",
+    "research-agent.py",
+    "scheduler.js",
+    ".claude\\settings.local.json",
+    "agents\\agent-03-income.js",
+    "architect-costs.json",
+    "CONOR_CHRONICLE.md",
+    "CONOR_EDGE.md",
+    "desktop.py",
+    "ecosystem.config.js",
+    "electron.js",
+    "ingest-exports.js",
+    "JARVIS SELF KNOWLEDGE.md",
+    "MEMORY_SUMMARY.md",
+    "monitor.py",
+    "package.json"
+  ],
+  "last_full_scan": null,
+  "last_delta_scan": null,
+  "consecutive_rejections": 0
+}

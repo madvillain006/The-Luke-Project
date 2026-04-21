@@ -300,12 +300,14 @@ async function routeToAgent(message) {
 app.get("/", (req, res) => res.sendFile(__dirname + "/chat.html"));
 
 app.post("/chat", async (req, res) => {
-  const { message, history } = req.body;
+  const { message, history, image } = req.body;
   if (!message) return res.status(400).json({ error: "No message" });
 
   // ── slash command intercept ────────────────────────────────────────────────
   if (message.startsWith("/")) {
-    const handled = handleSlashCommand(message, res);
+    // attach image to res so slash-commands can access it without changing every signature
+    if (image && message.startsWith("/heatmap")) res._heatmapImage = image;
+    const handled = await handleSlashCommand(message, res);
     if (handled !== null) return;
   }
 

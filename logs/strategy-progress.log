@@ -46,3 +46,7 @@
 [popup] lightweight chart with bracket lines added
 [layout] safe 3-window layout rewritten
 [session6] bracket + popup chart + safe layout complete
+[UI] /trading-mode button + handler
+[replay] historical signal replay simulator built
+[parse] C/P option type detection added
+[audit] Kian audit complete 2026-04-20 — B1 Bobby vision wired, B2 alert dedup, B3 active trade guard, B4 popup auto-close, Phase2 confluence time decay, Phase3 Ximes parser expansion (10/10 formats), bracket invalid-stop guard — docs/KIAN_AUDIT_REPORT.md written

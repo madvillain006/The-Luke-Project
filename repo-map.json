@@ -1,6 +1,6 @@
 {
   "root": "C:\\Users\\conor\\jarvis",
-  "built": "2026-04-20T23:52:23.418Z",
+  "built": "2026-04-21T01:03:48.561Z",
   "entries": [
     "d .claude",
     "f .claude\\settings.local.json",
@@ -96,6 +96,7 @@
     "d lib",
     "f lib\\actions.js",
     "f lib\\bobby-heatmap-rules.js",
+    "f lib\\bracket-calc.js",
     "f lib\\confluence.js",
     "f lib\\emotional-exits.js",
     "f lib\\logger.js",

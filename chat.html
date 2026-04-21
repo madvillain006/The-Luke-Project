@@ -515,6 +515,10 @@
         /reset
         <span class="tooltip">Clear today's levels and start fresh</span>
       </button>
+      <button class="qbtn has-tt" data-cmd="/trading-mode">
+        /trading-mode
+        <span class="tooltip">Set up 4-window layout for trading (ximes, bobby, tradovate, jarvis)</span>
+      </button>
     </div>
   </div>
 
@@ -917,7 +921,7 @@
         input.value = cmd;
         input.focus();
         // auto-send for status (no argument needed)
-        if (cmd === "/status" || cmd === "/confluence" || cmd === "/reset") {
+        if (cmd === "/status" || cmd === "/confluence" || cmd === "/reset" || cmd === "/trading-mode") {
           send();
         }
       });

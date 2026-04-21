@@ -5,6 +5,7 @@ const net = require('net')
 
 let serverProcess = null
 let tradePopup = null
+let popupAutoCloseTimer = null
 
 function isPortInUse(port) {
     return new Promise((resolve) => {
@@ -54,8 +55,17 @@ function createWindow() {
     })
 }
 
+function closeTradePopup() {
+    if (popupAutoCloseTimer) { clearTimeout(popupAutoCloseTimer); popupAutoCloseTimer = null; }
+    if (tradePopup) {
+        tradePopup.close();
+        tradePopup.destroy();
+        tradePopup = null;
+    }
+}
+
 ipcMain.on('show-trade-popup', (event, trade) => {
-    if (tradePopup) tradePopup.close()
+    closeTradePopup();
     tradePopup = new BrowserWindow({
         width: 400,
         height: 520,
@@ -74,10 +84,12 @@ ipcMain.on('show-trade-popup', (event, trade) => {
     tradePopup.webContents.on('did-finish-load', () => {
         tradePopup.webContents.send('trade-data', trade)
     })
+    // auto-close after 60 seconds if no button pressed
+    popupAutoCloseTimer = setTimeout(closeTradePopup, 60000)
 })
 
 ipcMain.on('close-trade-popup', () => {
-    if (tradePopup) { tradePopup.close(); tradePopup = null; }
+    closeTradePopup();
 })
 
 app.whenReady().then(async () => {
@@ -88,7 +100,7 @@ app.whenReady().then(async () => {
 app.on('will-quit', () => {
     globalShortcut.unregisterAll()
     if (serverProcess) serverProcess.kill()
-    if (tradePopup) tradePopup.close()
+    closeTradePopup()
 })
 
 app.on('window-all-closed', () => {

@@ -2,6 +2,27 @@ const { app, BrowserWindow, globalShortcut, ipcMain } = require('electron')
 const { spawn } = require('child_process')
 const path = require('path')
 const net = require('net')
+const fs = require('fs')
+
+const STATE_FILE = path.join(__dirname, 'data', 'window-state.json')
+
+function loadWindowState() {
+    try {
+        return JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'))
+    } catch {
+        return null
+    }
+}
+
+function saveWindowState(win) {
+    try {
+        if (!win || win.isDestroyed()) return
+        const bounds = win.getBounds()
+        const tmp = STATE_FILE + '.tmp'
+        fs.writeFileSync(tmp, JSON.stringify(bounds))
+        fs.renameSync(tmp, STATE_FILE)
+    } catch {}
+}
 
 let serverProcess = null
 let tradePopup = null
@@ -29,11 +50,14 @@ async function startServer() {
 }
 
 function createWindow() {
+    const saved = loadWindowState()
     const win = new BrowserWindow({
-        width: 380,
-        height: 480,
-        x: 1340,
-        y: 580,
+        width:  saved ? saved.width  : 400,
+        height: saved ? saved.height : 520,
+        x:      saved ? saved.x      : 1340,
+        y:      saved ? saved.y      : 580,
+        minWidth: 320,
+        minHeight: 400,
         alwaysOnTop: true,
         resizable: true,
         title: 'Jarvis',
@@ -41,11 +65,15 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
+            sandbox: true,
+            webSecurity: true,
             preload: path.join(__dirname, 'preload.js')
         }
     })
     win.setMenuBarVisibility(false)
     win.loadURL('http://localhost:3000')
+    win.on('resize', () => saveWindowState(win))
+    win.on('move',   () => saveWindowState(win))
     win.on('closed', () => {
         if (serverProcess) serverProcess.kill()
     })
@@ -77,6 +105,8 @@ ipcMain.on('show-trade-popup', (event, trade) => {
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
+            sandbox: true,
+            webSecurity: true,
             preload: path.join(__dirname, 'preload.js')
         }
     })

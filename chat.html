@@ -193,7 +193,7 @@
 
     /* ── BOTTOM BAR ── */
     #bottom-bar {
-      height: 100px;
+      min-height: 86px;
       flex-shrink: 0;
       border-top: 1px solid var(--b1);
       background: var(--bg);
@@ -232,13 +232,13 @@
       flex-shrink: 0;
     }
     #send:disabled { opacity: 0.5; cursor: wait; }
-    #quick-btns { display: flex; gap: 4px; }
+    #quick-btns { display: flex; gap: 4px; flex-wrap: wrap; overflow-x: hidden; }
     .qbtn {
-      flex: 1;
+      flex: 1 1 auto;
       background: transparent;
       border: 1px solid var(--b1);
       color: var(--dim);
-      padding: 4px 2px;
+      padding: 4px 6px;
       font-family: "Courier New", monospace;
       font-size: 11px;
       cursor: pointer;
@@ -252,6 +252,18 @@
     @media (max-width: 1000px) {
       .bubble { max-width: 95%; }
       #tb-prices { display: none; }
+    }
+
+    /* ── WIDGET MODE (≤500px) ── */
+    @media (max-width: 500px) {
+      .qbtn { font-size: 11px; padding: 4px 6px; }
+      .tb-lbl { display: none; }
+      .tb-div { display: none; }
+      .tb-seg { padding: 0 3px; }
+      #tb-jarvis-text { font-size: 10px; letter-spacing: 0; }
+      #tb-trades-val { font-size: 9px; }
+      .bubble { font-size: 12px; padding: 4px 7px; }
+      #top-bar { gap: 0; }
     }
 
     /* ── STAGED TRADE OVERLAY ── */
@@ -431,9 +443,9 @@
       <span class="tooltip">Today's trades. /review for details</span>
     </div>
     <div style="margin-left:auto;display:flex;align-items:center;gap:4px;padding-right:2px;">
-      <button id="kill-day-btn"  class="tb-killbtn">KILL:D</button>
-      <button id="kill-week-btn" class="tb-killbtn">KILL:W</button>
-      <button id="look-btn"      class="tb-killbtn">LOOK</button>
+      <button id="kill-day-btn"  class="tb-killbtn has-tt" title="Kill day: pause trading for the rest of today">KILL:D<span class="tooltip">Kill day: pause trading for the rest of today</span></button>
+      <button id="kill-week-btn" class="tb-killbtn has-tt" title="Kill week: stop trading for the rest of the week">KILL:W<span class="tooltip">Kill week: stop trading for the rest of the week</span></button>
+      <button id="look-btn"      class="tb-killbtn has-tt" title="Take a screenshot and analyze what's on screen">LOOK<span class="tooltip">Take a screenshot and analyze what's on screen</span></button>
     </div>
   </div>
 
@@ -472,7 +484,7 @@
     <div id="morning-checklist">
       <div id="mc-header">
         <span id="mc-title">MORNING CHECKLIST</span>
-        <button id="mc-close">✕</button>
+        <button id="mc-close" title="Dismiss morning checklist">✕</button>
       </div>
       <div class="mc-item has-tt" id="mc-levels">
         <span class="mc-check">□</span>
@@ -496,28 +508,35 @@
   <div id="bottom-bar">
     <div id="input-row">
       <input id="input" type="text" placeholder="..." autocomplete="off" />
-      <button id="send">SEND</button>
+      <button id="send" class="has-tt" title="Send message to Jarvis">SEND<span class="tooltip">Send message to Jarvis</span></button>
     </div>
     <div id="quick-btns">
-      <button class="qbtn has-tt" data-cmd="/confluence">
-        /confluence
-        <span class="tooltip">Show today's HIGH confluence zones</span>
+      <button class="qbtn has-tt" data-cmd="/status" title="Show current trading state, regime, trade count, market status">
+        /status<span class="tooltip">Show current trading state, regime, trade count, market status</span>
       </button>
-      <button class="qbtn has-tt" data-cmd="/alert ">
-        /alert
-        <span class="tooltip">Check an Ximes alert — paste after the command</span>
+      <button class="qbtn has-tt" data-cmd="/alert " title="Fire a Ximes/analyst alert for verdict + bracket calculation">
+        /alert<span class="tooltip">Fire a Ximes/analyst alert for verdict + bracket calculation</span>
       </button>
-      <button class="qbtn has-tt" data-cmd="/status">
-        /status
-        <span class="tooltip">Full system status: levels, trades, regime, meds</span>
+      <button class="qbtn has-tt" data-cmd="/levels " title="Load today's RichyDubz levels for confluence detection">
+        /levels<span class="tooltip">Load today's RichyDubz levels for confluence detection</span>
       </button>
-      <button class="qbtn has-tt" data-cmd="/reset">
-        /reset
-        <span class="tooltip">Clear today's levels and start fresh</span>
+      <button class="qbtn has-tt" data-cmd="/heatmap " title="Load Bobby's heatmap context (king nodes, air pockets, trinity)">
+        /heatmap<span class="tooltip">Load Bobby's heatmap context (king nodes, air pockets, trinity)</span>
       </button>
-      <button class="qbtn has-tt" data-cmd="/trading-mode">
-        /trading-mode
-        <span class="tooltip">Set up 4-window layout for trading (ximes, bobby, tradovate, jarvis)</span>
+      <button class="qbtn has-tt" data-cmd="/confluence" title="Show today's confluence zones ranked by score">
+        /confluence<span class="tooltip">Show today's confluence zones ranked by score</span>
+      </button>
+      <button class="qbtn has-tt" data-cmd="/review" title="Today's trades summary — W/L, P&amp;L, emotional state">
+        /review<span class="tooltip">Today's trades summary — W/L, P&amp;L, emotional state</span>
+      </button>
+      <button class="qbtn has-tt" data-cmd="/trading-mode" title="Set up 4-window layout (ximes, bobby, tradovate, jarvis)">
+        /trading-mode<span class="tooltip">Set up 4-window layout (ximes, bobby, tradovate, jarvis)</span>
+      </button>
+      <button class="qbtn has-tt" data-cmd="/reset" title="Clear today's levels and last signal (NOT trades.jsonl)">
+        /reset<span class="tooltip">Clear today's levels and last signal (NOT trades.jsonl)</span>
+      </button>
+      <button class="qbtn has-tt" data-cmd="/history" title="Last 5 alerts with verdicts">
+        /history<span class="tooltip">Last 5 alerts with verdicts</span>
       </button>
     </div>
   </div>
@@ -547,8 +566,8 @@
         <div id="pt-reason"></div>
       </div>
       <div id="pt-actions">
-        <button id="execute-btn">EXECUTE</button>
-        <button id="skip-btn">SKIP</button>
+        <button id="execute-btn" class="has-tt" title="Execute this trade signal (E key)">EXECUTE<span class="tooltip">Execute this trade signal (E key)</span></button>
+        <button id="skip-btn" class="has-tt" title="Skip this trade signal (S key)">SKIP<span class="tooltip">Skip this trade signal (S key)</span></button>
       </div>
     </div>
   </div>
@@ -563,7 +582,7 @@
   <div id="metrics-panel">
     <div id="mp-header">
       <span id="mp-title">METRICS</span>
-      <button id="mp-close">✕</button>
+      <button id="mp-close" title="Close metrics panel">✕</button>
     </div>
     <div id="mp-controls">
       <input id="mp-hours-input" type="number" min="1" max="720" value="24" />
@@ -581,7 +600,7 @@
   <div id="luke-panel">
     <div id="lp-header">
       <span id="lp-title">LUKE</span>
-      <button id="lp-close">✕</button>
+      <button id="lp-close" title="Close Luke health log panel">✕</button>
     </div>
     <div id="lp-body">
       <div id="lp-drafts-section">
@@ -641,15 +660,15 @@
     <div id="boot-modal-inner">
       <h3>BOOT CHECK — ISSUES DETECTED</h3>
       <ul id="boot-check-list"></ul>
-      <button id="boot-modal-close">DISMISS</button>
+      <button id="boot-modal-close" title="Dismiss boot issues and continue">DISMISS</button>
     </div>
   </div>
 
   <div id="panic-modal">
     <div id="panic-inner">
       <p>CONFIRM PANIC — kills 02B and intraday</p>
-      <button id="panic-confirm">PANIC</button>
-      <button id="panic-cancel">CANCEL</button>
+      <button id="panic-confirm" title="Confirm panic: kill 02B and stop intraday immediately">PANIC</button>
+      <button id="panic-cancel" title="Cancel panic">CANCEL</button>
     </div>
   </div>
 
@@ -657,8 +676,7 @@
     const BASE = window.location.origin.startsWith("http") ? window.location.origin : "http://localhost:3000";
     const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
     const wsHost = window.location.host || "localhost:3000";
-    const ws = new WebSocket(wsProtocol + "//" + wsHost);
-
+    let ws;
     const messages = document.getElementById("messages");
     const input    = document.getElementById("input");
     const sendBtn  = document.getElementById("send");
@@ -666,6 +684,15 @@
     let intradayActive = false;
     let toastTimer = null;
     let executeFirstTap = 0;
+    fetch(BASE + "/ws-token").then(r => r.json()).then(({ token }) => {
+      ws = new WebSocket(wsProtocol + "//" + wsHost + "/?token=" + encodeURIComponent(token));
+      initWs(ws);
+    }).catch(() => {
+      // Fallback for dev without token (will be rejected server-side)
+      ws = new WebSocket(wsProtocol + "//" + wsHost);
+      initWs(ws);
+    });
+    function initWs(socket) { ws = socket;
 
     // ── MARKET STATUS ─────────────────────────────────────
 
@@ -921,7 +948,7 @@
         input.value = cmd;
         input.focus();
         // auto-send for status (no argument needed)
-        if (cmd === "/status" || cmd === "/confluence" || cmd === "/reset" || cmd === "/trading-mode") {
+        if (cmd === "/status" || cmd === "/confluence" || cmd === "/reset" || cmd === "/trading-mode" || cmd === "/review" || cmd === "/history") {
           send();
         }
       });
@@ -1113,6 +1140,7 @@
         }
       } catch {}
     };
+    } // end initWs
 
     // ── STATE INDICATOR ───────────────────────────────────
 

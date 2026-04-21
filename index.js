@@ -15,9 +15,29 @@ const { loadMemory, saveMemory } = require("./lib/memory");
 const { buildSystemPrompt, loadDiscordSignals } = require("./lib/system-prompt");
 const { handleAction, runPython } = require("./lib/actions");
 const { handleSlashCommand } = require("./lib/slash-commands");
+const { validateMemoryKey, MAX_TEXT_BYTES, MAX_URL_LENGTH } = require("./lib/validators");
+const { detectPasteIntent } = require("./lib/detect-paste");
 
+const rateLimit = require("express-rate-limit");
 const app = express();
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+// ── CORS — localhost only ────────────────────────────────────────────────────
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Methods", "GET, POST");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  next();
+});
+
+// ── RATE LIMITING ────────────────────────────────────────────────────────────
+const rl = (max, windowMs = 60000) => rateLimit({ windowMs, max, standardHeaders: true, legacyHeaders: false });
+app.use("/chat",           rl(60));
+app.use("/notify",         rl(10));
+app.use("/agent",          rl(30));
+app.use("/research",       rl(20));
+app.use("/paste-signals",  rl(20));
+app.use(rl(100)); // global fallback
 
 app.use((req, res, next) => {
   express.json()(req, res, (err) => {
@@ -59,20 +79,20 @@ const MEM_CAP_BYTES   = 200 * 1024;
 const SERVER_START    = Date.now();
 
 function buildRepoMap() {
-  try {
-    const root = __dirname;
-    const map = { root, built: new Date().toISOString(), entries: [] };
-    function walk(dir, depth) {
-      if (depth > 2) return;
-      let entries;
-      try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch { return; }
-      for (const e of entries) {
-        if (["node_modules", ".git", "discord-exports"].includes(e.name)) continue;
-        const rel = path.relative(root, path.join(dir, e.name));
-        map.entries.push((e.isDirectory() ? "d " : "f ") + rel);
-        if (e.isDirectory()) walk(path.join(dir, e.name), depth + 1);
-      }
+  const root = __dirname;
+  const map = { root, built: new Date().toISOString(), entries: [] };
+  const walk = (dir, depth) => {
+    if (depth > 2) return;
+    let entries;
+    try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch { return; }
+    for (const e of entries) {
+      if (["node_modules", ".git", "discord-exports"].includes(e.name)) continue;
+      const rel = path.relative(root, path.join(dir, e.name));
+      map.entries.push((e.isDirectory() ? "d " : "f ") + rel);
+      if (e.isDirectory()) walk(path.join(dir, e.name), depth + 1);
     }
+  };
+  try {
     walk(root, 0);
     fs.writeFileSync(REPO_MAP_FILE, JSON.stringify(map, null, 2));
   } catch {}
@@ -304,10 +324,14 @@ app.post("/chat", async (req, res) => {
   if (!message) return res.status(400).json({ error: "No message" });
 
   // ── slash command intercept ────────────────────────────────────────────────
-  if (message.startsWith("/")) {
-    // attach image to res so slash-commands can access it without changing every signature
-    if (image && message.startsWith("/heatmap")) res._heatmapImage = image;
-    const handled = await handleSlashCommand(message, res);
+  let routedMessage = message;
+  if (!message.startsWith("/")) {
+    const { command, cleanedText } = detectPasteIntent(message, !!image);
+    if (command) routedMessage = command + " " + cleanedText;
+  }
+  if (routedMessage.startsWith("/")) {
+    if (image && routedMessage.startsWith("/heatmap")) res._heatmapImage = image;
+    const handled = await handleSlashCommand(routedMessage, res);
     if (handled !== null) return;
   }
 
@@ -485,7 +509,10 @@ app.post("/do", async (req, res) => {
 
 app.post("/research", async (req, res) => {
   const { url } = req.body;
-  if (!url) return res.status(400).json({ error: "No URL" });
+  if (!url || typeof url !== "string") return res.status(400).json({ error: "No URL" });
+  if (url.length > MAX_URL_LENGTH) return res.status(400).json({ error: "URL too long" });
+  // Reject non-http(s) schemes to prevent SSRF via file:// / ftp:// etc.
+  if (!/^https?:\/\//i.test(url)) return res.status(400).json({ error: "Only http/https URLs allowed" });
 
   try {
     let text = "";
@@ -538,7 +565,7 @@ app.post("/research", async (req, res) => {
 
 app.post("/memory", (req, res) => {
   const { key, value } = req.body;
-  if (!key) return res.status(400).json({ error: "No key" });
+  if (!validateMemoryKey(key)) return res.status(400).json({ error: "Invalid or blocked memory key" });
   const mem = loadMemory();
   mem[key] = value;
   mem._updated = new Date().toISOString();
@@ -575,9 +602,11 @@ app.get("/scheduler/status", (req, res) => {
 
 app.post("/notify", (req, res) => {
   const { message } = req.body;
-  if (!message) return res.status(400).json({ error: "No message" });
-  log("alert", { message });
-  broadcast({ type: "notification", message });
+  if (!message || typeof message !== "string") return res.status(400).json({ error: "No message" });
+  if (message.length > 500) return res.status(400).json({ error: "Message too long (max 500 chars)" });
+  const safeMessage = message.slice(0, 500);
+  log("alert", { message: safeMessage });
+  broadcast({ type: "notification", message: safeMessage });
   res.json({ sent: true });
 });
 
@@ -595,7 +624,8 @@ app.post("/scrape", async (req, res) => {
 
 app.post("/paste-signals", async (req, res) => {
   const { text, source } = req.body;
-  if (!text) return res.status(400).json({ error: "No text provided" });
+  if (!text || typeof text !== "string") return res.status(400).json({ error: "No text provided" });
+  if (Buffer.byteLength(text, "utf8") > MAX_TEXT_BYTES) return res.status(400).json({ error: "Text exceeds 10KB limit" });
 
   try {
     const response = await client.messages.create({
@@ -681,6 +711,9 @@ app.use("/agent/tokens", tokensRouter);
 const { router: fallbackRouter, isActive: isFallbackActive, callFallback } = require("./agents/agent-12-fallback");
 app.use("/agent/fallback", fallbackRouter);
 
+// Expose WS token to the browser (localhost only — not a secret across the network)
+app.get("/ws-token", (req, res) => res.json({ token: WS_TOKEN }));
+
 app.post("/intraday/start", (req, res) => {
   try {
     try { execSync("pm2 restart jarvis-intraday --update-env", { cwd: __dirname }); }
@@ -698,7 +731,34 @@ app.post("/intraday/stop", (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-app.get("/health", (req, res) => res.json({ ok: true, uptime_sec: Math.floor((Date.now() - SERVER_START) / 1000), version: "2.0" }));
+app.get("/health", (req, res) => {
+  const { isMarketOpen } = require("./lib/market-hours");
+  const today = new Date().toISOString().slice(0, 10);
+  const tradesFile = path.join(__dirname, "trades.jsonl");
+  const lastSigFile = path.join(__dirname, "data", "last-signal.json");
+
+  let trades_today = 0;
+  try {
+    trades_today = fs.readFileSync(tradesFile, "utf8").split("\n").filter(Boolean)
+      .map(l => { try { return JSON.parse(l); } catch { return null; } })
+      .filter(t => t && ((t.date || t.timestamp || "").startsWith(today))).length;
+  } catch {}
+
+  let last_signal = null;
+  try {
+    const ls = JSON.parse(fs.readFileSync(lastSigFile, "utf8"));
+    last_signal = { type: ls.signal_type, analyst: ls.analyst, ts: ls.date || ls.timestamp || null };
+  } catch {}
+
+  res.json({
+    ok: true,
+    uptime_sec: Math.floor((Date.now() - SERVER_START) / 1000),
+    version: "2.0",
+    trades_today,
+    last_signal,
+    market: isMarketOpen(),
+  });
+});
 
 app.get("/jarvis/self-diagnose", (req, res) => {
   const out = {
@@ -822,6 +882,12 @@ const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 const clients = new Set();
 
+// ── WS TOKEN — generated each boot, written for preload to read ──────────────
+const crypto = require("crypto");
+const WS_TOKEN = crypto.randomBytes(24).toString("hex");
+const WS_TOKEN_FILE = path.join(__dirname, ".ws-token");
+try { fs.writeFileSync(WS_TOKEN_FILE, WS_TOKEN); } catch {}
+
 function broadcast(data) {
   const json = JSON.stringify(data);
   for (const ws of clients) {
@@ -829,9 +895,16 @@ function broadcast(data) {
   }
 }
 
-wss.on("connection", (ws) => {
+wss.on("connection", (ws, req) => {
+  // Validate token from query string: ws://localhost:3000?token=<TOKEN>
+  const url = new URL(req.url || "/", "http://localhost:3000");
+  const token = url.searchParams.get("token");
+  if (token !== WS_TOKEN) {
+    ws.close(4401, "Unauthorized");
+    log("ws-auth-rejected", { ip: req.socket?.remoteAddress });
+    return;
+  }
   clients.add(ws);
-  console.log("Chat window connected");
   ws.on("close", () => clients.delete(ws));
   // Morning levels warning — fire immediately on connect if levels missing/stale
   try {
@@ -895,8 +968,90 @@ try {
 //   } catch {}
 // }, 30 * 60 * 1000);
 
+// ── CRASH RECOVERY ──────────────────────────────────────────────────────────
+const CRASH_DIR  = path.join(__dirname, "logs");
+const ARCH_DIR   = path.join(__dirname, "archive");
+
+function writeCrashState(reason, err) {
+  try {
+    if (!fs.existsSync(CRASH_DIR)) fs.mkdirSync(CRASH_DIR, { recursive: true });
+    const stamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+    const file = path.join(CRASH_DIR, `crash-${stamp}.json`);
+    fs.writeFileSync(file, JSON.stringify({
+      timestamp: new Date().toISOString(),
+      reason,
+      message: err && err.message ? err.message : String(err),
+      stack: err && err.stack ? err.stack.slice(0, 2000) : null
+    }, null, 2));
+    log("crash", { reason, message: err && err.message ? err.message : String(err) });
+  } catch {}
+}
+
+process.on("uncaughtException", (err) => {
+  writeCrashState("uncaughtException", err);
+  process.exit(1);
+});
+
+process.on("unhandledRejection", (reason) => {
+  writeCrashState("unhandledRejection", reason);
+});
+
+// ── BOOT SANITY CHECKS ──────────────────────────────────────────────────────
+(function bootChecks() {
+  const required_envs = ["ANTHROPIC_API_KEY"];
+  for (const key of required_envs) {
+    if (!process.env[key]) {
+      console.error(`[boot] FATAL: required env var ${key} is not set`);
+      process.exit(1);
+    }
+  }
+  // write-permission check on logs directory
+  const testFile = path.join(__dirname, "jarvis-log.jsonl");
+  try { fs.accessSync(path.dirname(testFile), fs.constants.W_OK); }
+  catch { console.error("[boot] FATAL: log directory is not writable"); process.exit(1); }
+
+  // required data dirs
+  for (const dir of ["data", "state", "agents"]) {
+    if (!fs.existsSync(path.join(__dirname, dir))) {
+      console.error(`[boot] FATAL: required directory '${dir}' is missing`);
+      process.exit(1);
+    }
+  }
+  log("boot-checks-passed", { envs: required_envs });
+})();
+
+// On boot: move any old crash files to archive/ and log them
+try {
+  if (!fs.existsSync(ARCH_DIR)) fs.mkdirSync(ARCH_DIR, { recursive: true });
+  const crashFiles = fs.readdirSync(CRASH_DIR).filter(f => f.startsWith("crash-") && f.endsWith(".json"));
+  if (crashFiles.length > 0) {
+    for (const f of crashFiles) {
+      const src = path.join(CRASH_DIR, f);
+      const dst = path.join(ARCH_DIR, f);
+      try {
+        const data = JSON.parse(fs.readFileSync(src, "utf8"));
+        log("boot-crash-found", { file: f, reason: data.reason, message: data.message });
+        fs.renameSync(src, dst);
+      } catch {}
+    }
+    console.warn(`[boot] Found and archived ${crashFiles.length} crash file(s) from last run.`);
+  }
+} catch {}
+
+function gracefulShutdown(signal) {
+  log("server-shutdown", { signal });
+  server.close(() => {
+    log("server-shutdown-complete", { signal });
+    process.exit(0);
+  });
+  // Force-kill if clients don't disconnect within 5 seconds
+  setTimeout(() => process.exit(1), 5000).unref();
+}
+process.on("SIGINT",  () => gracefulShutdown("SIGINT"));
+process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
+
 const PORT = 3000;
-server.listen(PORT, "0.0.0.0", () => {
+server.listen(PORT, "127.0.0.1", () => {
   console.log("Jarvis running on http://localhost:" + PORT);
   const _lvlsLoaded = (() => {
     try {

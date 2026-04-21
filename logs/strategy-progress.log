@@ -50,3 +50,10 @@
 [replay] historical signal replay simulator built
 [parse] C/P option type detection added
 [audit] Kian audit complete 2026-04-20 — B1 Bobby vision wired, B2 alert dedup, B3 active trade guard, B4 popup auto-close, Phase2 confluence time decay, Phase3 Ximes parser expansion (10/10 formats), bracket invalid-stop guard — docs/KIAN_AUDIT_REPORT.md written
+[dev-audit] senior engineer audit complete 2026-04-21
+[dry-fire] 5-trade dry fire complete + report written 2026-04-21T10:17:57Z
+[fix] bracket instrument filter + R:R root cause + popup wiring — validated against dry-fire scenarios
+[ui] responsive layout + tooltips + widget mode + window state persistence
+[ui] removed kill buttons, LOOK tooltip + responsive hide
+
+[ux] smart paste routing — auto-detect ximes/bobby/richy from pasted Discord content, no slash command needed

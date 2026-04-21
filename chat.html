@@ -414,8 +414,12 @@
     <div class="tb-seg has-tt">
       <span id="tb-dot">●</span>
       <span id="tb-jarvis-text">JARVIS</span>
-      <span id="chip-mode" class="off">OFF</span>
       <span class="tooltip">Connection to Jarvis backend</span>
+    </div>
+    <span class="tb-div">│</span>
+    <div class="tb-seg has-tt">
+      <span id="chip-mode" class="off">OFF</span>
+      <span class="tooltip">Trading mode — click to start/stop Agent 02B</span>
     </div>
     <span class="tb-div">│</span>
     <div class="tb-seg has-tt">
@@ -440,7 +444,7 @@
       <span class="tooltip">Today's trades. /review for details</span>
     </div>
     <div style="margin-left:auto;display:flex;align-items:center;gap:4px;padding-right:2px;">
-      <button id="look-btn" class="tb-killbtn has-tt" title="Take a screenshot of the current screen and ask Claude what's on it">LOOK<span class="tooltip">Take a screenshot of the current screen and ask Claude what's on it</span></button>
+      <button id="look-btn" class="tb-killbtn has-tt">LOOK<span class="tooltip">Take a screenshot of the current screen and ask Claude what's on it</span></button>
     </div>
   </div>
 
@@ -501,36 +505,37 @@
 
   <!-- BOTTOM BAR -->
   <div id="bottom-bar">
+    <div id="paste-hint" style="display:none;font-size:10px;color:var(--yel);padding:2px 6px;letter-spacing:0.5px;"></div>
     <div id="input-row">
       <input id="input" type="text" placeholder="..." autocomplete="off" />
-      <button id="send" class="has-tt" title="Send message to Jarvis">SEND<span class="tooltip">Send message to Jarvis</span></button>
+      <button id="send" class="has-tt">SEND<span class="tooltip">Send message to Jarvis</span></button>
     </div>
     <div id="quick-btns">
-      <button class="qbtn has-tt" data-cmd="/status" title="Show current trading state, regime, trade count, market status">
+      <button class="qbtn has-tt" data-cmd="/status">
         /status<span class="tooltip">Show current trading state, regime, trade count, market status</span>
       </button>
-      <button class="qbtn has-tt" data-cmd="/alert " title="Fire a Ximes/analyst alert for verdict + bracket calculation">
+      <button class="qbtn has-tt" data-cmd="/alert ">
         /alert<span class="tooltip">Fire a Ximes/analyst alert for verdict + bracket calculation</span>
       </button>
-      <button class="qbtn has-tt" data-cmd="/levels " title="Load today's RichyDubz levels for confluence detection">
+      <button class="qbtn has-tt" data-cmd="/levels ">
         /levels<span class="tooltip">Load today's RichyDubz levels for confluence detection</span>
       </button>
-      <button class="qbtn has-tt" data-cmd="/heatmap " title="Load Bobby's heatmap context (king nodes, air pockets, trinity)">
+      <button class="qbtn has-tt" data-cmd="/heatmap ">
         /heatmap<span class="tooltip">Load Bobby's heatmap context (king nodes, air pockets, trinity)</span>
       </button>
-      <button class="qbtn has-tt" data-cmd="/confluence" title="Show today's confluence zones ranked by score">
+      <button class="qbtn has-tt" data-cmd="/confluence">
         /confluence<span class="tooltip">Show today's confluence zones ranked by score</span>
       </button>
-      <button class="qbtn has-tt" data-cmd="/review" title="Today's trades summary — W/L, P&amp;L, emotional state">
+      <button class="qbtn has-tt" data-cmd="/review">
         /review<span class="tooltip">Today's trades summary — W/L, P&amp;L, emotional state</span>
       </button>
-      <button class="qbtn has-tt" data-cmd="/trading-mode" title="Set up 4-window layout (ximes, bobby, tradovate, jarvis)">
+      <button class="qbtn has-tt" data-cmd="/trading-mode">
         /trading-mode<span class="tooltip">Set up 4-window layout (ximes, bobby, tradovate, jarvis)</span>
       </button>
-      <button class="qbtn has-tt" data-cmd="/reset" title="Clear today's levels and last signal (NOT trades.jsonl)">
+      <button class="qbtn has-tt" data-cmd="/reset">
         /reset<span class="tooltip">Clear today's levels and last signal (NOT trades.jsonl)</span>
       </button>
-      <button class="qbtn has-tt" data-cmd="/history" title="Last 5 alerts with verdicts">
+      <button class="qbtn has-tt" data-cmd="/history">
         /history<span class="tooltip">Last 5 alerts with verdicts</span>
       </button>
     </div>
@@ -561,8 +566,8 @@
         <div id="pt-reason"></div>
       </div>
       <div id="pt-actions">
-        <button id="execute-btn" class="has-tt" title="Execute this trade signal (E key)">EXECUTE<span class="tooltip">Execute this trade signal (E key)</span></button>
-        <button id="skip-btn" class="has-tt" title="Skip this trade signal (S key)">SKIP<span class="tooltip">Skip this trade signal (S key)</span></button>
+        <button id="execute-btn" class="has-tt">EXECUTE<span class="tooltip">Execute this trade signal (E key)</span></button>
+        <button id="skip-btn" class="has-tt">SKIP<span class="tooltip">Skip this trade signal (S key)</span></button>
       </div>
     </div>
   </div>
@@ -1227,12 +1232,57 @@
       reader.readAsDataURL(blob);
     }
 
+    // ── PASTE DETECTION ───────────────────────────────────
+    const PASTE_ANALYST_RULES = [
+      { re: /\b(ximes|ximestrades|xi[mn]es|followthewhiterabblt)\b/i, command: '/alert',   analyst: 'ximes' },
+      { re: /\b(bobby|followtherabbit|spx[_ -]?coms)\b/i,             command: '/heatmap', analyst: 'bobby' },
+      { re: /\b(richy|richydubz|richyd)\b/i,                          command: '/levels',  analyst: 'richy' },
+    ];
+    const PASTE_DISCORD_PREFIX = /^[\s\S]*?(?:\[\d{1,2}:\d{2}\s*(?:AM|PM)\][^\n,]*,\s*:|[^\n]+ — Today at \d{1,2}:\d{2}\s*(?:AM|PM)\s*\n?)/i;
+    const PASTE_OPTION_RE     = /\b[A-Z]{1,5}\s+\d{3,5}[CP]\b/i;
+    const PASTE_HEATMAP_RE    = /\b(king node|air pocket|trinity)\b/i;
+
+    function detectPasteIntent(text, hasImage) {
+      if (hasImage) return { command: '/heatmap', cleanedText: text, detectedAnalyst: 'bobby' };
+      const sample = text.slice(0, 200);
+      for (const r of PASTE_ANALYST_RULES) {
+        if (r.re.test(sample)) return { command: r.command, cleanedText: text.replace(PASTE_DISCORD_PREFIX, '').trimStart(), detectedAnalyst: r.analyst };
+      }
+      if (PASTE_OPTION_RE.test(sample))   return { command: '/alert',   cleanedText: text.replace(PASTE_DISCORD_PREFIX, '').trimStart(), detectedAnalyst: null };
+      if (PASTE_HEATMAP_RE.test(sample))  return { command: '/heatmap', cleanedText: text.replace(PASTE_DISCORD_PREFIX, '').trimStart(), detectedAnalyst: null };
+      return { command: null, cleanedText: text, detectedAnalyst: null };
+    }
+
+    const pasteHint = document.getElementById("paste-hint");
+    let pasteHintTimer = null;
+    function showPasteHint(msg) {
+      pasteHint.textContent = msg;
+      pasteHint.style.display = "block";
+      clearTimeout(pasteHintTimer);
+      pasteHintTimer = setTimeout(() => { pasteHint.style.display = "none"; }, 4000);
+    }
+
     document.addEventListener("paste", (e) => {
       const items = Array.from(e.clipboardData?.items || []);
       const imageItem = items.find(item => item.type.startsWith("image/"));
-      if (!imageItem) return;
-      e.preventDefault();
-      handleImageBlob(imageItem.getAsFile(), imageItem.type);
+      if (imageItem) {
+        e.preventDefault();
+        handleImageBlob(imageItem.getAsFile(), imageItem.type);
+        return;
+      }
+      // text paste detection (only when input is focused or no element is focused)
+      const textItem = items.find(item => item.type === "text/plain");
+      if (!textItem) return;
+      textItem.getAsString(text => {
+        if (!text || text.length < 10) return;
+        if (document.activeElement !== input) return;
+        const { command, cleanedText, detectedAnalyst } = detectPasteIntent(text, false);
+        if (!command) return;
+        e.preventDefault();
+        input.value = command + ' ' + cleanedText;
+        const label = detectedAnalyst ? detectedAnalyst.charAt(0).toUpperCase() + detectedAnalyst.slice(1) + ' detected' : 'pattern detected';
+        showPasteHint('↳ routing to ' + command + ' (' + label + ')');
+      });
     });
 
     let dragDepth = 0;
@@ -1310,9 +1360,19 @@
     }
 
     async function send() {
-      const text = input.value.trim();
+      let text = input.value.trim();
       if (!text) return;
       input.value = "";
+      pasteHint.style.display = "none";
+      // auto-route non-slash messages that look like analyst pastes
+      if (!text.startsWith('/')) {
+        const { command, cleanedText, detectedAnalyst } = detectPasteIntent(text, false);
+        if (command) {
+          const label = detectedAnalyst ? detectedAnalyst.charAt(0).toUpperCase() + detectedAnalyst.slice(1) + ' detected' : 'pattern detected';
+          showPasteHint('↳ routing to ' + command + ' (' + label + ')');
+          text = command + ' ' + cleanedText;
+        }
+      }
       if (/^panic$/i.test(text)) {
         document.getElementById("panic-modal").classList.add("show");
         return;

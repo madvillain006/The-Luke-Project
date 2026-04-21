@@ -52,6 +52,11 @@
       letter-spacing: 0;
     }
     .has-tt:hover .tooltip { display: block; }
+    .tooltip-below {
+      top: 100% !important;
+      bottom: auto !important;
+      margin-top: 4px !important;
+    }
 
     /* ── TOP BAR ── */
     #top-bar {
@@ -88,7 +93,7 @@
       border-radius: 3px;
       border: 1px solid var(--b1);
       color: var(--dim);
-      cursor: pointer;
+      cursor: default;
     }
     #chip-mode.paper { color: var(--yel); border-color: var(--ybr); background: var(--ybg); }
     #chip-mode.live  { color: var(--green); border-color: var(--gbr); background: var(--gbg); }
@@ -419,7 +424,7 @@
     <span class="tb-div">│</span>
     <div class="tb-seg has-tt">
       <span id="chip-mode" class="off">OFF</span>
-      <span class="tooltip">Trading mode — click to start/stop Agent 02B</span>
+      <span class="tooltip tooltip-below">Trading mode indicator (PAPER/LIVE/OFF). Agent 02B disabled.</span>
     </div>
     <span class="tb-div">│</span>
     <div class="tb-seg has-tt">
@@ -444,7 +449,7 @@
       <span class="tooltip">Today's trades. /review for details</span>
     </div>
     <div style="margin-left:auto;display:flex;align-items:center;gap:4px;padding-right:2px;">
-      <button id="look-btn" class="tb-killbtn has-tt">LOOK<span class="tooltip">Take a screenshot of the current screen and ask Claude what's on it</span></button>
+      <button id="look-btn" class="tb-killbtn has-tt">LOOK<span class="tooltip tooltip-below">Take a screenshot of the current screen and ask Claude what's on it</span></button>
     </div>
   </div>
 
@@ -820,25 +825,25 @@
       }
     }
 
-    document.getElementById("chip-mode").addEventListener("click", async () => {
-      const modeChip = document.getElementById("chip-mode");
-      if (modeChip.classList.contains("off") || modeChip.className === "off") {
-        modeChip.textContent = "...";
-        try {
-          const sr = await fetch(BASE + "/agent/autonomous/start", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
-          const sd = await sr.json();
-          if (sd.started === false) { addMessage("assistant", "02B blocked: " + sd.reason); await syncStatus(); return; }
-          await fetch(BASE + "/agent/autonomous/launch", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
-          addMessage("assistant", "02B running in PAPER mode.");
-        } catch { addMessage("assistant", "02B failed to start."); }
-      } else {
-        try {
-          await fetch(BASE + "/agent/autonomous/stop", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
-          addMessage("assistant", "02B stopped.");
-        } catch {}
-      }
-      await syncStatus();
-    });
+    // document.getElementById("chip-mode").addEventListener("click", async () => {
+    //   const modeChip = document.getElementById("chip-mode");
+    //   if (modeChip.classList.contains("off") || modeChip.className === "off") {
+    //     modeChip.textContent = "...";
+    //     try {
+    //       const sr = await fetch(BASE + "/agent/autonomous/start", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+    //       const sd = await sr.json();
+    //       if (sd.started === false) { addMessage("assistant", "02B blocked: " + sd.reason); await syncStatus(); return; }
+    //       await fetch(BASE + "/agent/autonomous/launch", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+    //       addMessage("assistant", "02B running in PAPER mode.");
+    //     } catch { addMessage("assistant", "02B failed to start."); }
+    //   } else {
+    //     try {
+    //       await fetch(BASE + "/agent/autonomous/stop", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+    //       addMessage("assistant", "02B stopped.");
+    //     } catch {}
+    //   }
+    //   await syncStatus();
+    // });
 
     syncStatus();
     setInterval(syncStatus, 30000);
@@ -1360,35 +1365,46 @@
     }
 
     async function send() {
-      let text = input.value.trim();
-      if (!text) return;
-      input.value = "";
-      pasteHint.style.display = "none";
-      // auto-route non-slash messages that look like analyst pastes
-      if (!text.startsWith('/')) {
-        const { command, cleanedText, detectedAnalyst } = detectPasteIntent(text, false);
-        if (command) {
-          const label = detectedAnalyst ? detectedAnalyst.charAt(0).toUpperCase() + detectedAnalyst.slice(1) + ' detected' : 'pattern detected';
-          showPasteHint('↳ routing to ' + command + ' (' + label + ')');
-          text = command + ' ' + cleanedText;
+      try {
+        let text = input.value.trim();
+        if (!text) return;
+        input.value = "";
+        const ph = document.getElementById("paste-hint");
+        if (ph) ph.style.display = "none";
+        if (!text.startsWith('/')) {
+          try {
+            const det = detectPasteIntent(text, false);
+            if (det && det.command) {
+              if (typeof showPasteHint === 'function') {
+                const label = det.detectedAnalyst
+                  ? det.detectedAnalyst.charAt(0).toUpperCase() + det.detectedAnalyst.slice(1) + ' detected'
+                  : 'pattern detected';
+                showPasteHint('↳ routing to ' + det.command + ' (' + label + ')');
+              }
+              text = det.command + ' ' + det.cleanedText;
+            }
+          } catch (e) {
+            console.error('[send] paste detect threw:', e);
+          }
         }
-      }
-      if (/^panic$/i.test(text)) {
-        document.getElementById("panic-modal").classList.add("show");
-        return;
-      }
-      const overrideMatch = text.match(/^override\s+(.+)$/i);
-      if (overrideMatch) {
+        if (/^panic$/i.test(text)) {
+          document.getElementById("panic-modal").classList.add("show");
+          return;
+        }
+        const overrideMatch = text.match(/^override:\s*(.+)/i);
+        if (overrideMatch) {
+          logIntervention(overrideMatch[1]);
+          return;
+        }
+        if (typeof checkMC === 'function') checkMC(text);
         addMessage("user", text);
-        logIntervention(document.getElementById("ribbon-state").className || "regulated", "override: " + overrideMatch[1]);
-        await chat(overrideMatch[1]);
-        return;
+        if (/^do /i.test(text)) return doAction(text.slice(3));
+        if (/^look($| )/i.test(text)) return look(text.slice(4).trim());
+        return chat(text);
+      } catch (outerErr) {
+        console.error('[send] fatal:', outerErr);
+        addMessage('system', 'Send error: ' + (outerErr.message || outerErr));
       }
-      checkMC(text);
-      addMessage("user", text);
-      if (/^(open|type|click|scroll|press)\s/i.test(text))      await doAction(text);
-      else if (/(screen|look|what's open|what do you see)/i.test(text)) await look(text);
-      else await chat(text);
     }
 
     sendBtn.addEventListener("click", send);

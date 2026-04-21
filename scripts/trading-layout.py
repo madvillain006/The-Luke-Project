@@ -82,16 +82,17 @@ print("Opening 3 Edge windows...")
 for w in windows:
     subprocess.Popen([
         EDGE,
+        "--new-window",
+        "--profile-directory=Default",
         f"--window-position={w['x']},{w['y']}",
         f"--window-size={w['w']},{w['h']}",
-        "--new-window",
         w["url"]
     ])
-    time.sleep(3)
+    time.sleep(5)
     print(f"  Opened {w['name']}")
 
 print("Finding and positioning Jarvis...")
-time.sleep(2)
+time.sleep(4)
 jarvis_hwnd = find_window("Jarvis")
 if jarvis_hwnd:
     win32gui.SetWindowPos(

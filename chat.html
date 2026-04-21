@@ -536,6 +536,9 @@
       <button class="qbtn has-tt" data-cmd="/trading-mode">
         /trading-mode<span class="tooltip">Set up 4-window layout (ximes, bobby, tradovate, jarvis)</span>
       </button>
+      <button class="qbtn has-tt" data-cmd="/balance ">
+        /balance<span class="tooltip">Set current account balance for Apex floor tracking</span>
+      </button>
       <button class="qbtn has-tt" data-cmd="/reset">
         /reset<span class="tooltip">Clear today's levels and last signal (NOT trades.jsonl)</span>
       </button>
@@ -1058,6 +1061,13 @@
     setInterval(checkPendingSignal, 15000);
 
     executeBtn.addEventListener("click", async () => {
+      const modeChip = document.getElementById("chip-mode");
+      if (!modeChip || modeChip.className === "off" || modeChip.textContent === "OFF") {
+        hidePending();
+        toast("02B is OFF — enter this trade manually in Tradovate.", 5000);
+        addMessage("assistant", "Enter this trade manually in Tradovate — 02B is OFF and will not send orders.", "alert");
+        return;
+      }
       const stateClass = document.getElementById("ribbon-state").className || "regulated";
       if (stateClass === "rule_break") {
         logIntervention("rule_break", "execute blocked");

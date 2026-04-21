@@ -337,6 +337,31 @@ app.post("/chat", async (req, res) => {
 
   // ── end slash commands ────────────────────────────────────────────────────
 
+  // ── parseXimes intercept — catch signals before Claude fallthrough ────
+  if (message.length >= 8 && !message.startsWith("/")) {
+    const parsed = parseXimes(message);
+    if (parsed && parsed.type === "signal" && parsed.strike) {
+      const alertMsg = "/alert " + message;
+      const handled = await handleSlashCommand(alertMsg, res);
+      if (handled !== null) return;
+    }
+    if (parsed && parsed.type === "MANAGEMENT") {
+      const actions = {
+        TRIM: "⚡ XIMES TRIM — Take partial profits now.\n" +
+          (parsed.gainPct ? "He called " + parsed.gainPct + "% gain.\n" : "") +
+          "→ Close 50-75% of position. Hold runner.",
+        RUNNER: "🏃 XIMES RUNNER — Hold partial position.\n" +
+          (parsed.sizing ? "He has " + parsed.sizing + " cons left (" + parsed.pctRemaining + "%).\n" : "") +
+          "→ Keep 20-25% on. Move stop to breakeven.",
+        CLOSE: "🚪 XIMES EXIT — Close position now.",
+        ADD: "➕ XIMES ADDING — He is sizing in further.\n→ Consider adding within your risk parameters.",
+      };
+      const reply = actions[parsed.action] || "XIMES: " + parsed.action;
+      return res.json({ reply });
+    }
+  }
+  // ── end parseXimes intercept ──────────────────────────────────────────
+
   const messages = [...(history || []), { role: "user", content: message }];
   const _exitWarnings = checkEmotionalState(loadTodayContext());
   const state = _exitWarnings.find(w => w.type === "HARD") ? "rule_break"

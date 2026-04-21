@@ -63,3 +63,5 @@
 [parser] entry+management+session context+noise filter
 [routing] parseXimes intercept added to /chat handler
 [parser-kana+bobby-vision] Kana relay, ADD/STOP_UPDATE/TARGET_UPDATE, Bobby vision trading context, heatmap pipe 2026-04-21T17:09:23Z
+[parser-username-gate] Fix null username blocking manual /alert signals 2026-04-21T17:17:09Z
+[status-luke-timestamp] Add Luke last-log elapsed time to /status output 2026-04-21T13:35:23Z

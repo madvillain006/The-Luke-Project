@@ -1093,6 +1093,9 @@
             setTimeout(() => { chip.textContent = ""; }, 35000);
           }
         }
+        if (data.type === 'staged_trade' && window.electronAPI) {
+            window.electronAPI.showTradePopup(data.trade || data)
+        }
         else if (data.type === "status_update") updateChips(data);
         else if (data.type === "levels_warning") {
           addMessage("assistant", data.message, "alert");

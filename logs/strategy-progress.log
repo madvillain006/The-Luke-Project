@@ -37,3 +37,12 @@
 [layout] discord scroll + tradovate login check added
 [layout] discord scroll + tradovate login check added
 [UI] compact terminal UI with tooltips
+[fix] 2026-04-20T23:15:19Z status level count + sienna neutral default
+[bracket] calculator built and verified
+[alert] bracket values wired into response
+[popup] bracket display updated
+[popup] lightweight chart with bracket lines added
+[popup] bracket display updated
+[popup] lightweight chart with bracket lines added
+[layout] safe 3-window layout rewritten
+[session6] bracket + popup chart + safe layout complete

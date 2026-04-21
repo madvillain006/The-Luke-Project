@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    background: #0d1117;
+    color: #e6edf3;
+    font-family: monospace;
+    font-size: 13px;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 12px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+.header { font-size:15px; font-weight:bold; color:#3fb950; border-bottom:1px solid #30363d; padding-bottom:6px; }
+.header.short { color:#f85149; }
+.row { display:flex; justify-content:space-between; color:#8b949e; }
+.row span:last-child { color:#e6edf3; }
+.divider { border-top: 1px solid #21262d; margin: 2px 0; }
+.rr { color:#58a6ff; font-weight:bold; }
+.sources { font-size:11px; color:#6e7681; }
+.buttons { display:flex; gap:8px; margin-top:auto; }
+.btn { flex:1; padding:8px; border:none; border-radius:6px; font-size:13px; font-weight:bold; cursor:pointer; }
+.btn-execute { background:#238636; color:white; }
+.btn-execute:hover { background:#2ea043; }
+.btn-ignore { background:#21262d; color:#8b949e; border:1px solid #30363d; }
+.btn-ignore:hover { background:#30363d; }
+</style>
+</head>
+<body>
+<div class="header" id="header">SETUP</div>
+<div class="row"><span>Entry</span><span id="entry">—</span></div>
+<div class="row"><span>Stop</span><span id="stop" style="color:#f85149">—</span></div>
+<div class="row"><span>Target</span><span id="target" style="color:#3fb950">—</span></div>
+<div class="row"><span>R:R</span><span class="rr" id="rr">—</span></div>
+<div class="divider"></div>
+<div class="row"><span>Risk</span><span id="risk">—</span></div>
+<div class="row"><span>Reward</span><span id="reward">—</span></div>
+<div class="row"><span>Confluence</span><span id="conf">—</span></div>
+<div class="row"><span>Regime</span><span id="regime">—</span></div>
+<div class="sources" id="sources"></div>
+<div id="chart-container" style="flex:1; min-height:120px; margin:8px 0;"></div>
+<div class="buttons">
+  <button class="btn btn-execute" id="exec">EXECUTE</button>
+  <button class="btn btn-ignore" id="ignore">IGNORE</button>
+</div>
+<script>
+function populateTrade(trade) {
+    const isLong = trade.direction === 'LONG';
+    const direction = trade.direction || (isLong ? 'LONG' : 'SHORT');
+    const ticker = trade.ticker || trade.instrument || '';
+
+    document.getElementById('header').textContent =
+        (isLong ? '🟢' : '🔴') + ' SETUP — ' + direction + ' ' + ticker;
+    document.getElementById('header').className = 'header' + (isLong ? '' : ' short');
+
+    const entry = trade.entry || trade.strike;
+    document.getElementById('entry').textContent = entry != null ? entry : '—';
+
+    const stopTicks = trade.stop_ticks != null ? trade.stop_ticks + ' ticks' : '';
+    const stopDollar = trade.risk_dollars != null ? '-$' + trade.risk_dollars : '';
+    const stopExtra = (stopTicks && stopDollar) ? ' (' + stopTicks + ' | ' + stopDollar + ')' : '';
+    document.getElementById('stop').textContent = trade.stop != null ? trade.stop + stopExtra : '—';
+
+    const tgtTicks = trade.target_ticks != null ? trade.target_ticks + ' ticks' : '';
+    const tgtDollar = trade.reward_dollars != null ? '+$' + trade.reward_dollars : '';
+    const tgtExtra = (tgtTicks && tgtDollar) ? ' (' + tgtTicks + ' | ' + tgtDollar + ')' : '';
+    document.getElementById('target').textContent = trade.target != null ? trade.target + tgtExtra : '—';
+
+    const rr = trade.rr_ratio != null ? '1:' + trade.rr_ratio : (
+        trade.stop != null && trade.target != null && entry != null
+            ? '1:' + (Math.abs(trade.target - entry) / Math.abs(entry - trade.stop)).toFixed(1)
+            : '—'
+    );
+    document.getElementById('rr').textContent = rr;
+
+    document.getElementById('risk').textContent   = trade.risk_dollars   != null ? '$' + trade.risk_dollars   : '—';
+    document.getElementById('reward').textContent = trade.reward_dollars != null ? '$' + trade.reward_dollars : '—';
+    document.getElementById('conf').textContent   =
+        (trade.confluence_score || trade.confluence?.score || '—') + ' — ' +
+        (trade.confluence_confidence || trade.confluence?.confidence || '');
+    document.getElementById('regime').textContent = trade.sienna_regime || '—';
+    document.getElementById('sources').textContent =
+        'Sources: ' + (trade.confluence?.sources?.join(', ') || '—');
+
+    buildChart(trade);
+}
+
+function buildChart(trade) {
+    const container = document.getElementById('chart-container');
+    container.innerHTML = '';
+    const entry = trade.entry || trade.strike;
+    const stopP = trade.stop;
+    const targetP = trade.target;
+    if (entry == null) return;
+
+    const chart = LightweightCharts.createChart(container, {
+        width: container.offsetWidth || 376,
+        height: container.offsetHeight || 160,
+        layout: { background: {color: '#0d1117'}, textColor: '#e6edf3' },
+        grid: { vertLines: {color: '#21262d'}, horzLines: {color: '#21262d'} },
+        rightPriceScale: { borderColor: '#30363d' },
+        timeScale: { visible: false }
+    });
+
+    const candleSeries = chart.addCandlestickSeries({
+        upColor: '#3fb950', downColor: '#f85149',
+        borderUpColor: '#3fb950', borderDownColor: '#f85149',
+        wickUpColor: '#3fb950', wickDownColor: '#f85149'
+    });
+
+    // TODO: replace sample data with real Finnhub/Tradovate feed
+    const candles = [];
+    let price = entry;
+    const now = Math.floor(Date.now() / 1000);
+    for (let i = 47; i >= 0; i--) {
+        const time = now - (i * 300);
+        const open = price;
+        price += (Math.random() - 0.5) * (entry * 0.001);
+        const close = price;
+        const high = Math.max(open, close) + Math.random() * (entry * 0.0005);
+        const low  = Math.min(open, close) - Math.random() * (entry * 0.0005);
+        candles.push({ time, open, high, low, close });
+    }
+    candleSeries.setData(candles);
+
+    candleSeries.createPriceLine({
+        price: entry, color: '#ffffff', lineWidth: 1,
+        lineStyle: LightweightCharts.LineStyle.Solid,
+        title: 'Entry'
+    });
+    if (stopP != null) {
+        candleSeries.createPriceLine({
+            price: stopP, color: '#f85149', lineWidth: 2,
+            lineStyle: LightweightCharts.LineStyle.Dashed,
+            title: 'Stop'
+        });
+    }
+    if (targetP != null) {
+        candleSeries.createPriceLine({
+            price: targetP, color: '#3fb950', lineWidth: 2,
+            lineStyle: LightweightCharts.LineStyle.Dashed,
+            title: 'Target'
+        });
+    }
+
+    chart.timeScale().fitContent();
+}
+
+if (window.electronAPI) {
+    window.electronAPI.onTradeData((trade) => populateTrade(trade));
+}
+document.getElementById('exec').onclick = () => {
+    if (window.electronAPI) window.electronAPI.closePopup();
+};
+document.getElementById('ignore').onclick = () => {
+    if (window.electronAPI) window.electronAPI.closePopup();
+};
+</script>
+</body>
+</html>

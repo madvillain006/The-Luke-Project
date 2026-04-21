@@ -1,6 +1,6 @@
 ---
 # JARVIS — LIVE STATUS DOCUMENT
-Last updated: 2026-04-20 (refactor)
+Last updated: 2026-04-20 (session6 — bracket + popup chart + safe layout)
 Maintained by: Conor Kastan
 
 ## WHAT JARVIS IS
@@ -124,6 +124,13 @@ trading/market-context.js — market context
 - agent-08-sienna.js not a clean lane yet
 - Bobby vision parser stub only — needs real image test
 - Finnhub key still has hardcoded fallback in code (env preferred, fallback for safety)
+
+## SESSION 6 NEW CAPABILITIES
+- **Bracket calculator** (lib/bracket-calc.js): calculateBracket() derives stop/target from confluence zones per instrument spec (ES/NQ/MES/MNQ/SPY/SPX), returns ticks + dollar risk/reward + R:R ratio with warn/reject flags
+- **/alert response** now includes full bracket: entry, stop (ticks + $), target (ticks + $), R:R 1:X — weak trades downgraded to WEAK, R:R <1.0 auto-rejected
+- **Trade popup** (trade-popup.html) shows entry/stop/target with tick count and dollar risk, all bracket fields displayed
+- **Mini chart in popup**: TradingView Lightweight Charts 4.1.3, 48 candles of 5-min data (sample), entry (white), stop (red dashed), target (green dashed) price lines
+- **Safe layout script**: trading-layout.py rewritten — pyautogui completely removed, only subprocess + win32gui, opens 3 Edge windows (ximes/bobby/tradovate) + pins Jarvis bottom-right always-on-top
 
 ## WHAT'S NEXT (in order)
 1. Phase 1.7 — replay alignment retest (target 15%+ pass rate, now using pre-parsed signals)

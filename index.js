@@ -741,6 +741,8 @@ const { router: tokensRouter, trackUsage, getDailyStatus, isHardCap, isSoftCap }
 app.use("/agent/tokens", tokensRouter);
 const { router: fallbackRouter, isActive: isFallbackActive, callFallback } = require("./agents/agent-12-fallback");
 app.use("/agent/fallback", fallbackRouter);
+const agentKat = require('./agents/agent-14-kat');
+app.use('/agent/kat', agentKat);
 
 // Expose WS token to the browser (localhost only — not a secret across the network)
 app.get("/ws-token", (req, res) => res.json({ token: WS_TOKEN }));

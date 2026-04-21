@@ -113,10 +113,6 @@
       background: transparent;
       letter-spacing: 0.3px;
     }
-    #kill-day-btn  { border: 1px solid var(--ybr); color: var(--yel); }
-    #kill-day-btn:hover  { background: var(--ybr); }
-    #kill-week-btn { border: 1px solid var(--rbr); color: var(--red); }
-    #kill-week-btn:hover { background: var(--rbr); }
     #look-btn { border: 1px solid var(--b1); color: var(--blu); font-size: 9px; padding: 1px 4px; border-radius: 3px; cursor: pointer; background: transparent; }
     #look-btn:hover { background: var(--bg3); }
 
@@ -264,6 +260,7 @@
       #tb-trades-val { font-size: 9px; }
       .bubble { font-size: 12px; padding: 4px 7px; }
       #top-bar { gap: 0; }
+      #look-btn { display: none; }
     }
 
     /* ── STAGED TRADE OVERLAY ── */
@@ -443,9 +440,7 @@
       <span class="tooltip">Today's trades. /review for details</span>
     </div>
     <div style="margin-left:auto;display:flex;align-items:center;gap:4px;padding-right:2px;">
-      <button id="kill-day-btn"  class="tb-killbtn has-tt" title="Kill day: pause trading for the rest of today">KILL:D<span class="tooltip">Kill day: pause trading for the rest of today</span></button>
-      <button id="kill-week-btn" class="tb-killbtn has-tt" title="Kill week: stop trading for the rest of the week">KILL:W<span class="tooltip">Kill week: stop trading for the rest of the week</span></button>
-      <button id="look-btn"      class="tb-killbtn has-tt" title="Take a screenshot and analyze what's on screen">LOOK<span class="tooltip">Take a screenshot and analyze what's on screen</span></button>
+      <button id="look-btn" class="tb-killbtn has-tt" title="Take a screenshot of the current screen and ask Claude what's on it">LOOK<span class="tooltip">Take a screenshot of the current screen and ask Claude what's on it</span></button>
     </div>
   </div>
 
@@ -838,22 +833,6 @@
         } catch {}
       }
       await syncStatus();
-    });
-
-    document.getElementById("kill-day-btn").addEventListener("click", async () => {
-      try {
-        await fetch(BASE + "/agent/autonomous/kill", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
-        addMessage("assistant", "Daily kill activated.", "alert");
-        await syncStatus();
-      } catch {}
-    });
-
-    document.getElementById("kill-week-btn").addEventListener("click", async () => {
-      try {
-        await fetch(BASE + "/agent/autonomous/kill-week", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
-        addMessage("assistant", "Weekly kill activated.", "alert");
-        await syncStatus();
-      } catch {}
     });
 
     syncStatus();

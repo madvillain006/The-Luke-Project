@@ -57,3 +57,4 @@
 [ui] removed kill buttons, LOOK tooltip + responsive hide
 
 [ux] smart paste routing — auto-detect ximes/bobby/richy from pasted Discord content, no slash command needed
+[fix] send wrapped in try/catch, tooltip positioning fixed, paper chip click disabled

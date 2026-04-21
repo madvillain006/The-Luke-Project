@@ -7,7 +7,7 @@ const fs = require("fs");
 const path = require("path");
 const { readJsonFile, writeJsonAtomic } = require("./state/lib");
 const { parseXimes } = require("./lib/parse-ximes");
-const { parseBobby } = require("./lib/parse-bobby");
+const { parseBobby, parseBobbyImage } = require("./lib/parse-bobby");
 const { detectConfluence, inferInstrument } = require("./lib/confluence");
 const { checkEmotionalState, loadTodayContext } = require("./lib/emotional-exits");
 const { log } = require("./lib/logger");
@@ -486,21 +486,27 @@ app.post("/see", async (req, res) => {
 });
 
 app.post("/see-image", async (req, res) => {
-  const { image, mime_type, question } = req.body;
+  const { image } = req.body;
   if (!image) return res.status(400).json({ error: "No image" });
   try {
-    const response = await client.messages.create({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 512,
-      messages: [{
-        role: "user",
-        content: [
-          { type: "image", source: { type: "base64", media_type: mime_type || "image/png", data: image } },
-          { type: "text", text: question || "What's in this image? Be brief and specific." }
-        ]
-      }]
-    });
-    res.json({ reply: response.content[0].text });
+    const result = await parseBobbyImage(image);
+    if (!result) return res.status(422).json({ error: "No levels extracted from image" });
+
+    const levelsFile = path.join(__dirname, "data", "today-levels.json");
+    const today = new Date().toISOString().slice(0, 10);
+    let obj;
+    try { obj = JSON.parse(fs.readFileSync(levelsFile, "utf8")); } catch { obj = { date: today, richyd: [], bobby: [] }; }
+    result.date = new Date().toISOString();
+    result.source = 'bobby-vision';
+    obj.bobby = [...(obj.bobby || []), result];
+    fs.writeFileSync(levelsFile, JSON.stringify(obj, null, 2), "utf8");
+
+    const kings  = (result.king_nodes || []).join(", ") || "none";
+    const walls  = (result.resistance || []).join(", ") || "none";
+    const floors = (result.support || []).join(", ") || "none";
+    const pockets = (result.air_pockets || []).join(", ") || "none";
+    const summary = `King nodes: ${kings}. Walls: ${walls}. Floors: ${floors}. Air pockets: ${pockets}. Bias: ${result.bias}.`;
+    res.json({ reply: `${summary} Bobby heatmap loaded to confluence.` });
   } catch (err) {
     res.status(500).json({ error: "Vision failed" });
   }

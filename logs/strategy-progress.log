@@ -59,3 +59,7 @@
 [ux] smart paste routing — auto-detect ximes/bobby/richy from pasted Discord content, no slash command needed
 [fix] send wrapped in try/catch, tooltip positioning fixed, paper chip click disabled
 [session-wrap] phases 1-5 complete — LOOK tooltip restored, /luke command added, alert dry fire 3/5 SETUP no bleed, layout script safe-mode — READY WITH CAVEATS 2026-04-21
+[final-audit] 2026-04-21 — 3 fixes applied (SPY dollar amounts, /history handler, EXECUTE OFF disambiguation) — 5 flagged (consistency blind spot, floor staleness, test hooks, manual floor check, DAILY_OPS gap) — verdict READY WITH CAVEATS 8.2/10
+[parser] entry+management+session context+noise filter
+[routing] parseXimes intercept added to /chat handler
+[parser-kana+bobby-vision] Kana relay, ADD/STOP_UPDATE/TARGET_UPDATE, Bobby vision trading context, heatmap pipe 2026-04-21T17:09:23Z

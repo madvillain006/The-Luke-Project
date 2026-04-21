@@ -339,13 +339,13 @@ app.post("/chat", async (req, res) => {
 
   // ── parseXimes intercept — catch signals before Claude fallthrough ────
   if (message.length >= 8 && !message.startsWith("/")) {
-    const parsed = parseXimes(message);
-    if (parsed && parsed.type === "signal" && parsed.strike) {
+    const parsed = parseXimes(null, message);
+    if (parsed && parsed.signal_type === "LIVE_ENTRY" && parsed.strike) {
       const alertMsg = "/alert " + message;
       const handled = await handleSlashCommand(alertMsg, res);
       if (handled !== null) return;
     }
-    if (parsed && parsed.type === "MANAGEMENT") {
+    if (parsed && parsed.signal_type === "MANAGEMENT") {
       const actions = {
         TRIM: "⚡ XIMES TRIM — Take partial profits now.\n" +
           (parsed.gainPct ? "He called " + parsed.gainPct + "% gain.\n" : "") +

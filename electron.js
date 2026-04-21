@@ -43,7 +43,8 @@ async function startServer() {
         serverProcess = spawn('node', ['index.js'], {
             cwd: __dirname,
             stdio: 'ignore',
-            detached: false
+            detached: false,
+            env: { ...process.env, NODE_ENV: 'production' }
         })
         await new Promise(r => setTimeout(r, 5000))
     }

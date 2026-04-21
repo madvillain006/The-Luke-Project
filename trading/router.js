@@ -715,7 +715,7 @@ router.post("/shadow/reset", (req, res) => {
 });
 
 // ── FAULT-INJECTION TEST HOOKS (non-production only) ──────────────────────
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV === "test") {
   // Generic state patch — lets test scripts inject pending signals, open positions, etc.
   router.post("/_test/inject-state", (req, res) => {
     const patch = req.body || {};

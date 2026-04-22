@@ -13,7 +13,7 @@ const { detectConfluence, inferInstrument } = require("./lib/confluence");
 const { checkEmotionalState, loadTodayContext } = require("./lib/emotional-exits");
 const { log } = require("./lib/logger");
 const { loadMemory, saveMemory } = require("./lib/memory");
-const { buildSystemPrompt, loadDiscordSignals } = require("./lib/system-prompt");
+const { buildSystemPrompt, loadDiscordSignals, pruneDiscordHistory } = require("./lib/system-prompt");
 const { handleAction, runPython } = require("./lib/actions");
 const { handleSlashCommand } = require("./lib/slash-commands");
 const { validateMemoryKey, MAX_TEXT_BYTES, MAX_URL_LENGTH } = require("./lib/validators");
@@ -989,6 +989,7 @@ wss.on("connection", (ws, req) => {
 global.broadcast = broadcast;
 
 buildRepoMap();
+pruneDiscordHistory();
 // DISABLED - manual only
 // setInterval(buildRepoMap, 60 * 60 * 1000);
 

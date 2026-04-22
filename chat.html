@@ -761,7 +761,7 @@
         const d = await r.json();
         const bal = typeof d.balance === "number" ? d.balance.toFixed(0) : (d.balance || "—");
         document.getElementById("ribbon-move").textContent = "MOVE: $" + bal + "/$6k";
-      } catch {}
+      } catch (e) { console.error('[syncRibbon] fund-status error:', e.message); }
       try {
         const r = await fetch(BASE + "/agent/income/income-summary");
         const d = await r.json();
@@ -1147,7 +1147,7 @@
             (data.notes ? '\n' + data.notes : '');
           addMessage('kat', msg, 'kat-vision');
         }
-      } catch {}
+      } catch (e) { console.error('[ws:onmessage] parse error:', e.message, event.data?.slice(0, 80)); }
     };
     } // end initWs
 

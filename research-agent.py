@@ -11,7 +11,10 @@ def load_memory():
     try:
         with open(MEMORY_FILE, "r") as f:
             return json.load(f)
-    except:
+    except FileNotFoundError:
+        return {}
+    except json.JSONDecodeError as e:
+        print(f"[load_memory] corrupt memory.json: {e}")
         return {}
 
 def save_memory(mem):
@@ -21,8 +24,8 @@ def save_memory(mem):
 def notify(message):
     try:
         requests.post(f"{JARVIS_URL}/notify", json={"message": message}, timeout=5)
-    except:
-        pass
+    except (requests.ConnectionError, requests.Timeout) as e:
+        print(f"[notify] Jarvis unreachable: {e}")
 
 def analyze_article(text, url):
     try:

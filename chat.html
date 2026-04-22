@@ -1136,6 +1136,9 @@
           addMessage("assistant", data.message, "alert");
           if (/02B|KILL|PAPER|LIVE|CLOSED/.test(data.message)) syncStatus();
         }
+        else if (data.type === "kat_alert") {
+          addMessage("assistant", data.reply, "kat-alert");
+        }
       } catch {}
     };
     } // end initWs

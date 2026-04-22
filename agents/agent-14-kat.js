@@ -96,6 +96,7 @@ if (process.env.KAT_BOT_TOKEN) {
     discordClient.on('ready', () => {
       console.log('[kat] Bot online as ' + discordClient.user.tag);
       runBackfill(discordClient);
+      startKatPoll();
     });
 
     discordClient.on('messageCreate', async (message) => {
@@ -214,6 +215,101 @@ if (process.env.KAT_BOT_TOKEN) {
   }
 } else {
   console.log('[kat] KAT_BOT_TOKEN not set — bot offline, ready to deploy');
+}
+
+// ── Proactive confluence alerting ───────────────────────────────────────────
+const ALERT_POLL_MS       = 5 * 60 * 1000;   // check every 5 minutes
+const ALERT_WINDOW_MS     = 20 * 60 * 1000;  // signals within 20 minutes
+const ALERT_MIN_ANALYSTS  = 2;               // minimum distinct analysts
+const ALERT_COOLDOWN_MS   = 15 * 60 * 1000; // don't re-alert same instrument for 15 min
+
+const _lastKatAlert = {};  // { instrument: timestamp } — dedup map
+
+function checkKatConfluence() {
+  try {
+    // Gate: market hours only
+    const { isMarketOpen } = require('../lib/market-hours');
+    const marketStatus = isMarketOpen();
+    if (!marketStatus.open) return;
+
+    // Gate: no active trade (don't interrupt an open position)
+    const activeTradeFile = path.join(__dirname, '../data/active-trade.json');
+    if (fs.existsSync(activeTradeFile)) {
+      try {
+        const activeTrade = JSON.parse(fs.readFileSync(activeTradeFile, 'utf8'));
+        if (activeTrade.status === 'open' && !activeTrade.runner) return;
+      } catch (e) {}
+    }
+
+    const { getRecentKatSignals } = require('./kat-confluence');
+    const instruments = ['SPX', 'SPY_QQQ', 'ES_NQ'];
+
+    for (const instrument of instruments) {
+      // Cooldown check
+      const lastAlert = _lastKatAlert[instrument] || 0;
+      if (Date.now() - lastAlert < ALERT_COOLDOWN_MS) continue;
+
+      const signals = getRecentKatSignals(instrument, ALERT_WINDOW_MS);
+      if (signals.length < 2) continue;
+
+      // Count distinct analysts per bias
+      const bullAnalysts = new Set(signals.filter(s => s.bias === 'BULLISH').map(s => s.analyst));
+      const bearAnalysts = new Set(signals.filter(s => s.bias === 'BEARISH').map(s => s.analyst));
+
+      let dominantBias = null;
+      let dominantAnalysts = null;
+
+      if (bullAnalysts.size >= ALERT_MIN_ANALYSTS) {
+        dominantBias     = 'BULLISH';
+        dominantAnalysts = [...bullAnalysts];
+      } else if (bearAnalysts.size >= ALERT_MIN_ANALYSTS) {
+        dominantBias     = 'BEARISH';
+        dominantAnalysts = [...bearAnalysts];
+      }
+
+      if (!dominantBias) continue;
+
+      // Build alert message
+      const withImages = signals.filter(s => s.has_image && s.bias === dominantBias);
+      const biasEmoji  = dominantBias === 'BULLISH' ? '🟢' : '🔴';
+      const lines      = [
+        biasEmoji + ' KAT ALERT — ' + instrument + ' confluence brewing',
+        '→ ' + dominantAnalysts.length + ' analysts ' + dominantBias.toLowerCase() + ': ' + dominantAnalysts.join(', '),
+        withImages.length > 0 ? '→ ' + withImages.length + ' chart(s) posted' : '',
+        '→ No Ximes signal yet — watch for entry call',
+        '→ Run /confluence for full zone view'
+      ].filter(Boolean).join('\n');
+
+      // Broadcast to Jarvis chat via global WS
+      if (typeof global.broadcast === 'function') {
+        global.broadcast({ type: 'kat_alert', reply: lines });
+        console.log('[kat] Confluence alert broadcast: ' + instrument + ' ' + dominantBias);
+      } else {
+        console.log('[kat] broadcast not available — alert would be: ' + lines);
+      }
+
+      // Set cooldown
+      _lastKatAlert[instrument] = Date.now();
+    }
+  } catch (e) {
+    console.error('[kat] checkKatConfluence error:', e.message);
+  }
+}
+
+let _katPollInterval = null;
+
+function startKatPoll() {
+  if (_katPollInterval) return; // already running
+  _katPollInterval = setInterval(checkKatConfluence, ALERT_POLL_MS);
+  console.log('[kat] Confluence poll started — every ' + (ALERT_POLL_MS/60000) + 'min during market hours');
+}
+
+function stopKatPoll() {
+  if (_katPollInterval) {
+    clearInterval(_katPollInterval);
+    _katPollInterval = null;
+    console.log('[kat] Confluence poll stopped');
+  }
 }
 
 // ── Backfill ─────────────────────────────────────────────────────────────────
@@ -537,7 +633,9 @@ router.get('/status', (req, res) => {
     monitored_channels:    config.monitored_channels || [],
     raw_feed_count:        rawFeedCount(),
     last_capture:          lastCapture(),
-    activity
+    activity,
+    poll_active:           _katPollInterval !== null,
+    last_alerts:           _lastKatAlert
   });
 });
 
@@ -549,6 +647,11 @@ router.post('/enable', (req, res) => {
   config.enabled = enabled;
   saveConfig(config);
   console.log('[kat] ' + (enabled ? 'ENABLED — bot now capturing' : 'DISABLED — bot paused'));
+  if (config.enabled && discordClient && discordClient.isReady()) {
+    startKatPoll();
+  } else {
+    stopKatPoll();
+  }
   res.json({ ok: true, enabled: config.enabled });
 });
 

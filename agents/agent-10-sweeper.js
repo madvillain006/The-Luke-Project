@@ -4,6 +4,7 @@ const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
 const path = require("path");
 
+const { log: jarvisLog } = require("../lib/logger");
 const client = new Anthropic();
 const ROOT = path.join(__dirname, "..");
 
@@ -172,7 +173,7 @@ async function runInventory() {
   saveState(state);
 
   swLog({ phase: "inventory", event: "done", file_count: map.files.length });
-  console.log(`Sweeper inventory: ${map.files.length} files queued`);
+  jarvisLog("sweeper-inventory", { files_queued: map.files.length });
   return { files: map.files.length };
 }
 
@@ -266,12 +267,12 @@ async function runScanBatch(batchSize = 5) {
   if (state.scan_queue.length === 0) {
     state.last_full_scan = new Date().toISOString();
     swLog({ phase: "scan", event: "pass_complete", total: state.scanned_this_pass.length });
-    console.log(`Sweeper: full scan pass complete (${state.scanned_this_pass.length} files)`);
+    jarvisLog("sweeper-pass-complete", { files: state.scanned_this_pass.length });
   }
 
   saveState(state);
   const totalFindings = results.reduce((s, r) => s + (r.findings || 0), 0);
-  console.log(`Sweeper batch: ${results.length} files, ${totalFindings} findings, ${state.scan_queue.length} queued`);
+  jarvisLog("sweeper-batch", { scanned: results.length, findings: totalFindings, queued: state.scan_queue.length });
   return { scanned: results.length, total_findings: totalFindings, queue_remaining: state.scan_queue.length };
 }
 
@@ -297,11 +298,22 @@ async function runSynthesis() {
   if (allFindings.length === 0) return { skipped: true, reason: "no_findings" };
 
   const rejected = loadRejectedPatterns();
+
+  // Priority-order truncation: findings get up to 12000 chars first,
+  // rejected patterns fill whatever remains up to a combined 15000 char cap.
+  const FINDINGS_CAP = 12000;
+  const COMBINED_CAP = 15000;
+  const findingsStr = JSON.stringify(allFindings, null, 2).slice(0, FINDINGS_CAP);
+  const rejectedBudget = Math.max(0, COMBINED_CAP - findingsStr.length);
+  const rejectedStr = rejected.length > 0
+    ? JSON.stringify(rejected, null, 2).slice(0, rejectedBudget)
+    : "";
+
   const synthPrompt =
     `You are Sweeper synthesis for Jarvis — Conor's personal AI assistant.\n\n` +
     `FINDINGS (${allFindings.length} across codebase):\n` +
-    JSON.stringify(allFindings, null, 2).slice(0, 12000) +
-    (rejected.length > 0 ? `\n\nREJECTED PATTERNS (do not re-propose):\n${JSON.stringify(rejected, null, 2).slice(0, 2000)}` : "") +
+    findingsStr +
+    (rejectedStr ? `\n\nREJECTED PATTERNS (do not re-propose):\n${rejectedStr}` : "") +
     `\n\nWrite up to 10 grouped proposals. Rules:\n` +
     `- Title each with "## SWEEP: <title>"\n` +
     `- Group related findings (same issue across files = one proposal)\n` +
@@ -341,7 +353,7 @@ async function runSynthesis() {
     body: JSON.stringify({ message: `SWEEPER: ${allFindings.length} findings → proposals written to ${fname}` })
   }).catch(() => {});
 
-  console.log(`Sweeper synthesis: ${allFindings.length} findings → ${fname}`);
+  jarvisLog("sweeper-synthesis", { findings: allFindings.length, file: fname });
   return { proposals_file: fname, findings_used: allFindings.length };
 }
 

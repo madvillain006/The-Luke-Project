@@ -126,41 +126,33 @@ router.post("/debt-log", (req, res) => {
   res.json({ reply: `Logged. Total debt: $${total.toFixed(2)}`, debt });
 });
 
-// Forecast
-router.post("/forecast", async (req, res) => {
+// Forecast — pure JS
+router.post("/forecast", (req, res) => {
   const mem = loadMemory();
   const balance = mem.move_fund || 0;
   const remaining = 6000 - balance;
   const weeks = getWeeksToDeadline();
+  const weeklyNeeded = weeks > 0 ? remaining / weeks : Infinity;
   const debts = mem.debts || [];
+  const onTrack = weeklyNeeded <= 900;
+  const gap = weeklyNeeded - 900;
 
-  try {
-    const response = await client.messages.create({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 200,
-      system: AGENT_05_SYSTEM,
-      messages: [{
-        role: "user",
-        content: `Current financial snapshot:
-Move fund: $${balance.toFixed(2)} / $6,000
-Remaining: $${remaining.toFixed(2)}
-Weeks to deadline: ${weeks}
-Weekly Instacart target: $900 conservative
-Monthly burn: $1,410
-Debts: ${debts.length > 0 ? debts.map(d => `${d.creditor}: $${d.balance}`).join(", ") : "none logged"}
-
-Forecast: will we hit $6k by mid-June? What's the one thing to do differently?`
-      }]
-    });
-
-    res.json({ reply: response.content[0].text });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  let verdict;
+  if (weeks <= 0) {
+    verdict = "Deadline passed.";
+  } else if (onTrack) {
+    verdict = `On track. At $900/week you hit $6k with ${Math.ceil(remaining / 900)} weeks to spare.`;
+  } else {
+    verdict = `Behind. Need ${weeklyNeeded.toFixed(0)}/week vs $900 target — ${gap.toFixed(0)} gap. Add ${Math.ceil(gap / 15)} extra shifts/week or cut ${gap.toFixed(0)} monthly burn.`;
   }
+
+  const debtLine = debts.length > 0 ? ` Debts: ${debts.map(d => `${d.creditor} ${d.balance}`).join(", ")}.` : "";
+
+  res.json({ reply: `${balance.toFixed(0)}/$6,000 | ${weeks} weeks left | Need ${weeklyNeeded.toFixed(0)}/week.${debtLine} ${verdict}` });
 });
 
-// Proactive assessment — on track for Tennessee or not?
-router.get("/assess", async (req, res) => {
+// Proactive assessment — pure JS
+router.get("/assess", (req, res) => {
   const mem = loadMemory();
   const balance = mem.move_fund || 0;
   const remaining = 6000 - balance;
@@ -169,18 +161,11 @@ router.get("/assess", async (req, res) => {
   const onTrack = weeklyNeeded <= 900;
   const concern = !onTrack || weeks < 4;
 
-  try {
-    const response = await client.messages.create({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 150,
-      system: AGENT_05_SYSTEM,
-      messages: [{
-        role: "user",
-        content: `Fund: $${balance.toFixed(0)} / $6,000 | ${weeks} weeks left | Need $${weeklyNeeded.toFixed(0)}/week | Instacart target: $900/week\n\nOne sentence: on track or not, and why. One sentence: what to do about it.`
-      }]
-    });
-    res.json({ assessment: response.content[0].text, concern, on_track: onTrack, balance, weeks_left: weeks, weekly_needed: weeklyNeeded.toFixed(0) });
-  } catch (err) { res.status(500).json({ error: err.message }); }
+  const assessment = onTrack
+    ? `On track for Tennessee. ${balance.toFixed(0)} saved, need ${weeklyNeeded.toFixed(0)}/week with ${weeks} weeks left.`
+    : `Behind pace. Need ${weeklyNeeded.toFixed(0)}/week but target is $900 — close the ${(weeklyNeeded - 900).toFixed(0)} gap with more shifts or lower burn.`;
+
+  res.json({ assessment, concern, on_track: onTrack, balance, weeks_left: weeks, weekly_needed: weeklyNeeded.toFixed(0) });
 });
 
 module.exports = router;

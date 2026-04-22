@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const Anthropic = require("@anthropic-ai/sdk");
 const { execSync, spawnSync } = require("child_process");
@@ -207,7 +208,10 @@ async function routeToAgent(message) {
       if (drafts.length === 0) return { reply: "No pending Luke drafts.", agent: "health" };
       const lines = drafts.map(d => `${d.id}: food=${d.entry.food_eaten || "?"}, stool=${d.entry.stool || "?"}, vomit=${d.entry.vomiting ? "yes" : "no"}, notes=${(d.entry.notes || "").slice(0, 40)}`);
       return { reply: "Pending Luke drafts:\n" + lines.join("\n"), agent: "health" };
-    } catch { return null; }
+    } catch (err) {
+      log("agent-fetch-error", { agent: "health", endpoint: "/agent/health/drafts-luke", error: err.message });
+      return { reply: `[health agent error: ${err.message}]`, agent: "health-error" };
+    }
   }
 
   const lukeConfirmMatch = message.match(/confirm\s+(luke-draft-\d+)/i);
@@ -215,28 +219,40 @@ async function routeToAgent(message) {
     try {
       const data = await agentFetch("/agent/health/confirm-luke", "POST", { id: lukeConfirmMatch[1] });
       return { reply: data.reply, agent: "health" };
-    } catch { return null; }
+    } catch (err) {
+      log("agent-fetch-error", { agent: "health", endpoint: "/agent/health/confirm-luke", error: err.message });
+      return { reply: `[health agent error: ${err.message}]`, agent: "health-error" };
+    }
   }
 
   if (/(luke|vomit|threw up|puked|diarrhea|stool|poop|ate|refused|meds|omeprazole|prednisone|mirtazapine|carafate|ple|lethargic|playful|cups|kibble|cottage cheese)/i.test(message)) {
     try {
       const data = await agentFetch("/agent/health/draft-luke", "POST", extractHealthLog(message));
       return { reply: data.reply, agent: "health" };
-    } catch { return null; }
+    } catch (err) {
+      log("agent-fetch-error", { agent: "health", endpoint: "/agent/health/draft-luke", error: err.message });
+      return { reply: `[health agent error: ${err.message}]`, agent: "health-error" };
+    }
   }
 
   if (/(bought|entered|opened|took a position|took calls|took puts)/i.test(message)) {
     try {
       const data = await agentFetch("/agent/trader/log-trade", "POST", extractTrade(message));
       return { reply: data.reply, agent: "trader" };
-    } catch { return null; }
+    } catch (err) {
+      log("agent-fetch-error", { agent: "trader", endpoint: "/agent/trader/log-trade", error: err.message });
+      return { reply: `[trader agent error: ${err.message}]`, agent: "trader-error" };
+    }
   }
 
   if (/(calls|puts|strike|expiry|contract|flow|signal|conviction|wyckoff|spx|spy|qqq|fngu|apg|setup|thesis|premium|ema|ximes|bobby|heatmap|futures|mnq|mes)/i.test(message)) {
     try {
       const data = await agentFetch("/agent/trader/analyze-signal", "POST", { signal: message, ticker: extractTicker(message) });
       return { reply: data.reply, agent: "trader" };
-    } catch { return null; }
+    } catch (err) {
+      log("agent-fetch-error", { agent: "trader", endpoint: "/agent/trader/analyze-signal", error: err.message });
+      return { reply: `[trader agent error: ${err.message}]`, agent: "trader-error" };
+    }
   }
 
   if (/(instacart|shift|deliveries|delivery|made \$|earned|drove|zone|batch)/i.test(message)) {
@@ -245,7 +261,10 @@ async function routeToAgent(message) {
       try {
         const data = await agentFetch("/agent/income/log-shift", "POST", shift);
         return { reply: data.reply, agent: "income" };
-      } catch { return null; }
+      } catch (err) {
+        log("agent-fetch-error", { agent: "income", endpoint: "/agent/income/log-shift", error: err.message });
+        return { reply: `[income agent error: ${err.message}]`, agent: "income-error" };
+      }
     }
   }
 
@@ -281,7 +300,10 @@ async function routeToAgent(message) {
         `Daily P&L: $${(status.daily_pnl || 0).toFixed(0)}`,
       ].filter(Boolean).join("\n");
       return { reply: lines, agent: "autonomous" };
-    } catch { return null; }
+    } catch (err) {
+      log("agent-fetch-error", { agent: "autonomous", endpoint: "/agent/autonomous/*", error: err.message });
+      return { reply: `[autonomous agent error: ${err.message}]`, agent: "autonomous-error" };
+    }
   }
 
   if (/scheduler status|jobs status|scheduled jobs/i.test(message)) {
@@ -291,7 +313,10 @@ async function routeToAgent(message) {
       if (jobs.length === 0) return { reply: "No scheduler job receipts yet.", agent: "scheduler" };
       const lines = jobs.slice(0, 8).map(([name, info]) => `${name}: ${info.state || "unknown"} | ok=${info.last_succeeded || "never"} | fail=${info.last_failed || "never"}`);
       return { reply: "Scheduler jobs:\n" + lines.join("\n"), agent: "scheduler" };
-    } catch { return null; }
+    } catch (err) {
+      log("agent-fetch-error", { agent: "scheduler", endpoint: "/scheduler/status", error: err.message });
+      return { reply: `[scheduler agent error: ${err.message}]`, agent: "scheduler-error" };
+    }
   }
 
   if (/(opportunity|contract|pitch|freelance|apply|job|gig)/i.test(message)) {
@@ -301,7 +326,10 @@ async function routeToAgent(message) {
         ? `${data.active} active opportunity${data.active > 1 ? "ies" : ""} in pipeline. Tell me to intake a new one or get details.`
         : "No active opportunities in pipeline. Paste one and I'll evaluate it.";
       return { reply, agent: "opportunity" };
-    } catch { return null; }
+    } catch (err) {
+      log("agent-fetch-error", { agent: "opportunity", endpoint: "/agent/opportunity/pipeline", error: err.message });
+      return { reply: `[opportunity agent error: ${err.message}]`, agent: "opportunity-error" };
+    }
   }
 
   if (/(move fund|how much.*saved|fund status|on track|tennessee.*money|debt|owe|how are we looking|where are we at)/i.test(message)) {
@@ -309,8 +337,9 @@ async function routeToAgent(message) {
       const data = await agentFetch("/agent/finance/fund-status", "GET");
       const reply = "Fund: $" + (data.balance || "0") + " / $6,000 | " + (data.weeks_left || "?") + " weeks left | Need $" + (data.weekly_needed || "?") + "/week | " + (data.status || "unknown");
       return { reply, agent: "finance" };
-    } catch {
-      return { reply: "Couldn't pull fund status right now.", agent: "finance" };
+    } catch (err) {
+      log("agent-fetch-error", { agent: "finance", endpoint: "/agent/finance/fund-status", error: err.message });
+      return { reply: "Couldn't pull fund status right now.", agent: "finance-error" };
     }
   }
 
@@ -1111,3 +1140,4 @@ server.listen(PORT, "127.0.0.1", () => {
   console.log("Read DAILY_OPS.md before trading.");
   console.log("===================================");
 });
+

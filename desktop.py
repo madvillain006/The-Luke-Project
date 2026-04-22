@@ -23,8 +23,6 @@ def type_text(text):
 
 def open_url(url):
     import webbrowser
-    pyautogui.hotkey('ctrl', 'w')
-    time.sleep(0.5)
     webbrowser.open(url)
     time.sleep(4)
     return f"Opened URL: {url}"

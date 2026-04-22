@@ -78,3 +78,5 @@
 [test-fix] Market-aware instrument grouping — SPY/QQQ <1000, ES_NQ >=1000, SPX tickerHint only, validZones Option C, 54/54 2026-04-21T21:32:37Z
 [kat-backfill-fix] Channel lookup by ID — 90-day backfill working 2026-04-21T22:13:29Z
 [kat-targeted-backfill] POST /agent/kat/backfill-channels — targeted channel backfill endpoint 2026-04-21T22:30:22Z
+[kat-layer2-text] lib/parse-kat.js â€” text signal parser for KapriK0rn3/El Jefe/Barry/General Dollars style 2026-04-22T02:41:52Z
+[kat-layer2-noise] Raise price floor to 50, tighten noise gate for no-ticker sub-100 messages 2026-04-21T22:44:21Z

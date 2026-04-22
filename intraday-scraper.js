@@ -6,7 +6,8 @@ const Anthropic = require("@anthropic-ai/sdk");
 const client = new Anthropic();
 const HISTORY_FILE = path.join(__dirname, "discord-history.jsonl");
 const LOG_FILE = path.join(__dirname, "jarvis-log.jsonl");
-const FINNHUB_KEY = process.env.FINNHUB_KEY || "d7ibl19r01qu8vfo2410d7ibl19r01qu8vfo241g";
+const FINNHUB_KEY = process.env.FINNHUB_KEY;
+if (!FINNHUB_KEY) { console.error("FINNHUB_KEY not set in environment"); process.exit(1); }
 
 const INTRADAY_CHANNELS = [
   { server: "OWLS Capital", name: "ximes-dubz", url: "https://discord.com/channels/718624848812834903/1476605105263612097", priority: "PRIMARY" },

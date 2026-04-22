@@ -95,47 +95,38 @@ router.post("/log-shift", (req, res) => {
   });
 });
 
-// Weekly summary
-router.get("/income-summary", async (req, res) => {
+// Weekly summary — pure JS, no AI call needed
+router.get("/income-summary", (req, res) => {
   const shifts = loadShifts();
-  const mem = loadMemory();
 
-  if (shifts.length === 0) return res.json({ reply: "No shifts logged yet." });
+  if (shifts.length === 0) return res.json({ reply: "No shifts logged yet.", week_total: 0, weekly_income: 0 });
 
   const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
   const thisWeek = shifts.filter(s => s.date >= weekAgo);
   const totalNet = thisWeek.reduce((sum, s) => sum + s.net, 0);
   const totalHours = thisWeek.reduce((sum, s) => sum + s.hours, 0);
   const avgHourly = totalHours > 0 ? (totalNet / totalHours).toFixed(2) : 0;
+  const behind = Math.max(0, 1000 - totalNet);
 
   const bestShift = [...thisWeek].sort((a, b) => b.hourly - a.hourly)[0];
   const worstShift = [...thisWeek].sort((a, b) => a.hourly - b.hourly)[0];
 
-  try {
-    const response = await client.messages.create({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 200,
-      system: AGENT_03_SYSTEM,
-      messages: [{
-        role: "user",
-        content: `Weekly summary:
-Shifts this week: ${thisWeek.length}
-Total net: $${totalNet.toFixed(2)} of $1,000 target
-Avg $/hr: $${avgHourly}
-Best shift: $${bestShift?.hourly}/hr on ${bestShift?.date} in ${bestShift?.zone}
-Worst shift: $${worstShift?.hourly}/hr on ${worstShift?.date} in ${worstShift?.zone}
-
-Give one concrete action to improve next week.`
-      }]
-    });
-
-    res.json({
-      reply: response.content[0].text,
-      stats: { totalNet, totalHours, avgHourly, shiftsCount: thisWeek.length, target: 1000 }
-    });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  let action = "Keep consistent — you're on pace.";
+  if (behind > 0 && totalHours > 0) {
+    const hoursNeeded = (behind / parseFloat(avgHourly)).toFixed(1);
+    action = `Need ${behind.toFixed(2)} more — add ~${hoursNeeded}h at current rate or target higher-earning zones.`;
+  } else if (bestShift && worstShift && bestShift.zone !== worstShift.zone) {
+    action = `Prioritize ${bestShift.zone} zone (${bestShift.hourly}/hr) over ${worstShift.zone} (${worstShift.hourly}/hr).`;
   }
+
+  const status = behind > 0 ? `⚠ ${behind.toFixed(2)} behind` : "✓ On pace";
+
+  res.json({
+    reply: `Week: ${thisWeek.length} shifts | Net ${totalNet.toFixed(2)}/$1,000 | ${avgHourly}/hr avg | ${status}\n${action}`,
+    stats: { totalNet, totalHours, avgHourly, shiftsCount: thisWeek.length, target: 1000 },
+    week_total: totalNet,
+    weekly_income: totalNet
+  });
 });
 
 // Reset weekly counter (call every Monday)

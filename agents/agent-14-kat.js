@@ -125,6 +125,22 @@ if (process.env.KAT_BOT_TOKEN) {
       appendRawFeed(entry);
       updateActivity(message.author.username);
       console.log('[kat] Captured: ' + message.author.username + ' in #' + message.channel.name + ' — ' + entry.content.slice(0, 60));
+
+      const { parseKatSignal } = require('../lib/parse-kat');
+      const hasAttachments = entry.attachments.length > 0;
+      const signal = parseKatSignal(entry.username, entry.content, hasAttachments);
+      if (signal) {
+        signal.ts         = entry.ts;
+        signal.message_id = entry.message_id;
+        signal.channel    = entry.channel_name;
+        signal.user_id    = entry.user_id;
+        try {
+          fs.appendFileSync(PROCESSED, JSON.stringify(signal) + '\n', 'utf8');
+        } catch (e) {
+          console.error('[kat] processed write error:', e.message);
+        }
+        console.log('[kat] Signal: ' + signal.signal_type + ' | ' + signal.analyst + ' | ' + (signal.ticker||'no ticker') + ' | ' + signal.bias);
+      }
     });
 
     discordClient.on('error', (err) => {
@@ -395,6 +411,44 @@ async function runTargetedBackfill(client, targetChannelNames) {
   console.log('[kat] TARGETED BACKFILL complete — captured: ' + totalCaptured + ', skipped (dedup): ' + totalSkipped);
 }
 
+// ── Batch processor ──────────────────────────────────────────────────────────
+
+function batchProcess() {
+  const { parseKatSignal } = require('../lib/parse-kat');
+  if (!fs.existsSync(RAW_FEED)) {
+    console.log('[kat] No raw feed to process'); return;
+  }
+  const processed = new Set();
+  if (fs.existsSync(PROCESSED)) {
+    fs.readFileSync(PROCESSED, 'utf8').split('\n')
+      .filter(l => l.trim()).forEach(l => {
+        try { const e = JSON.parse(l); if (e.message_id) processed.add(e.message_id); } catch(e){}
+      });
+  }
+  const raw = fs.readFileSync(RAW_FEED, 'utf8').split('\n').filter(l => l.trim());
+  let parsed = 0; let skipped = 0; let noise = 0;
+  for (const line of raw) {
+    try {
+      const entry = JSON.parse(line);
+      if (processed.has(entry.message_id)) { skipped++; continue; }
+      const hasImg = (entry.attachments || []).length > 0;
+      const signal = parseKatSignal(entry.username, entry.content, hasImg);
+      if (signal) {
+        signal.ts         = entry.ts;
+        signal.message_id = entry.message_id;
+        signal.channel    = entry.channel_name;
+        signal.user_id    = entry.user_id;
+        fs.appendFileSync(PROCESSED, JSON.stringify(signal) + '\n', 'utf8');
+        parsed++;
+      } else {
+        noise++;
+      }
+      processed.add(entry.message_id);
+    } catch (e) { console.error('[kat] batch parse error:', e.message); }
+  }
+  console.log('[kat] Batch complete — parsed: ' + parsed + ', noise: ' + noise + ', skipped: ' + skipped);
+}
+
 // ── Routes ──────────────────────────────────────────────────────────────────
 
 // POST /agent/kat/backfill-channels  { channels: ["barrys-breakdowns", ...] }
@@ -448,6 +502,24 @@ router.post('/configure', (req, res) => {
   saveConfig(config);
   console.log('[kat] Config updated:', JSON.stringify({ users: config.monitored_users.map(u => u.username), channels: config.monitored_channels }));
   res.json({ ok: true, config });
+});
+
+// POST /agent/kat/process-backfill
+router.post('/process-backfill', (req, res) => {
+  res.json({ ok: true, message: 'Batch processing started' });
+  setImmediate(() => batchProcess());
+});
+
+// GET /agent/kat/signals?limit=50
+router.get('/signals', (req, res) => {
+  const limit = Math.min(parseInt(req.query.limit) || 50, 200);
+  if (!fs.existsSync(PROCESSED)) return res.json({ signals: [], count: 0 });
+  const lines = fs.readFileSync(PROCESSED, 'utf8')
+    .split('\n').filter(l => l.trim());
+  const signals = lines.slice(-limit).map(l => {
+    try { return JSON.parse(l); } catch (e) { return null; }
+  }).filter(Boolean);
+  res.json({ signals, count: lines.length });
 });
 
 // GET /agent/kat/feed?limit=50

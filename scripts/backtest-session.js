@@ -13,10 +13,10 @@ function getArg(flag) {
 const CSV_PATH = getArg('--csv');
 const TICKER   = (getArg('--ticker') || 'SPX').toUpperCase();
 const SOURCE   = getArg('--source') || 'all';
-const DATE     = getArg('--date');
+let   DATE     = getArg('--date');   // optional — derived from CSV if omitted
 
-if (!CSV_PATH || !DATE) {
-  console.error('Usage: node scripts/backtest-session.js --csv <path> --ticker <TICKER> --source <source> --date <YYYY-MM-DD>');
+if (!CSV_PATH) {
+  console.error('Usage: node scripts/backtest-session.js --csv <path> --ticker <TICKER> --source <source> [--date <YYYY-MM-DD>]');
   process.exit(1);
 }
 
@@ -25,29 +25,72 @@ const PROCESSED_SIGNALS = path.join(__dirname, '../data/kat/processed-signals.js
 const RAW_FEED          = path.join(__dirname, '../data/kat/raw-feed.jsonl');
 const OUTPUT_DIR        = path.join(__dirname, '../data/backtest');
 
-// ── CSV parser ────────────────────────────────────────────────────────────────
-// Handles: MM/DD/YYYY HH:MM,Open,High,Low,Close,Volume
-function loadCsvBars(csvPath) {
+// ── CSV column name constants ─────────────────────────────────────────────────
+const COL_DATETIME = 'Time';
+const COL_CLOSE    = 'Close';
+
+// ── DateTime parser ───────────────────────────────────────────────────────────
+function parseDateTime(str) {
+  // Barchart format: "YYYY-MM-DD HH:MM" (quoted, ISO-like, CT timezone)
+  // Convert CT to ET by adding 1 hour for market-hours correlation
+  const barchartISO = str.replace(/^"|"$/g, '').trim();
+  const isoRe = /^(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2})$/;
+  const isoM  = barchartISO.match(isoRe);
+  if (isoM) {
+    const d = new Date(parseInt(isoM[1]), parseInt(isoM[2])-1, parseInt(isoM[3]),
+                       parseInt(isoM[4]) + 1, parseInt(isoM[5]));
+    return d.getTime();
+  }
+
+  // Original format: MM/DD/YYYY HH:MM
+  const parts = barchartISO.split(' ');
+  if (parts.length < 2) return NaN;
+  const [datePart, timePart] = parts;
+  const [mm, dd, yyyy] = datePart.split('/');
+  if (!mm || !dd || !yyyy) return NaN;
+  const isoTs = `${yyyy}-${mm.padStart(2, '0')}-${dd.padStart(2, '0')}T${timePart}:00.000Z`;
+  return new Date(isoTs).getTime();
+}
+
+// ── CSV price loader (header-aware) ──────────────────────────────────────────
+function loadPriceCSV(csvPath) {
   if (!fs.existsSync(csvPath)) throw new Error(`CSV not found: ${csvPath}`);
   const lines = fs.readFileSync(csvPath, 'utf8').split('\n').filter(l => l.trim());
+  if (lines.length < 2) throw new Error(`CSV has no data rows: ${csvPath}`);
+
+  const headers = lines[0].split(',').map(h => h.replace(/^"|"$/g, '').trim());
+
+  const colIdx = {
+    dt:     headers.findIndex(h => h === COL_DATETIME || h === 'Date' || h === 'DateTime'),
+    open:   headers.findIndex(h => h === 'Open'),
+    high:   headers.findIndex(h => h === 'High'),
+    low:    headers.findIndex(h => h === 'Low'),
+    close:  headers.findIndex(h => h === COL_CLOSE || h === 'Latest' || h === 'Last'),
+    volume: headers.findIndex(h => h === 'Volume')
+  };
+
+  if (colIdx.dt === -1 || colIdx.close === -1) {
+    throw new Error(
+      `CSV missing required columns.\n` +
+      `Expected: ${COL_DATETIME}, ${COL_CLOSE}\n` +
+      `Found: ${headers.join(', ')}\n` +
+      `Note: Barchart uses 'Latest' instead of 'Close' — this is handled automatically`
+    );
+  }
+
   const bars = [];
   for (let i = 1; i < lines.length; i++) {
     const cols = lines[i].split(',');
-    if (cols.length < 5) continue;
-    const [datePart, timePart] = cols[0].trim().split(' ');
-    if (!datePart || !timePart) continue;
-    const [mm, dd, yyyy] = datePart.split('/');
-    if (!mm || !dd || !yyyy) continue;
-    const isoTs = `${yyyy}-${mm.padStart(2, '0')}-${dd.padStart(2, '0')}T${timePart}:00.000Z`;
-    const ts = new Date(isoTs).getTime();
+    if (cols.length < 2) continue;
+    const ts = parseDateTime(cols[colIdx.dt]);
     if (isNaN(ts)) continue;
     bars.push({
       ts,
-      open:   parseFloat(cols[1]),
-      high:   parseFloat(cols[2]),
-      low:    parseFloat(cols[3]),
-      close:  parseFloat(cols[4]),
-      volume: parseInt(cols[5]) || 0
+      open:   colIdx.open   !== -1 ? parseFloat(cols[colIdx.open])   : NaN,
+      high:   colIdx.high   !== -1 ? parseFloat(cols[colIdx.high])   : NaN,
+      low:    colIdx.low    !== -1 ? parseFloat(cols[colIdx.low])     : NaN,
+      close:  parseFloat(cols[colIdx.close]),
+      volume: colIdx.volume !== -1 ? (parseInt(cols[colIdx.volume]) || 0) : 0
     });
   }
   bars.sort((a, b) => a.ts - b.ts);
@@ -61,7 +104,8 @@ function loadSignals(ticker, source, date) {
   return lines.flatMap(l => {
     try {
       const s = JSON.parse(l);
-      if (!s.ts || !s.ts.startsWith(date)) return [];
+      if (!s.ts) return [];
+      if (date && !s.ts.startsWith(date)) return [];
       if (s.ticker && s.ticker.toUpperCase() !== ticker.toUpperCase()) return [];
       if (source && source !== 'all' && s.analyst !== source) return [];
       if (!s.bias || s.bias === 'NEUTRAL') return [];
@@ -268,8 +312,14 @@ function checkHeatmapAlignment(signal, heatmapContext) {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 function runBacktest() {
-  const bars = loadCsvBars(CSV_PATH);
+  const bars = loadPriceCSV(CSV_PATH);
   console.log(`[backtest] Loaded ${bars.length} bars from CSV`);
+
+  // Derive date from first bar if --date not provided
+  if (!DATE && bars.length > 0) {
+    DATE = new Date(bars[0].ts).toISOString().slice(0, 10);
+    console.log(`[backtest] --date not provided, derived from CSV: ${DATE}`);
+  }
 
   const signals = loadSignals(TICKER, SOURCE, DATE);
   console.log(`[backtest] Found ${signals.length} signals for ${DATE} / ${TICKER} / ${SOURCE}`);

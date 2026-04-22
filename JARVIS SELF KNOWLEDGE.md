@@ -42,9 +42,9 @@ Conor. 32. Buffalo NY, moving to Tennessee mid-June 2026. Cancer survivor, clear
 ## AGENTS
 - **01 SCAFFOLD** (index.js) — main chat, emotional regulation, daily triage, computer actions
 - **02 TRADER** (agents/agent-02-trader.js) — signal analysis, entry validation, P&L — STUB
-- **03 INCOME** (agents/agent-03-income.js) — Instacart optimization — STUB
-- **04 HEALTH** (agents/agent-04-health.js) — Luke vitals, meds tracking — STUB
-- **05 FINANCE** (agents/agent-05-finance.js) — move fund, debt, cashflow — STUB
+- **03 INCOME** (agents/agent-03-income.js) — Instacart shift tracking, weekly pace vs $1k target — ACTIVE
+- **04 HEALTH** (agents/agent-04-health.js) — Luke vitals, meds tracking — ACTIVE
+- **05 FINANCE** (agents/agent-05-finance.js) — move fund, debt, cashflow, Tennessee forecast — ACTIVE
 - **06 RESEARCH** (agents/agent-06-research.js) — synthesis, validation, self-improvement — ACTIVE
 
 ## AGENT 06 SKILLS LIBRARY
@@ -66,9 +66,8 @@ Agent 06 knows and can apply these skills by name:
 15. LONG-FORM-SUMMARY-COMPRESSOR — condense to essential points
 16. TONE-STYLE-ENFORCER — maintain consistent voice across outputs
 17. CONTENT-REPURPOSING-ENGINE — adapt content across formats
-18. KNOWLEDGE-STRUCTURING-SKILL — framework and hierarchy building
-19. EXCALIDRAW-DIAGRAM-GENERATOR — diagram instructions for visualization
-20. COMPETITIVE-INTELLIGENCE-SKILL — SWOT-style comparative analysis
+18. EXCALIDRAW-DIAGRAM-GENERATOR — diagram instructions for visualization
+19. COMPETITIVE-INTELLIGENCE-SKILL — SWOT-style comparative analysis
 
 ## KNOWN CONSTRAINTS
 - Lenovo Vantage blocks Chrome debug ports 9222 and 9333 — never use CDP

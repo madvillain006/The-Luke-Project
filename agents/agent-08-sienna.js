@@ -153,7 +153,7 @@ router.post("/analyze", async (req, res) => {
 
   try {
     const synthesis = await client.messages.create({
-      model: "claude-opus-4-6",
+      model: "claude-haiku-4-5-20251001",
       max_tokens: 1500,
       system: SIENNA_SYSTEM,
       messages: [{

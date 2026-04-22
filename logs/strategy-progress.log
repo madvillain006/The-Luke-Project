@@ -72,3 +72,5 @@
 [session-replay] lib/session-replay.js — structured /alert replay log. Every verdict captured with timing, confluence, skip reason, apex headroom. 2026-04-21T18:41:25Z
 [runner-protocol] /runner command, TRIM handler with runner state, active-trade runner exception, /trade RUNNER flag 2026-04-21T23:42:44Z
 [runner-protocol] /runner command, TRIM handler with runner state, active-trade runner exception, /trade RUNNER flag 2026-04-21T23:42:50Z
+[F1-fix] /trade now updates state.daily_pnl — Apex consistency cap applies to manual trades 2026-04-21T19:53:44Z
+[F4-fix] Add dollar-200 safety buffer to manual /alert Apex floor check 2026-04-21T20:09:00Z

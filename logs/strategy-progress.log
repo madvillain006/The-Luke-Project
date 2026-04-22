@@ -81,3 +81,8 @@
 [kat-layer2-text] lib/parse-kat.js â€” text signal parser for KapriK0rn3/El Jefe/Barry/General Dollars style 2026-04-22T02:41:52Z
 [kat-layer2-noise] Raise price floor to 50, tighten noise gate for no-ticker sub-100 messages 2026-04-21T22:44:21Z
 [kat-layer2-wire] Live capture auto-parses to processed-signals.jsonl, batch endpoint processes backfill, GET /signals endpoint 2026-04-21T22:48:02Z
+[kat-message-update] Wire messageUpdate event — captures Barry post-then-edit pattern and fixes filename undefined bug 2026-04-21T22:59:55Z
+[kat-confluence] lib/kat-confluence.js — recent Kat signal lookup feeds detectConfluence(), Jefe heatmap linked to /alert verdict 2026-04-21T23:10:00Z
+[kat-level-filter] Instrument-aware price floors — SPX>=3000 NQ>=10000 SPY/QQQ>=200 equity>=50 2026-04-21T23:35:28Z
+[kat-confluence-alert] Proactive WS alert when 2+ analysts bullish/bearish same instrument within 20min — 5min poll, 15min cooldown, market hours only 2026-04-21T23:39:46Z
+[kat-server-commands] getTopLevels/getBiasReport/getHeatmap/checkLevelMagnets implemented â€” !kat commands live, Level Magnets active, zero Claude API calls 2026-04-22T03:55:56Z

@@ -103,6 +103,16 @@ if (process.env.KAT_BOT_TOKEN) {
       if (message.author.bot) return;
       const config = loadConfig();
       if (!config.enabled) return;
+
+      // !kat command — any user, in command_channels
+      if (message.content.trim().startsWith('!kat')) {
+        const cmdChannels = config.command_channels || [];
+        if (cmdChannels.includes(message.channelId) || cmdChannels.includes(message.channel.name)) {
+          await handleKatCommand(message);
+          return;
+        }
+      }
+
       if (!isMonitoredUser(message.author.id, config)) return;
       if (!isMonitoredChannel(message.channelId, message.channel.name, config)) return;
 
@@ -288,6 +298,14 @@ function checkKatConfluence() {
         console.log('[kat] broadcast not available — alert would be: ' + lines);
       }
 
+      // Post to Discord magnet_channel
+      const cfg = loadConfig();
+      if (cfg.magnet_channel && discordClient && discordClient.isReady()) {
+        discordClient.channels.fetch(cfg.magnet_channel)
+          .then(ch => ch && ch.send(lines))
+          .catch(e => console.error('[kat] magnet_channel send error:', e.message));
+      }
+
       // Set cooldown
       _lastKatAlert[instrument] = Date.now();
     }
@@ -300,7 +318,10 @@ let _katPollInterval = null;
 
 function startKatPoll() {
   if (_katPollInterval) return; // already running
-  _katPollInterval = setInterval(checkKatConfluence, ALERT_POLL_MS);
+  _katPollInterval = setInterval(async () => {
+    checkKatConfluence();
+    await checkLevelMagnets();
+  }, ALERT_POLL_MS);
   console.log('[kat] Confluence poll started — every ' + (ALERT_POLL_MS/60000) + 'min during market hours');
 }
 
@@ -603,6 +624,307 @@ function batchProcess() {
   console.log('[kat] Batch complete — parsed: ' + parsed + ', noise: ' + noise + ', skipped: ' + skipped);
 }
 
+// ── Command helpers ──────────────────────────────────────────────────────────
+
+function getTopLevels(ticker) {
+  try {
+    if (!fs.existsSync(PROCESSED)) return 'No signal data yet. Check back soon.';
+
+    const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
+    const cutoff     = Date.now() - SEVEN_DAYS;
+    const lines      = fs.readFileSync(PROCESSED, 'utf8')
+      .split('\n').filter(l => l.trim());
+
+    const levelMap = {};
+    for (const line of lines) {
+      try {
+        const sig = JSON.parse(line);
+        if (!sig.ts || !sig.ticker) continue;
+        if (new Date(sig.ts).getTime() < cutoff) continue;
+        if (sig.ticker.toUpperCase() !== ticker.toUpperCase()) continue;
+        if (!sig.levels || sig.levels.length === 0) continue;
+        for (const level of sig.levels) {
+          const bucket = Math.round(level / 5) * 5;
+          if (!levelMap[bucket]) {
+            levelMap[bucket] = { count: 0, analysts: new Set(), biases: new Set() };
+          }
+          levelMap[bucket].count++;
+          if (sig.analyst) levelMap[bucket].analysts.add(sig.analyst);
+          if (sig.bias)    levelMap[bucket].biases.add(sig.bias);
+        }
+      } catch (e) {}
+    }
+
+    // Anti-hallucination: 2+ analysts OR 3+ mentions required
+    const qualified = Object.entries(levelMap)
+      .filter(([, v]) => v.analysts.size >= 2 || v.count >= 3)
+      .sort((a, b) => b[1].count - a[1].count)
+      .slice(0, 5);
+
+    if (qualified.length === 0) {
+      return 'No confirmed confluence levels for ' + ticker +
+        ' in the last 7 days.\n' +
+        '_Levels need 2+ analysts or 3+ mentions to qualify._';
+    }
+
+    const rows = qualified.map(([level, data]) => {
+      const tag = data.biases.has('BEARISH') && data.biases.has('BULLISH')
+        ? 'contested'
+        : data.biases.has('BEARISH') ? 'resistance' : 'support';
+      return '`' + level + '` — ' +
+        data.count + ' mention' + (data.count > 1 ? 's' : '') +
+        ', ' + data.analysts.size + ' analyst' + (data.analysts.size > 1 ? 's' : '') +
+        ' (' + tag + ')';
+    });
+
+    return '📊 **' + ticker + ' levels — last 7 days**\n' +
+      rows.join('\n') + '\n' +
+      '_Source: Elevated Charts analyst posts. ' +
+      '2+ analysts or 3+ mentions required._';
+  } catch (e) {
+    console.error('[kat] getTopLevels error:', e.message);
+    return 'Error reading level data. Try again shortly.';
+  }
+}
+
+function getBiasReport() {
+  try {
+    if (!fs.existsSync(PROCESSED)) return 'No signal data yet.';
+
+    const EIGHTEEN_HRS = 18 * 60 * 60 * 1000;
+    const cutoff       = Date.now() - EIGHTEEN_HRS;
+    const lines        = fs.readFileSync(PROCESSED, 'utf8')
+      .split('\n').filter(l => l.trim());
+
+    let bullish = 0; let bearish = 0; let neutral = 0;
+    const bullAnalysts = new Set();
+    const bearAnalysts = new Set();
+    const tickerCounts = {};
+
+    for (const line of lines) {
+      try {
+        const sig = JSON.parse(line);
+        if (!sig.ts) continue;
+        if (new Date(sig.ts).getTime() < cutoff) continue;
+        if (!['CHART_ANALYSIS','DIRECTIONAL','LEVEL_WATCH'].includes(sig.signal_type)) continue;
+        if (sig.bias === 'BULLISH') {
+          bullish++;
+          if (sig.analyst) bullAnalysts.add(sig.analyst);
+        } else if (sig.bias === 'BEARISH') {
+          bearish++;
+          if (sig.analyst) bearAnalysts.add(sig.analyst);
+        } else {
+          neutral++;
+        }
+        if (sig.ticker) tickerCounts[sig.ticker] = (tickerCounts[sig.ticker] || 0) + 1;
+      } catch (e) {}
+    }
+
+    const total = bullish + bearish + neutral;
+
+    // Anti-hallucination: minimum 3 signals
+    if (total < 3) {
+      return 'Not enough signal data in the last 18 hours.\n' +
+        '_Need at least 3 signals. Current: ' + total + '_';
+    }
+
+    const dominant = bullish > bearish ? 'BULLISH 🟢'
+      : bearish > bullish ? 'BEARISH 🔴' : 'MIXED ⚪';
+    const ratio = bullish + bearish > 0
+      ? Math.round((Math.max(bullish, bearish) / (bullish + bearish)) * 100)
+      : 50;
+
+    const topTickers = Object.entries(tickerCounts)
+      .sort((a, b) => b[1] - a[1]).slice(0, 3)
+      .map(([t, c]) => t + ' (' + c + ')').join(', ');
+
+    return '📡 **Elevated Charts — Last 18h Regime**\n' +
+      'Collective bias: **' + dominant + '** (' + ratio + '%)\n' +
+      'Bullish: ' + bullish + ' signals from ' + bullAnalysts.size + ' analyst(s)\n' +
+      'Bearish: ' + bearish + ' signals from ' + bearAnalysts.size + ' analyst(s)\n' +
+      'Most discussed: ' + (topTickers || 'N/A') + '\n' +
+      '_Based on ' + total + ' signals. Not a prediction — synthesis only._';
+  } catch (e) {
+    console.error('[kat] getBiasReport error:', e.message);
+    return 'Error reading bias data.';
+  }
+}
+
+async function getHeatmap(ticker) {
+  try {
+    if (!fs.existsSync(RAW_FEED)) return { content: 'No heatmap data yet.' };
+
+    const lines = fs.readFileSync(RAW_FEED, 'utf8')
+      .split('\n').filter(l => l.trim());
+
+    let bestEntry = null;
+    for (let i = lines.length - 1; i >= 0; i--) {
+      try {
+        const entry = JSON.parse(lines[i]);
+        if (!entry.attachments || entry.attachments.length === 0) continue;
+        const att = entry.attachments[0];
+        if (!att.url) continue;
+
+        const isImage = (att.content_type || '').startsWith('image') ||
+          /\.(png|jpg|jpeg|gif|webp)/i.test(att.filename || '');
+        if (!isImage) continue;
+
+        const contentUpper = (entry.content || '').toUpperCase();
+        const matches =
+          contentUpper.includes(ticker) ||
+          contentUpper.includes('$' + ticker) ||
+          (ticker === 'SPX' && contentUpper.includes('SPX')) ||
+          (ticker === 'QQQ' && contentUpper.includes('NDX'));
+        if (!matches) continue;
+
+        bestEntry = entry;
+        break;
+      } catch (e) {}
+    }
+
+    if (!bestEntry) {
+      return {
+        content: 'No recent heatmap found for ' + ticker + '.\n' +
+          '_Kat looks for image posts from monitored analysts mentioning ' + ticker + '._'
+      };
+    }
+
+    const ts      = new Date(bestEntry.ts);
+    const ageMs   = Date.now() - ts.getTime();
+    const ageMins = Math.round(ageMs / 60000);
+    const ageStr  = ageMins < 60
+      ? ageMins + 'm ago'
+      : Math.floor(ageMins / 60) + 'h ' + (ageMins % 60) + 'm ago';
+    const stale   = ageMs > 4 * 60 * 60 * 1000
+      ? '\n⚠️ _Over 4 hours old — levels may have shifted._' : '';
+
+    const caption =
+      '🗺️ **Most recent ' + ticker + ' heatmap**\n' +
+      'Posted by: ' + bestEntry.username + '\n' +
+      'Time: ' + ts.toLocaleTimeString('en-US', { timeZone: 'America/New_York' }) +
+      ' ET (' + ageStr + ')' +
+      (bestEntry.content ? '\n"' + bestEntry.content.slice(0, 100) + '"' : '') +
+      stale + '\n_Source: Elevated Charts analyst post via Kat_';
+
+    return {
+      content: caption,
+      files: [{
+        attachment: bestEntry.attachments[0].url,
+        name: bestEntry.attachments[0].filename || 'heatmap.png'
+      }]
+    };
+  } catch (e) {
+    console.error('[kat] getHeatmap error:', e.message);
+    return { content: 'Error fetching heatmap. CDN link may have expired.' };
+  }
+}
+
+async function checkLevelMagnets() {
+  try {
+    const config = loadConfig();
+    if (!config.enabled || !config.magnet_channel) return;
+    if (!discordClient || !discordClient.isReady()) return;
+
+    const { isMarketOpen } = require('../lib/market-hours');
+    if (!isMarketOpen().open) return;
+
+    if (!fs.existsSync(PROCESSED)) return;
+
+    const FORTYEIGHT_HRS = 48 * 60 * 60 * 1000;
+    const cutoff         = Date.now() - FORTYEIGHT_HRS;
+    const lines          = fs.readFileSync(PROCESSED, 'utf8')
+      .split('\n').filter(l => l.trim());
+
+    const levelMap = {};
+    for (const line of lines) {
+      try {
+        const sig = JSON.parse(line);
+        if (!sig.ts || !sig.levels) continue;
+        if (new Date(sig.ts).getTime() < cutoff) continue;
+        for (const level of sig.levels) {
+          const bucket = Math.round(level / 5) * 5;
+          const key    = (sig.ticker || 'UNK') + ':' + bucket;
+          if (!levelMap[key]) {
+            levelMap[key] = {
+              level: bucket, ticker: sig.ticker,
+              analysts: new Set(), count: 0,
+              biases: new Set(), lastTs: sig.ts
+            };
+          }
+          levelMap[key].count++;
+          levelMap[key].analysts.add(sig.analyst);
+          levelMap[key].biases.add(sig.bias);
+          if (sig.ts > levelMap[key].lastTs) levelMap[key].lastTs = sig.ts;
+        }
+      } catch (e) {}
+    }
+
+    for (const [key, data] of Object.entries(levelMap)) {
+      if (data.analysts.size < 2) continue;
+
+      const cooldownKey = 'magnet:' + key;
+      const lastAlert   = _lastKatAlert[cooldownKey] || 0;
+      if (Date.now() - lastAlert < 4 * 60 * 60 * 1000) continue;
+
+      const biasStr = data.biases.has('BEARISH') && data.biases.has('BULLISH')
+        ? 'CONTESTED ⚪'
+        : data.biases.has('BEARISH') ? 'resistance 🔴' : 'support 🟢';
+
+      const msg =
+        '🧲 **Level Magnet — ' + data.ticker + ' ' + data.level + '**\n' +
+        data.analysts.size + ' analysts independently marked this level\n' +
+        'Bias: ' + biasStr + ' | Mentions: ' + data.count + '\n' +
+        'Last marked: ' + new Date(data.lastTs).toLocaleTimeString('en-US',
+          { timeZone: 'America/New_York' }) + ' ET\n' +
+        '_Source: Elevated Charts analyst posts via Kat_';
+
+      try {
+        const guild   = discordClient.guilds.cache.first();
+        const channel = guild?.channels.cache.find(
+          c => c.name === config.magnet_channel ||
+               c.id   === config.magnet_channel
+        );
+        if (channel && channel.isTextBased()) {
+          await channel.send(msg);
+          _lastKatAlert[cooldownKey] = Date.now();
+          console.log('[kat] Level magnet posted: ' + data.ticker + ' ' + data.level);
+        }
+      } catch (e) {
+        console.error('[kat] magnet post error:', e.message);
+      }
+    }
+  } catch (e) {
+    console.error('[kat] checkLevelMagnets error:', e.message);
+  }
+}
+
+async function handleKatCommand(message) {
+  const args = message.content.trim().split(/\s+/);
+  const sub = args[1] ? args[1].toLowerCase() : '';
+  const ticker = (args[2] || 'SPX').toUpperCase();
+
+  try {
+    if (sub === 'levels') {
+      await message.reply(getTopLevels(ticker));
+    } else if (sub === 'bias') {
+      await message.reply(getBiasReport());
+    } else if (sub === 'heatmap') {
+      const heatmapPayload = await getHeatmap(ticker);
+      await message.reply(heatmapPayload);
+    } else {
+      await message.reply([
+        '**Kat commands:**',
+        '`!kat levels SPX` — top analyst-marked levels (2+ analysts or 3+ mentions)',
+        '`!kat bias` — directional bias across analysts, last 18 hours',
+        '`!kat heatmap SPX` — most recent heatmap with staleness indicator',
+        '`!kat` — this help list'
+      ].join('\n'));
+    }
+  } catch (e) {
+    console.error('[kat] handleKatCommand error:', e.message);
+  }
+}
+
 // ── Routes ──────────────────────────────────────────────────────────────────
 
 // POST /agent/kat/backfill-channels  { channels: ["barrys-breakdowns", ...] }
@@ -655,13 +977,20 @@ router.post('/enable', (req, res) => {
   res.json({ ok: true, enabled: config.enabled });
 });
 
-// POST /agent/kat/configure  { monitored_users: [...], monitored_channels: [...] }
+// POST /agent/kat/configure  { monitored_users, monitored_channels, magnet_channel, command_channels }
 router.post('/configure', (req, res) => {
   const config = loadConfig();
   if (req.body.monitored_users)    config.monitored_users    = req.body.monitored_users;
   if (req.body.monitored_channels) config.monitored_channels = req.body.monitored_channels;
+  if (req.body.magnet_channel)     config.magnet_channel     = req.body.magnet_channel;
+  if (req.body.command_channels)   config.command_channels   = req.body.command_channels;
   saveConfig(config);
-  console.log('[kat] Config updated:', JSON.stringify({ users: config.monitored_users.map(u => u.username), channels: config.monitored_channels }));
+  console.log('[kat] Config updated:', JSON.stringify({
+    users: config.monitored_users.map(u => u.username),
+    channels: config.monitored_channels,
+    magnet_channel: config.magnet_channel,
+    command_channels: config.command_channels
+  }));
   res.json({ ok: true, config });
 });
 

@@ -9,7 +9,8 @@ const STATE_FILE = path.join(__dirname, 'data', 'window-state.json')
 function loadWindowState() {
     try {
         return JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'))
-    } catch {
+    } catch (err) {
+        if (err.code !== 'ENOENT') console.error('[loadWindowState]', err.message)
         return null
     }
 }
@@ -21,7 +22,9 @@ function saveWindowState(win) {
         const tmp = STATE_FILE + '.tmp'
         fs.writeFileSync(tmp, JSON.stringify(bounds))
         fs.renameSync(tmp, STATE_FILE)
-    } catch {}
+    } catch (err) {
+        console.error('[saveWindowState]', err.message)
+    }
 }
 
 let serverProcess = null

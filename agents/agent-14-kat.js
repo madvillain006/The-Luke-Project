@@ -55,10 +55,12 @@ function isMonitoredUser(userId, config) {
   return (config.monitored_users || []).some(u => u.discord_id === userId);
 }
 
-function isMonitoredChannel(channelName, config) {
-  const channels = config.monitored_channels || [];
-  if (channels.length === 0) return false;
-  return channels.includes(channelName);
+function isMonitoredChannel(channelId, channelName, config) {
+  const ids   = config.monitored_channel_ids || [];
+  const names = config.monitored_channels    || [];
+  if (ids.length > 0)   return ids.includes(channelId);
+  if (names.length > 0) return names.includes(channelName);
+  return false;
 }
 
 function rawFeedCount() {
@@ -93,6 +95,7 @@ if (process.env.KAT_BOT_TOKEN) {
 
     discordClient.on('ready', () => {
       console.log('[kat] Bot online as ' + discordClient.user.tag);
+      runBackfill(discordClient);
     });
 
     discordClient.on('messageCreate', async (message) => {
@@ -100,10 +103,11 @@ if (process.env.KAT_BOT_TOKEN) {
       const config = loadConfig();
       if (!config.enabled) return;
       if (!isMonitoredUser(message.author.id, config)) return;
-      if (!isMonitoredChannel(message.channel.name, config)) return;
+      if (!isMonitoredChannel(message.channelId, message.channel.name, config)) return;
 
       const entry = {
         ts:           message.createdAt.toISOString(),
+        message_id:   message.id,
         guild_id:     message.guildId,
         channel_id:   message.channelId,
         channel_name: message.channel.name,
@@ -136,6 +140,135 @@ if (process.env.KAT_BOT_TOKEN) {
   }
 } else {
   console.log('[kat] KAT_BOT_TOKEN not set — bot offline, ready to deploy');
+}
+
+// ── Backfill ─────────────────────────────────────────────────────────────────
+async function runBackfill(client) {
+  const config = loadConfig();
+  if (!config.enabled) {
+    console.log('[kat] Backfill skipped — bot not enabled');
+    return;
+  }
+
+  const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
+  const cutoff = new Date(Date.now() - NINETY_DAYS_MS);
+  console.log('[kat] Backfill starting — cutoff: ' + cutoff.toISOString());
+
+  // Load existing message IDs to avoid duplicates
+  const seen = new Set();
+  if (fs.existsSync(RAW_FEED)) {
+    const lines = fs.readFileSync(RAW_FEED, 'utf8')
+      .split('\n').filter(l => l.trim());
+    for (const line of lines) {
+      try {
+        const entry = JSON.parse(line);
+        if (entry.message_id) seen.add(entry.message_id);
+      } catch (e) {}
+    }
+  }
+  console.log('[kat] Backfill — ' + seen.size + ' existing entries in feed (dedup set loaded)');
+
+  const monitoredIds = new Set((config.monitored_users || []).map(u => u.discord_id));
+
+  let totalCaptured = 0;
+  let totalSkipped  = 0;
+
+  for (const guild of client.guilds.cache.values()) {
+    await guild.fetch();
+    await guild.channels.fetch();
+
+    const channelIds   = new Set(config.monitored_channel_ids || []);
+    const channelNames = new Set(config.monitored_channels    || []);
+
+    const targetChannels = [];
+    for (const [, c] of guild.channels.cache) {
+      if (!c) continue;
+      try {
+        const isText = typeof c.isTextBased === 'function' ? c.isTextBased() : false;
+        if (!isText) continue;
+        if (channelIds.size > 0 && channelIds.has(c.id)) {
+          targetChannels.push(c);
+          console.log('[kat] Backfill target (by ID): #' + c.name);
+        } else if (channelIds.size === 0 && channelNames.has(c.name)) {
+          targetChannels.push(c);
+          console.log('[kat] Backfill target (by name): #' + c.name);
+        }
+      } catch (e) {
+        console.error('[kat] Channel check error:', e.message);
+      }
+    }
+
+    for (const channel of targetChannels) {
+      const channelName = channel.name;
+      console.log('[kat] Backfilling #' + channelName + ' in ' + guild.name);
+
+      let lastId        = null;
+      let reachedCutoff = false;
+      let pageCount     = 0;
+
+      while (!reachedCutoff) {
+        try {
+          const options = { limit: 100 };
+          if (lastId) options.before = lastId;
+
+          const messages = await channel.messages.fetch(options);
+          if (!messages.size) break;
+
+          const sorted = [...messages.values()].sort(
+            (a, b) => a.createdTimestamp - b.createdTimestamp
+          );
+
+          for (const msg of sorted) {
+            if (msg.createdAt < cutoff) { reachedCutoff = true; break; }
+            if (!monitoredIds.has(msg.author.id)) continue;
+            if (seen.has(msg.id)) { totalSkipped++; continue; }
+
+            const entry = {
+              ts:           msg.createdAt.toISOString(),
+              message_id:   msg.id,
+              guild_id:     msg.guildId,
+              channel_id:   msg.channelId,
+              channel_name: channelName,
+              user_id:      msg.author.id,
+              username:     msg.author.username,
+              content:      msg.content,
+              attachments:  msg.attachments.map(a => ({
+                id:           a.id,
+                url:          a.url,
+                filename:     a.name,
+                content_type: a.contentType || 'unknown'
+              })),
+              backfill:     true
+            };
+
+            appendRawFeed(entry);
+            seen.add(msg.id);
+            updateActivity(msg.author.username);
+            totalCaptured++;
+          }
+
+          lastId = sorted[0].id;
+          pageCount++;
+
+          // Rate limit courtesy pause — 500ms between pages
+          await new Promise(r => setTimeout(r, 500));
+
+          if (pageCount >= 200) {
+            console.log('[kat] Backfill page limit reached for #' + channelName);
+            break;
+          }
+
+        } catch (e) {
+          console.error('[kat] Backfill error in #' + channelName + ':', e.message);
+          break;
+        }
+      }
+
+      console.log('[kat] #' + channelName + ' backfill done — page ' + pageCount);
+    }
+  }
+
+  console.log('[kat] Backfill complete — captured: ' + totalCaptured + ', skipped (dedup): ' + totalSkipped);
 }
 
 // ── Routes ──────────────────────────────────────────────────────────────────

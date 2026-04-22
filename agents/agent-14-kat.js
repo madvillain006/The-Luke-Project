@@ -117,7 +117,7 @@ if (process.env.KAT_BOT_TOKEN) {
         attachments:  message.attachments.map(a => ({
           id:           a.id,
           url:          a.url,
-          filename:     a.name,
+          filename:     a.name || a.filename || 'image.png',
           content_type: a.contentType || 'unknown'
         }))
       };
@@ -140,6 +140,64 @@ if (process.env.KAT_BOT_TOKEN) {
           console.error('[kat] processed write error:', e.message);
         }
         console.log('[kat] Signal: ' + signal.signal_type + ' | ' + signal.analyst + ' | ' + (signal.ticker||'no ticker') + ' | ' + signal.bias);
+      }
+    });
+
+    discordClient.on('messageUpdate', async (oldMessage, newMessage) => {
+      try {
+        if (!newMessage.author || newMessage.author.bot) return;
+        const config = loadConfig();
+        if (!config.enabled) return;
+        if (!isMonitoredUser(newMessage.author.id, config)) return;
+
+        const channelIds = new Set(config.monitored_channel_ids || []);
+        const channelNames = new Set(config.monitored_channels || []);
+        const inTargetChannel = channelIds.has(newMessage.channelId) ||
+                                channelNames.has(newMessage.channel?.name);
+        if (!inTargetChannel) return;
+
+        // Only process if content actually changed and is now non-empty
+        if (!newMessage.content && newMessage.attachments.size === 0) return;
+        if (oldMessage.content === newMessage.content &&
+            oldMessage.attachments.size === newMessage.attachments.size) return;
+
+        const entry = {
+          ts:           newMessage.editedAt?.toISOString() || new Date().toISOString(),
+          message_id:   newMessage.id + '_edited',
+          guild_id:     newMessage.guildId,
+          channel_id:   newMessage.channelId,
+          channel_name: newMessage.channel?.name || 'unknown',
+          user_id:      newMessage.author.id,
+          username:     newMessage.author.username,
+          content:      newMessage.content,
+          attachments:  [...newMessage.attachments.values()].map(a => ({
+            id:           a.id,
+            url:          a.url,
+            filename:     a.name || a.filename || 'image.png',
+            content_type: a.contentType || 'unknown'
+          })),
+          edited:       true
+        };
+
+        appendRawFeed(entry);
+        updateActivity(newMessage.author.username);
+
+        // Parse immediately
+        const { parseKatSignal } = require('../lib/parse-kat');
+        const hasImg = entry.attachments.length > 0;
+        const signal = parseKatSignal(entry.username, entry.content, hasImg);
+        if (signal) {
+          signal.ts         = entry.ts;
+          signal.message_id = entry.message_id;
+          signal.channel    = entry.channel_name;
+          signal.user_id    = entry.user_id;
+          fs.appendFileSync(PROCESSED, JSON.stringify(signal) + '\n', 'utf8');
+          console.log('[kat] Edit signal: ' + signal.signal_type + ' | ' + signal.analyst + ' | ' + (signal.ticker||'?') + ' | ' + signal.bias);
+        } else {
+          console.log('[kat] Edit captured (no signal): ' + entry.username + ' — ' + entry.content.slice(0,60));
+        }
+      } catch (e) {
+        console.error('[kat] messageUpdate error:', e.message);
       }
     });
 
@@ -251,7 +309,7 @@ async function runBackfill(client) {
               attachments:  msg.attachments.map(a => ({
                 id:           a.id,
                 url:          a.url,
-                filename:     a.name,
+                filename:     a.name || a.filename || 'image.png',
                 content_type: a.contentType || 'unknown'
               })),
               backfill:     true
@@ -375,7 +433,7 @@ async function runTargetedBackfill(client, targetChannelNames) {
               attachments:  msg.attachments.map(a => ({
                 id:           a.id,
                 url:          a.url,
-                filename:     a.name,
+                filename:     a.name || a.filename || 'image.png',
                 content_type: a.contentType || 'unknown'
               })),
               backfill:     true

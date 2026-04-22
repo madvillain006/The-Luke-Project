@@ -76,3 +76,5 @@
 [F4-fix] Add dollar-200 safety buffer to manual /alert Apex floor check 2026-04-21T20:09:00Z
 [session-readiness] Advisory readiness warnings on SETUP/WEAK verdicts — never blocks /alert 2026-04-21T20:34:21Z
 [test-fix] Market-aware instrument grouping — SPY/QQQ <1000, ES_NQ >=1000, SPX tickerHint only, validZones Option C, 54/54 2026-04-21T21:32:37Z
+[kat-backfill-fix] Channel lookup by ID — 90-day backfill working 2026-04-21T22:13:29Z
+[kat-targeted-backfill] POST /agent/kat/backfill-channels — targeted channel backfill endpoint 2026-04-21T22:30:22Z

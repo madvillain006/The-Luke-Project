@@ -271,7 +271,144 @@ async function runBackfill(client) {
   console.log('[kat] Backfill complete — captured: ' + totalCaptured + ', skipped (dedup): ' + totalSkipped);
 }
 
+// ── Targeted Backfill ────────────────────────────────────────────────────────
+async function runTargetedBackfill(client, targetChannelNames) {
+  const config = loadConfig();
+  if (!config.enabled) {
+    console.log('[kat] Targeted backfill skipped — bot not enabled');
+    return;
+  }
+
+  const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
+  const cutoff = new Date(Date.now() - NINETY_DAYS_MS);
+  const targetSet = new Set(targetChannelNames);
+  console.log('[kat] TARGETED BACKFILL starting for: ' + targetChannelNames.join(', '));
+
+  const seen = new Set();
+  if (fs.existsSync(RAW_FEED)) {
+    const lines = fs.readFileSync(RAW_FEED, 'utf8')
+      .split('\n').filter(l => l.trim());
+    for (const line of lines) {
+      try {
+        const entry = JSON.parse(line);
+        if (entry.message_id) seen.add(entry.message_id);
+      } catch (e) {}
+    }
+  }
+  console.log('[kat] TARGETED BACKFILL — ' + seen.size + ' existing entries in feed (dedup set loaded)');
+
+  const monitoredIds = new Set((config.monitored_users || []).map(u => u.discord_id));
+
+  let totalCaptured = 0;
+  let totalSkipped  = 0;
+
+  for (const guild of client.guilds.cache.values()) {
+    await guild.fetch();
+    await guild.channels.fetch();
+
+    const targetChannels = [];
+    for (const [, c] of guild.channels.cache) {
+      if (!c) continue;
+      try {
+        const isText = typeof c.isTextBased === 'function' ? c.isTextBased() : false;
+        if (!isText) continue;
+        if (targetSet.has(c.name)) {
+          targetChannels.push(c);
+          console.log('[kat] TARGETED BACKFILL target: #' + c.name);
+        }
+      } catch (e) {
+        console.error('[kat] Channel check error:', e.message);
+      }
+    }
+
+    for (const channel of targetChannels) {
+      const channelName = channel.name;
+      console.log('[kat] TARGETED BACKFILL backfilling #' + channelName + ' in ' + guild.name);
+
+      let lastId        = null;
+      let reachedCutoff = false;
+      let pageCount     = 0;
+      let channelCaptured = 0;
+
+      while (!reachedCutoff) {
+        try {
+          const options = { limit: 100 };
+          if (lastId) options.before = lastId;
+
+          const messages = await channel.messages.fetch(options);
+          if (!messages.size) break;
+
+          const sorted = [...messages.values()].sort(
+            (a, b) => a.createdTimestamp - b.createdTimestamp
+          );
+
+          for (const msg of sorted) {
+            if (msg.createdAt < cutoff) { reachedCutoff = true; break; }
+            if (!monitoredIds.has(msg.author.id)) continue;
+            if (seen.has(msg.id)) { totalSkipped++; continue; }
+
+            const entry = {
+              ts:           msg.createdAt.toISOString(),
+              message_id:   msg.id,
+              guild_id:     msg.guildId,
+              channel_id:   msg.channelId,
+              channel_name: channelName,
+              user_id:      msg.author.id,
+              username:     msg.author.username,
+              content:      msg.content,
+              attachments:  msg.attachments.map(a => ({
+                id:           a.id,
+                url:          a.url,
+                filename:     a.name,
+                content_type: a.contentType || 'unknown'
+              })),
+              backfill:     true
+            };
+
+            appendRawFeed(entry);
+            seen.add(msg.id);
+            updateActivity(msg.author.username);
+            totalCaptured++;
+            channelCaptured++;
+          }
+
+          lastId = sorted[0].id;
+          pageCount++;
+
+          await new Promise(r => setTimeout(r, 500));
+
+          if (pageCount >= 200) {
+            console.log('[kat] TARGETED BACKFILL page limit reached for #' + channelName);
+            break;
+          }
+
+        } catch (e) {
+          console.error('[kat] TARGETED BACKFILL error in #' + channelName + ':', e.message);
+          break;
+        }
+      }
+
+      console.log('[kat] #' + channelName + ' targeted backfill done — captured: ' + channelCaptured + ', pages: ' + pageCount);
+    }
+  }
+
+  console.log('[kat] TARGETED BACKFILL complete — captured: ' + totalCaptured + ', skipped (dedup): ' + totalSkipped);
+}
+
 // ── Routes ──────────────────────────────────────────────────────────────────
+
+// POST /agent/kat/backfill-channels  { channels: ["barrys-breakdowns", ...] }
+router.post('/backfill-channels', async (req, res) => {
+  const { channels } = req.body;
+  if (!channels || !Array.isArray(channels)) {
+    return res.status(400).json({ error: 'channels array required' });
+  }
+  if (!discordClient || !discordClient.isReady()) {
+    return res.status(503).json({ error: 'Bot not online' });
+  }
+  res.json({ ok: true, message: 'Backfill started for: ' + channels.join(', ') });
+  setImmediate(() => runTargetedBackfill(discordClient, channels));
+});
 
 // GET /agent/kat/status
 router.get('/status', (req, res) => {

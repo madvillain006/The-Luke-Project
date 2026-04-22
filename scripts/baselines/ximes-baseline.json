@@ -1,0 +1,113 @@
+[
+  {
+    "id": "unknown-user",
+    "user": "unknownuser",
+    "input": "SPY 560C avg 1.20",
+    "output": null
+  },
+  {
+    "id": "noise-ticker-only",
+    "user": "ximestrades",
+    "input": "SPY",
+    "output": null
+  },
+  {
+    "id": "noise-url",
+    "user": "ximestrades",
+    "input": "https://example.com/chart",
+    "output": null
+  },
+  {
+    "id": "live-entry-patA",
+    "user": "ximestrades",
+    "input": "SPX 5800C avg 2.50 — ENTRY NOW",
+    "output": {
+      "signal_type": "LIVE_ENTRY",
+      "ticker": "SPX",
+      "strike": 5800,
+      "direction": "LONG",
+      "entry_price": 2.5,
+      "analyst": "ximes",
+      "confidence": "HIGH",
+      "verdict": null,
+      "raw": "SPX 5800C avg 2.50 — ENTRY NOW"
+    }
+  },
+  {
+    "id": "pre-market-setup",
+    "user": "ximestrades",
+    "input": "SETUP A\nDirection: calls\nStrike: 5750\nEntry: 9:35 open\nCut: 5740\nConfidence: 75%",
+    "output": {
+      "signal_type": "PRE_MARKET_SETUP",
+      "direction": "LONG",
+      "strike": 5750,
+      "cut": 5740,
+      "confidence_pct": 75,
+      "confidence": "HIGH",
+      "analyst": "ximes",
+      "raw": "SETUP A\nDirection: calls\nStrike: 5750\nEntry: 9:35 open\nCut: 5740\nConfidence: 75%"
+    }
+  },
+  {
+    "id": "mgmt-trim",
+    "user": "ximestrades",
+    "input": "TRIMMING 50% at 3.20",
+    "output": {
+      "signal_type": "MANAGEMENT",
+      "action": "TRIM",
+      "pct": 50,
+      "analyst": "ximes",
+      "raw": "TRIMMING 50% at 3.20"
+    }
+  },
+  {
+    "id": "mgmt-cut-relay",
+    "user": "followthewhiterabblt",
+    "input": "CUT — cut small loss at .80",
+    "output": {
+      "signal_type": "MANAGEMENT",
+      "action": "CUT",
+      "price": 80,
+      "analyst": "ximes",
+      "raw": "CUT — cut small loss at .80"
+    }
+  },
+  {
+    "id": "live-entry-patB",
+    "user": "ximestrades",
+    "input": "5800P avg 1.10",
+    "output": {
+      "signal_type": "LIVE_ENTRY",
+      "ticker": "ES",
+      "strike": 5800,
+      "direction": "SHORT",
+      "entry_price": 1.1,
+      "analyst": "ximes",
+      "confidence": "HIGH",
+      "verdict": null,
+      "raw": "5800P avg 1.10"
+    }
+  },
+  {
+    "id": "live-entry-nq",
+    "user": "ximestrades",
+    "input": "NQ 20000P avg 45.00",
+    "output": {
+      "signal_type": "LIVE_ENTRY",
+      "ticker": "NQ",
+      "strike": 20000,
+      "direction": "SHORT",
+      "entry_price": 45,
+      "analyst": "ximes",
+      "confidence": "HIGH",
+      "verdict": null,
+      "raw": "NQ 20000P avg 45.00"
+    }
+  },
+  {
+    "id": "relay-entry-blocked",
+    "user": "kanabis16",
+    "input": "SPX 5750C avg 2.00",
+    "output": null
+  }
+]

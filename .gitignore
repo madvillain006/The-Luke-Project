@@ -8,7 +8,8 @@ discord-history.jsonl
 discord-history.jsonl.bak
 bobby-context.jsonl
 autonomous-state.json
-data/
+data/*
+!data/futures-rollover-calendar.json
 *.jsonl
 discord-exports/
 LOOK AT THIS ONE AND RENAME FOR DISCORD EXPORTS/

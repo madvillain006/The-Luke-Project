@@ -1,0 +1,31 @@
+{
+  "ES": [
+    { "contract": "ESH24", "active_from": "2023-12-11", "active_to": "2024-03-14", "expiry": "2024-03-15" },
+    { "contract": "ESM24", "active_from": "2024-03-11", "active_to": "2024-06-20", "expiry": "2024-06-21" },
+    { "contract": "ESU24", "active_from": "2024-06-17", "active_to": "2024-09-19", "expiry": "2024-09-20" },
+    { "contract": "ESZ24", "active_from": "2024-09-16", "active_to": "2024-12-19", "expiry": "2024-12-20" },
+    { "contract": "ESH25", "active_from": "2024-12-16", "active_to": "2025-03-20", "expiry": "2025-03-21" },
+    { "contract": "ESM25", "active_from": "2025-03-17", "active_to": "2025-06-19", "expiry": "2025-06-20" },
+    { "contract": "ESU25", "active_from": "2025-06-16", "active_to": "2025-09-18", "expiry": "2025-09-19" },
+    { "contract": "ESZ25", "active_from": "2025-09-15", "active_to": "2025-12-18", "expiry": "2025-12-19" },
+    { "contract": "ESH26", "active_from": "2025-12-15", "active_to": "2026-03-19", "expiry": "2026-03-20" },
+    { "contract": "ESM26", "active_from": "2026-03-16", "active_to": "2026-06-18", "expiry": "2026-06-19" }
+  ],
+  "NQ": [
+    { "contract": "NQH24", "active_from": "2023-12-11", "active_to": "2024-03-14", "expiry": "2024-03-15" },
+    { "contract": "NQM24", "active_from": "2024-03-11", "active_to": "2024-06-20", "expiry": "2024-06-21" },
+    { "contract": "NQU24", "active_from": "2024-06-17", "active_to": "2024-09-19", "expiry": "2024-09-20" },
+    { "contract": "NQZ24", "active_from": "2024-09-16", "active_to": "2024-12-19", "expiry": "2024-12-20" },
+    { "contract": "NQH25", "active_from": "2024-12-16", "active_to": "2025-03-20", "expiry": "2025-03-21" },
+    { "contract": "NQM25", "active_from": "2025-03-17", "active_to": "2025-06-19", "expiry": "2025-06-20" },
+    { "contract": "NQU25", "active_from": "2025-06-16", "active_to": "2025-09-18", "expiry": "2025-09-19" },
+    { "contract": "NQZ25", "active_from": "2025-09-15", "active_to": "2025-12-18", "expiry": "2025-12-19" },
+    { "contract": "NQH26", "active_from": "2025-12-15", "active_to": "2026-03-19", "expiry": "2026-03-20" },
+    { "contract": "NQM26", "active_from": "2026-03-16", "active_to": "2026-06-18", "expiry": "2026-06-19" }
+  ],
+  "notes": {
+    "roll_logic": "active_from is approximately 3 trading days before prior contract expiry — when open interest shifts. active_to has 1-2 day buffer before expiry since most traders roll early.",
+    "spx_spy_qqq": "No rollover needed. These reference the underlying index/ETF price directly.",
+    "data_source": "CME quarterly expiry schedule. Third Friday of expiry month."
+  }
+}

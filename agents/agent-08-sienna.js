@@ -101,7 +101,7 @@ router.post("/analyze", async (req, res) => {
 
     if (fileResults.length > 0) {
       allExtracted.push({ file: file.name, data: fileResults.join("\n") });
-      console.log(`Sienna: extracted ${fileResults.length} chunks from ${file.name}`);
+      log("sienna-extract", { file: file.name, chunks: fileResults.length });
     }
   }
 
@@ -112,6 +112,45 @@ router.post("/analyze", async (req, res) => {
 
   const combined = allExtracted.map(e => `=== ${e.file} ===\n${e.data}`).join("\n\n");
 
+  // H10 fix: if combined exceeds 14000 chars, chunk-summarize first via Haiku,
+  // then pass the condensed summaries to the main synthesis. Prevents silent
+  // truncation of trader methodology data.
+  const SYNTH_BUDGET = 14000;
+  let dataForSynthesis = combined;
+
+  if (combined.length > SYNTH_BUDGET) {
+    const CHUNK_SIZE = 10000;
+    const chunks = [];
+    for (let i = 0; i < combined.length; i += CHUNK_SIZE) {
+      chunks.push(combined.slice(i, i + CHUNK_SIZE));
+    }
+
+    const summaries = [];
+    for (let i = 0; i < chunks.length; i++) {
+      try {
+        const r = await client.messages.create({
+          model: "claude-haiku-4-5-20251001",
+          max_tokens: 500,
+          messages: [{
+            role: "user",
+            content: `Summarize this chunk of pre-extracted trader data for a downstream synthesis step. Preserve: trader names, specific price levels, setup names, entry triggers, stop/target methods, timing patterns. Drop: repetitive phrasing, filler, duplicates.\n\nChunk ${i + 1}/${chunks.length}:\n${chunks[i]}`
+          }]
+        });
+        summaries.push(r.content[0].text);
+      } catch (err) {
+        log("sienna-chunk-summary-error", { chunk: i + 1, error: err.message });
+      }
+      await new Promise(r => setTimeout(r, 400));
+    }
+
+    dataForSynthesis = summaries.join("\n\n");
+    log("sienna-chunked-synthesis", {
+      chunks: chunks.length,
+      total_chars: combined.length,
+      condensed_chars: dataForSynthesis.length
+    });
+  }
+
   try {
     const synthesis = await client.messages.create({
       model: "claude-opus-4-6",
@@ -119,7 +158,7 @@ router.post("/analyze", async (req, res) => {
       system: SIENNA_SYSTEM,
       messages: [{
         role: "user",
-        content: `Build a complete quantitative trader profile from this Discord export data.\n\nFor EACH trader found:\n1. Core methodology — how they identify setups\n2. Typical instruments and timeframes\n3. Entry triggers (specific, not vague)\n4. Stop criteria\n5. Target method\n6. Timing patterns (when during session)\n7. What works based on the data\n8. What doesn't work\n\nFor NOBU specifically:\n- Document Flag Velocity (FV) — what it is, when Nobu uses it, what it signals\n- Only count FV when posted by Nobu or when Nobu responds with a picture\n- How does FV relate to trade execution?\n\nData:\n${combined.slice(0, 14000)}`
+        content: `Build a complete quantitative trader profile from this Discord export data.\n\nFor EACH trader found:\n1. Core methodology — how they identify setups\n2. Typical instruments and timeframes\n3. Entry triggers (specific, not vague)\n4. Stop criteria\n5. Target method\n6. Timing patterns (when during session)\n7. What works based on the data\n8. What doesn't work\n\nFor NOBU specifically:\n- Document Flag Velocity (FV) — what it is, when Nobu uses it, what it signals\n- Only count FV when posted by Nobu or when Nobu responds with a picture\n- How does FV relate to trade execution?\n\nData:\n${dataForSynthesis}`
       }]
     });
 
@@ -135,7 +174,6 @@ router.post("/analyze", async (req, res) => {
 
   } catch (err) {
     log("sienna-analyze-error", { error: err.message });
-    console.error("Sienna synthesis error:", err.message);
   }
 });
 

@@ -101,7 +101,9 @@ async function notifyJarvis(message) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message })
     });
-  } catch {}
+  } catch (err) {
+    console.error("[notifyJarvis] failed:", err.message);
+  }
 }
 
 async function triggerAutonomousEvaluate() {
@@ -185,7 +187,7 @@ async function runGlanceCycle() {
         console.log("Glance alert: " + channel.name);
       }
       await sleep(2000);
-    } catch {}
+    } catch (err) { console.error("[glance] error on " + channel.name + ":", err.message); }
   }
 }
 

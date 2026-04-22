@@ -152,6 +152,15 @@ if (process.env.KAT_BOT_TOKEN) {
         }
         console.log('[kat] Signal: ' + signal.signal_type + ' | ' + signal.analyst + ' | ' + (signal.ticker||'no ticker') + ' | ' + signal.bias);
       }
+
+      // Real-time vision — fires on new live captures with images
+      // Market hours only. Fire-and-forget. Enriches active session.
+      if (hasAttachments && entry.attachments[0]?.url) {
+        const { isMarketOpen } = require('../lib/market-hours');
+        if (isMarketOpen().open) {
+          setImmediate(() => processLiveVision(entry, signal));
+        }
+      }
     });
 
     discordClient.on('messageUpdate', async (oldMessage, newMessage) => {
@@ -225,6 +234,93 @@ if (process.env.KAT_BOT_TOKEN) {
   }
 } else {
   console.log('[kat] KAT_BOT_TOKEN not set — bot offline, ready to deploy');
+}
+
+// ── Real-time vision on live captures ───────────────────────────────────────
+
+async function processLiveVision(entry, parsedSignal) {
+  try {
+    const Anthropic  = require('@anthropic-ai/sdk');
+    const https      = require('https');
+    const att        = entry.attachments[0];
+    if (!att || !att.url) return;
+
+    // Fetch image
+    const base64 = await new Promise((resolve, reject) => {
+      const req = https.get(att.url, (res) => {
+        if (res.statusCode !== 200) { reject(new Error('HTTP ' + res.statusCode)); return; }
+        const chunks = [];
+        res.on('data', c => chunks.push(c));
+        res.on('end', () => resolve(Buffer.concat(chunks).toString('base64')));
+      });
+      req.on('error', reject);
+      req.setTimeout(12000, () => { req.destroy(); reject(new Error('timeout')); });
+    });
+
+    const client   = new Anthropic();
+    const response = await client.messages.create({
+      model:      'claude-sonnet-4-6',
+      max_tokens: 500,
+      system: 'You are analyzing a financial chart or heatmap image posted by a trader. ' +
+              'Extract key price levels and directional bias. ' +
+              'Return ONLY valid JSON: ' +
+              '{"chart_type":"candlestick"|"heatmap"|"technical"|"unknown",' +
+              '"ticker":string|null,"key_levels":[numbers],' +
+              '"support_levels":[numbers],"resistance_levels":[numbers],' +
+              '"bias":"BULLISH"|"BEARISH"|"NEUTRAL","patterns":[strings],' +
+              '"notes":string}. ' +
+              'Return empty arrays if not identifiable. No markdown.',
+      messages: [{
+        role: 'user',
+        content: [
+          { type: 'image', source: { type: 'base64',
+            media_type: (att.content_type || 'image/png').split(';')[0],
+            data: base64 } },
+          { type: 'text',
+            text: 'Analyst: ' + entry.username +
+                  '\nPosted text: ' + (entry.content || '') }
+        ]
+      }]
+    });
+
+    const rawText = response.content[0]?.text || '';
+    let vision = null;
+    try {
+      vision = JSON.parse(rawText.replace(/```json|```/g, '').trim());
+    } catch (e) {
+      console.error('[kat-vision] parse error:', rawText.slice(0, 80));
+      return;
+    }
+
+    if (!vision) return;
+
+    console.log('[kat-vision] Live:', entry.username,
+      '→', vision.chart_type, '| bias:', vision.bias,
+      '| levels:', (vision.key_levels || []).length);
+
+    const allLevels = [
+      ...(vision.key_levels        || []),
+      ...(vision.support_levels    || []),
+      ...(vision.resistance_levels || [])
+    ].filter(l => l > 50);
+
+    if (allLevels.length > 0 && typeof global.broadcast === 'function') {
+      global.broadcast({
+        type:       'kat_vision',
+        analyst:    entry.username,
+        ticker:     vision.ticker || parsedSignal?.ticker,
+        bias:       vision.bias,
+        levels:     allLevels,
+        chart_type: vision.chart_type,
+        notes:      vision.notes,
+        ts:         entry.ts
+      });
+      console.log('[kat-vision] Broadcast to Jarvis:', allLevels.length, 'levels from', entry.username);
+    }
+
+  } catch (e) {
+    console.error('[kat-vision] processLiveVision error:', e.message);
+  }
 }
 
 // ── Proactive confluence alerting ───────────────────────────────────────────

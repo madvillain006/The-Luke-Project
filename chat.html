@@ -1139,6 +1139,14 @@
         else if (data.type === "kat_alert") {
           addMessage("assistant", data.reply, "kat-alert");
         }
+        else if (data.type === 'kat_vision') {
+          const levels = (data.levels || []).join(', ');
+          const msg = '📸 ' + data.analyst + ' chart: ' +
+            (data.ticker || '?') + ' ' + data.bias +
+            (levels ? ' | levels: ' + levels : '') +
+            (data.notes ? '\n' + data.notes : '');
+          addMessage('kat', msg, 'kat-vision');
+        }
       } catch {}
     };
     } // end initWs

@@ -2,7 +2,7 @@
 *Initialize manually — Jarvis will maintain after first entry*
 
 ## Entry Criteria
-TBD — fill in after first 10 trades
+Ximes live entry notification + Saty ATR level confluence required. Heatmap (Bobby) confluence is additive — when present and aligned, size heavier than baseline.
 
 ## Exit Criteria
 By premium paid, not arbitrary levels

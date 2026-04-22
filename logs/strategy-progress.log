@@ -74,3 +74,5 @@
 [runner-protocol] /runner command, TRIM handler with runner state, active-trade runner exception, /trade RUNNER flag 2026-04-21T23:42:50Z
 [F1-fix] /trade now updates state.daily_pnl — Apex consistency cap applies to manual trades 2026-04-21T19:53:44Z
 [F4-fix] Add dollar-200 safety buffer to manual /alert Apex floor check 2026-04-21T20:09:00Z
+[session-readiness] Advisory readiness warnings on SETUP/WEAK verdicts — never blocks /alert 2026-04-21T20:34:21Z
+[test-fix] Market-aware instrument grouping — SPY/QQQ <1000, ES_NQ >=1000, SPX tickerHint only, validZones Option C, 54/54 2026-04-21T21:32:37Z

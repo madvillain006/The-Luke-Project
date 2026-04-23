@@ -18,6 +18,7 @@ const { handleAction, runPython } = require("./lib/actions");
 const { handleSlashCommand } = require("./lib/slash-commands");
 const { validateMemoryKey, MAX_TEXT_BYTES, MAX_URL_LENGTH } = require("./lib/validators");
 const { detectPasteIntent } = require("./lib/detect-paste");
+const { handlePasteAccumulate } = require("./lib/daily-accumulator");
 
 const rateLimit = require("express-rate-limit");
 const app = express();
@@ -354,6 +355,12 @@ app.get("/", (req, res) => {
 app.post("/chat", async (req, res) => {
   const { message, history, image } = req.body;
   if (!message) return res.status(400).json({ error: "No message" });
+
+  // ── accumulator: auto-classify paste, store piece, ack, fire verdict ────────
+  if (!message.startsWith("/")) {
+    const accResult = await handlePasteAccumulate(message, image, res);
+    if (accResult) return;
+  }
 
   // ── slash command intercept ────────────────────────────────────────────────
   let routedMessage = message;

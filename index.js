@@ -52,7 +52,8 @@ app.use((req, res, next) => {
     });
     return;
   }
-  express.json()(req, res, (err) => {
+  const jsonLimit = (req.path === '/chat') ? '10mb' : '100kb';
+  express.json({ limit: jsonLimit })(req, res, (err) => {
     if (err) return res.status(400).json({ error: "Invalid JSON" });
     next();
   });

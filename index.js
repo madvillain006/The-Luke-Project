@@ -42,6 +42,16 @@ app.use("/paste-signals",  rl(20));
 app.use(rl(100)); // global fallback
 
 app.use((req, res, next) => {
+  const ct = req.headers['content-type'] || '';
+  if (req.path === '/chat' && /^(image\/|application\/octet-stream)/.test(ct)) {
+    const chunks = [];
+    req.on('data', c => chunks.push(c));
+    req.on('end', () => {
+      req.body = { message: '[image]', image: Buffer.concat(chunks).toString('base64') };
+      next();
+    });
+    return;
+  }
   express.json()(req, res, (err) => {
     if (err) return res.status(400).json({ error: "Invalid JSON" });
     next();

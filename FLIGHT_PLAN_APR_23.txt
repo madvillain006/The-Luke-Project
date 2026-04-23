@@ -1,0 +1,165 @@
+═══════════════════════════════════════════════════════════
+                  TOMORROW'S FLIGHT PLAN
+                    April 23, 2026
+═══════════════════════════════════════════════════════════
+
+ONE RULE ABOVE ALL OTHERS:
+  DO NOT TRADE BEFORE 2:00 PM ET.
+  AFTERNOON WINDOW ONLY. 2 CONTRACTS. TRUST THE SYSTEM.
+
+═══════════════════════════════════════════════════════════
+  MORNING PREP (6:00-9:00 AM ET — takes 5 minutes)
+═══════════════════════════════════════════════════════════
+
+1. Open terminal in C:\Users\conor\jarvis
+
+2. Run: pm2 list
+   Expect: jarvis, discord-scraper, (maybe kat-scraper) all "online"
+   IF ANYTHING ERRORED:  pm2 restart all
+   IF MISSING ENTIRELY:  pm2 start ecosystem.config.js
+
+3. Run: pm2 restart jarvis
+   Wait 5 seconds.
+
+4. Open Jarvis window. Run these in order:
+     /ready                      (expect some ❌ — normal)
+     /balance [today's Apex #]
+     /levels [paste RichyDubz morning levels]
+     /heatmap [paste Bobby commentary text]
+     /ready                      (now expect 4 ✅)
+
+   IF /ready STILL HAS ❌: fix that one specific thing. Don't restart.
+
+═══════════════════════════════════════════════════════════
+  9:30 AM - 1:59 PM ET — DO NOT TRADE
+═══════════════════════════════════════════════════════════
+
+Watch. Observe /alert output if you want. DO NOT PRESS BUY.
+Morning win rate = 50%. Afternoon = 59.7%. 10-point gap.
+Your $500 headroom cannot survive a morning coin flip.
+
+Pet Luke. Eat. Stretch.
+Check Luke's meds at 4:00 AM (omeprazole) and 4:30 AM
+(mirtazapine + prednisone) — /luke [what you gave him]
+
+═══════════════════════════════════════════════════════════
+  BOBBY HEATMAP IMAGE — if/when he posts one
+═══════════════════════════════════════════════════════════
+
+CURRENT STATE: Vision prompt was wrong last time (saw audio).
+  A fix brief is saved at:  C:\Users\conor\jarvis\CC_BRIEF_HEATMAP_FIX.md
+  PASTE IT INTO CLAUDE CODE NOW if you want it fixed before market.
+  If not, no worries — use TEXT fallback below.
+
+FALLBACK (always works):
+  - Read Bobby's text message, not the image
+  - Bobby types the levels into his message too — e.g.
+    "king node 7125, support 7095, resistance 7128"
+  - Paste that TEXT into:  /heatmap [bobby's text]
+  - The text parser has been working for weeks.
+
+IF YOU TRY AN IMAGE AND IT FAILS:
+  - Don't panic. Don't debug.
+  - Copy Bobby's text commentary from the same Discord message
+  - Run /heatmap with just the text
+  - Move on.
+
+═══════════════════════════════════════════════════════════
+  2:00 PM ET — FIRST ELIGIBLE TRADE WINDOW OPENS
+═══════════════════════════════════════════════════════════
+
+When Ximes posts a signal in ximes-dubz:
+
+  1. Copy the full line including [timestamp] username
+  2. Paste into Jarvis:  /alert [paste]
+  3. Read the verdict:
+
+     SETUP  ✅   → eligible (proceed to step 4)
+     WEAK   ⚠️   → DO NOT TRADE. Wait for next.
+     SKIP   ❌   → DO NOT TRADE. Wait for next.
+     BLOCKED⛔   → DO NOT TRADE. Check why, wait for next.
+
+  4. If SETUP — use these rules:
+     - ES: 2 contracts (not 3, not 1 — TWO)
+     - SPY: 4 contracts equivalent risk
+     - Entry, stop, target as shown in bracket
+     - Set bracket in Tradovate EXACTLY as Jarvis says
+     - DO NOT MODIFY
+
+  5. Set OCO in Tradovate. Walk to another room.
+     Set 30-min timer. Come back when it rings.
+
+  6. When Ximes calls trim/runner/close:
+     - Copy his message → /alert [paste]
+     - Jarvis tells you what to do in Tradovate
+     - Do that. No more, no less.
+
+  7. When trade is fully out:
+     - /trade LONG ES [entry] [exit] WIN
+       (or LOSS, or SCRATCH — whichever)
+     - If you held a runner: add "RUNNER" at the end
+
+═══════════════════════════════════════════════════════════
+  EMERGENCY RULES — if any of these happen, DO THIS:
+═══════════════════════════════════════════════════════════
+
+"Jarvis crashed or hung":
+  → pm2 restart jarvis
+  → Wait 5 sec. Done.
+  → Do not debug. Do not call me.
+
+"/alert threw an error I don't understand":
+  → Do not trade that signal.
+  → Wait for next Ximes signal.
+  → Re-run /alert on the next one.
+
+"Ximes posted 3 signals back to back and I feel rushed":
+  → Take the first valid SETUP. Ignore the rest.
+  → You cannot be in two trades at once.
+
+"I lost the first trade":
+  → STOP FOR THE DAY.
+  → /trade [close it], then shut it down.
+  → 4 more sessions. One bad day is survivable.
+  → Pet Luke. Eat dinner. Try Thursday.
+
+"I won the first trade":
+  → You may take ONE more valid SETUP after 2pm.
+  → Same sizing (2 ES).
+  → After second trade, STOP FOR THE DAY regardless.
+
+"It's 3:45 PM and I haven't traded":
+  → DO NOT FORCE. Flat day = floor preserved = win.
+  → You have 4 more sessions.
+
+"I feel myself spiraling":
+  → Close Jarvis. Leave the room.
+  → Come back in 10 minutes or don't come back.
+  → Market isn't going anywhere.
+
+═══════════════════════════════════════════════════════════
+  THE ONE THING TO REMEMBER
+═══════════════════════════════════════════════════════════
+
+You don't need to be right tomorrow.
+You need to follow the process tomorrow.
+
+The system made you execute 248 signals in backtest.
+59.7% of afternoon setups won.
+Your job is to let the math work.
+
+Press the button. Walk away. Come back in 30 minutes.
+
+Luke is home either way. The week is 5 sessions.
+One missed morning = nothing. One forced trade = everything.
+
+═══════════════════════════════════════════════════════════
+  AFTER SESSION (whenever you're done)
+═══════════════════════════════════════════════════════════
+
+  /review    — see today's trades and state
+  /status    — sanity check
+
+Close laptop. Hold Luke. You did the job.
+
+═══════════════════════════════════════════════════════════

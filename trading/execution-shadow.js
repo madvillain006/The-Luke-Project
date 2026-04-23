@@ -86,7 +86,7 @@ async function executeShadow(state, signal) {
   }
 
   // Simulated fill with configurable slippage
-  const maxSlip = (state.shadow_config && state.shadow_config.max_slippage_ticks != null)
+  const maxSlip = (state.shadow_config && state.shadow_config.max_slippage_ticks !== null && state.shadow_config.max_slippage_ticks !== undefined)
     ? state.shadow_config.max_slippage_ticks : DEFAULT_MAX_SLIPPAGE_TICKS;
   const fill = simulateFill(signal, marketCtx, maxSlip);
 
@@ -150,7 +150,7 @@ async function monitorShadowPosition() {
   if (!closeReason) return;
 
   const exitPrice = closeReason === "STOP HIT" ? pos.stop : pos.target;
-  const fillBase = pos.fill_price != null ? pos.fill_price : pos.entry;
+  const fillBase = pos.fill_price !== null && pos.fill_price !== undefined ? pos.fill_price : pos.entry;
   const pnl = pos.direction === "LONG"
     ? (exitPrice - fillBase) * pv
     : (fillBase - exitPrice) * pv;

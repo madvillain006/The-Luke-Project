@@ -346,7 +346,10 @@ async function routeToAgent(message) {
   return null;
 }
 
-app.get("/", (req, res) => res.sendFile(__dirname + "/chat.html"));
+app.get("/", (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.sendFile(__dirname + "/chat.html");
+});
 
 app.post("/chat", async (req, res) => {
   const { message, history, image } = req.body;
@@ -712,6 +715,43 @@ app.get("/signals", (req, res) => {
   res.json({ count: signals.length, signals });
 });
 
+// ── SATY ATR WEBHOOK (TradingView → Jarvis) ──────────────────────────────────
+// Set up a TradingView alert on Saty's ATR script with webhook URL:
+//   http://[your-ngrok-url]/webhook/saty
+// Alert message (JSON format):
+//   {"up2":{{plot_0}},"up1":{{plot_1}},"mid":{{plot_2}},"down1":{{plot_3}},"down2":{{plot_4}},"atr":{{plot_5}}}
+// Or simpler — just set the alert message to the 5 level values space-separated.
+app.post("/webhook/saty", (req, res) => {
+  try {
+    const { saveSatyLevels, parseSatyText } = require('./lib/saty-levels');
+    const body = req.body;
+    // Accept either pre-parsed JSON or raw text
+    let parsed;
+    if (body && typeof body === 'object' && (body.up1 || body.mid || body.up2)) {
+      // Already parsed JSON from TradingView
+      parsed = { ...body, valid: true };
+    } else {
+      // Try to parse as text
+      const text = typeof body === 'string' ? body : JSON.stringify(body);
+      parsed = parseSatyText(text);
+    }
+    if (!parsed || !parsed.valid) {
+      return res.status(400).json({ ok: false, error: 'parse failed' });
+    }
+    saveSatyLevels(parsed);
+    log('saty-webhook', { levels: parsed });
+    res.json({ ok: true, levels: parsed });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+app.get("/webhook/saty", (req, res) => {
+  const { loadSatyLevels, buildStatusSummary } = require('./lib/saty-levels');
+  const data = loadSatyLevels();
+  res.json({ loaded: !!data, summary: buildStatusSummary(data) });
+});
+
 app.get("/state", (req, res) => {
   const mem = loadMemory();
   res.json({ current_state: mem.current_state || "regulated", emotional_log: (mem.emotional_log || []).slice(-10) });
@@ -978,9 +1018,11 @@ wss.on("connection", (ws, req) => {
         return o.date === _today && ((o.richyd || []).length + (o.bobby || []).length) > 0;
       } catch { return false; }
     })();
+    if (ws.readyState === 1) {
+      ws.send(JSON.stringify({ type: "assistant", message: "I built Jarvis so I wouldn't have to trade scared. Today I don't trade scared. I follow the system. I trade the system. Luke is home. That's why I do this." }));
+    }
     if (!_levelsOk && ws.readyState === 1) {
       ws.send(JSON.stringify({ type: "levels_warning", message: "⚠️ No levels loaded. Paste /levels [RichyDubz morning message] then /heatmap [Bobby text] before trading." }));
-      ws.send(JSON.stringify({ type: "assistant", message: "💬 I was built because you're tired of losing. Let's make today count." }));
       log("UX", { event: "morning levels warning on boot" });
     }
   } catch {}

@@ -1,7 +1,11 @@
 const fs = require("fs");
 const { client, HISTORY_FILE } = require("./common");
 
-const FINNHUB_KEY = process.env.FINNHUB_KEY || "d7ibl19r01qu8vfo2410d7ibl19r01qu8vfo241g";
+const FINNHUB_KEY = process.env.FINNHUB_KEY;
+if (!FINNHUB_KEY) {
+  // Price fetching will return null — signals will degrade gracefully
+  console.warn("[signals] FINNHUB_KEY not set — price fetching disabled");
+}
 const ALLOWED_TICKERS = new Set(["NQ", "MNQ", "ES", "MES"]);
 const INTRADAY_REJECT_PATTERNS = [
   /long-?term/i,

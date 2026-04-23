@@ -1,0 +1,6 @@
+{
+  "timestamp": "2026-04-22T13:04:27.522Z",
+  "reason": "uncaughtException",
+  "message": "listen EADDRINUSE: address already in use 127.0.0.1:3000",
+  "stack": "Error: listen EADDRINUSE: address already in use 127.0.0.1:3000\n    at Server.setupListenHandle [as _listen2] (node:net:2008:16)\n    at listenInCluster (node:net:2065:12)\n    at node:net:2274:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"
+}

@@ -17,7 +17,7 @@ function parseMessages(text) {
   const lines = text.split('\n');
   let currentUser = null;
   const headerRe = /^\[(\d+\/\d+\/\d{4}\s+\d+:\d+\s+[AP]M)\]\s+(.+)$/;
-  const skipLine = /^\{|\={3,}|^Guild:|^Channel:|^$/;
+  const skipLine = /^\{|={3,}|^Guild:|^Channel:|^$/;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();

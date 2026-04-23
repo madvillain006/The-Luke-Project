@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const { spawnSync } = require("child_process");
 
+const { log: jarvisLog } = require("../lib/logger");
 const client = new Anthropic();
 const ROOT = path.join(__dirname, "..");
 
@@ -145,7 +146,7 @@ async function runScan(trigger = "scheduled", forceRun = false) {
   const spentToday = getDailyCost();
   if (spentToday >= DAILY_BUDGET) {
     archLog({ phase: PHASE, trigger, skipped: "budget_exceeded", cost_today: spentToday.toFixed(4) });
-    console.log("Agent-09: dormant — daily budget cap reached");
+    jarvisLog("agent-09-dormant", { reason: "budget_exceeded", cost_today: spentToday.toFixed(4) });
     return { skipped: true, reason: "budget", cost_today: spentToday };
   }
 
@@ -154,7 +155,7 @@ async function runScan(trigger = "scheduled", forceRun = false) {
     const streak = getZeroStreak();
     if (streak >= 3) {
       archLog({ phase: PHASE, trigger, skipped: "zero_streak", streak });
-      console.log(`Agent-09: paused — zero_streak=${streak}`);
+      jarvisLog("agent-09-paused", { reason: "zero_streak", streak });
       return { skipped: true, reason: "zero_streak", streak };
     }
   }
@@ -267,7 +268,7 @@ async function runScan(trigger = "scheduled", forceRun = false) {
     }).catch(() => {});
   }
 
-  console.log(`Agent-09 (${trigger}): ${observations.length} obs | $${runCost.toFixed(5)} run | $${dayTotal.toFixed(4)} day | cache w:${cacheWrite} r:${cacheRead}`);
+  jarvisLog("agent-09-run", { trigger, obs: observations.length, run_cost: runCost.toFixed(5), day_total: dayTotal.toFixed(4), cache_write: cacheWrite, cache_read: cacheRead });
   return {
     phase: PHASE, trigger,
     observations_count: observations.length,

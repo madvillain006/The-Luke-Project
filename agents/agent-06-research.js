@@ -13,7 +13,7 @@ const SELF_KNOWLEDGE_FILE = path.join(__dirname, "../JARVIS_SELF_KNOWLEDGE.md");
 const SKILLS_DIR = path.join(__dirname, "../skills");
 const SUGGESTIONS_FILE = path.join(__dirname, "../suggestions.md");
 const DOCS_DIR = path.join(__dirname, "..");
-const FINNHUB_KEY = process.env.FINNHUB_KEY || "d7ibl19r01qu8vfo2410d7ibl19r01qu8vfo241g";
+const FINNHUB_KEY = process.env.FINNHUB_KEY;
 
 function loadMemory() {
   try { return JSON.parse(fs.readFileSync(MEMORY_FILE, "utf8")); } catch { return {}; }
@@ -248,7 +248,7 @@ router.post("/generate-documents", async (req, res) => {
   const allSignals = loadAllHistoricalSignals();
   const mem = loadMemory();
 
-  console.log("Agent 06: generating base documents from " + allSignals.length + " historical signals...");
+  log("generate-documents-start", { signals: allSignals.length });
 
   try {
     // 1. TRADER_PROFILES.md
@@ -264,7 +264,7 @@ router.post("/generate-documents", async (req, res) => {
     });
 
     fs.writeFileSync(path.join(DOCS_DIR, "TRADER_PROFILES.md"), "# TRADER PROFILES\n*Generated " + new Date().toISOString() + "*\n\n" + traderProfileResponse.content[0].text);
-    console.log("TRADER_PROFILES.md written");
+    log("generate-documents-doc", { doc: "TRADER_PROFILES.md" });
 
     // 2. MEMORY_SUMMARY.md
     const skip = ["agent06_research", "emotional_log", "closed_trades", "fund_log", "conor_health_log", "open_trades"];
@@ -278,7 +278,7 @@ router.post("/generate-documents", async (req, res) => {
     });
 
     fs.writeFileSync(path.join(DOCS_DIR, "MEMORY_SUMMARY.md"), "# MEMORY SUMMARY\n*Generated " + new Date().toISOString() + "*\n\n" + memorySummaryResponse.content[0].text);
-    console.log("MEMORY_SUMMARY.md written");
+    log("generate-documents-doc", { doc: "MEMORY_SUMMARY.md" });
 
     // 3. CONOR_CHRONICLE.md — append today's entry
     const chroniclePath = path.join(DOCS_DIR, "CONOR_CHRONICLE.md");
@@ -293,20 +293,20 @@ router.post("/generate-documents", async (req, res) => {
     } else {
       fs.appendFileSync(chroniclePath, todayEntry);
     }
-    console.log("CONOR_CHRONICLE.md updated");
+    log("generate-documents-doc", { doc: "CONOR_CHRONICLE.md" });
 
     // 4. CONOR_EDGE.md — initialize if not exists
     const edgePath = path.join(DOCS_DIR, "CONOR_EDGE.md");
     if (!fs.existsSync(edgePath)) {
       fs.writeFileSync(edgePath, "# CONOR EDGE DOCUMENT\n*Initialize manually — Jarvis will maintain after first entry*\n\n## Entry Criteria\nTBD — fill in after first 10 trades\n\n## Exit Criteria\nBy premium paid, not arbitrary levels\n\n## Hard Rules\n- No lottos\n- No revenge trades\n- -25% hard stop at entry\n- OCO set immediately\n- No trading during Instacart shifts\n\n## Wyckoff Framework\nCurrent phase: Markup confirmed\n\n## Track Record\nNo trades logged yet\n");
-      console.log("CONOR_EDGE.md initialized");
+      log("generate-documents-doc", { doc: "CONOR_EDGE.md initialized" });
     }
 
     log("generate-documents", { signals: allSignals.length, docs: ["TRADER_PROFILES.md", "MEMORY_SUMMARY.md", "CONOR_CHRONICLE.md", "CONOR_EDGE.md"] });
 
   } catch (err) {
     log("generate-documents-error", { error: err.message });
-    console.error("Document generation error:", err.message);
+    log("generate-documents-error", { err: err.message });
   }
 });
 

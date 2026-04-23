@@ -118,62 +118,33 @@ async function executeLive(state, signal) {
 
   if (!ocoOrder) {
     log("execution-protection-all-retries-failed", { entry_order_id: entryOrder.orderId });
-    setExecutionPhase(state, "emergency_flatten_submitted", { entry_order_id: entryOrder.orderId });
-
-    // DISABLED - human must flatten manually
-    // const flattenResult = await emergencyFlatten(creds, accountId, contractId, signal.direction);
-
-    if (flattenResult.ok) {
-      setExecutionPhase(state, "emergency_flatten_confirmed", {
-        entry_order_id: entryOrder.orderId,
-        flatten_order_id: flattenResult.orderId,
-        flatten_tag: flattenResult.tag
-      });
-      state.open_position = null;
-      state.pending_signal = null;
-      state.running = false;
-      state.execution_blocked = true;
-      saveState(state);
-      log("execution-emergency-flatten-success", { flatten_order_id: flattenResult.orderId });
-      notifyJarvis(
-        `02B EMERGENCY FLATTEN EXECUTED\n` +
-        `${signal.direction} ${ticker} position closed via market order\n` +
-        `Entry: ${entryOrder.orderId} | Flatten: ${flattenResult.orderId}\n` +
-        `System stopped. Verify flat in Tradovate.\n` +
-        `Resume: POST /agent/autonomous/clear-critical { acknowledged:true, reason:"..." }`
-      );
-    } else {
-      setExecutionPhase(state, "emergency_flatten_failed", {
-        entry_order_id: entryOrder.orderId,
-        flatten_error: flattenResult.error,
-        flatten_tag: flattenResult.tag
-      });
-      state.open_position = {
-        mode: "live", ticker, direction: signal.direction,
-        entry: signal.entry, stop: signal.stop, target: signal.target,
-        size: 1, entry_order_id: entryOrder.orderId, oco_order_id: null,
-        account_id: accountId, contract_id: contractId, reason: signal.reason,
-        execution_phase: "emergency_flatten_failed",
-        protection_status: "missing",
-        status: "open", opened: new Date().toISOString()
-      };
-      state.pending_signal = null;
-      state.running = false;
-      state.execution_blocked = true;
-      state.critical_mismatch = true;
-      saveState(state);
-      log("execution-critical-mismatch", { entry_order_id: entryOrder.orderId, flatten_error: flattenResult.error });
-      notifyJarvis(
-        `!!! 02B CRITICAL FAILURE !!!\n` +
-        `ENTRY FILLED. PROTECTION FAILED. FLATTEN FAILED.\n` +
-        `${signal.direction} ${ticker} @ ${signal.entry} — UNPROTECTED POSITION\n` +
-        `Entry order: ${entryOrder.orderId}\n` +
-        `CHECK TRADOVATE NOW. MANUAL CLOSE REQUIRED.\n` +
-        `critical_mismatch=true — system HARD BLOCKED until operator clears.`
-      );
-    }
-
-    throw new Error("Live entry placed but all protection attempts failed — emergency flatten triggered");
+    // Emergency flatten is disabled — human must flatten manually.
+    // Record unprotected position and hard-block system immediately.
+    setExecutionPhase(state, "protection_failed_manual_flatten_required", { entry_order_id: entryOrder.orderId });
+    state.open_position = {
+      mode: "live", ticker, direction: signal.direction,
+      entry: signal.entry, stop: signal.stop, target: signal.target,
+      size: 1, entry_order_id: entryOrder.orderId, oco_order_id: null,
+      account_id: accountId, contract_id: contractId, reason: signal.reason,
+      execution_phase: "protection_failed_manual_flatten_required",
+      protection_status: "missing",
+      status: "open", opened: new Date().toISOString()
+    };
+    state.pending_signal = null;
+    state.running = false;
+    state.execution_blocked = true;
+    state.critical_mismatch = true;
+    saveState(state);
+    log("execution-critical-mismatch", { entry_order_id: entryOrder.orderId, reason: "protection_failed_flatten_disabled" });
+    notifyJarvis(
+      `!!! 02B CRITICAL FAILURE !!!\n` +
+      `ENTRY FILLED. PROTECTION FAILED. FLATTEN DISABLED.\n` +
+      `${signal.direction} ${ticker} @ ${signal.entry} — UNPROTECTED POSITION\n` +
+      `Entry order: ${entryOrder.orderId}\n` +
+      `CHECK TRADOVATE NOW. MANUAL CLOSE REQUIRED.\n` +
+      `critical_mismatch=true — system HARD BLOCKED until operator clears.`
+    );
+    throw new Error("Live entry placed but all protection attempts failed — manual flatten required");
   }
 
   const trade = {

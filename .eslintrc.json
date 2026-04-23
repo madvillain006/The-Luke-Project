@@ -1,0 +1,16 @@
+{
+  "env": { "node": true, "browser": true, "es2022": true },
+  "extends": "eslint:recommended",
+  "parserOptions": { "ecmaVersion": 2022, "sourceType": "script" },
+  "rules": {
+    "no-unused-vars": "warn",
+    "no-undef": "error",
+    "no-console": "off",
+    "prefer-const": "warn",
+    "no-var": "warn",
+    "eqeqeq": ["error", "always"],
+    "no-throw-literal": "error",
+    "handle-callback-err": "warn",
+    "no-empty": ["error", { "allowEmptyCatch": true }]
+  }
+}

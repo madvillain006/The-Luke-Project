@@ -89,3 +89,4 @@
 [level-frequency] scripts/build-level-frequency.js + confluence bonus — 90d Kat signals mapped, historical level repetition feeds zone scoring 2026-04-22T00:09:36Z
 [kat-live-vision] Real-time vision on live captures during market hours — broadcasts levels to Jarvis WS, no historical batch 2026-04-22T00:17:47Z
 [backtest-heatmap] Heatmap text correlation added to backtest â€” Bobby/Jefe text levels vs signal strike/direction, zero Claude API calls, image URLs noted as expired 2026-04-22T04:40:04Z
+[backtest-csv-fix] Barchart ISO datetime parser + Latest column mapping + CT->ET timezone offset 2026-04-22T08:46:38Z

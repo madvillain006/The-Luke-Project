@@ -31,31 +31,23 @@
       position: relative;
     }
 
-    /* ── TOOLTIP ── */
     .has-tt { position: relative; }
-    .tooltip {
-      position: absolute;
-      z-index: 9999;
+    .tooltip { display: none; } /* JS handles positioning */
+
+    /* JS tooltip — appended to body, never clipped */
+    #js-tooltip {
+      position: fixed;
+      z-index: 99999;
       background: #1a1f2e;
-      border: 1px solid #333;
-      padding: 4px 8px;
+      border: 1px solid #444;
+      padding: 4px 9px;
       border-radius: 4px;
       font-size: 11px;
+      color: #c9d4e0;
       pointer-events: none;
       white-space: nowrap;
-      color: var(--fg);
-      bottom: calc(100% + 6px);
-      left: 50%;
-      transform: translateX(-50%);
       display: none;
       font-family: -apple-system, "Segoe UI", sans-serif;
-      letter-spacing: 0;
-    }
-    .has-tt:hover .tooltip { display: block; }
-    .tooltip-below {
-      top: 100% !important;
-      bottom: auto !important;
-      margin-top: 4px !important;
     }
 
     /* ── TOP BAR ── */
@@ -233,7 +225,7 @@
       flex-shrink: 0;
     }
     #send:disabled { opacity: 0.5; cursor: wait; }
-    #quick-btns { display: flex; gap: 4px; flex-wrap: wrap; overflow-x: hidden; }
+    #quick-btns { display: flex; gap: 4px; flex-wrap: wrap; overflow: visible; }
     .qbtn {
       flex: 1 1 auto;
       background: transparent;
@@ -582,6 +574,9 @@
   <!-- Toast -->
   <div id="toast"></div>
 
+  <!-- JS Tooltip -->
+  <div id="js-tooltip"></div>
+
   <!-- Drag overlay -->
   <div id="drag-overlay">DROP IMAGE</div>
 
@@ -684,6 +679,31 @@
     const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
     const wsHost = window.location.host || "localhost:3000";
     let ws;
+
+    // ── JS TOOLTIP ───────────────────────────────────────────
+    const _jsTip = document.getElementById('js-tooltip');
+    let _tipTimer = null;
+    document.querySelectorAll('.has-tt').forEach(el => {
+      const tip = el.querySelector('.tooltip');
+      if (!tip) return;
+      el.addEventListener('mouseenter', (e) => {
+        _jsTip.textContent = tip.textContent.trim();
+        _jsTip.style.display = 'block';
+        const r = el.getBoundingClientRect();
+        let top = r.top - _jsTip.offsetHeight - 8;
+        let left = r.left + r.width / 2 - _jsTip.offsetWidth / 2;
+        // flip below if no room above
+        if (top < 4) top = r.bottom + 6;
+        // clamp to viewport
+        left = Math.max(4, Math.min(left, window.innerWidth - _jsTip.offsetWidth - 4));
+        _jsTip.style.top = top + 'px';
+        _jsTip.style.left = left + 'px';
+      });
+      el.addEventListener('mouseleave', () => {
+        _jsTip.style.display = 'none';
+      });
+    });
+    // ── END JS TOOLTIP ───────────────────────────────────────
     const messages = document.getElementById("messages");
     const input    = document.getElementById("input");
     const sendBtn  = document.getElementById("send");

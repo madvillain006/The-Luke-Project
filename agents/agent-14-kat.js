@@ -935,7 +935,9 @@ async function checkLevelMagnets() {
     for (const line of lines) {
       try {
         const sig = JSON.parse(line);
-        if (!sig.ts || !sig.levels) continue;
+        if (!sig.ts || !sig.levels || !sig.levels.length) continue;
+        if (!sig.ticker) continue;
+        if (!['LEVEL_WATCH','CHART_ANALYSIS'].includes(sig.signal_type)) continue;
         if (new Date(sig.ts).getTime() < cutoff) continue;
         for (const level of sig.levels) {
           const bucket = Math.round(level / 5) * 5;

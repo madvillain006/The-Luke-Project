@@ -364,7 +364,7 @@ app.get("/", (req, res) => {
 
 app.post("/chat", async (req, res) => {
   const { message, history, image } = req.body;
-  if (!message) return res.status(400).json({ error: "No message" });
+  if (!message && !image) return res.status(400).json({ error: "No message" });
 
   // ── accumulator: auto-classify paste, store piece, ack, fire verdict ────────
   if (!message.startsWith("/")) {

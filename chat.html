@@ -1254,17 +1254,30 @@
         const dataUrl = evt.target.result;
         const base64  = dataUrl.split(",")[1];
         addImageMessage(dataUrl);
-        const question = input.value.trim() || "What's in this image?";
+        const question = input.value.trim();
         input.value = "";
         showThinking("ANALYZING...");
         sendBtn.disabled = true;
         try {
-          const r = await fetch(BASE + "/see-image", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ image: base64, mime_type: mimeType, question })
-          });
-          const d = await r.json();
+          let r, d;
+          if (!question) {
+            // Image-only paste: route through /chat so handlePasteAccumulate
+            // can update daily context, check the checklist, and fire verdict.
+            r = await fetch(BASE + "/chat", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ image: base64, message: "" })
+            });
+            d = await r.json();
+          } else {
+            // Image + text: vision query
+            r = await fetch(BASE + "/see-image", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ image: base64, mime_type: mimeType, question })
+            });
+            d = await r.json();
+          }
           hideThinking();
           addMessage("assistant", d.reply || d.error || "No response.", "vision");
         } catch {

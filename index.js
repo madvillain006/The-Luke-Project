@@ -733,6 +733,23 @@ app.get("/signals", (req, res) => {
   res.json({ count: signals.length, signals });
 });
 
+// ── PRICE — SPX real-time via Polygon (MASSIVE_API_KEY) ─────────────────────
+app.get("/price/spx", async (req, res) => {
+  const { getLivePrice } = require('./lib/live-price');
+  const data = await getLivePrice();
+  if (!data) return res.status(503).json({ error: 'price unavailable — Polygon fetch failed or market closed' });
+  res.json({
+    ticker: 'SPX',
+    price: data.spx,
+    spy_price: data.spy,
+    timestamp: new Date(data.cached_at).toISOString(),
+    data_date: data.data_date,
+    source: 'massive_market',
+    price_approximation: true,
+    delayed: data.delayed || false
+  });
+});
+
 // ── SATY ATR WEBHOOK (TradingView → Jarvis) ──────────────────────────────────
 // Set up a TradingView alert on Saty's ATR script with webhook URL:
 //   http://[your-ngrok-url]/webhook/saty

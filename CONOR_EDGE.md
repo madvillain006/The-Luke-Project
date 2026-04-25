@@ -1,5 +1,5 @@
-# CONOR EDGE DOCUMENT
-*Initialize manually — Jarvis will maintain after first entry*
+﻿# CONOR EDGE DOCUMENT
+*Initialize manually — Luke will maintain after first entry*
 
 ## Entry Criteria
 Ximes live entry notification + Saty ATR level confluence required. Heatmap (Bobby) confluence is additive — when present and aligned, size heavier than baseline.

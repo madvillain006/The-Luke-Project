@@ -20,7 +20,7 @@ function log(type, data) {
   fs.appendFileSync(LOG_FILE, JSON.stringify({ timestamp: new Date().toISOString(), type, data }) + "\n");
 }
 
-const AGENT_05_SYSTEM = `You are the FINANCE agent within Jarvis — Conor's money tracking and forecasting layer.
+const AGENT_05_SYSTEM = `You are the FINANCE agent within Luke — Conor's money tracking and forecasting layer.
 
 CURRENT SITUATION:
 - Move fund target: $6,000 by mid-June 2026

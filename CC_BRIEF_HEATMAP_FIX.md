@@ -138,7 +138,7 @@ Return ONLY the JSON object. No ```json fences. No prose.
    ```
    node -e "require('./lib/parse-bobby').parseBobbyImage(require('fs').readFileSync('test-heatmap.png').toString('base64')).then(r => console.log(JSON.stringify(r, null, 2)))"
    ```
-   (The user will have a file `test-heatmap.png` in the jarvis root by the
+   (The user will have a file `test-heatmap.png` in the luke root by the
    time you run this — it's a real Bobby heatmap image.)
 
 Report the parsed output. STOP for review before committing.

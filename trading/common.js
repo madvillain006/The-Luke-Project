@@ -25,7 +25,7 @@ function logPaperTrade(trade) {
   fs.appendFileSync(PAPER_TRADES_FILE, JSON.stringify({ timestamp: new Date().toISOString(), ...trade }) + "\n");
 }
 
-function notifyJarvis(message) {
+function notifyLuke(message) {
   return fetch("http://localhost:3000/notify", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -79,7 +79,7 @@ module.exports = {
   saveState,
   log,
   logPaperTrade,
-  notifyJarvis,
+  notifyLuke,
   getETTime,
   getTradingWindowStatus,
   getFrontMonthSymbol,

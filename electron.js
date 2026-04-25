@@ -64,7 +64,7 @@ function createWindow() {
         minHeight: 400,
         alwaysOnTop: true,
         resizable: true,
-        title: 'Jarvis',
+        title: 'Luke',
         autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: false,

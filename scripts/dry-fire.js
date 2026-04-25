@@ -4,7 +4,7 @@
 /**
  * DRY-FIRE TEST SCRIPT — v2
  *
- * Simulates the full Jarvis pipeline OUTSIDE market hours. Sanity check
+ * Simulates the full Luke pipeline OUTSIDE market hours. Sanity check
  * for tomorrow. Restores all state on exit.
  *
  * Strategy: mock the TIME (Date.now and new Date()) but DO NOT touch
@@ -49,7 +49,7 @@ if (MOCK_ENABLED) {
 }
 
 // ── STEP 2: Backup state ────────────────────────────────────────────────
-const JARVIS_ROOT = path.join(__dirname, '..');
+const LUKE_ROOT = path.join(__dirname, '..');
 const FILES_TO_BACKUP = [
   'data/today-levels.json',
   'data/active-trade.json',
@@ -62,13 +62,13 @@ const FILES_TO_BACKUP = [
 
 const BACKUPS = {};
 for (const rel of FILES_TO_BACKUP) {
-  const full = path.join(JARVIS_ROOT, rel);
+  const full = path.join(LUKE_ROOT, rel);
   BACKUPS[rel] = fs.existsSync(full) ? fs.readFileSync(full, 'utf8') : null;
 }
 
 function restoreState() {
   for (const [rel, content] of Object.entries(BACKUPS)) {
-    const full = path.join(JARVIS_ROOT, rel);
+    const full = path.join(LUKE_ROOT, rel);
     try {
       if (content === null) {
         if (fs.existsSync(full)) fs.unlinkSync(full);
@@ -92,9 +92,9 @@ process.on('uncaughtException', (e) => {
 
 // ── STEP 3: Seed fresh state for tests ──────────────────────────────────
 // (Done AFTER backup, so restore undoes these.)
-const apexStatePath = path.join(JARVIS_ROOT, 'data/apex-state.json');
-const activeTradePath = path.join(JARVIS_ROOT, 'data/active-trade.json');
-const levelsPath = path.join(JARVIS_ROOT, 'data/today-levels.json');
+const apexStatePath = path.join(LUKE_ROOT, 'data/apex-state.json');
+const activeTradePath = path.join(LUKE_ROOT, 'data/active-trade.json');
+const levelsPath = path.join(LUKE_ROOT, 'data/today-levels.json');
 
 // Seed apex-state.json with today's mocked date so /ready balance check passes.
 fs.mkdirSync(path.dirname(apexStatePath), { recursive: true });
@@ -161,7 +161,7 @@ async function test(name, command, checks) {
 // ── STEP 6: Run tests ───────────────────────────────────────────────────
 (async () => {
   console.log('══════════════════════════════════════════════');
-  console.log(' JARVIS DRY-FIRE v2 — pipeline sanity test');
+  console.log(' LUKE DRY-FIRE v2 — pipeline sanity test');
   console.log('══════════════════════════════════════════════');
 
   // Test 1 — /ready BEFORE loading levels (expect some ❌)
@@ -267,7 +267,7 @@ async function test(name, command, checks) {
     'Test 9: /status',
     '/status',
     [
-      { label: 'Shows JARVIS ONLINE',    match: /JARVIS ONLINE/i },
+      { label: 'Shows LUKE ONLINE',    match: /LUKE ONLINE/i },
       { label: 'Shows market status',    match: /Market:/i },
       { label: 'Shows levels status',    match: /Levels:/i },
       { label: 'Shows Luke row',         match: /Luke/i },

@@ -8,7 +8,7 @@ const {
   loadState,
   saveState,
   log,
-  notifyJarvis,
+  notifyLuke,
   getTradingWindowStatus,
   getFrontMonthSymbol,
   VALID_MODES,
@@ -37,13 +37,13 @@ async function stageTrade(state, signal) {
   log("autonomous-staged", signal);
 
   const pending = getPendingSignalPayload(state);
-  notifyJarvis(
+  notifyLuke(
     `02B SIGNAL - TAP TO EXECUTE\n` +
     `${signal.direction} ${signal.ticker || "MNQ"}\n` +
     `Entry: ${signal.entry} | Stop: ${signal.stop} | Target: ${signal.target}\n` +
     `Risk: $${pending.risk_dollars} | R:R ${pending.rr}:1\n` +
     `${signal.reason}\n` +
-    `Expires in 5 min - confirm in Jarvis`
+    `Expires in 5 min - confirm in Luke`
   );
 
   if (global.broadcast) {
@@ -111,7 +111,7 @@ router.post("/kill", (req, res) => {
   state.pending_signal = null;
   saveState(state);
   log("autonomous-kill-day", { manual: true });
-  notifyJarvis("02B KILL SWITCH ACTIVATED - system stopped for today");
+  notifyLuke("02B KILL SWITCH ACTIVATED - system stopped for today");
   res.json({ killed: true, reason: "Manual daily kill" });
 });
 
@@ -123,7 +123,7 @@ router.post("/kill-week", (req, res) => {
   state.kill_week_until = getWeeklyKillUntil();
   saveState(state);
   log("autonomous-kill-week", { manual: true, until: state.kill_week_until });
-  notifyJarvis("02B WEEKLY KILL SWITCH - stopped until " + state.kill_week_until.slice(0, 10));
+  notifyLuke("02B WEEKLY KILL SWITCH - stopped until " + state.kill_week_until.slice(0, 10));
   res.json({ killed: true, until: state.kill_week_until });
 });
 
@@ -197,7 +197,7 @@ router.post("/execute-staged", async (req, res) => {
       const reconciliation = await reconcileState(state);
       if (!reconciliation.ok) {
         log("autonomous-reconcile-block", reconciliation);
-        notifyJarvis("02B LIVE BLOCKED - broker/local mismatch\n" + reconciliation.mismatches.join("\n"));
+        notifyLuke("02B LIVE BLOCKED - broker/local mismatch\n" + reconciliation.mismatches.join("\n"));
         const blockedState = loadState();
         blockedState.pending_signal = null;
         saveState(blockedState);
@@ -209,7 +209,7 @@ router.post("/execute-staged", async (req, res) => {
     }
   } catch (err) {
     log("execute-staged-error", { error: err.message });
-    notifyJarvis("02B EXECUTE FAILED: " + err.message);
+    notifyLuke("02B EXECUTE FAILED: " + err.message);
     const s = loadState();
     s.pending_signal = null;
     saveState(s);
@@ -338,7 +338,7 @@ router.post("/evaluate", async (req, res) => {
     const floorBlock = getApexPreTradeFloorBlock(freshState, signal);
     if (floorBlock) {
       log("autonomous-apex-floor-block", floorBlock);
-      notifyJarvis(`02B SKIPPED - too close to Apex floor\nMax loss $${floorBlock.maxLoss.toFixed(0)} would breach floor $${floorBlock.floor.toFixed(0)} + $${floorBlock.buffer} buffer`);
+      notifyLuke(`02B SKIPPED - too close to Apex floor\nMax loss $${floorBlock.maxLoss.toFixed(0)} would breach floor $${floorBlock.floor.toFixed(0)} + $${floorBlock.buffer} buffer`);
       return;
     }
 
@@ -371,7 +371,7 @@ router.post("/eod-update", (req, res) => {
     state.apex.eod_threshold = closingBalance - state.apex.max_drawdown;
     saveState(state);
     log("apex-eod-update", { new_high: closingBalance, new_threshold: state.apex.eod_threshold });
-    notifyJarvis(
+    notifyLuke(
       `APEX EOD UPDATE - FLOOR MOVED\n` +
       `Closing balance: $${closingBalance.toFixed(0)} (new high)\n` +
       `Drawdown floor: $${previousThreshold.toFixed(0)} -> $${state.apex.eod_threshold.toFixed(0)}\n` +
@@ -379,7 +379,7 @@ router.post("/eod-update", (req, res) => {
     );
   } else {
     saveState(state);
-    notifyJarvis(
+    notifyLuke(
       `APEX EOD - no change\n` +
       `Closing: $${closingBalance.toFixed(0)} | High: $${previousHigh.toFixed(0)} | Floor: $${state.apex.eod_threshold.toFixed(0)}`
     );
@@ -508,7 +508,7 @@ router.post("/test-connection", async (req, res) => {
       setup_steps: [
         "1. Create account at tradovate.com",
         "2. Go to Settings > API Credentials",
-        "3. Create new application named 'Jarvis' - get CID (numeric) and SEC (string)",
+        "3. Create new application named 'Jarvis' - get CID (numeric) and SEC (string)",  // must match appId in broker-tradovate.js
         "4. deviceId can be any stable string, e.g. 'jarvis-device-01'",
         "5. Set env: 'demo' for paper account, 'live' for real money",
         "6. POST /agent/autonomous/set-mode with all credentials"
@@ -649,7 +649,7 @@ router.post("/replay", async (req, res) => {
     const signal = await scoreSignals(ximes, bobby);
     log("02b-replay", { date, ximes: ximes.length, bobby: bobby.length, execute: signal.execute, reason: signal.reason });
 
-    notifyJarvis(
+    notifyLuke(
       `02B REPLAY - ${date || `last ${hours_back || 24}h`}\n` +
       `Ximes: ${ximes.length} | Bobby: ${bobby.length} signals\n` +
       (signal.execute

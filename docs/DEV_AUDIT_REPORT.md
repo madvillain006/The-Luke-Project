@@ -1,5 +1,5 @@
-# DEV_AUDIT_REPORT.md
-**Jarvis — Senior Engineer Audit**
+﻿# DEV_AUDIT_REPORT.md
+**Luke — Senior Engineer Audit**
 Auditor: Senior Engineer, OWLS Infrastructure
 Date: 2026-04-21
 Scope: Full codebase — security, architecture, tests, production readiness
@@ -57,7 +57,7 @@ Three files with zero external references moved to `archive/`:
 - **Note:** Key appeared in git history as a deletion (commit `771df94`). History cannot be cleaned without force-push to all branches. Recommend rotating the key.
 
 ### S-2: Server Bound to 0.0.0.0 (MEDIUM)
-`server.listen(PORT, "0.0.0.0")` exposed Jarvis on all network interfaces.
+`server.listen(PORT, "0.0.0.0")` exposed Luke on all network interfaces.
 - Fixed: changed to `"127.0.0.1"` — loopback only
 
 ### S-3: No Input Validation (MEDIUM)
@@ -68,7 +68,7 @@ No validation on any POST endpoints.
 
 ### S-4: Directory Traversal in Actions (HIGH)
 `lib/actions.js` "read" action had no path sanitization.
-- Fixed: `const filePath = path.resolve(rawPath); if (!filePath.startsWith(JARVIS_ROOT)) return "READ BLOCKED"`
+- Fixed: `const filePath = path.resolve(rawPath); if (!filePath.startsWith(LUKE_ROOT)) return "READ BLOCKED"`
 
 ### S-5: No CORS Headers (LOW)
 - Added `Access-Control-Allow-Origin: http://localhost:3000` middleware — restricts to local frontend only
@@ -116,7 +116,7 @@ After adding WS token fetch, the `initWs()` function was never closed. DOM varia
 - Fixed: DOM variables moved back to outer script scope; `initWs` closes after `ws.onmessage`
 
 ### A-6: agent-13-workflows.js Unmounted
-The file exists and is listed as active in `JARVIS_STATUS.md` but has no `app.use()` mount in `index.js`. Not a bug — deferred to FUTURE_COMMERCIAL_AUDIT.md.
+The file exists and is listed as active in `LUKE_STATUS.md` but has no `app.use()` mount in `index.js`. Not a bug — deferred to FUTURE_COMMERCIAL_AUDIT.md.
 
 ### A-7: Boot-time Sanity Checks
 Added `bootChecks()` IIFE that:

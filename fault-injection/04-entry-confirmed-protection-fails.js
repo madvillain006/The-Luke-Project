@@ -14,7 +14,7 @@ async function runPath(flattenSucceeds) {
 
   const r = await api("POST", "/agent/autonomous/_test/simulate-protection-failure", { flatten_succeeds: flattenSucceeds });
   if (r.status === 404) {
-    fail("Test hook not available — is NODE_ENV set to 'production'? Start Jarvis without NODE_ENV=production");
+    fail("Test hook not available — is NODE_ENV set to 'production'? Start Luke without NODE_ENV=production");
     return false;
   }
   if (!r.body || !r.body.ok) {

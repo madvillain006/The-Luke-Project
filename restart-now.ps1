@@ -1,1 +1,1 @@
-pm2 restart jarvis-server
+pm2 restart luke-server

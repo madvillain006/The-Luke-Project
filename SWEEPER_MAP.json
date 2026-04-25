@@ -1,9 +1,9 @@
-{
+﻿{
   "generated": "2026-04-19T23:06:35.840Z",
   "files": [
     {
       "path": "agents\\agent-06-research.js",
-      "full": "C:\\Users\\conor\\jarvis\\agents\\agent-06-research.js",
+      "full": "C:\\Users\\conor\\luke\\agents\\agent-06-research.js",
       "lines": 418,
       "category": "agent",
       "priority": "high",
@@ -11,7 +11,7 @@
     },
     {
       "path": "agents\\agent-10-sweeper.js",
-      "full": "C:\\Users\\conor\\jarvis\\agents\\agent-10-sweeper.js",
+      "full": "C:\\Users\\conor\\luke\\agents\\agent-10-sweeper.js",
       "lines": 502,
       "category": "agent",
       "priority": "high",
@@ -19,7 +19,7 @@
     },
     {
       "path": "chat.html",
-      "full": "C:\\Users\\conor\\jarvis\\chat.html",
+      "full": "C:\\Users\\conor\\luke\\chat.html",
       "lines": 915,
       "category": "ui",
       "priority": "high",
@@ -27,7 +27,7 @@
     },
     {
       "path": "index.js",
-      "full": "C:\\Users\\conor\\jarvis\\index.js",
+      "full": "C:\\Users\\conor\\luke\\index.js",
       "lines": 827,
       "category": "core",
       "priority": "high",
@@ -35,7 +35,7 @@
     },
     {
       "path": "agents\\agent-05-finance.js",
-      "full": "C:\\Users\\conor\\jarvis\\agents\\agent-05-finance.js",
+      "full": "C:\\Users\\conor\\luke\\agents\\agent-05-finance.js",
       "lines": 186,
       "category": "agent",
       "priority": "med",
@@ -43,7 +43,7 @@
     },
     {
       "path": "agents\\agent-07-opportunity.js",
-      "full": "C:\\Users\\conor\\jarvis\\agents\\agent-07-opportunity.js",
+      "full": "C:\\Users\\conor\\luke\\agents\\agent-07-opportunity.js",
       "lines": 221,
       "category": "agent",
       "priority": "med",
@@ -51,7 +51,7 @@
     },
     {
       "path": "agents\\agent-08-sienna.js",
-      "full": "C:\\Users\\conor\\jarvis\\agents\\agent-08-sienna.js",
+      "full": "C:\\Users\\conor\\luke\\agents\\agent-08-sienna.js",
       "lines": 212,
       "category": "agent",
       "priority": "med",
@@ -59,7 +59,7 @@
     },
     {
       "path": "agents\\agent-09-architect.js",
-      "full": "C:\\Users\\conor\\jarvis\\agents\\agent-09-architect.js",
+      "full": "C:\\Users\\conor\\luke\\agents\\agent-09-architect.js",
       "lines": 335,
       "category": "agent",
       "priority": "med",
@@ -67,7 +67,7 @@
     },
     {
       "path": "discord-scraper.js",
-      "full": "C:\\Users\\conor\\jarvis\\discord-scraper.js",
+      "full": "C:\\Users\\conor\\luke\\discord-scraper.js",
       "lines": 201,
       "category": "core",
       "priority": "med",
@@ -75,7 +75,7 @@
     },
     {
       "path": "intraday-scraper.js",
-      "full": "C:\\Users\\conor\\jarvis\\intraday-scraper.js",
+      "full": "C:\\Users\\conor\\luke\\intraday-scraper.js",
       "lines": 287,
       "category": "core",
       "priority": "med",
@@ -83,7 +83,7 @@
     },
     {
       "path": "research-agent.py",
-      "full": "C:\\Users\\conor\\jarvis\\research-agent.py",
+      "full": "C:\\Users\\conor\\luke\\research-agent.py",
       "lines": 176,
       "category": "core",
       "priority": "med",
@@ -91,7 +91,7 @@
     },
     {
       "path": "scheduler.js",
-      "full": "C:\\Users\\conor\\jarvis\\scheduler.js",
+      "full": "C:\\Users\\conor\\luke\\scheduler.js",
       "lines": 359,
       "category": "core",
       "priority": "med",
@@ -99,7 +99,7 @@
     },
     {
       "path": ".claude\\settings.local.json",
-      "full": "C:\\Users\\conor\\jarvis\\.claude\\settings.local.json",
+      "full": "C:\\Users\\conor\\luke\\.claude\\settings.local.json",
       "lines": 18,
       "category": "config",
       "priority": "low",
@@ -107,7 +107,7 @@
     },
     {
       "path": "agents\\agent-03-income.js",
-      "full": "C:\\Users\\conor\\jarvis\\agents\\agent-03-income.js",
+      "full": "C:\\Users\\conor\\luke\\agents\\agent-03-income.js",
       "lines": 150,
       "category": "agent",
       "priority": "low",
@@ -115,7 +115,7 @@
     },
     {
       "path": "architect-costs.json",
-      "full": "C:\\Users\\conor\\jarvis\\architect-costs.json",
+      "full": "C:\\Users\\conor\\luke\\architect-costs.json",
       "lines": 7,
       "category": "config",
       "priority": "low",
@@ -123,7 +123,7 @@
     },
     {
       "path": "CONOR_CHRONICLE.md",
-      "full": "C:\\Users\\conor\\jarvis\\CONOR_CHRONICLE.md",
+      "full": "C:\\Users\\conor\\luke\\CONOR_CHRONICLE.md",
       "lines": 10,
       "category": "core",
       "priority": "low",
@@ -131,7 +131,7 @@
     },
     {
       "path": "CONOR_EDGE.md",
-      "full": "C:\\Users\\conor\\jarvis\\CONOR_EDGE.md",
+      "full": "C:\\Users\\conor\\luke\\CONOR_EDGE.md",
       "lines": 22,
       "category": "core",
       "priority": "low",
@@ -139,7 +139,7 @@
     },
     {
       "path": "desktop.py",
-      "full": "C:\\Users\\conor\\jarvis\\desktop.py",
+      "full": "C:\\Users\\conor\\luke\\desktop.py",
       "lines": 85,
       "category": "core",
       "priority": "low",
@@ -147,7 +147,7 @@
     },
     {
       "path": "ecosystem.config.js",
-      "full": "C:\\Users\\conor\\jarvis\\ecosystem.config.js",
+      "full": "C:\\Users\\conor\\luke\\ecosystem.config.js",
       "lines": 27,
       "category": "core",
       "priority": "low",
@@ -155,7 +155,7 @@
     },
     {
       "path": "electron.js",
-      "full": "C:\\Users\\conor\\jarvis\\electron.js",
+      "full": "C:\\Users\\conor\\luke\\electron.js",
       "lines": 42,
       "category": "core",
       "priority": "low",
@@ -163,15 +163,15 @@
     },
     {
       "path": "ingest-exports.js",
-      "full": "C:\\Users\\conor\\jarvis\\ingest-exports.js",
+      "full": "C:\\Users\\conor\\luke\\ingest-exports.js",
       "lines": 113,
       "category": "core",
       "priority": "low",
       "last_scanned": "2026-04-19T23:14:16.125Z"
     },
     {
-      "path": "JARVIS SELF KNOWLEDGE.md",
-      "full": "C:\\Users\\conor\\jarvis\\JARVIS SELF KNOWLEDGE.md",
+      "path": "LUKE SELF KNOWLEDGE.md",
+      "full": "C:\\Users\\conor\\luke\\LUKE SELF KNOWLEDGE.md",
       "lines": 108,
       "category": "core",
       "priority": "low",
@@ -179,7 +179,7 @@
     },
     {
       "path": "MEMORY_SUMMARY.md",
-      "full": "C:\\Users\\conor\\jarvis\\MEMORY_SUMMARY.md",
+      "full": "C:\\Users\\conor\\luke\\MEMORY_SUMMARY.md",
       "lines": 12,
       "category": "core",
       "priority": "low",
@@ -187,7 +187,7 @@
     },
     {
       "path": "monitor.py",
-      "full": "C:\\Users\\conor\\jarvis\\monitor.py",
+      "full": "C:\\Users\\conor\\luke\\monitor.py",
       "lines": 139,
       "category": "core",
       "priority": "low",
@@ -195,7 +195,7 @@
     },
     {
       "path": "package.json",
-      "full": "C:\\Users\\conor\\jarvis\\package.json",
+      "full": "C:\\Users\\conor\\luke\\package.json",
       "lines": 21,
       "category": "config",
       "priority": "low",
@@ -203,7 +203,7 @@
     },
     {
       "path": "suggestions.md",
-      "full": "C:\\Users\\conor\\jarvis\\suggestions.md",
+      "full": "C:\\Users\\conor\\luke\\suggestions.md",
       "lines": 28,
       "category": "core",
       "priority": "low",
@@ -211,7 +211,7 @@
     },
     {
       "path": "TRADER_PROFILES.md",
-      "full": "C:\\Users\\conor\\jarvis\\TRADER_PROFILES.md",
+      "full": "C:\\Users\\conor\\luke\\TRADER_PROFILES.md",
       "lines": 58,
       "category": "core",
       "priority": "low",
@@ -219,3 +219,4 @@
     }
   ]
 }
+

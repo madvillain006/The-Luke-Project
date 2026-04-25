@@ -1,4 +1,4 @@
-# MEMORY SUMMARY
+﻿# MEMORY SUMMARY
 *Updated 2026-04-22 — reflects current state as of Apex eval week*
 
 # Conor Summary (April 22, 2026)
@@ -13,9 +13,9 @@
 - Confluence: Bobby heatmap (SPX king nodes), RichyDubz key levels, Kat-monitored analysts (Jefe, Barry, KapriK0rn3)
 - Sizing: 2 ES contracts standard (runner-capable). 1 contract if Ximes signals fractional.
 - SESSION RULE: AFTERNOON WINDOW ONLY — 2pm to 3:50pm ET. Morning win rate 50% vs afternoon 59.7% from 248-signal backtest.
-- Hard rules: no trades before 2pm ET, no revenge trades, stop = Jarvis bracket calc (OCO in Tradovate), log all trades with /trade
+- Hard rules: no trades before 2pm ET, no revenge trades, stop = Luke bracket calc (OCO in Tradovate), log all trades with /trade
 
-**Jarvis State (current build — April 22 2026):**
+**Luke State (current build — April 22 2026):**
 - Full pipeline: /alert → parseXimes → confluence scoring → bracket calc → sizing guidance → readiness warnings
 - /ready command: 4-check session gate (balance, RichyDubz levels, Bobby heatmap, Apex floor)
 - Runner protocol: /runner marks position, /trade without RUNNER keyword warns when runner is active

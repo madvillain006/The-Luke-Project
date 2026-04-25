@@ -1,4 +1,4 @@
-const { getPointValue, loadState, saveState, log, logPaperTrade, notifyJarvis } = require("./common");
+const { getPointValue, loadState, saveState, log, logPaperTrade, notifyLuke } = require("./common");
 const { getFuturesPrice } = require("./signals");
 const { getMarketContext } = require("./market-context");
 const { validateStagedTrade } = require("./risk");
@@ -40,7 +40,7 @@ function executePaper(state, signal) {
   })();
 
   const toGo = Math.max(0, 25 - state.paper_trades);
-  notifyJarvis(
+  notifyLuke(
     `02B PAPER TRADE #${state.paper_trades}\n` +
     `${trade.direction} ${trade.ticker} @ ${trade.entry}\n` +
     `Stop: ${trade.stop} | Target: ${trade.target}\n` +
@@ -67,7 +67,7 @@ async function monitorOpenPosition() {
       : (pos.entry - price) * pv;
     const currentAccount = apex.account_start + (state.total_eval_pnl || 0) + unrealized;
     if (currentAccount <= apex.eod_threshold) {
-      notifyJarvis(
+      notifyLuke(
         `APEX FLOOR BREACHED (UNREALIZED)\n` +
         `Account incl. open P&L: $${currentAccount.toFixed(0)} | Floor: $${apex.eod_threshold.toFixed(0)}\n` +
         `Force-closing position to protect eval`
@@ -127,10 +127,10 @@ async function monitorOpenPosition() {
     if (accountValue <= apex.eod_threshold) {
       state.running = false;
       state.kill_week = true;
-      notifyJarvis(`APEX EOD THRESHOLD BREACHED\nAccount: $${accountValue.toFixed(0)} | Floor: $${apex.eod_threshold.toFixed(0)}\n02B STOPPED - eval failed.`);
+      notifyLuke(`APEX EOD THRESHOLD BREACHED\nAccount: $${accountValue.toFixed(0)} | Floor: $${apex.eod_threshold.toFixed(0)}\n02B STOPPED - eval failed.`);
     } else if ((state.total_eval_pnl || 0) >= apex.profit_target) {
       state.running = false;
-      notifyJarvis(`APEX EVAL PASSED\n$${state.total_eval_pnl.toFixed(0)} profit on 50k account\nPay the activation fee -> apextraderfunding.com`);
+      notifyLuke(`APEX EVAL PASSED\n$${state.total_eval_pnl.toFixed(0)} profit on 50k account\nPay the activation fee -> apextraderfunding.com`);
     }
   }
 
@@ -148,7 +148,7 @@ async function monitorOpenPosition() {
   }
   if (state.kill_day) msg += "\nDAILY LIMIT HIT - killed for today";
   if (state.kill_week) msg += "\nWEEKLY LIMIT HIT - killed until " + (state.kill_week_until || "Monday").slice(0, 10);
-  notifyJarvis(msg);
+  notifyLuke(msg);
 }
 
 module.exports = {

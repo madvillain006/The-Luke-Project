@@ -1,11 +1,11 @@
-# Fault Injection — Jarvis
+﻿# Fault Injection — Luke
 
-Proves Jarvis fails safely. Each script runs against a live local server on `localhost:3000`.
+Proves Luke fails safely. Each script runs against a live local server on `localhost:3000`.
 
 ## Prerequisites
 
 ```
-node index.js &         # Jarvis must be running
+node index.js &         # Luke must be running
 # Do NOT set NODE_ENV=production — test hooks require it unset
 ```
 
@@ -17,7 +17,7 @@ Scripts 04, 06, 07, 08, 10 use `/_test/*` hooks added to `trading/router.js` (gu
 node fault-injection/NN-name.js
 ```
 
-Exit code 0 = PASS. Exit code 1 = FAIL (with reason). Exit code 2 = Jarvis not running.
+Exit code 0 = PASS. Exit code 1 = FAIL (with reason). Exit code 2 = Luke not running.
 
 ---
 

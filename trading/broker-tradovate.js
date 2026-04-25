@@ -15,9 +15,9 @@ async function getTradovateToken(creds) {
     body: JSON.stringify({
       name: creds.username,
       password: creds.password,
-      appId: "Jarvis",
+      appId: "Jarvis",      // kept as "Jarvis" — matches Tradovate app registration; do not change without re-registering
       appVersion: "1.0",
-      deviceId: creds.deviceId || "jarvis-device-01",
+      deviceId: creds.deviceId || "jarvis-device-01",   // stable device ID; tied to Tradovate registration
       cid: parseInt(creds.cid),
       sec: creds.sec
     })

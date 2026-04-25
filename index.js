@@ -422,7 +422,7 @@ app.post("/chat", async (req, res) => {
 
   saveSessionMessage("user", message);
 
-  const ACK_SYSTEM = "You are Jarvis. Acknowledge this agent result in one sentence. Be brief. No em dashes.";
+  const ACK_SYSTEM = "You are Luke. Acknowledge this agent result in one sentence. Be brief. No em dashes.";
 
   try {
     const routed = await routeToAgent(message);
@@ -434,14 +434,14 @@ app.post("/chat", async (req, res) => {
         messages: [
           ...messages,
           { role: "assistant", content: "[" + routed.agent.toUpperCase() + " AGENT LOGGED: " + routed.reply + "]" },
-          { role: "user", content: "acknowledge that in one sentence as Jarvis, naturally. No em dashes. Do not mention mood, state, detection, or system internals." }
+          { role: "user", content: "acknowledge that in one sentence as Luke, naturally. No em dashes. Do not mention mood, state, detection, or system internals." }
         ]
       });
       trackUsage("main-ack", "claude-haiku-4-5-20251001", ackResponse.usage?.input_tokens || 0, ackResponse.usage?.output_tokens || 0);
       let reply = ackResponse.content[0].text;
       if (alerts.length > 0) reply += "\n\n" + alerts.join("\n");
       saveSessionMessage("assistant", reply);
-      log("chat", { user: message, jarvis: reply, agent: routed.agent, state });
+      log("chat", { user: message, luke: reply, agent: routed.agent, state });
       return res.json({ reply, state, history: [...messages, { role: "assistant", content: reply }] });
     }
   } catch {}
@@ -450,7 +450,7 @@ app.post("/chat", async (req, res) => {
   if (isFallbackActive()) {
     try {
       const fb = await callFallback(
-        "You are Jarvis — Conor's personal assistant. Keep it brief and direct.",
+        "You are Luke — Conor's personal assistant. Keep it brief and direct.",
         message
       );
       let reply = fb.reply;
@@ -475,7 +475,7 @@ app.post("/chat", async (req, res) => {
   const useHaiku = isSimpleMessage(message);
   const chatModel = useHaiku ? "claude-haiku-4-5-20251001" : "claude-opus-4-7";
   const chatSystemPrompt = useHaiku
-    ? "You are Jarvis — Conor's personal AI. Sharp, brief, no filler. No em dashes."
+    ? "You are Luke — Conor's personal AI. Sharp, brief, no filler. No em dashes."
     : buildSystemPrompt(state, message);
 
   try {
@@ -512,7 +512,7 @@ app.post("/chat", async (req, res) => {
 
     if (alerts.length > 0) reply += "\n\n" + alerts.join("\n");
     saveSessionMessage("assistant", reply);
-    log("chat", { user: message, jarvis: reply, state });
+    log("chat", { user: message, luke: reply, state });
     res.json({ reply, state, action, history: [...messages, { role: "assistant", content: response.content[0].text }] });
   } catch (err) {
     console.error(err.message);
@@ -624,7 +624,7 @@ app.post("/research", async (req, res) => {
     const response = await client.messages.create({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 384,
-      messages: [{ role: "user", content: "You are Agent 06 — research agent for Jarvis. Extract what is useful for building a personal AI agent system or for trading.\n\nURL: " + url + "\n\nCONTENT:\n" + text + "\n\nFormat exactly like this:\nKEY INSIGHT: one sentence\nAPPLIES TO: scaffold / trader / research / all\nIMPLEMENTATION: one sentence\nPRIORITY: HIGH / MEDIUM / LOW\n\nUnder 80 words total. If not relevant to AI agents or trading, say: NOT RELEVANT" }]
+      messages: [{ role: "user", content: "You are Agent 06 — research agent for Luke. Extract what is useful for building a personal AI agent system or for trading.\n\nURL: " + url + "\n\nCONTENT:\n" + text + "\n\nFormat exactly like this:\nKEY INSIGHT: one sentence\nAPPLIES TO: scaffold / trader / research / all\nIMPLEMENTATION: one sentence\nPRIORITY: HIGH / MEDIUM / LOW\n\nUnder 80 words total. If not relevant to AI agents or trading, say: NOT RELEVANT" }]
     });
 
     const insight = response.content[0].text;
@@ -750,7 +750,7 @@ app.get("/price/spx", async (req, res) => {
   });
 });
 
-// ── SATY ATR WEBHOOK (TradingView → Jarvis) ──────────────────────────────────
+// ── SATY ATR WEBHOOK (TradingView → Luke) ────────────────────────────────────
 // Set up a TradingView alert on Saty's ATR script with webhook URL:
 //   http://[your-ngrok-url]/webhook/saty
 // Alert message (JSON format):
@@ -853,8 +853,8 @@ app.get("/ws-token", (req, res) => res.json({ token: WS_TOKEN }));
 
 app.post("/intraday/start", (req, res) => {
   try {
-    try { execSync("pm2 restart jarvis-intraday --update-env", { cwd: __dirname }); }
-    catch { execSync("pm2 start jarvis-intraday --update-env", { cwd: __dirname }); }
+    try { execSync("pm2 restart luke-intraday --update-env", { cwd: __dirname }); }
+    catch { execSync("pm2 start luke-intraday --update-env", { cwd: __dirname }); }
     log("intraday-start", {});
     res.json({ started: true });
   } catch (err) { res.status(500).json({ error: err.message }); }
@@ -862,7 +862,7 @@ app.post("/intraday/start", (req, res) => {
 
 app.post("/intraday/stop", (req, res) => {
   try {
-    execSync("pm2 stop jarvis-intraday", { cwd: __dirname });
+    execSync("pm2 stop luke-intraday", { cwd: __dirname });
     log("intraday-stop", {});
     res.json({ stopped: true });
   } catch (err) { res.status(500).json({ error: err.message }); }
@@ -897,7 +897,7 @@ app.get("/health", (req, res) => {
   });
 });
 
-app.get("/jarvis/self-diagnose", (req, res) => {
+app.get("/luke/self-diagnose", (req, res) => {
   const out = {
     missing_capabilities: [],
     broken_tools: [],
@@ -912,7 +912,7 @@ app.get("/jarvis/self-diagnose", (req, res) => {
     const map = JSON.parse(fs.readFileSync(REPO_MAP_FILE, "utf8"));
     const age = (Date.now() - new Date(map.built).getTime()) / 60000;
     if (age > 90) out.stale_data.push("repo-map.json last built " + Math.round(age) + "m ago");
-  } catch { out.missing_capabilities.push("repo-map not built — Jarvis cannot locate own files"); }
+  } catch { out.missing_capabilities.push("repo-map not built — Luke cannot locate own files"); }
 
   // Tool failures
   try {
@@ -944,16 +944,16 @@ app.get("/jarvis/self-diagnose", (req, res) => {
   } catch {}
 
   // Derive suggestions
-  if (out.missing_capabilities.length > 0) out.suggested_priorities.push("run GET /jarvis/self-diagnose after fixing repo-map");
+  if (out.missing_capabilities.length > 0) out.suggested_priorities.push("run GET /luke/self-diagnose after fixing repo-map");
   if (out.broken_tools.length > 0) out.suggested_priorities.push("review tool-failures.jsonl for search scope issues");
   if (out.stale_data.some(s => s.includes("MEMORY"))) out.suggested_priorities.push("refresh MEMORY_SUMMARY.md");
 
   res.json(out);
 });
 
-app.post("/jarvis/tool-health-nightly", (req, res) => { computeToolHealth(); res.json({ ok: true }); });
+app.post("/luke/tool-health-nightly", (req, res) => { computeToolHealth(); res.json({ ok: true }); });
 
-app.get("/jarvis/boot-check", (req, res) => {
+app.get("/luke/boot-check", (req, res) => {
   const checks = [];
   function check(name, fn) {
     try { const r = fn(); checks.push({ name, status: r ? "green" : "yellow", detail: r || "not available" }); }
@@ -994,7 +994,7 @@ app.get("/jarvis/boot-check", (req, res) => {
   res.json({ overall, checks });
 });
 
-app.post("/jarvis/log-intervention", (req, res) => {
+app.post("/luke/log-intervention", (req, res) => {
   const { state, action } = req.body;
   try { fs.appendFileSync(STATE_INTERVENTIONS, JSON.stringify({ ts: new Date().toISOString(), state, action }) + "\n"); } catch {}
   res.json({ ok: true });
@@ -1010,7 +1010,7 @@ app.post("/panic", (req, res) => {
   log("PANIC", { triggered: new Date().toISOString() });
   try { fs.writeFileSync(path.join(__dirname, "panic-dump-" + Date.now() + ".json"), JSON.stringify({ timestamp: new Date().toISOString(), memory: loadMemory() }, null, 2)); } catch {}
   try { fetch("http://localhost:3000/agent/autonomous/kill", { method: "POST" }).catch(() => {}); } catch {}
-  try { execSync("pm2 stop jarvis-intraday", { cwd: __dirname }); } catch {}
+  try { execSync("pm2 stop luke-intraday", { cwd: __dirname }); } catch {}
   broadcast({ type: "notification", message: "PANIC executed — 02B kill sent, intraday stopped, state dumped" });
   res.json({ ok: true });
 });
@@ -1054,7 +1054,7 @@ wss.on("connection", (ws, req) => {
       } catch { return false; }
     })();
     if (ws.readyState === 1) {
-      ws.send(JSON.stringify({ type: "assistant", message: "I built Jarvis so I wouldn't have to trade scared. Today I don't trade scared. I follow the system. I trade the system. Luke is home. That's why I do this." }));
+      ws.send(JSON.stringify({ type: "assistant", message: "I built Luke so I wouldn't have to trade scared. Today I don't trade scared. I follow the system. I trade the system. Luke is home. That's why I do this." }));
     }
     if (!_levelsOk && ws.readyState === 1) {
       ws.send(JSON.stringify({ type: "levels_warning", message: "⚠️ No levels loaded. Paste /levels [RichyDubz morning message] then /heatmap [Bobby text] before trading." }));
@@ -1192,7 +1192,7 @@ process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
 
 const PORT = 3000;
 server.listen(PORT, "127.0.0.1", () => {
-  console.log("Jarvis running on http://localhost:" + PORT);
+  console.log("Luke running on http://localhost:" + PORT);
   const _lvlsLoaded = (() => {
     try {
       const o = JSON.parse(fs.readFileSync(path.join(__dirname, "data", "today-levels.json"), "utf8"));
@@ -1208,7 +1208,7 @@ server.listen(PORT, "127.0.0.1", () => {
     } catch { return 0; }
   })();
   console.log("===================================");
-  console.log("JARVIS ONLINE");
+  console.log("LUKE ONLINE");
   console.log("===================================");
   console.log("I was built because you're tired of losing.");
   console.log("-----------------------------------");

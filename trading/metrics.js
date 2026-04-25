@@ -174,7 +174,7 @@ function summariseCritical(e) {
 
 function buildTextSummary(m) {
   const lines = [
-    `Jarvis 02B metrics — last ${m.range_hours}h (since ${m.since.slice(0, 16).replace("T", " ")} UTC):`,
+    `Luke 02B metrics — last ${m.range_hours}h (since ${m.since.slice(0, 16).replace("T", " ")} UTC):`,
     `Signals evaluated: ${m.signals_evaluated} | Staged: ${m.signals_staged}`,
   ];
 

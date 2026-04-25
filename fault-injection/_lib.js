@@ -67,7 +67,7 @@ async function assertRunning() {
     const r = await api("GET", "/health");
     if (r.status !== 200) throw new Error("non-200");
   } catch {
-    console.error("ERROR: Jarvis not running on localhost:3000 — start it first");
+    console.error("ERROR: Luke not running on localhost:3000 — start it first");
     process.exit(2);
   }
 }

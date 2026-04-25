@@ -94,7 +94,7 @@ async function scrapeAndExtract(channel) {
   }
 }
 
-async function notifyJarvis(message) {
+async function notifyLuke(message) {
   try {
     await fetch("http://localhost:3000/notify", {
       method: "POST",
@@ -102,7 +102,7 @@ async function notifyJarvis(message) {
       body: JSON.stringify({ message })
     });
   } catch (err) {
-    console.error("[notifyJarvis] failed:", err.message);
+    console.error("[notifyLuke] failed:", err.message);
   }
 }
 
@@ -148,8 +148,8 @@ async function runIntradayCycle() {
       fs.appendFileSync(HISTORY_FILE, JSON.stringify(entry) + "\n");
       fs.appendFileSync(LOG_FILE, JSON.stringify({ timestamp: new Date().toISOString(), type: "intraday-signal", data: { channel: channel.name, insights: result.insights } }) + "\n");
 
-      await notifyJarvis("INTRADAY SIGNAL [" + channel.name + "]:\n" + result.insights);
-      console.log("Signal found in " + channel.name + " — Jarvis notified");
+      await notifyLuke("INTRADAY SIGNAL [" + channel.name + "]:\n" + result.insights);
+      console.log("Signal found in " + channel.name + " — Luke notified");
       newSignals = true;
     }
     await sleep(3000);
@@ -183,7 +183,7 @@ async function runGlanceCycle() {
 
       const summary = response.content[0].text;
       if (!summary.includes("NOTHING_NOTABLE")) {
-        await notifyJarvis("GLANCE [" + channel.name + "]: " + summary);
+        await notifyLuke("GLANCE [" + channel.name + "]: " + summary);
         console.log("Glance alert: " + channel.name);
       }
       await sleep(2000);
@@ -248,12 +248,12 @@ async function runPreMarketScan() {
   }
 
   if (results.length > 0) {
-    await notifyJarvis(
+    await notifyLuke(
       "PRE-MARKET SCAN COMPLETE\n\n" +
       results.map(r => "[" + r.channel + "]\n" + r.data).join("\n\n")
     );
   } else {
-    await notifyJarvis("Pre-market scan ran — no data posted yet in ximes or bobby. Check manually.");
+    await notifyLuke("Pre-market scan ran — no data posted yet in ximes or bobby. Check manually.");
   }
 }
 

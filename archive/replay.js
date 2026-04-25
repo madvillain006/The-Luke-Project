@@ -1,12 +1,14 @@
 'use strict';
+// Historical schema preserved — pre-rename. Field names (jarvis_verdict, jarvis_entry, etc.)
+// reflect the original project name; renaming would orphan existing replay output files.
 
 const fs = require('fs');
 const path = require('path');
 const { detectConfluence, inferInstrument } = require('./confluence');
 const { calculateBracket } = require('./bracket-calc');
 
-const JARVIS_ROOT = path.join(__dirname, '..');
-const DISCORD_HISTORY = path.join(JARVIS_ROOT, 'discord-history.jsonl');
+const LUKE_ROOT = path.join(__dirname, '..');
+const DISCORD_HISTORY = path.join(LUKE_ROOT, 'discord-history.jsonl');
 
 function loadHistory(startMs, endMs) {
   if (!fs.existsSync(DISCORD_HISTORY)) return [];

@@ -31,7 +31,7 @@ function logShift(shift) {
   fs.appendFileSync(SHIFTS_FILE, JSON.stringify({ timestamp: new Date().toISOString(), ...shift }) + "\n");
 }
 
-const AGENT_03_SYSTEM = `You are the INCOME agent within Jarvis — Conor's Instacart optimization layer.
+const AGENT_03_SYSTEM = `You are the INCOME agent within Luke — Conor's Instacart optimization layer.
 
 CONTEXT:
 - Target: $1,000/week clean from Instacart

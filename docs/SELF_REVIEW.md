@@ -1,4 +1,4 @@
-# JARVIS SELF-REVIEW — FULL TECHNICAL AUDIT
+﻿# LUKE SELF-REVIEW — FULL TECHNICAL AUDIT
 Generated: 2026-04-20
 Reviewed by: Claude (external code review, no context from prior sessions)
 Scope: All files listed in the audit request
@@ -66,7 +66,7 @@ The following paths are fully wired and manually testable today:
 
 **Two parallel emotional state systems**: `lib/emotional-exits.js` (the clean version, used in `/alert` and `/review`) and `detectEmotionalState()` in `index.js:204-248` (a separate regex-based system used in main chat). They have different signal sets, different state categories, and different outputs. They will disagree. One should be deleted.
 
-**`agent-08-sienna.js`**: Has three working endpoints (`/analyze`, `/profile`, `/score-signal`, `/model`) but zero integration with the trading pipeline. `trading/signals.js` does not call Sienna. The `SIENNA_PROFILE.md` is referenced but the regime filter role described in `JARVIS_STATUS.md` is not implemented anywhere.
+**`agent-08-sienna.js`**: Has three working endpoints (`/analyze`, `/profile`, `/score-signal`, `/model`) but zero integration with the trading pipeline. `trading/signals.js` does not call Sienna. The `SIENNA_PROFILE.md` is referenced but the regime filter role described in `LUKE_STATUS.md` is not implemented anywhere.
 
 **`agents/agent-13-workflows.js`**: Listed in status, not audited, not referenced in `index.js` router mounts. Possibly dead.
 
@@ -106,7 +106,7 @@ Move to `.env` / `process.env.FINNHUB_KEY`.
 `POST /agent/autonomous/_test/inject-state` lets any caller inject arbitrary state (pending signals, open positions, kill flags) into the trading system. Always active because `NODE_ENV` is never "production". A bug or accidental call here can corrupt the trading state file. Set `NODE_ENV=production` in ecosystem.config.js immediately.
 
 **Luke med notifications: NONE**:
-There are zero automated reminders for the 4:00 AM and 4:30 AM med schedule. The scheduler is fully disabled. Agent-04 has no timer. The system prompt mentions the meds, and `/status` shows a countdown, but both require Conor to be awake and actively using Jarvis. If he oversleeps or doesn't open the chat, no notification fires. This is not a code bug — it is a missing feature. It is the highest safety risk outside of trading because the consequence is a missed med window for a dog with PLE.
+There are zero automated reminders for the 4:00 AM and 4:30 AM med schedule. The scheduler is fully disabled. Agent-04 has no timer. The system prompt mentions the meds, and `/status` shows a countdown, but both require Conor to be awake and actively using Luke. If he oversleeps or doesn't open the chat, no notification fires. This is not a code bug — it is a missing feature. It is the highest safety risk outside of trading because the consequence is a missed med window for a dog with PLE.
 
 ---
 
@@ -158,12 +158,12 @@ The "read JSONL, filter by date, parse lines, catch errors" pattern appears at l
 
 ## 7. SAFETY AUDIT
 
-**Path: Ximes posts alert → Jarvis responds**
+**Path: Ximes posts alert → Luke responds**
 
 1. User copies Discord message, types `/alert [paste]`
 2. `index.js:770`: loads `tradeCtx` from `loadTodayContext()` → reads `trades.jsonl`
 3. `checkEmotionalState(tradeCtx)`: checks losses (≥2 = HARD block), drawdown (≥2% = HARD), time since last trade (<5 min = HARD, <15 min after loss = HARD). Hard blocks return immediately — correct.
-4. `parseXimes("followthewhiterabblt", text, null, null, null)` — **silent failure point**: username is hardcoded as "followthewhiterabblt". If the user pastes an alert and ANALYST_MAP doesn't recognize the username (e.g. "ximestrades" — mentioned in JARVIS_STATUS.md:36 but NOT in lib/parse-ximes.js ANALYST_MAP), `parseXimes` returns null and the response is "❌ SKIP — could not parse signal". No error, no indication of the real problem.
+4. `parseXimes("followthewhiterabblt", text, null, null, null)` — **silent failure point**: username is hardcoded as "followthewhiterabblt". If the user pastes an alert and ANALYST_MAP doesn't recognize the username (e.g. "ximestrades" — mentioned in LUKE_STATUS.md:36 but NOT in lib/parse-ximes.js ANALYST_MAP), `parseXimes` returns null and the response is "❌ SKIP — could not parse signal". No error, no indication of the real problem.
 5. `loadLevels()` → loads `today-levels.json`. If not loaded today, `obj.bobby = []`. Confluence check runs with empty Bobby context — will likely return SKIP silently.
 6. `detectConfluence(...)` → `inferInstrument(strike)` → checks if strike > 3000 (ES/NQ), >= 500 (SPX), >= 100 (SPY). If strike is parsed as a premium price (e.g. $3.50) it returns null — **silent skip** with no explanation.
 7. Output: SETUP/WEAK/SKIP with confidence and suggested stop.

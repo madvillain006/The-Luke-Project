@@ -1,17 +1,17 @@
-# Final Pre-Money Audit Report — 2026-04-21
+﻿# Final Pre-Money Audit Report — 2026-04-21
 
 **Scope:** Apex 50k EOD Trail evaluation, starting 2026-04-21  
 **Auditor persona:** Senior quant engineer, 15+ years HFT/prop/retail  
-**Platform:** Jarvis 2.0 — Express + Electron + Claude API, Windows 11  
+**Platform:** Luke 2.0 — Express + Electron + Claude API, Windows 11  
 **Market state at audit:** Pre-market (before 9:30 AM ET)
 
 ---
 
 ## Mental Model
 
-Jarvis is a human-in-the-loop trading assistant. It processes Discord signals, evaluates confluence with Bobby heatmap levels, computes bracket R:R, and recommends SETUP / WEAK / SKIP. The human executes every trade manually in Tradovate. There is an 02B autonomous agent path that can place bracket orders via Tradovate API — but this path requires the human to click EXECUTE in the Jarvis UI, satisfying Apex's "human initiates" requirement as long as 02B mode is LIVE.
+Luke is a human-in-the-loop trading assistant. It processes Discord signals, evaluates confluence with Bobby heatmap levels, computes bracket R:R, and recommends SETUP / WEAK / SKIP. The human executes every trade manually in Tradovate. There is an 02B autonomous agent path that can place bracket orders via Tradovate API — but this path requires the human to click EXECUTE in the Luke UI, satisfying Apex's "human initiates" requirement as long as 02B mode is LIVE.
 
-**Critical Apex constraint:** Jarvis must never place an order without human confirmation. The EXECUTE button in chat.html is that confirmation gate. This audit verifies the gate holds, cannot be bypassed, and degrades clearly when the autonomous path is unavailable.
+**Critical Apex constraint:** Luke must never place an order without human confirmation. The EXECUTE button in chat.html is that confirmation gate. This audit verifies the gate holds, cannot be bypassed, and degrades clearly when the autonomous path is unavailable.
 
 ---
 
@@ -150,7 +150,7 @@ Jarvis is a human-in-the-loop trading assistant. It processes Discord signals, e
 | 7.3 | spec.defaultStop for SPY is 1.5 points | 1.5pt default stop on SPY options where you're buying premium is position-sizing info, not a futures stop. The bracket calculator treats entry as the underlying price, not option premium. R:R on option entry should factor in theta. Not a bug — just scope: this system grades confluence levels, not option Greeks. | INFO — out of scope |
 | 7.4 | No slippage model | executeLive() places market orders. No slippage estimate in bracket calculation. For ES/NQ futures at market open, 1 tick slippage is common. Risk dollar math assumes fill at exact entry. | INFO — acknowledged |
 | 7.5 | 02B scoreSignals() requires BOTH ximes AND bobby | If bobby signals array is empty (loader not run), scoreSignals returns null. /evaluate returns error. Manual /alert path is unaffected. Operator must run /heatmap before expecting 02B to fire. | INFO — documented behavior |
-| 7.6 | trade-popup.html EXECUTE is a no-op | Popup EXECUTE button only closes the popup. Execution happens from chat.html. If user runs Jarvis without Electron (bare node index.js), popup doesn't show, which is correct — but the button label "EXECUTE" on the popup could confuse. | P2 — cosmetic, out of scope today |
+| 7.6 | trade-popup.html EXECUTE is a no-op | Popup EXECUTE button only closes the popup. Execution happens from chat.html. If user runs Luke without Electron (bare node index.js), popup doesn't show, which is correct — but the button label "EXECUTE" on the popup could confuse. | P2 — cosmetic, out of scope today |
 
 **Phase 7 verdict:** No new blockers found. HFT-eye observations are edge cases and scope limitations, not correctness defects.
 
@@ -205,7 +205,7 @@ Jarvis is a human-in-the-loop trading assistant. It processes Discord signals, e
 
 **READY WITH CAVEATS**
 
-Jarvis is safe to use on the Apex 50k EOD Trail evaluation starting today under the following conditions:
+Luke is safe to use on the Apex 50k EOD Trail evaluation starting today under the following conditions:
 
 1. **02B mode OFF or PAPER for eval day** — 02B in LIVE mode places real orders via Tradovate API. If Apex requires human-only entry, keep 02B off. EXECUTE button now clearly redirects to Tradovate when OFF.
 
@@ -215,7 +215,7 @@ Jarvis is safe to use on the Apex 50k EOD Trail evaluation starting today under 
 
 4. **Run /heatmap within 2 hours of market open** — Bobby levels >4 hours old score near zero in confluence. Fresh levels required for meaningful brackets.
 
-5. **Verify ANTHROPIC_API_KEY in environment** — .env not present. Key must be in system environment or pm2 env or Jarvis will crash on first Claude call.
+5. **Verify ANTHROPIC_API_KEY in environment** — .env not present. Key must be in system environment or pm2 env or Luke will crash on first Claude call.
 
 No P0 blockers present. System has been validated through dry-fire (5/5 trades, 2026-04-21). Manual path bracket correctness confirmed post-instrument-bleed fix. Dollar amounts corrected this session. Good luck.
 

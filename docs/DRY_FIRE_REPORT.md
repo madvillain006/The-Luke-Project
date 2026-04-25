@@ -1,13 +1,13 @@
-# Dry Fire Report — 2026-04-21
+﻿# Dry Fire Report — 2026-04-21
 
 ## Root Cause Found
 Node.js module caching: all prior session edits to `lib/` modules were not being loaded
-by the running Jarvis process (PID 25196, uptime 945+s at discovery). Every "fix" applied
+by the running Luke process (PID 25196, uptime 945+s at discovery). Every "fix" applied
 to `slash-commands.js`, `parse-ximes.js`, etc. was sitting in files but NOT executing —
 the running process held pre-edit versions in memory. Required a clean `Stop-Process` kill
 and fresh restart to pick up changes.
 
-**This will bite us every time a lib file is edited while Jarvis is running.**
+**This will bite us every time a lib file is edited while Luke is running.**
 
 RECOMMENDATION: Install `nodemon` (`npm i -D nodemon`) and run `nodemon index.js --watch lib/`
 for all dev sessions. Alternatively use `pm2 start index.js --watch lib/`.
@@ -18,7 +18,7 @@ for all dev sessions. Alternatively use `pm2 start index.js --watch lib/`.
 
 | Field | Value |
 |---|---|
-| Jarvis version | 2.0 |
+| Luke version | 2.0 |
 | Uptime at test start | 7s (fresh boot) |
 | Platform | Windows 11, Node.js, Electron |
 | Market state during test | Pre-market (before 9:30 AM ET) |
@@ -182,4 +182,4 @@ All 5 pass criteria met. Zero regressions.
 
 - Instrument bleed eliminated: bracket-calc now enforces same-instrument zone filtering.
 - R:R 0 on valid setups eliminated: cross-instrument stop pollution removed; default brackets fire when entry is at the only zone level.
-- /alert SETUP now broadcasts `staged_trade` WS event; popup infrastructure is wired. Popup will display visually only when Jarvis is launched via the Electron desktop shortcut — bare `node index.js` serves the chat UI but the Electron popup window requires the desktop app.
+- /alert SETUP now broadcasts `staged_trade` WS event; popup infrastructure is wired. Popup will display visually only when Luke is launched via the Electron desktop shortcut — bare `node index.js` serves the chat UI but the Electron popup window requires the desktop app.

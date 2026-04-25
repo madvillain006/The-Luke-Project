@@ -315,7 +315,7 @@ async function processLiveVision(entry, parsedSignal) {
         notes:      vision.notes,
         ts:         entry.ts
       });
-      console.log('[kat-vision] Broadcast to Jarvis:', allLevels.length, 'levels from', entry.username);
+      console.log('[kat-vision] Broadcast to Luke:', allLevels.length, 'levels from', entry.username);
     }
 
   } catch (e) {
@@ -386,7 +386,7 @@ function checkKatConfluence() {
         '→ Run /confluence for full zone view'
       ].filter(Boolean).join('\n');
 
-      // Broadcast to Jarvis chat via global WS
+      // Broadcast to Luke chat via global WS
       if (typeof global.broadcast === 'function') {
         global.broadcast({ type: 'kat_alert', reply: lines });
         console.log('[kat] Confluence alert broadcast: ' + instrument + ' ' + dominantBias);

@@ -5,7 +5,7 @@ import json
 from datetime import datetime
 from playwright.async_api import async_playwright
 
-JARVIS_URL = "http://localhost:3000"
+LUKE_URL = "http://localhost:3000"
 
 CHANNELS = [
     {"server": "Base", "name": "positions", "url": "https://discord.com/channels/995345482618503249/995347068942045204", "priority": "HIGH"},
@@ -48,7 +48,7 @@ RATING | TRADER | SUMMARY"""
 
 def notify(message):
     try:
-        requests.post(f"{JARVIS_URL}/notify", json={"message": message}, timeout=5)
+        requests.post(f"{LUKE_URL}/notify", json={"message": message}, timeout=5)
         print(f"Notified: {message[:80]}")
     except Exception as e:
         print(f"Notify failed: {e}")
@@ -77,7 +77,7 @@ async def scan_channel(page, channel):
             "question": f"Channel: {channel['server']} #{channel['name']}\n\nRecent messages:\n{text_content}\n\n{SCAN_PROMPT}"
         }
 
-        res = requests.post(f"{JARVIS_URL}/see", json=payload, timeout=30)
+        res = requests.post(f"{LUKE_URL}/see", json=payload, timeout=30)
         result = res.json().get("reply", "").strip()
         print(f"  → {result[:100]}")
         return result
@@ -127,7 +127,7 @@ async def run_scan():
 
 async def run_monitor(interval_minutes=15):
     print(f"Monitor active. {len(CHANNELS)} channels. Every {interval_minutes} min.")
-    notify("Jarvis monitor online.")
+    notify("Luke monitor online.")
     while True:
         try:
             await run_scan()

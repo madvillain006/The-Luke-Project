@@ -1,8 +1,8 @@
-{
+﻿{
   "inventory_done": true,
   "scan_queue": [
-    "C:\\Users\\conor\\jarvis\\suggestions.md",
-    "C:\\Users\\conor\\jarvis\\TRADER_PROFILES.md"
+    "C:\\Users\\conor\\luke\\suggestions.md",
+    "C:\\Users\\conor\\luke\\TRADER_PROFILES.md"
   ],
   "scanned_this_pass": [
     "agents\\agent-06-research.js",
@@ -26,7 +26,7 @@
     "ecosystem.config.js",
     "electron.js",
     "ingest-exports.js",
-    "JARVIS SELF KNOWLEDGE.md",
+    "LUKE SELF KNOWLEDGE.md",
     "MEMORY_SUMMARY.md",
     "monitor.py",
     "package.json"
@@ -35,3 +35,4 @@
   "last_delta_scan": null,
   "consecutive_rejections": 0
 }
+

@@ -28,7 +28,7 @@ LAYOUT = {
     "ximes":     (OX,      OY,      HW, HH),
     "bobby":     (OX + HW, OY,      HW, HH),
     "tradovate": (OX,      OY + HH, HW, HH),
-    "jarvis":    (OX + HW, OY + HH, HW, HH),
+    "luke":      (OX + HW, OY + HH, HW, HH),
 }
 
 # ── EDGE ──────────────────────────────────────────────────────────────────────
@@ -91,16 +91,16 @@ for i, hwnd in enumerate(new_wins[:3]):
     move_win(hwnd, x, y, w, h)
     print(f"  Edge window {i+1} -> ({x},{y}) {w}x{h}")
 
-# ── POSITION JARVIS ───────────────────────────────────────────────────────────
-print("Positioning Jarvis...")
+# ── POSITION LUKE ─────────────────────────────────────────────────────────────
+print("Positioning Luke...")
 time.sleep(2)
-jarvis = find_windows("Jarvis")
-if jarvis:
-    x, y, w, h = LAYOUT["jarvis"]
-    move_win(jarvis[0], x, y, w, h, topmost=True)
-    print(f"  Jarvis -> ({x},{y}) {w}x{h} topmost")
+luke = find_windows("Luke")
+if luke:
+    x, y, w, h = LAYOUT["luke"]
+    move_win(luke[0], x, y, w, h, topmost=True)
+    print(f"  Luke -> ({x},{y}) {w}x{h} topmost")
 else:
-    print("  Jarvis window not found")
+    print("  Luke window not found")
 
 print("\n[ok] Done.")
 for name, pos in LAYOUT.items():

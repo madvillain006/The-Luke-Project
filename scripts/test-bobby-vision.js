@@ -5,7 +5,7 @@
  * Usage:
  *   node scripts/test-bobby-vision.js [path-to-image]
  *
- * Default image path: test-heatmap.png in jarvis root.
+ * Default image path: test-heatmap.png in luke root.
  * Drag any Bobby heatmap screenshot to that path, then run this.
  */
 const fs   = require('fs');

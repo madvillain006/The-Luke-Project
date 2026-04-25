@@ -4,7 +4,7 @@ import requests
 from datetime import datetime
 from playwright.async_api import async_playwright
 
-JARVIS_URL = "http://localhost:3000"
+LUKE_URL = "http://localhost:3000"
 MEMORY_FILE = "memory.json"
 
 def load_memory():
@@ -23,16 +23,16 @@ def save_memory(mem):
 
 def notify(message):
     try:
-        requests.post(f"{JARVIS_URL}/notify", json={"message": message}, timeout=5)
+        requests.post(f"{LUKE_URL}/notify", json={"message": message}, timeout=5)
     except (requests.ConnectionError, requests.Timeout) as e:
-        print(f"[notify] Jarvis unreachable: {e}")
+        print(f"[notify] Luke unreachable: {e}")
 
 def analyze_article(text, url):
     try:
         res = requests.post(
-            f"{JARVIS_URL}/chat",
+            f"{LUKE_URL}/chat",
             json={
-                "message": f"""You are Agent 06 — research agent. Read this article about AI agents and extract what is directly useful for building Jarvis.
+                "message": f"""You are Agent 06 — research agent. Read this article about AI agents and extract what is directly useful for building Luke.
 
 URL: {url}
 
@@ -41,7 +41,7 @@ CONTENT:
 
 Extract:
 1. KEY INSIGHT (one sentence — the most actionable thing)
-2. APPLIES TO (which Jarvis agent this helps: scaffold/trader/research/all)
+2. APPLIES TO (which Luke agent this helps: scaffold/trader/research/all)
 3. IMPLEMENTATION NOTE (one sentence on how to actually use this)
 4. PRIORITY: HIGH / MEDIUM / LOW for Conor's current build stage
 

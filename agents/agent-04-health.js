@@ -64,7 +64,7 @@ function persistLukeEntry(entry) {
   return flags;
 }
 
-const AGENT_04_SYSTEM = `You are the HEALTH agent within Jarvis - managing Luke's PLE and Conor's health logging.
+const AGENT_04_SYSTEM = `You are the HEALTH agent within Luke - managing Luke's PLE and Conor's health logging.
 
 LUKE'S CONDITION: PLE (protein-losing enteropathy) - chronic, requires careful daily management.
 

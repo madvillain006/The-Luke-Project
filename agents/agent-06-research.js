@@ -9,7 +9,7 @@ const client = new Anthropic();
 const MEMORY_FILE = path.join(__dirname, "../memory.json");
 const HISTORY_FILE = path.join(__dirname, "../discord-history.jsonl");
 const LOG_FILE = path.join(__dirname, "../jarvis-log.jsonl");
-const SELF_KNOWLEDGE_FILE = path.join(__dirname, "../JARVIS_SELF_KNOWLEDGE.md");
+const SELF_KNOWLEDGE_FILE = path.join(__dirname, "../LUKE SELF KNOWLEDGE.md");
 const SKILLS_DIR = path.join(__dirname, "../skills");
 const SUGGESTIONS_FILE = path.join(__dirname, "../suggestions.md");
 const DOCS_DIR = path.join(__dirname, "..");
@@ -86,9 +86,9 @@ function buildAgent06System() {
   const selfKnowledge = loadSelfKnowledge();
   const extraSkills = loadSkills();
 
-  return "You are Agent 06 - the research, intelligence, and self-improvement layer of Jarvis, built for Conor.\n\n" +
-    "YOUR ROLE: Synthesize information, validate sources, structure knowledge, analyze patterns, generate improvements, build new skills, and make Jarvis smarter over time.\n\n" +
-    "JARVIS ARCHITECTURE:\n" + selfKnowledge + "\n\n" +
+  return "You are Agent 06 - the research, intelligence, and self-improvement layer of Luke, built for Conor.\n\n" +
+    "YOUR ROLE: Synthesize information, validate sources, structure knowledge, analyze patterns, generate improvements, build new skills, and make Luke smarter over time.\n\n" +
+    "LUKE ARCHITECTURE:\n" + selfKnowledge + "\n\n" +
     "SKILLS: DEEP-RESEARCH-SYNTHESIZER, WORKFLOW-AUTOMATION-AGENT, CODE-REVIEW-SKILL, SKILL-CREATOR-META-SKILL, COMPETITIVE-INTELLIGENCE-SKILL, DEVOPS-ASSISTANT, KNOWLEDGE-STRUCTURING-SKILL, SOURCE-VALIDATION-SKILL, UI-UX-LAYOUT-ADVISOR, FLOWCHART-DECISION-BUILDER, TRADER-PROFILE-BUILDER\n\n" +
     (extraSkills ? "ADDITIONAL SKILLS:\n" + extraSkills + "\n\n" : "") +
     "SELF-IMPROVEMENT RULES:\n" +
@@ -115,7 +115,7 @@ router.post("/synthesize", async (req, res) => {
       model: "claude-opus-4-6",
       max_tokens: 800,
       system: buildAgent06System(),
-      messages: [{ role: "user", content: "Use DEEP-RESEARCH-SYNTHESIZER" + (topic ? " focused on: " + topic : "") + ".\n\nResearch:\n" + research.slice(-15).map(r => r.insight).join("\n\n") + "\n\nSignals:\n" + signals.join("\n\n") + "\n\nOutput: dominant patterns, actionable insights, what Jarvis should do differently." }]
+      messages: [{ role: "user", content: "Use DEEP-RESEARCH-SYNTHESIZER" + (topic ? " focused on: " + topic : "") + ".\n\nResearch:\n" + research.slice(-15).map(r => r.insight).join("\n\n") + "\n\nSignals:\n" + signals.join("\n\n") + "\n\nOutput: dominant patterns, actionable insights, what Luke should do differently." }]
     });
     const reply = response.content[0].text;
     log("research-synthesize", { topic, reply });
@@ -216,7 +216,7 @@ router.post("/ui-advice", async (req, res) => {
       model: "claude-haiku-4-5-20251001",
       max_tokens: 250,
       system: buildAgent06System(),
-      messages: [{ role: "user", content: "Use UI-UX-LAYOUT-ADVISOR on Jarvis Electron 480x700:\n\n" + description + "\n\nLayout improvements, hierarchy, spacing." }]
+      messages: [{ role: "user", content: "Use UI-UX-LAYOUT-ADVISOR on Luke Electron 480x700:\n\n" + description + "\n\nLayout improvements, hierarchy, spacing." }]
     });
     res.json({ reply: response.content[0].text });
   } catch (err) { res.status(500).json({ error: err.message }); }
@@ -298,7 +298,7 @@ router.post("/generate-documents", async (req, res) => {
     // 4. CONOR_EDGE.md — initialize if not exists
     const edgePath = path.join(DOCS_DIR, "CONOR_EDGE.md");
     if (!fs.existsSync(edgePath)) {
-      fs.writeFileSync(edgePath, "# CONOR EDGE DOCUMENT\n*Initialize manually — Jarvis will maintain after first entry*\n\n## Entry Criteria\nTBD — fill in after first 10 trades\n\n## Exit Criteria\nBy premium paid, not arbitrary levels\n\n## Hard Rules\n- No lottos\n- No revenge trades\n- -25% hard stop at entry\n- OCO set immediately\n- No trading during Instacart shifts\n\n## Wyckoff Framework\nCurrent phase: Markup confirmed\n\n## Track Record\nNo trades logged yet\n");
+      fs.writeFileSync(edgePath, "# CONOR EDGE DOCUMENT\n*Initialize manually — Luke will maintain after first entry*\n\n## Entry Criteria\nTBD — fill in after first 10 trades\n\n## Exit Criteria\nBy premium paid, not arbitrary levels\n\n## Hard Rules\n- No lottos\n- No revenge trades\n- -25% hard stop at entry\n- OCO set immediately\n- No trading during Instacart shifts\n\n## Wyckoff Framework\nCurrent phase: Markup confirmed\n\n## Track Record\nNo trades logged yet\n");
       log("generate-documents-doc", { doc: "CONOR_EDGE.md initialized" });
     }
 

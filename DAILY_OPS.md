@@ -1,43 +1,43 @@
----
-# JARVIS DAILY OPS
+﻿---
+# LUKE DAILY OPS
 Quick reference. Read this before touching anything.
 
 ## BEFORE YOU START
-1. Check Jarvis is NOT running:
+1. Check Luke is NOT running:
    tasklist | findstr node
    If node.exe running → taskkill /F /IM node.exe /T
 
-2. Start Jarvis manually only:
-   cd C:\Users\conor\jarvis
+2. Start Luke manually only:
+   cd C:\Users\conor\luke
    node index.js
 
 ## MORNING ROUTINE (8:30-9:20 AM)
 
 ### Step 1 — Paste RichyDubz levels (8:30-9:00 AM)
 RichyDubz posts pre-market levels in ximes-dubz channel every morning.
-Copy his morning message. In Jarvis chat type:
+Copy his morning message. In Luke chat type:
   /levels [paste message here]
-Jarvis extracts: SPY/SPX/NQ/ES key levels, bias, support, resistance.
+Luke extracts: SPY/SPX/NQ/ES key levels, bias, support, resistance.
 
 ### Step 2 — Paste Bobby heatmap context (9:00-9:20 AM)
 Bobby posts heatmap commentary in bobby-spx-coms.
-Copy his text. In Jarvis chat type:
+Copy his text. In Luke chat type:
   /heatmap [paste message here]
-Jarvis extracts: king nodes, support, resistance, VIX context.
+Luke extracts: king nodes, support, resistance, VIX context.
 
 ### Step 3 — Check today's confluence
-In Jarvis chat type:
+In Luke chat type:
   /confluence
-Jarvis shows today's HIGH and MEDIUM zones only.
+Luke shows today's HIGH and MEDIUM zones only.
 These are your levels for the day.
 
 ## DURING MARKET HOURS
 
 ### When Ximes posts an alert:
 Copy the alert from ximes-dubz Discord.
-In Jarvis chat type:
+In Luke chat type:
   /alert [paste alert here]
-Jarvis responds with one of:
+Luke responds with one of:
   ✅ SETUP — level, direction, confidence, stop, target
   ⚠️  WEAK — why it doesn't meet threshold
   ❌ SKIP — no confluence, do not trade
@@ -45,8 +45,8 @@ Jarvis responds with one of:
 ### If setup is ✅ SETUP:
 YOU decide to trade or not.
 YOU enter the trade manually in Tradovate.
-YOU set stop and target per Jarvis output.
-Jarvis NEVER places orders.
+YOU set stop and target per Luke output.
+Luke NEVER places orders.
 
 ### Checking levels during day:
   /levels today    → today's RichyDubz levels
@@ -74,21 +74,21 @@ Example:
 /alert [text]      → check Ximes alert against confluence
 /trade [details]   → log a completed trade
 /review            → today's summary
-/status            → Jarvis system status
-/stop              → shut down Jarvis safely
+/status            → Luke system status
+/stop              → shut down Luke safely
 /reset             → clear today's levels + last signal (not trades) — run EOD
 
 ## HARD RULES (read every day)
-- Jarvis suggests. You decide. You execute.
+- Luke suggests. You decide. You execute.
 - No trade without defined stop AND target.
-- No trade if Jarvis says SKIP or WEAK.
+- No trade if Luke says SKIP or WEAK.
 - No more than 3 trades per day.
 - Stop trading after 2 losses in one day.
 - Never trade last 10 minutes of session (3:50 PM+).
 - Luke meds: 4:00 AM omeprazole, 4:30 AM mirtazapine + prednisone WITH FOOD.
 
 ## WHEN THINGS BREAK
-Jarvis won't start:
+Luke won't start:
   pm2 kill
   node index.js
 
@@ -106,6 +106,6 @@ Bobby:       bobby-context.jsonl
 Trades:      trades.jsonl
 Logs:        logs/strategy-progress.log
 This file:   DAILY_OPS.md
-Status:      JARVIS_STATUS.md
+Status:      LUKE_STATUS.md
 Rules:       docs/ARCHITECTURE_RULES.md
 ---

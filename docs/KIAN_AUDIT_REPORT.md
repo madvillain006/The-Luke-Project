@@ -1,18 +1,18 @@
-# Kian Audit Report
+﻿# Kian Audit Report
 Date: April 20 2026
 Auditor: Senior Auditor (Opus / claude-sonnet-4-6 extended thinking)
-System: Jarvis v1 — trading decision-support copilot
+System: Luke v1 — trading decision-support copilot
 Scope: Full source audit + blocker fixes + Phase 2-3 enhancements
 
 ---
 
 ## Executive Summary
 
-**Is Jarvis ready for a real OWLS member to use? NO — not yet, but it is closer than it looks.**
+**Is Luke ready for a real OWLS member to use? NO — not yet, but it is closer than it looks.**
 
 The core intelligence loop is genuinely solid: Ximes parsing → Bobby context → confluence detection → emotional gate → bracket calculator → regime filter → SETUP/WEAK/SKIP verdict. That loop works end-to-end and would give a disciplined OWLS trader real decision support. The product vision is correct and the parser IP is defensible.
 
-What is blocking OWLS beta is not the intelligence — it is four operational holes that would cause confusion or misuse in a live session: Bobby's heatmap images were completely ignored (80% of his signal value), duplicate alerts were firing two popups under pressure, there was no guard against staging a second trade while one was open, and the trade popup didn't close on action. All four are now fixed. The additional gaps — stale confluence zones being treated equal to fresh ones, and 19% direction parse coverage on Ximes signals — are also addressed. Jarvis is now materially more reliable for live use than it was at audit start.
+What is blocking OWLS beta is not the intelligence — it is four operational holes that would cause confusion or misuse in a live session: Bobby's heatmap images were completely ignored (80% of his signal value), duplicate alerts were firing two popups under pressure, there was no guard against staging a second trade while one was open, and the trade popup didn't close on action. All four are now fixed. The additional gaps — stale confluence zones being treated equal to fresh ones, and 19% direction parse coverage on Ximes signals — are also addressed. Luke is now materially more reliable for live use than it was at audit start.
 
 Remaining gaps are real but manageable for a solo-use eval run. Not yet beta-ready for external OWLS members, but Conor can use it on his Apex eval starting tomorrow.
 
@@ -137,7 +137,7 @@ Changes: direction-first pattern in `classifyLiveEntry`; "ported" slang; leading
 - Finnhub key and Tradovate credentials are hardcoded/env-local
 
 **Path to OWLS alpha (estimated 6-8 weeks post-eval):**
-1. Pass Apex eval using Jarvis — this is the proof of concept
+1. Pass Apex eval using Luke — this is the proof of concept
 2. Strip personal agents (Luke, income, Tennessee) into separate repo
 3. Build `analyst_config.json` — generic parser config per analyst
 4. Add today-levels persistence per-user (currently global file)

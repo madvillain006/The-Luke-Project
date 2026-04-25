@@ -1,4 +1,4 @@
-const { getFrontMonthSymbol, log, notifyJarvis, saveState } = require("./common");
+const { getFrontMonthSymbol, log, notifyLuke, saveState } = require("./common");
 const { getBaseUrl, getTradovateToken, getAccounts, getContractId, tokenCache, emergencyFlatten } = require("./broker-tradovate");
 const { getMarketContext } = require("./market-context");
 const { validateStagedTrade } = require("./risk");
@@ -136,7 +136,7 @@ async function executeLive(state, signal) {
     state.critical_mismatch = true;
     saveState(state);
     log("execution-critical-mismatch", { entry_order_id: entryOrder.orderId, reason: "protection_failed_flatten_disabled" });
-    notifyJarvis(
+    notifyLuke(
       `!!! 02B CRITICAL FAILURE !!!\n` +
       `ENTRY FILLED. PROTECTION FAILED. FLATTEN DISABLED.\n` +
       `${signal.direction} ${ticker} @ ${signal.entry} — UNPROTECTED POSITION\n` +
@@ -174,7 +174,7 @@ async function executeLive(state, signal) {
   });
   log("autonomous-execute-live", trade);
 
-  notifyJarvis(
+  notifyLuke(
     `02B LIVE ORDER PLACED\n` +
     `${trade.direction} ${trade.ticker} @ ${trade.entry}\n` +
     `Stop: ${trade.stop} | Target: ${trade.target}\n` +

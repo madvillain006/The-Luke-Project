@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Jarvis</title>
+  <title>Luke</title>
   <style>
     :root {
       --bg:  #080c10;
@@ -76,7 +76,7 @@
 
     #tb-dot { font-size: 9px; color: var(--green); }
     #tb-dot.err { color: var(--red); }
-    #tb-jarvis-text { color: var(--med); letter-spacing: 1px; font-size: 11px; }
+    #tb-luke-text { color: var(--med); letter-spacing: 1px; font-size: 11px; }
 
     #chip-mode {
       font-size: 9px;
@@ -133,7 +133,7 @@
 
     .msg-row { display: flex; align-items: flex-end; gap: 5px; }
     .msg-row.user   { flex-direction: row-reverse; }
-    .msg-row.jarvis { flex-direction: row; }
+    .msg-row.luke { flex-direction: row; }
 
     .bubble {
       max-width: 85%;
@@ -149,7 +149,7 @@
       color: var(--fg);
     }
     .bubble.user   { background: var(--gbg); border-color: var(--gbr); color: var(--green); border-left-width: 1px; }
-    .bubble.jarvis { border-left-color: #2a3a4a; }
+    .bubble.luke { border-left-color: #2a3a4a; }
     .bubble.setup  { border-left-color: var(--green); }
     .bubble.skip   { border-left-color: var(--red); }
     .bubble.weak   { border-left-color: var(--yel); }
@@ -253,7 +253,7 @@
       .tb-lbl { display: none; }
       .tb-div { display: none; }
       .tb-seg { padding: 0 3px; }
-      #tb-jarvis-text { font-size: 10px; letter-spacing: 0; }
+      #tb-luke-text { font-size: 10px; letter-spacing: 0; }
       #tb-trades-val { font-size: 9px; }
       .bubble { font-size: 12px; padding: 4px 7px; }
       #top-bar { gap: 0; }
@@ -410,8 +410,8 @@
   <div id="top-bar">
     <div class="tb-seg has-tt">
       <span id="tb-dot">●</span>
-      <span id="tb-jarvis-text">JARVIS</span>
-      <span class="tooltip">Connection to Jarvis backend</span>
+      <span id="tb-luke-text">LUKE</span>
+      <span class="tooltip">Connection to Luke backend</span>
     </div>
     <span class="tb-div">│</span>
     <div class="tb-seg has-tt">
@@ -504,7 +504,7 @@
     <div id="paste-hint" style="display:none;font-size:10px;color:var(--yel);padding:2px 6px;letter-spacing:0.5px;"></div>
     <div id="input-row">
       <input id="input" type="text" placeholder="..." autocomplete="off" />
-      <button id="send" class="has-tt">SEND<span class="tooltip">Send message to Jarvis</span></button>
+      <button id="send" class="has-tt">SEND<span class="tooltip">Send message to Luke</span></button>
     </div>
     <div id="quick-btns">
       <button class="qbtn has-tt" data-cmd="/status">
@@ -526,7 +526,7 @@
         /review<span class="tooltip">Today's trades summary — W/L, P&amp;L, emotional state</span>
       </button>
       <button class="qbtn has-tt" data-cmd="/trading-mode">
-        /trading-mode<span class="tooltip">Set up 4-window layout (ximes, bobby, tradovate, jarvis)</span>
+        /trading-mode<span class="tooltip">Set up 4-window layout (ximes, bobby, tradovate, luke)</span>
       </button>
       <button class="qbtn has-tt" data-cmd="/balance ">
         /balance<span class="tooltip">Set current account balance for Apex floor tracking</span>
@@ -1115,7 +1115,7 @@
     });
 
     async function logIntervention(state, action) {
-      try { await fetch(BASE + "/jarvis/log-intervention", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ state, action }) }); } catch {}
+      try { await fetch(BASE + "/luke/log-intervention", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ state, action }) }); } catch {}
     }
 
     skipBtn.addEventListener("click", async () => {
@@ -1194,12 +1194,12 @@
       if (/^SETUP[:\s]/i.test(text))  return "setup";
       if (/^SKIP[:\s]/i.test(text))   return "skip";
       if (/^WEAK[:\s]/i.test(text))   return "weak";
-      return "jarvis";
+      return "luke";
     }
 
     function addMessage(role, text, type) {
       const row = document.createElement("div");
-      row.className = "msg-row " + (role === "user" ? "user" : "jarvis");
+      row.className = "msg-row " + (role === "user" ? "user" : "luke");
 
       const bubble = document.createElement("div");
       const bType = role === "user" ? "user" : detectBubbleType(text, type);
@@ -1488,7 +1488,7 @@
 
     (async () => {
       try {
-        const r = await fetch(BASE + "/jarvis/boot-check");
+        const r = await fetch(BASE + "/luke/boot-check");
         const d = await r.json();
         if (d.overall === "red") {
           const ul = document.getElementById("boot-check-list");

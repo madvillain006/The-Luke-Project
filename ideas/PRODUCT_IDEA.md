@@ -1,4 +1,4 @@
-# Jarvis → Commercial Product Vision
+﻿# Luke → Commercial Product Vision
 Date: April 20 2026
 Author: Conor Kastan
 
@@ -17,7 +17,7 @@ Every retail trader who follows Discord analysts has the same problem:
 - No system enforces discipline
 - Copy trading tools are dumb (mirror positions, no intelligence)
 
-Jarvis solves all five. That's not an accident — it was built
+Luke solves all five. That's not an accident — it was built
 by someone who had all five problems at once.
 
 ## What This Actually Is
@@ -29,7 +29,7 @@ It's a **signal intelligence layer** — reads analyst intent,
 scores confluence, filters by regime, enforces discipline,
 and surfaces the decision to a human who makes the final call.
 
-The human always executes. Jarvis never trades autonomously.
+The human always executes. Luke never trades autonomously.
 This is the legal and compliance moat. Prop firm safe by design.
 
 ## Why It's Different
@@ -39,7 +39,7 @@ Every existing tool does one thing:
 - Trading journals: log after the fact (too late)
 - Discord bots: reformat messages (no intelligence)
 
-Jarvis does all of this in one loop:
+Luke does all of this in one loop:
 Read signal → understand context → score confluence →
 check regime → check discipline → surface verdict →
 human decides → log result → learn over time
@@ -73,18 +73,18 @@ the product sells itself to anyone who follows those analysts.
 - Apex, TopstepTrader, FTMO traders
 - They CANNOT afford emotional mistakes (eval is on the line)
 - Discipline enforcement is worth real money to them
-- Jarvis is prop-firm-safe by design
+- Luke is prop-firm-safe by design
 - Price: $99-199/month (they're already paying $100+/month for evals)
 
 ### Market 3 — Discord Trading Communities (B2B)
-- White label Jarvis for any Discord trading server
+- White label Luke for any Discord trading server
 - Community owner pays, members get access
 - OWLS, Unusual Whales, other communities
 - Price: $500-2000/month per community
 
 ### Market 4 — Individual Analyst Followers
 - Anyone following a specific analyst on Discord/Twitter/X
-- Configure Jarvis with their analyst's username + parsing rules
+- Configure Luke with their analyst's username + parsing rules
 - Self-serve onboarding with analyst config wizard
 - Price: $29-49/month
 
@@ -117,7 +117,7 @@ That pitch works. Kian will listen. Ximes will find it interesting.
 The parsed data you already have proves it works on their signals.
 
 ## Timeline
-Now → June 2026: Pass Apex eval using Jarvis
+Now → June 2026: Pass Apex eval using Luke
 June 2026: Document results, clean up codebase
 July 2026: Build generic analyst config layer
 August 2026: Approach OWLS with working demo + results

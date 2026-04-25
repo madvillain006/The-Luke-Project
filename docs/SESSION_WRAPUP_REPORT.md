@@ -1,11 +1,11 @@
-# Session Wrapup Report — 2026-04-21
+﻿# Session Wrapup Report — 2026-04-21
 
 ---
 
 ## Phase Summaries
 
 ### Phase 1 — LOOK Tooltip Fix
-**What was fixed:** The LOOK button and chip-mode trading indicator were using CSS `<span class="tooltip tooltip-below">` elements for tooltips. These spans are positioned relative to the button and get clipped by the Jarvis window boundary, making them invisible.
+**What was fixed:** The LOOK button and chip-mode trading indicator were using CSS `<span class="tooltip tooltip-below">` elements for tooltips. These spans are positioned relative to the button and get clipped by the Luke window boundary, making them invisible.
 
 **Fix:** Replaced both with native HTML `title=` attributes. The OS renders native tooltips outside the window boundary, so they're never clipped.
 
@@ -36,7 +36,7 @@
 ### Phase 3 — Alert Flow Dry Fire
 **Purpose:** Verify all recent UI + backend changes (bracket calc, popup wiring, chat send) did not break the manual alert path.
 
-**Setup:** Jarvis restarted fresh. Market gate temporarily bypassed (one line commented). Levels loaded: 9 RichyDubz + 2 Bobby nodes → 5 HIGH confluence zones (5820/5850/5875 ES, 556 SPY, 20150 NQ).
+**Setup:** Luke restarted fresh. Market gate temporarily bypassed (one line commented). Levels loaded: 9 RichyDubz + 2 Bobby nodes → 5 HIGH confluence zones (5820/5850/5875 ES, 556 SPY, 20150 NQ).
 
 **Results:**
 
@@ -52,7 +52,7 @@
 
 **Known soft issue:** SPY bracket dollar amounts ($30k risk) reflect futures-style tick math and are not correct for options/equity contracts. This is a bracket-calc cosmetic issue — the actual tick counts and R:R ratios are correct.
 
-**Market gate restored:** Confirmed "Market closed" response after gate re-enabled and Jarvis restarted.
+**Market gate restored:** Confirmed "Market closed" response after gate re-enabled and Luke restarted.
 
 **Final state:** Manual alert path fully functional. Instrument bleed eliminated (fix validated from prior session). R:R 0 eliminated. Market gate ON.
 
@@ -64,7 +64,7 @@
 **Additions:**
 - **RAM check:** At runtime (not dry-run), reads available physical RAM via `ctypes.windll.kernel32.GlobalMemoryStatusEx`. If < 2 GB available, prints warning and exits before opening anything. Catches exceptions gracefully.
 - **Dry-run mode:** `LAYOUT_DRYRUN=1 python scripts/trading-layout.py` prints all intended actions without touching any windows or processes.
-- **Position fix:** Jarvis window position corrected from `(1340, 600, 400, 520)` to `(960, 540, 400, 540)` per spec.
+- **Position fix:** Luke window position corrected from `(1340, 600, 400, 520)` to `(960, 540, 400, 540)` per spec.
 
 **Verification:** `grep pyautogui` → no matches. `python ast.parse` → syntax ok. `LAYOUT_DRYRUN=1 python` → prints all intended actions, exits cleanly, no desktop changes.
 

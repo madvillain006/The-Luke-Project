@@ -48,7 +48,7 @@ function loadAllHistorySignals() {
   } catch { return []; }
 }
 
-const SIENNA_SYSTEM = `You are SIENNA — a quantitative trading research engine within Jarvis.
+const SIENNA_SYSTEM = `You are SIENNA — a quantitative trading research engine within Luke.
 
 YOUR JOB:
 - Extract and model trader methodologies from raw Discord data

@@ -1,12 +1,12 @@
----
-# JARVIS — LIVE STATUS DOCUMENT
+﻿---
+# LUKE — LIVE STATUS DOCUMENT
 Last updated: 2026-04-20 (session6 — bracket + popup chart + safe layout)
 Maintained by: Conor Kastan
 
-## WHAT JARVIS IS
+## WHAT LUKE IS
 Trading decision-support copilot + personal assistant.
 Human (Conor) makes ALL final decisions.
-Jarvis prepares, alerts, suggests. Never executes autonomously.
+Luke prepares, alerts, suggests. Never executes autonomously.
 Apex 50k EOD Trail eval compliant.
 
 ## HARD RULES — NEVER CHANGE
@@ -87,7 +87,7 @@ Bobby alone = context only, no trade
 - execution-live.js emergency flatten auto-call (commented out)
 - index.js background intervals (lines 1195, 1202, 1219 commented out)
 - ecosystem.config.js autorestart: false on all apps
-- start-jarvis.bat renamed to start-jarvis.bat.disabled
+- start-luke.bat.disabled (formerly start-jarvis.bat)
 - PM2 killed and saved empty
 
 ## AGENTS
@@ -130,7 +130,7 @@ trading/market-context.js — market context
 - **/alert response** now includes full bracket: entry, stop (ticks + $), target (ticks + $), R:R 1:X — weak trades downgraded to WEAK, R:R <1.0 auto-rejected
 - **Trade popup** (trade-popup.html) shows entry/stop/target with tick count and dollar risk, all bracket fields displayed
 - **Mini chart in popup**: TradingView Lightweight Charts 4.1.3, 48 candles of 5-min data (sample), entry (white), stop (red dashed), target (green dashed) price lines
-- **Safe layout script**: trading-layout.py rewritten — pyautogui completely removed, only subprocess + win32gui, opens 3 Edge windows (ximes/bobby/tradovate) + pins Jarvis bottom-right always-on-top
+- **Safe layout script**: trading-layout.py rewritten — pyautogui completely removed, only subprocess + win32gui, opens 3 Edge windows (ximes/bobby/tradovate) + pins Luke bottom-right always-on-top
 
 ## WHAT'S NEXT (in order)
 1. Phase 1.7 — replay alignment retest (target 15%+ pass rate, now using pre-parsed signals)
@@ -151,5 +151,5 @@ This agent is the most safety-critical non-trading component.
 ## THE POINT
 Built by one person with ADHD, a sick dog, a trading eval deadline,
 and a move across state lines by June 15 2026.
-Jarvis exists because the alternative was losing.
+Luke exists because the alternative was losing.
 ---

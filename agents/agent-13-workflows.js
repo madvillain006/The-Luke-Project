@@ -128,7 +128,7 @@ async function runPreflight(checks) {
         const r = await fetch("http://localhost:3000/health");
         const d = await r.json(); ok = d.ok === true; detail = d.ok ? "ok" : "server not healthy";
       } else if (check === "boot_check") {
-        const r = await fetch("http://localhost:3000/jarvis/boot-check");
+        const r = await fetch("http://localhost:3000/luke/boot-check");
         const d = await r.json(); ok = d.overall !== "red"; detail = d.overall;
       } else if (check === "tradovate_connected") {
         const r = await fetch("http://localhost:3000/agent/autonomous/test-connection", { method: "POST" });

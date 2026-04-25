@@ -4,7 +4,7 @@ const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
 const path = require("path");
 
-const { log: jarvisLog } = require("../lib/logger");
+const { log: lukeLog } = require("../lib/logger");
 const client = new Anthropic();
 const ROOT = path.join(__dirname, "..");
 
@@ -173,12 +173,12 @@ async function runInventory() {
   saveState(state);
 
   swLog({ phase: "inventory", event: "done", file_count: map.files.length });
-  jarvisLog("sweeper-inventory", { files_queued: map.files.length });
+  lukeLog("sweeper-inventory", { files_queued: map.files.length });
   return { files: map.files.length };
 }
 
 // ── PHASE 2 — SCAN BATCH ──────────────────────────────────
-const SCAN_SYSTEM = `You are Sweeper — code quality scanner for Jarvis AI system.
+const SCAN_SYSTEM = `You are Sweeper — code quality scanner for Luke AI system.
 Scan the file. Find real issues with concrete evidence only.
 
 Categories: token_waste | duplication | dead_code | search_trap | error_gap | schema_drift | scheduler_waste | config_sprawl
@@ -267,12 +267,12 @@ async function runScanBatch(batchSize = 5) {
   if (state.scan_queue.length === 0) {
     state.last_full_scan = new Date().toISOString();
     swLog({ phase: "scan", event: "pass_complete", total: state.scanned_this_pass.length });
-    jarvisLog("sweeper-pass-complete", { files: state.scanned_this_pass.length });
+    lukeLog("sweeper-pass-complete", { files: state.scanned_this_pass.length });
   }
 
   saveState(state);
   const totalFindings = results.reduce((s, r) => s + (r.findings || 0), 0);
-  jarvisLog("sweeper-batch", { scanned: results.length, findings: totalFindings, queued: state.scan_queue.length });
+  lukeLog("sweeper-batch", { scanned: results.length, findings: totalFindings, queued: state.scan_queue.length });
   return { scanned: results.length, total_findings: totalFindings, queue_remaining: state.scan_queue.length };
 }
 
@@ -310,7 +310,7 @@ async function runSynthesis() {
     : "";
 
   const synthPrompt =
-    `You are Sweeper synthesis for Jarvis — Conor's personal AI assistant.\n\n` +
+    `You are Sweeper synthesis for Luke — Conor's personal AI assistant.\n\n` +
     `FINDINGS (${allFindings.length} across codebase):\n` +
     findingsStr +
     (rejectedStr ? `\n\nREJECTED PATTERNS (do not re-propose):\n${rejectedStr}` : "") +
@@ -353,7 +353,7 @@ async function runSynthesis() {
     body: JSON.stringify({ message: `SWEEPER: ${allFindings.length} findings → proposals written to ${fname}` })
   }).catch(() => {});
 
-  jarvisLog("sweeper-synthesis", { findings: allFindings.length, file: fname });
+  lukeLog("sweeper-synthesis", { findings: allFindings.length, file: fname });
   return { proposals_file: fname, findings_used: allFindings.length };
 }
 

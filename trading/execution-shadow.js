@@ -1,5 +1,5 @@
 const {
-  log, loadState, saveState, logPaperTrade, notifyJarvis, getPointValue
+  log, loadState, saveState, logPaperTrade, notifyLuke, getPointValue
 } = require("./common");
 const { reconcileState } = require("./broker-tradovate");
 const { getMarketContext, TICK_SIZE } = require("./market-context");
@@ -50,7 +50,7 @@ async function executeShadow(state, signal) {
       sess.rejected.push({ reason: "reconcile_mismatch", mismatches: rec.mismatches, timestamp: new Date().toISOString() });
       state.pending_signal = null;
       saveState(state);
-      notifyJarvis(`02B SHADOW: reconcile mismatch (live would have blocked)\n${(rec.mismatches || []).join("\n")}`);
+      notifyLuke(`02B SHADOW: reconcile mismatch (live would have blocked)\n${(rec.mismatches || []).join("\n")}`);
       return { executed: false, reason: "reconcile_mismatch", simulated: true };
     }
   } catch (err) {
@@ -62,7 +62,7 @@ async function executeShadow(state, signal) {
     });
     state.pending_signal = null;
     saveState(state);
-    notifyJarvis(`02B SHADOW: reconcile error\n${err.message}`);
+    notifyLuke(`02B SHADOW: reconcile error\n${err.message}`);
     return { executed: false, reason: "reconcile_error", simulated: true, error: err.message };
   }
 
@@ -81,7 +81,7 @@ async function executeShadow(state, signal) {
     sess.rejected.push({ reason: "market_gate", reasons: gate.reasons, timestamp: new Date().toISOString() });
     state.pending_signal = null;
     saveState(state);
-    notifyJarvis(`02B SHADOW: market gate rejected\n${gate.reasons.join("\n")}`);
+    notifyLuke(`02B SHADOW: market gate rejected\n${gate.reasons.join("\n")}`);
     return { executed: false, reason: "market_gate_rejected", reasons: gate.reasons, simulated: true };
   }
 
@@ -119,7 +119,7 @@ async function executeShadow(state, signal) {
   logPaperTrade(trade);
   log("shadow-execute", trade);
 
-  notifyJarvis(
+  notifyLuke(
     `02B SHADOW TRADE (SIMULATED — NO ORDER SENT)\n` +
     `${trade.direction} ${trade.ticker} @ ${fill.fill_price} (${fill.slippage_ticks}t slip)\n` +
     `Stop: ${signal.stop} | Target: ${signal.target}\n` +
@@ -168,7 +168,7 @@ async function monitorShadowPosition() {
   state.open_position = null;
   saveState(state);
 
-  notifyJarvis(
+  notifyLuke(
     `02B SHADOW CLOSE — ${closeReason}\n` +
     `${pos.direction} ${pos.ticker}: ${pnl >= 0 ? "+" : ""}$${pnl.toFixed(0)} (simulated)\n` +
     `Session P&L: $${sess.simulated_pnl.toFixed(0)} | Entries: ${sess.would_have_entered}`

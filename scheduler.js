@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { log } = require("./lib/logger");
 
-const JARVIS_URL = "http://localhost:3000";
+const LUKE_URL = "http://localhost:3000";
 const HEARTBEAT_FILE = path.join(__dirname, "scheduler-heartbeat.json");
 const JOB_STATUS_FILE = path.join(__dirname, "scheduler-jobs.json");
 
@@ -59,7 +59,7 @@ async function runJob(job, fn) {
 }
 
 async function post(endpoint, body) {
-  const r = await fetch(`${JARVIS_URL}${endpoint}`, {
+  const r = await fetch(`${LUKE_URL}${endpoint}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body)
@@ -69,7 +69,7 @@ async function post(endpoint, body) {
 }
 
 async function get(endpoint) {
-  const r = await fetch(`${JARVIS_URL}${endpoint}`);
+  const r = await fetch(`${LUKE_URL}${endpoint}`);
   if (!r.ok) throw new Error(`GET ${endpoint} failed: HTTP ${r.status}`);
   return r.json();
 }
@@ -135,7 +135,7 @@ async function runPreMarketScan() {
 }
 
 async function generateDocuments() {
-  const r = await fetch(`${JARVIS_URL}/agent/research/generate-documents`, {
+  const r = await fetch(`${LUKE_URL}/agent/research/generate-documents`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({})
@@ -213,7 +213,7 @@ async function pollRSSFeeds() {
         if (!title || title.length < 5) continue;
 
         const text = title + "\n" + desc;
-        const quickR = await fetch(`${JARVIS_URL}/agent/opportunity/scan-context`, {
+        const quickR = await fetch(`${LUKE_URL}/agent/opportunity/scan-context`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ context: text, platform: feed.name })
@@ -222,7 +222,7 @@ async function pollRSSFeeds() {
         const quick = await quickR.json();
 
         if (quick.reply && quick.reply.toLowerCase().startsWith("yes")) {
-          const intakeR = await fetch(`${JARVIS_URL}/agent/opportunity/intake`, {
+          const intakeR = await fetch(`${LUKE_URL}/agent/opportunity/intake`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text, source: feed.name })
@@ -247,7 +247,7 @@ async function pollRSSFeeds() {
 }
 
 async function resetWeeklyIncome() {
-  const r = await fetch(`${JARVIS_URL}/agent/income/reset-week`, {
+  const r = await fetch(`${LUKE_URL}/agent/income/reset-week`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({})
@@ -257,7 +257,7 @@ async function resetWeeklyIncome() {
 }
 
 async function checkTradovateHealth() {
-  const r = await fetch(`${JARVIS_URL}/agent/autonomous/test-connection`, {
+  const r = await fetch(`${LUKE_URL}/agent/autonomous/test-connection`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: "{}"
@@ -308,13 +308,13 @@ async function runScheduler() {
   //
   //   if (hour === 0) {
   //     await runJob("tokens-reset-daily", async () => {
-  //       const r = await fetch(`${JARVIS_URL}/agent/tokens/reset-daily`, { method: "POST" });
+  //       const r = await fetch(`${LUKE_URL}/agent/tokens/reset-daily`, { method: "POST" });
   //       if (!r.ok) throw new Error("HTTP " + r.status);
   //       return "reset";
   //     });
   //     if (now.getDay() === 1) {
   //       await runJob("tokens-reset-weekly", async () => {
-  //         const r = await fetch(`${JARVIS_URL}/agent/tokens/reset-weekly`, { method: "POST" });
+  //         const r = await fetch(`${LUKE_URL}/agent/tokens/reset-weekly`, { method: "POST" });
   //         if (!r.ok) throw new Error("HTTP " + r.status);
   //         return "reset";
   //       });
@@ -340,7 +340,7 @@ async function runScheduler() {
   //
   //   if (hour === 3) {
   //     await runJob("research-background-cycle", async () => {
-  //       const r = await fetch(`${JARVIS_URL}/agent/research/background-cycle`, {
+  //       const r = await fetch(`${LUKE_URL}/agent/research/background-cycle`, {
   //         method: "POST",
   //         headers: { "Content-Type": "application/json" },
   //         body: JSON.stringify({})
@@ -350,7 +350,7 @@ async function runScheduler() {
   //     });
   //     await runJob("agent-assessments", runAgentAssessments);
   //     await runJob("tool-health-nightly", async () => {
-  //       const r = await fetch(`${JARVIS_URL}/jarvis/tool-health-nightly`, { method: "POST" });
+  //       const r = await fetch(`${LUKE_URL}/luke/tool-health-nightly`, { method: "POST" });
   //       if (!r.ok) throw new Error("HTTP " + r.status);
   //       return "ok";
   //     });
@@ -376,7 +376,7 @@ async function runScheduler() {
   //
   //   if (hour === 9) {
   //     await runJob("autonomous-daily-reset", async () => {
-  //       const r = await fetch(`${JARVIS_URL}/agent/autonomous/daily-reset`, {
+  //       const r = await fetch(`${LUKE_URL}/agent/autonomous/daily-reset`, {
   //         method: "POST",
   //         headers: { "Content-Type": "application/json" },
   //         body: JSON.stringify({})
@@ -395,7 +395,7 @@ async function runScheduler() {
   //
   //   if (hour === 17 && now.getDay() !== 0 && now.getDay() !== 6) {
   //     await runJob("apex-eod-update", async () => {
-  //       const r = await fetch(`${JARVIS_URL}/agent/autonomous/eod-update`, {
+  //       const r = await fetch(`${LUKE_URL}/agent/autonomous/eod-update`, {
   //         method: "POST",
   //         headers: { "Content-Type": "application/json" },
   //         body: JSON.stringify({})

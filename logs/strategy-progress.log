@@ -1,4 +1,4 @@
-[phase1.1] ingestion-audit complete â€” 2026-04-20 â€” 12 entry points mapped, 4 flags raised (SSRF, memory poisoning, hardcoded key, unvalidated WS broadcast)
+ï»¿[phase1.1] ingestion-audit complete â€” 2026-04-20 â€” 12 entry points mapped, 4 flags raised (SSRF, memory poisoning, hardcoded key, unvalidated WS broadcast)
 [phase1.2] structured-extraction complete â€” lib/parse-signal.js | parseSignal(rawText, source) â†’ {bias, level, confidence, source, raw, passToPipeline} | LOW confidence gates pipeline | 2026-04-20T14:14:25Z
 [phase1.3] replay-sufficiency complete â€” INSUFFICIENT | logs/discord-history.jsonl missing (0 entries, need 50+) | parse-signal.js ready | blocker: run discord-scraper to populate history | 2026-04-20
 [phase1.4] replay-alignment complete â€” 2026-04-20 â€” 128 results from 100 entries | passToPipeline=1/128 (0.8%) | BUGS: bold markdown breaks regexes, dollar-prefix strike notation unrecognized | verdict: NOT fit for replay â€” 2 targeted fixes needed | logs/replay-alignment.md
@@ -69,24 +69,24 @@
 [A-04] STOP_UPDATE and TARGET_UPDATE management signals return actionable response instead of SKIP 2026-04-21T14:48:05Z
 [A-01] Fix Bobby level instrument inference â€” SPX range 4000-9000 maps to SPX not ES. Bobby king nodes now cluster with Ximes SPX signals. 2026-04-21T18:57:07Z
 [kat-layer1] agent-14-kat.js â€” Discord ingestion bot, Layer 1 complete. Offline until KAT_BOT_TOKEN set and enabled via API. 2026-04-21T21:26:44Z
-[session-replay] lib/session-replay.js — structured /alert replay log. Every verdict captured with timing, confluence, skip reason, apex headroom. 2026-04-21T18:41:25Z
+[session-replay] lib/session-replay.js ï¿½ structured /alert replay log. Every verdict captured with timing, confluence, skip reason, apex headroom. 2026-04-21T18:41:25Z
 [runner-protocol] /runner command, TRIM handler with runner state, active-trade runner exception, /trade RUNNER flag 2026-04-21T23:42:44Z
 [runner-protocol] /runner command, TRIM handler with runner state, active-trade runner exception, /trade RUNNER flag 2026-04-21T23:42:50Z
-[F1-fix] /trade now updates state.daily_pnl — Apex consistency cap applies to manual trades 2026-04-21T19:53:44Z
+[F1-fix] /trade now updates state.daily_pnl ï¿½ Apex consistency cap applies to manual trades 2026-04-21T19:53:44Z
 [F4-fix] Add dollar-200 safety buffer to manual /alert Apex floor check 2026-04-21T20:09:00Z
-[session-readiness] Advisory readiness warnings on SETUP/WEAK verdicts — never blocks /alert 2026-04-21T20:34:21Z
-[test-fix] Market-aware instrument grouping — SPY/QQQ <1000, ES_NQ >=1000, SPX tickerHint only, validZones Option C, 54/54 2026-04-21T21:32:37Z
-[kat-backfill-fix] Channel lookup by ID — 90-day backfill working 2026-04-21T22:13:29Z
-[kat-targeted-backfill] POST /agent/kat/backfill-channels — targeted channel backfill endpoint 2026-04-21T22:30:22Z
+[session-readiness] Advisory readiness warnings on SETUP/WEAK verdicts ï¿½ never blocks /alert 2026-04-21T20:34:21Z
+[test-fix] Market-aware instrument grouping ï¿½ SPY/QQQ <1000, ES_NQ >=1000, SPX tickerHint only, validZones Option C, 54/54 2026-04-21T21:32:37Z
+[kat-backfill-fix] Channel lookup by ID ï¿½ 90-day backfill working 2026-04-21T22:13:29Z
+[kat-targeted-backfill] POST /agent/kat/backfill-channels ï¿½ targeted channel backfill endpoint 2026-04-21T22:30:22Z
 [kat-layer2-text] lib/parse-kat.js â€” text signal parser for KapriK0rn3/El Jefe/Barry/General Dollars style 2026-04-22T02:41:52Z
 [kat-layer2-noise] Raise price floor to 50, tighten noise gate for no-ticker sub-100 messages 2026-04-21T22:44:21Z
 [kat-layer2-wire] Live capture auto-parses to processed-signals.jsonl, batch endpoint processes backfill, GET /signals endpoint 2026-04-21T22:48:02Z
-[kat-message-update] Wire messageUpdate event — captures Barry post-then-edit pattern and fixes filename undefined bug 2026-04-21T22:59:55Z
-[kat-confluence] lib/kat-confluence.js — recent Kat signal lookup feeds detectConfluence(), Jefe heatmap linked to /alert verdict 2026-04-21T23:10:00Z
-[kat-level-filter] Instrument-aware price floors — SPX>=3000 NQ>=10000 SPY/QQQ>=200 equity>=50 2026-04-21T23:35:28Z
-[kat-confluence-alert] Proactive WS alert when 2+ analysts bullish/bearish same instrument within 20min — 5min poll, 15min cooldown, market hours only 2026-04-21T23:39:46Z
+[kat-message-update] Wire messageUpdate event ï¿½ captures Barry post-then-edit pattern and fixes filename undefined bug 2026-04-21T22:59:55Z
+[kat-confluence] lib/kat-confluence.js ï¿½ recent Kat signal lookup feeds detectConfluence(), Jefe heatmap linked to /alert verdict 2026-04-21T23:10:00Z
+[kat-level-filter] Instrument-aware price floors ï¿½ SPX>=3000 NQ>=10000 SPY/QQQ>=200 equity>=50 2026-04-21T23:35:28Z
+[kat-confluence-alert] Proactive WS alert when 2+ analysts bullish/bearish same instrument within 20min ï¿½ 5min poll, 15min cooldown, market hours only 2026-04-21T23:39:46Z
 [kat-server-commands] getTopLevels/getBiasReport/getHeatmap/checkLevelMagnets implemented â€” !kat commands live, Level Magnets active, zero Claude API calls 2026-04-22T03:55:56Z
-[level-frequency] scripts/build-level-frequency.js + confluence bonus — 90d Kat signals mapped, historical level repetition feeds zone scoring 2026-04-22T00:09:36Z
-[kat-live-vision] Real-time vision on live captures during market hours — broadcasts levels to Jarvis WS, no historical batch 2026-04-22T00:17:47Z
+[level-frequency] scripts/build-level-frequency.js + confluence bonus ï¿½ 90d Kat signals mapped, historical level repetition feeds zone scoring 2026-04-22T00:09:36Z
+[kat-live-vision] Real-time vision on live captures during market hours ï¿½ broadcasts levels to Luke WS, no historical batch 2026-04-22T00:17:47Z
 [backtest-heatmap] Heatmap text correlation added to backtest â€” Bobby/Jefe text levels vs signal strike/direction, zero Claude API calls, image URLs noted as expired 2026-04-22T04:40:04Z
 [backtest-csv-fix] Barchart ISO datetime parser + Latest column mapping + CT->ET timezone offset 2026-04-22T08:46:38Z

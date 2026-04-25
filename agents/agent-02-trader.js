@@ -35,7 +35,7 @@ async function getLiveQuote(ticker) {
   } catch { return null; }
 }
 
-const AGENT_02_SYSTEM = `You are the TRADER agent within Jarvis — Conor's options trading execution layer.
+const AGENT_02_SYSTEM = `You are the TRADER agent within Luke — Conor's options trading execution layer.
 
 YOUR ROLE:
 Signal analysis, entry validation, trade logging, P&L tracking. You don't make trades — you validate them against Conor's rules and track results.

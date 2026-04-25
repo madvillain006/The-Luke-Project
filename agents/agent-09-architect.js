@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const { spawnSync } = require("child_process");
 
-const { log: jarvisLog } = require("../lib/logger");
+const { log: lukeLog } = require("../lib/logger");
 const client = new Anthropic();
 const ROOT = path.join(__dirname, "..");
 
@@ -34,7 +34,7 @@ const PROTECTED = [
 ];
 
 // Static — cached block 1. Role + rules + output schema. Keep compact.
-const SYSTEM_PROMPT = `You are Agent-09, Jarvis architect, Phase A (read-only observer).
+const SYSTEM_PROMPT = `You are Agent-09, Luke architect, Phase A (read-only observer).
 Scan logs and repo. Return structured observations. No code changes. No proposals.
 
 Rules:
@@ -125,8 +125,8 @@ function ensureGit() {
 
   const env = {
     ...process.env,
-    GIT_AUTHOR_NAME: "Jarvis",    GIT_AUTHOR_EMAIL: "jarvis@local",
-    GIT_COMMITTER_NAME: "Jarvis", GIT_COMMITTER_EMAIL: "jarvis@local"
+    GIT_AUTHOR_NAME: "Luke",    GIT_AUTHOR_EMAIL: "luke@local",
+    GIT_COMMITTER_NAME: "Luke", GIT_COMMITTER_EMAIL: "luke@local"
   };
 
   spawnSync("git", ["init"], { cwd: ROOT, encoding: "utf8", env });
@@ -146,7 +146,7 @@ async function runScan(trigger = "scheduled", forceRun = false) {
   const spentToday = getDailyCost();
   if (spentToday >= DAILY_BUDGET) {
     archLog({ phase: PHASE, trigger, skipped: "budget_exceeded", cost_today: spentToday.toFixed(4) });
-    jarvisLog("agent-09-dormant", { reason: "budget_exceeded", cost_today: spentToday.toFixed(4) });
+    lukeLog("agent-09-dormant", { reason: "budget_exceeded", cost_today: spentToday.toFixed(4) });
     return { skipped: true, reason: "budget", cost_today: spentToday };
   }
 
@@ -155,7 +155,7 @@ async function runScan(trigger = "scheduled", forceRun = false) {
     const streak = getZeroStreak();
     if (streak >= 3) {
       archLog({ phase: PHASE, trigger, skipped: "zero_streak", streak });
-      jarvisLog("agent-09-paused", { reason: "zero_streak", streak });
+      lukeLog("agent-09-paused", { reason: "zero_streak", streak });
       return { skipped: true, reason: "zero_streak", streak };
     }
   }
@@ -268,7 +268,7 @@ async function runScan(trigger = "scheduled", forceRun = false) {
     }).catch(() => {});
   }
 
-  jarvisLog("agent-09-run", { trigger, obs: observations.length, run_cost: runCost.toFixed(5), day_total: dayTotal.toFixed(4), cache_write: cacheWrite, cache_read: cacheRead });
+  lukeLog("agent-09-run", { trigger, obs: observations.length, run_cost: runCost.toFixed(5), day_total: dayTotal.toFixed(4), cache_write: cacheWrite, cache_read: cacheRead });
   return {
     phase: PHASE, trigger,
     observations_count: observations.length,

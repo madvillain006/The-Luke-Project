@@ -1,8 +1,8 @@
-# FUTURE_COMMERCIAL_AUDIT.md
-**Jarvis — Deferred Items for Commercial/Multi-User Hardening**
+﻿# FUTURE_COMMERCIAL_AUDIT.md
+**Luke — Deferred Items for Commercial/Multi-User Hardening**
 Date: 2026-04-21
 
-This document tracks issues that are acceptable for solo-trader use but would need resolution before Jarvis is deployed as a shared or commercial service.
+This document tracks issues that are acceptable for solo-trader use but would need resolution before Luke is deployed as a shared or commercial service.
 
 ---
 
@@ -28,7 +28,7 @@ Agents (02B, 04, 06, 08) read/write shared JSONL files. Concurrent multi-user wr
 ## High Priority for Production Scale
 
 ### H-1: agent-13-workflows.js Not Mounted
-`agents/agent-13-workflows.js` is listed as active in `JARVIS_STATUS.md` but has no `app.use()` mount in `index.js`. The workflow execution engine is unreachable. Before relying on it: add the mount and write integration tests.
+`agents/agent-13-workflows.js` is listed as active in `LUKE_STATUS.md` but has no `app.use()` mount in `index.js`. The workflow execution engine is unreachable. Before relying on it: add the mount and write integration tests.
 
 ### H-2: ESLint Warnings in Core Files
 `index.js` has 7 unused-variable warnings for imports that may be used via dynamic dispatch but are not verified. Before scaling: audit these imports and either connect them to their intended routes or remove them.
@@ -64,7 +64,7 @@ The main server file handles routing, scheduling, WebSocket, WS token, crash rec
 ### M-5: `lib/config.js` Not Imported Anywhere Yet
 Constants were centralized into `lib/config.js` but existing code still uses the original inline values. The constants file is ready — a subsequent pass should replace inline magic numbers with config references.
 
-### M-6: `/jarvis/self-diagnose` Endpoint Is Broad
+### M-6: `/luke/self-diagnose` Endpoint Is Broad
 The self-diagnose endpoint returns internal file paths and state structure. Acceptable for solo use; would need access control for any shared deployment.
 
 ### M-7: Playwright Dependency Unused

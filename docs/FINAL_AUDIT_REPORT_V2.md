@@ -1,4 +1,4 @@
-# JARVIS FINAL AUDIT REPORT v2
+﻿# LUKE FINAL AUDIT REPORT v2
 
 ## Date: 2026-04-21
 ## Auditor: Senior Quant Engineer (skeptical posture — commercial and eval readiness focus)
@@ -52,7 +52,7 @@ The consistency cap is only enforced in `getApexConsistencyReason()` (trading/ri
 ### 1d. News blackout
 **FAIL — no system protection**
 
-No FOMC/NFP/CPI calendar integration exists anywhere in the codebase. No blackout window in `market-hours.js`. Conor's only protection is manual awareness. During an FOMC announcement, a Ximes signal could pass every Jarvis gate and display SETUP. This is a real eval-risk.
+No FOMC/NFP/CPI calendar integration exists anywhere in the codebase. No blackout window in `market-hours.js`. Conor's only protection is manual awareness. During an FOMC announcement, a Ximes signal could pass every Luke gate and display SETUP. This is a real eval-risk.
 
 ### 1e. isAutomated flag
 **PASS**
@@ -90,7 +90,7 @@ if (process.env.NODE_ENV === "test") {
 ### 1g. Copy-trade detection surface
 **PASS**
 
-Execution timing is non-deterministic: signal arrives → Jarvis evaluates (milliseconds) → popup shown → Conor reads and decides → EXECUTE clicked (seconds to minutes). This is not a bot pattern. All orders are market orders with `isAutomated: false`. No fixed-interval firing or timestamp-correlated execution pattern.
+Execution timing is non-deterministic: signal arrives → Luke evaluates (milliseconds) → popup shown → Conor reads and decides → EXECUTE clicked (seconds to minutes). This is not a bot pattern. All orders are market orders with `isAutomated: false`. No fixed-interval firing or timestamp-correlated execution pattern.
 
 ---
 
@@ -300,11 +300,11 @@ Zero Claude API calls. Realistic latency: 15-25ms. For a time-sensitive Ximes al
 | MISSING: /balance | Not in DAILY_OPS.md at all (F2). Apex floor is stale from yesterday unless he runs it. If he made money yesterday and didn't update, tomorrow's floor check uses the wrong balance. |
 | MISSING: 02B status | No mention of checking 02B running/stopped state. If 02B is in wrong mode (paper vs live), Conor has no reminder. |
 | MISSING: /status check | DAILY_OPS.md doesn't instruct a /status run before trading. Missing from the pre-trade checklist. |
-| Hard rule: "No more than 3 trades per day" | DAILY_OPS.md says this but Jarvis doesn't enforce a hard 3-trade limit. In RISK_OFF regime, max_trades_today=1. In NEUTRAL, 2. In RISK_ON, 3. If Conor manually logs trades in a RISK_ON day, the regime gate allows 3 but the emotional gate (2-loss limit) might block sooner. The DAILY_OPS max and the system max are not synchronized. |
+| Hard rule: "No more than 3 trades per day" | DAILY_OPS.md says this but Luke doesn't enforce a hard 3-trade limit. In RISK_OFF regime, max_trades_today=1. In NEUTRAL, 2. In RISK_ON, 3. If Conor manually logs trades in a RISK_ON day, the regime gate allows 3 but the emotional gate (2-loss limit) might block sooner. The DAILY_OPS max and the system max are not synchronized. |
 
 ### 4c. Multi-message paste behavior
 
-When Conor copies 5 Ximes messages at once and pastes into Jarvis:
+When Conor copies 5 Ximes messages at once and pastes into Luke:
 
 1. detectPasteIntent() finds ximes username in first 200 chars → routes to /alert
 2. parseXimes(detectedUsername, text) receives the entire 5-message blob as a single text
@@ -313,7 +313,7 @@ When Conor copies 5 Ximes messages at once and pastes into Jarvis:
 
 **What Conor sees**: One SETUP or SKIP response. He doesn't know the other 4 signals were lost.
 
-**When this hurts**: Ximes sometimes posts a series (entry → sizing update → management update) in quick succession. Conor pastes all 3. Jarvis processes the entry, ignores the sizing note and management signal. He gets a SETUP verdict but misses critical context (e.g., "only 2/5 contracts left").
+**When this hurts**: Ximes sometimes posts a series (entry → sizing update → management update) in quick succession. Conor pastes all 3. Luke processes the entry, ignores the sizing note and management signal. He gets a SETUP verdict but misses critical context (e.g., "only 2/5 contracts left").
 
 ### 4d. Management signal UX gap during live trades
 

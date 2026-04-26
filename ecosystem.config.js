@@ -6,7 +6,9 @@ module.exports = {
       cwd: "C:\\Users\\conor\\luke",
       env: { ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY, NODE_ENV: "production" },
       restart_delay: 3000,
-      autorestart: false,
+      autorestart: true,
+      max_restarts: 5,
+      min_uptime: '60s',
       watch: false
     },
     {
@@ -15,7 +17,9 @@ module.exports = {
       cwd: "C:\\Users\\conor\\luke",
       env: { ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY, NODE_ENV: "production" },
       restart_delay: 3000,
-      autorestart: false,
+      autorestart: true,
+      max_restarts: 5,
+      min_uptime: '60s',
       watch: false
     },
     {

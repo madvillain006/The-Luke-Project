@@ -1,3 +1,35 @@
+/*
+ * ARCHIVED — intraday-scraper v0 (screenshot-based)
+ *
+ * Original purpose:
+ *   Automated ingestion of analyst signals via Playwright screenshot scraping
+ *   of Discord windows. Captured pre-market data (Finnhub quotes, level estimates)
+ *   and analyst Discord channel content without requiring manual paste.
+ *
+ * Why archived:
+ *   Requires a Mac mini target environment for headless browser + Discord window
+ *   management. Current dev machine (Windows) cannot run this reliably. Archived
+ *   rather than deleted to preserve the work and historical context.
+ *
+ * When to revisit:
+ *   Post-Apex-payout, when shipping the commercial version. Do NOT unarchive
+ *   and resume without first evaluating alternative approaches (see below).
+ *
+ * Architectural note for v1 design:
+ *   Do NOT assume screenshot scraping is the right path. Evaluate:
+ *     - Direct Discord API (discord.js bot reading channels — Kat already does this)
+ *     - Headless browser with proper authentication
+ *     - OWLS server hooks (if Elevated Charts provides them)
+ *     - Paid analyst feed APIs (structured data, no scraping needed)
+ *   v0 screenshot approach was a pragmatic first attempt, not a design commitment.
+ *
+ * Original commit reference:
+ *   c929691 — Jarvis v1 - built April 20 2026
+ *   0172f71 — fix(intraday): log notifyJarvis and glance errors instead of silent catch
+ *   567448c — fix(security): remove hardcoded Finnhub key fallback
+ *   5381a97 — Rename project: Jarvis → Luke
+ */
+
 const { execSync } = require("child_process");
 const fs = require("fs");
 const path = require("path");

@@ -1,3 +1,24 @@
+process.on('uncaughtException', (err, origin) => {
+  const fs = require('fs');
+  const path = require('path');
+  const ts = new Date().toISOString();
+  const entry = `[${ts}] uncaughtException origin=${origin}\n${err.stack || err}\n\n`;
+  try { fs.appendFileSync(path.join(__dirname, 'crash.log'), entry); } catch (e) { /* swallow */ }
+  console.error(entry);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  const fs = require('fs');
+  const path = require('path');
+  const ts = new Date().toISOString();
+  const entry = `[${ts}] unhandledRejection\nreason: ${reason?.stack || reason}\n\n`;
+  try { fs.appendFileSync(path.join(__dirname, 'crash.log'), entry); } catch (e) { /* swallow */ }
+  console.error(entry);
+  // Do NOT exit — log and continue. Node 15+ would crash by default; we want to survive
+  // transient promise rejections but capture them.
+});
+
 require('dotenv').config();
 const express = require("express");
 const Anthropic = require("@anthropic-ai/sdk");
@@ -565,7 +586,7 @@ app.post("/see-image", async (req, res) => {
 
 app.post("/premarket", (req, res) => {
   try {
-    const { runPreMarketScan } = require("./intraday-scraper");
+    const { runPreMarketScan } = require("./archive/intraday-scraper-v0-screenshot-based");
     res.json({ started: true });
     runPreMarketScan().catch(console.error);
   } catch (err) {

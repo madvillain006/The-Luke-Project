@@ -1,3 +1,29 @@
+process.on('uncaughtException', (err, origin) => {
+  const fs = require('fs');
+  const path = require('path');
+  const ts = new Date().toISOString();
+  const entry = `[${ts}] uncaughtException origin=${origin}\n${err.stack || err}\n\n`;
+  try { fs.appendFileSync(path.join(__dirname, 'crash.log'), entry); } catch (e) { /* swallow */ }
+  console.error(entry);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  const fs = require('fs');
+  const path = require('path');
+  const ts = new Date().toISOString();
+  const entry = `[${ts}] unhandledRejection\nreason: ${reason?.stack || reason}\n\n`;
+  try { fs.appendFileSync(path.join(__dirname, 'crash.log'), entry); } catch (e) { /* swallow */ }
+  console.error(entry);
+  // Do NOT exit — log and continue. Node 15+ would crash by default; we want to survive
+  // transient promise rejections but capture them.
+});
+
+process.on('SIGINT', () => {
+  console.log('SIGINT received — shutting down gracefully');
+  process.exit(0);
+});
+
 const fs = require("fs");
 const path = require("path");
 const { log } = require("./lib/logger");
@@ -128,7 +154,7 @@ async function morningBriefing() {
 }
 
 async function runPreMarketScan() {
-  const { runPreMarketScan } = require("./intraday-scraper");
+  const { runPreMarketScan } = require("./archive/intraday-scraper-v0-screenshot-based");
   await runPreMarketScan();
   log("pre-market-scan", { triggered: true });
   return "completed";

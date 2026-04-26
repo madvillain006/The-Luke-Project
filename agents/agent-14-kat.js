@@ -93,7 +93,7 @@ if (process.env.KAT_BOT_TOKEN) {
       ]
     });
 
-    discordClient.on('ready', () => {
+    discordClient.on('clientReady', () => {
       console.log('[kat] Bot online as ' + discordClient.user.tag);
       runBackfill(discordClient);
       startKatPoll();

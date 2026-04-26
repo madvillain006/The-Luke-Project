@@ -381,6 +381,7 @@ app.post("/chat", async (req, res) => {
   }
   if (routedMessage.startsWith("/")) {
     if (image && routedMessage.startsWith("/heatmap")) res._heatmapImage = image;
+    if (image && routedMessage.startsWith("/dubz"))    res._dubzImage    = image;
     const handled = await handleSlashCommand(routedMessage, res);
     if (handled !== null) return;
   }

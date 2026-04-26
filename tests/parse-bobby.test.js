@@ -1,6 +1,8 @@
 'use strict';
 
-const { parseBobby, mergeBobby } = require('../lib/parse-bobby');
+const fs   = require('fs');
+const path = require('path');
+const { parseBobby, mergeBobby, detectMediaType } = require('../lib/parse-bobby');
 
 describe('parseBobby', () => {
   it('returns null for empty or non-string input', () => {
@@ -49,6 +51,66 @@ describe('parseBobby', () => {
     const result = parseBobby('King node 5800 — VIX elevated, be careful');
     expect(result).not.toBeNull();
     expect(result.vix_mentioned).toBe(true);
+  });
+});
+
+describe('detectMediaType', () => {
+  // Simulate clipboard path: real PNG fixture loaded from disk, base64-encoded
+  it('detects PNG from base64 string (clipboard path)', () => {
+    const pngPath = path.join(__dirname, '../fixtures/dubz/2026-04-26_0917_dubz_nq.png');
+    const b64 = fs.readFileSync(pngPath).toString('base64');
+    expect(detectMediaType(b64)).toBe('image/png');
+  });
+
+  it('detects PNG from raw Buffer', () => {
+    const pngPath = path.join(__dirname, '../fixtures/dubz/2026-04-26_0917_dubz_nq.png');
+    const buf = fs.readFileSync(pngPath);
+    expect(detectMediaType(buf)).toBe('image/png');
+  });
+
+  it('detects JPEG from base64 string', () => {
+    // Minimal JPEG: FF D8 FF E0 magic bytes
+    const jpegBytes = Buffer.from([0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10, 0x4A, 0x46, 0x49, 0x46, 0x00, 0x01]);
+    const b64 = jpegBytes.toString('base64');
+    expect(detectMediaType(b64)).toBe('image/jpeg');
+  });
+
+  it('detects JPEG from raw Buffer', () => {
+    const jpegBytes = Buffer.from([0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10]);
+    expect(detectMediaType(jpegBytes)).toBe('image/jpeg');
+  });
+
+  it('detects GIF from Buffer', () => {
+    const gif = Buffer.from([0x47, 0x49, 0x46, 0x38, 0x39, 0x61]); // GIF89a
+    expect(detectMediaType(gif)).toBe('image/gif');
+  });
+
+  it('detects WebP from Buffer', () => {
+    const webp = Buffer.from([
+      0x52, 0x49, 0x46, 0x46,  // RIFF
+      0x00, 0x00, 0x00, 0x00,  // file size (ignored)
+      0x57, 0x45, 0x42, 0x50   // WEBP
+    ]);
+    expect(detectMediaType(webp)).toBe('image/webp');
+  });
+
+  it('throws on unrecognized format instead of silently defaulting', () => {
+    const junk = Buffer.from([0x00, 0x01, 0x02, 0x03, 0x04, 0x05]);
+    expect(() => detectMediaType(junk)).toThrow('unrecognized image format');
+  });
+
+  it('throws on wrong input type', () => {
+    expect(() => detectMediaType(42)).toThrow('expected string or Buffer');
+    expect(() => detectMediaType(null)).toThrow('expected string or Buffer');
+  });
+
+  it('strips data URL prefix before detection (caller responsibility — verify raw64 path)', () => {
+    // Callers do: raw64 = input.replace(/^data:image\/[^;]+;base64,/, '')
+    // Confirm that after stripping, the PNG is still detected correctly
+    const pngPath = path.join(__dirname, '../fixtures/dubz/2026-04-26_0917_dubz_nq.png');
+    const dataUrl = 'data:image/png;base64,' + fs.readFileSync(pngPath).toString('base64');
+    const raw64   = dataUrl.replace(/^data:image\/[^;]+;base64,/, '');
+    expect(detectMediaType(raw64)).toBe('image/png');
   });
 });
 

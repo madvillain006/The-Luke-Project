@@ -10,6 +10,7 @@ bobby-context.jsonl
 autonomous-state.json
 data/*
 !data/futures-rollover-calendar.json
+!data/.gitkeep
 *.jsonl
 discord-exports/
 LOOK AT THIS ONE AND RENAME FOR DISCORD EXPORTS/

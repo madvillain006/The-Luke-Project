@@ -584,14 +584,13 @@ app.post("/see-image", async (req, res) => {
   }
 });
 
+// guarded in Phase 1B.6.3 — intraday-scraper v0 archived; requires Mac mini hardware
 app.post("/premarket", (req, res) => {
-  try {
-    const { runPreMarketScan } = require("./archive/intraday-scraper-v0-screenshot-based");
-    res.json({ started: true });
-    runPreMarketScan().catch(console.error);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  res.status(503).json({
+    error: "premarket-scan-archived",
+    message: "Pre-market scan depends on intraday-scraper v0 which is archived (Phase 1B.6.2). Available in v1 with Mac mini target.",
+    phase: "1B.6.3"
+  });
 });
 
 app.post("/do", async (req, res) => {
@@ -1149,14 +1148,15 @@ function writeCrashState(reason, err) {
   } catch {}
 }
 
-process.on("uncaughtException", (err) => {
-  writeCrashState("uncaughtException", err);
-  process.exit(1);
-});
-
-process.on("unhandledRejection", (reason) => {
-  writeCrashState("unhandledRejection", reason);
-});
+// disabled in Phase 1B.6.3 — superseded by crash handlers at top of file (write to crash.log).
+// unhandledRejection was dual-logging: both the handler below and the top-of-file handler fired.
+// process.on("uncaughtException", (err) => {
+//   writeCrashState("uncaughtException", err);
+//   process.exit(1);
+// });
+// process.on("unhandledRejection", (reason) => {
+//   writeCrashState("unhandledRejection", reason);
+// });
 
 // ── BOOT SANITY CHECKS ──────────────────────────────────────────────────────
 (function bootChecks() {

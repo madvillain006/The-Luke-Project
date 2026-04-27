@@ -1,11 +1,11 @@
-﻿# MEMORY SUMMARY
+# MEMORY SUMMARY
 *Updated 2026-04-22 — reflects current state as of Apex eval week*
 
 # Conor Summary (April 22, 2026)
 
 **Financial State:** Apex 50k funded eval in progress. Balance ~$50,717, floor ~$48,053. Need $2,283 more profit to pass $53k target and receive payout. Instacart is the income bridge — goal is to quit it after Apex payout. Monthly burn $1,410, Kat covers rent.
 
-**Luke Health:** PLE (protein-losing enteropathy). Strict med protocol: omeprazole alone at 4AM (empty stomach), 30 min wait, then mirtazapine + prednisone at 4:30AM. Never mix. Diet: kibble + cottage cheese. Carafate only if Luke refuses kibble. Last log April 21 — meds given, food yes, stool firm, energy normal.
+**Luke:** In memory of Luke. He was Conor's dog and mattered deeply. Do not surface medication schedules, feeding logs, or care reminders.
 
 **Trading Setup (current):**
 - Account: Apex 50k eval — futures only, NOT options

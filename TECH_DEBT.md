@@ -67,3 +67,108 @@ confluence weights and per-analyst trust scores.
 Stash any pre-payout-collected intraday CSV data at
 data/historical/<date>/<instrument>_1min.csv until this harness is
 built. Do not wire into anything before Phase 5.
+
+---
+
+## Phase 3+ (post-Phase-2): Mancini analyst integration
+
+Adam Mancini posts SPX levels on Twitter that have proven reliable.
+Add as a fourth analyst alongside Dubz / Bobby / Saty (Ximes is
+trade-execution, not level-source).
+
+Required pieces (estimated 1-2 days of work):
+- fixtures/mancini/ directory + README documenting format
+- lib/parse-mancini.js — text parser. Mancini posts in tweet format,
+  short. SPX levels primarily. May need a separate parser path or could
+  potentially reuse parts of parseDubz.
+- /mancini slash command in lib/slash-commands.js
+- appendManciniToMemory function writing to Level Memory under SPX key
+- Confluence engine (lib/confluence-engine.js once Phase 2 ships) needs
+  to recognize 'mancini' as a valid analyst in mentions[]
+- Tests for parser + memory integration
+
+Do NOT add Mancini before Phase 2 ships. Adding a fourth analyst to a
+correlation engine that hasn't validated against three is scope creep.
+Conor will paste Mancini levels manually into a temporary holding file
+until the parser is built.
+
+Holding file: fixtures/mancini/inbox.md (centralized append-only log,
+Conor pastes here, parser is built later to read this file).
+
+---
+
+## Phase 3+: Centralized per-analyst commentary log files
+
+Adopted 2026-04-27. Pattern: instead of one .txt per snapshot, each
+analyst has a single rolling log file per day with all timestamped
+commentary inline. Image attachments stay in their own files with
+timestamps that cross-reference into the log.
+
+Format:
+  fixtures/<analyst>/<YYYY-MM-DD>_<analyst>_log.md
+
+Per-entry shape:
+  ## [HH:MM AM/PM]
+  > <message text>
+  Image: <filename or "none">
+  Tickers: <list or "all">
+  Note: <Conor's eyes-on observation>
+
+Rationale: makes intraday narrative legible end-to-end. Phase 5
+backtest harness reads these chronologically and pairs with intraday
+price data for empirical edge measurement.
+
+For Phase 2: parsers continue to read individual .txt files for
+structured parsing. The log file is a parallel human-readable record,
+not a parser input. Phase 5+ work converts the log files into a
+structured ingest pipeline.
+
+Files already created:
+- fixtures/bobby/2026-04-27_bobby_log.md (seeded with 6 entries from
+  the morning's snapshots)
+
+---
+
+## Phase 5+: Futures-vs-options tolerance differentiation
+
+In Phase 2 confluence scoring, all instruments use the same scoring
+formula. In production trading, Conor trades ES futures (eval account)
+which has tighter drawdown tolerance than options.
+
+Phase 2 v1 treats all levels equivalently. Future enhancement: per-
+instrument scoring weight adjustments where ES/NQ futures levels
+require tighter cross-source agreement (e.g. crossSourceConfirmed
+within 0.10pt instead of 0.25pt) before earning the +0.15 weight.
+SPY/QQQ/SPX options-driven scoring stays as currently specified.
+
+This is a tuning question, not a bug. Acceptable to defer until
+post-payout when backtest data exists to validate the right tolerances
+empirically. Adding futures-tightness now without data is guessing.
+
+---
+
+## Phase 5+: Intraday price action vs analyst signal validation
+
+Once historical intraday data is collected (currently being downloaded
+by Conor) and the Phase 5 backtest harness exists, run every Bobby
+king_node, every Dubz key+flip, and every Ximes LIVE_ENTRY against the
+intraday price action that followed.
+
+Specifically:
+- Bobby king nodes: did price actually pin near the node, or did it
+  break through? Pin rate per node, time-to-break, post-break drift.
+- Dubz key flips: did the level act as flip (break + retest)? Flip
+  hold rate vs failure rate.
+- Ximes LIVE_ENTRY: did the entry produce a runner, scalp, or stop?
+  R-multiple distribution per signal.
+
+Conor noted: futures drawdown tolerance is tighter than options. The
+"wiggle room" allowed by an options contract spread is not present on
+futures. So a Bobby king node that's ±2 points imprecise might be
+acceptable confluence for SPY options but unacceptable for ES futures
+on a $48k floor. Phase 5 metrics need to capture this asymmetry.
+
+Output: per-analyst, per-signal-type, per-instrument edge measurement.
+Drives both confluence-weight tuning and the futures-tightness
+adjustment above.
+

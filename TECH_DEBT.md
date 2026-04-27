@@ -97,6 +97,45 @@ Conor pastes here, parser is built later to read this file).
 
 ---
 
+## Phase 5+: Mancini parser — spurious year-as-price parse_errors
+
+Behavior: parser extracts year tokens (e.g. "2026") from prose like
+"best long of 2026" and from Reddit timestamp prefixes
+("04/22/2026 11:50AM") as numerics, then discards them via the
+3000-20000 range validator. Produces 14 spurious parse_errors per
+Reddit-archive batch run.
+
+Impact: cosmetic only. No real ES prices dropped. No level data
+lost. Phase 5 backtest is unaffected.
+
+Fix sketch: add 1900-2100 year-range exclusion in extractPrices,
+OR strip embedded "MM/DD/YYYY" timestamp prefixes during
+preprocessing before the price scanner runs.
+
+Priority: low. Defer.
+
+---
+
+## Phase 5+: Mancini parser — mergeSubResults propagates narrative-only error to merged result with levels
+
+Behavior: when one sub-tweet of a multi-tweet Reddit comment is
+narrative-only (e.g. the "Note: ..." sub-tweet at 04/22/2026
+07:57AM with no levels), its "narrative-only post — no levels
+detected" error bubbles up into the merged result's parse_errors
+even when the merged result has valid levels (e.g. tweet 66 in
+parsed-batch-reddit-archive returns levels [7097, 7147] but also
+the narrative-only error).
+
+Impact: cosmetic only. Levels parse correctly. Error is a stray.
+
+Fix sketch: in mergeSubResults, filter "narrative-only post"
+errors from parse_errors when the merged result has levels.length
+> 0 OR chop_zones.length > 0.
+
+Priority: low. Defer.
+
+---
+
 ## Phase 3+: Centralized per-analyst commentary log files
 
 Adopted 2026-04-27. Pattern: instead of one .txt per snapshot, each

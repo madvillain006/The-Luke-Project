@@ -1,0 +1,1291 @@
+{
+  "tweets": [
+    {
+      "instrument": "ES",
+      "date": "2026-04-09",
+      "tweet_timestamp": "2026-04-09T12:00:00-04:00",
+      "levels": [
+        {
+          "price": 6788,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "chop zones\" with explicit ranges (e.g. \"6793/88-6830=chop\"). - Says \"no elevator down sell = no t",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6830,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "chop zones\" with explicit ranges (e.g. \"6793/88-6830=chop\"). - Says \"no elevator down sell = no t",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [
+        {
+          "low": 6788,
+          "high": 6830,
+          "source_snippet": "chop zones\" with explicit ranges (e.g. \"6793/88-6830=chop\"). - Says \"no elevator down sell = no t"
+        }
+      ],
+      "no_trade_signal": true,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-10",
+      "tweet_timestamp": "2026-04-10T12:00:00-04:00",
+      "levels": [
+        {
+          "price": 6592,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "we get some. Runners still paying from Tuesday's 6592 reclaim and yesterday's 6809 Failed Breakdown. 6872-6848=",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "Tuesday's 6592 reclaim and yesterday's 6809 Failed Breakdown. 6872-6848=chop/flag. Today's 1st targe",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6848,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "and yesterday's 6809 Failed Breakdown. 6872-6848=chop/flag. Today's 1st target was 6882, and we ra",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6872,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "and yesterday's 6809 Failed Breakdown. 6872-6848=chop/flag. Today's 1st target was 6882, and we ra",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6882,
+          "significance": "key",
+          "direction": "support",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "09 Failed Breakdown. 6872-6848=chop/flag. Today's 1st target was 6882, and we ran there, and dipped. 6900-05 still abov",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6900,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ceiling - 6882 — 1st target (HIT) - 6900-6905 — stretch resistance",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [
+        {
+          "low": 6848,
+          "high": 6872,
+          "source_snippet": "and yesterday's 6809 Failed Breakdown. 6872-6848=chop/flag. Today's 1st target was 6882, and we ra"
+        }
+      ],
+      "no_trade_signal": true,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6809,
+          "pattern": "failed_breakdown",
+          "source_snippet": "Tuesday's 6592 reclaim and yesterday's 6809 Failed Breakdown. 6872-6848=chop/flag. Today's 1st targe"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-10",
+      "tweet_timestamp": "2026-04-10T12:00:00-04:00",
+      "levels": [
+        {
+          "price": 6592,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "in #ES_F but runners still paying. Trigger #1 was 6592 reclaim Tuesday, now +280 points. Trigger #2 was ystds 68",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "im Tuesday, now +280 points. Trigger #2 was ystds 6809 reclaim. Target was 6872, still a ceiling Plan today: Rid",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6848,
+          "significance": "key",
+          "direction": null,
+          "intent": "stop",
+          "trigger_type": "fail",
+          "hit_status": "pending",
+          "trap_warning": true,
+          "source": "text",
+          "source_snippet": "pport (watch traps). 6872, 6882, 6900 next slate. 6848 fails, dip 6821-26 - 6592 — Trigger #1 (carry-fo",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6852,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "till a ceiling Plan today: Ride runner. 6848-52=support (watch traps). 6872, 6882, 6900 next sl",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6872,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": true,
+          "source": "text",
+          "source_snippet": "w +280 points. Trigger #2 was ystds 6809 reclaim. Target was 6872, still a ceiling Plan today: Ride runner. 6848-52",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-09",
+      "tweet_timestamp": "2026-04-09T12:00:00-04:00",
+      "levels": [
+        {
+          "price": 6592,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "the runner pay, which is now +280 from Tuesday's 6592 reclaim long. Today's #ES_F trigger was the 6809 reclaim.",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "6592 reclaim long. Today's #ES_F trigger was the 6809 reclaim. Targets were 6819, 6830 main (both hit). Bonus w",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6819,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "long. Today's #ES_F trigger was the 6809 reclaim. Targets were 6819, 6830 main (both hit). Bonus were 6846, 6854, 687",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": {
+        "trigger_price": 6592,
+        "points_paid": 280
+      },
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-09",
+      "tweet_timestamp": "2026-04-09T12:00:00-04:00",
+      "levels": [
+        {
+          "price": 6592,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "nue to pay in (now +280 points from the 6592 Failed Breakdown on Tuesday given out live) good time to",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": {
+        "trigger_price": 6592,
+        "points_paid": 280
+      },
+      "pattern_entries": [
+        {
+          "price": 6592,
+          "pattern": "failed_breakdown",
+          "source_snippet": "nue to pay in (now +280 points from the 6592 Failed Breakdown on Tuesday given out live) good time to"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-04",
+      "tweet_timestamp": "2026-04-04T12:00:00-04:00",
+      "levels": [
+        {
+          "price": 6499,
+          "significance": "key",
+          "direction": "support",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ts 6677, 6716, 6820. 6592 fails, retrace to 6553, 6499 1st - 6499 — 2nd retrace target if 6592 fails",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6592,
+          "significance": "key",
+          "direction": null,
+          "intent": "stop",
+          "trigger_type": "fail",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "reakout attempt likely. Targets 6677, 6716, 6820. 6592 fails, retrace to 6553, 6499 1st - 6499 — 2nd re",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6624,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "in a clear downtrend channel/flag with 6624 resistance. This week, we hit resistance Plan Next",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-09",
+      "tweet_timestamp": "2026-04-09T16:00:00-04:00",
+      "levels": [
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "Closing update #ES_F: 6809 reclaim was today's long trigger given at 8am. Targets we",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6830,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "09 reclaim was today's long trigger given at 8am. Targets were 6830 main (hit), 6872 bonus (hit). Hold runner now for",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-09",
+      "tweet_timestamp": "2026-04-09T08:00:00-04:00",
+      "levels": [
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "eps paying in #ES_F. Today's long trigger was the 6809 reclaim given live 8am. Core targets given were 6819, 683",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6846,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ve 8am. Core targets given were 6819, 6830 (hit). Bonus slate were 6846 (hit), 6854 (hit), 6872 (been here for an hour) Ride runner now 6883, 6902 2nd bonus set",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6854,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ve 8am. Core targets given were 6819, 6830 (hit). Bonus slate were 6846 (hit), 6854 (hit), 6872 (been here for an hour) Ride runner now 6883, 6902 2nd bonus set",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6872,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ve 8am. Core targets given were 6819, 6830 (hit). Bonus slate were 6846 (hit), 6854 (hit), 6872 (been here for an hour) Ride runner now 6883, 6902 2nd bonus set",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6902,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "second_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "872 (been here for an hour) Ride runner now 6883, 6902 2nd bonus set",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-09",
+      "tweet_timestamp": "2026-04-09T08:00:00-04:00",
+      "levels": [
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "argets now in #ES_F. Today's long trigger was the 6809 reclaim given at 8am + in newsletter last night. Core tar",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6846,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ght. Core target slate was 6819, 6830 (both hit). Bonus targets today were 6846 (just hit), 6854, 6872. Now just let a small runner work rest of day",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6854,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ght. Core target slate was 6819, 6830 (both hit). Bonus targets today were 6846 (just hit), 6854, 6872. Now just let a small runner work rest of day",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6872,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ght. Core target slate was 6819, 6830 (both hit). Bonus targets today were 6846 (just hit), 6854, 6872. Now just let a small runner work rest of day",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-09",
+      "tweet_timestamp": "2026-04-09T08:00:00-04:00",
+      "levels": [
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "We have hit the full bonus slate in #ES_F. 6809 reclaim was today's long trigger given at 8am. Core targe",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6819,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "claim was today's long trigger given at 8am. Core targets were 6819, 6830, both hit. 6830 was range resistance. Bonus",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6830,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "Core targets were 6819, 6830, both hit. 6830 was range resistance. Bonus/breakout slate were 6846 (hit),",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6846,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "6819, 6830, both hit. 6830 was range resistance. Bonus/breakout slate were 6846 (hit), 6854 (hit), 6872 (hit exact). Ride that runner. Next bonus set are 6883, 6902",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6854,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "6819, 6830, both hit. 6830 was range resistance. Bonus/breakout slate were 6846 (hit), 6854 (hit), 6872 (hit exact). Ride that runner. Next bonus set are 6883, 6902",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6872,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "6819, 6830, both hit. 6830 was range resistance. Bonus/breakout slate were 6846 (hit), 6854 (hit), 6872 (hit exact). Ride that runner. Next bonus set are 6883, 6902",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6883,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "4 (hit), 6872 (hit exact). Ride that runner. Next bonus set are 6883, 6902",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6902,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "4 (hit), 6872 (hit exact). Ride that runner. Next bonus set are 6883, 6902",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-09",
+      "tweet_timestamp": "2026-04-09T12:00:00-04:00",
+      "levels": [
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "etting scalps. Today's long trigger given was the 6809 reclaim. We triggered at 930AM. 1st target was 6819 (hit)",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6819,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "iven was the 6809 reclaim. We triggered at 930AM. 1st target was 6819 (hit). 2nd target was ~6830 (hit). 6830 remains r",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6830,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "riggered at 930AM. 1st target was 6819 (hit). 2nd target was ~6830 (hit). 6830 remains range res. Lock in gains Bonu",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6846,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "6830 (hit). 6830 remains range res. Lock in gains Bonus slate today remains 6846, 6854, 6872",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6854,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "6830 (hit). 6830 remains range res. Lock in gains Bonus slate today remains 6846, 6854, 6872",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6872,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "6830 (hit). 6830 remains range res. Lock in gains Bonus slate today remains 6846, 6854, 6872",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-09",
+      "tweet_timestamp": "2026-04-09T12:00:00-04:00",
+      "levels": [
+        {
+          "price": 6788,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "830, 6846, 6854, 6872 if ES wants more. 6793/88-6830=chop - 6788, 6793 — chop floor - 68",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "in #ES_F as we digest the recent 250 point long. 6809 reclaim was today's choppy long trigger. We triggered 930",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6819,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "today's choppy long trigger. We triggered 930AM. 1st target was 6819 where I warned *lock in lvl to lvl aggressively*.",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6830,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "830, 6846, 6854, 6872 if ES wants more. 6793/88-6830=chop - 6788, 6793 — chop floor - 68",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [
+        {
+          "low": 6788,
+          "high": 6830,
+          "source_snippet": "830, 6846, 6854, 6872 if ES wants more. 6793/88-6830=chop - 6788, 6793 — chop floor - 68"
+        }
+      ],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-09",
+      "tweet_timestamp": "2026-04-09T08:00:00-04:00",
+      "levels": [
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "trades. *Lock in gains lvl to lvl aggressively*. 6809 reclaim was long trigger given at 8am. We triggered Targe",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6819,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "claim was long trigger given at 8am. We triggered Targets were 6819 1st (hit), 6830 2nd (not yet). Bonus slate 6846,",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6830,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "second_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "at 8am. We triggered Targets were 6819 1st (hit), 6830 2nd (not yet). Bonus slate 6846, 6854, 6872",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6846,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "Targets were 6819 1st (hit), 6830 2nd (not yet). Bonus slate 6846, 6854, 6872",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6854,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "Targets were 6819 1st (hit), 6830 2nd (not yet). Bonus slate 6846, 6854, 6872",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6872,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "Targets were 6819 1st (hit), 6830 2nd (not yet). Bonus slate 6846, 6854, 6872",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-09",
+      "tweet_timestamp": "2026-04-09T09:00:00-04:00",
+      "levels": [
+        {
+          "price": 6593,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "day 2 of digesting Tuesday's 250 point 6593 Failed Breakdown long. Be very careful trading 0 vol - traps",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6781,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "short_trigger",
+          "trigger_type": "fail",
+          "hit_status": "pending",
+          "trap_warning": true,
+          "source": "text",
+          "source_snippet": "chop. 6809 reclaims see 6819, 6830+. 6788 fails, sell 6781 (watch traps), 6766-70 - 6766-6770 — short",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6788,
+          "significance": "key",
+          "direction": null,
+          "intent": "stop",
+          "trigger_type": "fail",
+          "hit_status": "pending",
+          "trap_warning": true,
+          "source": "text",
+          "source_snippet": "to 6830=pure chop. 6809 reclaims see 6819, 6830+. 6788 fails, sell 6781 (watch traps), 6766-70 - 6766-6",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "re extreme. No change: 6793/88 to 6830=pure chop. 6809 reclaims see 6819, 6830+. 6788 fails, sell 6781 (watch traps), 6766-70",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6819,
+          "significance": "key",
+          "direction": "support",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "re extreme. No change: 6793/88 to 6830=pure chop. 6809 reclaims see 6819, 6830+. 6788 fails, sell 6781 (watch traps), 6766-70",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6830,
+          "significance": "key",
+          "direction": "support",
+          "intent": "second_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "re extreme. No change: 6793/88 to 6830=pure chop. 6809 reclaims see 6819, 6830+. 6788 fails, sell 6781 (watch traps), 6766-70",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [
+        {
+          "low": 6788,
+          "high": 6830,
+          "source_snippet": "ps and fakeouts are extreme. No change: 6793/88 to 6830=pure chop. 6809 reclaims see 6819, 6830+. 6788 fa"
+        }
+      ],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6593,
+          "pattern": "failed_breakdown",
+          "source_snippet": "day 2 of digesting Tuesday's 250 point 6593 Failed Breakdown long. Be very careful trading 0 vol - traps"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    }
+  ],
+  "deduped_levels": [
+    {
+      "price": 6499,
+      "significance": "key",
+      "direction": "support",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "ts 6677, 6716, 6820. 6592 fails, retrace to 6553, 6499 1st - 6499 — 2nd retrace target if 6592 fails",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-04T12:00:00-04:00"
+    },
+    {
+      "price": 6592,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "long_trigger",
+      "trigger_type": "reclaim",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "we get some. Runners still paying from Tuesday's 6592 reclaim and yesterday's 6809 Failed Breakdown. 6872-6848=\nin #ES_F but runners still paying. Trigger #1 was 6592 reclaim Tuesday, now +280 points. Trigger #2 was ystds 68",
+      "crossSourceConfirmed": false,
+      "tweet_count": 2,
+      "tweet_timestamp": "2026-04-10T12:00:00-04:00"
+    },
+    {
+      "price": 6592,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "failed_breakdown",
+      "trigger_type": "breakdown",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "nue to pay in (now +280 points from the 6592 Failed Breakdown on Tuesday given out live) good time to",
+      "crossSourceConfirmed": false,
+      "tweet_count": 2,
+      "tweet_timestamp": "2026-04-09T12:00:00-04:00"
+    },
+    {
+      "price": 6592,
+      "significance": "key",
+      "direction": null,
+      "intent": "stop",
+      "trigger_type": "fail",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "reakout attempt likely. Targets 6677, 6716, 6820. 6592 fails, retrace to 6553, 6499 1st - 6499 — 2nd re",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-04T12:00:00-04:00"
+    },
+    {
+      "price": 6593,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "failed_breakdown",
+      "trigger_type": "breakdown",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "day 2 of digesting Tuesday's 250 point 6593 Failed Breakdown long. Be very careful trading 0 vol - traps",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-09T09:00:00-04:00"
+    },
+    {
+      "price": 6624,
+      "significance": "unclear",
+      "direction": "resistance",
+      "intent": null,
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "in a clear downtrend channel/flag with 6624 resistance. This week, we hit resistance Plan Next",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-04T12:00:00-04:00"
+    },
+    {
+      "price": 6781,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "short_trigger",
+      "trigger_type": "fail",
+      "hit_status": "pending",
+      "trap_warning": true,
+      "source": "text",
+      "source_snippet": "chop. 6809 reclaims see 6819, 6830+. 6788 fails, sell 6781 (watch traps), 6766-70 - 6766-6770 — short",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-09T09:00:00-04:00"
+    },
+    {
+      "price": 6788,
+      "significance": "key",
+      "direction": null,
+      "intent": "stop",
+      "trigger_type": "fail",
+      "hit_status": "pending",
+      "trap_warning": true,
+      "source": "text",
+      "source_snippet": "to 6830=pure chop. 6809 reclaims see 6819, 6830+. 6788 fails, sell 6781 (watch traps), 6766-70 - 6766-6",
+      "crossSourceConfirmed": false,
+      "tweet_count": 3,
+      "tweet_timestamp": "2026-04-09T12:00:00-04:00"
+    },
+    {
+      "price": 6809,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "failed_breakdown",
+      "trigger_type": "breakdown",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "Tuesday's 6592 reclaim and yesterday's 6809 Failed Breakdown. 6872-6848=chop/flag. Today's 1st targe\nim Tuesday, now +280 points. Trigger #2 was ystds 6809 reclaim. Target was 6872, still a ceiling Plan today: Rid",
+      "crossSourceConfirmed": false,
+      "tweet_count": 2,
+      "tweet_timestamp": "2026-04-10T12:00:00-04:00"
+    },
+    {
+      "price": 6809,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "long_trigger",
+      "trigger_type": "reclaim",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "6592 reclaim long. Today's #ES_F trigger was the 6809 reclaim. Targets were 6819, 6830 main (both hit). Bonus w\nClosing update #ES_F: 6809 reclaim was today's long trigger given at 8am. Targets we\neps paying in #ES_F. Today's long trigger was the 6809 reclaim given live 8am. Core targets given were 6819, 683\nargets now in #ES_F. Today's long trigger was the 6809 reclaim given at 8am + in newsletter last night. Core tar\nWe have hit the full bonus slate in #ES_F. 6809 reclaim was today's long trigger given at 8am. Core targe\netting scalps. Today's long trigger given was the 6809 reclaim. We triggered at 930AM. 1st target was 6819 (hit)\nin #ES_F as we digest the recent 250 point long. 6809 reclaim was today's choppy long trigger. We triggered 930\ntrades. *Lock in gains lvl to lvl aggressively*. 6809 reclaim was long trigger given at 8am. We triggered Targe\nre extreme. No change: 6793/88 to 6830=pure chop. 6809 reclaims see 6819, 6830+. 6788 fails, sell 6781 (watch traps), 6766-70",
+      "crossSourceConfirmed": false,
+      "tweet_count": 9,
+      "tweet_timestamp": "2026-04-09T08:00:00-04:00"
+    },
+    {
+      "price": 6819,
+      "significance": "key",
+      "direction": "resistance",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "hit",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "long. Today's #ES_F trigger was the 6809 reclaim. Targets were 6819, 6830 main (both hit). Bonus were 6846, 6854, 687\nclaim was today's long trigger given at 8am. Core targets were 6819, 6830, both hit. 6830 was range resistance. Bonus\niven was the 6809 reclaim. We triggered at 930AM. 1st target was 6819 (hit). 2nd target was ~6830 (hit). 6830 remains r\ntoday's choppy long trigger. We triggered 930AM. 1st target was 6819 where I warned *lock in lvl to lvl aggressively*.\nclaim was long trigger given at 8am. We triggered Targets were 6819 1st (hit), 6830 2nd (not yet). Bonus slate 6846,\nre extreme. No change: 6793/88 to 6830=pure chop. 6809 reclaims see 6819, 6830+. 6788 fails, sell 6781 (watch traps), 6766-70",
+      "crossSourceConfirmed": false,
+      "tweet_count": 6,
+      "tweet_timestamp": "2026-04-09T08:00:00-04:00"
+    },
+    {
+      "price": 6830,
+      "significance": "key",
+      "direction": "resistance",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "hit",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "09 reclaim was today's long trigger given at 8am. Targets were 6830 main (hit), 6872 bonus (hit). Hold runner now for\nCore targets were 6819, 6830, both hit. 6830 was range resistance. Bonus/breakout slate were 6846 (hit),\nriggered at 930AM. 1st target was 6819 (hit). 2nd target was ~6830 (hit). 6830 remains range res. Lock in gains Bonu\n830, 6846, 6854, 6872 if ES wants more. 6793/88-6830=chop - 6788, 6793 — chop floor - 68\nat 8am. We triggered Targets were 6819 1st (hit), 6830 2nd (not yet). Bonus slate 6846, 6854, 6872\nre extreme. No change: 6793/88 to 6830=pure chop. 6809 reclaims see 6819, 6830+. 6788 fails, sell 6781 (watch traps), 6766-70",
+      "crossSourceConfirmed": false,
+      "tweet_count": 7,
+      "tweet_timestamp": "2026-04-09T08:00:00-04:00"
+    },
+    {
+      "price": 6846,
+      "significance": "unclear",
+      "direction": "resistance",
+      "intent": "bonus_target",
+      "trigger_type": null,
+      "hit_status": "hit",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "ve 8am. Core targets given were 6819, 6830 (hit). Bonus slate were 6846 (hit), 6854 (hit), 6872 (been here for an hour) Ride runner now 6883, 6902 2nd bonus set\nght. Core target slate was 6819, 6830 (both hit). Bonus targets today were 6846 (just hit), 6854, 6872. Now just let a small runner work rest of day\n6819, 6830, both hit. 6830 was range resistance. Bonus/breakout slate were 6846 (hit), 6854 (hit), 6872 (hit exact). Ride that runner. Next bonus set are 6883, 6902\n6830 (hit). 6830 remains range res. Lock in gains Bonus slate today remains 6846, 6854, 6872\nTargets were 6819 1st (hit), 6830 2nd (not yet). Bonus slate 6846, 6854, 6872",
+      "crossSourceConfirmed": false,
+      "tweet_count": 5,
+      "tweet_timestamp": "2026-04-09T08:00:00-04:00"
+    },
+    {
+      "price": 6848,
+      "significance": "key",
+      "direction": null,
+      "intent": "stop",
+      "trigger_type": "fail",
+      "hit_status": "pending",
+      "trap_warning": true,
+      "source": "text",
+      "source_snippet": "pport (watch traps). 6872, 6882, 6900 next slate. 6848 fails, dip 6821-26 - 6592 — Trigger #1 (carry-fo",
+      "crossSourceConfirmed": false,
+      "tweet_count": 2,
+      "tweet_timestamp": "2026-04-10T12:00:00-04:00"
+    },
+    {
+      "price": 6852,
+      "significance": "unclear",
+      "direction": "support",
+      "intent": null,
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "till a ceiling Plan today: Ride runner. 6848-52=support (watch traps). 6872, 6882, 6900 next sl",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-10T12:00:00-04:00"
+    },
+    {
+      "price": 6854,
+      "significance": "unclear",
+      "direction": "resistance",
+      "intent": "bonus_target",
+      "trigger_type": null,
+      "hit_status": "hit",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "ve 8am. Core targets given were 6819, 6830 (hit). Bonus slate were 6846 (hit), 6854 (hit), 6872 (been here for an hour) Ride runner now 6883, 6902 2nd bonus set\nght. Core target slate was 6819, 6830 (both hit). Bonus targets today were 6846 (just hit), 6854, 6872. Now just let a small runner work rest of day\n6819, 6830, both hit. 6830 was range resistance. Bonus/breakout slate were 6846 (hit), 6854 (hit), 6872 (hit exact). Ride that runner. Next bonus set are 6883, 6902\n6830 (hit). 6830 remains range res. Lock in gains Bonus slate today remains 6846, 6854, 6872\nTargets were 6819 1st (hit), 6830 2nd (not yet). Bonus slate 6846, 6854, 6872",
+      "crossSourceConfirmed": false,
+      "tweet_count": 5,
+      "tweet_timestamp": "2026-04-09T08:00:00-04:00"
+    },
+    {
+      "price": 6872,
+      "significance": "key",
+      "direction": "resistance",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": true,
+      "source": "text",
+      "source_snippet": "w +280 points. Trigger #2 was ystds 6809 reclaim. Target was 6872, still a ceiling Plan today: Ride runner. 6848-52",
+      "crossSourceConfirmed": false,
+      "tweet_count": 2,
+      "tweet_timestamp": "2026-04-10T12:00:00-04:00"
+    },
+    {
+      "price": 6872,
+      "significance": "unclear",
+      "direction": "resistance",
+      "intent": "bonus_target",
+      "trigger_type": null,
+      "hit_status": "hit",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "ve 8am. Core targets given were 6819, 6830 (hit). Bonus slate were 6846 (hit), 6854 (hit), 6872 (been here for an hour) Ride runner now 6883, 6902 2nd bonus set\nght. Core target slate was 6819, 6830 (both hit). Bonus targets today were 6846 (just hit), 6854, 6872. Now just let a small runner work rest of day\n6819, 6830, both hit. 6830 was range resistance. Bonus/breakout slate were 6846 (hit), 6854 (hit), 6872 (hit exact). Ride that runner. Next bonus set are 6883, 6902\n6830 (hit). 6830 remains range res. Lock in gains Bonus slate today remains 6846, 6854, 6872\nTargets were 6819 1st (hit), 6830 2nd (not yet). Bonus slate 6846, 6854, 6872",
+      "crossSourceConfirmed": false,
+      "tweet_count": 5,
+      "tweet_timestamp": "2026-04-09T08:00:00-04:00"
+    },
+    {
+      "price": 6882,
+      "significance": "key",
+      "direction": "support",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "09 Failed Breakdown. 6872-6848=chop/flag. Today's 1st target was 6882, and we ran there, and dipped. 6900-05 still abov",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-10T12:00:00-04:00"
+    },
+    {
+      "price": 6883,
+      "significance": "unclear",
+      "direction": "resistance",
+      "intent": "bonus_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "4 (hit), 6872 (hit exact). Ride that runner. Next bonus set are 6883, 6902",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-09T08:00:00-04:00"
+    },
+    {
+      "price": 6900,
+      "significance": "unclear",
+      "direction": "resistance",
+      "intent": null,
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "ceiling - 6882 — 1st target (HIT) - 6900-6905 — stretch resistance",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-10T12:00:00-04:00"
+    },
+    {
+      "price": 6902,
+      "significance": "key",
+      "direction": "resistance",
+      "intent": "second_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "872 (been here for an hour) Ride runner now 6883, 6902 2nd bonus set\n4 (hit), 6872 (hit exact). Ride that runner. Next bonus set are 6883, 6902",
+      "crossSourceConfirmed": false,
+      "tweet_count": 2,
+      "tweet_timestamp": "2026-04-09T08:00:00-04:00"
+    }
+  ],
+  "parse_errors": []
+}

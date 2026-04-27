@@ -1,0 +1,5207 @@
+{
+  "tweets": [
+    {
+      "instrument": "ES",
+      "date": "2026-04-10",
+      "tweet_timestamp": "2026-04-10T12:00:00-04:00",
+      "levels": [
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "parser's cross-tweet dedup needs to collapse \"6809 reclaim long trigger\" mentioned 8 times in one day to",
+          "crossSourceConfirmed": false,
+          "tweet_count": 1
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": [
+        "no Mancini-format content detected",
+        "discarded out-of-range ES price 2026 from \"04/22/2026 11:50AM - ...\" in DESCENDING time order (newest first within the\""
+      ],
+      "sub_tweets": [
+        {
+          "instrument": "ES",
+          "date": "2026-04-10",
+          "tweet_timestamp": "2026-04-10T12:00:00-04:00",
+          "levels": [],
+          "chop_zones": [],
+          "no_trade_signal": false,
+          "runner_active": null,
+          "pattern_entries": [],
+          "weekly_pattern": null,
+          "narrative_only": true,
+          "parse_errors": [
+            "narrative-only post — no levels detected",
+            "no Mancini-format content detected"
+          ]
+        },
+        {
+          "instrument": "ES",
+          "date": "2026-04-22",
+          "tweet_timestamp": "2026-04-22T11:51:00-04:00",
+          "levels": [],
+          "chop_zones": [],
+          "no_trade_signal": false,
+          "runner_active": null,
+          "pattern_entries": [],
+          "weekly_pattern": null,
+          "narrative_only": true,
+          "parse_errors": [
+            "narrative-only post — no levels detected",
+            "no Mancini-format content detected"
+          ]
+        },
+        {
+          "instrument": "ES",
+          "date": "2026-04-22",
+          "tweet_timestamp": "2026-04-22T11:50:00-04:00",
+          "levels": [
+            {
+              "price": 6809,
+              "significance": "key",
+              "direction": "flip",
+              "intent": "long_trigger",
+              "trigger_type": "reclaim",
+              "hit_status": "pending",
+              "trap_warning": false,
+              "source": "text",
+              "source_snippet": "parser's cross-tweet dedup needs to collapse \"6809 reclaim long trigger\" mentioned 8 times in one day to",
+              "crossSourceConfirmed": false
+            }
+          ],
+          "chop_zones": [],
+          "no_trade_signal": false,
+          "runner_active": null,
+          "pattern_entries": [],
+          "weekly_pattern": null,
+          "narrative_only": false,
+          "parse_errors": [
+            "discarded out-of-range ES price 2026 from \"04/22/2026 11:50AM - ...\" in DESCENDING time order (newest first within the\""
+          ]
+        }
+      ]
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-10",
+      "tweet_timestamp": "2026-04-10T09:00:00-04:00",
+      "levels": [
+        {
+          "price": 6592,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "in #ES_F but runners still paying. Trigger #1 was 6592 reclaim Tuesday, now +280 points. Trigger #2 was ystds 68",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "im Tuesday, now +280 points. Trigger #2 was ystds 6809 reclaim. Target was 6872, still a ceiling Plan today: Rid",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6848,
+          "significance": "key",
+          "direction": null,
+          "intent": "stop",
+          "trigger_type": "fail",
+          "hit_status": "pending",
+          "trap_warning": true,
+          "source": "text",
+          "source_snippet": "pport (watch traps). 6872, 6882, 6900 next slate. 6848 fails, dip 6821-26",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6852,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "till a ceiling Plan today: Ride runner. 6848-52=support (watch traps). 6872, 6882, 6900 next sl",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6872,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": true,
+          "source": "text",
+          "source_snippet": "w +280 points. Trigger #2 was ystds 6809 reclaim. Target was 6872, still a ceiling Plan today: Ride runner. 6848-52",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-10",
+      "tweet_timestamp": "2026-04-10T10:00:00-04:00",
+      "levels": [
+        {
+          "price": 6592,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "we get some. Runners still paying from Tuesday's 6592 reclaim and yesterday's 6809 Failed Breakdown. 6872-6848=",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "Tuesday's 6592 reclaim and yesterday's 6809 Failed Breakdown. 6872-6848=chop/flag. Today's 1st targe",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6848,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "and yesterday's 6809 Failed Breakdown. 6872-6848=chop/flag. Today's 1st target was 6882, and we ra",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6872,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "and yesterday's 6809 Failed Breakdown. 6872-6848=chop/flag. Today's 1st target was 6882, and we ra",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6882,
+          "significance": "key",
+          "direction": "support",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "09 Failed Breakdown. 6872-6848=chop/flag. Today's 1st target was 6882, and we ran there, and dipped. 6900-05 still abov",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [
+        {
+          "low": 6848,
+          "high": 6872,
+          "source_snippet": "and yesterday's 6809 Failed Breakdown. 6872-6848=chop/flag. Today's 1st target was 6882, and we ra"
+        }
+      ],
+      "no_trade_signal": true,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6809,
+          "pattern": "failed_breakdown",
+          "source_snippet": "Tuesday's 6592 reclaim and yesterday's 6809 Failed Breakdown. 6872-6848=chop/flag. Today's 1st targe"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-10",
+      "tweet_timestamp": "2026-04-10T11:00:00-04:00",
+      "levels": [
+        {
+          "price": 6592,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "now. On Tuesday we saw a massive macro Failed Breakdown of 6592 (given live + in newsletter) & we've be",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6848,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "& we've been long since for 280+ points 6848-6872=another flag. Today's 1st target was 6882 (hit). 690",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6872,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "& we've been long since for 280+ points 6848-6872=another flag. Today's 1st target was 6882 (hit). 690",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6882,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "e for 280+ points 6848-6872=another flag. Today's 1st target was 6882 (hit). 6900-05 above if ES wants more",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [
+        {
+          "low": 6848,
+          "high": 6872,
+          "source_snippet": "& we've been long since for 280+ points 6848-6872=another flag. Today's 1st target was 6882 (hit). 690"
+        }
+      ],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6592,
+          "pattern": "failed_breakdown",
+          "source_snippet": "now. On Tuesday we saw a massive macro Failed Breakdown of 6592 (given live + in newsletter) & we've be"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-10",
+      "tweet_timestamp": "2026-04-10T11:00:00-04:00",
+      "levels": [
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ays 6592 Macro Failed Breakdown and 2) Yesterdays 6809 reclaim. 6848-6872=a new bull flag. Todays targets were 6",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6848,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "eakdown and 2) Yesterdays 6809 reclaim. 6848-6872=a new bull flag. Todays targets were 6882 (hit), 6900-0",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6872,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "eakdown and 2) Yesterdays 6809 reclaim. 6848-6872=a new bull flag. Todays targets were 6882 (hit), 6900-0",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6882,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "s 6809 reclaim. 6848-6872=a new bull flag. Todays targets were 6882 (hit), 6900-05, 6922 above. Same supports",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [
+        {
+          "low": 6848,
+          "high": 6872,
+          "source_snippet": "eakdown and 2) Yesterdays 6809 reclaim. 6848-6872=a new bull flag. Todays targets were 6882 (hit), 6900-0"
+        }
+      ],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-10",
+      "tweet_timestamp": "2026-04-10T14:00:00-04:00",
+      "levels": [
+        {
+          "price": 6848,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": true,
+          "source": "text",
+          "source_snippet": "Tuesday's 6592 Macro Failed Breakdown. 6848-6872=a tight flag. Today's 1st target was 6882, we ran th",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6872,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "Tuesday's 6592 Macro Failed Breakdown. 6848-6872=a tight flag. Today's 1st target was 6882, we ran th",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6882,
+          "significance": "key",
+          "direction": "support",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "Failed Breakdown. 6848-6872=a tight flag. Today's 1st target was 6882, we ran there, rejected back into the range. 6848",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [
+        {
+          "low": 6848,
+          "high": 6872,
+          "source_snippet": "Tuesday's 6592 Macro Failed Breakdown. 6848-6872=a tight flag. Today's 1st target was 6882, we ran th"
+        }
+      ],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-10",
+      "tweet_timestamp": "2026-04-10T14:00:00-04:00",
+      "levels": [
+        {
+          "price": 6848,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "There's 6848 support hit in #ES_F but volatility is still no",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-10",
+      "tweet_timestamp": "2026-04-10T14:00:00-04:00",
+      "levels": [
+        {
+          "price": 6848,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "or trade heavy in this 0 quality chop. 6848-6872 is the pure chop range as posted. We just held 6848 almost exact. 6861,",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6872,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "or trade heavy in this 0 quality chop. 6848-6872 is the pure chop range as posted. We just held 6848 almost exact. 6861,",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [
+        {
+          "low": 6848,
+          "high": 6872,
+          "source_snippet": "or trade heavy in this 0 quality chop. 6848-6872 is the pure chop range as posted. We just held 6848 almost exact. 6861,"
+        }
+      ],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-10",
+      "tweet_timestamp": "2026-04-10T16:00:00-04:00",
+      "levels": [
+        {
+          "price": 6848,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "_F: Slow session but levels respecting. 6848 to 6872=a tight bull flag. We held 6848 as posted. 6861 was 1st r",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6861,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ight bull flag. We held 6848 as posted. 6861 was 1st resistance, here now. 6872, then 6900+ if we can c",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6872,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "_F: Slow session but levels respecting. 6848 to 6872=a tight bull flag. We held 6848 as posted. 6861 was 1st r",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [
+        {
+          "low": 6848,
+          "high": 6872,
+          "source_snippet": "_F: Slow session but levels respecting. 6848 to 6872=a tight bull flag. We held 6848 as posted. 6861 was 1st r"
+        }
+      ],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-11",
+      "tweet_timestamp": "2026-04-11T12:00:00-04:00",
+      "levels": [
+        {
+          "price": 6982,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "short_trigger",
+          "trigger_type": "fail",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "7085 to keep 7230, 7300 live direct. 7085 fails, sell 6982 ════════════════════════════════════════════════",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7085,
+          "significance": "key",
+          "direction": null,
+          "intent": "stop",
+          "trigger_type": "fail",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ls must hold 7085 to keep 7230, 7300 live direct. 7085 fails, sell 6982 ═════════════════════════════════════",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-13",
+      "tweet_timestamp": "2026-04-13T08:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "bear trap/Failed Breakdown. I tweeted 6:01PM that 6793 reclaim triggers up. We triggered 8:45PM. Targets were 68",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6802,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "at 6793 reclaim triggers up. We triggered 8:45PM. Targets were 6802 1st (hit), 6818-22 2nd (hit) Plan: Ride runner. 6",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "2nd (hit) Plan: Ride runner. 6802, 6793=support. 6809 reclaim sees 6818-22, 6832, 6848-50. Dip<92 to 80",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-13",
+      "tweet_timestamp": "2026-04-13T08:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "same every week). Given live 6:01PM, I posted the 6793 reclaim triggers long to 6802 (hit), 6818-22 (hit) For th",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "2 (hit) For those who missed it, 1hr ago I posted 6809 reclaim triggers to 6818-22 (hit), 6832, 6848",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": "sunday_gap_long",
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-13",
+      "tweet_timestamp": "2026-04-13T08:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "e setup, given in advance here and in newsletter. 6793 reclaim was our long trigger given 6pm (or 6809 reclaim g",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": ". 6793 reclaim was our long trigger given 6pm (or 6809 reclaim given 8am). Targets were 6818-22 (hit), 6832 (hit",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6818,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ng trigger given 6pm (or 6809 reclaim given 8am). Targets were 6818-22 (hit), 6832 (hit), 6848 (hit). Now ride runner",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6873,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "2 (hit), 6832 (hit), 6848 (hit). Now ride runner. Bonus slate=6873, 6886",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6886,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "2 (hit), 6832 (hit), 6848 (hit). Now ride runner. Bonus slate=6873, 6886",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-13",
+      "tweet_timestamp": "2026-04-13T08:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "given. Trigger 1: Posted at 6:01PM last eve, the 6793 Reclaim. For those who missed it, Trigger 2: Posted at 8a",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "or those who missed it, Trigger 2: Posted at 8am, 6809 reclaim. Targets given were 6822 (hit), 6832 (hit), 6848",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6872,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "near_miss",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "6822 (hit), 6832 (hit), 6848 (hit). Ride runner. Bonus slate was 6872 (almost), 6886",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6886,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "6822 (hit), 6832 (hit), 6848 (hit). Ride runner. Bonus slate was 6872 (almost), 6886",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-13",
+      "tweet_timestamp": "2026-04-13T08:00:00-04:00",
+      "levels": [
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "e of targets in #ES_F. At 8am today, I posted the 6809 reclaim long trigger. Core targets were 6822 (hit), 6832",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6822,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "day, I posted the 6809 reclaim long trigger. Core targets were 6822 (hit), 6832 (hit), 6848 (hit). Bonus slate were 6",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6872,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "targets were 6822 (hit), 6832 (hit), 6848 (hit). Bonus slate were 6872 (hit), then 6886 (almost). Easy day - just let runner pay now. 6892, 6903 n",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6886,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "near_miss",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "targets were 6822 (hit), 6832 (hit), 6848 (hit). Bonus slate were 6872 (hit), then 6886 (almost). Easy day - just let runner pay now. 6892, 6903 n",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-13",
+      "tweet_timestamp": "2026-04-13T08:00:00-04:00",
+      "levels": [
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "selloff then bear trap/Failed Breakdown in #ES_F. 6809 reclaim was long trigger given live 8am (newsletter reade",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": true,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-13",
+      "tweet_timestamp": "2026-04-13T08:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "cially +100 points on our long from the 6793 Failed Breakdown last evening in #ES_F (for those who mis",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ing in #ES_F (for those who missed it, I gave the 6809 Reclaim at 8am). Targets given were 6848 main (hit). Bonu",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6793,
+          "pattern": "failed_breakdown",
+          "source_snippet": "cially +100 points on our long from the 6793 Failed Breakdown last evening in #ES_F (for those who mis"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-13",
+      "tweet_timestamp": "2026-04-13T16:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "F: +100 points now on the long from the 6793 Failed Breakdown last eve. Now nothing to do but ride run",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6793,
+          "pattern": "failed_breakdown",
+          "source_snippet": "F: +100 points now on the long from the 6793 Failed Breakdown last eve. Now nothing to do but ride run"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-14",
+      "tweet_timestamp": "2026-04-14T07:58:00-04:00",
+      "levels": [
+        {
+          "price": 6360,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "93 Failed Breadkown, but many since the 6360 Failed Breakdown. Now, we just let the runner pay. There",
+          "crossSourceConfirmed": false,
+          "tweet_count": 1
+        },
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "keeps paying in #ES_F. Recent adds were 6793 Failed Breakdown Sunday (given live) and 6809 reclaim yst",
+          "crossSourceConfirmed": false,
+          "tweet_count": 1
+        },
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ere 6793 Failed Breakdown Sunday (given live) and 6809 reclaim ystd (given live). I posted 2:55PM lots more was",
+          "crossSourceConfirmed": false,
+          "tweet_count": 1
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": true,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6793,
+          "pattern": "failed_breakdown",
+          "source_snippet": "keeps paying in #ES_F. Recent adds were 6793 Failed Breakdown Sunday (given live) and 6809 reclaim yst"
+        },
+        {
+          "price": 6360,
+          "pattern": "failed_breakdown",
+          "source_snippet": "93 Failed Breadkown, but many since the 6360 Failed Breakdown. Now, we just let the runner pay. There"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": [
+        "no Mancini-format content detected",
+        "discarded out-of-range ES price 2026 from \"04/14/2026 07:58AM - Best long of 2026 keeps paying in #ES_F. Recent adds were 6\"",
+        "discarded out-of-range ES price 2026 from \"04/14/2026 07:59AM - Note: There is just nothing to do now. Most of us have been\""
+      ],
+      "sub_tweets": [
+        {
+          "instrument": "ES",
+          "date": "2026-04-27",
+          "tweet_timestamp": "2026-04-27T09:00:00-04:00",
+          "levels": [],
+          "chop_zones": [],
+          "no_trade_signal": false,
+          "runner_active": null,
+          "pattern_entries": [],
+          "weekly_pattern": null,
+          "narrative_only": true,
+          "parse_errors": [
+            "narrative-only post — no levels detected",
+            "no Mancini-format content detected"
+          ]
+        },
+        {
+          "instrument": "ES",
+          "date": "2026-04-14",
+          "tweet_timestamp": "2026-04-14T07:58:00-04:00",
+          "levels": [
+            {
+              "price": 6793,
+              "significance": "key",
+              "direction": "flip",
+              "intent": "failed_breakdown",
+              "trigger_type": "breakdown",
+              "hit_status": "pending",
+              "trap_warning": false,
+              "source": "text",
+              "source_snippet": "keeps paying in #ES_F. Recent adds were 6793 Failed Breakdown Sunday (given live) and 6809 reclaim yst",
+              "crossSourceConfirmed": false
+            },
+            {
+              "price": 6809,
+              "significance": "key",
+              "direction": "flip",
+              "intent": "long_trigger",
+              "trigger_type": "reclaim",
+              "hit_status": "pending",
+              "trap_warning": false,
+              "source": "text",
+              "source_snippet": "ere 6793 Failed Breakdown Sunday (given live) and 6809 reclaim ystd (given live). I posted 2:55PM lots more was",
+              "crossSourceConfirmed": false
+            }
+          ],
+          "chop_zones": [],
+          "no_trade_signal": false,
+          "runner_active": null,
+          "pattern_entries": [
+            {
+              "price": 6793,
+              "pattern": "failed_breakdown",
+              "source_snippet": "keeps paying in #ES_F. Recent adds were 6793 Failed Breakdown Sunday (given live) and 6809 reclaim yst"
+            }
+          ],
+          "weekly_pattern": null,
+          "narrative_only": false,
+          "parse_errors": [
+            "discarded out-of-range ES price 2026 from \"04/14/2026 07:58AM - Best long of 2026 keeps paying in #ES_F. Recent adds were 6\"",
+            "discarded out-of-range ES price 2026 from \"04/14/2026 07:58AM - Best long of 2026 keeps paying in #ES_F. Recent adds were 6\""
+          ]
+        },
+        {
+          "instrument": "ES",
+          "date": "2026-04-14",
+          "tweet_timestamp": "2026-04-14T07:59:00-04:00",
+          "levels": [
+            {
+              "price": 6360,
+              "significance": "key",
+              "direction": "flip",
+              "intent": "failed_breakdown",
+              "trigger_type": "breakdown",
+              "hit_status": "pending",
+              "trap_warning": false,
+              "source": "text",
+              "source_snippet": "93 Failed Breadkown, but many since the 6360 Failed Breakdown. Now, we just let the runner pay. There",
+              "crossSourceConfirmed": false
+            }
+          ],
+          "chop_zones": [],
+          "no_trade_signal": true,
+          "runner_active": null,
+          "pattern_entries": [
+            {
+              "price": 6360,
+              "pattern": "failed_breakdown",
+              "source_snippet": "93 Failed Breadkown, but many since the 6360 Failed Breakdown. Now, we just let the runner pay. There"
+            }
+          ],
+          "weekly_pattern": null,
+          "narrative_only": false,
+          "parse_errors": [
+            "discarded out-of-range ES price 2026 from \"04/14/2026 07:59AM - Note: There is just nothing to do now. Most of us have been\""
+          ]
+        }
+      ]
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-14",
+      "tweet_timestamp": "2026-04-14T10:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "o now in #ES_F. Entries were the Sunday 6793 Failed Breakdown (given live Sunday 6pm) and the 6809 Fai",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6809,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "eakdown (given live Sunday 6pm) and the 6809 Failed Breakdown yesterday. I posted 2:55PM yesterday lot",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6948,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "re green ahead with 6937 next, and we hit Today's 1st target was 6948 (hit), 6958, 6967 above. Same supports",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6793,
+          "pattern": "failed_breakdown",
+          "source_snippet": "o now in #ES_F. Entries were the Sunday 6793 Failed Breakdown (given live Sunday 6pm) and the 6809 Fai"
+        },
+        {
+          "price": 6809,
+          "pattern": "failed_breakdown",
+          "source_snippet": "eakdown (given live Sunday 6pm) and the 6809 Failed Breakdown yesterday. I posted 2:55PM yesterday lot"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-14",
+      "tweet_timestamp": "2026-04-14T08:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "e are working today's targets in #ES_F. 6793 Failed Breakdown was our entry Sunday. I warned yesterday",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6793,
+          "pattern": "failed_breakdown",
+          "source_snippet": "e are working today's targets in #ES_F. 6793 Failed Breakdown was our entry Sunday. I warned yesterday"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": [
+        "discarded out-of-range ES price 2026 from \"Biggest long of 2026 continues to pay and we are working today's targets in #ES_\""
+      ]
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-14",
+      "tweet_timestamp": "2026-04-14T08:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "nner work, now +184 point from Sunday's 6793 Failed Breakdown given live in #ES_F. Today's target slat",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6978,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "given at 8am: 6948 (hit), 6858 (hit), 6967 (hit). Bonus slate was 6978 (hit), 7002 then 7021 if ES wants more. Let the runner pay",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7002,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "given at 8am: 6948 (hit), 6858 (hit), 6967 (hit). Bonus slate was 6978 (hit), 7002 then 7021 if ES wants more. Let the runner pay",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7021,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "given at 8am: 6948 (hit), 6858 (hit), 6967 (hit). Bonus slate was 6978 (hit), 7002 then 7021 if ES wants more. Let the runner pay",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": {
+        "trigger_price": 6793,
+        "points_paid": 184
+      },
+      "pattern_entries": [
+        {
+          "price": 6793,
+          "pattern": "failed_breakdown",
+          "source_snippet": "nner work, now +184 point from Sunday's 6793 Failed Breakdown given live in #ES_F. Today's target slat"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-14",
+      "tweet_timestamp": "2026-04-14T08:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "in #ES_F now +200 from Sunday evenings 6793 Failed Breakdown given live. Today's targets given 8am we",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6978,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "8am were 6948 (hit), 6958 (hit), 6967 (all hit). Bonus set were 6978 (hit), 6994 (hit), 7002, then 7021 still bonus. No new setups until we pull back to 6930 at leas",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6994,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "8am were 6948 (hit), 6958 (hit), 6967 (all hit). Bonus set were 6978 (hit), 6994 (hit), 7002, then 7021 still bonus. No new setups until we pull back to 6930 at leas",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7002,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "8am were 6948 (hit), 6958 (hit), 6967 (all hit). Bonus set were 6978 (hit), 6994 (hit), 7002, then 7021 still bonus. No new setups until we pull back to 6930 at leas",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7021,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "8am were 6948 (hit), 6958 (hit), 6967 (all hit). Bonus set were 6978 (hit), 6994 (hit), 7002, then 7021 still bonus. No new setups until we pull back to 6930 at leas",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": {
+        "trigger_price": 6793,
+        "points_paid": 200
+      },
+      "pattern_entries": [
+        {
+          "price": 6793,
+          "pattern": "failed_breakdown",
+          "source_snippet": "in #ES_F now +200 from Sunday evenings 6793 Failed Breakdown given live. Today's targets given 8am we"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-14",
+      "tweet_timestamp": "2026-04-14T14:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ain. We are +200 points from the Sunday 6793 Failed Breakdown, given live. Today's targets were 6948,",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6948,
+          "significance": "key",
+          "direction": "support",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "Sunday 6793 Failed Breakdown, given live. Today's targets were 6948, 6958, 6967 (all hit). Bonus were 6978, 6994 (her",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": true,
+      "runner_active": {
+        "trigger_price": 6793,
+        "points_paid": 200
+      },
+      "pattern_entries": [
+        {
+          "price": 6793,
+          "pattern": "failed_breakdown",
+          "source_snippet": "ain. We are +200 points from the Sunday 6793 Failed Breakdown, given live. Today's targets were 6948,"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-14",
+      "tweet_timestamp": "2026-04-14T08:00:00-04:00",
+      "levels": [
+        {
+          "price": 6792,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "he best long of 2026 just keeps paying. 6792 Failed Breakdown Sunday was our recent major add in #ES_F",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6978,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "am were 6948, 6958, 6967 (all hit). I then gave a bonus slate of 6978 (hit), 6994 (hit), 7002 (just hit) 7021 next, then lots more above. Same supports",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6994,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "am were 6948, 6958, 6967 (all hit). I then gave a bonus slate of 6978 (hit), 6994 (hit), 7002 (just hit) 7021 next, then lots more above. Same supports",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7002,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "am were 6948, 6958, 6967 (all hit). I then gave a bonus slate of 6978 (hit), 6994 (hit), 7002 (just hit) 7021 next, then lots more above. Same supports",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6792,
+          "pattern": "failed_breakdown",
+          "source_snippet": "he best long of 2026 just keeps paying. 6792 Failed Breakdown Sunday was our recent major add in #ES_F"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": [
+        "discarded out-of-range ES price 2026 from \"The best long of 2026 just keeps paying. 6792 Failed Breakdown Sunday was our re\""
+      ]
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-14",
+      "tweet_timestamp": "2026-04-14T16:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "update #ES_F: +230 points from Sunday's 6793 Failed Breakdown. Again - nothing to do but ride runner",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6948,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "o but ride runner until we get a dip. Today's 8am targets were 6948, 6958, 6967 (all hit). Bonus target was 7002 (exa",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7002,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "am targets were 6948, 6958, 6967 (all hit). Bonus target was 7002 (exact high). 7021 next then 7050. Newsletter out",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": {
+        "trigger_price": 6793,
+        "points_paid": 230
+      },
+      "pattern_entries": [
+        {
+          "price": 6793,
+          "pattern": "failed_breakdown",
+          "source_snippet": "update #ES_F: +230 points from Sunday's 6793 Failed Breakdown. Again - nothing to do but ride runner"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-16",
+      "tweet_timestamp": "2026-04-16T08:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ut rally in #ES_F after Sunday evenings 6793 Failed Breakdown, given live & in newsletter. Yesterdays",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7041,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "7073=flag. 7073, 7087, 7093 next slate. 7041, 7016=1st support of interest",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7056,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "us (hit) Plan: 0 to do until deep sell. 7056-7073=flag. 7073, 7087, 7093 next slate. 7041, 701",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7073,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "us (hit) Plan: 0 to do until deep sell. 7056-7073=flag. 7073, 7087, 7093 next slate. 7041, 701",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [
+        {
+          "low": 7056,
+          "high": 7073,
+          "source_snippet": "us (hit) Plan: 0 to do until deep sell. 7056-7073=flag. 7073, 7087, 7093 next slate. 7041, 701"
+        }
+      ],
+      "no_trade_signal": true,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6793,
+          "pattern": "failed_breakdown",
+          "source_snippet": "ut rally in #ES_F after Sunday evenings 6793 Failed Breakdown, given live & in newsletter. Yesterdays"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-16",
+      "tweet_timestamp": "2026-04-16T10:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "to do but hold our runner from Sunday's 6793 Failed Breakdown. We need a deep sell to open new entrie",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7056,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "target was 7073, stuck here No change: 7056-7073=a flag. 7087, 7093 next up. 7041, 7016=support",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7073,
+          "significance": "key",
+          "direction": "support",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "deep sell to open new entries. Yesterday's bonus target was 7073, stuck here No change: 7056-7073=a flag. 7087, 70",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [
+        {
+          "low": 7056,
+          "high": 7073,
+          "source_snippet": "target was 7073, stuck here No change: 7056-7073=a flag. 7087, 7093 next up. 7041, 7016=support"
+        }
+      ],
+      "no_trade_signal": true,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6793,
+          "pattern": "failed_breakdown",
+          "source_snippet": "to do but hold our runner from Sunday's 6793 Failed Breakdown. We need a deep sell to open new entrie"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-16",
+      "tweet_timestamp": "2026-04-16T10:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": ". After a 280 point rally from Sunday's 6793 failed breakdown, 7073 was today's 1st target. 7041, 701",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7056,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ings get semi-interesting below). 7056-7073=chop. 7056 reclaim high risk long",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7073,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ere things get semi-interesting below). 7056-7073=chop. 7056 reclaim high risk long",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [
+        {
+          "low": 7056,
+          "high": 7073,
+          "source_snippet": "ere things get semi-interesting below). 7056-7073=chop. 7056 reclaim high risk long"
+        }
+      ],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6793,
+          "pattern": "failed_breakdown",
+          "source_snippet": ". After a 280 point rally from Sunday's 6793 failed breakdown, 7073 was today's 1st target. 7041, 701"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-16",
+      "tweet_timestamp": "2026-04-16T10:00:00-04:00",
+      "levels": [
+        {
+          "price": 6593,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": ". After a 280 point rally from Sunday's 6593 failed breakdown, 7073 was today's 1st target. 7041, 701",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7056,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "t semi-interesting) are supports. 7056-7073=chop. 7056 reclaim high risk long",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7073,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ngs get semi-interesting) are supports. 7056-7073=chop. 7056 reclaim high risk long",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [
+        {
+          "low": 7056,
+          "high": 7073,
+          "source_snippet": "ngs get semi-interesting) are supports. 7056-7073=chop. 7056 reclaim high risk long"
+        }
+      ],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6593,
+          "pattern": "failed_breakdown",
+          "source_snippet": ". After a 280 point rally from Sunday's 6593 failed breakdown, 7073 was today's 1st target. 7041, 701"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-16",
+      "tweet_timestamp": "2026-04-16T11:00:00-04:00",
+      "levels": [
+        {
+          "price": 7056,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "sting for me until 7016 and deep sell. No change. 7056 reclaim sees 7073 again. 7087, 7093 if clears",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7073,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": ". 7073 was target & its been a ceiling. 7056-7073=pure chop. Nothing interesting for me until 7016",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [
+        {
+          "low": 7056,
+          "high": 7073,
+          "source_snippet": ". 7073 was target & its been a ceiling. 7056-7073=pure chop. Nothing interesting for me until 7016"
+        }
+      ],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-16",
+      "tweet_timestamp": "2026-04-16T11:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "of targets up. Our runner from Sunday's 6793 Failed Breakdown is still paying",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7073,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "posted 25mins ago that reclaims of 7056 see 7073. We reclaimed 7056, and hit 7073. 7086,",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6793,
+          "pattern": "failed_breakdown",
+          "source_snippet": "of targets up. Our runner from Sunday's 6793 Failed Breakdown is still paying"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-16",
+      "tweet_timestamp": "2026-04-16T11:00:00-04:00",
+      "levels": [
+        {
+          "price": 7056,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ity. We got a setup finally though. I posted that 7056 reclaims see 7073. We reclaimed 7056, and ran to 7073. 7086, 7093 r",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7073,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ity. We got a setup finally though. I posted that 7056 reclaims see 7073. We reclaimed 7056, and ran to 7073. 7086, 7093 r",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-16",
+      "tweet_timestamp": "2026-04-16T10:00:00-04:00",
+      "levels": [
+        {
+          "price": 7058,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "y even with 0 volatility. I posted at 10:04AM the 7058 reclaim triggers us up. Targets given were 7073 (this is",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7073,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "laim triggers us up. Targets given were 7073 (this is a major resistance shelf but it hit), 7086 was 2nd target",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-16",
+      "tweet_timestamp": "2026-04-16T10:00:00-04:00",
+      "levels": [
+        {
+          "price": 6958,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ome) but levels respecting. I posted at 10am that 6958 reclaims trigger to 7073(hit), 7086 (hit), 7093. 7058 then",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-16",
+      "tweet_timestamp": "2026-04-16T16:00:00-04:00",
+      "levels": [
+        {
+          "price": 7058,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "port continues to defend nicely. At 10am I posted 7058 reclaims see 7073, 7086, 7093. 2/3 tagged. We then backtested 7058 2x exactly.",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7073,
+          "significance": "key",
+          "direction": "support",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "port continues to defend nicely. At 10am I posted 7058 reclaims see 7073, 7086, 7093. 2/3 tagged. We then backtested 7058 2x exactly.",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7086,
+          "significance": "key",
+          "direction": "support",
+          "intent": "second_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "port continues to defend nicely. At 10am I posted 7058 reclaims see 7073, 7086, 7093. 2/3 tagged. We then backtested 7058 2x exactly.",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7093,
+          "significance": "key",
+          "direction": "support",
+          "intent": "second_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "port continues to defend nicely. At 10am I posted 7058 reclaims see 7073, 7086, 7093. 2/3 tagged. We then backtested 7058 2x exactly.",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-17",
+      "tweet_timestamp": "2026-04-17T07:54:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "#ES_F. Long still paying from Sunday's 6793 Failed Breakdown. We did get a rare add yesterday though",
+          "crossSourceConfirmed": false,
+          "tweet_count": 1
+        },
+        {
+          "price": 7058,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "id get a rare add yesterday though. I posted 10am 7058 reclaim triggers up. Targets were 7073, 7086, 7093. All h",
+          "crossSourceConfirmed": false,
+          "tweet_count": 1
+        },
+        {
+          "price": 7073,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "y though. I posted 10am 7058 reclaim triggers up. Targets were 7073, 7086, 7093. All hit Plan: Ride runner. 7103, 711",
+          "crossSourceConfirmed": false,
+          "tweet_count": 1
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": true,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6793,
+          "pattern": "failed_breakdown",
+          "source_snippet": "#ES_F. Long still paying from Sunday's 6793 Failed Breakdown. We did get a rare add yesterday though"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": [
+        "no Mancini-format content detected",
+        "discarded out-of-range ES price 2026 from \"04/17/2026 07:54AM - Day #5 of Lockout Rally in #ES_F. Long still paying from Su\"",
+        "discarded out-of-range ES price 2026 from \"04/17/2026 07:55AM - Note: As I've said probably 10 times this week - there is n\""
+      ],
+      "sub_tweets": [
+        {
+          "instrument": "ES",
+          "date": "2026-04-27",
+          "tweet_timestamp": "2026-04-27T09:00:00-04:00",
+          "levels": [],
+          "chop_zones": [],
+          "no_trade_signal": false,
+          "runner_active": null,
+          "pattern_entries": [],
+          "weekly_pattern": null,
+          "narrative_only": true,
+          "parse_errors": [
+            "narrative-only post — no levels detected",
+            "no Mancini-format content detected"
+          ]
+        },
+        {
+          "instrument": "ES",
+          "date": "2026-04-17",
+          "tweet_timestamp": "2026-04-17T07:54:00-04:00",
+          "levels": [
+            {
+              "price": 6793,
+              "significance": "key",
+              "direction": "flip",
+              "intent": "failed_breakdown",
+              "trigger_type": "breakdown",
+              "hit_status": "pending",
+              "trap_warning": false,
+              "source": "text",
+              "source_snippet": "#ES_F. Long still paying from Sunday's 6793 Failed Breakdown. We did get a rare add yesterday though",
+              "crossSourceConfirmed": false
+            },
+            {
+              "price": 7058,
+              "significance": "key",
+              "direction": "flip",
+              "intent": "long_trigger",
+              "trigger_type": "reclaim",
+              "hit_status": "pending",
+              "trap_warning": false,
+              "source": "text",
+              "source_snippet": "id get a rare add yesterday though. I posted 10am 7058 reclaim triggers up. Targets were 7073, 7086, 7093. All h",
+              "crossSourceConfirmed": false
+            },
+            {
+              "price": 7073,
+              "significance": "key",
+              "direction": "resistance",
+              "intent": "first_target",
+              "trigger_type": null,
+              "hit_status": "pending",
+              "trap_warning": false,
+              "source": "text",
+              "source_snippet": "y though. I posted 10am 7058 reclaim triggers up. Targets were 7073, 7086, 7093. All hit Plan: Ride runner. 7103, 711",
+              "crossSourceConfirmed": false
+            }
+          ],
+          "chop_zones": [],
+          "no_trade_signal": false,
+          "runner_active": null,
+          "pattern_entries": [
+            {
+              "price": 6793,
+              "pattern": "failed_breakdown",
+              "source_snippet": "#ES_F. Long still paying from Sunday's 6793 Failed Breakdown. We did get a rare add yesterday though"
+            }
+          ],
+          "weekly_pattern": null,
+          "narrative_only": false,
+          "parse_errors": [
+            "discarded out-of-range ES price 2026 from \"04/17/2026 07:54AM - Day #5 of Lockout Rally in #ES_F. Long still paying from Su\""
+          ]
+        },
+        {
+          "instrument": "ES",
+          "date": "2026-04-17",
+          "tweet_timestamp": "2026-04-17T07:55:00-04:00",
+          "levels": [],
+          "chop_zones": [],
+          "no_trade_signal": true,
+          "runner_active": null,
+          "pattern_entries": [],
+          "weekly_pattern": null,
+          "narrative_only": false,
+          "parse_errors": [
+            "discarded out-of-range ES price 2026 from \"04/17/2026 07:55AM - Note: As I've said probably 10 times this week - there is n\"",
+            "no Mancini-format content detected"
+          ]
+        }
+      ]
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-17",
+      "tweet_timestamp": "2026-04-17T08:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ues to print in #ES_F from our original 6793 Failed Breakdown on Sunday. Today's targets given 8am + n",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7154,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "8am + newsletter were 7103, 7116, 7131 (all hit). Bonus slate today was 7154 (just hit), 7162, 7177. Nothing to do but ride it and get paid until we",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7162,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "8am + newsletter were 7103, 7116, 7131 (all hit). Bonus slate today was 7154 (just hit), 7162, 7177. Nothing to do but ride it and get paid until we",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7177,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "8am + newsletter were 7103, 7116, 7131 (all hit). Bonus slate today was 7154 (just hit), 7162, 7177. Nothing to do but ride it and get paid until we",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6793,
+          "pattern": "failed_breakdown",
+          "source_snippet": "ues to print in #ES_F from our original 6793 Failed Breakdown on Sunday. Today's targets given 8am + n"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-17",
+      "tweet_timestamp": "2026-04-17T08:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "pays, now +386 points since our Sunday 6793 Failed Breakdown in #ES_F. Today's targets were given at",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7147,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "t), 7177 (hit), 7188, then 7200 Just ride runner. 7147 1st micro support",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6793,
+          "pattern": "failed_breakdown",
+          "source_snippet": "pays, now +386 points since our Sunday 6793 Failed Breakdown in #ES_F. Today's targets were given at"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": [
+        "discarded out-of-range ES price 2026 from \"We continue to print as best long of 2026 pays, now +386 points since our Sunday\""
+      ]
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-17",
+      "tweet_timestamp": "2026-04-17T08:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "After +386 points from Sunday's 6793 Failed Breakdown, we've run almost all available targets",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": {
+        "trigger_price": 6793,
+        "points_paid": 386
+      },
+      "pattern_entries": [
+        {
+          "price": 6793,
+          "pattern": "failed_breakdown",
+          "source_snippet": "After +386 points from Sunday's 6793 Failed Breakdown, we've run almost all available targets"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-17",
+      "tweet_timestamp": "2026-04-17T16:00:00-04:00",
+      "levels": [
+        {
+          "price": 6793,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "S_F: Its been +386 points from Sunday's 6793 Failed Breakdown. Today's target was 7131 (hit) with 715",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7131,
+          "significance": "key",
+          "direction": "support",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ints from Sunday's 6793 Failed Breakdown. Today's target was 7131 (hit) with 7154, 7177 first bonus set. ES is tire",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": {
+        "trigger_price": 6793,
+        "points_paid": 386
+      },
+      "pattern_entries": [
+        {
+          "price": 6793,
+          "pattern": "failed_breakdown",
+          "source_snippet": "S_F: Its been +386 points from Sunday's 6793 Failed Breakdown. Today's target was 7131 (hit) with 715"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-18",
+      "tweet_timestamp": "2026-04-18T12:00:00-04:00",
+      "levels": [
+        {
+          "price": 6982,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "short_trigger",
+          "trigger_type": "fail",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "7085 to keep 7230, 7300 live direct. 7085 fails, sell 6982",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7085,
+          "significance": "key",
+          "direction": null,
+          "intent": "stop",
+          "trigger_type": "fail",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ls must hold 7085 to keep 7230, 7300 live direct. 7085 fails, sell 6982",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-18",
+      "tweet_timestamp": "2026-04-18T11:30:00-04:00",
+      "levels": [
+        {
+          "price": 6592,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "Last Tuesday 11:30AM a Failed Breakdown of 6592 got us long in #ES_F for +280 point ral",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6592,
+          "pattern": "failed_breakdown",
+          "source_snippet": "Last Tuesday 11:30AM a Failed Breakdown of 6592 got us long in #ES_F for +280 point ral"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-19",
+      "tweet_timestamp": "2026-04-19T12:00:00-04:00",
+      "levels": [
+        {
+          "price": 6592,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ss 280+ point rally following Tuesday's 6592 Failed Breakdown. Bulls must recover 6780 and 6793 now t",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 6592,
+          "pattern": "failed_breakdown",
+          "source_snippet": "ss 280+ point rally following Tuesday's 6592 Failed Breakdown. Bulls must recover 6780 and 6793 now t"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-20",
+      "tweet_timestamp": "2026-04-20T16:00:00-04:00",
+      "levels": [
+        {
+          "price": 7085,
+          "significance": "key",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "y 4pm newsletter, bulls had to hold the 7085 backtest. It held to the tick. Then, at 6pm I tw",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7120,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "test. It held to the tick. Then, at 6pm I tweeted 7120 reclaim another trigger. We went +15 Plan: Ride runner. 7",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": "sunday_gap_long",
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-20",
+      "tweet_timestamp": "2026-04-20T09:00:00-04:00",
+      "levels": [
+        {
+          "price": 7120,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "given in newsletter. Held to the tick. 7120 Failed Breakdown was given here 6pm. Targets were 7137 (h",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7137,
+          "significance": "key",
+          "direction": "support",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "e tick. 7120 Failed Breakdown was given here 6pm. Targets were 7137 (hit), 7147-53 (hit). 7160, 7166, 7178 are bonus",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 7120,
+          "pattern": "failed_breakdown",
+          "source_snippet": "given in newsletter. Held to the tick. 7120 Failed Breakdown was given here 6pm. Targets were 7137 (h"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-20",
+      "tweet_timestamp": "2026-04-20T09:00:00-04:00",
+      "levels": [
+        {
+          "price": 7137,
+          "significance": "key",
+          "direction": "support",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "out backtest long. 7120 was the Failed Breakdown. Targets were 7137 (hit), 7147-53 (hit). Bonus slate today remain 71",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7160,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "reakdown. Targets were 7137 (hit), 7147-53 (hit). Bonus slate today remain 7160, 7166, 7178",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7166,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "reakdown. Targets were 7137 (hit), 7147-53 (hit). Bonus slate today remain 7160, 7166, 7178",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7178,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": "bonus_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "reakdown. Targets were 7137 (hit), 7147-53 (hit). Bonus slate today remain 7160, 7166, 7178",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-20",
+      "tweet_timestamp": "2026-04-20T10:00:00-04:00",
+      "levels": [
+        {
+          "price": 7085,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": true,
+          "source": "text",
+          "source_snippet": "All targets hit in #ES_F. 7085 was support given in Friday's newsletter (held exac",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7120,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": true,
+          "source": "text",
+          "source_snippet": "en in Friday's newsletter (held exact). 7120 Failed Breakdown was another entry. Targets were 7137 (hi",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7137,
+          "significance": "key",
+          "direction": "support",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "exact). 7120 Failed Breakdown was another entry. Targets were 7137 (hit), 7147-53 (hit). 7160 was 1st bonus, hit. 71",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 7120,
+          "pattern": "failed_breakdown",
+          "source_snippet": "en in Friday's newsletter (held exact). 7120 Failed Breakdown was another entry. Targets were 7137 (hi"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-20",
+      "tweet_timestamp": "2026-04-20T10:00:00-04:00",
+      "levels": [
+        {
+          "price": 7085,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "d structure. All targets for today hit. 7085 was support - it held to the tick. Targets today we",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7120,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": true,
+          "source": "text",
+          "source_snippet": "-53 (hit). Bonus 7160 (hit), 7166, 7178 7120-7147=pure chop. Watch traps of 7120 now if we get them",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7147,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": true,
+          "source": "text",
+          "source_snippet": "-53 (hit). Bonus 7160 (hit), 7166, 7178 7120-7147=pure chop. Watch traps of 7120 now if we get them",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [
+        {
+          "low": 7120,
+          "high": 7147,
+          "source_snippet": "-53 (hit). Bonus 7160 (hit), 7166, 7178 7120-7147=pure chop. Watch traps of 7120 now if we get them"
+        }
+      ],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-20",
+      "tweet_timestamp": "2026-04-20T11:00:00-04:00",
+      "levels": [
+        {
+          "price": 7085,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "est the Friday rally. Just hold runner. 7085 was support posted - held to the tick 6pm last nigh",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7120,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "support posted - held to the tick 6pm last night. 7120 reclaim was an additional long. Targets were 7137 (hit),",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7137,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "last night. 7120 reclaim was an additional long. Targets were 7137 (hit), 7147-53 (hit) 7120-7147 remain pure chop.",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7147,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "Targets were 7137 (hit), 7147-53 (hit) 7120-7147 remain pure chop. 7166, 7178 bonus",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [
+        {
+          "low": 7120,
+          "high": 7147,
+          "source_snippet": "Targets were 7137 (hit), 7147-53 (hit) 7120-7147 remain pure chop. 7166, 7178 bonus"
+        }
+      ],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-20",
+      "tweet_timestamp": "2026-04-20T14:00:00-04:00",
+      "levels": [
+        {
+          "price": 7085,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "rebuild structure after Friday's rally. 7085 was support as posted, held to the tick. Targets to",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-20",
+      "tweet_timestamp": "2026-04-20T14:00:00-04:00",
+      "levels": [
+        {
+          "price": 7085,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "lidation now. Total chop in this range. 7085 was support posted Friday, and it held to the tick",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7137,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "and it held to the tick at 6pm last eve. Today's targets were 7137, then 7147-53. 7160, 7166, 7178 when ready",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-20",
+      "tweet_timestamp": "2026-04-20T16:00:00-04:00",
+      "levels": [
+        {
+          "price": 7147,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "the action went to the morning traders. 7147-53 was resistance/final target today and we've been stuck",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7153,
+          "significance": "unclear",
+          "direction": "resistance",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "the action went to the morning traders. 7147-53 was resistance/final target today and we've been stuck",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-21",
+      "tweet_timestamp": "2026-04-21T07:57:00-04:00",
+      "levels": [
+        {
+          "price": 7085,
+          "significance": "key",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "down. We long on the Failed Breakdown (7085 backtest long or 7120 Failed Breakdown), then ri",
+          "crossSourceConfirmed": false,
+          "tweet_count": 2
+        },
+        {
+          "price": 7120,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "Failed Breakdown (7085 backtest long or 7120 Failed Breakdown), then ride runner all week. Targets I",
+          "crossSourceConfirmed": false,
+          "tweet_count": 2
+        },
+        {
+          "price": 7147,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": true,
+          "source": "text",
+          "source_snippet": "hit) Plan: 7186, 7194, 7217 next slate. 7147-53=support (watch traps)",
+          "crossSourceConfirmed": false,
+          "tweet_count": 1
+        },
+        {
+          "price": 7153,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "hit) Plan: 7186, 7194, 7217 next slate. 7147-53=support (watch traps)",
+          "crossSourceConfirmed": false,
+          "tweet_count": 1
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": true,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 7120,
+          "pattern": "failed_breakdown",
+          "source_snippet": "Failed Breakdown (7085 backtest long or 7120 Failed Breakdown), then ride runner all week. Targets I"
+        }
+      ],
+      "weekly_pattern": "sunday_gap_long",
+      "narrative_only": false,
+      "parse_errors": [
+        "no Mancini-format content detected",
+        "discarded out-of-range ES price 2026 from \"04/21/2026 07:57AM - Every week the same in #ES_F. Sunday gap down. We long on t\"",
+        "discarded out-of-range ES price 2026 from \"04/21/2026 07:58AM - Note: Once again there is nothing to do now until we get an\""
+      ],
+      "sub_tweets": [
+        {
+          "instrument": "ES",
+          "date": "2026-04-27",
+          "tweet_timestamp": "2026-04-27T09:00:00-04:00",
+          "levels": [],
+          "chop_zones": [],
+          "no_trade_signal": false,
+          "runner_active": null,
+          "pattern_entries": [],
+          "weekly_pattern": null,
+          "narrative_only": true,
+          "parse_errors": [
+            "narrative-only post — no levels detected",
+            "no Mancini-format content detected"
+          ]
+        },
+        {
+          "instrument": "ES",
+          "date": "2026-04-21",
+          "tweet_timestamp": "2026-04-21T07:57:00-04:00",
+          "levels": [
+            {
+              "price": 7085,
+              "significance": "key",
+              "direction": "support",
+              "intent": null,
+              "trigger_type": null,
+              "hit_status": "pending",
+              "trap_warning": false,
+              "source": "text",
+              "source_snippet": "down. We long on the Failed Breakdown (7085 backtest long or 7120 Failed Breakdown), then ri",
+              "crossSourceConfirmed": false
+            },
+            {
+              "price": 7120,
+              "significance": "key",
+              "direction": "flip",
+              "intent": "failed_breakdown",
+              "trigger_type": "breakdown",
+              "hit_status": "pending",
+              "trap_warning": false,
+              "source": "text",
+              "source_snippet": "Failed Breakdown (7085 backtest long or 7120 Failed Breakdown), then ride runner all week. Targets I",
+              "crossSourceConfirmed": false
+            },
+            {
+              "price": 7147,
+              "significance": "unclear",
+              "direction": "support",
+              "intent": null,
+              "trigger_type": null,
+              "hit_status": "pending",
+              "trap_warning": true,
+              "source": "text",
+              "source_snippet": "hit) Plan: 7186, 7194, 7217 next slate. 7147-53=support (watch traps)",
+              "crossSourceConfirmed": false
+            },
+            {
+              "price": 7153,
+              "significance": "unclear",
+              "direction": "support",
+              "intent": null,
+              "trigger_type": null,
+              "hit_status": "pending",
+              "trap_warning": false,
+              "source": "text",
+              "source_snippet": "hit) Plan: 7186, 7194, 7217 next slate. 7147-53=support (watch traps)",
+              "crossSourceConfirmed": false
+            }
+          ],
+          "chop_zones": [],
+          "no_trade_signal": false,
+          "runner_active": null,
+          "pattern_entries": [
+            {
+              "price": 7120,
+              "pattern": "failed_breakdown",
+              "source_snippet": "Failed Breakdown (7085 backtest long or 7120 Failed Breakdown), then ride runner all week. Targets I"
+            }
+          ],
+          "weekly_pattern": "sunday_gap_long",
+          "narrative_only": false,
+          "parse_errors": [
+            "discarded out-of-range ES price 2026 from \"04/21/2026 07:57AM - Every week the same in #ES_F. Sunday gap down. We long on t\""
+          ]
+        },
+        {
+          "instrument": "ES",
+          "date": "2026-04-21",
+          "tweet_timestamp": "2026-04-21T07:58:00-04:00",
+          "levels": [
+            {
+              "price": 7085,
+              "significance": "key",
+              "direction": "support",
+              "intent": null,
+              "trigger_type": null,
+              "hit_status": "pending",
+              "trap_warning": false,
+              "source": "text",
+              "source_snippet": "t the Sunday open. We are long from the 7085 backtest OR the 7120 Failed Breakdown. Ride runn",
+              "crossSourceConfirmed": false
+            },
+            {
+              "price": 7120,
+              "significance": "key",
+              "direction": "flip",
+              "intent": "failed_breakdown",
+              "trigger_type": "breakdown",
+              "hit_status": "pending",
+              "trap_warning": false,
+              "source": "text",
+              "source_snippet": "are long from the 7085 backtest OR the 7120 Failed Breakdown. Ride runner",
+              "crossSourceConfirmed": false
+            }
+          ],
+          "chop_zones": [],
+          "no_trade_signal": true,
+          "runner_active": null,
+          "pattern_entries": [
+            {
+              "price": 7120,
+              "pattern": "failed_breakdown",
+              "source_snippet": "are long from the 7085 backtest OR the 7120 Failed Breakdown. Ride runner"
+            }
+          ],
+          "weekly_pattern": null,
+          "narrative_only": false,
+          "parse_errors": [
+            "discarded out-of-range ES price 2026 from \"04/21/2026 07:58AM - Note: Once again there is nothing to do now until we get an\""
+          ]
+        }
+      ]
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-21",
+      "tweet_timestamp": "2026-04-21T09:00:00-04:00",
+      "levels": [
+        {
+          "price": 7085,
+          "significance": "key",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "Sunday's entry given here & newsletter (7085 backtest long OR 7120 Failed Breakdown both work",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7120,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ere & newsletter (7085 backtest long OR 7120 Failed Breakdown both worked). Targets were 7147-53, 7160",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7147,
+          "significance": "key",
+          "direction": "support",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": true,
+          "source": "text",
+          "source_snippet": "ktest long OR 7120 Failed Breakdown both worked). Targets were 7147-53, 7160, 7178 (all hit) 7160 micro support, 7147",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7160,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "gets were 7147-53, 7160, 7178 (all hit) 7160 micro support, 7147-53 below (watch traps). Same upsi",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": true,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 7120,
+          "pattern": "failed_breakdown",
+          "source_snippet": "ere & newsletter (7085 backtest long OR 7120 Failed Breakdown both worked). Targets were 7147-53, 7160"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-21",
+      "tweet_timestamp": "2026-04-21T10:00:00-04:00",
+      "levels": [
+        {
+          "price": 7085,
+          "significance": "key",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "trigger given here + newsletter was the 7085 Backtest/7120 Failed Breakdown Sunday evening. I",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7120,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "here + newsletter was the 7085 Backtest/7120 Failed Breakdown Sunday evening. I just posted 7147-50 wa",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7147,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "Breakdown Sunday evening. I just posted 7147-50 was support today. Held exact 1st target today was",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7150,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "Breakdown Sunday evening. I just posted 7147-50 was support today. Held exact 1st target today was",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7166,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "second_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "oday. Held exact 1st target today was 7160 (hit), 7166 2nd (hit). 7178, 7186 above",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 7120,
+          "pattern": "failed_breakdown",
+          "source_snippet": "here + newsletter was the 7085 Backtest/7120 Failed Breakdown Sunday evening. I just posted 7147-50 wa"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-21",
+      "tweet_timestamp": "2026-04-21T11:00:00-04:00",
+      "levels": [
+        {
+          "price": 7085,
+          "significance": "key",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "now in #ES_F. Long trigger was Sunday's 7085 backtest OR the 7120 Failed Breakdown. We ran to",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7120,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": true,
+          "source": "text",
+          "source_snippet": "igger was Sunday's 7085 backtest OR the 7120 Failed Breakdown. We ran to 7180's. 7147-53 was today's",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7147,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "120 Failed Breakdown. We ran to 7180's. 7147-53 was today's support as posted. Held exact on test #1, bounc",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7153,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "120 Failed Breakdown. We ran to 7180's. 7147-53 was today's support as posted. Held exact on test #1, bounc",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 7120,
+          "pattern": "failed_breakdown",
+          "source_snippet": "igger was Sunday's 7085 backtest OR the 7120 Failed Breakdown. We ran to 7180's. 7147-53 was today's"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-21",
+      "tweet_timestamp": "2026-04-21T11:00:00-04:00",
+      "levels": [
+        {
+          "price": 7120,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "nd up from Sunday's 7085 direct long OR 7120 Failed Breakdown. 7120 was support as posted & we just s",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 7120,
+          "pattern": "failed_breakdown",
+          "source_snippet": "nd up from Sunday's 7085 direct long OR 7120 Failed Breakdown. 7120 was support as posted & we just s"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-21",
+      "tweet_timestamp": "2026-04-21T14:00:00-04:00",
+      "levels": [
+        {
+          "price": 7085,
+          "significance": "key",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "orning burst but lvls still respecting. 7085 backtest or 7120 Failed Breakdown got us long Su",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7120,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "lvls still respecting. 7085 backtest or 7120 Failed Breakdown got us long Sunday. We rallied to 7180s.",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 7120,
+          "pattern": "failed_breakdown",
+          "source_snippet": "lvls still respecting. 7085 backtest or 7120 Failed Breakdown got us long Sunday. We rallied to 7180s."
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-21",
+      "tweet_timestamp": "2026-04-21T14:00:00-04:00",
+      "levels": [
+        {
+          "price": 7085,
+          "significance": "key",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "lity returning in #ES_F. After Sunday's 7085 backtest long OR 7120 Failed Breakdown, we rippe",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7120,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "F. After Sunday's 7085 backtest long OR 7120 Failed Breakdown, we ripped to 7180s this morning. 7120",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 7120,
+          "pattern": "failed_breakdown",
+          "source_snippet": "F. After Sunday's 7085 backtest long OR 7120 Failed Breakdown, we ripped to 7180s this morning. 7120"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-21",
+      "tweet_timestamp": "2026-04-21T14:00:00-04:00",
+      "levels": [
+        {
+          "price": 7120,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": "reclaim",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "s. 1hr ago, we reclaimed and ran to ~7135 1st up. 7120 reclaims see 7135, 7147-53. 7104, 7085=supports",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7135,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "for 20 points. 1hr ago, we reclaimed and ran to ~7135 1st up. 7120 reclaims see 7135, 7147-53. 7104, 7085=s",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7147,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "s. 1hr ago, we reclaimed and ran to ~7135 1st up. 7120 reclaims see 7135, 7147-53. 7104, 7085=supports",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7153,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "second_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "s. 1hr ago, we reclaimed and ran to ~7135 1st up. 7120 reclaims see 7135, 7147-53. 7104, 7085=supports",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-21",
+      "tweet_timestamp": "2026-04-21T16:00:00-04:00",
+      "levels": [
+        {
+          "price": 7100,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "47-53 remains above and its a big test. 7100-05 overnight support. Newsletter out soon with entries- we a",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7105,
+          "significance": "unclear",
+          "direction": "support",
+          "intent": null,
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "47-53 remains above and its a big test. 7100-05 overnight support. Newsletter out soon with entries- we a",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7135,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "et/ATM machine. We continue to recover, rally to ~7135 1st up, then reject. 7147-53 remains above and its a",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-22",
+      "tweet_timestamp": "2026-04-22T07:56:00-04:00",
+      "levels": [
+        {
+          "price": 7097,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "readers got it 30mins prior. Setup was Failed Breakdown of 7097. We trapped it to 7085, recovered, boug",
+          "crossSourceConfirmed": false,
+          "tweet_count": 1
+        },
+        {
+          "price": 7147,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "f 7097. We trapped it to 7085, recovered, bought. Target was 7147, hit Plan: Ride runner. 7153, 7165, 7180 next up.",
+          "crossSourceConfirmed": false,
+          "tweet_count": 1
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": true,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 7097,
+          "pattern": "failed_breakdown",
+          "source_snippet": "readers got it 30mins prior. Setup was Failed Breakdown of 7097. We trapped it to 7085, recovered, boug"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": [
+        "no Mancini-format content detected",
+        "discarded out-of-range ES price 2026 from \"04/22/2026 07:56AM - Last eve after 4pm we got a textbook Failed Breakdown. News\"",
+        "discarded out-of-range ES price 2026 from \"04/22/2026 07:57AM - Note: As I make clear every single day - there is nothing t\""
+      ],
+      "sub_tweets": [
+        {
+          "instrument": "ES",
+          "date": "2026-04-27",
+          "tweet_timestamp": "2026-04-27T09:00:00-04:00",
+          "levels": [],
+          "chop_zones": [],
+          "no_trade_signal": false,
+          "runner_active": null,
+          "pattern_entries": [],
+          "weekly_pattern": null,
+          "narrative_only": true,
+          "parse_errors": [
+            "narrative-only post — no levels detected",
+            "no Mancini-format content detected"
+          ]
+        },
+        {
+          "instrument": "ES",
+          "date": "2026-04-22",
+          "tweet_timestamp": "2026-04-22T07:56:00-04:00",
+          "levels": [
+            {
+              "price": 7097,
+              "significance": "key",
+              "direction": "flip",
+              "intent": "failed_breakdown",
+              "trigger_type": "breakdown",
+              "hit_status": "pending",
+              "trap_warning": false,
+              "source": "text",
+              "source_snippet": "readers got it 30mins prior. Setup was Failed Breakdown of 7097. We trapped it to 7085, recovered, boug",
+              "crossSourceConfirmed": false
+            },
+            {
+              "price": 7147,
+              "significance": "key",
+              "direction": "resistance",
+              "intent": "first_target",
+              "trigger_type": null,
+              "hit_status": "pending",
+              "trap_warning": false,
+              "source": "text",
+              "source_snippet": "f 7097. We trapped it to 7085, recovered, bought. Target was 7147, hit Plan: Ride runner. 7153, 7165, 7180 next up.",
+              "crossSourceConfirmed": false
+            }
+          ],
+          "chop_zones": [],
+          "no_trade_signal": false,
+          "runner_active": null,
+          "pattern_entries": [
+            {
+              "price": 7097,
+              "pattern": "failed_breakdown",
+              "source_snippet": "readers got it 30mins prior. Setup was Failed Breakdown of 7097. We trapped it to 7085, recovered, boug"
+            }
+          ],
+          "weekly_pattern": null,
+          "narrative_only": false,
+          "parse_errors": [
+            "discarded out-of-range ES price 2026 from \"04/22/2026 07:56AM - Last eve after 4pm we got a textbook Failed Breakdown. News\""
+          ]
+        },
+        {
+          "instrument": "ES",
+          "date": "2026-04-22",
+          "tweet_timestamp": "2026-04-22T07:57:00-04:00",
+          "levels": [],
+          "chop_zones": [],
+          "no_trade_signal": true,
+          "runner_active": null,
+          "pattern_entries": [],
+          "weekly_pattern": null,
+          "narrative_only": false,
+          "parse_errors": [
+            "discarded out-of-range ES price 2026 from \"04/22/2026 07:57AM - Note: As I make clear every single day - there is nothing t\"",
+            "no Mancini-format content detected"
+          ]
+        },
+        {
+          "instrument": "ES",
+          "date": "2026-04-22",
+          "tweet_timestamp": "2026-04-22T07:58:00-04:00",
+          "levels": [],
+          "chop_zones": [],
+          "no_trade_signal": false,
+          "runner_active": null,
+          "pattern_entries": [],
+          "weekly_pattern": null,
+          "narrative_only": true,
+          "parse_errors": [
+            "narrative-only post — no levels detected",
+            "no Mancini-format content detected"
+          ]
+        }
+      ]
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-22",
+      "tweet_timestamp": "2026-04-22T16:00:00-04:00",
+      "levels": [
+        {
+          "price": 7097,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": ". Hold runner. Our long trigger was the 7097 Failed Breakdown after 4pm yesterday (given in advance in",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7147,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "r 4pm yesterday (given in advance in newsletter). Target was 7147. Stuck here for hours 7153 (hit), 7165, 7180 next",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 7097,
+          "pattern": "failed_breakdown",
+          "source_snippet": ". Hold runner. Our long trigger was the 7097 Failed Breakdown after 4pm yesterday (given in advance in"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-22",
+      "tweet_timestamp": "2026-04-22T16:00:00-04:00",
+      "levels": [
+        {
+          "price": 7097,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "_F & work through today's target slate. 7097 Failed Breakdown was the long trigger given 30mins in adv",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7147,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "ng trigger given 30mins in advance in newsletter. Target was 7147 - stuck there all night. Today's targets were 715",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7153,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "Target was 7147 - stuck there all night. Today's targets were 7153 (hit), 7165 (almost), 7180. Just ride runner unti",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 7097,
+          "pattern": "failed_breakdown",
+          "source_snippet": "_F & work through today's target slate. 7097 Failed Breakdown was the long trigger given 30mins in adv"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-22",
+      "tweet_timestamp": "2026-04-22T16:00:00-04:00",
+      "levels": [
+        {
+          "price": 7097,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "Targets continue to hit precisely in #ES_F. Long trigger was the 7097 low Failed Breakdown we got after 4pm yesterday (",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7147,
+          "significance": "key",
+          "direction": "resistance",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "t after 4pm yesterday (given in newsletter). Main target was 7147. Today's targets given 8am were 7153 (hit), 7165",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-22",
+      "tweet_timestamp": "2026-04-22T11:50:00-04:00",
+      "levels": [
+        {
+          "price": 7097,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "2/2026 11:50AM - Mid-day chop in #ES_F. 7097 Failed Breakdown was our long trigger with 7147 target. T",
+          "crossSourceConfirmed": false,
+          "tweet_count": 1
+        },
+        {
+          "price": 7147,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "long_trigger",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "-day chop in #ES_F. 7097 Failed Breakdown was our long trigger with 7147 target. Today's targets given 8am were 7153 (hit)",
+          "crossSourceConfirmed": false,
+          "tweet_count": 1
+        }
+      ],
+      "chop_zones": [],
+      "no_trade_signal": true,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 7097,
+          "pattern": "failed_breakdown",
+          "source_snippet": "2/2026 11:50AM - Mid-day chop in #ES_F. 7097 Failed Breakdown was our long trigger with 7147 target. T"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": [
+        "no Mancini-format content detected",
+        "discarded out-of-range ES price 2026 from \"04/22/2026 11:50AM - Mid-day chop in #ES_F. 7097 Failed Breakdown was our long t\"",
+        "discarded out-of-range ES price 2026 from \"04/22/2026 11:51AM - Note: Per my morning post there is nothing to do until we g\""
+      ],
+      "sub_tweets": [
+        {
+          "instrument": "ES",
+          "date": "2026-04-27",
+          "tweet_timestamp": "2026-04-27T11:00:00-04:00",
+          "levels": [],
+          "chop_zones": [],
+          "no_trade_signal": false,
+          "runner_active": null,
+          "pattern_entries": [],
+          "weekly_pattern": null,
+          "narrative_only": true,
+          "parse_errors": [
+            "narrative-only post — no levels detected",
+            "no Mancini-format content detected"
+          ]
+        },
+        {
+          "instrument": "ES",
+          "date": "2026-04-22",
+          "tweet_timestamp": "2026-04-22T11:50:00-04:00",
+          "levels": [
+            {
+              "price": 7097,
+              "significance": "key",
+              "direction": "flip",
+              "intent": "failed_breakdown",
+              "trigger_type": "breakdown",
+              "hit_status": "pending",
+              "trap_warning": false,
+              "source": "text",
+              "source_snippet": "2/2026 11:50AM - Mid-day chop in #ES_F. 7097 Failed Breakdown was our long trigger with 7147 target. T",
+              "crossSourceConfirmed": false
+            },
+            {
+              "price": 7147,
+              "significance": "key",
+              "direction": "flip",
+              "intent": "long_trigger",
+              "trigger_type": null,
+              "hit_status": "pending",
+              "trap_warning": false,
+              "source": "text",
+              "source_snippet": "-day chop in #ES_F. 7097 Failed Breakdown was our long trigger with 7147 target. Today's targets given 8am were 7153 (hit)",
+              "crossSourceConfirmed": false
+            }
+          ],
+          "chop_zones": [],
+          "no_trade_signal": false,
+          "runner_active": null,
+          "pattern_entries": [
+            {
+              "price": 7097,
+              "pattern": "failed_breakdown",
+              "source_snippet": "2/2026 11:50AM - Mid-day chop in #ES_F. 7097 Failed Breakdown was our long trigger with 7147 target. T"
+            }
+          ],
+          "weekly_pattern": null,
+          "narrative_only": false,
+          "parse_errors": [
+            "discarded out-of-range ES price 2026 from \"04/22/2026 11:50AM - Mid-day chop in #ES_F. 7097 Failed Breakdown was our long t\""
+          ]
+        },
+        {
+          "instrument": "ES",
+          "date": "2026-04-22",
+          "tweet_timestamp": "2026-04-22T11:51:00-04:00",
+          "levels": [],
+          "chop_zones": [],
+          "no_trade_signal": true,
+          "runner_active": null,
+          "pattern_entries": [],
+          "weekly_pattern": null,
+          "narrative_only": false,
+          "parse_errors": [
+            "discarded out-of-range ES price 2026 from \"04/22/2026 11:51AM - Note: Per my morning post there is nothing to do until we g\"",
+            "no Mancini-format content detected"
+          ]
+        }
+      ]
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-22",
+      "tweet_timestamp": "2026-04-22T16:00:00-04:00",
+      "levels": [
+        {
+          "price": 7085,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": ", 7153 (hit), 7165 (high of day), 7180. 7085-7185= a massive flag 7147, 7135 (watch traps), 7120 remain s",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7097,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "y chop. Wait for a vol spike to engage. 7097 Failed Breakdown yesterday was our long trigger. Targets",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7147,
+          "significance": "key",
+          "direction": "support",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": true,
+          "source": "text",
+          "source_snippet": "Failed Breakdown yesterday was our long trigger. Targets were 7147, 7153 (hit), 7165 (high of day), 7180. 7085-7185=",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7185,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": ", 7153 (hit), 7165 (high of day), 7180. 7085-7185= a massive flag 7147, 7135 (watch traps), 7120 remain s",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [
+        {
+          "low": 7085,
+          "high": 7185,
+          "source_snippet": ", 7153 (hit), 7165 (high of day), 7180. 7085-7185= a massive flag 7147, 7135 (watch traps), 7120 remain s"
+        }
+      ],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 7097,
+          "pattern": "failed_breakdown",
+          "source_snippet": "y chop. Wait for a vol spike to engage. 7097 Failed Breakdown yesterday was our long trigger. Targets"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    },
+    {
+      "instrument": "ES",
+      "date": "2026-04-22",
+      "tweet_timestamp": "2026-04-22T16:00:00-04:00",
+      "levels": [
+        {
+          "price": 7085,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "rt, just held exact (7135, 7120 below). 7085-7185 remains a massive flag ══════════════════════════════════════",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7097,
+          "significance": "key",
+          "direction": "flip",
+          "intent": "failed_breakdown",
+          "trigger_type": "breakdown",
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "F but levels respecting well. After the 7097 Failed Breakdown long yesterday, today's targets were 7147 (h",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7147,
+          "significance": "key",
+          "direction": "support",
+          "intent": "first_target",
+          "trigger_type": null,
+          "hit_status": "hit",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "the 7097 Failed Breakdown long yesterday, today's targets were 7147 (hit), 7153 (hit), 7165 (high of day), 7180 (not",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7185,
+          "significance": "unclear",
+          "direction": null,
+          "intent": "chop_boundary",
+          "trigger_type": null,
+          "hit_status": "pending",
+          "trap_warning": false,
+          "source": "text",
+          "source_snippet": "rt, just held exact (7135, 7120 below). 7085-7185 remains a massive flag ══════════════════════════════════════",
+          "crossSourceConfirmed": false
+        }
+      ],
+      "chop_zones": [
+        {
+          "low": 7085,
+          "high": 7185,
+          "source_snippet": "rt, just held exact (7135, 7120 below). 7085-7185 remains a massive flag ══════════════════════════════════════"
+        }
+      ],
+      "no_trade_signal": false,
+      "runner_active": null,
+      "pattern_entries": [
+        {
+          "price": 7097,
+          "pattern": "failed_breakdown",
+          "source_snippet": "F but levels respecting well. After the 7097 Failed Breakdown long yesterday, today's targets were 7147 (h"
+        }
+      ],
+      "weekly_pattern": null,
+      "narrative_only": false,
+      "parse_errors": []
+    }
+  ],
+  "deduped_levels": [
+    {
+      "price": 6360,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "failed_breakdown",
+      "trigger_type": "breakdown",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "93 Failed Breadkown, but many since the 6360 Failed Breakdown. Now, we just let the runner pay. There",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-14T07:58:00-04:00"
+    },
+    {
+      "price": 6592,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "failed_breakdown",
+      "trigger_type": "breakdown",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "now. On Tuesday we saw a massive macro Failed Breakdown of 6592 (given live + in newsletter) & we've be",
+      "crossSourceConfirmed": false,
+      "tweet_count": 3,
+      "tweet_timestamp": "2026-04-10T09:00:00-04:00"
+    },
+    {
+      "price": 6592,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "failed_breakdown",
+      "trigger_type": "breakdown",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "Last Tuesday 11:30AM a Failed Breakdown of 6592 got us long in #ES_F for +280 point ral",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-18T11:30:00-04:00"
+    },
+    {
+      "price": 6592,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "failed_breakdown",
+      "trigger_type": "breakdown",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "ss 280+ point rally following Tuesday's 6592 Failed Breakdown. Bulls must recover 6780 and 6793 now t",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-19T12:00:00-04:00"
+    },
+    {
+      "price": 6593,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "failed_breakdown",
+      "trigger_type": "breakdown",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": ". After a 280 point rally from Sunday's 6593 failed breakdown, 7073 was today's 1st target. 7041, 701",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-16T10:00:00-04:00"
+    },
+    {
+      "price": 6792,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "failed_breakdown",
+      "trigger_type": "breakdown",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "he best long of 2026 just keeps paying. 6792 Failed Breakdown Sunday was our recent major add in #ES_F",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-14T08:00:00-04:00"
+    },
+    {
+      "price": 6793,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "failed_breakdown",
+      "trigger_type": "breakdown",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "cially +100 points on our long from the 6793 Failed Breakdown last evening in #ES_F (for those who mis\nF: +100 points now on the long from the 6793 Failed Breakdown last eve. Now nothing to do but ride run",
+      "crossSourceConfirmed": false,
+      "tweet_count": 6,
+      "tweet_timestamp": "2026-04-13T08:00:00-04:00"
+    },
+    {
+      "price": 6793,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "failed_breakdown",
+      "trigger_type": "breakdown",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "keeps paying in #ES_F. Recent adds were 6793 Failed Breakdown Sunday (given live) and 6809 reclaim yst\no now in #ES_F. Entries were the Sunday 6793 Failed Breakdown (given live Sunday 6pm) and the 6809 Fai\ne are working today's targets in #ES_F. 6793 Failed Breakdown was our entry Sunday. I warned yesterday\nnner work, now +184 point from Sunday's 6793 Failed Breakdown given live in #ES_F. Today's target slat\nin #ES_F now +200 from Sunday evenings 6793 Failed Breakdown given live. Today's targets given 8am we\nain. We are +200 points from the Sunday 6793 Failed Breakdown, given live. Today's targets were 6948,\nupdate #ES_F: +230 points from Sunday's 6793 Failed Breakdown. Again - nothing to do but ride runner",
+      "crossSourceConfirmed": false,
+      "tweet_count": 7,
+      "tweet_timestamp": "2026-04-14T07:58:00-04:00"
+    },
+    {
+      "price": 6793,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "failed_breakdown",
+      "trigger_type": "breakdown",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "ut rally in #ES_F after Sunday evenings 6793 Failed Breakdown, given live & in newsletter. Yesterdays\nto do but hold our runner from Sunday's 6793 Failed Breakdown. We need a deep sell to open new entrie\n. After a 280 point rally from Sunday's 6793 failed breakdown, 7073 was today's 1st target. 7041, 701\nof targets up. Our runner from Sunday's 6793 Failed Breakdown is still paying",
+      "crossSourceConfirmed": false,
+      "tweet_count": 4,
+      "tweet_timestamp": "2026-04-16T08:00:00-04:00"
+    },
+    {
+      "price": 6793,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "failed_breakdown",
+      "trigger_type": "breakdown",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "#ES_F. Long still paying from Sunday's 6793 Failed Breakdown. We did get a rare add yesterday though\nues to print in #ES_F from our original 6793 Failed Breakdown on Sunday. Today's targets given 8am + n\npays, now +386 points since our Sunday 6793 Failed Breakdown in #ES_F. Today's targets were given at\nAfter +386 points from Sunday's 6793 Failed Breakdown, we've run almost all available targets\nS_F: Its been +386 points from Sunday's 6793 Failed Breakdown. Today's target was 7131 (hit) with 715",
+      "crossSourceConfirmed": false,
+      "tweet_count": 5,
+      "tweet_timestamp": "2026-04-17T07:54:00-04:00"
+    },
+    {
+      "price": 6802,
+      "significance": "key",
+      "direction": "resistance",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "at 6793 reclaim triggers up. We triggered 8:45PM. Targets were 6802 1st (hit), 6818-22 2nd (hit) Plan: Ride runner. 6",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-13T08:00:00-04:00"
+    },
+    {
+      "price": 6809,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "failed_breakdown",
+      "trigger_type": "breakdown",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "Tuesday's 6592 reclaim and yesterday's 6809 Failed Breakdown. 6872-6848=chop/flag. Today's 1st targe\nays 6592 Macro Failed Breakdown and 2) Yesterdays 6809 reclaim. 6848-6872=a new bull flag. Todays targets were 6",
+      "crossSourceConfirmed": false,
+      "tweet_count": 4,
+      "tweet_timestamp": "2026-04-10T09:00:00-04:00"
+    },
+    {
+      "price": 6809,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "long_trigger",
+      "trigger_type": "reclaim",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "2nd (hit) Plan: Ride runner. 6802, 6793=support. 6809 reclaim sees 6818-22, 6832, 6848-50. Dip<92 to 80\n2 (hit) For those who missed it, 1hr ago I posted 6809 reclaim triggers to 6818-22 (hit), 6832, 6848\n. 6793 reclaim was our long trigger given 6pm (or 6809 reclaim given 8am). Targets were 6818-22 (hit), 6832 (hit\nor those who missed it, Trigger 2: Posted at 8am, 6809 reclaim. Targets given were 6822 (hit), 6832 (hit), 6848\ne of targets in #ES_F. At 8am today, I posted the 6809 reclaim long trigger. Core targets were 6822 (hit), 6832\nselloff then bear trap/Failed Breakdown in #ES_F. 6809 reclaim was long trigger given live 8am (newsletter reade\ning in #ES_F (for those who missed it, I gave the 6809 Reclaim at 8am). Targets given were 6848 main (hit). Bonu",
+      "crossSourceConfirmed": false,
+      "tweet_count": 7,
+      "tweet_timestamp": "2026-04-13T08:00:00-04:00"
+    },
+    {
+      "price": 6809,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "failed_breakdown",
+      "trigger_type": "breakdown",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "eakdown (given live Sunday 6pm) and the 6809 Failed Breakdown yesterday. I posted 2:55PM yesterday lot",
+      "crossSourceConfirmed": false,
+      "tweet_count": 2,
+      "tweet_timestamp": "2026-04-14T07:58:00-04:00"
+    },
+    {
+      "price": 6818,
+      "significance": "key",
+      "direction": "resistance",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "ng trigger given 6pm (or 6809 reclaim given 8am). Targets were 6818-22 (hit), 6832 (hit), 6848 (hit). Now ride runner",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-13T08:00:00-04:00"
+    },
+    {
+      "price": 6822,
+      "significance": "key",
+      "direction": "resistance",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "hit",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "day, I posted the 6809 reclaim long trigger. Core targets were 6822 (hit), 6832 (hit), 6848 (hit). Bonus slate were 6",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-13T08:00:00-04:00"
+    },
+    {
+      "price": 6848,
+      "significance": "key",
+      "direction": null,
+      "intent": "stop",
+      "trigger_type": "fail",
+      "hit_status": "pending",
+      "trap_warning": true,
+      "source": "text",
+      "source_snippet": "pport (watch traps). 6872, 6882, 6900 next slate. 6848 fails, dip 6821-26\nand yesterday's 6809 Failed Breakdown. 6872-6848=chop/flag. Today's 1st target was 6882, and we ra\n& we've been long since for 280+ points 6848-6872=another flag. Today's 1st target was 6882 (hit). 690\neakdown and 2) Yesterdays 6809 reclaim. 6848-6872=a new bull flag. Todays targets were 6882 (hit), 6900-0\nTuesday's 6592 Macro Failed Breakdown. 6848-6872=a tight flag. Today's 1st target was 6882, we ran th\nThere's 6848 support hit in #ES_F but volatility is still no\nor trade heavy in this 0 quality chop. 6848-6872 is the pure chop range as posted. We just held 6848 almost exact. 6861,\n_F: Slow session but levels respecting. 6848 to 6872=a tight bull flag. We held 6848 as posted. 6861 was 1st r",
+      "crossSourceConfirmed": false,
+      "tweet_count": 8,
+      "tweet_timestamp": "2026-04-10T09:00:00-04:00"
+    },
+    {
+      "price": 6852,
+      "significance": "unclear",
+      "direction": "support",
+      "intent": null,
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "till a ceiling Plan today: Ride runner. 6848-52=support (watch traps). 6872, 6882, 6900 next sl",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-10T09:00:00-04:00"
+    },
+    {
+      "price": 6861,
+      "significance": "unclear",
+      "direction": "resistance",
+      "intent": null,
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "ight bull flag. We held 6848 as posted. 6861 was 1st resistance, here now. 6872, then 6900+ if we can c",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-10T16:00:00-04:00"
+    },
+    {
+      "price": 6872,
+      "significance": "key",
+      "direction": "resistance",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": true,
+      "source": "text",
+      "source_snippet": "w +280 points. Trigger #2 was ystds 6809 reclaim. Target was 6872, still a ceiling Plan today: Ride runner. 6848-52\nand yesterday's 6809 Failed Breakdown. 6872-6848=chop/flag. Today's 1st target was 6882, and we ra\n& we've been long since for 280+ points 6848-6872=another flag. Today's 1st target was 6882 (hit). 690\neakdown and 2) Yesterdays 6809 reclaim. 6848-6872=a new bull flag. Todays targets were 6882 (hit), 6900-0\nTuesday's 6592 Macro Failed Breakdown. 6848-6872=a tight flag. Today's 1st target was 6882, we ran th\nor trade heavy in this 0 quality chop. 6848-6872 is the pure chop range as posted. We just held 6848 almost exact. 6861,\n_F: Slow session but levels respecting. 6848 to 6872=a tight bull flag. We held 6848 as posted. 6861 was 1st r",
+      "crossSourceConfirmed": false,
+      "tweet_count": 7,
+      "tweet_timestamp": "2026-04-10T09:00:00-04:00"
+    },
+    {
+      "price": 6872,
+      "significance": "unclear",
+      "direction": "resistance",
+      "intent": "bonus_target",
+      "trigger_type": null,
+      "hit_status": "hit",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "6822 (hit), 6832 (hit), 6848 (hit). Ride runner. Bonus slate was 6872 (almost), 6886\ntargets were 6822 (hit), 6832 (hit), 6848 (hit). Bonus slate were 6872 (hit), then 6886 (almost). Easy day - just let runner pay now. 6892, 6903 n",
+      "crossSourceConfirmed": false,
+      "tweet_count": 2,
+      "tweet_timestamp": "2026-04-13T08:00:00-04:00"
+    },
+    {
+      "price": 6873,
+      "significance": "unclear",
+      "direction": "resistance",
+      "intent": "bonus_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "2 (hit), 6832 (hit), 6848 (hit). Now ride runner. Bonus slate=6873, 6886",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-13T08:00:00-04:00"
+    },
+    {
+      "price": 6882,
+      "significance": "key",
+      "direction": "support",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "hit",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "09 Failed Breakdown. 6872-6848=chop/flag. Today's 1st target was 6882, and we ran there, and dipped. 6900-05 still abov\ne for 280+ points 6848-6872=another flag. Today's 1st target was 6882 (hit). 6900-05 above if ES wants more\ns 6809 reclaim. 6848-6872=a new bull flag. Todays targets were 6882 (hit), 6900-05, 6922 above. Same supports\nFailed Breakdown. 6848-6872=a tight flag. Today's 1st target was 6882, we ran there, rejected back into the range. 6848",
+      "crossSourceConfirmed": false,
+      "tweet_count": 4,
+      "tweet_timestamp": "2026-04-10T10:00:00-04:00"
+    },
+    {
+      "price": 6886,
+      "significance": "unclear",
+      "direction": "resistance",
+      "intent": "bonus_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "2 (hit), 6832 (hit), 6848 (hit). Now ride runner. Bonus slate=6873, 6886\n6822 (hit), 6832 (hit), 6848 (hit). Ride runner. Bonus slate was 6872 (almost), 6886\ntargets were 6822 (hit), 6832 (hit), 6848 (hit). Bonus slate were 6872 (hit), then 6886 (almost). Easy day - just let runner pay now. 6892, 6903 n",
+      "crossSourceConfirmed": false,
+      "tweet_count": 3,
+      "tweet_timestamp": "2026-04-13T08:00:00-04:00"
+    },
+    {
+      "price": 6948,
+      "significance": "key",
+      "direction": "resistance",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "hit",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "re green ahead with 6937 next, and we hit Today's 1st target was 6948 (hit), 6958, 6967 above. Same supports\nSunday 6793 Failed Breakdown, given live. Today's targets were 6948, 6958, 6967 (all hit). Bonus were 6978, 6994 (her\no but ride runner until we get a dip. Today's 8am targets were 6948, 6958, 6967 (all hit). Bonus target was 7002 (exa",
+      "crossSourceConfirmed": false,
+      "tweet_count": 3,
+      "tweet_timestamp": "2026-04-14T10:00:00-04:00"
+    },
+    {
+      "price": 6958,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "long_trigger",
+      "trigger_type": "reclaim",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "ome) but levels respecting. I posted at 10am that 6958 reclaims trigger to 7073(hit), 7086 (hit), 7093. 7058 then",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-16T10:00:00-04:00"
+    },
+    {
+      "price": 6978,
+      "significance": "unclear",
+      "direction": "support",
+      "intent": "bonus_target",
+      "trigger_type": null,
+      "hit_status": "hit",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "given at 8am: 6948 (hit), 6858 (hit), 6967 (hit). Bonus slate was 6978 (hit), 7002 then 7021 if ES wants more. Let the runner pay\n8am were 6948 (hit), 6958 (hit), 6967 (all hit). Bonus set were 6978 (hit), 6994 (hit), 7002, then 7021 still bonus. No new setups until we pull back to 6930 at leas\nam were 6948, 6958, 6967 (all hit). I then gave a bonus slate of 6978 (hit), 6994 (hit), 7002 (just hit) 7021 next, then lots more above. Same supports",
+      "crossSourceConfirmed": false,
+      "tweet_count": 3,
+      "tweet_timestamp": "2026-04-14T08:00:00-04:00"
+    },
+    {
+      "price": 6982,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "short_trigger",
+      "trigger_type": "fail",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "7085 to keep 7230, 7300 live direct. 7085 fails, sell 6982 ════════════════════════════════════════════════",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-11T12:00:00-04:00"
+    },
+    {
+      "price": 6982,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "short_trigger",
+      "trigger_type": "fail",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "7085 to keep 7230, 7300 live direct. 7085 fails, sell 6982",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-18T12:00:00-04:00"
+    },
+    {
+      "price": 6994,
+      "significance": "unclear",
+      "direction": "support",
+      "intent": "bonus_target",
+      "trigger_type": null,
+      "hit_status": "hit",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "8am were 6948 (hit), 6958 (hit), 6967 (all hit). Bonus set were 6978 (hit), 6994 (hit), 7002, then 7021 still bonus. No new setups until we pull back to 6930 at leas\nam were 6948, 6958, 6967 (all hit). I then gave a bonus slate of 6978 (hit), 6994 (hit), 7002 (just hit) 7021 next, then lots more above. Same supports",
+      "crossSourceConfirmed": false,
+      "tweet_count": 2,
+      "tweet_timestamp": "2026-04-14T08:00:00-04:00"
+    },
+    {
+      "price": 7002,
+      "significance": "key",
+      "direction": "resistance",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "am targets were 6948, 6958, 6967 (all hit). Bonus target was 7002 (exact high). 7021 next then 7050. Newsletter out",
+      "crossSourceConfirmed": false,
+      "tweet_count": 4,
+      "tweet_timestamp": "2026-04-14T08:00:00-04:00"
+    },
+    {
+      "price": 7021,
+      "significance": "unclear",
+      "direction": "support",
+      "intent": "bonus_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "given at 8am: 6948 (hit), 6858 (hit), 6967 (hit). Bonus slate was 6978 (hit), 7002 then 7021 if ES wants more. Let the runner pay\n8am were 6948 (hit), 6958 (hit), 6967 (all hit). Bonus set were 6978 (hit), 6994 (hit), 7002, then 7021 still bonus. No new setups until we pull back to 6930 at leas",
+      "crossSourceConfirmed": false,
+      "tweet_count": 2,
+      "tweet_timestamp": "2026-04-14T08:00:00-04:00"
+    },
+    {
+      "price": 7041,
+      "significance": "unclear",
+      "direction": "support",
+      "intent": null,
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "7073=flag. 7073, 7087, 7093 next slate. 7041, 7016=1st support of interest",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-16T08:00:00-04:00"
+    },
+    {
+      "price": 7056,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "long_trigger",
+      "trigger_type": "reclaim",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "ings get semi-interesting below). 7056-7073=chop. 7056 reclaim high risk long\nt semi-interesting) are supports. 7056-7073=chop. 7056 reclaim high risk long\nsting for me until 7016 and deep sell. No change. 7056 reclaim sees 7073 again. 7087, 7093 if clears\nity. We got a setup finally though. I posted that 7056 reclaims see 7073. We reclaimed 7056, and ran to 7073. 7086, 7093 r",
+      "crossSourceConfirmed": false,
+      "tweet_count": 6,
+      "tweet_timestamp": "2026-04-16T08:00:00-04:00"
+    },
+    {
+      "price": 7058,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "long_trigger",
+      "trigger_type": "reclaim",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "y even with 0 volatility. I posted at 10:04AM the 7058 reclaim triggers us up. Targets given were 7073 (this is\nport continues to defend nicely. At 10am I posted 7058 reclaims see 7073, 7086, 7093. 2/3 tagged. We then backtested 7058 2x exactly.",
+      "crossSourceConfirmed": false,
+      "tweet_count": 2,
+      "tweet_timestamp": "2026-04-16T10:00:00-04:00"
+    },
+    {
+      "price": 7058,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "long_trigger",
+      "trigger_type": "reclaim",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "id get a rare add yesterday though. I posted 10am 7058 reclaim triggers up. Targets were 7073, 7086, 7093. All h",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-17T07:54:00-04:00"
+    },
+    {
+      "price": 7073,
+      "significance": "key",
+      "direction": "support",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "deep sell to open new entries. Yesterday's bonus target was 7073, stuck here No change: 7056-7073=a flag. 7087, 70\nere things get semi-interesting below). 7056-7073=chop. 7056 reclaim high risk long\nngs get semi-interesting) are supports. 7056-7073=chop. 7056 reclaim high risk long\n. 7073 was target & its been a ceiling. 7056-7073=pure chop. Nothing interesting for me until 7016\nposted 25mins ago that reclaims of 7056 see 7073. We reclaimed 7056, and hit 7073. 7086,\nity. We got a setup finally though. I posted that 7056 reclaims see 7073. We reclaimed 7056, and ran to 7073. 7086, 7093 r\nlaim triggers us up. Targets given were 7073 (this is a major resistance shelf but it hit), 7086 was 2nd target\nport continues to defend nicely. At 10am I posted 7058 reclaims see 7073, 7086, 7093. 2/3 tagged. We then backtested 7058 2x exactly.",
+      "crossSourceConfirmed": false,
+      "tweet_count": 9,
+      "tweet_timestamp": "2026-04-16T08:00:00-04:00"
+    },
+    {
+      "price": 7073,
+      "significance": "key",
+      "direction": "resistance",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "y though. I posted 10am 7058 reclaim triggers up. Targets were 7073, 7086, 7093. All hit Plan: Ride runner. 7103, 711",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-17T07:54:00-04:00"
+    },
+    {
+      "price": 7085,
+      "significance": "key",
+      "direction": null,
+      "intent": "stop",
+      "trigger_type": "fail",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "ls must hold 7085 to keep 7230, 7300 live direct. 7085 fails, sell 6982 ═════════════════════════════════════",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-11T12:00:00-04:00"
+    },
+    {
+      "price": 7085,
+      "significance": "key",
+      "direction": null,
+      "intent": "stop",
+      "trigger_type": "fail",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "ls must hold 7085 to keep 7230, 7300 live direct. 7085 fails, sell 6982",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-18T12:00:00-04:00"
+    },
+    {
+      "price": 7085,
+      "significance": "key",
+      "direction": "support",
+      "intent": null,
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": true,
+      "source": "text",
+      "source_snippet": "y 4pm newsletter, bulls had to hold the 7085 backtest. It held to the tick. Then, at 6pm I tw\nAll targets hit in #ES_F. 7085 was support given in Friday's newsletter (held exac\nd structure. All targets for today hit. 7085 was support - it held to the tick. Targets today we\nest the Friday rally. Just hold runner. 7085 was support posted - held to the tick 6pm last nigh\nrebuild structure after Friday's rally. 7085 was support as posted, held to the tick. Targets to\nlidation now. Total chop in this range. 7085 was support posted Friday, and it held to the tick",
+      "crossSourceConfirmed": false,
+      "tweet_count": 6,
+      "tweet_timestamp": "2026-04-20T10:00:00-04:00"
+    },
+    {
+      "price": 7085,
+      "significance": "key",
+      "direction": "support",
+      "intent": null,
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "down. We long on the Failed Breakdown (7085 backtest long or 7120 Failed Breakdown), then ri\nSunday's entry given here & newsletter (7085 backtest long OR 7120 Failed Breakdown both work\ntrigger given here + newsletter was the 7085 Backtest/7120 Failed Breakdown Sunday evening. I\nnow in #ES_F. Long trigger was Sunday's 7085 backtest OR the 7120 Failed Breakdown. We ran to\norning burst but lvls still respecting. 7085 backtest or 7120 Failed Breakdown got us long Su\nlity returning in #ES_F. After Sunday's 7085 backtest long OR 7120 Failed Breakdown, we rippe",
+      "crossSourceConfirmed": false,
+      "tweet_count": 6,
+      "tweet_timestamp": "2026-04-21T07:57:00-04:00"
+    },
+    {
+      "price": 7085,
+      "significance": "unclear",
+      "direction": null,
+      "intent": "chop_boundary",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": ", 7153 (hit), 7165 (high of day), 7180. 7085-7185= a massive flag 7147, 7135 (watch traps), 7120 remain s\nrt, just held exact (7135, 7120 below). 7085-7185 remains a massive flag ══════════════════════════════════════",
+      "crossSourceConfirmed": false,
+      "tweet_count": 2,
+      "tweet_timestamp": "2026-04-22T16:00:00-04:00"
+    },
+    {
+      "price": 7086,
+      "significance": "key",
+      "direction": "support",
+      "intent": "second_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "port continues to defend nicely. At 10am I posted 7058 reclaims see 7073, 7086, 7093. 2/3 tagged. We then backtested 7058 2x exactly.",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-16T16:00:00-04:00"
+    },
+    {
+      "price": 7093,
+      "significance": "key",
+      "direction": "support",
+      "intent": "second_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "port continues to defend nicely. At 10am I posted 7058 reclaims see 7073, 7086, 7093. 2/3 tagged. We then backtested 7058 2x exactly.",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-16T16:00:00-04:00"
+    },
+    {
+      "price": 7097,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "failed_breakdown",
+      "trigger_type": "breakdown",
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "readers got it 30mins prior. Setup was Failed Breakdown of 7097. We trapped it to 7085, recovered, boug\n. Hold runner. Our long trigger was the 7097 Failed Breakdown after 4pm yesterday (given in advance in\n_F & work through today's target slate. 7097 Failed Breakdown was the long trigger given 30mins in adv\nTargets continue to hit precisely in #ES_F. Long trigger was the 7097 low Failed Breakdown we got after 4pm yesterday (\n2/2026 11:50AM - Mid-day chop in #ES_F. 7097 Failed Breakdown was our long trigger with 7147 target. T\ny chop. Wait for a vol spike to engage. 7097 Failed Breakdown yesterday was our long trigger. Targets\nF but levels respecting well. After the 7097 Failed Breakdown long yesterday, today's targets were 7147 (h",
+      "crossSourceConfirmed": false,
+      "tweet_count": 7,
+      "tweet_timestamp": "2026-04-22T07:56:00-04:00"
+    },
+    {
+      "price": 7100,
+      "significance": "unclear",
+      "direction": "support",
+      "intent": null,
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "47-53 remains above and its a big test. 7100-05 overnight support. Newsletter out soon with entries- we a",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-21T16:00:00-04:00"
+    },
+    {
+      "price": 7105,
+      "significance": "unclear",
+      "direction": "support",
+      "intent": null,
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "47-53 remains above and its a big test. 7100-05 overnight support. Newsletter out soon with entries- we a",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-21T16:00:00-04:00"
+    },
+    {
+      "price": 7120,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "failed_breakdown",
+      "trigger_type": "breakdown",
+      "hit_status": "pending",
+      "trap_warning": true,
+      "source": "text",
+      "source_snippet": "given in newsletter. Held to the tick. 7120 Failed Breakdown was given here 6pm. Targets were 7137 (h\nen in Friday's newsletter (held exact). 7120 Failed Breakdown was another entry. Targets were 7137 (hi\n-53 (hit). Bonus 7160 (hit), 7166, 7178 7120-7147=pure chop. Watch traps of 7120 now if we get them\nsupport posted - held to the tick 6pm last night. 7120 reclaim was an additional long. Targets were 7137 (hit),",
+      "crossSourceConfirmed": false,
+      "tweet_count": 5,
+      "tweet_timestamp": "2026-04-20T10:00:00-04:00"
+    },
+    {
+      "price": 7120,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "failed_breakdown",
+      "trigger_type": "breakdown",
+      "hit_status": "pending",
+      "trap_warning": true,
+      "source": "text",
+      "source_snippet": "Failed Breakdown (7085 backtest long or 7120 Failed Breakdown), then ride runner all week. Targets I\nere & newsletter (7085 backtest long OR 7120 Failed Breakdown both worked). Targets were 7147-53, 7160\nhere + newsletter was the 7085 Backtest/7120 Failed Breakdown Sunday evening. I just posted 7147-50 wa\nigger was Sunday's 7085 backtest OR the 7120 Failed Breakdown. We ran to 7180's. 7147-53 was today's\nnd up from Sunday's 7085 direct long OR 7120 Failed Breakdown. 7120 was support as posted & we just s\nlvls still respecting. 7085 backtest or 7120 Failed Breakdown got us long Sunday. We rallied to 7180s.\nF. After Sunday's 7085 backtest long OR 7120 Failed Breakdown, we ripped to 7180s this morning. 7120\ns. 1hr ago, we reclaimed and ran to ~7135 1st up. 7120 reclaims see 7135, 7147-53. 7104, 7085=supports",
+      "crossSourceConfirmed": false,
+      "tweet_count": 8,
+      "tweet_timestamp": "2026-04-21T07:57:00-04:00"
+    },
+    {
+      "price": 7131,
+      "significance": "key",
+      "direction": "support",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "hit",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "ints from Sunday's 6793 Failed Breakdown. Today's target was 7131 (hit) with 7154, 7177 first bonus set. ES is tire",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-17T16:00:00-04:00"
+    },
+    {
+      "price": 7135,
+      "significance": "key",
+      "direction": "resistance",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "for 20 points. 1hr ago, we reclaimed and ran to ~7135 1st up. 7120 reclaims see 7135, 7147-53. 7104, 7085=s\net/ATM machine. We continue to recover, rally to ~7135 1st up, then reject. 7147-53 remains above and its a",
+      "crossSourceConfirmed": false,
+      "tweet_count": 2,
+      "tweet_timestamp": "2026-04-21T14:00:00-04:00"
+    },
+    {
+      "price": 7137,
+      "significance": "key",
+      "direction": "support",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "hit",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "e tick. 7120 Failed Breakdown was given here 6pm. Targets were 7137 (hit), 7147-53 (hit). 7160, 7166, 7178 are bonus\nout backtest long. 7120 was the Failed Breakdown. Targets were 7137 (hit), 7147-53 (hit). Bonus slate today remain 71\nexact). 7120 Failed Breakdown was another entry. Targets were 7137 (hit), 7147-53 (hit). 7160 was 1st bonus, hit. 71\nlast night. 7120 reclaim was an additional long. Targets were 7137 (hit), 7147-53 (hit) 7120-7147 remain pure chop.\nand it held to the tick at 6pm last eve. Today's targets were 7137, then 7147-53. 7160, 7166, 7178 when ready",
+      "crossSourceConfirmed": false,
+      "tweet_count": 5,
+      "tweet_timestamp": "2026-04-20T09:00:00-04:00"
+    },
+    {
+      "price": 7147,
+      "significance": "key",
+      "direction": "resistance",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "t), 7177 (hit), 7188, then 7200 Just ride runner. 7147 1st micro support",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-17T08:00:00-04:00"
+    },
+    {
+      "price": 7147,
+      "significance": "unclear",
+      "direction": null,
+      "intent": "chop_boundary",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": true,
+      "source": "text",
+      "source_snippet": "-53 (hit). Bonus 7160 (hit), 7166, 7178 7120-7147=pure chop. Watch traps of 7120 now if we get them\nTargets were 7137 (hit), 7147-53 (hit) 7120-7147 remain pure chop. 7166, 7178 bonus\nthe action went to the morning traders. 7147-53 was resistance/final target today and we've been stuck",
+      "crossSourceConfirmed": false,
+      "tweet_count": 3,
+      "tweet_timestamp": "2026-04-20T10:00:00-04:00"
+    },
+    {
+      "price": 7147,
+      "significance": "key",
+      "direction": "support",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": true,
+      "source": "text",
+      "source_snippet": "ktest long OR 7120 Failed Breakdown both worked). Targets were 7147-53, 7160, 7178 (all hit) 7160 micro support, 7147\nBreakdown Sunday evening. I just posted 7147-50 was support today. Held exact 1st target today was\n120 Failed Breakdown. We ran to 7180's. 7147-53 was today's support as posted. Held exact on test #1, bounc\ns. 1hr ago, we reclaimed and ran to ~7135 1st up. 7120 reclaims see 7135, 7147-53. 7104, 7085=supports",
+      "crossSourceConfirmed": false,
+      "tweet_count": 5,
+      "tweet_timestamp": "2026-04-21T07:57:00-04:00"
+    },
+    {
+      "price": 7147,
+      "significance": "key",
+      "direction": "flip",
+      "intent": "long_trigger",
+      "trigger_type": null,
+      "hit_status": "hit",
+      "trap_warning": true,
+      "source": "text",
+      "source_snippet": "-day chop in #ES_F. 7097 Failed Breakdown was our long trigger with 7147 target. Today's targets given 8am were 7153 (hit)\nFailed Breakdown yesterday was our long trigger. Targets were 7147, 7153 (hit), 7165 (high of day), 7180. 7085-7185=\nthe 7097 Failed Breakdown long yesterday, today's targets were 7147 (hit), 7153 (hit), 7165 (high of day), 7180 (not",
+      "crossSourceConfirmed": false,
+      "tweet_count": 7,
+      "tweet_timestamp": "2026-04-22T07:56:00-04:00"
+    },
+    {
+      "price": 7150,
+      "significance": "unclear",
+      "direction": "support",
+      "intent": null,
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "Breakdown Sunday evening. I just posted 7147-50 was support today. Held exact 1st target today was",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-21T10:00:00-04:00"
+    },
+    {
+      "price": 7153,
+      "significance": "unclear",
+      "direction": "resistance",
+      "intent": null,
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "the action went to the morning traders. 7147-53 was resistance/final target today and we've been stuck",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-20T16:00:00-04:00"
+    },
+    {
+      "price": 7153,
+      "significance": "key",
+      "direction": "resistance",
+      "intent": "second_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "s. 1hr ago, we reclaimed and ran to ~7135 1st up. 7120 reclaims see 7135, 7147-53. 7104, 7085=supports",
+      "crossSourceConfirmed": false,
+      "tweet_count": 3,
+      "tweet_timestamp": "2026-04-21T07:57:00-04:00"
+    },
+    {
+      "price": 7153,
+      "significance": "key",
+      "direction": "resistance",
+      "intent": "first_target",
+      "trigger_type": null,
+      "hit_status": "hit",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "Target was 7147 - stuck there all night. Today's targets were 7153 (hit), 7165 (almost), 7180. Just ride runner unti",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-22T16:00:00-04:00"
+    },
+    {
+      "price": 7154,
+      "significance": "unclear",
+      "direction": "support",
+      "intent": "bonus_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "8am + newsletter were 7103, 7116, 7131 (all hit). Bonus slate today was 7154 (just hit), 7162, 7177. Nothing to do but ride it and get paid until we",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-17T08:00:00-04:00"
+    },
+    {
+      "price": 7160,
+      "significance": "unclear",
+      "direction": "support",
+      "intent": "bonus_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "reakdown. Targets were 7137 (hit), 7147-53 (hit). Bonus slate today remain 7160, 7166, 7178",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-20T09:00:00-04:00"
+    },
+    {
+      "price": 7160,
+      "significance": "unclear",
+      "direction": "support",
+      "intent": null,
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "gets were 7147-53, 7160, 7178 (all hit) 7160 micro support, 7147-53 below (watch traps). Same upsi",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-21T09:00:00-04:00"
+    },
+    {
+      "price": 7162,
+      "significance": "unclear",
+      "direction": "support",
+      "intent": "bonus_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "8am + newsletter were 7103, 7116, 7131 (all hit). Bonus slate today was 7154 (just hit), 7162, 7177. Nothing to do but ride it and get paid until we",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-17T08:00:00-04:00"
+    },
+    {
+      "price": 7166,
+      "significance": "unclear",
+      "direction": "support",
+      "intent": "bonus_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "reakdown. Targets were 7137 (hit), 7147-53 (hit). Bonus slate today remain 7160, 7166, 7178",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-20T09:00:00-04:00"
+    },
+    {
+      "price": 7166,
+      "significance": "key",
+      "direction": "resistance",
+      "intent": "second_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "oday. Held exact 1st target today was 7160 (hit), 7166 2nd (hit). 7178, 7186 above",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-21T10:00:00-04:00"
+    },
+    {
+      "price": 7177,
+      "significance": "unclear",
+      "direction": "support",
+      "intent": "bonus_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "8am + newsletter were 7103, 7116, 7131 (all hit). Bonus slate today was 7154 (just hit), 7162, 7177. Nothing to do but ride it and get paid until we",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-17T08:00:00-04:00"
+    },
+    {
+      "price": 7178,
+      "significance": "unclear",
+      "direction": "support",
+      "intent": "bonus_target",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": "reakdown. Targets were 7137 (hit), 7147-53 (hit). Bonus slate today remain 7160, 7166, 7178",
+      "crossSourceConfirmed": false,
+      "tweet_count": 1,
+      "tweet_timestamp": "2026-04-20T09:00:00-04:00"
+    },
+    {
+      "price": 7185,
+      "significance": "unclear",
+      "direction": null,
+      "intent": "chop_boundary",
+      "trigger_type": null,
+      "hit_status": "pending",
+      "trap_warning": false,
+      "source": "text",
+      "source_snippet": ", 7153 (hit), 7165 (high of day), 7180. 7085-7185= a massive flag 7147, 7135 (watch traps), 7120 remain s\nrt, just held exact (7135, 7120 below). 7085-7185 remains a massive flag ══════════════════════════════════════",
+      "crossSourceConfirmed": false,
+      "tweet_count": 2,
+      "tweet_timestamp": "2026-04-22T16:00:00-04:00"
+    }
+  ],
+  "parse_errors": [
+    "[unknown] discarded out-of-range ES price 2026 from \"04/22/2026 11:50AM - ...\" in DESCENDING time order (newest first within the\"",
+    "[2026-04-14] discarded out-of-range ES price 2026 from \"04/14/2026 07:58AM - Best long of 2026 keeps paying in #ES_F. Recent adds were 6\"",
+    "[2026-04-14] discarded out-of-range ES price 2026 from \"04/14/2026 07:59AM - Note: There is just nothing to do now. Most of us have been\"",
+    "[2026-04-14] discarded out-of-range ES price 2026 from \"Biggest long of 2026 continues to pay and we are working today's targets in #ES_\"",
+    "[2026-04-14] discarded out-of-range ES price 2026 from \"The best long of 2026 just keeps paying. 6792 Failed Breakdown Sunday was our re\"",
+    "[2026-04-17] discarded out-of-range ES price 2026 from \"04/17/2026 07:54AM - Day #5 of Lockout Rally in #ES_F. Long still paying from Su\"",
+    "[2026-04-17] discarded out-of-range ES price 2026 from \"04/17/2026 07:55AM - Note: As I've said probably 10 times this week - there is n\"",
+    "[2026-04-17] discarded out-of-range ES price 2026 from \"We continue to print as best long of 2026 pays, now +386 points since our Sunday\"",
+    "[2026-04-21] discarded out-of-range ES price 2026 from \"04/21/2026 07:57AM - Every week the same in #ES_F. Sunday gap down. We long on t\"",
+    "[2026-04-21] discarded out-of-range ES price 2026 from \"04/21/2026 07:58AM - Note: Once again there is nothing to do now until we get an\"",
+    "[2026-04-22] discarded out-of-range ES price 2026 from \"04/22/2026 07:56AM - Last eve after 4pm we got a textbook Failed Breakdown. News\"",
+    "[2026-04-22] discarded out-of-range ES price 2026 from \"04/22/2026 07:57AM - Note: As I make clear every single day - there is nothing t\"",
+    "[2026-04-22] discarded out-of-range ES price 2026 from \"04/22/2026 11:50AM - Mid-day chop in #ES_F. 7097 Failed Breakdown was our long t\"",
+    "[2026-04-22] discarded out-of-range ES price 2026 from \"04/22/2026 11:51AM - Note: Per my morning post there is nothing to do until we g\""
+  ]
+}

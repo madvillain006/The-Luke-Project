@@ -1,0 +1,477 @@
+══════════════════════════════════════════════════════════════════════
+BOBBY FIXTURE VALIDATION HARNESS
+Run at: 2026-04-27T15:06:05.202Z
+══════════════════════════════════════════════════════════════════════
+
+Fixture sets found: 6
+  2026-04-27_1003  txt=2026-04-27_1003_bobby.txt  images=[2026-04-27_1003_bobby_3panel.png]
+  2026-04-27_1005  txt=2026-04-27_1005_bobby.txt  images=[2026-04-27_1005_bobby_3panel.png]
+  2026-04-27_1008  txt=2026-04-27_1008_bobby.txt  images=[2026-04-27_1008_bobby_3panel.png]
+  2026-04-27_1013  txt=2026-04-27_1013_bobby.txt  images=[2026-04-27_1013_bobby_3panel.png]
+  2026-04-27_1017  txt=2026-04-27_1017_bobby.txt  images=[2026-04-27_1017_bobby_3panel.png]
+  2026-04-27_1049  txt=MISSING (image-only set)  images=[2026-04-27_1049_bobby_3panel.png]
+
+══════════════════════════════════════════════════════════════════════
+FIXTURE SET: 2026-04-27_1003
+  txt=2026-04-27_1003_bobby.txt  images=1
+══════════════════════════════════════════════════════════════════════
+
+[TEXT PARSE]  file=2026-04-27_1003_bobby.txt  chars=127  empty=false
+  Preview: "10:03 AM]BOBBY [SKY], : $SPX heatmaps, decent support under all three with room to run on SPY bullish for SPX for now @e"
+  Result: null (parseBobby returned null — no prices found)
+
+[VISION PARSE]  file=2026-04-27_1003_bobby_3panel.png  size=113.0KB
+[live-price] MASSIVE_API_KEY not set — live price unavailable
+[bobby-vision] raw response: {
+  "tickers_detected": ["SPXW", "SPY", "QQQ"],
+  "panels": [
+    {
+      "ticker": "SPXW",
+      "current_price": 7162.15,
+      "king_nodes": [7160],
+      "walls": [7185, 7130],
+      "floors": [7160]
+    },
+    {
+      "ticker": "SPY",
+      "current_price": 713.89,
+      "king_nodes": [711],
+  
+  Status: ok
+  tickers_detected: ["SPXW","SPY","QQQ"]
+  bias: BULLISH  trinity: true
+  notes: "All three panels show dominant yellow king nodes near current price with massive gamma concentrations (SPXW $54.7K, SPY $125.6K, QQQ $26K), suggesting strong pinning behavior near current levels with bullish momentum indicated by positive percentage moves across all tickers."
+    king_nodes: 7160, 711, 663
+    support   : 7160, 711, 663
+    resistance: 7185, 7130, 720, 714, 671
+    air_pockets: 7205, 709
+
+[MERGE]
+  source: bobby-vision  bias: BULLISH
+    king_nodes: 7160, 711, 663
+    support   : 7160, 711, 663
+    resistance: 7185, 7130, 720, 714, 671
+  notes: "All three panels show dominant yellow king nodes near current price with massive gamma concentrations (SPXW $54.7K, SPY $125.6K, QQQ $26K), suggesting strong pinning behavior near current levels with bullish momentum indicated by positive percentage moves across all tickers."
+  tickers_detected: ["SPXW","SPY","QQQ"]
+
+  Full merged JSON:
+{
+  "king_nodes": [
+    7160,
+    711,
+    663
+  ],
+  "air_pockets": [
+    7205,
+    709
+  ],
+  "trinity": true,
+  "support": [
+    7160,
+    711,
+    663
+  ],
+  "resistance": [
+    7185,
+    7130,
+    720,
+    714,
+    671
+  ],
+  "tickers_detected": [
+    "SPXW",
+    "SPY",
+    "QQQ"
+  ],
+  "vix_mentioned": false,
+  "bias": "BULLISH",
+  "notes": "All three panels show dominant yellow king nodes near current price with massive gamma concentrations (SPXW $54.7K, SPY $125.6K, QQQ $26K), suggesting strong pinning behavior near current levels with bullish momentum indicated by positive percentage moves across all tickers.",
+  "raw": "",
+  "source": "bobby-vision",
+  "vision_parsed": true
+}
+
+══════════════════════════════════════════════════════════════════════
+FIXTURE SET: 2026-04-27_1005
+  txt=2026-04-27_1005_bobby.txt  images=1
+══════════════════════════════════════════════════════════════════════
+
+[TEXT PARSE]  file=2026-04-27_1005_bobby.txt  chars=108  empty=false
+  Preview: "10:05 AM]BOBBY [SKY], : Remmeber large nodes cause the chop if the rest of king nodes are not close in value"
+  Result: null (parseBobby returned null — no prices found)
+
+[VISION PARSE]  file=2026-04-27_1005_bobby_3panel.png  size=122.1KB
+[live-price] MASSIVE_API_KEY not set — live price unavailable
+[bobby-vision] raw response: {
+  "tickers_detected": ["SPXW", "SPY", "QQQ"],
+  "panels": [
+    {
+      "ticker": "SPXW",
+      "current_price": 7162.16,
+      "king_nodes": [7160],
+      "walls": [7200, 7185],
+      "floors": [7130, 7160]
+    },
+    {
+      "ticker": "SPY",
+      "current_price": 713.88,
+      "king_nodes": [71
+  Status: ok
+  tickers_detected: ["SPXW","SPY","QQQ"]
+  bias: BULLISH  trinity: true
+  notes: "All three panels show strong king nodes near current price with SPXW at 7160 ($55,732K), SPY at 712 ($146,838K king), and QQQ at 662 ($28,353K), with notable purple resistance walls just above current levels at SPY 720 and QQQ 663."
+    king_nodes: 7160, 712, 662
+    support   : 7130, 715, 664
+    resistance: 7185, 720, 663, 671
+
+[MERGE]
+  source: bobby-vision  bias: BULLISH
+    king_nodes: 7160, 712, 662
+    support   : 7130, 715, 664
+    resistance: 7185, 720, 663, 671
+  notes: "All three panels show strong king nodes near current price with SPXW at 7160 ($55,732K), SPY at 712 ($146,838K king), and QQQ at 662 ($28,353K), with notable purple resistance walls just above current levels at SPY 720 and QQQ 663."
+  tickers_detected: ["SPXW","SPY","QQQ"]
+
+  Full merged JSON:
+{
+  "king_nodes": [
+    7160,
+    712,
+    662
+  ],
+  "air_pockets": [],
+  "trinity": true,
+  "support": [
+    7130,
+    715,
+    664
+  ],
+  "resistance": [
+    7185,
+    720,
+    663,
+    671
+  ],
+  "tickers_detected": [
+    "SPXW",
+    "SPY",
+    "QQQ"
+  ],
+  "vix_mentioned": false,
+  "bias": "BULLISH",
+  "notes": "All three panels show strong king nodes near current price with SPXW at 7160 ($55,732K), SPY at 712 ($146,838K king), and QQQ at 662 ($28,353K), with notable purple resistance walls just above current levels at SPY 720 and QQQ 663.",
+  "raw": "",
+  "source": "bobby-vision",
+  "vision_parsed": true
+}
+
+══════════════════════════════════════════════════════════════════════
+FIXTURE SET: 2026-04-27_1008
+  txt=2026-04-27_1008_bobby.txt  images=1
+══════════════════════════════════════════════════════════════════════
+
+[TEXT PARSE]  file=2026-04-27_1008_bobby.txt  chars=0  empty=true
+  [no text] — empty .txt file, skipping parseBobby
+
+[VISION PARSE]  file=2026-04-27_1008_bobby_3panel.png  size=124.5KB
+[live-price] MASSIVE_API_KEY not set — live price unavailable
+[bobby-vision] raw response: {
+  "tickers_detected": ["SPXW", "SPY", "QQQ"],
+  "panels": [
+    {
+      "ticker": "SPXW",
+      "current_price": 7162.06,
+      "king_nodes": [7160],
+      "walls": [7185, 7130],
+      "floors": [7160]
+    },
+    {
+      "ticker": "SPY",
+      "current_price": 713.86,
+      "king_nodes": [712],
+  
+  Status: ok
+  tickers_detected: ["SPXW","SPY","QQQ"]
+  bias: BULLISH  trinity: true
+  notes: "All three panels show strong yellow king nodes with massive positive gamma (SPXW $59K, SPY $156K, QQQ $43K), with purple resistance walls just above current prices suggesting dealers may pin near these levels short-term."
+    king_nodes: 7160, 712, 664
+    support   : 7160, 712, 663
+    resistance: 7185, 7130, 720, 714, 670
+
+[MERGE]
+  source: bobby-vision  bias: BULLISH
+    king_nodes: 7160, 712, 664
+    support   : 7160, 712, 663
+    resistance: 7185, 7130, 720, 714, 670
+  notes: "All three panels show strong yellow king nodes with massive positive gamma (SPXW $59K, SPY $156K, QQQ $43K), with purple resistance walls just above current prices suggesting dealers may pin near these levels short-term."
+  tickers_detected: ["SPXW","SPY","QQQ"]
+
+  Full merged JSON:
+{
+  "king_nodes": [
+    7160,
+    712,
+    664
+  ],
+  "air_pockets": [],
+  "trinity": true,
+  "support": [
+    7160,
+    712,
+    663
+  ],
+  "resistance": [
+    7185,
+    7130,
+    720,
+    714,
+    670
+  ],
+  "tickers_detected": [
+    "SPXW",
+    "SPY",
+    "QQQ"
+  ],
+  "vix_mentioned": false,
+  "bias": "BULLISH",
+  "notes": "All three panels show strong yellow king nodes with massive positive gamma (SPXW $59K, SPY $156K, QQQ $43K), with purple resistance walls just above current prices suggesting dealers may pin near these levels short-term.",
+  "raw": "",
+  "source": "bobby-vision",
+  "vision_parsed": true
+}
+
+══════════════════════════════════════════════════════════════════════
+FIXTURE SET: 2026-04-27_1013
+  txt=2026-04-27_1013_bobby.txt  images=1
+══════════════════════════════════════════════════════════════════════
+
+[TEXT PARSE]  file=2026-04-27_1013_bobby.txt  chars=0  empty=true
+  [no text] — empty .txt file, skipping parseBobby
+
+[VISION PARSE]  file=2026-04-27_1013_bobby_3panel.png  size=118.6KB
+[live-price] MASSIVE_API_KEY not set — live price unavailable
+[bobby-vision] raw response: {
+  "tickers_detected": ["SPXW", "SPY", "QQQ"],
+  "panels": [
+    {
+      "ticker": "SPXW",
+      "current_price": 7161.11,
+      "king_nodes": [7160],
+      "walls": [7185],
+      "floors": [7130, 7160]
+    },
+    {
+      "ticker": "SPY",
+      "current_price": 713.84,
+      "king_nodes": [712],
+  
+  Status: ok
+  tickers_detected: ["SPXW","SPY","QQQ"]
+  bias: BULLISH  trinity: true
+  notes: "All three panels show yellow king nodes near current price with strong positive gamma anchoring at 7160/712/663, suggesting dealers are long gamma and price is pinned near dominant nodes with upside walls just above."
+    king_nodes: 7160, 712, 663
+    support   : 7130, 714, 659
+    resistance: 7185, 720, 665, 672
+
+[MERGE]
+  source: bobby-vision  bias: BULLISH
+    king_nodes: 7160, 712, 663
+    support   : 7130, 714, 659
+    resistance: 7185, 720, 665, 672
+  notes: "All three panels show yellow king nodes near current price with strong positive gamma anchoring at 7160/712/663, suggesting dealers are long gamma and price is pinned near dominant nodes with upside walls just above."
+  tickers_detected: ["SPXW","SPY","QQQ"]
+
+  Full merged JSON:
+{
+  "king_nodes": [
+    7160,
+    712,
+    663
+  ],
+  "air_pockets": [],
+  "trinity": true,
+  "support": [
+    7130,
+    714,
+    659
+  ],
+  "resistance": [
+    7185,
+    720,
+    665,
+    672
+  ],
+  "tickers_detected": [
+    "SPXW",
+    "SPY",
+    "QQQ"
+  ],
+  "vix_mentioned": false,
+  "bias": "BULLISH",
+  "notes": "All three panels show yellow king nodes near current price with strong positive gamma anchoring at 7160/712/663, suggesting dealers are long gamma and price is pinned near dominant nodes with upside walls just above.",
+  "raw": "",
+  "source": "bobby-vision",
+  "vision_parsed": true
+}
+
+══════════════════════════════════════════════════════════════════════
+FIXTURE SET: 2026-04-27_1017
+  txt=2026-04-27_1017_bobby.txt  images=1
+══════════════════════════════════════════════════════════════════════
+
+[TEXT PARSE]  file=2026-04-27_1017_bobby.txt  chars=0  empty=true
+  [no text] — empty .txt file, skipping parseBobby
+
+[VISION PARSE]  file=2026-04-27_1017_bobby_3panel.png  size=120.5KB
+[live-price] MASSIVE_API_KEY not set — live price unavailable
+[bobby-vision] raw response: {
+  "tickers_detected": ["SPXW", "SPY", "QQQ"],
+  "panels": [
+    {
+      "ticker": "SPXW",
+      "current_price": 7158.61,
+      "king_nodes": [7168],
+      "walls": [7185, 7200],
+      "floors": [7130, 7168]
+    },
+    {
+      "ticker": "SPY",
+      "current_price": 713.59,
+      "king_nodes": [71
+  Status: ok
+  tickers_detected: ["SPXW","SPY","QQQ"]
+  bias: BULLISH  trinity: true
+  notes: "All three panels show dominant yellow/green king nodes near current price with large positive gamma exposure (SPXW $59,362.1K at 7168, SPY $173,464.5K at 712, QQQ $48,608.6K at 664), suggesting strong dealer support and pinning action near current levels."
+    king_nodes: 7168, 712, 664, 662
+    support   : 7130, 712, 714, 662
+    resistance: 7185, 7200, 720, 715, 665
+
+[MERGE]
+  source: bobby-vision  bias: BULLISH
+    king_nodes: 7168, 712, 664, 662
+    support   : 7130, 712, 714, 662
+    resistance: 7185, 7200, 720, 715, 665
+  notes: "All three panels show dominant yellow/green king nodes near current price with large positive gamma exposure (SPXW $59,362.1K at 7168, SPY $173,464.5K at 712, QQQ $48,608.6K at 664), suggesting strong dealer support and pinning action near current levels."
+  tickers_detected: ["SPXW","SPY","QQQ"]
+
+  Full merged JSON:
+{
+  "king_nodes": [
+    7168,
+    712,
+    664,
+    662
+  ],
+  "air_pockets": [],
+  "trinity": true,
+  "support": [
+    7130,
+    712,
+    714,
+    662
+  ],
+  "resistance": [
+    7185,
+    7200,
+    720,
+    715,
+    665
+  ],
+  "tickers_detected": [
+    "SPXW",
+    "SPY",
+    "QQQ"
+  ],
+  "vix_mentioned": false,
+  "bias": "BULLISH",
+  "notes": "All three panels show dominant yellow/green king nodes near current price with large positive gamma exposure (SPXW $59,362.1K at 7168, SPY $173,464.5K at 712, QQQ $48,608.6K at 664), suggesting strong dealer support and pinning action near current levels.",
+  "raw": "",
+  "source": "bobby-vision",
+  "vision_parsed": true
+}
+
+══════════════════════════════════════════════════════════════════════
+FIXTURE SET: 2026-04-27_1049
+  txt=(none — image-only fixture)  images=1
+══════════════════════════════════════════════════════════════════════
+
+[TEXT PARSE]  No .txt file — image-only fixture, skipping text parse
+
+[VISION PARSE]  file=2026-04-27_1049_bobby_3panel.png  size=216.3KB
+[live-price] MASSIVE_API_KEY not set — live price unavailable
+[bobby-vision] raw response: {
+  "tickers_detected": ["SPXW", "SPY", "QQQ"],
+  "panels": [
+    {
+      "ticker": "SPXW",
+      "current_price": 7160.76,
+      "king_nodes": [7160],
+      "walls": [7180],
+      "floors": [7130]
+    },
+    {
+      "ticker": "SPY",
+      "current_price": 713.68,
+      "king_nodes": [712],
+      "w
+  Status: ok
+  tickers_detected: ["SPXW","SPY","QQQ"]
+  bias: BULLISH  trinity: true
+  notes: "All three panels show strong positive gamma king nodes near current price with SPXW at 7160 ($67,782K), SPY at 712 ($228,384.9K), and QQQ at 664 ($56,883.4K) suggesting dealer long gamma support and bullish pinning behavior."
+    king_nodes: 7160, 712, 664, 662
+    support   : 7130, 714, 660
+    resistance: 7180, 720
+
+[MERGE]
+  source: bobby-vision  bias: BULLISH
+    king_nodes: 7160, 712, 664, 662
+    support   : 7130, 714, 660
+    resistance: 7180, 720
+  notes: "All three panels show strong positive gamma king nodes near current price with SPXW at 7160 ($67,782K), SPY at 712 ($228,384.9K), and QQQ at 664 ($56,883.4K) suggesting dealer long gamma support and bullish pinning behavior."
+  tickers_detected: ["SPXW","SPY","QQQ"]
+
+  Full merged JSON:
+{
+  "king_nodes": [
+    7160,
+    712,
+    664,
+    662
+  ],
+  "air_pockets": [],
+  "trinity": true,
+  "support": [
+    7130,
+    714,
+    660
+  ],
+  "resistance": [
+    7180,
+    720
+  ],
+  "tickers_detected": [
+    "SPXW",
+    "SPY",
+    "QQQ"
+  ],
+  "vix_mentioned": false,
+  "bias": "BULLISH",
+  "notes": "All three panels show strong positive gamma king nodes near current price with SPXW at 7160 ($67,782K), SPY at 712 ($228,384.9K), and QQQ at 664 ($56,883.4K) suggesting dealer long gamma support and bullish pinning behavior.",
+  "raw": "",
+  "source": "bobby-vision",
+  "vision_parsed": true
+}
+
+══════════════════════════════════════════════════════════════════════
+VALIDATION SUMMARY
+══════════════════════════════════════════════════════════════════════
+Fixtures processed:    6
+Text parse ok:         0
+Text parse null/empty: 6
+Vision calls made:     6
+Vision calls ok:       6
+Vision calls failed:   0
+King nodes total:      20
+Support levels total:  19
+Resistance total:      25
+══════════════════════════════════════════════════════════════════════

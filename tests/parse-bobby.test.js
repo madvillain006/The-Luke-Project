@@ -2,7 +2,7 @@
 
 const fs   = require('fs');
 const path = require('path');
-const { parseBobby, mergeBobby, detectMediaType } = require('../lib/parse-bobby');
+const { parseBobby, mergeBobby, detectMediaType, normalizePanels, getGroundedPrice } = require('../lib/parse-bobby');
 
 describe('parseBobby', () => {
   it('returns null for empty or non-string input', () => {
@@ -166,5 +166,258 @@ describe('mergeBobby', () => {
     const merged = mergeBobby(text, vision);
     expect(merged.king_nodes).toEqual([5810]);
     expect(merged.source).toBe('bobby-merged');
+  });
+});
+
+// ── Gate B-4: parseBobby commentary-only bias ─────────────────────────────────
+
+describe('parseBobby – Gate B-4: commentary-only bias (no prices)', () => {
+  it('returns non-null with bias for bullish commentary text without prices', () => {
+    // Fixture 1003 text: "decent support under all three with room to run on SPY bullish for SPX"
+    const result = parseBobby(
+      '[10:03 AM]BOBBY [SKY], : $SPX heatmaps, decent support under all three ' +
+      'with room to run on SPY bullish for SPX for now @everyone'
+    );
+    expect(result).not.toBeNull();
+    expect(result.bias).toBe('BULLISH');
+    expect(result.king_nodes).toHaveLength(0);
+    expect(result.support).toHaveLength(0);
+    expect(result.resistance).toHaveLength(0);
+    expect(result.source).toBe('bobby-text');
+  });
+
+  it('returns non-null with NEUTRAL bias for chop commentary', () => {
+    // Fixture 1005 text: "large nodes cause the chop"
+    const result = parseBobby(
+      '[10:05 AM]BOBBY [SKY], : Remmeber large nodes cause the chop if the rest ' +
+      'of king nodes are not close in value'
+    );
+    expect(result).not.toBeNull();
+    expect(result.bias).toBe('NEUTRAL');
+    expect(result.king_nodes).toHaveLength(0);
+    expect(result.source).toBe('bobby-text');
+  });
+
+  it('still returns null when no prices AND no bias signals', () => {
+    expect(parseBobby('Just some market observations here, nothing directional.')).toBeNull();
+  });
+
+  it('commentary path does not fire when prices are present', () => {
+    // Text has a price near 'support' — normal path, not commentary path
+    const result = parseBobby('Support at 5800 holding strong.');
+    expect(result).not.toBeNull();
+    expect(result.support).toContain(5800);
+  });
+});
+
+// ── Gate G1 (B-2): normalizePanels – instrument attribution ──────────────────
+
+describe('normalizePanels – Gate G1 (B-2): per-instrument attribution', () => {
+  it('adds instrument field: SPXW→SPX, SPY→SPY, QQQ→QQQ', () => {
+    const raw = [
+      { ticker: 'SPXW', current_price: 7162, king_nodes: [7160], walls: [7185], floors: [7130] },
+      { ticker: 'SPY',  current_price: 713,  king_nodes: [711],  walls: [720],  floors: [709]  },
+      { ticker: 'QQQ',  current_price: 663,  king_nodes: [663],  walls: [670],  floors: [659]  },
+    ];
+    const panels = normalizePanels(raw, null);
+    expect(panels[0].instrument).toBe('SPX');
+    expect(panels[1].instrument).toBe('SPY');
+    expect(panels[2].instrument).toBe('QQQ');
+  });
+
+  it('sets IWM instrument to null (not in level-memory CANONICAL_TOLERANCE)', () => {
+    const raw = [{ ticker: 'IWM', current_price: 210, king_nodes: [210], walls: [], floors: [] }];
+    const panels = normalizePanels(raw, null);
+    expect(panels[0].instrument).toBeNull();
+  });
+
+  it('returns empty array for non-array input', () => {
+    expect(normalizePanels(null, null)).toEqual([]);
+    expect(normalizePanels('bad', null)).toEqual([]);
+  });
+
+  it('preserves ticker and current_price from raw panel', () => {
+    const raw = [{ ticker: 'SPY', current_price: 713.89, king_nodes: [711], walls: [720], floors: [709] }];
+    const panels = normalizePanels(raw, null);
+    expect(panels[0].ticker).toBe('SPY');
+    expect(panels[0].current_price).toBe(713.89);
+  });
+});
+
+// ── Gate G3 (B-1): normalizePanels – king node dedup ─────────────────────────
+
+describe('normalizePanels – Gate G3 (B-1): king node dedup from support/resistance', () => {
+  it('removes king node value from floors within the same panel', () => {
+    // Model returned king_nodes=[7160] AND floors=[7160, 7130] — 7160 duplicated
+    const raw = [{
+      ticker: 'SPXW', current_price: null,
+      king_nodes: [7160], walls: [], floors: [7160, 7130]
+    }];
+    const panels = normalizePanels(raw, null);
+    expect(panels[0].king_nodes).toEqual([7160]);
+    expect(panels[0].support).not.toContain(7160);
+    expect(panels[0].support).toContain(7130);
+  });
+
+  it('removes king node value from walls within the same panel', () => {
+    const raw = [{
+      ticker: 'SPY', current_price: null,
+      king_nodes: [711], walls: [711, 720], floors: []
+    }];
+    const panels = normalizePanels(raw, null);
+    expect(panels[0].king_nodes).toEqual([711]);
+    expect(panels[0].resistance).not.toContain(711);
+    expect(panels[0].resistance).toContain(720);
+  });
+
+  it('applies ±0.5 tolerance so near-duplicates are also removed', () => {
+    const raw = [{
+      ticker: 'SPXW', current_price: null,
+      king_nodes: [7160], walls: [], floors: [7160.3, 7130]
+    }];
+    const panels = normalizePanels(raw, null);
+    // 7160.3 is within ±0.5 of king_node 7160 → removed
+    expect(panels[0].support).not.toContain(7160.3);
+    expect(panels[0].support).toContain(7130);
+  });
+
+  it('preserves distinct values that are not near any king node', () => {
+    const raw = [{
+      ticker: 'SPXW', current_price: null,
+      king_nodes: [7160], walls: [7185], floors: [7130, 7100]
+    }];
+    const panels = normalizePanels(raw, null);
+    expect(panels[0].king_nodes).toContain(7160);
+    // No canonical price — model classification preserved
+    expect(panels[0].resistance).toContain(7185);
+    expect(panels[0].support).toContain(7130);
+    expect(panels[0].support).toContain(7100);
+  });
+});
+
+// ── Gate G2 (B-3): normalizePanels – wall classification via grounded price ───
+
+describe('normalizePanels – Gate G2 (B-3): wall classification with grounded current_price', () => {
+  it('reclassifies wall below current price to support', () => {
+    // 7130 was in walls but is below current_price 7162 → should land in support
+    const raw = [{
+      ticker: 'SPXW', current_price: 7162,
+      king_nodes: [7160], walls: [7185, 7130], floors: []
+    }];
+    // No live prices — use vision's current_price (7162) as canonical
+    const panels = normalizePanels(raw, null);
+    expect(panels[0].support).toContain(7130);
+    expect(panels[0].resistance).not.toContain(7130);
+    expect(panels[0].resistance).toContain(7185);
+  });
+
+  it('reclassifies floor above current price to resistance', () => {
+    // 715 in floors but is above current_price 713 → should land in resistance
+    const raw = [{
+      ticker: 'SPY', current_price: 713,
+      king_nodes: [711], walls: [720], floors: [715, 709]
+    }];
+    const panels = normalizePanels(raw, null);
+    expect(panels[0].resistance).toContain(715);
+    expect(panels[0].support).not.toContain(715);
+    expect(panels[0].support).toContain(709);
+  });
+
+  it('skips levels within ±0.5 of current price (at-price levels)', () => {
+    const raw = [{
+      ticker: 'SPXW', current_price: 7162,
+      king_nodes: [], walls: [7162.3], floors: []
+    }];
+    const panels = normalizePanels(raw, null);
+    // 7162.3 is within ±0.5 of 7162 → excluded from support/resistance
+    expect(panels[0].support).toHaveLength(0);
+    expect(panels[0].resistance).toHaveLength(0);
+  });
+
+  it('uses grounded price from livePrice when available (overrides vision current_price)', () => {
+    // Vision says current_price=7150 but grounded SPX is 7162
+    const livePrice = { spx: 7162, spy: 713, instruments: { qqq: { price: 663 } } };
+    const raw = [{
+      ticker: 'SPXW', current_price: 7150,
+      king_nodes: [], walls: [7130, 7185], floors: []
+    }];
+    const panels = normalizePanels(raw, livePrice);
+    // Using grounded 7162: 7130 < 7162 → support; 7185 > 7162 → resistance
+    expect(panels[0].support).toContain(7130);
+    expect(panels[0].resistance).toContain(7185);
+    expect(panels[0].current_price).toBe(7162); // canonical is grounded
+  });
+
+  it('fails open when livePrice is null — preserves model classification', () => {
+    // No live price and no vision current_price — model classification stays
+    const raw = [{
+      ticker: 'SPXW', current_price: null,
+      king_nodes: [7160], walls: [7185], floors: [7130]
+    }];
+    const panels = normalizePanels(raw, null);
+    // No canonical price → deduped walls → resistance, deduped floors → support
+    expect(panels[0].resistance).toContain(7185);
+    expect(panels[0].support).toContain(7130);
+  });
+
+  it('QQQ grounded price resolved from livePrice.instruments.qqq.price', () => {
+    const livePrice = { spx: 7162, spy: 713, instruments: { qqq: { price: 663 } } };
+    const raw = [{
+      ticker: 'QQQ', current_price: null,
+      king_nodes: [663], walls: [670], floors: [659]
+    }];
+    const panels = normalizePanels(raw, livePrice);
+    expect(panels[0].current_price).toBe(663);
+    // After king-node dedup (none overlap): 670 > 663 → resistance; 659 < 663 → support
+    expect(panels[0].resistance).toContain(670);
+    expect(panels[0].support).toContain(659);
+  });
+});
+
+// ── Gate G1 (B-2): mergeBobby – panels propagated from vision ─────────────────
+
+describe('mergeBobby – Gate G1 (B-2): panels propagated into merged result', () => {
+  const VISION_PANELS = [
+    { ticker: 'SPXW', instrument: 'SPX', current_price: 7162, king_nodes: [7160], support: [7130], resistance: [7185] },
+    { ticker: 'SPY',  instrument: 'SPY', current_price: 713,  king_nodes: [711],  support: [709],  resistance: [720]  },
+  ];
+
+  it('merged result includes panels from vision', () => {
+    const text   = { king_nodes: [], support: [], resistance: [], bias: 'BULLISH', raw: '', vix_mentioned: false };
+    const vision = { panels: VISION_PANELS, king_nodes: [7160, 711], support: [7130, 709],
+                     resistance: [7185, 720], bias: 'BULLISH', trinity: true, notes: '', tickers_detected: [],
+                     source: 'bobby-vision', vision_parsed: true };
+    const merged = mergeBobby(text, vision);
+    expect(merged.panels).toEqual(VISION_PANELS);
+    expect(merged.source).toBe('bobby-merged');
+  });
+
+  it('text bias_statement propagates into merged result', () => {
+    const text   = { king_nodes: [], support: [], resistance: [], bias: 'BEARISH',
+                     bias_statement: 'lower nodes dominating', raw: '', vix_mentioned: false };
+    const vision = { panels: [], king_nodes: [], support: [], resistance: [],
+                     bias: 'BULLISH', trinity: false, notes: '', tickers_detected: [],
+                     source: 'bobby-vision', vision_parsed: true };
+    const merged = mergeBobby(text, vision);
+    expect(merged.bias).toBe('BEARISH');
+    expect(merged.bias_statement).toBe('lower nodes dominating');
+  });
+
+  it('panels is empty array when vision has no panels', () => {
+    const text   = { king_nodes: [5800], support: [], resistance: [], bias: 'NEUTRAL', raw: '', vix_mentioned: false };
+    const vision = { king_nodes: [5820], support: [], resistance: [], bias: 'BULLISH', vix_mentioned: false };
+    const merged = mergeBobby(text, vision);
+    expect(merged.panels).toEqual([]);
+  });
+
+  it('trinity and notes from vision appear in merged result', () => {
+    const text   = { king_nodes: [], support: [], resistance: [], bias: 'NEUTRAL', raw: '', vix_mentioned: false };
+    const vision = { panels: [], king_nodes: [], support: [], resistance: [],
+                     bias: 'BULLISH', trinity: true, notes: 'strong pinning', tickers_detected: ['SPXW'],
+                     source: 'bobby-vision', vision_parsed: true };
+    const merged = mergeBobby(text, vision);
+    expect(merged.trinity).toBe(true);
+    expect(merged.notes).toBe('strong pinning');
+    expect(merged.tickers_detected).toContain('SPXW');
   });
 });

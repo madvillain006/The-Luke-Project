@@ -287,3 +287,49 @@ describe('parseDubzText – compound attribution', () => {
     expect(qqqLvls.find(l => Math.abs(l.price - 650) < 0.01)).toBeDefined();
   });
 });
+
+// ── Gate G5 (Dubz Bug #3): vision/text disagreement surfaces in parse_errors ──
+
+describe('mergeDubzInputs – Gate G5: vision/text disagreement in parse_errors', () => {
+
+  it('adds parse_error when vision and text disagree on ES level (rounding case)', () => {
+    // ES: text=7185.75 (exact from Dubz commentary), vision=7190.00 (rounding artifact)
+    // diff=4.25 > CROSS_TOL 0.25, so both survive; detectConflicts flags it.
+    const textResult   = makeTextResult([makeTextLevel(7185.75, 'flip')]);
+    const imageResults = [makeImageResult('ES', [{ price: 7190.00, type: 'resistance', color: 'red' }])];
+    const merged = mergeDubzInputs(textResult, imageResults, null, '2026-04-27', PASTE);
+
+    // Both levels survive (beyond cross-source dedup tolerance)
+    const esLevels = merged.instruments.ES.levels;
+    expect(esLevels).toHaveLength(2);
+
+    // Conflict is detected structurally
+    expect(merged.conflicts).toHaveLength(1);
+    expect(merged.conflicts[0].instrument).toBe('ES');
+    expect(merged.conflicts[0].text_level).toBe(7185.75);
+    expect(merged.conflicts[0].image_level).toBe(7190.00);
+
+    // And surfaced in parse_errors for user-facing reply (G5)
+    const conflictError = merged.parse_errors.find(e => e.includes('vision/text disagreement'));
+    expect(conflictError).toBeDefined();
+    expect(conflictError).toMatch(/ES/);
+    expect(conflictError).toMatch(/7185.75/);
+    expect(conflictError).toMatch(/7190/);
+  });
+
+  it('does NOT add parse_error when text and vision match within dedup tolerance', () => {
+    // 7185.75 vs 7186.00 — diff 0.25, within CROSS_TOL → deduped; no conflict
+    const textResult   = makeTextResult([makeTextLevel(7185.75, 'flip')]);
+    const imageResults = [makeImageResult('ES', [{ price: 7186.00, type: 'support', color: 'green' }])];
+    const merged = mergeDubzInputs(textResult, imageResults, null, '2026-04-27', PASTE);
+
+    expect(merged.conflicts).toHaveLength(0);
+    expect(merged.parse_errors.filter(e => e.includes('vision/text disagreement'))).toHaveLength(0);
+  });
+
+  it('does NOT add parse_error when no image levels exist to compare', () => {
+    const textResult = makeTextResult([makeTextLevel(7185.75, 'flip')]);
+    const merged = mergeDubzInputs(textResult, [], null, '2026-04-27', PASTE);
+    expect(merged.parse_errors.filter(e => e.includes('vision/text disagreement'))).toHaveLength(0);
+  });
+});

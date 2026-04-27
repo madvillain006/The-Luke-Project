@@ -190,3 +190,100 @@ describe('mergeDubzInputs – cross-source deduplication', () => {
     expect(esLevels.every(l => l.crossSourceConfirmed === false)).toBe(true);
   });
 });
+
+// ── parseDubzText – compound attribution ───────────────────────────────────────
+
+const { parseDubzText } = require('../lib/parse-dubz');
+
+describe('parseDubzText – compound attribution', () => {
+
+  // The exact sentence from fixtures/dubz/2026-04-27_0859_dubz.txt that
+  // exposed the bug: ES was silently dropped because its window ended before
+  // the prices appeared.
+  const FIXTURE_SENTENCE =
+    'Most importantly ES and SPY flipped 7185.75 & 712.38 in this pre-market ' +
+    'this morning and currently pushing off those levels from last week. ' +
+    'These were great spots to fade last week making this another significant ' +
+    'flip you need to be aware of, these 2 levels will be key to managing the ' +
+    'weekend puts swings off open for me too.';
+
+  it('Pattern A: "A and B verbed X & Y" – each instrument gets its own price', () => {
+    const result = parseDubzText(FIXTURE_SENTENCE);
+
+    const esLvls  = result.instruments.ES.levels;
+    const spyLvls = result.instruments.SPY.levels;
+
+    // ES must get 7185.75 (in ES price range 3000-20000)
+    expect(esLvls.length).toBeGreaterThanOrEqual(1);
+    const esLevel = esLvls.find(l => Math.abs(l.price - 7185.75) < 0.01);
+    expect(esLevel).toBeDefined();
+    expect(esLevel.source).toBe('text');
+
+    // SPY must get 712.38 (in SPY price range 100-1000)
+    expect(spyLvls.length).toBeGreaterThanOrEqual(1);
+    const spyLevel = spyLvls.find(l => Math.abs(l.price - 712.38) < 0.01);
+    expect(spyLevel).toBeDefined();
+    expect(spyLevel.source).toBe('text');
+  });
+
+  it('Pattern A: direction and significance from shared verb apply to ES level', () => {
+    const result  = parseDubzText(FIXTURE_SENTENCE);
+    const esLevel = result.instruments.ES.levels.find(l => Math.abs(l.price - 7185.75) < 0.01);
+
+    expect(esLevel).toBeDefined();
+    expect(esLevel.direction).toBe('flip');       // "flipped" triggers FLIP_RE
+    expect(esLevel.significance).toBe('key');     // "significant flip" → key
+  });
+
+  it('Pattern A: ES does NOT receive the SPY-range price (712.38)', () => {
+    const result  = parseDubzText(FIXTURE_SENTENCE);
+    const esLvls  = result.instruments.ES.levels;
+    const wrongLvl = esLvls.find(l => Math.abs(l.price - 712.38) < 0.01);
+    expect(wrongLvl).toBeUndefined();
+  });
+
+  it('Pattern A: SPY does NOT receive the ES-range price (7185.75)', () => {
+    const result  = parseDubzText(FIXTURE_SENTENCE);
+    const spyLvls = result.instruments.SPY.levels;
+    const wrongLvl = spyLvls.find(l => Math.abs(l.price - 7185.75) < 0.01);
+    expect(wrongLvl).toBeUndefined();
+  });
+
+  it('Pattern B: "A and B key level at X" – both instruments get the shared price', () => {
+    // QQQ range: 100-2000, SPY range: 100-1000 — 450 is valid for both
+    const text   = 'QQQ and SPY key level at 450.';
+    const result = parseDubzText(text);
+
+    const qqqLvl = result.instruments.QQQ.levels.find(l => Math.abs(l.price - 450) < 0.01);
+    const spyLvl = result.instruments.SPY.levels.find(l => Math.abs(l.price - 450) < 0.01);
+
+    expect(qqqLvl).toBeDefined();
+    expect(spyLvl).toBeDefined();
+  });
+
+  it('single-instrument attribution is unaffected by the fix', () => {
+    const text   = 'ES key flip 7185.75 major level.';
+    const result = parseDubzText(text);
+
+    const esLvls = result.instruments.ES.levels;
+    expect(esLvls.length).toBeGreaterThanOrEqual(1);
+    const lvl = esLvls.find(l => Math.abs(l.price - 7185.75) < 0.01);
+    expect(lvl).toBeDefined();
+    expect(lvl.direction).toBe('flip');
+  });
+
+  it('non-connector gap between instruments does not trigger window extension', () => {
+    // "ES 7093.75 major level QQQ 650" — "7093.75 major level" is not a connector
+    // so QQQ should not receive ES-range prices.
+    const text   = 'ES 7093.75 major level. QQQ 650 support zone.';
+    const result = parseDubzText(text);
+
+    const esLvls  = result.instruments.ES.levels;
+    const qqqLvls = result.instruments.QQQ.levels;
+
+    // ES gets 7093.75, not 650 (out of range anyway)
+    expect(esLvls.find(l => Math.abs(l.price - 7093.75) < 0.01)).toBeDefined();
+    // QQQ gets 650, not 7093.75 (out of range for QQQ too)
+    expect(qqqLvls.find(l => Math.abs(l.price - 650) < 0.01)).toBeDefined();
+  });
+});

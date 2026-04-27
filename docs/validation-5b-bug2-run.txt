@@ -1,0 +1,733 @@
+══════════════════════════════════════════════════════════════════════
+DUBZ FIXTURE VALIDATION HARNESS
+Run at: 2026-04-27T14:18:26.015Z
+══════════════════════════════════════════════════════════════════════
+
+Fixture sets found: 3
+  2026-04-26_0917_dubz  txt=2026-04-26_0917_dubz.txt  images=[2026-04-26_0917_dubz_es.png, 2026-04-26_0917_dubz_nq.png, 2026-04-26_0917_dubz_qqq.png]
+  2026-04-27_0859_dubz  txt=2026-04-27_0859_dubz.txt  images=[2026-04-27_0859_dubz_es.png, 2026-04-27_0859_dubz_nq.png, 2026-04-27_0859_dubz_qqq.png, 2026-04-27_0859_dubz_spy.png]
+  2026-04-27_0927_dubz  txt=2026-04-27_0927_dubz.txt  images=[2026-04-27_0927_dubz_es.png]
+
+══════════════════════════════════════════════════════════════════════
+FIXTURE SET: 2026-04-26_0917_dubz
+Date: 2026-04-26   Text: 2026-04-26_0917_dubz.txt   Images: 3
+══════════════════════════════════════════════════════════════════════
+
+[TEXT PARSE]  file=2026-04-26_0917_dubz.txt  chars=1230
+  Preview: "9:17 AM]RichyDubz [$OWL], : @everyone All I really want to say is if you're just buying puts at the highs yesterday you'..."
+  NQ (1 levels):
+    26884.75      sig=key  dir=flip  src=text  snippet="NQ 26,884.75, this is a major level and why we've shorted the failures here over the last few days. This is a significant flip. NQ 26,884.75 🔑 QQQ 65"
+  ES (1 levels):
+    7093.75       sig=key  src=text  snippet="ES 7093.75 🔑 (Overhead resistance is thin, not major on both ES/SPY, this will likely be better for continuation longs than shorts) SPY 698.34 is sti"
+  QQQ (1 levels):
+    650           sig=unclear  src=text  snippet="QQQ 650 ES 7093.75 🔑 (Overhead resistance is thin, not major on both ES/SPY, this will likely be better for continuation longs than shorts) SPY 698.3"
+  SPY (2 levels):
+    698.34        sig=unclear  dir=support  src=text  snippet="SPY 698.34 is still my favorite long-term retest long, but I added 702.65 today as well this was last Tuesday's highs and this Tuesday's lows, this is"
+    702.65        sig=minor  dir=support  src=text  snippet="SPY 698.34 is still my favorite long-term retest long, but I added 702.65 today as well this was last Tuesday's highs and this Tuesday's lows, this is"
+  parse_errors: (none)
+
+[VISION PARSE]  file=2026-04-26_0917_dubz_es.png  expected_instrument=ES  size=113.5KB
+[live-price] MASSIVE_API_KEY not set — live price unavailable
+[dubz-vision] raw response: {
+  "instrument": "ES",
+  "current_price": 7148.50,
+  "levels": [
+    { "price": 7185.75, "type": "resistance", "color": "red" },
+    { "price": 7093.75, "type": "support", "color": "green" },
+    { "price": 7062.25, "type": "support", "color": "green" },
+    { "price": 7043.00, "type": "support", "
+  Status: ok
+  Detected instrument: ES  (expected: ES)
+  Current price: 7148.5
+  Levels (7):
+    7185.75       
+    7093.75       
+    7062.25       
+    7043          
+    6962          
+    6911.25       
+    6822.25       
+  Zones: (none)
+
+[VISION PARSE]  file=2026-04-26_0917_dubz_nq.png  expected_instrument=NQ  size=81.2KB
+[live-price] MASSIVE_API_KEY not set — live price unavailable
+[dubz-vision] raw response: {"instrument":"NQ","current_price":27017.50,"levels":[{"price":26884.75,"type":"support","color":"green"},{"price":26564.50,"type":"support","color":"green"},{"price":26275.50,"type":"support","color":"green"}],"zones":[]}
+  Status: ok
+  Detected instrument: NQ  (expected: NQ)
+  Current price: 27017.5
+  Levels (3):
+    26884.75      
+    26564.5       
+    26275.5       
+  Zones: (none)
+
+[VISION PARSE]  file=2026-04-26_0917_dubz_qqq.png  expected_instrument=QQQ  size=114.5KB
+[live-price] MASSIVE_API_KEY not set — live price unavailable
+[dubz-vision] raw response: {
+  "instrument": "QQQ",
+  "current_price": 653.54,
+  "levels": [
+    { "price": 650.00, "type": "support", "color": "green" },
+    { "price": 642.53, "type": "support", "color": "green" },
+    { "price": 638.41, "type": "support", "color": "green" },
+    { "price": 630.20, "type": "support", "color
+  Status: ok
+  Detected instrument: QQQ  (expected: QQQ)
+  Current price: 653.54
+  Levels (7):
+    650           
+    642.53        
+    638.41        
+    630.2         
+    619.19        
+    613.43        
+    607.96        
+  Zones: (none)
+
+[MERGE]
+
+  Final merged state (instruments):
+    NQ (3 total):
+    26884.75      sig=key  dir=flip  src=text  snippet="NQ 26,884.75, this is a major level and why we've shorted the failures here over the last few days. This is a significant flip. NQ 26,884.75 🔑 QQQ 65"
+    26564.5       sig=unclear  dir=support  src=image
+    26275.5       sig=unclear  dir=support  src=image
+    ES (7 total):
+    7093.75       sig=key  dir=support  src=text  snippet="ES 7093.75 🔑 (Overhead resistance is thin, not major on both ES/SPY, this will likely be better for continuation longs than shorts) SPY 698.34 is sti"
+    7185.75       sig=unclear  dir=resistance  src=image
+    7062.25       sig=unclear  dir=support  src=image
+    7043          sig=unclear  dir=support  src=image
+    6962          sig=unclear  dir=support  src=image
+    6911.25       sig=unclear  dir=support  src=image
+    6822.25       sig=unclear  dir=support  src=image
+    QQQ (7 total):
+    650           sig=unclear  dir=support  src=text  snippet="QQQ 650 ES 7093.75 🔑 (Overhead resistance is thin, not major on both ES/SPY, this will likely be better for continuation longs than shorts) SPY 698.3"
+    642.53        sig=unclear  dir=support  src=image
+    638.41        sig=unclear  dir=support  src=image
+    630.2         sig=unclear  dir=support  src=image
+    619.19        sig=unclear  dir=support  src=image
+    613.43        sig=unclear  dir=support  src=image
+    607.96        sig=unclear  dir=support  src=image
+    SPY (2 total):
+    698.34        sig=unclear  dir=support  src=text  snippet="SPY 698.34 is still my favorite long-term retest long, but I added 702.65 today as well this was last Tuesday's highs and this Tuesday's lows, this is"
+    702.65        sig=minor  dir=support  src=text  snippet="SPY 698.34 is still my favorite long-term retest long, but I added 702.65 today as well this was last Tuesday's highs and this Tuesday's lows, this is"
+  Conflicts: (none)
+  Merged parse_errors: (none)
+
+  Full merged state JSON:
+{
+  "date": "2026-04-26",
+  "last_updated": "2026-04-27T14:18:37.901Z",
+  "source_pastes": [
+    {
+      "source": "validation-harness",
+      "fixture": "2026-04-26_0917_dubz",
+      "timestamp": "2026-04-27T14:18:37.900Z"
+    }
+  ],
+  "instruments": {
+    "NQ": {
+      "levels": [
+        {
+          "price": 26884.75,
+          "significance": "key",
+          "significance_signal": "key_emoji",
+          "direction": "flip",
+          "intent": null,
+          "source": "text",
+          "source_snippet": "NQ 26,884.75, this is a major level and why we've shorted the failures here over the last few days. This is a significant flip. NQ 26,884.75 🔑 QQQ 65",
+          "crossSourceConfirmed": true
+        },
+        {
+          "price": 26564.5,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 26275.5,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        }
+      ]
+    },
+    "ES": {
+      "levels": [
+        {
+          "price": 7093.75,
+          "significance": "key",
+          "significance_signal": "key_emoji",
+          "direction": "support",
+          "intent": null,
+          "source": "text",
+          "source_snippet": "ES 7093.75 🔑 (Overhead resistance is thin, not major on both ES/SPY, this will likely be better for continuation longs than shorts) SPY 698.34 is sti",
+          "crossSourceConfirmed": true
+        },
+        {
+          "price": 7185.75,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "resistance",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7062.25,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7043,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6962,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6911.25,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 6822.25,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        }
+      ]
+    },
+    "QQQ": {
+      "levels": [
+        {
+          "price": 650,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "text",
+          "source_snippet": "QQQ 650 ES 7093.75 🔑 (Overhead resistance is thin, not major on both ES/SPY, this will likely be better for continuation longs than shorts) SPY 698.3",
+          "crossSourceConfirmed": true
+        },
+        {
+          "price": 642.53,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 638.41,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 630.2,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 619.19,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 613.43,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 607.96,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        }
+      ]
+    },
+    "SPY": {
+      "levels": [
+        {
+          "price": 698.34,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": "long_retest",
+          "source": "text",
+          "source_snippet": "SPY 698.34 is still my favorite long-term retest long, but I added 702.65 today as well this was last Tuesday's highs and this Tuesday's lows, this is",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 702.65,
+          "significance": "minor",
+          "significance_signal": "language",
+          "direction": "support",
+          "intent": "long_retest",
+          "source": "text",
+          "source_snippet": "SPY 698.34 is still my favorite long-term retest long, but I added 702.65 today as well this was last Tuesday's highs and this Tuesday's lows, this is",
+          "crossSourceConfirmed": false
+        }
+      ]
+    }
+  },
+  "conflicts": [],
+  "parse_errors": []
+}
+
+══════════════════════════════════════════════════════════════════════
+FIXTURE SET: 2026-04-27_0859_dubz
+Date: 2026-04-27   Text: 2026-04-27_0859_dubz.txt   Images: 4
+══════════════════════════════════════════════════════════════════════
+
+[TEXT PARSE]  file=2026-04-27_0859_dubz.txt  chars=983
+  Preview: "8:59 AM]RichyDubz [$OWL], : @everyone A few levels added below, still in blue sky territory with no significant overhead..."
+  NQ (0 levels): (none)
+  ES (1 levels):
+    7185.75       sig=key  dir=flip  src=text  snippet="ES and SPY flipped 7185.75 & 712.38 in this pre-market this morning and currently pushing off those levels from last week. These were great spots to f"
+  QQQ (0 levels): (none)
+  SPY (1 levels):
+    712.38        sig=key  dir=flip  src=text  snippet="SPY flipped 7185.75 & 712.38 in this pre-market this morning and currently pushing off those levels from last week. These were great spots to fade las"
+  parse_errors: (none)
+
+[VISION PARSE]  file=2026-04-27_0859_dubz_es.png  expected_instrument=ES  size=51.9KB
+[live-price] MASSIVE_API_KEY not set — live price unavailable
+[dubz-vision] raw response: {
+  "instrument": "ES",
+  "current_price": 7185.75,
+  "levels": [
+    { "price": 7190.00, "type": "resistance", "color": "red" },
+    { "price": 7093.75, "type": "support", "color": "green" }
+  ],
+  "zones": []
+}
+  Status: ok
+  Detected instrument: ES  (expected: ES)
+  Current price: 7185.75
+  Levels (2):
+    7190          
+    7093.75       
+  Zones: (none)
+
+[VISION PARSE]  file=2026-04-27_0859_dubz_nq.png  expected_instrument=NQ  size=56.7KB
+[live-price] MASSIVE_API_KEY not set — live price unavailable
+[dubz-vision] raw response: {
+  "instrument": "NQ",
+  "current_price": 27430.50,
+  "levels": [
+    { "price": 27430.50, "type": "resistance", "color": "red" },
+    { "price": 26884.75, "type": "support", "color": "green" },
+    { "price": 26568.75, "type": "support", "color": "green" },
+    { "price": 26275.50, "type": "suppor
+  Status: ok
+  Detected instrument: NQ  (expected: NQ)
+  Current price: 27430.5
+  Levels (4):
+    27430.5       
+    26884.75      
+    26568.75      
+    26275.5       
+  Zones: (none)
+
+[VISION PARSE]  file=2026-04-27_0859_dubz_qqq.png  expected_instrument=QQQ  size=49.2KB
+[live-price] MASSIVE_API_KEY not set — live price unavailable
+[dubz-vision] raw response: {"instrument":"QQQ","current_price":663.72,"levels":[{"price":650.00,"type":"support","color":"green"},{"price":642.53,"type":"support","color":"green"},{"price":638.41,"type":"support","color":"green"},{"price":630.20,"type":"support","color":"green"}],"zones":[]}
+  Status: ok
+  Detected instrument: QQQ  (expected: QQQ)
+  Current price: 663.72
+  Levels (4):
+    650           
+    642.53        
+    638.41        
+    630.2         
+  Zones: (none)
+
+[VISION PARSE]  file=2026-04-27_0859_dubz_spy.png  expected_instrument=SPY  size=39.0KB
+[live-price] MASSIVE_API_KEY not set — live price unavailable
+[dubz-vision] raw response: {
+  "instrument": "SPY",
+  "current_price": 713.58,
+  "levels": [
+    { "price": 712.38, "type": "resistance", "color": "red" },
+    { "price": 702.65, "type": "support", "color": "green" },
+    { "price": 698.34, "type": "support", "color": "green" }
+  ],
+  "zones": []
+}
+  Status: ok
+  Detected instrument: SPY  (expected: SPY)
+  Current price: 713.58
+  Levels (3):
+    712.38        
+    702.65        
+    698.34        
+  Zones: (none)
+
+[MERGE]
+
+  Final merged state (instruments):
+    NQ (4 total):
+    27430.5       sig=unclear  dir=resistance  src=image
+    26884.75      sig=unclear  dir=support  src=image
+    26568.75      sig=unclear  dir=support  src=image
+    26275.5       sig=unclear  dir=support  src=image
+    ES (3 total):
+    7185.75       sig=key  dir=flip  src=text  snippet="ES and SPY flipped 7185.75 & 712.38 in this pre-market this morning and currently pushing off those levels from last week. These were great spots to f"
+    7190          sig=unclear  dir=resistance  src=image
+    7093.75       sig=unclear  dir=support  src=image
+    QQQ (4 total):
+    650           sig=unclear  dir=support  src=image
+    642.53        sig=unclear  dir=support  src=image
+    638.41        sig=unclear  dir=support  src=image
+    630.2         sig=unclear  dir=support  src=image
+    SPY (3 total):
+    712.38        sig=key  dir=flip  src=text  snippet="SPY flipped 7185.75 & 712.38 in this pre-market this morning and currently pushing off those levels from last week. These were great spots to fade las"
+    702.65        sig=unclear  dir=support  src=image
+    698.34        sig=unclear  dir=support  src=image
+  Conflicts: [{"instrument":"ES","text_level":7185.75,"image_level":7190,"text_snippet":"ES and SPY flipped 7185.75 & 712.38 in this pre-market this morning and currently pushing off those levels from last week. These were great spots to f","note":"Image and text differ by 4.25 points — review"}]
+  Merged parse_errors: (none)
+
+  Full merged state JSON:
+{
+  "date": "2026-04-27",
+  "last_updated": "2026-04-27T14:18:50.288Z",
+  "source_pastes": [
+    {
+      "source": "validation-harness",
+      "fixture": "2026-04-27_0859_dubz",
+      "timestamp": "2026-04-27T14:18:50.288Z"
+    }
+  ],
+  "instruments": {
+    "NQ": {
+      "levels": [
+        {
+          "price": 27430.5,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "resistance",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 26884.75,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 26568.75,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 26275.5,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        }
+      ]
+    },
+    "ES": {
+      "levels": [
+        {
+          "price": 7185.75,
+          "significance": "key",
+          "significance_signal": "language",
+          "direction": "flip",
+          "intent": null,
+          "source": "text",
+          "source_snippet": "ES and SPY flipped 7185.75 & 712.38 in this pre-market this morning and currently pushing off those levels from last week. These were great spots to f",
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7190,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "resistance",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7093.75,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        }
+      ]
+    },
+    "QQQ": {
+      "levels": [
+        {
+          "price": 650,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 642.53,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 638.41,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 630.2,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        }
+      ]
+    },
+    "SPY": {
+      "levels": [
+        {
+          "price": 712.38,
+          "significance": "key",
+          "significance_signal": "language",
+          "direction": "flip",
+          "intent": null,
+          "source": "text",
+          "source_snippet": "SPY flipped 7185.75 & 712.38 in this pre-market this morning and currently pushing off those levels from last week. These were great spots to fade las",
+          "crossSourceConfirmed": true
+        },
+        {
+          "price": 702.65,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 698.34,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        }
+      ]
+    }
+  },
+  "conflicts": [
+    {
+      "instrument": "ES",
+      "text_level": 7185.75,
+      "image_level": 7190,
+      "text_snippet": "ES and SPY flipped 7185.75 & 712.38 in this pre-market this morning and currently pushing off those levels from last week. These were great spots to f",
+      "note": "Image and text differ by 4.25 points — review"
+    }
+  ],
+  "parse_errors": []
+}
+
+══════════════════════════════════════════════════════════════════════
+FIXTURE SET: 2026-04-27_0927_dubz
+Date: 2026-04-27   Text: 2026-04-27_0927_dubz.txt   Images: 1
+══════════════════════════════════════════════════════════════════════
+
+[TEXT PARSE]  file=2026-04-27_0927_dubz.txt  chars=345
+  Preview: "9:27 AM]RichyDubz [$OWL], : @everyone $ES, sellers have been and are still aggressive but have failed to break this for ..."
+  NQ (0 levels): (none)
+  ES (0 levels): (none)
+  QQQ (0 levels): (none)
+  SPY (0 levels): (none)
+  parse_errors: ["no price levels extracted from text"]
+
+[VISION PARSE]  file=2026-04-27_0927_dubz_es.png  expected_instrument=ES  size=61.4KB
+[live-price] MASSIVE_API_KEY not set — live price unavailable
+[dubz-vision] raw response: {"instrument":"ES","current_price":7187.75,"levels":[{"price":7188.00,"type":"support","color":"green"},{"price":7185.75,"type":"resistance","color":"red"}],"zones":[]}
+  Status: ok
+  Detected instrument: ES  (expected: ES)
+  Current price: 7187.75
+  Levels (2):
+    7188          
+    7185.75       
+  Zones: (none)
+
+[MERGE]
+
+  Final merged state (instruments):
+    NQ (0 total): (none)
+    ES (2 total):
+    7188          sig=unclear  dir=support  src=image
+    7185.75       sig=unclear  dir=resistance  src=image
+    QQQ (0 total): (none)
+    SPY (0 total): (none)
+  Conflicts: (none)
+  Merged parse_errors:
+    - no price levels extracted from text
+
+  Full merged state JSON:
+{
+  "date": "2026-04-27",
+  "last_updated": "2026-04-27T14:18:53.043Z",
+  "source_pastes": [
+    {
+      "source": "validation-harness",
+      "fixture": "2026-04-27_0927_dubz",
+      "timestamp": "2026-04-27T14:18:53.043Z"
+    }
+  ],
+  "instruments": {
+    "NQ": {
+      "levels": []
+    },
+    "ES": {
+      "levels": [
+        {
+          "price": 7188,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "support",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        },
+        {
+          "price": 7185.75,
+          "significance": "unclear",
+          "significance_signal": "unstated",
+          "direction": "resistance",
+          "intent": null,
+          "source": "image",
+          "source_snippet": null,
+          "crossSourceConfirmed": false
+        }
+      ]
+    },
+    "QQQ": {
+      "levels": []
+    },
+    "SPY": {
+      "levels": []
+    }
+  },
+  "conflicts": [],
+  "parse_errors": [
+    "no price levels extracted from text"
+  ]
+}
+
+══════════════════════════════════════════════════════════════════════
+VALIDATION SUMMARY
+══════════════════════════════════════════════════════════════════════
+Fixtures processed:    3
+Vision calls made:     8
+Vision calls failed:   0
+Total parse_errors:    1
+Levels extracted per instrument (across all fixtures):
+  NQ     7
+  ES     12
+  QQQ    11
+  SPY    5
+══════════════════════════════════════════════════════════════════════

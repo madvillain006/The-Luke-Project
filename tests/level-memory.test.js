@@ -189,3 +189,46 @@ it('T12: queryLevels with missing state file returns []', () => {
   // tmpFile was never written — it does not exist
   expect(queryLevels({ instrument: 'NQ' })).toEqual([]);
 });
+
+// ── T13: Gate 5 — SPY/QQQ tolerance 0.50 ─────────────────────────────────────
+it('T13: SPY tolerance 0.50 — Bobby 712 and Dubz 712.38 (0.38pt) collapse to one canonical', async () => {
+  await recordLevel({ analyst: 'bobby', instrument: 'SPY', price: 712,    source_type: 'vision' });
+  const r2 = await recordLevel({ analyst: 'dubz',  instrument: 'SPY', price: 712.38, source_type: 'text' });
+
+  // 0.38 < 0.50 tolerance → attaches to existing canonical
+  expect(r2.created_new).toBe(false);
+  expect(r2.canonical_price).toBe(712);
+  expect(r2.total_mentions).toBe(2);
+
+  const mem = loadMemory();
+  expect(mem.levels.filter(l => l.instrument === 'SPY')).toHaveLength(1);
+});
+
+it('T13b: SPY tolerance 0.50 — prices 1pt apart (711 vs 712) create separate canonicals', async () => {
+  await recordLevel({ analyst: 'bobby', instrument: 'SPY', price: 711, source_type: 'vision' });
+  const r2 = await recordLevel({ analyst: 'bobby', instrument: 'SPY', price: 712, source_type: 'vision' });
+
+  // 1.0 > 0.50 tolerance → new canonical
+  expect(r2.created_new).toBe(true);
+  const mem = loadMemory();
+  expect(mem.levels.filter(l => l.instrument === 'SPY')).toHaveLength(2);
+});
+
+// ── T14: recordLevel stores crossSourceConfirmed on mention ───────────────────
+it('T14: recordLevel stores crossSourceConfirmed on mention and defaults to false', async () => {
+  await recordLevel({
+    analyst: 'dubz', instrument: 'ES', price: 7100,
+    source_type: 'text', crossSourceConfirmed: true,
+  });
+  const mem1 = loadMemory();
+  expect(mem1.levels[0].mentions[0].crossSourceConfirmed).toBe(true);
+
+  await recordLevel({
+    analyst: 'bobby', instrument: 'ES', price: 7200,
+    source_type: 'vision',
+    // crossSourceConfirmed omitted — should default false
+  });
+  const mem2 = loadMemory();
+  const bobbyLevel = mem2.levels.find(l => l.canonical_price === 7200);
+  expect(bobbyLevel.mentions[0].crossSourceConfirmed).toBe(false);
+});

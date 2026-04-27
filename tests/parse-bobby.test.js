@@ -24,7 +24,10 @@ describe('parseBobby', () => {
   });
 
   it('extracts support and resistance levels', () => {
-    const result = parseBobby('Support at 5750 holding strong. Resistance wall at 5820 above.');
+    const result = parseBobby(
+      'Support at 5750 holding strong with buyers defending the zone and bids stepping in repeatedly through the morning session. ' +
+      'Resistance wall at 5820 above.'
+    );
     expect(result).not.toBeNull();
     expect(result.support).toContain(5750);
     expect(result.resistance).toContain(5820);
@@ -371,6 +374,107 @@ describe('normalizePanels – Gate G2 (B-3): wall classification with grounded c
     // After king-node dedup (none overlap): 670 > 663 → resistance; 659 < 663 → support
     expect(panels[0].resistance).toContain(670);
     expect(panels[0].support).toContain(659);
+  });
+});
+
+// ── Gate 2: pricesNear regex cap {3,9} ────────────────────────────────────────
+
+describe('parseBobby – Gate 2: pricesNear regex cap {3,9}', () => {
+  it('extracts NQ prices with commas (up to 9 digit+comma chars)', () => {
+    const result = parseBobby('NQ 26,884 holding above the 27,000 magnet');
+    expect(result).not.toBeNull();
+    const all = [...result.king_nodes, ...result.support, ...result.resistance];
+    expect(all).toContain(26884);
+    expect(all).toContain(27000);
+  });
+});
+
+// ── Gate 1: parseBobby array-pollution dedup ──────────────────────────────────
+
+describe('parseBobby – Gate 1: array-pollution dedup', () => {
+  it('regression: same price in support+resistance keyword overlap is dropped from both', () => {
+    const result = parseBobby(
+      'support at 7100 above the resistance line at 7100'
+    );
+    expect(result).not.toBeNull();
+    expect(result.king_nodes).not.toContain(7100);
+    expect(result.support).not.toContain(7100);
+    expect(result.resistance).not.toContain(7100);
+  });
+
+  it('regression: king node price is removed from support and resistance', () => {
+    const result = parseBobby(
+      'king node at 5800 with support at 5800 below and resistance at 5800 above'
+    );
+    expect(result).not.toBeNull();
+    expect(result.king_nodes).toContain(5800);
+    expect(result.support).not.toContain(5800);
+    expect(result.resistance).not.toContain(5800);
+  });
+
+  it('regression: 5d bearish fixture pollution fix — 7100 and 7180 not in all three arrays', () => {
+    const text = fs.readFileSync(
+      path.join(__dirname, '../fixtures/bobby/synthetic-bearish-bobby.txt'),
+      'utf8'
+    );
+    const result = parseBobby(text);
+    expect(result).not.toBeNull();
+    for (const price of [7100, 7180]) {
+      const count = [result.king_nodes, result.support, result.resistance]
+        .filter(arr => arr.includes(price)).length;
+      expect(count).toBeLessThan(3);
+    }
+    expect([result.support, result.resistance].filter(arr => arr.includes(7100)).length).toBeLessThanOrEqual(1);
+    expect([result.support, result.resistance].filter(arr => arr.includes(7180)).length).toBeLessThanOrEqual(1);
+  });
+});
+
+// ── Gate 3: crossSourceConfirmed wired through appendBobbyToMemory ───────────
+
+describe('appendBobbyToMemory – Gate 3: crossSourceConfirmed on merged path', () => {
+  const os   = require('os');
+  const { appendBobbyToMemory } = require('../lib/parse-bobby');
+  const { queryLevels, _internal: { _setMemoryFile, _resetWriteFn } } = require('../lib/level-memory');
+
+  let tmpFile;
+  beforeEach(() => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bobby-mem-'));
+    tmpFile = path.join(dir, 'lm.json');
+    _setMemoryFile(tmpFile);
+    _resetWriteFn();
+  });
+
+  it('merged result: panel king_node confirmed by text king_nodes → crossSourceConfirmed: true', async () => {
+    const result = {
+      source: 'bobby-merged',
+      king_nodes: [7160],  // text-derived
+      panels: [{
+        ticker: 'SPXW', instrument: 'SPX',
+        king_nodes: [7160], support: [], resistance: [],
+      }],
+      notes: 'test',
+    };
+
+    await appendBobbyToMemory(result);
+    const levels = queryLevels({ instrument: 'SPX' });
+    expect(levels).toHaveLength(1);
+    expect(levels[0].mentions[0].crossSourceConfirmed).toBe(true);
+  });
+
+  it('vision-only result: king_node not in text king_nodes → crossSourceConfirmed: false', async () => {
+    const result = {
+      source: 'bobby-vision',
+      king_nodes: [],  // no text
+      panels: [{
+        ticker: 'SPXW', instrument: 'SPX',
+        king_nodes: [7160], support: [], resistance: [],
+      }],
+      notes: 'test',
+    };
+
+    await appendBobbyToMemory(result);
+    const levels = queryLevels({ instrument: 'SPX' });
+    expect(levels[0].mentions[0].crossSourceConfirmed).toBe(false);
   });
 });
 

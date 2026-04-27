@@ -1,5 +1,9 @@
 'use strict';
 
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+
 const {
   scoreLevel,
   queryLevelsAcrossEquivalents,
@@ -13,6 +17,9 @@ const {
     _resetQueryLevels,
   },
 } = require('../lib/confluence-engine');
+const { recordLevel, _internal: { _setMemoryFile, _resetWriteFn } } = require('../lib/level-memory');
+
+const DEFAULT_MEMORY_FILE = path.join(__dirname, '../data/level-memory.json');
 
 // ── Timestamp helpers ──────────────────────────────────────────────────────────
 
@@ -41,6 +48,8 @@ function record(canonicalPrice, instrument, mentionList) {
 
 afterEach(() => {
   _resetQueryLevels();
+  _setMemoryFile(DEFAULT_MEMORY_FILE);
+  _resetWriteFn();
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -255,8 +264,8 @@ it('T12: breakdown components sum to raw_total', () => {
 // GATE 2 — Cross-instrument equivalence tests (T13–T16)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// T13: ES query returns levels from SPX with prices basis-adjusted
-it('T13: ES query returns SPX levels with prices basis-adjusted (SPX + (-30))', () => {
+// T13: ES query returns levels from SPX with prices basis-adjusted (Gate 4 fix: basis +30)
+it('T13: ES query returns SPX levels with prices basis-adjusted (SPX + (+30))', () => {
   const spxRecord = record(5100, 'SPX', [
     mention('bobby', 'key', null, 'text', RECENT),
   ]);
@@ -267,9 +276,40 @@ it('T13: ES query returns SPX levels with prices basis-adjusted (SPX + (-30))', 
   expect(results).toHaveLength(1);
 
   const equiv = results[0];
-  // SPX 5100 converted to ES: 5100 + basis(-30) = 5070
-  expect(equiv.canonical_price).toBeCloseTo(5070, 4);
+  // SPX 5100 converted to ES: 5100 + basis(+30) = 5130
+  expect(equiv.canonical_price).toBeCloseTo(5130, 4);
   expect(equiv.instrument).toBe('ES');
+});
+
+// T13b: SPX query returns ES levels with prices basis-adjusted (basis −30)
+it('T13b: SPX query returns ES levels with prices basis-adjusted (ES + (-30))', () => {
+  const esRecord = record(5130, 'ES', [
+    mention('dubz', 'key', 'flip', 'text', RECENT),
+  ]);
+
+  _setQueryLevels(({ instrument }) => instrument === 'ES' ? [esRecord] : []);
+
+  const results = queryLevelsAcrossEquivalents('SPX');
+  expect(results).toHaveLength(1);
+
+  const equiv = results[0];
+  // ES 5130 converted to SPX: 5130 + basis(-30) = 5100
+  expect(equiv.canonical_price).toBeCloseTo(5100, 4);
+  expect(equiv.instrument).toBe('SPX');
+});
+
+// T13c: production scenario — SPX Saty 7028 surfaces as ES 7058 (not 6998)
+it('T13c: production scenario — SPX 7028 surfaces as ES 7058 (not 6998)', () => {
+  const spxRecord = record(7028, 'SPX', [
+    mention('saty', 'key', null, 'saty_atr', RECENT),
+  ]);
+
+  _setQueryLevels(({ instrument }) => instrument === 'SPX' ? [spxRecord] : []);
+
+  const results = queryLevelsAcrossEquivalents('ES');
+  expect(results).toHaveLength(1);
+  // ES = SPX + 30: 7028 + 30 = 7058, NOT 6998
+  expect(results[0].canonical_price).toBeCloseTo(7058, 4);
 });
 
 // T14: Levels in primary instrument carry cross_instrument_origin: null
@@ -369,9 +409,44 @@ it('/verdict ES includes SPX-equivalent levels in output', () => {
 
   const output = buildVerdictMarkdown(['ES'], { currentPrices: {}, topN: 5 });
 
-  // SPX 5100 normalized to ES: 5100 + (-30) = 5070
-  expect(output).toContain('5070');
+  // SPX 5100 normalized to ES: 5100 + basis(+30) = 5130
+  expect(output).toContain('5130');
   // Should show king node flag
+  expect(output).toContain('king node');
+});
+
+it('/verdict integrates with real level-memory records from a temp file', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'verdict-mem-'));
+  const tmpFile = path.join(dir, 'level-memory.json');
+  _setMemoryFile(tmpFile);
+  _resetWriteFn();
+
+  await recordLevel({
+    analyst: 'dubz',
+    instrument: 'SPY',
+    price: 712.38,
+    significance: 'key',
+    direction: 'flip',
+    source_type: 'text',
+    timestamp: RECENT,
+    crossSourceConfirmed: true,
+  });
+  await recordLevel({
+    analyst: 'bobby',
+    instrument: 'SPY',
+    price: 712.0,
+    significance: 'key',
+    direction: null,
+    source_type: 'vision',
+    timestamp: RECENT,
+  });
+
+  const output = buildVerdictMarkdown(['SPY'], { currentPrices: { SPY: 712.5 }, topN: 5 });
+
+  expect(output).toContain('### SPY (current: 712.5)');
+  expect(output).toContain('**SPY 712.38**');
+  expect(output).toContain('**A**');
+  expect(output).toContain('2 analysts: dubz key+flip, bobby vision');
   expect(output).toContain('king node');
 });
 

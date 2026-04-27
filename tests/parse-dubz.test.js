@@ -333,3 +333,64 @@ describe('mergeDubzInputs – Gate G5: vision/text disagreement in parse_errors'
     expect(merged.parse_errors.filter(e => e.includes('vision/text disagreement'))).toHaveLength(0);
   });
 });
+
+// ── Gate 3: crossSourceConfirmed wired through appendDubzToMemory ─────────────
+
+describe('appendDubzToMemory – Gate 3: crossSourceConfirmed persisted to Level Memory', () => {
+  const fs   = require('fs');
+  const os   = require('os');
+  const path = require('path');
+  const { appendDubzToMemory } = require('../lib/parse-dubz');
+  const { queryLevels, _internal: { _setMemoryFile, _resetWriteFn } } = require('../lib/level-memory');
+
+  let tmpFile;
+  beforeEach(() => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dubz-mem-'));
+    tmpFile = path.join(dir, 'level-memory.json');
+    _setMemoryFile(tmpFile);
+    _resetWriteFn();
+  });
+
+  it('crossSourceConfirmed: true on merged level is stored in the Level Memory mention', async () => {
+    const state = {
+      instruments: {
+        ES: {
+          levels: [{
+            price: 7185.75, significance: 'key', direction: 'flip',
+            intent: null, source: 'text', source_snippet: 'ES key flip 7185.75',
+            crossSourceConfirmed: true,
+          }],
+        },
+        NQ: { levels: [] }, QQQ: { levels: [] }, SPY: { levels: [] },
+      },
+      parse_errors: [],
+    };
+
+    await appendDubzToMemory(state);
+
+    const results = queryLevels({ instrument: 'ES' });
+    expect(results).toHaveLength(1);
+    expect(results[0].mentions[0].crossSourceConfirmed).toBe(true);
+  });
+
+  it('crossSourceConfirmed: false on unconfirmed level is stored correctly', async () => {
+    const state = {
+      instruments: {
+        ES: {
+          levels: [{
+            price: 7100, significance: 'unclear', direction: 'support',
+            intent: null, source: 'text', source_snippet: null,
+            crossSourceConfirmed: false,
+          }],
+        },
+        NQ: { levels: [] }, QQQ: { levels: [] }, SPY: { levels: [] },
+      },
+      parse_errors: [],
+    };
+
+    await appendDubzToMemory(state);
+
+    const results = queryLevels({ instrument: 'ES' });
+    expect(results[0].mentions[0].crossSourceConfirmed).toBe(false);
+  });
+});

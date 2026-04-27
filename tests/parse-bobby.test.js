@@ -52,6 +52,42 @@ describe('parseBobby', () => {
     expect(result).not.toBeNull();
     expect(result.vix_mentioned).toBe(true);
   });
+
+  // Regression: pricesNear window boundary bisected "7140" → "714" when a
+  // keyword (e.g. "magnet") fell ~80 chars before the 4-digit price.
+  it('regression: 4-digit price near window edge is not truncated (7140 not 714)', () => {
+    const result = parseBobby(
+      'King node at 7100 — magnet for the day. Support cushion at 7060 holding well. ' +
+      'Resistance wall at 7140 above — gatekeeper if we rip. Support floor at 7020 below.'
+    );
+    expect(result).not.toBeNull();
+    // 714 must never appear — it is a window-bisection artefact, not a real level
+    expect(result.king_nodes).not.toContain(714);
+    expect(result.support).not.toContain(714);
+    expect(result.resistance).not.toContain(714);
+    // 7140 must be captured (in resistance and/or king_nodes via gatekeeper/magnet overlap)
+    const all = [...result.king_nodes, ...result.support, ...result.resistance];
+    expect(all).toContain(7140);
+  });
+
+  it('regression: clean 4-digit boundary — support at 7000', () => {
+    const result = parseBobby('Support at 7000 holding strong.');
+    expect(result).not.toBeNull();
+    expect(result.support).toContain(7000);
+  });
+
+  it('regression: lower SPX range — king node at 5895', () => {
+    const result = parseBobby('King node at 5895 — primary magnet today.');
+    expect(result).not.toBeNull();
+    expect(result.king_nodes).toContain(5895);
+  });
+
+  it('regression: resistance wall string in isolation extracts correctly', () => {
+    const result = parseBobby('Resistance wall at 7140 above');
+    expect(result).not.toBeNull();
+    expect(result.resistance).toContain(7140);
+    expect(result.king_nodes).not.toContain(714);
+  });
 });
 
 describe('detectMediaType', () => {

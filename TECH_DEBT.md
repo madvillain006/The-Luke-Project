@@ -12,3 +12,18 @@ Add entries here when something is intentionally skipped, not when something is 
   preserved as record (written by old logger → logs/crash-*.json → migrated to archive/ on each boot). Old logger
   was active before Phase 1B.6.3 fix; unhandledRejection was dual-logging. Both process.on handlers in the old
   system now commented out in index.js.
+
+## Pre-payout: Vision quality logging
+
+Build a vision quality log that captures every Bobby/Dubz vision
+parse with: input image hash, full vision output (king_nodes,
+support, resistance, bias, etc.), live grounded price context at
+time of parse, and an optional user-flag for ground-truth accuracy.
+
+This is logging, not vision improvement. It is prerequisite data
+for ANY future vision improvement work AND for validation of
+direct GEX feeds post-payout (when vision becomes legacy fallback
+or is dropped entirely).
+
+Do NOT scope vision improvement itself before this log exists.
+Speculative tuning without ground-truth data is wasted effort.

@@ -980,7 +980,7 @@ app.get("/luke/boot-check", (req, res) => {
     try { const r = fn(); checks.push({ name, status: r ? "green" : "yellow", detail: r || "not available" }); }
     catch (e) { checks.push({ name, status: "red", detail: e.message }); }
   }
-  check("memory-file", () => { JSON.parse(fs.readFileSync(MEMORY_FILE, "utf8")); return "ok"; });
+  check("memory-file", () => { readJsonFile(MEMORY_FILE); return "ok"; });
   check("repo-map", () => {
     const map = JSON.parse(fs.readFileSync(REPO_MAP_FILE, "utf8"));
     return (Date.now() - new Date(map.built).getTime()) < 120 * 60000 ? "ok" : null;
@@ -1240,4 +1240,5 @@ server.listen(PORT, "127.0.0.1", () => {
   console.log("Read DAILY_OPS.md before trading.");
   console.log("===================================");
 });
+
 

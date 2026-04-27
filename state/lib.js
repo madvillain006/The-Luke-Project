@@ -5,9 +5,13 @@ function ensureDir(dirPath) {
   fs.mkdirSync(dirPath, { recursive: true });
 }
 
+function stripBom(text) {
+  return typeof text === "string" ? text.replace(/^\uFEFF/, "") : text;
+}
+
 function readJsonFile(filePath, fallback) {
   try {
-    return JSON.parse(fs.readFileSync(filePath, "utf8"));
+    return JSON.parse(stripBom(fs.readFileSync(filePath, "utf8")));
   } catch (err) {
     if (fallback !== undefined) return fallback;
     throw err;
@@ -30,5 +34,6 @@ module.exports = {
   appendJsonl,
   ensureDir,
   readJsonFile,
+  stripBom,
   writeJsonAtomic,
 };

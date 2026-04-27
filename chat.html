@@ -481,9 +481,9 @@
         <span id="mc-title">MORNING CHECKLIST</span>
         <button id="mc-close" title="Dismiss morning checklist">✕</button>
       </div>
-      <div class="mc-item has-tt" id="mc-levels">
+      <div class="mc-item has-tt" id="mc-dubz">
         <span class="mc-check">□</span>
-        <span class="mc-cmd">/levels</span>
+        <span class="mc-cmd">/dubz</span>
         <span class="tooltip">Paste RichyDubz morning message after this command</span>
       </div>
       <div class="mc-item has-tt" id="mc-heatmap">
@@ -491,10 +491,10 @@
         <span class="mc-cmd">/heatmap</span>
         <span class="tooltip">Paste Bobby's heatmap text after this command</span>
       </div>
-      <div class="mc-item has-tt" id="mc-confluence">
+      <div class="mc-item has-tt" id="mc-verdict">
         <span class="mc-check">□</span>
-        <span class="mc-cmd">/confluence</span>
-        <span class="tooltip">Run after levels+heatmap to see today's zones</span>
+        <span class="mc-cmd">/verdict</span>
+        <span class="tooltip">Run after Dubz and heatmap to see ranked levels</span>
       </div>
     </div>
   </div>
@@ -513,14 +513,14 @@
       <button class="qbtn has-tt" data-cmd="/alert ">
         /alert<span class="tooltip">Fire a Ximes/analyst alert for verdict + bracket calculation</span>
       </button>
-      <button class="qbtn has-tt" data-cmd="/levels ">
-        /levels<span class="tooltip">Load today's RichyDubz levels for confluence detection</span>
+      <button class="qbtn has-tt" data-cmd="/dubz ">
+        /dubz<span class="tooltip">Load today's RichyDubz levels for verdict scoring</span>
       </button>
       <button class="qbtn has-tt" data-cmd="/heatmap ">
         /heatmap<span class="tooltip">Load Bobby's heatmap context (king nodes, air pockets, trinity)</span>
       </button>
-      <button class="qbtn has-tt" data-cmd="/confluence">
-        /confluence<span class="tooltip">Show today's confluence zones ranked by score</span>
+      <button class="qbtn has-tt" data-cmd="/verdict">
+        /verdict<span class="tooltip">Show today's ranked confluence levels</span>
       </button>
       <button class="qbtn has-tt" data-cmd="/review">
         /review<span class="tooltip">Today's trades summary — W/L, P&amp;L, emotional state</span>
@@ -959,7 +959,7 @@
         input.value = cmd;
         input.focus();
         // auto-send for status (no argument needed)
-        if (cmd === "/status" || cmd === "/confluence" || cmd === "/reset" || cmd === "/trading-mode" || cmd === "/review" || cmd === "/history") {
+        if (cmd === "/status" || cmd === "/verdict" || cmd === "/reset" || cmd === "/trading-mode" || cmd === "/review" || cmd === "/history") {
           send();
         }
       });
@@ -967,17 +967,17 @@
 
     // ── MORNING CHECKLIST ─────────────────────────────────
 
-    const mcState = { levels: false, heatmap: false, confluence: false };
+    const mcState = { dubz: false, heatmap: false, verdict: false };
 
     function checkMC(text) {
-      if (/^\/levels/i.test(text))     { mcState.levels = true; }
+      if (/^\/dubz/i.test(text))       { mcState.dubz = true; }
       if (/^\/heatmap/i.test(text))    { mcState.heatmap = true; }
-      if (/^\/confluence/i.test(text)) { mcState.confluence = true; }
+      if (/^\/verdict/i.test(text))    { mcState.verdict = true; }
       updateMC();
     }
 
     function updateMC() {
-      ["levels", "heatmap", "confluence"].forEach(key => {
+      ["dubz", "heatmap", "verdict"].forEach(key => {
         const el = document.getElementById("mc-" + key);
         if (!el) return;
         if (mcState[key]) {
@@ -1294,7 +1294,7 @@
     const PASTE_ANALYST_RULES = [
       { re: /\b(ximes|ximestrades|xi[mn]es|followthewhiterabblt)\b/i, command: '/alert',   analyst: 'ximes' },
       { re: /\b(bobby|followtherabbit|spx[_ -]?coms)\b/i,             command: '/heatmap', analyst: 'bobby' },
-      { re: /\b(richy|richydubz|richyd)\b/i,                          command: '/levels',  analyst: 'richy' },
+      { re: /\b(richy|richydubz|richyd)\b/i,                          command: '/dubz',    analyst: 'richy' },
     ];
     const PASTE_DISCORD_PREFIX = /^[\s\S]*?(?:\[\d{1,2}:\d{2}\s*(?:AM|PM)\][^\n,]*,\s*:|[^\n]+ — Today at \d{1,2}:\d{2}\s*(?:AM|PM)\s*\n?)/i;
     const PASTE_OPTION_RE     = /\b[A-Z]{1,5}\s+\d{3,5}[CP]\b/i;

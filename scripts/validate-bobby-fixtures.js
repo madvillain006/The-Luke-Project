@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config();
+
 /**
  * Integration validation harness for Bobby fixture parsing.
  * Runs real vision calls (costs tokens — that's intentional).

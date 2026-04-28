@@ -50,7 +50,18 @@ TRADOVATE_URL = "https://trader.tradovate.com"
 def find_windows(fragment):
     result = []
     def cb(hwnd, _):
-        if win32gui.IsWindowVisible(hwnd) and fragment.lower() in win32gui.GetWindowText(hwnd).lower():
+        title = win32gui.GetWindowText(hwnd)
+        if win32gui.IsWindowVisible(hwnd) and fragment.lower() in title.lower():
+            result.append(hwnd)
+    win32gui.EnumWindows(cb, None)
+    return result
+
+
+def find_windows_exact(title_text):
+    result = []
+    def cb(hwnd, _):
+        title = win32gui.GetWindowText(hwnd).strip()
+        if win32gui.IsWindowVisible(hwnd) and title == title_text:
             result.append(hwnd)
     win32gui.EnumWindows(cb, None)
     return result
@@ -64,6 +75,22 @@ if DRY_RUN:
     for name, pos in LAYOUT.items():
         print(f"[DRY] {name}: {pos}")
     sys.exit(0)
+
+
+def launch_luke():
+    launcher = os.path.join(os.path.dirname(__file__), '..', 'LAUNCH-LUKE.cmd')
+    electron = os.path.join(os.path.dirname(__file__), '..', 'node_modules', 'electron', 'dist', 'electron.exe')
+    entry = os.path.join(os.path.dirname(__file__), '..', 'electron.js')
+    if os.path.exists(launcher):
+        print('Launching Luke via LAUNCH-LUKE.cmd...')
+        subprocess.Popen(['cmd', '/c', launcher])
+        return True
+    if os.path.exists(electron) and os.path.exists(entry):
+        print('Launching Luke via electron.exe...')
+        subprocess.Popen([electron, entry], cwd=os.path.dirname(entry))
+        return True
+    print('Luke launcher not found')
+    return False
 
 # ── OPEN WINDOWS ──────────────────────────────────────────────────────────────
 before = set(h for h in find_windows("Edge") + find_windows("Microsoft Edge"))
@@ -94,7 +121,15 @@ for i, hwnd in enumerate(new_wins[:3]):
 # ── POSITION LUKE ─────────────────────────────────────────────────────────────
 print("Positioning Luke...")
 time.sleep(2)
-luke = find_windows("Luke")
+luke = find_windows_exact("Luke")
+if not luke:
+    launched = launch_luke()
+    if launched:
+        for _ in range(12):
+            time.sleep(1)
+            luke = find_windows_exact("Luke")
+            if luke:
+                break
 if luke:
     x, y, w, h = LAYOUT["luke"]
     move_win(luke[0], x, y, w, h, topmost=True)

@@ -15,7 +15,7 @@ process.on('unhandledRejection', (reason, promise) => {
   const entry = `[${ts}] unhandledRejection\nreason: ${reason?.stack || reason}\n\n`;
   try { fs.appendFileSync(path.join(__dirname, 'crash.log'), entry); } catch (e) { /* swallow */ }
   console.error(entry);
-  // Do NOT exit â€” log and continue. Node 15+ would crash by default; we want to survive
+  // Do NOT exit Ã¢â‚¬â€ log and continue. Node 15+ would crash by default; we want to survive
   // transient promise rejections but capture them.
 });
 
@@ -45,7 +45,7 @@ const rateLimit = require("express-rate-limit");
 const app = express();
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-// â”€â”€ CORS â€” localhost only â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬ CORS Ã¢â‚¬â€ localhost only Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header("Access-Control-Allow-Methods", "GET, POST");
@@ -53,7 +53,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// â”€â”€ RATE LIMITING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬ RATE LIMITING Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 const rl = (max, windowMs = 60000) => rateLimit({ windowMs, max, standardHeaders: true, legacyHeaders: false });
 app.use("/chat",           rl(60));
 app.use("/notify",         rl(10));
@@ -198,7 +198,7 @@ function extractTrade(message) {
 }
 
 function extractShift(message) {
-  // Prioritize "made $87" / "earned $87" / "$87" â€” don't grab hours number first
+  // Prioritize "made $87" / "earned $87" / "$87" Ã¢â‚¬â€ don't grab hours number first
   const earningsMatch = message.match(/(?:made|earned)\s*\$\s*([\d]+(?:\.\d+)?)/i)
     || message.match(/\$\s*([\d]+(?:\.\d+)?)/)
     || message.match(/([\d]+(?:\.\d+)?)/);
@@ -272,13 +272,13 @@ async function routeToAgent(message) {
       if (action) await agentFetch("/agent/autonomous/" + action, "POST", {});
       const status = await agentFetch("/agent/autonomous/status", "GET");
       const lines = [
-        "02B â€” " + (status.running ? (status.mode === "live" ? "LIVE" : "PAPER") : "OFF"),
+        "02B Ã¢â‚¬â€ " + (status.running ? (status.mode === "live" ? "LIVE" : "PAPER") : "OFF"),
         status.running ? `Mode: ${status.mode.toUpperCase()}` : null,
         status.execution?.phase ? `Execution: ${status.execution.phase}` : null,
         `Paper trades: ${status.paper_trades || 0} / 25`,
         status.open_position ? `Open: ${status.open_position.direction} ${status.open_position.ticker} @ ${status.open_position.entry}` : "No open position",
-        status.kill_day ? "âš  Daily kill active" : null,
-        status.kill_week ? "ðŸš¨ Weekly kill active" : null,
+        status.kill_day ? "Ã¢Å¡Â  Daily kill active" : null,
+        status.kill_week ? "Ã°Å¸Å¡Â¨ Weekly kill active" : null,
         `Daily P&L: $${(status.daily_pnl || 0).toFixed(0)}`,
       ].filter(Boolean).join("\n");
       return { reply: lines, agent: "autonomous" };
@@ -337,13 +337,13 @@ app.post("/chat", async (req, res) => {
   const { message, history, image } = req.body;
   if (!message && !image) return res.status(400).json({ error: "No message" });
 
-  // â”€â”€ accumulator: auto-classify paste, store piece, ack, fire verdict â”€â”€â”€â”€â”€â”€â”€â”€
+  // Ã¢â€â‚¬Ã¢â€â‚¬ accumulator: auto-classify paste, store piece, ack, fire verdict Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
   if (!message.startsWith("/")) {
     const accResult = await handlePasteAccumulate(message, image, res);
     if (accResult) return;
   }
 
-  // â”€â”€ slash command intercept â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // Ã¢â€â‚¬Ã¢â€â‚¬ slash command intercept Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
   let routedMessage = message;
   if (!message.startsWith("/")) {
     const { command, cleanedText } = detectPasteIntent(message, !!image);
@@ -356,9 +356,9 @@ app.post("/chat", async (req, res) => {
     if (handled !== null) return;
   }
 
-  // â”€â”€ end slash commands â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // Ã¢â€â‚¬Ã¢â€â‚¬ end slash commands Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
-  // â”€â”€ parseXimes intercept â€” catch signals before Claude fallthrough â”€â”€â”€â”€
+  // Ã¢â€â‚¬Ã¢â€â‚¬ parseXimes intercept Ã¢â‚¬â€ catch signals before Claude fallthrough Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
   if (message.length >= 8 && !message.startsWith("/")) {
     const parsed = parseXimes(null, message);
     if (parsed && parsed.signal_type === "LIVE_ENTRY" && parsed.strike) {
@@ -368,20 +368,20 @@ app.post("/chat", async (req, res) => {
     }
     if (parsed && parsed.signal_type === "MANAGEMENT") {
       const actions = {
-        TRIM: "âš¡ XIMES TRIM â€” Take partial profits now.\n" +
+        TRIM: "Ã¢Å¡Â¡ XIMES TRIM Ã¢â‚¬â€ Take partial profits now.\n" +
           (parsed.gainPct ? "He called " + parsed.gainPct + "% gain.\n" : "") +
-          "â†’ Close 50-75% of position. Hold runner.",
-        RUNNER: "ðŸƒ XIMES RUNNER â€” Hold partial position.\n" +
+          "Ã¢â€ â€™ Close 50-75% of position. Hold runner.",
+        RUNNER: "Ã°Å¸ÂÆ’ XIMES RUNNER Ã¢â‚¬â€ Hold partial position.\n" +
           (parsed.sizing ? "He has " + parsed.sizing + " cons left (" + parsed.pctRemaining + "%).\n" : "") +
-          "â†’ Keep 20-25% on. Move stop to breakeven.",
-        CLOSE: "ðŸšª XIMES EXIT â€” Close position now.",
-        ADD: "âž• XIMES ADDING â€” He is sizing in further.\nâ†’ Consider adding within your risk parameters.",
+          "Ã¢â€ â€™ Keep 20-25% on. Move stop to breakeven.",
+        CLOSE: "Ã°Å¸Å¡Âª XIMES EXIT Ã¢â‚¬â€ Close position now.",
+        ADD: "Ã¢Å¾â€¢ XIMES ADDING Ã¢â‚¬â€ He is sizing in further.\nÃ¢â€ â€™ Consider adding within your risk parameters.",
       };
       const reply = actions[parsed.action] || "XIMES: " + parsed.action;
       return res.json({ reply });
     }
   }
-  // â”€â”€ end parseXimes intercept â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // Ã¢â€â‚¬Ã¢â€â‚¬ end parseXimes intercept Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
   const messages = [...(history || []), { role: "user", content: message }];
   const _exitWarnings = checkEmotionalState(loadTodayContext());
@@ -421,7 +421,7 @@ app.post("/chat", async (req, res) => {
   if (isFallbackActive()) {
     try {
       const fb = await callFallback(
-        "You are Luke â€” Conor's personal assistant. Keep it brief and direct.",
+        "You are Luke Ã¢â‚¬â€ Conor's personal assistant. Keep it brief and direct.",
         message
       );
       let reply = fb.reply;
@@ -446,7 +446,7 @@ app.post("/chat", async (req, res) => {
   const useHaiku = isSimpleMessage(message);
   const chatModel = useHaiku ? "claude-haiku-4-5-20251001" : "claude-opus-4-7";
   const chatSystemPrompt = useHaiku
-    ? "You are Luke â€” Conor's personal AI. Sharp, brief, no filler. No em dashes."
+    ? "You are Luke Ã¢â‚¬â€ Conor's personal AI. Sharp, brief, no filler. No em dashes."
     : buildSystemPrompt(state, message);
 
   try {
@@ -533,7 +533,7 @@ app.post("/see-image", async (req, res) => {
   }
 });
 
-// guarded in Phase 1B.6.3 â€” intraday-scraper v0 archived; requires Mac mini hardware
+// guarded in Phase 1B.6.3 Ã¢â‚¬â€ intraday-scraper v0 archived; requires Mac mini hardware
 app.post("/premarket", (req, res) => {
   res.status(503).json({
     error: "premarket-scan-archived",
@@ -594,7 +594,7 @@ app.post("/research", async (req, res) => {
     const response = await client.messages.create({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 384,
-      messages: [{ role: "user", content: "You are Agent 06 â€” research agent for Luke. Extract what is useful for building a personal AI agent system or for trading.\n\nURL: " + url + "\n\nCONTENT:\n" + text + "\n\nFormat exactly like this:\nKEY INSIGHT: one sentence\nAPPLIES TO: scaffold / trader / research / all\nIMPLEMENTATION: one sentence\nPRIORITY: HIGH / MEDIUM / LOW\n\nUnder 80 words total. If not relevant to AI agents or trading, say: NOT RELEVANT" }]
+      messages: [{ role: "user", content: "You are Agent 06 Ã¢â‚¬â€ research agent for Luke. Extract what is useful for building a personal AI agent system or for trading.\n\nURL: " + url + "\n\nCONTENT:\n" + text + "\n\nFormat exactly like this:\nKEY INSIGHT: one sentence\nAPPLIES TO: scaffold / trader / research / all\nIMPLEMENTATION: one sentence\nPRIORITY: HIGH / MEDIUM / LOW\n\nUnder 80 words total. If not relevant to AI agents or trading, say: NOT RELEVANT" }]
     });
 
     const insight = response.content[0].text;
@@ -703,11 +703,11 @@ app.get("/signals", (req, res) => {
   res.json({ count: signals.length, signals });
 });
 
-// â”€â”€ PRICE â€” SPX real-time via Polygon (MASSIVE_API_KEY) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬ PRICE Ã¢â‚¬â€ SPX real-time via Polygon (MASSIVE_API_KEY) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 app.get("/price/spx", async (req, res) => {
   const { getLivePrice } = require('./lib/live-price');
   const data = await getLivePrice();
-  if (!data) return res.status(503).json({ error: 'price unavailable â€” Polygon fetch failed or market closed' });
+  if (!data) return res.status(503).json({ error: 'price unavailable Ã¢â‚¬â€ Polygon fetch failed or market closed' });
   res.json({
     ticker: 'SPX',
     price: data.spx,
@@ -720,12 +720,12 @@ app.get("/price/spx", async (req, res) => {
   });
 });
 
-// â”€â”€ SATY ATR WEBHOOK (TradingView â†’ Luke) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬ SATY ATR WEBHOOK (TradingView Ã¢â€ â€™ Luke) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 // Set up a TradingView alert on Saty's ATR script with webhook URL:
 //   http://[your-ngrok-url]/webhook/saty
 // Alert message (JSON format):
 //   {"up2":{{plot_0}},"up1":{{plot_1}},"mid":{{plot_2}},"down1":{{plot_3}},"down2":{{plot_4}},"atr":{{plot_5}}}
-// Or simpler â€” just set the alert message to the 5 level values space-separated.
+// Or simpler Ã¢â‚¬â€ just set the alert message to the 5 level values space-separated.
 app.post("/webhook/saty", (req, res) => {
   try {
     const { saveSatyLevels, parseSatyText } = require('./lib/saty-levels');
@@ -818,7 +818,7 @@ app.use("/agent/fallback", fallbackRouter);
 const agentKat = require('./agents/agent-14-kat');
 app.use('/agent/kat', agentKat);
 
-// Expose WS token to the browser (localhost only â€” not a secret across the network)
+// Expose WS token to the browser (localhost only Ã¢â‚¬â€ not a secret across the network)
 app.get("/ws-token", (req, res) => res.json({ token: WS_TOKEN }));
 
 app.post("/intraday/start", (req, res) => {
@@ -882,7 +882,7 @@ app.get("/luke/self-diagnose", (req, res) => {
     const map = JSON.parse(fs.readFileSync(REPO_MAP_FILE, "utf8"));
     const age = (Date.now() - new Date(map.built).getTime()) / 60000;
     if (age > 90) out.stale_data.push("repo-map.json last built " + Math.round(age) + "m ago");
-  } catch { out.missing_capabilities.push("repo-map not built â€” Luke cannot locate own files"); }
+  } catch { out.missing_capabilities.push("repo-map not built Ã¢â‚¬â€ Luke cannot locate own files"); }
 
   // Tool failures
   try {
@@ -981,7 +981,7 @@ app.post("/panic", (req, res) => {
   try { fs.writeFileSync(path.join(__dirname, "panic-dump-" + Date.now() + ".json"), JSON.stringify({ timestamp: new Date().toISOString(), memory: loadMemory() }, null, 2)); } catch {}
   try { fetch("http://localhost:3000/agent/autonomous/kill", { method: "POST" }).catch(() => {}); } catch {}
   try { execSync("pm2 stop luke-intraday", { cwd: __dirname }); } catch {}
-  broadcast({ type: "notification", message: "PANIC executed â€” 02B kill sent, intraday stopped, state dumped" });
+  broadcast({ type: "notification", message: "PANIC executed Ã¢â‚¬â€ 02B kill sent, intraday stopped, state dumped" });
   res.json({ ok: true });
 });
 
@@ -989,7 +989,7 @@ const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 const clients = new Set();
 
-// â”€â”€ WS TOKEN â€” generated each boot, written for preload to read â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬ WS TOKEN Ã¢â‚¬â€ generated each boot, written for preload to read Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 const crypto = require("crypto");
 const WS_TOKEN = crypto.randomBytes(24).toString("hex");
 const WS_TOKEN_FILE = path.join(__dirname, ".ws-token");
@@ -1013,7 +1013,7 @@ wss.on("connection", (ws, req) => {
   }
   clients.add(ws);
   ws.on("close", () => clients.delete(ws));
-  // Morning levels warning â€” fire immediately on connect if levels missing/stale
+  // Morning levels warning Ã¢â‚¬â€ fire immediately on connect if levels missing/stale
   try {
     const _today = new Date().toISOString().slice(0, 10);
     const _lvlsFile = path.join(__dirname, "data", "today-levels.json");
@@ -1027,7 +1027,7 @@ wss.on("connection", (ws, req) => {
       ws.send(JSON.stringify({ type: "assistant", message: "I built Luke so I wouldn't have to trade scared. Today I don't trade scared. I follow the system. I trade the system. Luke is home. That's why I do this." }));
     }
     if (!_levelsOk && ws.readyState === 1) {
-      ws.send(JSON.stringify({ type: "levels_warning", message: "âš ï¸ No levels loaded. Paste /levels [RichyDubz morning message] then /heatmap [Bobby text] before trading." }));
+      ws.send(JSON.stringify({ type: "levels_warning", message: "Ã¢Å¡Â Ã¯Â¸Â No levels loaded. Paste /levels [RichyDubz morning message] then /heatmap [Bobby text] before trading." }));
       log("UX", { event: "morning levels warning on boot" });
     }
   } catch {}
@@ -1056,7 +1056,7 @@ try {
 //       const age = now - new Date(hb[job].last_run).getTime();
 //       if (age > interval * 2) {
 //         const ageH = Math.round(age / 3600000);
-//         broadcast({ type: "notification", message: (job.includes("health") ? "ðŸ”´ " : "") + "SCHEDULER STALE: " + job + " last ran " + ageH + "h ago" });
+//         broadcast({ type: "notification", message: (job.includes("health") ? "Ã°Å¸â€Â´ " : "") + "SCHEDULER STALE: " + job + " last ran " + ageH + "h ago" });
 //         log("sched-heartbeat-alert", { job, age_h: ageH });
 //       }
 //     }
@@ -1072,13 +1072,13 @@ try {
 //     const ratio = s.daily_pnl / s.total_eval_pnl;
 //     const level = ratio >= 0.50 ? "violation" : ratio >= 0.45 ? "halt" : ratio >= 0.35 ? "warning" : null;
 //     if (level) {
-//       if (level !== "warning") broadcast({ type: "notification", message: (level === "violation" ? "ðŸš¨ " : "âš  ") + "APEX CONCENTRATION: today " + Math.round(ratio * 100) + "% of cumulative [" + level.toUpperCase() + "]" });
+//       if (level !== "warning") broadcast({ type: "notification", message: (level === "violation" ? "Ã°Å¸Å¡Â¨ " : "Ã¢Å¡Â  ") + "APEX CONCENTRATION: today " + Math.round(ratio * 100) + "% of cumulative [" + level.toUpperCase() + "]" });
 //       log("apex-consistency", { ratio: ratio.toFixed(3), daily_pnl: s.daily_pnl, total_eval_pnl: s.total_eval_pnl, level });
 //     }
 //   } catch {}
 // }, 30 * 60 * 1000);
 
-// â”€â”€ CRASH RECOVERY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬ CRASH RECOVERY Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 const CRASH_DIR  = path.join(__dirname, "logs");
 const ARCH_DIR   = path.join(__dirname, "archive");
 
@@ -1097,7 +1097,7 @@ function writeCrashState(reason, err) {
   } catch {}
 }
 
-// disabled in Phase 1B.6.3 â€” superseded by crash handlers at top of file (write to crash.log).
+// disabled in Phase 1B.6.3 Ã¢â‚¬â€ superseded by crash handlers at top of file (write to crash.log).
 // unhandledRejection was dual-logging: both the handler below and the top-of-file handler fired.
 // process.on("uncaughtException", (err) => {
 //   writeCrashState("uncaughtException", err);
@@ -1107,7 +1107,7 @@ function writeCrashState(reason, err) {
 //   writeCrashState("unhandledRejection", reason);
 // });
 
-// â”€â”€ BOOT SANITY CHECKS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬ BOOT SANITY CHECKS Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 (function bootChecks() {
   const required_envs = ["ANTHROPIC_API_KEY"];
   for (const key of required_envs) {
@@ -1186,6 +1186,6 @@ server.listen(PORT, "127.0.0.1", () => {
   console.log(`Levels loaded: ${_lvlsLoaded ? 'YES' : 'NO'}`);
   console.log(`Trades today:  ${_tradesToday}`);
   console.log("Type /status in chat for full state.");
-  console.log("Read DAILY_OPS.md before trading.");
+  console.log("Read docs/MONDAY_OPS.md before trading.");
   console.log("===================================");
 });

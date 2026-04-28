@@ -15,12 +15,12 @@ process.on('unhandledRejection', (reason, promise) => {
   const entry = `[${ts}] unhandledRejection\nreason: ${reason?.stack || reason}\n\n`;
   try { fs.appendFileSync(path.join(__dirname, 'crash.log'), entry); } catch (e) { /* swallow */ }
   console.error(entry);
-  // Do NOT exit — log and continue. Node 15+ would crash by default; we want to survive
+  // Do NOT exit â€” log and continue. Node 15+ would crash by default; we want to survive
   // transient promise rejections but capture them.
 });
 
 process.on('SIGINT', () => {
-  console.log('SIGINT received — shutting down gracefully');
+  console.log('SIGINT received â€” shutting down gracefully');
   process.exit(0);
 });
 
@@ -112,10 +112,10 @@ async function morningBriefing() {
 
   try {
     const health = await get("/agent/health/assess");
-    sections.push("LUKE: " + health.assessment);
+    sections.push("SYSTEM: " + health.assessment);
     if (health.concern) sections.push("LUKE CONCERN FLAGGED - check logs");
   } catch {
-    sections.push("LUKE: unavailable");
+    sections.push("SYSTEM: unavailable");
   }
 
   try {
@@ -145,7 +145,6 @@ async function morningBriefing() {
   } catch {}
 
   sections.push("WINDOWS: 9:45-10:30AM and 2:30-3:30PM ET | ximes+bobby confluence required");
-  sections.push("MEDS: Omeprazole 4AM alone -> wait 30min -> Mirtazapine+Prednisone 4:30AM with food");
 
   const briefing = "MORNING BRIEFING " + new Date().toLocaleDateString() + "\n\n" + sections.join("\n");
   await post("/notify", { message: briefing });
@@ -175,7 +174,7 @@ async function runAgentAssessments() {
 
   try {
     const health = await get("/agent/health/assess");
-    if (health.concern) concerns.push("LUKE: " + health.assessment);
+    if (health.concern) concerns.push("SYSTEM: " + health.assessment);
   } catch {}
 
   try {

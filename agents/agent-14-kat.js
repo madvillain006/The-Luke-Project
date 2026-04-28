@@ -4,7 +4,7 @@ const fs       = require('fs');
 const path     = require('path');
 const router   = express.Router();
 
-// ── Paths ───────────────────────────────────────────────────────────────────
+// ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Paths ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 const KAT_DIR       = path.join(__dirname, '../data/kat');
 const RAW_FEED      = path.join(KAT_DIR, 'raw-feed.jsonl');
 const PROCESSED     = path.join(KAT_DIR, 'processed-signals.jsonl');
@@ -12,7 +12,7 @@ const ACTIVITY      = path.join(KAT_DIR, 'activity.json');
 const CONFIG_FILE   = path.join(KAT_DIR, 'monitored-users.json');
 const SYNTHESIS     = path.join(KAT_DIR, 'synthesis-report.json');
 
-// ── Helpers ─────────────────────────────────────────────────────────────────
+// ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Helpers ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 function ensureDir() {
   if (!fs.existsSync(KAT_DIR)) fs.mkdirSync(KAT_DIR, { recursive: true });
 }
@@ -79,7 +79,72 @@ function lastCapture() {
   } catch (e) { return null; }
 }
 
-// ── Discord bot ─────────────────────────────────────────────────────────────
+function resolveAttachmentMediaType(att, buffer) {
+  const declared = ((att && att.content_type) || '').split(';')[0].toLowerCase();
+  const filename = ((att && att.filename) || '').toLowerCase();
+  if (buffer && buffer.length >= 12) {
+    if (buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4e && buffer[3] === 0x47) return 'image/png';
+    if (buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) return 'image/jpeg';
+    if (buffer.slice(0, 3).toString('ascii') === 'GIF') return 'image/gif';
+    if (buffer.slice(0, 4).toString('ascii') === 'RIFF' && buffer.slice(8, 12).toString('ascii') === 'WEBP') return 'image/webp';
+  }
+  if (filename.endsWith('.png')) return 'image/png';
+  if (filename.endsWith('.jpg') || filename.endsWith('.jpeg')) return 'image/jpeg';
+  if (filename.endsWith('.gif')) return 'image/gif';
+  if (filename.endsWith('.webp')) return 'image/webp';
+  if (declared.startsWith('image/')) return declared;
+  return 'image/png';
+}
+
+function normalizeKatTicker(ticker) {
+  const raw = (ticker || '').toUpperCase().replace(/[^A-Z]/g, '');
+  if (['ESF', 'ES', 'MES', 'SPX', 'SPXW'].includes(raw)) return raw.startsWith('SPX') ? 'SPX' : raw.startsWith('MES') ? 'MES' : 'ES';
+  if (['NQF', 'NQ', 'MNQ', 'NDX', 'QQQ'].includes(raw)) return raw === 'QQQ' ? 'QQQ' : raw === 'NDX' ? 'NDX' : raw.startsWith('MNQ') ? 'MNQ' : 'NQ';
+  if (raw === 'SPY') return 'SPY';
+  return raw || null;
+}
+
+function tickerMatches(targetTicker, candidateTicker) {
+  const target = normalizeKatTicker(targetTicker);
+  const candidate = normalizeKatTicker(candidateTicker);
+  if (!target || !candidate) return false;
+  if (target === candidate) return true;
+  const aliasSets = [
+    new Set(['SPX', 'ES', 'MES', 'SPXW']),
+    new Set(['QQQ', 'NQ', 'MNQ', 'NDX']),
+  ];
+  return aliasSets.some(set => set.has(target) && set.has(candidate));
+}
+
+function loadRawFeedMap() {
+  const map = new Map();
+  if (!fs.existsSync(RAW_FEED)) return map;
+  const lines = fs.readFileSync(RAW_FEED, 'utf8').split('\n').filter(l => l.trim());
+  for (const line of lines) {
+    try {
+      const entry = JSON.parse(line);
+      if (entry && entry.message_id) map.set(entry.message_id, entry);
+    } catch (e) {}
+  }
+  return map;
+}
+
+function getRecentImagePostsForSignals(signals, limit) {
+  const rawMap = loadRawFeedMap();
+  const posts = [];
+  const seen = new Set();
+  for (const sig of [...signals].sort((a, b) => new Date(b.ts || 0) - new Date(a.ts || 0))) {
+    const entry = rawMap.get(sig.message_id);
+    const att = entry && Array.isArray(entry.attachments) ? entry.attachments.find(a => a && a.url) : null;
+    if (!entry || !att || seen.has(entry.message_id)) continue;
+    seen.add(entry.message_id);
+    posts.push({ username: entry.username, ticker: sig.ticker || null, url: att.url, filename: att.filename || 'chart.png' });
+    if (posts.length >= (limit || 2)) break;
+  }
+  return posts;
+}
+
+// ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Discord bot ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 let discordClient = null;
 
 if (process.env.KAT_BOT_TOKEN) {
@@ -104,7 +169,7 @@ if (process.env.KAT_BOT_TOKEN) {
       const config = loadConfig();
       if (!config.enabled) return;
 
-      // !kat command — any user, in command_channels
+      // !kat command ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â any user, in command_channels
       if (message.content.trim().startsWith('!kat')) {
         const cmdChannels = config.command_channels || [];
         if (cmdChannels.includes(message.channelId) || cmdChannels.includes(message.channel.name)) {
@@ -135,7 +200,7 @@ if (process.env.KAT_BOT_TOKEN) {
 
       appendRawFeed(entry);
       updateActivity(message.author.username);
-      console.log('[kat] Captured: ' + message.author.username + ' in #' + message.channel.name + ' — ' + entry.content.slice(0, 60));
+      console.log('[kat] Captured: ' + message.author.username + ' in #' + message.channel.name + ' ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ' + entry.content.slice(0, 60));
 
       const { parseKatSignal } = require('../lib/parse-kat');
       const hasAttachments = entry.attachments.length > 0;
@@ -153,9 +218,9 @@ if (process.env.KAT_BOT_TOKEN) {
         console.log('[kat] Signal: ' + signal.signal_type + ' | ' + signal.analyst + ' | ' + (signal.ticker||'no ticker') + ' | ' + signal.bias);
       }
 
-      // Real-time vision — fires on new live captures with images
+      // Real-time vision ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â fires on new live captures with images
       // Market hours only. Fire-and-forget. Enriches active session.
-      if (hasAttachments && entry.attachments[0]?.url) {
+      if (hasAttachments && entry.attachments[0]?.url && config.vision_enabled !== false) {
         const { isMarketOpen } = require('../lib/market-hours');
         if (isMarketOpen().open) {
           setImmediate(() => processLiveVision(entry, signal));
@@ -214,7 +279,7 @@ if (process.env.KAT_BOT_TOKEN) {
           fs.appendFileSync(PROCESSED, JSON.stringify(signal) + '\n', 'utf8');
           console.log('[kat] Edit signal: ' + signal.signal_type + ' | ' + signal.analyst + ' | ' + (signal.ticker||'?') + ' | ' + signal.bias);
         } else {
-          console.log('[kat] Edit captured (no signal): ' + entry.username + ' — ' + entry.content.slice(0,60));
+          console.log('[kat] Edit captured (no signal): ' + entry.username + ' ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ' + entry.content.slice(0,60));
         }
       } catch (e) {
         console.error('[kat] messageUpdate error:', e.message);
@@ -233,10 +298,10 @@ if (process.env.KAT_BOT_TOKEN) {
     console.error('[kat] discord.js load error:', e.message);
   }
 } else {
-  console.log('[kat] KAT_BOT_TOKEN not set — bot offline, ready to deploy');
+  console.log('[kat] KAT_BOT_TOKEN not set ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â bot offline, ready to deploy');
 }
 
-// ── Real-time vision on live captures ───────────────────────────────────────
+// ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Real-time vision on live captures ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 
 async function processLiveVision(entry, parsedSignal) {
   try {
@@ -246,16 +311,18 @@ async function processLiveVision(entry, parsedSignal) {
     if (!att || !att.url) return;
 
     // Fetch image
-    const base64 = await new Promise((resolve, reject) => {
+    const imageBuffer = await new Promise((resolve, reject) => {
       const req = https.get(att.url, (res) => {
         if (res.statusCode !== 200) { reject(new Error('HTTP ' + res.statusCode)); return; }
         const chunks = [];
         res.on('data', c => chunks.push(c));
-        res.on('end', () => resolve(Buffer.concat(chunks).toString('base64')));
+        res.on('end', () => resolve(Buffer.concat(chunks)));
       });
       req.on('error', reject);
       req.setTimeout(12000, () => { req.destroy(); reject(new Error('timeout')); });
     });
+    const mediaType = resolveAttachmentMediaType(att, imageBuffer);
+    const base64 = imageBuffer.toString('base64');
 
     const client   = new Anthropic();
     const response = await client.messages.create({
@@ -274,7 +341,7 @@ async function processLiveVision(entry, parsedSignal) {
         role: 'user',
         content: [
           { type: 'image', source: { type: 'base64',
-            media_type: (att.content_type || 'image/png').split(';')[0],
+            media_type: mediaType,
             data: base64 } },
           { type: 'text',
             text: 'Analyst: ' + entry.username +
@@ -295,7 +362,7 @@ async function processLiveVision(entry, parsedSignal) {
     if (!vision) return;
 
     console.log('[kat-vision] Live:', entry.username,
-      '→', vision.chart_type, '| bias:', vision.bias,
+      'ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢', vision.chart_type, '| bias:', vision.bias,
       '| levels:', (vision.key_levels || []).length);
 
     const allLevels = [
@@ -323,13 +390,13 @@ async function processLiveVision(entry, parsedSignal) {
   }
 }
 
-// ── Proactive confluence alerting ───────────────────────────────────────────
+// ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Proactive confluence alerting ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 const ALERT_POLL_MS       = 5 * 60 * 1000;   // check every 5 minutes
 const ALERT_WINDOW_MS     = 20 * 60 * 1000;  // signals within 20 minutes
 const ALERT_MIN_ANALYSTS  = 2;               // minimum distinct analysts
 const ALERT_COOLDOWN_MS   = 15 * 60 * 1000; // don't re-alert same instrument for 15 min
 
-const _lastKatAlert = {};  // { instrument: timestamp } — dedup map
+const _lastKatAlert = {};  // { instrument: timestamp } ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â dedup map
 
 function checkKatConfluence() {
   try {
@@ -347,7 +414,7 @@ function checkKatConfluence() {
       } catch (e) {}
     }
 
-    const { getRecentKatSignals } = require('./kat-confluence');
+    const { getRecentKatSignals } = require('../lib/kat-confluence');
     const instruments = ['SPX', 'SPY_QQQ', 'ES_NQ'];
 
     for (const instrument of instruments) {
@@ -359,8 +426,10 @@ function checkKatConfluence() {
       if (signals.length < 2) continue;
 
       // Count distinct analysts per bias
-      const bullAnalysts = new Set(signals.filter(s => s.bias === 'BULLISH').map(s => s.analyst));
-      const bearAnalysts = new Set(signals.filter(s => s.bias === 'BEARISH').map(s => s.analyst));
+      const bullSignals = signals.filter(s => s.bias === 'BULLISH');
+      const bearSignals = signals.filter(s => s.bias === 'BEARISH');
+      const bullAnalysts = new Set(bullSignals.map(s => s.analyst));
+      const bearAnalysts = new Set(bearSignals.map(s => s.analyst));
 
       let dominantBias = null;
       let dominantAnalysts = null;
@@ -376,14 +445,29 @@ function checkKatConfluence() {
       if (!dominantBias) continue;
 
       // Build alert message
-      const withImages = signals.filter(s => s.has_image && s.bias === dominantBias);
-      const biasEmoji  = dominantBias === 'BULLISH' ? '🟢' : '🔴';
+      const dominantSignals = dominantBias === 'BULLISH' ? bullSignals : bearSignals;
+      const withImages = dominantSignals.filter(s => s.has_image);
+      const tickerCounts = {};
+      for (const sig of dominantSignals) {
+        const key = normalizeKatTicker(sig.ticker) || 'UNKNOWN';
+        tickerCounts[key] = (tickerCounts[key] || 0) + 1;
+      }
+      const topTickers = Object.entries(tickerCounts)
+        .filter(([ticker]) => ticker !== 'UNKNOWN')
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3)
+        .map(([ticker, count]) => ticker + ' (' + count + ')')
+        .join(', ');
+      const recentImages = getRecentImagePostsForSignals(withImages, 2);
+      const biasEmoji  = dominantBias === 'BULLISH' ? 'ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â¢' : 'ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â´';
       const lines      = [
-        biasEmoji + ' KAT ALERT — ' + instrument + ' confluence brewing',
-        '→ ' + dominantAnalysts.length + ' analysts ' + dominantBias.toLowerCase() + ': ' + dominantAnalysts.join(', '),
-        withImages.length > 0 ? '→ ' + withImages.length + ' chart(s) posted' : '',
-        '→ No Ximes signal yet — watch for entry call',
-        '→ Run /confluence for full zone view'
+        biasEmoji + ' KAT ALERT ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ' + instrument + ' confluence brewing',
+        'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ ' + dominantAnalysts.length + ' analysts ' + dominantBias.toLowerCase() + ': ' + dominantAnalysts.join(', '),
+        topTickers ? 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Tickers: ' + topTickers : '',
+        withImages.length > 0 ? 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ ' + withImages.length + ' chart(s) posted' : '',
+        ...recentImages.map(img => 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Chart: ' + img.username + ' ' + (img.ticker || 'chart') + ' ' + img.url),
+        'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ No Ximes signal yet ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â watch for entry call',
+        'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Run /entries ES or /verdict for Luke view'
       ].filter(Boolean).join('\n');
 
       // Broadcast to Luke chat via global WS
@@ -391,7 +475,7 @@ function checkKatConfluence() {
         global.broadcast({ type: 'kat_alert', reply: lines });
         console.log('[kat] Confluence alert broadcast: ' + instrument + ' ' + dominantBias);
       } else {
-        console.log('[kat] broadcast not available — alert would be: ' + lines);
+        console.log('[kat] broadcast not available ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â alert would be: ' + lines);
       }
 
       // Post to Discord magnet_channel
@@ -418,7 +502,7 @@ function startKatPoll() {
     checkKatConfluence();
     await checkLevelMagnets();
   }, ALERT_POLL_MS);
-  console.log('[kat] Confluence poll started — every ' + (ALERT_POLL_MS/60000) + 'min during market hours');
+  console.log('[kat] Confluence poll started ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â every ' + (ALERT_POLL_MS/60000) + 'min during market hours');
 }
 
 function stopKatPoll() {
@@ -429,17 +513,17 @@ function stopKatPoll() {
   }
 }
 
-// ── Backfill ─────────────────────────────────────────────────────────────────
+// ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Backfill ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 async function runBackfill(client) {
   const config = loadConfig();
   if (!config.enabled) {
-    console.log('[kat] Backfill skipped — bot not enabled');
+    console.log('[kat] Backfill skipped ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â bot not enabled');
     return;
   }
 
   const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
   const cutoff = new Date(Date.now() - NINETY_DAYS_MS);
-  console.log('[kat] Backfill starting — cutoff: ' + cutoff.toISOString());
+  console.log('[kat] Backfill starting ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â cutoff: ' + cutoff.toISOString());
 
   // Load existing message IDs to avoid duplicates
   const seen = new Set();
@@ -453,7 +537,7 @@ async function runBackfill(client) {
       } catch (e) {}
     }
   }
-  console.log('[kat] Backfill — ' + seen.size + ' existing entries in feed (dedup set loaded)');
+  console.log('[kat] Backfill ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ' + seen.size + ' existing entries in feed (dedup set loaded)');
 
   const monitoredIds = new Set((config.monitored_users || []).map(u => u.discord_id));
 
@@ -537,7 +621,7 @@ async function runBackfill(client) {
           lastId = sorted[0].id;
           pageCount++;
 
-          // Rate limit courtesy pause — 500ms between pages
+          // Rate limit courtesy pause ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 500ms between pages
           await new Promise(r => setTimeout(r, 500));
 
           if (pageCount >= 200) {
@@ -551,18 +635,18 @@ async function runBackfill(client) {
         }
       }
 
-      console.log('[kat] #' + channelName + ' backfill done — page ' + pageCount);
+      console.log('[kat] #' + channelName + ' backfill done ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â page ' + pageCount);
     }
   }
 
-  console.log('[kat] Backfill complete — captured: ' + totalCaptured + ', skipped (dedup): ' + totalSkipped);
+  console.log('[kat] Backfill complete ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â captured: ' + totalCaptured + ', skipped (dedup): ' + totalSkipped);
 }
 
-// ── Targeted Backfill ────────────────────────────────────────────────────────
+// ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Targeted Backfill ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 async function runTargetedBackfill(client, targetChannelNames) {
   const config = loadConfig();
   if (!config.enabled) {
-    console.log('[kat] Targeted backfill skipped — bot not enabled');
+    console.log('[kat] Targeted backfill skipped ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â bot not enabled');
     return;
   }
 
@@ -582,7 +666,7 @@ async function runTargetedBackfill(client, targetChannelNames) {
       } catch (e) {}
     }
   }
-  console.log('[kat] TARGETED BACKFILL — ' + seen.size + ' existing entries in feed (dedup set loaded)');
+  console.log('[kat] TARGETED BACKFILL ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ' + seen.size + ' existing entries in feed (dedup set loaded)');
 
   const monitoredIds = new Set((config.monitored_users || []).map(u => u.discord_id));
 
@@ -675,14 +759,14 @@ async function runTargetedBackfill(client, targetChannelNames) {
         }
       }
 
-      console.log('[kat] #' + channelName + ' targeted backfill done — captured: ' + channelCaptured + ', pages: ' + pageCount);
+      console.log('[kat] #' + channelName + ' targeted backfill done ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â captured: ' + channelCaptured + ', pages: ' + pageCount);
     }
   }
 
-  console.log('[kat] TARGETED BACKFILL complete — captured: ' + totalCaptured + ', skipped (dedup): ' + totalSkipped);
+  console.log('[kat] TARGETED BACKFILL complete ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â captured: ' + totalCaptured + ', skipped (dedup): ' + totalSkipped);
 }
 
-// ── Batch processor ──────────────────────────────────────────────────────────
+// ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Batch processor ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 
 function batchProcess() {
   const { parseKatSignal } = require('../lib/parse-kat');
@@ -717,10 +801,10 @@ function batchProcess() {
       processed.add(entry.message_id);
     } catch (e) { console.error('[kat] batch parse error:', e.message); }
   }
-  console.log('[kat] Batch complete — parsed: ' + parsed + ', noise: ' + noise + ', skipped: ' + skipped);
+  console.log('[kat] Batch complete ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â parsed: ' + parsed + ', noise: ' + noise + ', skipped: ' + skipped);
 }
 
-// ── Command helpers ──────────────────────────────────────────────────────────
+// ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Command helpers ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 
 function getTopLevels(ticker) {
   try {
@@ -767,13 +851,13 @@ function getTopLevels(ticker) {
       const tag = data.biases.has('BEARISH') && data.biases.has('BULLISH')
         ? 'contested'
         : data.biases.has('BEARISH') ? 'resistance' : 'support';
-      return '`' + level + '` — ' +
+      return '`' + level + '` ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ' +
         data.count + ' mention' + (data.count > 1 ? 's' : '') +
         ', ' + data.analysts.size + ' analyst' + (data.analysts.size > 1 ? 's' : '') +
         ' (' + tag + ')';
     });
 
-    return '📊 **' + ticker + ' levels — last 7 days**\n' +
+    return 'ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â  **' + ticker + ' levels ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â last 7 days**\n' +
       rows.join('\n') + '\n' +
       '_Source: Elevated Charts analyst posts. ' +
       '2+ analysts or 3+ mentions required._';
@@ -824,8 +908,8 @@ function getBiasReport() {
         '_Need at least 3 signals. Current: ' + total + '_';
     }
 
-    const dominant = bullish > bearish ? 'BULLISH 🟢'
-      : bearish > bullish ? 'BEARISH 🔴' : 'MIXED ⚪';
+    const dominant = bullish > bearish ? 'BULLISH ÃƒÂ°Ã…Â¸Ã…Â¸Ã‚Â¢'
+      : bearish > bullish ? 'BEARISH ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â´' : 'MIXED ÃƒÂ¢Ã…Â¡Ã‚Âª';
     const ratio = bullish + bearish > 0
       ? Math.round((Math.max(bullish, bearish) / (bullish + bearish)) * 100)
       : 50;
@@ -834,12 +918,12 @@ function getBiasReport() {
       .sort((a, b) => b[1] - a[1]).slice(0, 3)
       .map(([t, c]) => t + ' (' + c + ')').join(', ');
 
-    return '📡 **Elevated Charts — Last 18h Regime**\n' +
+    return 'ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¡ **Elevated Charts ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Last 18h Regime**\n' +
       'Collective bias: **' + dominant + '** (' + ratio + '%)\n' +
       'Bullish: ' + bullish + ' signals from ' + bullAnalysts.size + ' analyst(s)\n' +
       'Bearish: ' + bearish + ' signals from ' + bearAnalysts.size + ' analyst(s)\n' +
       'Most discussed: ' + (topTickers || 'N/A') + '\n' +
-      '_Based on ' + total + ' signals. Not a prediction — synthesis only._';
+      '_Based on ' + total + ' signals. Not a prediction ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â synthesis only._';
   } catch (e) {
     console.error('[kat] getBiasReport error:', e.message);
     return 'Error reading bias data.';
@@ -848,10 +932,21 @@ function getBiasReport() {
 
 async function getHeatmap(ticker) {
   try {
+    const config = loadConfig();
+    if (config.heatmap_detection === false) return { content: 'Kat heatmap lookup is disabled in config.' };
     if (!fs.existsSync(RAW_FEED)) return { content: 'No heatmap data yet.' };
 
     const lines = fs.readFileSync(RAW_FEED, 'utf8')
       .split('\n').filter(l => l.trim());
+    const processedMatches = new Set();
+    if (fs.existsSync(PROCESSED)) {
+      for (const line of fs.readFileSync(PROCESSED, 'utf8').split('\n').filter(l => l.trim())) {
+        try {
+          const sig = JSON.parse(line);
+          if (sig && sig.has_image && sig.message_id && tickerMatches(ticker, sig.ticker)) processedMatches.add(sig.message_id);
+        } catch (e) {}
+      }
+    }
 
     let bestEntry = null;
     for (let i = lines.length - 1; i >= 0; i--) {
@@ -866,13 +961,14 @@ async function getHeatmap(ticker) {
         if (!isImage) continue;
 
         const contentUpper = (entry.content || '').toUpperCase();
-        const matches =
+        const textMatches =
           contentUpper.includes(ticker) ||
           contentUpper.includes('$' + ticker) ||
-          (ticker === 'SPX' && contentUpper.includes('SPX')) ||
-          (ticker === 'QQQ' && contentUpper.includes('NDX'));
-        if (!matches) continue;
-
+          contentUpper.includes('#' + ticker) ||
+          (ticker === 'SPX' && (contentUpper.includes('SPX') || contentUpper.includes('ES_F') || contentUpper.includes('#ES_F'))) ||
+          (ticker === 'QQQ' && (contentUpper.includes('QQQ') || contentUpper.includes('NDX') || contentUpper.includes('NQ_F') || contentUpper.includes('#NQ_F')));
+        const processedMatch = processedMatches.has(entry.message_id);
+        if (!textMatches && !processedMatch) continue;
         bestEntry = entry;
         break;
       } catch (e) {}
@@ -892,10 +988,10 @@ async function getHeatmap(ticker) {
       ? ageMins + 'm ago'
       : Math.floor(ageMins / 60) + 'h ' + (ageMins % 60) + 'm ago';
     const stale   = ageMs > 4 * 60 * 60 * 1000
-      ? '\n⚠️ _Over 4 hours old — levels may have shifted._' : '';
+      ? '\nÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â _Over 4 hours old ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â levels may have shifted._' : '';
 
     const caption =
-      '🗺️ **Most recent ' + ticker + ' heatmap**\n' +
+      'ÃƒÂ°Ã…Â¸Ã¢â‚¬â€Ã‚ÂºÃƒÂ¯Ã‚Â¸Ã‚Â **Most recent ' + ticker + ' heatmap**\n' +
       'Posted by: ' + bestEntry.username + '\n' +
       'Time: ' + ts.toLocaleTimeString('en-US', { timeZone: 'America/New_York' }) +
       ' ET (' + ageStr + ')' +
@@ -965,11 +1061,11 @@ async function checkLevelMagnets() {
       if (Date.now() - lastAlert < 4 * 60 * 60 * 1000) continue;
 
       const biasStr = data.biases.has('BEARISH') && data.biases.has('BULLISH')
-        ? 'CONTESTED ⚪'
-        : data.biases.has('BEARISH') ? 'resistance 🔴' : 'support 🟢';
+        ? 'CONTESTED ÃƒÂ¢Ã…Â¡Ã‚Âª'
+        : data.biases.has('BEARISH') ? 'resistance ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â´' : 'support ÃƒÂ°Ã…Â¸Ã…Â¸Ã‚Â¢';
 
       const msg =
-        '🧲 **Level Magnet — ' + data.ticker + ' ' + data.level + '**\n' +
+        'ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â² **Level Magnet ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ' + data.ticker + ' ' + data.level + '**\n' +
         data.analysts.size + ' analysts independently marked this level\n' +
         'Bias: ' + biasStr + ' | Mentions: ' + data.count + '\n' +
         'Last marked: ' + new Date(data.lastTs).toLocaleTimeString('en-US',
@@ -1012,10 +1108,10 @@ async function handleKatCommand(message) {
     } else {
       await message.reply([
         '**Kat commands:**',
-        '`!kat levels SPX` — top analyst-marked levels (2+ analysts or 3+ mentions)',
-        '`!kat bias` — directional bias across analysts, last 18 hours',
-        '`!kat heatmap SPX` — most recent heatmap with staleness indicator',
-        '`!kat` — this help list'
+        '`!kat levels SPX` ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â top analyst-marked levels (2+ analysts or 3+ mentions)',
+        '`!kat bias` ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â directional bias across analysts, last 18 hours',
+        '`!kat heatmap SPX` ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â most recent heatmap with staleness indicator',
+        '`!kat` ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â this help list'
       ].join('\n'));
     }
   } catch (e) {
@@ -1023,7 +1119,7 @@ async function handleKatCommand(message) {
   }
 }
 
-// ── Routes ──────────────────────────────────────────────────────────────────
+// ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Routes ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 
 // POST /agent/kat/backfill-channels  { channels: ["barrys-breakdowns", ...] }
 router.post('/backfill-channels', async (req, res) => {
@@ -1066,7 +1162,7 @@ router.post('/enable', (req, res) => {
   const config = loadConfig();
   config.enabled = enabled;
   saveConfig(config);
-  console.log('[kat] ' + (enabled ? 'ENABLED — bot now capturing' : 'DISABLED — bot paused'));
+  console.log('[kat] ' + (enabled ? 'ENABLED ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â bot now capturing' : 'DISABLED ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â bot paused'));
   if (config.enabled && discordClient && discordClient.isReady()) {
     startKatPoll();
   } else {
@@ -1130,3 +1226,4 @@ router.get('/activity', (req, res) => {
 });
 
 module.exports = router;
+

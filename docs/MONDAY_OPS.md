@@ -32,6 +32,10 @@ If anything is errored or missing, run:
 Open chat UI, paste day's Saty ATR levels via /saty.
 Verify response shows 13 levels loaded, no parse errors.
 
+Important:
+- Saty levels are stored as SPX structure
+- ES views inherit them through equivalence
+
 ## 4. Skim crash.log
 
   Get-Content crash.log -Tail 20
@@ -55,10 +59,21 @@ the system output with skepticism for that session.
 
 Never enter a trade off Luke's confluence read alone. Required 
 checklist still applies:
-- Saty levels loaded ✓
-- Bobby heatmap or Kat/Jefe heatmap parsed ✓
-- Ximes LIVE_ENTRY signal (text path, untouched in 5d) ✓
+- Saty levels loaded
+- Bobby heatmap or Kat/Jefe heatmap parsed
+- Ximes LIVE_ENTRY signal (text path, untouched in 5d)
 - Manual visual verification of all three before pulling the trigger
+
+Then run:
+- `/status`
+- `/verdict`
+- `/entries ES`
+
+Trust `/entries ES` over the older autonomous staging lane if they ever
+conflict.
+
+If `/entries ES` refuses because inputs are stale or missing: do not
+force it. Load the missing inputs first.
 
 Apex floor is ~$48,053. Do not trade if eyes-on-screen sanity check 
 disagrees with system output.

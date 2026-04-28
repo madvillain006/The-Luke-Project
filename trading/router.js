@@ -19,6 +19,7 @@ const { executePaper, monitorOpenPosition } = require("./execution-paper");
 const { executeLive } = require("./execution-live");
 const { executeShadow, monitorShadowPosition, getShadowSummary } = require("./execution-shadow");
 const { tokenCache, getBaseUrl, getTradovateToken, getAccounts, getContractId, reconcileState } = require("./broker-tradovate");
+const { getMarketContext } = require("./market-context");
 const {
   buildStatusPayload,
   getPendingSignalPayload,
@@ -300,6 +301,78 @@ function buildEntriesAlignment(signal, modernDubz, modernBobby) {
   };
 }
 
+async function buildAutonomousPreflight(state) {
+  const modernDubz = loadModernDubzContextSignals();
+  const modernBobby = loadModernBobbyContext();
+  const records = queryLevelsAcrossEquivalents("ES");
+  const freshness = summarizePhase2Freshness(records, modernDubz, modernBobby);
+  const window = getTradingWindowStatus();
+  const consistencyReason = getApexConsistencyReason(state);
+  const bestRecord = records
+    .map(record => ({ record, scored: scoreLevel(record) }))
+    .sort((a, b) => b.scored.score - a.scored.score)
+    .find(row => ["A", "B", "C"].includes(row.scored.grade));
+
+  const bestEntriesLevel = bestRecord
+    ? computeFuturesEntryZone(bestRecord.record, {
+        instrument: "ES",
+        confluenceGrade: bestRecord.scored.grade,
+        confluenceScore: bestRecord.scored.score,
+      })
+    : null;
+
+  let marketCtx = null;
+  try {
+    if (state.tradovate && state.tradovate.username && state.tradovate.cid && state.tradovate.sec) {
+      marketCtx = await getMarketContext(state.tradovate, "ES");
+    }
+  } catch (err) {
+    marketCtx = {
+      ticker: "ES",
+      stale: true,
+      source_ok: false,
+      error: err.message,
+      fetched_at: new Date().toISOString(),
+    };
+  }
+
+  const blockers = [];
+  if (!state.running) blockers.push("02B not running");
+  if (state.kill_day) blockers.push("daily kill active");
+  if (state.kill_week) blockers.push("weekly kill active");
+  if (state.open_position) blockers.push("position already open");
+  if (state.pending_signal && new Date() < new Date(state.pending_signal.expires_at)) blockers.push("pending signal awaiting confirmation");
+  if (!window.ok) blockers.push(window.reason);
+  if (consistencyReason) blockers.push(consistencyReason);
+  if (!freshness.dubz_today && !freshness.bobby_today) blockers.push("fresh same-day Bobby/Dubz context missing");
+  if (!bestEntriesLevel) blockers.push("no actionable ES confluence level");
+  if (marketCtx && marketCtx.stale) blockers.push(`market context stale: ${marketCtx.error || "unknown"}`);
+
+  return {
+    ok: blockers.length === 0,
+    blockers,
+    mode: state.mode,
+    running: state.running,
+    trading_window: window,
+    consistency: consistencyReason || "ok",
+    freshness,
+    counts: {
+      es_records: records.length,
+      dubz_context: modernDubz.length,
+      bobby_context: modernBobby.length,
+    },
+    best_entries_level: bestRecord ? {
+      canonical_price: bestRecord.record.canonical_price,
+      grade: bestRecord.scored.grade,
+      score: bestRecord.scored.score,
+      sizing: bestEntriesLevel.sizing_guidance,
+      optimal_entry: bestEntriesLevel.entry_window.optimal_entry,
+      stop: bestEntriesLevel.entry_window.abort_below ?? bestEntriesLevel.entry_window.abort_above,
+    } : null,
+    market_context: marketCtx,
+  };
+}
+
 async function stageTrade(state, signal) {
   const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
   state.pending_signal = { ...signal, staged_at: new Date().toISOString(), expires_at: expiresAt };
@@ -330,6 +403,15 @@ async function stageTrade(state, signal) {
 
 router.get("/status", (req, res) => {
   res.json(buildStatusPayload(loadState()));
+});
+
+router.get("/preflight", async (req, res) => {
+  try {
+    const state = loadState();
+    res.json(await buildAutonomousPreflight(state));
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
 });
 
 router.post("/start", async (req, res) => {

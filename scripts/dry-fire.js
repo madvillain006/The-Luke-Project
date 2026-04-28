@@ -2,16 +2,16 @@
 'use strict';
 
 /**
- * DRY-FIRE TEST SCRIPT — v2
+ * DRY-FIRE TEST SCRIPT â€” v2
  *
  * Simulates the full Luke pipeline OUTSIDE market hours. Sanity check
  * for tomorrow. Restores all state on exit.
  *
  * Strategy: mock the TIME (Date.now and new Date()) but DO NOT touch
- * Intl.DateTimeFormat — let it see the mocked Date naturally.
+ * Intl.DateTimeFormat â€” let it see the mocked Date naturally.
  *
  * Then update today's balance to the mocked date so /ready passes.
- * Chain tests so /alert creates active trade → /runner sets runner →
+ * Chain tests so /alert creates active trade â†’ /runner sets runner â†’
  * /trade sees the runner.
  *
  * Usage:
@@ -25,8 +25,8 @@ const fs   = require('fs');
 const VERBOSE       = process.argv.includes('--verbose');
 const MOCK_ENABLED  = process.env.NO_MOCK !== '1';
 
-// ── STEP 1: Mock Date to Tuesday 4/28/2026 @ 2:30 PM ET ─────────────────
-//   2:30 PM ET on April 28 2026 → 18:30 UTC (EDT = UTC-4)
+// â”€â”€ STEP 1: Mock Date to Tuesday 4/28/2026 @ 2:30 PM ET â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+//   2:30 PM ET on April 28 2026 â†’ 18:30 UTC (EDT = UTC-4)
 const MOCK_UTC_MS = Date.UTC(2026, 3, 28, 18, 30, 0);
 
 if (MOCK_ENABLED) {
@@ -45,10 +45,10 @@ if (MOCK_ENABLED) {
   MockDate.now   = () => MOCK_UTC_MS;
   global.Date    = MockDate;
 
-  console.log('[DRY-FIRE] Mocked time → Tue 4/28/2026 2:30 PM ET (afternoon window)\n');
+  console.log('[DRY-FIRE] Mocked time â†’ Tue 4/28/2026 2:30 PM ET (afternoon window)\n');
 }
 
-// ── STEP 2: Backup state ────────────────────────────────────────────────
+// â”€â”€ STEP 2: Backup state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const LUKE_ROOT = path.join(__dirname, '..');
 const FILES_TO_BACKUP = [
   'data/today-levels.json',
@@ -90,7 +90,7 @@ process.on('uncaughtException', (e) => {
   process.exit(1);
 });
 
-// ── STEP 3: Seed fresh state for tests ──────────────────────────────────
+// â”€â”€ STEP 3: Seed fresh state for tests â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // (Done AFTER backup, so restore undoes these.)
 const apexStatePath = path.join(LUKE_ROOT, 'data/apex-state.json');
 const activeTradePath = path.join(LUKE_ROOT, 'data/active-trade.json');
@@ -100,22 +100,22 @@ const levelsPath = path.join(LUKE_ROOT, 'data/today-levels.json');
 fs.mkdirSync(path.dirname(apexStatePath), { recursive: true });
 fs.writeFileSync(apexStatePath, JSON.stringify({
   balance: 50700,
-  trail_floor: 48200,          // $2500 headroom — safely above $500
+  trail_floor: 48200,          // $2500 headroom â€” safely above $500
   updated: new Date(MOCK_UTC_MS).toISOString(),
 }, null, 2));
 
 // Clear any residual active trade so /alert can create fresh.
 if (fs.existsSync(activeTradePath)) fs.unlinkSync(activeTradePath);
 
-// ── STEP 4: Require slash-commands AFTER Date mock ──────────────────────
+// â”€â”€ STEP 4: Require slash-commands AFTER Date mock â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const { handleSlashCommand } = require('../lib/slash-commands');
 
-// ── STEP 5: Test harness ────────────────────────────────────────────────
+// â”€â”€ STEP 5: Test harness â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let passed = 0, failed = 0;
 
 async function test(name, command, checks) {
-  console.log(`\n━━━ ${name} ━━━`);
-  console.log(`> ${command.replace(/\n/g, ' ⏎ ')}`);
+  console.log(`\nâ”â”â” ${name} â”â”â”`);
+  console.log(`> ${command.replace(/\n/g, ' âŽ ')}`);
 
   let responseData = null;
   const res = {
@@ -127,14 +127,14 @@ async function test(name, command, checks) {
     const result = handleSlashCommand(command, res);
     if (result && typeof result.then === 'function') await result;
   } catch (e) {
-    console.log(`✗ THREW: ${e.message}`);
+    console.log(`âœ— THREW: ${e.message}`);
     if (VERBOSE) console.log(e.stack);
     failed++;
     return null;
   }
 
   if (!responseData || !responseData.reply) {
-    console.log('✗ NO RESPONSE');
+    console.log('âœ— NO RESPONSE');
     failed++;
     return null;
   }
@@ -145,7 +145,7 @@ async function test(name, command, checks) {
   let allOk = true;
   for (const c of checks) {
     const ok = c.match.test ? c.match.test(reply) : reply.includes(c.match);
-    console.log(`  ${ok ? '✓' : '✗'} ${c.label}`);
+    console.log(`  ${ok ? 'âœ“' : 'âœ—'} ${c.label}`);
     if (!ok) {
       allOk = false;
       if (!VERBOSE) console.log(`      (expected match: ${c.match})`);
@@ -158,15 +158,15 @@ async function test(name, command, checks) {
   return responseData;
 }
 
-// ── STEP 6: Run tests ───────────────────────────────────────────────────
+// â”€â”€ STEP 6: Run tests â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 (async () => {
-  console.log('══════════════════════════════════════════════');
-  console.log(' LUKE DRY-FIRE v2 — pipeline sanity test');
-  console.log('══════════════════════════════════════════════');
+  console.log('â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•');
+  console.log(' LUKE DRY-FIRE v2 â€” pipeline sanity test');
+  console.log('â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•');
 
-  // Test 1 — /ready BEFORE loading levels (expect some ❌)
+  // Test 1 â€” /ready BEFORE loading levels (expect some âŒ)
   await test(
-    'Test 1: /ready (pre-load — expects some ❌)',
+    'Test 1: /ready (pre-load â€” expects some âŒ)',
     '/ready',
     [
       { label: 'Shows SESSION READINESS header',      match: /SESSION READINESS/i },
@@ -177,44 +177,44 @@ async function test(name, command, checks) {
     ]
   );
 
-  // Test 2 — /levels (RichyDubz sample)
+  // Test 2 â€” /levels (RichyDubz sample)
   await test(
-    'Test 2: /levels — RichyDubz paste',
-    '/levels ES 6845 support, SPY 593 resistance, SPX 7120 support',
+    'Test 2 - /dubz - RichyDubz paste',
+    '/dubz ES 6845 support, SPY 593 resistance, SPX 7120 support',
     [
-      { label: 'Confirms levels saved', match: /saved|updated|✅|levels/i },
+      { label: 'Confirms levels saved', match: /saved|updated|âœ…|levels/i },
     ]
   );
 
-  // Test 3 — /heatmap (Bobby sample with real-looking SPX prices)
+  // Test 3 â€” /heatmap (Bobby sample with real-looking SPX prices)
   await test(
-    'Test 3: /heatmap — Bobby paste',
+    'Test 3: /heatmap â€” Bobby paste',
     '/heatmap King node upper at 7125. King node lower at 7085. Support: 7095, 7088. Resistance: 7118. Bullish',
     [
       { label: 'Confirms heatmap saved',   match: /updated|saved|heatmap|nodes/i },
     ]
   );
 
-  // Test 4 — /ready AGAIN (expect all ✅)
+  // Test 4 â€” /ready AGAIN (expect all âœ…)
   await test(
-    'Test 4: /ready (post-load — expects all ✅)',
+    'Test 4: /ready (post-load â€” expects all âœ…)',
     '/ready',
     [
       { label: 'Shows READY TO TRADE verdict', match: /READY TO TRADE/i },
-      { label: 'Balance set today ✅',          match: /✅ Balance set today/i },
-      { label: 'RichyDubz loaded ✅',           match: /✅ RichyDubz/i },
-      { label: 'Bobby loaded ✅',               match: /✅ Bobby/i },
-      { label: 'Apex floor safe ✅',            match: /✅ Apex floor safe/i },
+      { label: 'Balance set today âœ…',          match: /âœ… Balance set today/i },
+      { label: 'RichyDubz loaded âœ…',           match: /âœ… RichyDubz/i },
+      { label: 'Bobby loaded âœ…',               match: /âœ… Bobby/i },
+      { label: 'Apex floor safe âœ…',            match: /âœ… Apex floor safe/i },
     ]
   );
 
-  // Test 5 — /alert ES 6845 LONG (should produce SETUP or WEAK with bracket)
+  // Test 5 â€” /alert ES 6845 LONG (should produce SETUP or WEAK with bracket)
   //
   // Your confluence threshold requires at least a MEDIUM zone. We loaded
   // ES 6845 support in /levels which is the same price as the alert, so
   // parseXimes + confluence should match.
   const alertResp = await test(
-    'Test 5: /alert ES 6845 calls avg 3.20 — expect verdict + bracket',
+    'Test 5: /alert ES 6845 calls avg 3.20 â€” expect verdict + bracket',
     '/alert ES 6845 calls avg 3.20',
     [
       { label: 'Returns a verdict',               match: /SETUP|WEAK|SKIP/i },
@@ -222,21 +222,21 @@ async function test(name, command, checks) {
     ]
   );
 
-  // Peek at active trade — did /alert create one?
+  // Peek at active trade â€” did /alert create one?
   const hasActive = fs.existsSync(activeTradePath);
   console.log(`  (post-/alert) active-trade.json exists: ${hasActive}`);
 
-  // Test 6 — /runner (needs active trade; skips gracefully if none)
+  // Test 6 â€” /runner (needs active trade; skips gracefully if none)
   const runnerResp = await test(
-    'Test 6: /runner — mark runner active',
+    'Test 6: /runner â€” mark runner active',
     '/runner 50',
     hasActive
-      ? [{ label: 'Confirms runner active', match: /Runner active|🏃/i }]
-      : [{ label: 'Gracefully handles no active trade', match: /No active trade|❌/i }]
+      ? [{ label: 'Confirms runner active', match: /Runner active|ðŸƒ/i }]
+      : [{ label: 'Gracefully handles no active trade', match: /No active trade|âŒ/i }]
   );
 
-  // Test 7 — /trade WITHOUT RUNNER keyword
-  // If runner was set, expect ⚠️ RUNNER ACTIVE warning.
+  // Test 7 â€” /trade WITHOUT RUNNER keyword
+  // If runner was set, expect âš ï¸ RUNNER ACTIVE warning.
   // If no runner was set, expect trade to log cleanly.
   const runnerWasSet = hasActive && runnerResp && /Runner active/i.test(runnerResp.reply || '');
 
@@ -245,24 +245,24 @@ async function test(name, command, checks) {
     '/trade LONG ES 3.20 4.80 WIN',
     runnerWasSet
       ? [
-          { label: 'Returns RUNNER ACTIVE warning',        match: /RUNNER ACTIVE|⚠️/i },
+          { label: 'Returns RUNNER ACTIVE warning',        match: /RUNNER ACTIVE|âš ï¸/i },
           { label: 'Instructs to add RUNNER keyword',       match: /add RUNNER|RUNNER to confirm/i },
         ]
       : [
-          { label: 'Logs trade successfully',                match: /Trade logged|logged|✅/i },
+          { label: 'Logs trade successfully',                match: /Trade logged|logged|âœ…/i },
         ]
   );
 
-  // Test 8 — /trade WITH RUNNER keyword (should always log)
+  // Test 8 â€” /trade WITH RUNNER keyword (should always log)
   await test(
-    'Test 8: /trade LONG ES 3.20 4.80 WIN RUNNER — logs cleanly',
+    'Test 8: /trade LONG ES 3.20 4.80 WIN RUNNER â€” logs cleanly',
     '/trade LONG ES 3.20 4.80 WIN RUNNER',
     [
-      { label: 'Trade logged confirmation', match: /Trade logged|logged|✅/i },
+      { label: 'Trade logged confirmation', match: /Trade logged|logged|âœ…/i },
     ]
   );
 
-  // Test 9 — /status sanity
+  // Test 9 â€” /status sanity
   await test(
     'Test 9: /status',
     '/status',
@@ -274,15 +274,15 @@ async function test(name, command, checks) {
     ]
   );
 
-  // ── SUMMARY ───────────────────────────────────────────────────────────
-  console.log('\n══════════════════════════════════════════════');
+  // â”€â”€ SUMMARY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  console.log('\nâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•');
   console.log(` RESULTS: ${passed} passed, ${failed} failed`);
-  console.log('══════════════════════════════════════════════');
+  console.log('â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•');
 
   if (failed === 0) {
-    console.log('\n✅ Full pipeline is green. Tomorrow, follow the same flow live.\n');
+    console.log('\nâœ… Full pipeline is green. Tomorrow, follow the same flow live.\n');
   } else {
-    console.log(`\n⚠️ ${failed} test(s) failed. Run with --verbose for full response text.\n`);
+    console.log(`\nâš ï¸ ${failed} test(s) failed. Run with --verbose for full response text.\n`);
   }
 
   process.exit(failed === 0 ? 0 : 1);

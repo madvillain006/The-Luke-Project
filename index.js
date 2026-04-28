@@ -420,7 +420,7 @@ app.post("/chat", async (req, res) => {
   if (isFallbackActive()) {
     try {
       const fb = await callFallback(
-        "You are Luke ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Conor's personal assistant. Keep it brief and direct.",
+        "You are Luke - concise trading and ops copilot. Keep it brief and direct.",
         message
       );
       let reply = fb.reply;
@@ -445,7 +445,7 @@ app.post("/chat", async (req, res) => {
   const useHaiku = isSimpleMessage(message);
   const chatModel = useHaiku ? "claude-haiku-4-5-20251001" : "claude-opus-4-7";
   const chatSystemPrompt = useHaiku
-    ? "You are Luke ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Conor's personal AI. Sharp, brief, no filler. No em dashes."
+    ? "You are Luke - sharp, brief, no filler. No em dashes."
     : buildSystemPrompt(state, message);
 
   try {
@@ -1015,7 +1015,7 @@ wss.on("connection", (ws, req) => {
       } catch { return false; }
     })();
     if (ws.readyState === 1) {
-      ws.send(JSON.stringify({ type: "assistant", message: "I built Luke so I wouldn't have to trade scared. Today I don't trade scared. I follow the system. I trade the system. Luke is home. That's why I do this." }));
+      ws.send(JSON.stringify({ type: "assistant", message: "I trade the plan. I follow the system. No fear, no freelancing." }));
     }
     if (!_levelsOk && ws.readyState === 1) {
       ws.send(JSON.stringify({ type: "levels_warning", message: "ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â No levels loaded. Paste /dubz [RichyDubz morning message] then /heatmap [Bobby text] before trading." }));
@@ -1108,7 +1108,7 @@ function writeCrashState(reason, err) {
     }
   }
   // write-permission check on logs directory
-  const testFile = path.join(__dirname, "jarvis-log.jsonl");
+  const testFile = path.join(__dirname, "luke-log.jsonl");
   try { fs.accessSync(path.dirname(testFile), fs.constants.W_OK); }
   catch { console.error("[boot] FATAL: log directory is not writable"); process.exit(1); }
 
@@ -1172,7 +1172,7 @@ server.listen(PORT, "127.0.0.1", () => {
   console.log("===================================");
   console.log("LUKE ONLINE");
   console.log("===================================");
-  console.log("I was built because you're tired of losing.");
+  console.log("Luke online. Trade the plan.");
   console.log("-----------------------------------");
   console.log(`Levels loaded: ${_lvlsLoaded ? 'YES' : 'NO'}`);
   console.log(`Trades today:  ${_tradesToday}`);

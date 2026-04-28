@@ -459,15 +459,15 @@ function checkKatConfluence() {
         .map(([ticker, count]) => ticker + ' (' + count + ')')
         .join(', ');
       const recentImages = getRecentImagePostsForSignals(withImages, 2);
-      const biasEmoji  = dominantBias === 'BULLISH' ? 'ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â¢' : 'ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â´';
+      const biasTag = dominantBias === 'BULLISH' ? 'BULL' : 'BEAR';
       const lines      = [
-        biasEmoji + ' KAT ALERT ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ' + instrument + ' confluence brewing',
-        'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ ' + dominantAnalysts.length + ' analysts ' + dominantBias.toLowerCase() + ': ' + dominantAnalysts.join(', '),
-        topTickers ? 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Tickers: ' + topTickers : '',
-        withImages.length > 0 ? 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ ' + withImages.length + ' chart(s) posted' : '',
-        ...recentImages.map(img => 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Chart: ' + img.username + ' ' + (img.ticker || 'chart') + ' ' + img.url),
-        'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ No Ximes signal yet ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â watch for entry call',
-        'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Run /entries ES or /verdict for Luke view'
+        biasTag + ' KAT ALERT - ' + instrument + ' confluence brewing',
+        '- ' + dominantAnalysts.length + ' analysts ' + dominantBias.toLowerCase() + ': ' + dominantAnalysts.join(', '),
+        topTickers ? '- Tickers: ' + topTickers : '',
+        withImages.length > 0 ? '- ' + withImages.length + ' chart(s) posted' : '',
+        ...recentImages.map(img => '- Chart: ' + img.username + ' ' + (img.ticker || 'chart') + ' ' + img.url),
+        '- No Ximes signal yet - watch for entry call',
+        '- Run /entries ES or /verdict for Luke view'
       ].filter(Boolean).join('\n');
 
       // Broadcast to Luke chat via global WS
@@ -475,7 +475,7 @@ function checkKatConfluence() {
         global.broadcast({ type: 'kat_alert', reply: lines });
         console.log('[kat] Confluence alert broadcast: ' + instrument + ' ' + dominantBias);
       } else {
-        console.log('[kat] broadcast not available ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â alert would be: ' + lines);
+        console.log('[kat] broadcast not available - alert would be: ' + lines);
       }
 
       // Post to Discord magnet_channel
@@ -502,7 +502,7 @@ function startKatPoll() {
     checkKatConfluence();
     await checkLevelMagnets();
   }, ALERT_POLL_MS);
-  console.log('[kat] Confluence poll started ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â every ' + (ALERT_POLL_MS/60000) + 'min during market hours');
+  console.log('[kat] Confluence poll started - every ' + (ALERT_POLL_MS/60000) + 'min during market hours');
 }
 
 function stopKatPoll() {

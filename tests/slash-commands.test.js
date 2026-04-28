@@ -3,13 +3,14 @@
 const fs = require('fs');
 const path = require('path');
 
-const { _internal: { getPhase2WorkflowLoadStatus, getLegacyConfluenceState } } = require('../lib/slash-commands');
+const { handleSlashCommand, _internal: { getPhase2WorkflowLoadStatus, getLegacyConfluenceState } } = require('../lib/slash-commands');
 
 const DATA_DIR = path.join(__dirname, '../data');
 const LEVEL_MEMORY_FILE = path.join(DATA_DIR, 'level-memory.json');
 const DUBZ_LEVELS_FILE = path.join(DATA_DIR, 'dubz-levels.json');
 const DAILY_CTX_FILE = path.join(DATA_DIR, 'daily-context.json');
 const TODAY_LEVELS_FILE = path.join(DATA_DIR, 'today-levels.json');
+const SATY_LEVELS_FILE = path.join(DATA_DIR, 'saty-levels.json');
 
 describe('slash-commands Phase 2 workflow status', () => {
   let originals;
@@ -20,6 +21,7 @@ describe('slash-commands Phase 2 workflow status', () => {
       dubzLevels: fs.existsSync(DUBZ_LEVELS_FILE) ? fs.readFileSync(DUBZ_LEVELS_FILE, 'utf8') : null,
       dailyCtx: fs.existsSync(DAILY_CTX_FILE) ? fs.readFileSync(DAILY_CTX_FILE, 'utf8') : null,
       todayLevels: fs.existsSync(TODAY_LEVELS_FILE) ? fs.readFileSync(TODAY_LEVELS_FILE, 'utf8') : null,
+      satyLevels: fs.existsSync(SATY_LEVELS_FILE) ? fs.readFileSync(SATY_LEVELS_FILE, 'utf8') : null,
     };
   });
 
@@ -29,6 +31,7 @@ describe('slash-commands Phase 2 workflow status', () => {
       [DUBZ_LEVELS_FILE, originals.dubzLevels],
       [DAILY_CTX_FILE, originals.dailyCtx],
       [TODAY_LEVELS_FILE, originals.todayLevels],
+      [SATY_LEVELS_FILE, originals.satyLevels],
     ]) {
       if (original === null) {
         if (fs.existsSync(file)) fs.unlinkSync(file);
@@ -123,5 +126,102 @@ describe('slash-commands Phase 2 workflow status', () => {
         levels: [712.38],
       }),
     ]));
+  });
+});
+
+
+describe('slash-commands /entries hardening', () => {
+  let originals;
+
+  beforeEach(() => {
+    originals = {
+      levelMemory: fs.existsSync(LEVEL_MEMORY_FILE) ? fs.readFileSync(LEVEL_MEMORY_FILE, 'utf8') : null,
+      dubzLevels: fs.existsSync(DUBZ_LEVELS_FILE) ? fs.readFileSync(DUBZ_LEVELS_FILE, 'utf8') : null,
+      dailyCtx: fs.existsSync(DAILY_CTX_FILE) ? fs.readFileSync(DAILY_CTX_FILE, 'utf8') : null,
+      todayLevels: fs.existsSync(TODAY_LEVELS_FILE) ? fs.readFileSync(TODAY_LEVELS_FILE, 'utf8') : null,
+      satyLevels: fs.existsSync(SATY_LEVELS_FILE) ? fs.readFileSync(SATY_LEVELS_FILE, 'utf8') : null,
+    };
+  });
+
+  afterEach(() => {
+    for (const [file, original] of [
+      [LEVEL_MEMORY_FILE, originals.levelMemory],
+      [DUBZ_LEVELS_FILE, originals.dubzLevels],
+      [DAILY_CTX_FILE, originals.dailyCtx],
+      [TODAY_LEVELS_FILE, originals.todayLevels],
+      [SATY_LEVELS_FILE, originals.satyLevels],
+    ]) {
+      if (original === null) {
+        if (fs.existsSync(file)) fs.unlinkSync(file);
+      } else {
+        fs.writeFileSync(file, original, 'utf8');
+      }
+    }
+  });
+
+  it('refuses /entries when no fresh inputs are loaded today', async () => {
+    for (const f of [LEVEL_MEMORY_FILE, DUBZ_LEVELS_FILE, DAILY_CTX_FILE, TODAY_LEVELS_FILE, SATY_LEVELS_FILE]) {
+      if (fs.existsSync(f)) fs.unlinkSync(f);
+    }
+
+    let payload = null;
+    const res = { json(obj) { payload = obj; return obj; } };
+
+    await handleSlashCommand('/entries ES', res);
+
+    expect(payload.reply).toBe('No fresh levels loaded today for ES. Run /saty, /dubz, and /heatmap first.');
+  });
+
+  it('surfaces Mancini chop zones inside /entries output', async () => {
+    const todayET = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+    const ts = new Date().toISOString();
+
+    fs.writeFileSync(SATY_LEVELS_FILE, JSON.stringify({ updated: ts, put_trigger: 6809 }), 'utf8');
+    fs.writeFileSync(LEVEL_MEMORY_FILE, JSON.stringify({
+      version: 1,
+      last_updated: ts,
+      levels: [
+        {
+          canonical_price: 6809,
+          instrument: 'ES',
+          first_seen: ts,
+          last_seen: ts,
+          total_mentions: 2,
+          mentions: [
+            { analyst: 'mancini', date: todayET, timestamp: ts, significance: 'key', direction: 'flip', intent: 'long_trigger', source_type: 'text', source_snippet: '6809 reclaim long trigger', crossSourceConfirmed: false },
+            { analyst: 'saty', date: todayET, timestamp: ts, significance: 'key', direction: 'support', intent: null, source_type: 'saty_atr', source_snippet: 'put trigger 6809', crossSourceConfirmed: false },
+          ],
+        },
+        {
+          canonical_price: 6793,
+          instrument: 'ES',
+          first_seen: ts,
+          last_seen: ts,
+          total_mentions: 1,
+          mentions: [
+            { analyst: 'mancini', date: todayET, timestamp: ts, significance: 'unclear', direction: null, intent: 'chop_boundary', source_type: 'text', source_snippet: '6793/88 to 6830 = pure chop', crossSourceConfirmed: false },
+          ],
+        },
+        {
+          canonical_price: 6830,
+          instrument: 'ES',
+          first_seen: ts,
+          last_seen: ts,
+          total_mentions: 1,
+          mentions: [
+            { analyst: 'mancini', date: todayET, timestamp: ts, significance: 'unclear', direction: null, intent: 'chop_boundary', source_type: 'text', source_snippet: '6793/88 to 6830 = pure chop', crossSourceConfirmed: false },
+          ],
+        },
+      ],
+    }), 'utf8');
+
+    let payload = null;
+    const res = { json(obj) { payload = obj; return obj; } };
+
+    await handleSlashCommand('/entries ES', res);
+
+    expect(payload.reply).toContain('## Futures Entries ES');
+    expect(payload.reply).toContain('AVOID: 6793-6830 (Mancini chop zone)');
+    expect(payload.reply).toContain('Recommendation:');
   });
 });

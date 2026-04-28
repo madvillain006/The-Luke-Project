@@ -29,6 +29,8 @@ const {
 const { getSiennaRegime } = require("../lib/sienna-regime");
 const { loadDubzState } = require("../lib/parse-dubz");
 const { loadMemory: loadLevelMemory } = require("../lib/level-memory");
+const { queryLevelsAcrossEquivalents, scoreLevel } = require("../lib/confluence-engine");
+const { computeFuturesEntryZone } = require("../lib/futures-entry-zones");
 
 const router = express.Router();
 
@@ -36,10 +38,21 @@ function etDateKey() {
   return new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
 }
 
+function toEtDateKey(timestamp) {
+  if (!timestamp) return null;
+  const ms = new Date(timestamp).getTime();
+  if (!Number.isFinite(ms)) return null;
+  return new Date(ms).toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+}
+
 function isFreshEnough(timestamp, hours = 36) {
   if (!timestamp) return false;
   const ms = new Date(timestamp).getTime();
   return Number.isFinite(ms) && (Date.now() - ms) <= (hours * 60 * 60 * 1000);
+}
+
+function isFreshTodayEt(timestamp) {
+  return toEtDateKey(timestamp) === etDateKey();
 }
 
 function biasFromDubzLevel(level) {
@@ -56,7 +69,7 @@ function loadModernDubzContextSignals() {
 
     const todayET = etDateKey();
     const todayUTC = new Date().toISOString().slice(0, 10);
-    const stateLooksCurrent = state.date === todayET || state.date === todayUTC || isFreshEnough(state.last_updated, 36);
+    const stateLooksCurrent = state.date === todayET || state.date === todayUTC || isFreshTodayEt(state.last_updated);
     if (!stateLooksCurrent) return [];
 
     const signals = [];
@@ -107,7 +120,7 @@ function loadModernBobbyContext() {
     for (const record of memory.levels) {
       for (const mention of (record.mentions || [])) {
         if (mention.analyst !== "bobby") continue;
-        if (!isFreshEnough(mention.timestamp, 36)) continue;
+        if (!isFreshTodayEt(mention.timestamp)) continue;
 
         const bucket = mention.source_type === "vision" ? vision : text;
         if (mention.significance === "key" && !mention.direction) bucket.king_nodes.add(record.canonical_price);
@@ -139,6 +152,152 @@ function loadModernBobbyContext() {
   } catch {
     return [];
   }
+}
+
+function normalizeSignalInstrument(ticker) {
+  const raw = String(ticker || "").toUpperCase();
+  if (raw.includes("NQ")) return "NQ";
+  if (raw.includes("ES") || raw.includes("SPX") || raw.includes("SPY")) return "ES";
+  return null;
+}
+
+function deriveAvoidZones(records) {
+  const avoidBoundaries = records
+    .filter(record => (record.mentions || []).some(m => m.analyst === "mancini" && m.intent === "chop_boundary"))
+    .map(record => record.canonical_price)
+    .sort((a, b) => a - b);
+
+  const zones = [];
+  for (let i = 0; i < avoidBoundaries.length - 1; i += 2) {
+    zones.push({ low: avoidBoundaries[i], high: avoidBoundaries[i + 1] });
+  }
+  return zones;
+}
+
+function summarizePhase2Freshness(records, modernDubz, modernBobby) {
+  const todayET = etDateKey();
+  const hasAnalystToday = analyst =>
+    records.some(record => (record.mentions || []).some(m => m.analyst === analyst && toEtDateKey(m.timestamp) === todayET));
+
+  return {
+    today_et: todayET,
+    dubz_today: modernDubz.some(sig => isFreshTodayEt(sig.ts)),
+    bobby_today: modernBobby.some(bucket => isFreshTodayEt(bucket.ts)),
+    saty_today: hasAnalystToday("saty"),
+    mancini_today: hasAnalystToday("mancini"),
+  };
+}
+
+function buildEntriesAlignment(signal, modernDubz, modernBobby) {
+  const instrument = normalizeSignalInstrument(signal.ticker);
+  if (!instrument) {
+    return { ok: false, reason: `Unsupported signal ticker ${signal.ticker || "unknown"}` };
+  }
+
+  const records = queryLevelsAcrossEquivalents(instrument);
+  if (!records.length) {
+    return { ok: false, reason: `No confluence records loaded for ${instrument}` };
+  }
+
+  const freshness = summarizePhase2Freshness(records, modernDubz, modernBobby);
+  if (!freshness.dubz_today && !freshness.bobby_today) {
+    return { ok: false, reason: `No fresh Bobby/Dubz context loaded today for ${instrument}`, freshness };
+  }
+
+  const currentPrice = Number.isFinite(signal.entry) ? signal.entry : null;
+  const ranked = records
+    .map(record => ({ record, scored: scoreLevel(record, { currentPrice }) }))
+    .sort((a, b) => b.scored.score - a.scored.score);
+
+  const enriched = ranked.map(item => {
+    const zone = computeFuturesEntryZone(item.record, {
+      instrument,
+      currentPrice,
+      confluenceGrade: item.scored.grade,
+      confluenceScore: item.scored.score,
+    });
+    const side = zone.entry_window.abort_below != null ? "LONG" : "SHORT";
+    return { item, zone, side };
+  });
+
+  const best = enriched.find(row => ["full", "half", "quarter"].includes(row.zone.sizing_guidance)) || enriched[0];
+  if (!best) {
+    return { ok: false, reason: `No ranked levels available for ${instrument}`, freshness };
+  }
+
+  if (best.zone.sizing_guidance === "pass") {
+    return {
+      ok: false,
+      reason: `/entries best level is ${best.item.scored.grade} grade PASS, not actionable`,
+      freshness,
+      best: {
+        canonical_price: best.zone.canonical_price,
+        side: best.side,
+        grade: best.item.scored.grade,
+        score: best.item.scored.score,
+      },
+    };
+  }
+
+  const avoidZones = deriveAvoidZones(records);
+  const avoidHit = Number.isFinite(signal.entry)
+    ? avoidZones.find(zone => signal.entry >= zone.low && signal.entry <= zone.high)
+    : null;
+  if (avoidHit) {
+    return {
+      ok: false,
+      reason: `Signal entry ${signal.entry} sits inside Mancini chop zone ${avoidHit.low}-${avoidHit.high}`,
+      freshness,
+      avoid_zone: avoidHit,
+    };
+  }
+
+  if (String(signal.direction || "").toUpperCase() !== best.side) {
+    return {
+      ok: false,
+      reason: `Signal side ${signal.direction || "unknown"} disagrees with /entries ${best.side} ${instrument} ${best.zone.canonical_price}`,
+      freshness,
+      best: {
+        canonical_price: best.zone.canonical_price,
+        side: best.side,
+        grade: best.item.scored.grade,
+        score: best.item.scored.score,
+      },
+    };
+  }
+
+  const maxGap = instrument === "NQ" ? 15 : 10;
+  const anchorGap = Number.isFinite(signal.entry) ? Math.abs(signal.entry - best.zone.canonical_price) : Infinity;
+  if (anchorGap > maxGap) {
+    return {
+      ok: false,
+      reason: `Signal entry ${signal.entry} is ${anchorGap.toFixed(2)} pts from /entries anchor ${best.zone.canonical_price}`,
+      freshness,
+      best: {
+        canonical_price: best.zone.canonical_price,
+        side: best.side,
+        grade: best.item.scored.grade,
+        score: best.item.scored.score,
+      },
+    };
+  }
+
+  return {
+    ok: true,
+    freshness,
+    best: {
+      canonical_price: best.zone.canonical_price,
+      side: best.side,
+      grade: best.item.scored.grade,
+      score: best.item.scored.score,
+      sizing: best.zone.sizing_guidance,
+      optimal_entry: best.zone.entry_window.optimal_entry,
+      acceptable_entry: best.zone.entry_window.acceptable_entry,
+      stop: best.zone.entry_window.abort_below ?? best.zone.entry_window.abort_above,
+    },
+    avoid_zones: avoidZones,
+    entry_gap: anchorGap,
+  };
 }
 
 async function stageTrade(state, signal) {
@@ -364,6 +523,11 @@ router.post("/evaluate", async (req, res) => {
 
     const modernDubz = loadModernDubzContextSignals();
     const modernBobby = loadModernBobbyContext();
+    const phase2Freshness = summarizePhase2Freshness(queryLevelsAcrossEquivalents("ES"), modernDubz, modernBobby);
+    if (!phase2Freshness.dubz_today && !phase2Freshness.bobby_today) {
+      log("autonomous-stale-context", phase2Freshness);
+      return;
+    }
 
     // Attach confluence score using modern Phase 2 stores while preserving the old detector contract.
     const confluenceZones = detectConfluence(
@@ -403,6 +567,24 @@ router.post("/evaluate", async (req, res) => {
         signal.confluence_confidence = matchedZone.confidence;
       }
     }
+
+    const entriesAlignment = buildEntriesAlignment(signal, modernDubz, modernBobby);
+    log("autonomous-alignment", {
+      execute: entriesAlignment.ok,
+      reason: entriesAlignment.reason || "aligned",
+      freshness: entriesAlignment.freshness || phase2Freshness,
+      best: entriesAlignment.best || null,
+      entry_gap: entriesAlignment.entry_gap ?? null,
+      avoid_zone: entriesAlignment.avoid_zone || null,
+      ximes_count: ximes.length,
+      bobby_legacy_count: bobby.length,
+      dubz_modern_count: modernDubz.length,
+      bobby_modern_count: modernBobby.length,
+      confluence_zones: confluenceZones.length,
+    });
+    if (!entriesAlignment.ok) return;
+    signal.phase2_alignment = entriesAlignment.best;
+    signal.phase2_freshness = entriesAlignment.freshness;
 
     // Sienna regime gate
     const regime = getSiennaRegime();

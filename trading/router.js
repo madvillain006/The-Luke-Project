@@ -27,8 +27,119 @@ const {
   getApexPreTradeFloorBlock,
 } = require("./risk");
 const { getSiennaRegime } = require("../lib/sienna-regime");
+const { loadDubzState } = require("../lib/parse-dubz");
+const { loadMemory: loadLevelMemory } = require("../lib/level-memory");
 
 const router = express.Router();
+
+function etDateKey() {
+  return new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+}
+
+function isFreshEnough(timestamp, hours = 36) {
+  if (!timestamp) return false;
+  const ms = new Date(timestamp).getTime();
+  return Number.isFinite(ms) && (Date.now() - ms) <= (hours * 60 * 60 * 1000);
+}
+
+function biasFromDubzLevel(level) {
+  if (!level || !level.direction) return "NEUTRAL";
+  if (level.direction === "support") return "BULLISH";
+  if (level.direction === "resistance") return "BEARISH";
+  return "NEUTRAL";
+}
+
+function loadModernDubzContextSignals() {
+  try {
+    const state = loadDubzState();
+    if (!state || !state.instruments) return [];
+
+    const todayET = etDateKey();
+    const todayUTC = new Date().toISOString().slice(0, 10);
+    const stateLooksCurrent = state.date === todayET || state.date === todayUTC || isFreshEnough(state.last_updated, 36);
+    if (!stateLooksCurrent) return [];
+
+    const signals = [];
+    for (const [ticker, bucket] of Object.entries(state.instruments || {})) {
+      for (const level of (bucket?.levels || [])) {
+        if (!Number.isFinite(level.price)) continue;
+        signals.push({
+          signal_type: "CONTEXT",
+          analyst: "richydubz",
+          source: "richydubz-context",
+          ticker,
+          levels: [level.price],
+          bias: biasFromDubzLevel(level),
+          ts: level.timestamp || state.last_updated || new Date().toISOString(),
+        });
+      }
+    }
+    return signals;
+  } catch {
+    return [];
+  }
+}
+
+function buildBobbyBucket(levels, sourceType, timestamp) {
+  if (!levels.king_nodes.length && !levels.support.length && !levels.resistance.length) return null;
+  return {
+    king_nodes: [...levels.king_nodes],
+    support: [...levels.support],
+    resistance: [...levels.resistance],
+    bias: "NEUTRAL",
+    source: sourceType === "vision" ? "bobby-vision" : "bobby-text",
+    vision_parsed: sourceType === "vision",
+    has_image: sourceType === "vision",
+    ts: timestamp || new Date().toISOString(),
+  };
+}
+
+function loadModernBobbyContext() {
+  try {
+    const memory = loadLevelMemory();
+    if (!memory || !Array.isArray(memory.levels)) return [];
+
+    const text = { king_nodes: new Set(), support: new Set(), resistance: new Set() };
+    const vision = { king_nodes: new Set(), support: new Set(), resistance: new Set() };
+    let textTs = null;
+    let visionTs = null;
+
+    for (const record of memory.levels) {
+      for (const mention of (record.mentions || [])) {
+        if (mention.analyst !== "bobby") continue;
+        if (!isFreshEnough(mention.timestamp, 36)) continue;
+
+        const bucket = mention.source_type === "vision" ? vision : text;
+        if (mention.significance === "key" && !mention.direction) bucket.king_nodes.add(record.canonical_price);
+        else if (mention.direction === "support") bucket.support.add(record.canonical_price);
+        else if (mention.direction === "resistance") bucket.resistance.add(record.canonical_price);
+
+        if (mention.source_type === "vision") {
+          if (!visionTs || new Date(mention.timestamp) > new Date(visionTs)) visionTs = mention.timestamp;
+        } else {
+          if (!textTs || new Date(mention.timestamp) > new Date(textTs)) textTs = mention.timestamp;
+        }
+      }
+    }
+
+    const out = [];
+    const textBucket = buildBobbyBucket({
+      king_nodes: Array.from(text.king_nodes),
+      support: Array.from(text.support),
+      resistance: Array.from(text.resistance),
+    }, "text", textTs);
+    const visionBucket = buildBobbyBucket({
+      king_nodes: Array.from(vision.king_nodes),
+      support: Array.from(vision.support),
+      resistance: Array.from(vision.resistance),
+    }, "vision", visionTs);
+    if (textBucket) out.push(textBucket);
+    if (visionBucket) out.push(visionBucket);
+    return out;
+  } catch {
+    return [];
+  }
+}
 
 async function stageTrade(state, signal) {
   const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
@@ -251,22 +362,15 @@ router.post("/evaluate", async (req, res) => {
     const { ximes, bobby } = loadRecentSignals(signalWindow);
     log("autonomous-evaluate", { ximes_count: ximes.length, bobby_count: bobby.length, window_min: signalWindow });
 
-    // Load today's levels for confluence check
-    const DATA_DIR = require("path").join(__dirname, "..", "data");
-    const LEVELS_FILE = require("path").join(DATA_DIR, "today-levels.json");
-    const today = new Date().toISOString().slice(0, 10);
-    let todayLevels = null;
-    try {
-      if (fs.existsSync(LEVELS_FILE)) {
-        const obj = JSON.parse(fs.readFileSync(LEVELS_FILE, "utf8"));
-        if (obj.date === today) todayLevels = obj;
-      }
-    } catch {}
+    const modernDubz = loadModernDubzContextSignals();
+    const modernBobby = loadModernBobbyContext();
 
-    // Attach confluence score to each ximes signal
-    const confluenceZones = todayLevels
-      ? detectConfluence([...ximes, ...(todayLevels.richyd || [])], [...bobby, ...(todayLevels.bobby || [])], null)
-      : detectConfluence(ximes, bobby, null);
+    // Attach confluence score using modern Phase 2 stores while preserving the old detector contract.
+    const confluenceZones = detectConfluence(
+      [...ximes, ...modernDubz],
+      [...bobby, ...modernBobby],
+      null
+    );
 
     const tol = 10;
     const enrichedXimes = ximes.map(sig => {
@@ -669,13 +773,13 @@ router.post("/clear-critical", (req, res) => {
   }
   const state = loadState();
   if (!state.critical_mismatch && !state.execution_blocked) {
-    return res.json({ cleared: false, reason: "No critical_mismatch or execution_blocked flag set — nothing to clear" });
+    return res.json({ cleared: false, reason: "No critical_mismatch or execution_blocked flag set â€” nothing to clear" });
   }
   state.critical_mismatch = false;
   state.execution_blocked = false;
   saveState(state);
   log("autonomous-critical-cleared", { reason: reason.trim(), cleared_by: "operator" });
-  res.json({ cleared: true, note: "critical_mismatch and execution_blocked cleared. Trading remains stopped — start manually." });
+  res.json({ cleared: true, note: "critical_mismatch and execution_blocked cleared. Trading remains stopped â€” start manually." });
 });
 
 router.post("/launch", async (req, res) => {
@@ -693,7 +797,7 @@ router.post("/launch", async (req, res) => {
   log("autonomous-launch-windows", { windows: windows.map(w => w.name) });
 });
 
-// ── SHADOW MODE ──────────────────────────────────────────────────────────
+// â”€â”€ SHADOW MODE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 router.get("/shadow/summary", (req, res) => {
   res.json(getShadowSummary(loadState()));
 });
@@ -714,9 +818,9 @@ router.post("/shadow/reset", (req, res) => {
   res.json({ reset: true, started: state.shadow_session.started });
 });
 
-// ── FAULT-INJECTION TEST HOOKS (non-production only) ──────────────────────
+// â”€â”€ FAULT-INJECTION TEST HOOKS (non-production only) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 if (process.env.NODE_ENV === "test") {
-  // Generic state patch — lets test scripts inject pending signals, open positions, etc.
+  // Generic state patch â€” lets test scripts inject pending signals, open positions, etc.
   router.post("/_test/inject-state", (req, res) => {
     const patch = req.body || {};
     const state = loadState();
@@ -726,7 +830,7 @@ if (process.env.NODE_ENV === "test") {
     res.json({ ok: true, patched: Object.keys(patch) });
   });
 
-  // Simulate the full protection-failure → emergencyFlatten sequence without Tradovate
+  // Simulate the full protection-failure â†’ emergencyFlatten sequence without Tradovate
   router.post("/_test/simulate-protection-failure", (req, res) => {
     const { flatten_succeeds = false } = req.body || {};
     const state = loadState();
@@ -773,7 +877,7 @@ if (process.env.NODE_ENV === "test") {
     });
   });
 
-  // Run reconcile logic with a synthetic phantom broker position — no real Tradovate call
+  // Run reconcile logic with a synthetic phantom broker position â€” no real Tradovate call
   router.post("/_test/reconcile-phantom", (req, res) => {
     const state = loadState();
     const syntheticOpenPositions = [{ netPos: 1, contractId: 99901 }];

@@ -152,13 +152,6 @@ async function morningBriefing() {
   return `${sections.length} sections`;
 }
 
-async function runPreMarketScan() {
-  const { runPreMarketScan } = require("./archive/intraday-scraper-v0-screenshot-based");
-  await runPreMarketScan();
-  log("pre-market-scan", { triggered: true });
-  return "completed";
-}
-
 async function generateDocuments() {
   const r = await fetch(`${LUKE_URL}/agent/research/generate-documents`, {
     method: "POST",
@@ -384,7 +377,6 @@ async function runScheduler() {
   //   if (hour === 4) await runJob("morning-briefing", morningBriefing);
   //
   //   if (hour === 6 && now.getDay() !== 0 && now.getDay() !== 6) {
-  //     await runJob("pre-market-scan", runPreMarketScan);
   //     await runJob("tradovate-health", checkTradovateHealth);
   //   }
   //

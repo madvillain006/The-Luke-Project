@@ -34,7 +34,7 @@
     .has-tt { position: relative; }
     .tooltip { display: none; } /* JS handles positioning */
 
-    /* JS tooltip ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â appended to body, never clipped */
+ /* JS tooltip appended to body, never clipped */
     #js-tooltip {
       position: fixed;
       z-index: 99999;
@@ -50,7 +50,7 @@
       font-family: -apple-system, "Segoe UI", sans-serif;
     }
 
-    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ TOP BAR ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+ /* TOP BAR */
     #top-bar {
       height: 32px;
       display: flex;
@@ -117,7 +117,7 @@
     #chip-pnl, #chip-pos, #chip-apex, #chip-arch,
     #chip-sweep, #chip-conn, #chip-canary { display: none !important; }
 
-    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ MESSAGES ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+ /* MESSAGES */
     #messages {
       flex: 1;
       overflow-y: auto;
@@ -161,7 +161,7 @@
 
     .thinking { color: var(--dim); font-size: 10px; letter-spacing: 2px; padding: 3px 0; align-self: flex-start; }
 
-    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ MORNING CHECKLIST ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+ /* MORNING CHECKLIST */
     #morning-checklist {
       position: absolute;
       top: 6px;
@@ -184,7 +184,7 @@
     .mc-cmd { font-family: "Courier New", monospace; font-size: 11px; color: var(--blu); }
     .mc-item.done .mc-cmd { color: var(--green); }
 
-    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ BOTTOM BAR ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+ /* BOTTOM BAR */
     #bottom-bar {
       min-height: 86px;
       flex-shrink: 0;
@@ -247,7 +247,7 @@
       #tb-prices { display: none; }
     }
 
-    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ WIDGET MODE (ÃƒÂ¢Ã¢â‚¬Â°Ã‚Â¤500px) ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+ /* WIDGET MODE (500px) */
     @media (max-width: 500px) {
       .qbtn { font-size: 11px; padding: 4px 6px; }
       .tb-lbl { display: none; }
@@ -260,7 +260,7 @@
       #look-btn { display: none; }
     }
 
-    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ STAGED TRADE OVERLAY ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+ /* STAGED TRADE OVERLAY */
     #pending-trade {
       position: absolute;
       top: 32px; left: 0; right: 0; bottom: 0;
@@ -300,7 +300,7 @@
     #skip-btn { background: transparent; border: 1px solid #4a2a2a; color: var(--red); padding: 6px 10px; font-family: inherit; font-size: 10px; letter-spacing: 1.5px; cursor: pointer; border-radius: 4px; }
     #skip-btn:hover { border-color: var(--red); }
 
-    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ TOAST ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+ /* TOAST */
     #toast {
       position: absolute;
       bottom: 108px; left: 8px; right: 8px;
@@ -318,7 +318,7 @@
     }
     #toast.show { display: block; }
 
-    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ DRAG OVERLAY ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+ /* DRAG OVERLAY */
     #drag-overlay {
       position: absolute; inset: 0; z-index: 300;
       background: rgba(8,12,16,0.88);
@@ -328,7 +328,7 @@
     }
     #drag-overlay.show { display: flex; }
 
-    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ BOOT MODAL ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+ /* BOOT MODAL */
     #boot-modal { position: absolute; inset: 0; z-index: 500; background: rgba(8,12,16,0.95); display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
     #boot-modal.show { display: flex; }
     #boot-modal-inner { background: var(--bg2); border: 1px solid var(--rbr); border-radius: 6px; padding: 16px; width: 100%; max-width: 340px; }
@@ -339,7 +339,7 @@
     #boot-modal li.green  { color: var(--green); }
     #boot-modal-close { margin-top: 12px; background: transparent; border: 1px solid var(--b2); color: var(--fg); padding: 4px 12px; font-family: inherit; font-size: 10px; letter-spacing: 1px; cursor: pointer; border-radius: 4px; }
 
-    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ PANIC MODAL ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+ /* PANIC MODAL */
     #panic-modal { position: absolute; inset: 0; z-index: 600; background: rgba(8,12,16,0.95); display: none; align-items: center; justify-content: center; }
     #panic-modal.show { display: flex; }
     #panic-inner { background: #1a0000; border: 1px solid var(--red); border-radius: 6px; padding: 16px; max-width: 260px; text-align: center; }
@@ -347,7 +347,7 @@
     #panic-confirm { background: var(--red); border: none; color: var(--bg); padding: 6px 16px; font-family: inherit; font-size: 10px; font-weight: 700; letter-spacing: 2px; cursor: pointer; border-radius: 4px; margin-right: 8px; }
     #panic-cancel  { background: transparent; border: 1px solid var(--b2); color: var(--fg); padding: 6px 12px; font-family: inherit; font-size: 10px; cursor: pointer; border-radius: 4px; letter-spacing: 1px; }
 
-    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ METRICS PANEL ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+ /* METRICS PANEL */
     #metrics-panel { position: absolute; top: 32px; left: 0; right: 0; bottom: 0; z-index: 91; background: var(--bg); display: none; flex-direction: column; }
     #metrics-panel.visible { display: flex; }
     #mp-header { display: flex; align-items: center; justify-content: space-between; padding: 5px 10px; border-bottom: 1px solid var(--b1); flex-shrink: 0; }
@@ -372,7 +372,7 @@
     .mp-critical-ts { color: var(--dim); margin-right: 6px; }
     #mp-status { font-size: 9px; color: var(--dim); letter-spacing: 1px; padding: 2px 0; min-height: 13px; }
 
-    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ LUKE PANEL ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+ /* LUKE PANEL */
     #luke-panel { position: absolute; top: 32px; left: 0; right: 0; bottom: 0; z-index: 90; background: var(--bg); display: none; flex-direction: column; }
     #luke-panel.visible { display: flex; }
     #lp-header { display: flex; align-items: center; justify-content: space-between; padding: 5px 10px; border-bottom: 1px solid var(--b1); flex-shrink: 0; }
@@ -409,32 +409,32 @@
   <!-- TOP BAR -->
   <div id="top-bar">
     <div class="tb-seg has-tt">
-      <span id="tb-dot">ÃƒÂ¢Ã¢â‚¬â€Ã‚Â</span>
+      <span id="tb-dot">*</span>
       <span id="tb-luke-text">LUKE</span>
       <span class="tooltip">Connection to Luke backend</span>
     </div>
-    <span class="tb-div">ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡</span>
+    <span class="tb-div">|</span>
     <div class="tb-seg has-tt">
       <span id="chip-mode" class="off" title="Trading mode indicator (PAPER/LIVE/OFF). Agent 02B disabled.">OFF</span>
     </div>
-    <span class="tb-div">ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡</span>
+    <span class="tb-div">|</span>
     <div class="tb-seg has-tt">
       <span class="tb-lbl">Market:</span>
-      <span id="tb-market-val">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
+      <span id="tb-market-val">-</span>
       <span class="tooltip">Regular session 9:30AM-4:00PM ET</span>
     </div>
-    <span class="tb-div">ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡</span>
+    <span class="tb-div">|</span>
     <div class="tb-seg has-tt">
       <span class="tb-lbl">Regime:</span>
       <span id="tb-regime-val">NEUTRAL</span>
       <span class="tooltip">RISK_ON=3 trades, NEUTRAL=2, RISK_OFF=1 max</span>
     </div>
-    <span class="tb-div">ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡</span>
+    <span class="tb-div">|</span>
     <div class="tb-seg tb-px" id="tb-prices">
-      <span id="tb-spy">SPY:ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
-      <span id="tb-es">ES:ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
+      <span id="tb-spy">SPY:-</span>
+      <span id="tb-es">ES:-</span>
     </div>
-    <span class="tb-div">ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡</span>
+    <span class="tb-div">|</span>
     <div class="tb-seg has-tt">
       <span id="tb-trades-val">0 trades 0W 0L</span>
       <span class="tooltip">Today's trades. /review for details</span>
@@ -446,21 +446,21 @@
 
   <!-- HIDDEN LEGACY ELEMENTS (JS compatibility) -->
   <div style="display:none">
-    <span id="chip-pnl">P&amp;L ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
+    <span id="chip-pnl">P&amp;L -</span>
     <span id="chip-pos">flat</span>
     <span id="chip-apex"></span>
     <span id="chip-arch">ARCH:0</span>
     <span id="chip-sweep">SWEEP:0</span>
     <span id="chip-conn">CONN</span>
     <span id="chip-canary">CANARY</span>
-    <span id="ribbon-move">MOVE: ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
+    <span id="ribbon-move">MOVE: -</span>
     <span id="ribbon-luke">IN MEMORY OF LUKE</span>
-    <span id="ribbon-wtd">WTD: ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
+    <span id="ribbon-wtd">WTD: -</span>
     <span id="ribbon-state">ONLINE</span>
-    <span id="sp-levels">LEVELS: ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
-    <span id="sp-confluence">ZONE: ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
-    <span id="sp-trades">TODAY: ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
-    <span id="sp-state">STATE: ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
+    <span id="sp-levels">LEVELS: -</span>
+    <span id="sp-confluence">ZONE: -</span>
+    <span id="sp-trades">TODAY: -</span>
+    <span id="sp-state">STATE: -</span>
     <span id="sp-meds">IN MEMORY OF LUKE</span>
     <button id="btn-mkt">MKT</button>
     <button id="btn-audit">AUDIT</button>
@@ -489,11 +489,6 @@
         <span class="mc-check">[ ]</span>
         <span class="mc-cmd">/saty</span>
         <span class="tooltip">Load the 13 Saty ATR levels by 8:30 AM ET if they are not already in</span>
-      </div>
-      <div class="mc-item has-tt" id="mc-dubz">
-        <span class="mc-check">[ ]</span>
-        <span class="mc-cmd">/dubz</span>
-        <span class="tooltip">Paste RichyDubz morning message after this command</span>
       </div>
       <div class="mc-item has-tt" id="mc-heatmap">
         <span class="mc-check">[ ]</span>
@@ -565,7 +560,7 @@
     <div id="pt-body">
       <div>
         <div id="pt-header-row">
-          <div class="pt-label">ÃƒÂ¢Ã…Â¡Ã‚Â¡ 02B SIGNAL ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â CONFIRM</div>
+          <div class="pt-label">02B SIGNAL - CONFIRM</div>
           <svg class="countdown-svg" viewBox="0 0 36 36">
             <circle class="ring-bg"       cx="18" cy="18" r="15.9155"/>
             <circle class="ring-progress" cx="18" cy="18" r="15.9155" id="pt-ring"/>
@@ -596,7 +591,7 @@
   <div id="metrics-panel">
     <div id="mp-header">
       <span id="mp-title">METRICS</span>
-      <button id="mp-close" title="Close metrics panel">ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¢</button>
+      <button id="mp-close" title="Close metrics panel">X</button>
     </div>
     <div id="mp-controls">
       <input id="mp-hours-input" type="number" min="1" max="720" value="24" />
@@ -614,7 +609,7 @@
   <div id="luke-panel">
     <div id="lp-header">
       <span id="lp-title">LUKE</span>
-      <button id="lp-close" title="Close Luke memorial panel">Ã¢Å“â€¢</button>
+      <button id="lp-close" title="Close Luke memorial panel">X</button>
     </div>
     <div id="lp-body">
       <div id="lp-drafts-section">
@@ -630,7 +625,7 @@
 
   <div id="boot-modal">
     <div id="boot-modal-inner">
-      <h3>BOOT CHECK ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ISSUES DETECTED</h3>
+      <h3>BOOT CHECK ISSUES DETECTED</h3>
       <ul id="boot-check-list"></ul>
       <button id="boot-modal-close" title="Dismiss boot issues and continue">DISMISS</button>
     </div>
@@ -638,7 +633,7 @@
 
   <div id="panic-modal">
     <div id="panic-inner">
-      <p>CONFIRM PANIC ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â kills 02B and intraday</p>
+      <p>CONFIRM PANIC kills 02B and intraday</p>
       <button id="panic-confirm" title="Confirm panic: kill 02B and stop intraday immediately">PANIC</button>
       <button id="panic-cancel" title="Cancel panic">CANCEL</button>
     </div>
@@ -650,7 +645,7 @@
     const wsHost = window.location.host || "localhost:3000";
     let ws;
 
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ JS TOOLTIP ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // JS TOOLTIP 
     const _jsTip = document.getElementById('js-tooltip');
     let _tipTimer = null;
     document.querySelectorAll('.has-tt').forEach(el => {
@@ -673,7 +668,7 @@
         _jsTip.style.display = 'none';
       });
     });
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ END JS TOOLTIP ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // END JS TOOLTIP 
     const messages = document.getElementById("messages");
     const input    = document.getElementById("input");
     const sendBtn  = document.getElementById("send");
@@ -691,7 +686,7 @@
     });
     function initWs(socket) { ws = socket;
 
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ MARKET STATUS ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // MARKET STATUS 
 
     function updateMarketStatus() {
       const el = document.getElementById("tb-market-val");
@@ -723,7 +718,7 @@
     updateMarketStatus();
     setInterval(updateMarketStatus, 30000);
 
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ TOAST ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // TOAST 
 
     function toast(text, ms = 3500) {
       const el = document.getElementById("toast");
@@ -733,13 +728,13 @@
       toastTimer = setTimeout(() => el.classList.remove("show"), ms);
     }
 
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ RIBBON (legacy compat) ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // RIBBON (legacy compat) 
     async function syncRibbon() {
       document.getElementById("ribbon-luke").textContent = "IN MEMORY OF LUKE";
       try {
         const r = await fetch(BASE + "/agent/finance/fund-status");
         const d = await r.json();
-        const bal = typeof d.balance === "number" ? d.balance.toFixed(0) : (d.balance || "ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â");
+ const bal = typeof d.balance === "number" ? d.balance.toFixed(0) : (d.balance || "");
         document.getElementById("ribbon-move").textContent = "MOVE: $" + bal + "/$6k";
       } catch (e) { console.error('[syncRibbon] fund-status error:', e.message); }
       try {
@@ -747,14 +742,14 @@
         const d = await r.json();
         const wtd = d.week_total ?? d.weekly_income ?? d.wtd ?? null;
         document.getElementById("ribbon-wtd").textContent =
-          "WTD: " + (wtd !== null ? "$" + (typeof wtd === "number" ? wtd.toFixed(0) : wtd) : "ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â");
+ "WTD: " + (wtd !== null ? "$" + (typeof wtd === "number" ? wtd.toFixed(0) : wtd) : "");
       } catch {}
     }
 
     syncRibbon();
     setInterval(syncRibbon, 5 * 60 * 1000);
 
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ STATUS CHIPS ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // STATUS CHIPS 
 
     async function syncStatus() {
       try {
@@ -830,7 +825,7 @@
     syncStatus();
     setInterval(syncStatus, 30000);
 
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ ACTION BUTTONS (hidden, legacy) ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // ACTION BUTTONS (hidden, legacy) 
 
     async function withBtn(btnId, fn) {
       const btn = document.getElementById(btnId);
@@ -874,9 +869,6 @@
       toast(JSON.stringify(d).slice(0, 250), 5000);
     }));
 
-      const d = await r.json();
-      toast(d.started ? "Pre-market scan started." : JSON.stringify(d).slice(0, 150));
-    }));
 
     document.getElementById("btn-eod").addEventListener("click", () => withBtn("btn-eod", async () => {
       const r = await fetch(BASE + "/agent/autonomous/eod-update", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
@@ -891,7 +883,9 @@
       const r = await fetch(BASE + "/agent/income/income-summary");
       const d = await r.json();
       toast(JSON.stringify(d).slice(0, 250), 5000);
-    }));`r`n    document.getElementById("btn-luke").addEventListener("click", () => openLukePanel());
+    }));
+
+    document.getElementById("btn-luke").addEventListener("click", () => openLukePanel());
 
     document.getElementById("btn-metrics").addEventListener("click", () => {
       const panel = document.getElementById("metrics-panel");
@@ -899,11 +893,11 @@
       else openMetricsPanel();
     });
 
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ LOOK ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // LOOK 
 
     document.getElementById("look-btn").addEventListener("click", () => look());
 
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ QUICK BUTTONS ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // QUICK BUTTONS 
 
     document.querySelectorAll(".qbtn").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -917,29 +911,54 @@
       });
     });
 
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ MORNING CHECKLIST ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // MORNING CHECKLIST 
 
-    const mcState = { balance: false, saty: false, dubz: false, heatmap: false, verdict: false };
+    const mcState = { balance: false, saty: false, heatmap: false, verdict: false };
 
-    function checkMC(text) {
-      if (/^\/balance\b/i.test(text)) { mcState.balance = true; }
-      if (/^\/saty\b/i.test(text))    { mcState.saty = true; }
-      if (/^\/dubz/i.test(text))       { mcState.dubz = true; }
-      if (/^\/heatmap/i.test(text))    { mcState.heatmap = true; }
-      if (/^\/verdict/i.test(text))    { mcState.verdict = true; }
+    function checkMC(command, reply) {
+      const text = (command || "").trim();
+      const out = String(reply || "");
+
+      if (/SESSION READINESS/i.test(out)) {
+        mcState.balance = /OK Balance set today/i.test(out);
+        mcState.saty = /OK Saty ATR levels loaded/i.test(out);
+        mcState.heatmap = /OK Bobby heatmap loaded/i.test(out);
+      } else {
+        if (/^\/balance\s+\d/i.test(text) && /^Balance set:/i.test(out)) {
+          mcState.balance = true;
+        }
+        if (/^\/saty\s+\S/i.test(text) && /SATY LEVELS SAVED/i.test(out)) {
+          mcState.saty = true;
+        }
+        if (/^\/heatmap\s+\S/i.test(text) && /^Heatmap context updated/i.test(out)) {
+          mcState.heatmap = true;
+        }
+        if (
+          /^\/verdict\b/i.test(text) &&
+          /^## Confluence verdict/i.test(out) &&
+          mcState.balance &&
+          mcState.saty &&
+          mcState.heatmap
+        ) {
+          mcState.verdict = true;
+        }
+      }
       updateMC();
     }
 
     function updateMC() {
-      ["balance", "saty", "dubz", "heatmap", "verdict"].forEach(key => {
+      ["balance", "saty", "heatmap", "verdict"].forEach(key => {
         const el = document.getElementById("mc-" + key);
         if (!el) return;
         if (mcState[key]) {
           el.classList.add("done");
           el.querySelector(".mc-check").textContent = "OK";
+        } else {
+          el.classList.remove("done");
+          el.querySelector(".mc-check").textContent = "[ ]";
         }
       });
-      if (mcState.balance && mcState.saty && mcState.dubz && mcState.heatmap && mcState.verdict) {
+      if (mcState.balance && mcState.saty && mcState.heatmap && mcState.verdict) {
         setTimeout(() => document.getElementById("morning-checklist").classList.add("hidden"), 1200);
       }
     }
@@ -948,7 +967,7 @@
       document.getElementById("morning-checklist").classList.add("hidden");
     });
 
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ STAGED TRADE ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // STAGED TRADE 
 
     const pendingTrade = document.getElementById("pending-trade");
     const executeBtn   = document.getElementById("execute-btn");
@@ -959,15 +978,15 @@
       const s = data.signal;
       const ticker = s.ticker || "MNQ";
       document.getElementById("pt-signal").textContent =
-        s.direction + " " + ticker + "  Ãƒâ€šÃ‚Â·  E:" + s.entry + "  S:" + s.stop + "  T:" + s.target;
+ s.direction + " " + ticker + " E:" + s.entry + " S:" + s.stop + " T:" + s.target;
       const confluencePart = s.confluence_score != null
-        ? "  Ãƒâ€šÃ‚Â·  CONF:" + s.confluence_score + " [" + (s.confluence_confidence || "?") + "]"
+ ? " CONF:" + s.confluence_score + " [" + (s.confluence_confidence || "?") + "]"
         : "";
       const sourcesPart = s.confluence_sources && s.confluence_sources.length
         ? "  src:" + s.confluence_sources.join("+")
         : "";
       document.getElementById("pt-meta").textContent =
-        "Risk: $" + data.risk_dollars + "  Ãƒâ€šÃ‚Â·  R:R " + data.rr + ":1" + confluencePart + sourcesPart;
+ "Risk: $" + data.risk_dollars + " R:R " + data.rr + ":1" + confluencePart + sourcesPart;
       document.getElementById("pt-reason").textContent = s.reason || "";
       document.getElementById("lbl-target").textContent = "T " + s.target;
       document.getElementById("lbl-entry").textContent  = "E " + s.entry;
@@ -1038,14 +1057,14 @@
       const modeChip = document.getElementById("chip-mode");
       if (!modeChip || modeChip.className === "off" || modeChip.textContent === "OFF") {
         hidePending();
-        toast("02B is OFF ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â enter this trade manually in Tradovate.", 5000);
-        addMessage("assistant", "Enter this trade manually in Tradovate ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 02B is OFF and will not send orders.", "alert");
+        toast("02B is OFF - enter this trade manually in Tradovate.", 5000);
+        addMessage("assistant", "Enter this trade manually in Tradovate - 02B is OFF and will not send orders.", "alert");
         return;
       }
       const stateClass = document.getElementById("ribbon-state").className || "regulated";
       if (stateClass === "rule_break") {
         logIntervention("rule_break", "execute blocked");
-        toast("Rule break detected ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â execute disabled.", 4000);
+        toast("Rule break detected - execute disabled.", 4000);
         return;
       }
       if (stateClass === "spiraling") {
@@ -1054,7 +1073,7 @@
           logIntervention("spiraling", "double-confirmed execute");
         } else {
           executeFirstTap = now;
-          toast("Spiraling ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â tap EXECUTE again within 1s to confirm.", 3000);
+        toast("Spiraling - tap EXECUTE again within 1s to confirm.", 3000);
           return;
         }
       }
@@ -1083,7 +1102,7 @@
       if (e.key === "s" || e.key === "S") skipBtn.click();
     });
 
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ WEBSOCKET ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // WEBSOCKET 
 
     ws.onmessage = (event) => {
       try {
@@ -1115,7 +1134,7 @@
         }
         else if (data.type === 'kat_vision') {
           const levels = (data.levels || []).join(', ');
-          const msg = 'ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¸ ' + data.analyst + ' chart: ' +
+ const msg = ' ' + data.analyst + ' chart: ' +
             (data.ticker || '?') + ' ' + data.bias +
             (levels ? ' | levels: ' + levels : '') +
             (data.notes ? '\n' + data.notes : '');
@@ -1125,7 +1144,7 @@
     };
     } // end initWs
 
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ STATE INDICATOR ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // STATE INDICATOR 
 
     function updateStateIndicator(state) {
       if (!state) return;
@@ -1135,7 +1154,7 @@
       el.textContent = labels[state] || "ONLINE";
     }
 
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ MESSAGES ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // MESSAGES 
 
     function nowTs() {
       const d = new Date();
@@ -1200,7 +1219,7 @@
       if (t) t.remove();
     }
 
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ IMAGE PASTE / DROP ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // IMAGE PASTE / DROP 
 
     async function handleImageBlob(blob, mimeType) {
       const reader = new FileReader();
@@ -1244,13 +1263,13 @@
       reader.readAsDataURL(blob);
     }
 
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ PASTE DETECTION ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // PASTE DETECTION 
     const PASTE_ANALYST_RULES = [
       { re: /\b(ximes|ximestrades|xi[mn]es|followthewhiterabblt)\b/i, command: '/alert',   analyst: 'ximes' },
       { re: /\b(bobby|followtherabbit|spx[_ -]?coms)\b/i,             command: '/heatmap', analyst: 'bobby' },
       { re: /\b(richy|richydubz|richyd)\b/i,                          command: '/dubz',    analyst: 'richy' },
     ];
-    const PASTE_DISCORD_PREFIX = /^[\s\S]*?(?:\[\d{1,2}:\d{2}\s*(?:AM|PM)\][^\n,]*,\s*:|[^\n]+ ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Today at \d{1,2}:\d{2}\s*(?:AM|PM)\s*\n?)/i;
+    const PASTE_DISCORD_PREFIX = /^[\s\S]*?(?:\[\d{1,2}:\d{2}\s*(?:AM|PM)\][^\n,]*,\s*:|[^\n]+(?:\s+[-\u2013\u2014]\s+|\s+)Today at \d{1,2}:\d{2}\s*(?:AM|PM)\s*\n?)/i;
     const PASTE_OPTION_RE     = /\b[A-Z]{1,5}\s+\d{3,5}[CP]\b/i;
     const PASTE_HEATMAP_RE    = /\b(king node|air pocket|trinity)\b/i;
 
@@ -1293,7 +1312,7 @@
         e.preventDefault();
         input.value = command + ' ' + cleanedText;
         const label = detectedAnalyst ? detectedAnalyst.charAt(0).toUpperCase() + detectedAnalyst.slice(1) + ' detected' : 'pattern detected';
-        showPasteHint('ÃƒÂ¢Ã¢â‚¬Â Ã‚Â³ routing to ' + command + ' (' + label + ')');
+ showPasteHint(' routing to ' + command + ' (' + label + ')');
       });
     });
 
@@ -1318,7 +1337,7 @@
       if (file && file.type.startsWith("image/")) handleImageBlob(file, file.type);
     });
 
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ CHAT ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // CHAT 
 
     async function look(question) {
       showThinking("LOOKING...");
@@ -1361,6 +1380,7 @@
         const d = await r.json();
         hideThinking();
         addMessage("assistant", d.reply);
+        if (typeof checkMC === 'function') checkMC(text, d.reply);
         if (d.state) updateStateIndicator(d.state);
         history = d.history;
       } catch {
@@ -1386,7 +1406,7 @@
                 const label = det.detectedAnalyst
                   ? det.detectedAnalyst.charAt(0).toUpperCase() + det.detectedAnalyst.slice(1) + ' detected'
                   : 'pattern detected';
-                showPasteHint('ÃƒÂ¢Ã¢â‚¬Â Ã‚Â³ routing to ' + det.command + ' (' + label + ')');
+ showPasteHint(' routing to ' + det.command + ' (' + label + ')');
               }
               text = det.command + ' ' + det.cleanedText;
             }
@@ -1403,7 +1423,6 @@
           logIntervention(overrideMatch[1]);
           return;
         }
-        if (typeof checkMC === 'function') checkMC(text);
         addMessage("user", text);
         if (/^do /i.test(text)) return doAction(text.slice(3));
         if (/^look($| )/i.test(text)) return look(text.slice(4).trim());
@@ -1417,28 +1436,31 @@
     sendBtn.addEventListener("click", send);
     input.addEventListener("keydown", e => { if (e.key === "Enter") send(); });
 
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ CONNECTION ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // CONNECTION 
 
     const connChip = document.getElementById("chip-conn");
     async function checkConn() {
+      const actions = document.getElementById("actions");
       try {
         await fetch(BASE + "/health");
-        connChip.className = "chip ok";
+        if (connChip) connChip.className = "chip ok";
         document.getElementById("tb-dot").className = "";
-        document.getElementById("actions").style.opacity = "";
-        document.getElementById("actions").style.pointerEvents = "";
+        if (actions) {
+          actions.style.opacity = "";
+          actions.style.pointerEvents = "";
+        }
       } catch {
-        connChip.className = "chip err";
+        if (connChip) connChip.className = "chip err";
         document.getElementById("tb-dot").className = "err";
-        document.getElementById("actions").style.opacity = "0.3";
-        document.getElementById("actions").style.pointerEvents = "none";
+        if (actions) {
+          actions.style.opacity = "0.3";
+          actions.style.pointerEvents = "none";
+        }
         toast("Server connection lost.");
       }
     }
     checkConn();
     setInterval(checkConn, 10000);
-
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ BOOT CHECK ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 
     (async () => {
       try {
@@ -1447,7 +1469,7 @@
         if (d.overall === "red") {
           const ul = document.getElementById("boot-check-list");
           ul.innerHTML = d.checks.map(c =>
-            `<li class="${c.status}">${c.status === "green" ? "ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“" : c.status === "yellow" ? "ÃƒÂ¢Ã…Â¡Ã‚Â " : "ÃƒÂ¢Ã…â€œÃ¢â‚¬â€"} ${c.name}: ${c.detail}</li>`
+            `<li class="${c.status}">${c.status === "green" ? "OK" : c.status === "yellow" ? "WARN" : "FAIL"} ${c.name}: ${c.detail}</li>`
           ).join("");
           document.getElementById("boot-modal").classList.add("show");
         }
@@ -1462,14 +1484,14 @@
       document.getElementById("panic-modal").classList.remove("show");
       try {
         await fetch(BASE + "/panic", { method: "POST" });
-        addMessage("assistant", "PANIC executed ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 02B killed, intraday stopped.", "alert");
+        addMessage("assistant", "PANIC executed - 02B killed, intraday stopped.", "alert");
       } catch { addMessage("assistant", "PANIC endpoint failed.", "alert"); }
     });
     document.getElementById("panic-cancel").addEventListener("click", () => {
       document.getElementById("panic-modal").classList.remove("show");
     });
 
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ METRICS PANEL ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // METRICS PANEL 
 
     let metricsTextSummary = "";
 
@@ -1528,9 +1550,9 @@
       const avgCls = m.paper_pnl_avg_per_trade > 0 ? "pos" : m.paper_pnl_avg_per_trade < 0 ? "neg" : "";
       const rejectTotal = Object.values(m.rejects_by_reason || {}).reduce((a, b) => a + b, 0);
       const rejectStr = rejectTotal === 0 ? "0" :
-        rejectTotal + " ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â " + Object.entries(m.rejects_by_reason)
+        rejectTotal + " | " + Object.entries(m.rejects_by_reason)
           .sort((a, b) => b[1] - a[1])
-          .map(([k, v]) => k.replace(/_/g, " ") + "ÃƒÆ’Ã¢â‚¬â€" + v)
+          .map(([k, v]) => k.replace(/_/g, " ") + ": " + v)
           .join(", ");
       const signalsHtml = section("SIGNALS", [
         row("evaluated", m.signals_evaluated),
@@ -1543,8 +1565,8 @@
         row("total P&L", "$" + m.paper_pnl_total, pnlCls),
         row("avg/trade", "$" + m.paper_pnl_avg_per_trade, avgCls),
         m.avg_time_to_protection_confirmed_ms !== null
-          ? row("entryÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢protected", (m.avg_time_to_protection_confirmed_ms / 1000).toFixed(1) + "s")
-          : row("entryÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢protected", "N/A (no live execs)"),
+          ? row("entry->protected", (m.avg_time_to_protection_confirmed_ms / 1000).toFixed(1) + "s")
+          : row("entry->protected", "N/A (no live execs)"),
       ]);
       const systemHtml = section("SYSTEM", [
         row("reconcile mismatches", m.reconciliation_mismatches_count, m.reconciliation_mismatches_count > 0 ? "warn" : ""),
@@ -1554,14 +1576,14 @@
       let criticalHtml = "";
       if (m.critical_events && m.critical_events.length > 0) {
         const items = m.critical_events.map(e =>
-          `<div class="mp-critical-item"><span class="mp-critical-ts">${(e.timestamp || "").slice(11, 16)}</span>${e.type} ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ${e.summary || ""}</div>`
+ `<div class="mp-critical-item"><span class="mp-critical-ts">${(e.timestamp || "").slice(11, 16)}</span>${e.type} ${e.summary || ""}</div>`
         ).join("");
         criticalHtml = `<div class="mp-section"><div class="mp-section-label">CRITICAL LOG</div>${items}</div>`;
       }
       return signalsHtml + tradesHtml + systemHtml + criticalHtml;
     }
 
-    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ LUKE PANEL ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬    let lukePollInterval = null;
+ // LUKE PANEL let lukePollInterval = null;
 
     function openLukePanel() {
       document.getElementById("luke-panel").classList.add("visible");
@@ -1574,7 +1596,7 @@
 
     document.getElementById("lp-close").addEventListener("click", closeLukePanel);
 
-    // Ã¢â‚¬â€Ã¢â‚¬â€ STATUS PANEL AUTO-REFRESH ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+ // STATUS PANEL AUTO-REFRESH 
 
     function parseStatusReply(text) {
       const spEl = (id, val, cls) => {
@@ -1584,20 +1606,22 @@
         el.className = "sp-item" + (cls ? " " + cls : "");
       };
 
-      const levelsMatch = text.match(/Levels:\s*(ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦[^\n]*|ÃƒÂ¢Ã‚ÂÃ…â€™[^\n]*)/i);
+      const levelsMatch = text.match(/^Levels:\s*([^\n]+)/im);
       if (levelsMatch) {
-        const ok = levelsMatch[1].startsWith("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦");
+        const levelText = levelsMatch[1].trim();
+        const ok = /loaded/i.test(levelText) && !/not loaded/i.test(levelText);
         spEl("sp-levels", "LEVELS: " + (ok ? "YES" : "NO"), ok ? "ok" : "err");
       }
 
-      const zoneMatch = text.match(/Zone:\s*([^\n|]+)/i) || text.match(/ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â\s*([\d.]+)\s+(\S+)\s+(\S+)/);
+      const zoneMatch = text.match(/^Zone:\s*([^\n|]+)/im);
       if (zoneMatch) {
         spEl("sp-confluence", "ZONE: " + (zoneMatch[1] || "").trim().slice(0, 30), "info");
       } else if (/no HIGH confluence/i.test(text)) {
         spEl("sp-confluence", "ZONE: none", "warn");
       }
 
-      const tradeMatch = text.match(/(\d+)\s+trades\s*\|\s*(\d+)W\s+(\d+)L\s*\|\s*Net:\s*([+\-][\d.]+)/i);
+      const tradeMatch = text.match(/^Trades:\s*(\d+)\s+trades,\s*(\d+)W\s+(\d+)L,\s*net\s*([+\-][\d.]+)/im)
+        || text.match(/(\d+)\s+trades\s*\|\s*(\d+)W\s+(\d+)L\s*\|\s*Net:\s*([+\-][\d.]+)/i);
       if (tradeMatch) {
         const net = parseFloat(tradeMatch[4]);
         spEl("sp-trades", `TODAY: ${tradeMatch[1]}t ${tradeMatch[2]}W/${tradeMatch[3]}L ${tradeMatch[4]}pts`, net >= 0 ? "ok" : "err");
@@ -1609,11 +1633,14 @@
         if (tbTrades) tbTrades.textContent = "0 trades 0W 0L";
       }
 
-      const stateMatch = text.match(/Emotional state:\s*([^\n]+)/i);
+      const stateMatch = text.match(/^State:\s*([^\n]+)/im) || text.match(/Emotional state:\s*([^\n]+)/i);
       if (stateMatch) {
-        const s = stateMatch[1];
-        const cls = /ÃƒÂ¢Ã‚ÂÃ…â€™/.test(s) ? "err" : /ÃƒÂ¢Ã…Â¡Ã‚Â /.test(s) ? "warn" : "ok";
-        spEl("sp-state", "STATE: " + (cls === "ok" ? "ÃƒÂ°Ã…Â¸Ã…Â¸Ã‚Â¢" : cls === "warn" ? "ÃƒÂ°Ã…Â¸Ã…Â¸Ã‚Â¡" : "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â´"), cls);
+        const stateText = stateMatch[1].trim();
+        const cls = /RED|HARD|KILL|blocked/i.test(stateText) ? "err"
+          : /YELLOW|SOFT|WARN|CLOSED/i.test(stateText) ? "warn"
+          : /GREEN|OK|CLEAR/i.test(stateText) ? "ok"
+          : "";
+        spEl("sp-state", "STATE: " + stateText.slice(0, 42), cls);
       }
 
       spEl("sp-meds", "IN MEMORY OF LUKE", "");

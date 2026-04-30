@@ -15,12 +15,12 @@ process.on('unhandledRejection', (reason, promise) => {
   const entry = `[${ts}] unhandledRejection\nreason: ${reason?.stack || reason}\n\n`;
   try { fs.appendFileSync(path.join(__dirname, 'crash.log'), entry); } catch (e) { /* swallow */ }
   console.error(entry);
-  // Do NOT exit â€” log and continue. Node 15+ would crash by default; we want to survive
+  // Do NOT exit  log and continue. Node 15+ would crash by default; we want to survive
   // transient promise rejections but capture them.
 });
 
 process.on('SIGINT', () => {
-  console.log('SIGINT received â€” shutting down gracefully');
+  console.log('SIGINT received  shutting down gracefully');
   process.exit(0);
 });
 
@@ -294,6 +294,39 @@ async function runScheduler() {
   let currentDate = new Date().toISOString().slice(0, 10);
   let lastRssHour = -1;
   let eodFiredToday = null;
+
+
+
+  const { runSatyAutoPull, loadAutoPullState } = require("./lib/saty-auto-pull");
+  setInterval(async () => {
+    if (!process.env.MASSIVE_API_KEY) return;
+    const now = new Date();
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/New_York',
+      hour12: false,
+      weekday: 'short',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    }).formatToParts(now);
+    const map = Object.fromEntries(parts.map(p => [p.type, p.value]));
+    if (map.weekday === 'Sat' || map.weekday === 'Sun') return;
+    const mins = (Number(map.hour) * 60) + Number(map.minute);
+    if (mins < 505 || mins > 515) return; // 8:25-8:35 ET
+    const todayET = `${map.year}-${map.month}-${map.day}`;
+    const state = loadAutoPullState();
+    const lastAttemptET = state?.last_attempt
+      ? new Date(state.last_attempt).toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
+      : null;
+    if (lastAttemptET === todayET) return;
+    await runJob("saty-auto-pull-0830", async () => {
+      const result = await runSatyAutoPull();
+      if (!result.ok && !result.pending) throw new Error(result.error || result.reason || 'Saty auto-pull failed');
+      return result.pending ? `pending: ${result.reason || 'pending'}` : `saved ${result.level_count} levels`;
+    });
+  }, 60 * 1000);
 
   // DISABLED - manual trigger only
   // setInterval(async () => {

@@ -1,0 +1,310 @@
+{
+  "generatedAt": "2026-04-29T14:59:28.026Z",
+  "reportVersion": "0.1.0",
+  "historicalBars": {
+    "files": {
+      "esContracts": {
+        "esh26": [
+          "esh26_intraday-1min_historical-data-download-04-29-2026.csv"
+        ],
+        "esm26": [
+          "esm26_intraday-1min_historical-data-download-04-29-2026 (1).csv",
+          "esm26_intraday-1min_historical-data-download-04-29-2026.csv"
+        ]
+      },
+      "spx": [
+        "spx_intraday-1min_historical-data-download-04-29-2026.csv"
+      ]
+    },
+    "esh26": {
+      "totalBars": 19999,
+      "distinctDates": 18,
+      "firstBar": "2026-03-01T20:37:00-05:00",
+      "lastBar": "2026-03-20T08:29:00-04:00",
+      "datesWithRTH": 14,
+      "datesWithOvernight": 18
+    },
+    "esm26": {
+      "totalBars": 32928,
+      "distinctDates": 30,
+      "firstBar": "2026-03-26T03:56:00-04:00",
+      "lastBar": "2026-04-29T08:29:00-04:00",
+      "datesWithRTH": 23,
+      "datesWithOvernight": 30
+    },
+    "esMerged": {
+      "totalBars": 52927,
+      "distinctDates": 48,
+      "firstBar": "2026-03-01T20:37:00-05:00",
+      "lastBar": "2026-04-29T08:29:00-04:00",
+      "expectedWeekdays": 42,
+      "missingDates": [
+        "2026-03-23",
+        "2026-03-24",
+        "2026-03-25"
+      ],
+      "missingCount": 3,
+      "datesWithRTH": 37,
+      "datesWithOvernight": 48
+    },
+    "spx": {
+      "totalBars": 19999,
+      "distinctDates": 49,
+      "firstBar": "2026-02-18T12:40:00-05:00",
+      "lastBar": "2026-04-28T16:38:00-04:00",
+      "expectedWeekdays": 49,
+      "missingDates": [],
+      "missingCount": 0,
+      "datesWithRTH": 49,
+      "datesWithOvernight": 49,
+      "overnightNote": "SPX \"overnight\" bars are post-market only (16:01-16:38 range, volume=0). Cash index — no true overnight or pre-market bars present. Useful as post-close reference but not for overnight session replay."
+    },
+    "gapNote": "3 missing ES trading date(s): 2026-03-23, 2026-03-24, 2026-03-25."
+  },
+  "bobbyExport": {
+    "source": "C:\\Users\\conor\\luke\\data\\backtest\\es-long-bracket\\raw\\bobby json.json",
+    "totalMessages": 934,
+    "messageCount_header": 934,
+    "authorCounts": {
+      "Flowseidon (Kian)": 10,
+      "NP (So Handsome)": 1,
+      "BOBBY": 892,
+      "DemSPXslayer LLC": 5,
+      "TT": 8,
+      "*BOOMBORG": 3,
+      "XImEs": 11,
+      "Glitch": 3,
+      "RegardedTrader (Jon)": 1
+    },
+    "bobbyAuthorMessages": 892,
+    "nonBobbyMessages": 42,
+    "firstBobbyMessage": "2026-02-19T15:11:43.073-05:00",
+    "lastBobbyMessage": "2026-04-28T16:02:35.309-04:00",
+    "distinctTradingDates": 42,
+    "tradingDateRange": {
+      "first": "2026-02-19",
+      "last": "2026-04-28"
+    },
+    "bobbyWithAttachments": 724,
+    "bobbyWithoutAttachments": 168,
+    "bobbyAttachmentTotal": 724,
+    "bobbyImageAttachmentCount": 724,
+    "bobbyNonImageAttachmentCount": 0,
+    "imageExtensions": {
+      "png": 723,
+      "webp": 1
+    },
+    "attachmentStructureKeys": [
+      "id",
+      "url",
+      "fileName",
+      "fileSizeBytes"
+    ],
+    "urlsAreDiscordCDN": true,
+    "urlsHaveExpiry": true,
+    "urlExpiryNote": "Discord CDN URLs contain expiry params (ex=..., hm=...). May be expired.",
+    "first5Messages": [
+      {
+        "id": "1473072689630675166",
+        "timestamp": "2026-02-16T16:44:57.575-05:00",
+        "author": "Flowseidon (Kian)",
+        "contentSnippet": "Test @everyone",
+        "attachmentCount": 0
+      },
+      {
+        "id": "1473076942134710404",
+        "timestamp": "2026-02-16T17:01:51.451-05:00",
+        "author": "NP (So Handsome)",
+        "contentSnippet": "Doesn’t work",
+        "attachmentCount": 0
+      },
+      {
+        "id": "1474136388185358487",
+        "timestamp": "2026-02-19T15:11:43.073-05:00",
+        "author": "BOBBY",
+        "contentSnippet": "Good afternoon Owls, will be on from Wed fulltime. @everyone",
+        "attachmentCount": 0
+      },
+      {
+        "id": "1474138219271553125",
+        "timestamp": "2026-02-19T15:18:59.638-05:00",
+        "author": "Flowseidon (Kian)",
+        "contentSnippet": "https://x.com/FlowbyBobby for ones who do not know @everyone",
+        "attachmentCount": 0
+      },
+      {
+        "id": "1474248352076926986",
+        "timestamp": "2026-02-19T22:36:37.345-05:00",
+        "author": "DemSPXslayer LLC",
+        "contentSnippet": "https://tenor.com/view/theo-von-bobby-bobbeh-mmmm-bobby-mmmm-bobbeh-gif-23258990",
+        "attachmentCount": 0
+      }
+    ],
+    "last5Messages": [
+      {
+        "id": "1498757948082491482",
+        "timestamp": "2026-04-28T14:49:00.399-04:00",
+        "author": "BOBBY",
+        "contentSnippet": "Thank fuck",
+        "attachmentCount": 0
+      },
+      {
+        "id": "1498757982832427018",
+        "timestamp": "2026-04-28T14:49:08.684-04:00",
+        "author": "BOBBY",
+        "contentSnippet": "owls i do everything in power to help us i promise",
+        "attachmentCount": 0
+      },
+      {
+        "id": "1498758167448912002",
+        "timestamp": "2026-04-28T14:49:52.7-04:00",
+        "author": "BOBBY",
+        "contentSnippet": "7145 still the main one",
+        "attachmentCount": 1
+      },
+      {
+        "id": "1498763753859190827",
+        "timestamp": "2026-04-28T15:12:04.604-04:00",
+        "author": "BOBBY",
+        "contentSnippet": "$SPX 7145 king node fucking acquired owls ggs @everyone",
+        "attachmentCount": 1
+      },
+      {
+        "id": "1498776465557164163",
+        "timestamp": "2026-04-28T16:02:35.309-04:00",
+        "author": "BOBBY",
+        "contentSnippet": "Me if i missed that last move today @everyone",
+        "attachmentCount": 1
+      }
+    ]
+  },
+  "bobbyMediaCache": {
+    "manifestPath": "C:\\Users\\conor\\luke\\discord-exports\\bobby\\media\\manifest.json",
+    "bomDetected": true,
+    "bomStripped": true,
+    "manifestEntries": 673,
+    "manifestAuthors": {
+      "bobbyaxl": 668,
+      "atattooedtrader": 3,
+      "kiantrades": 1,
+      "followthewhiterabblt": 1
+    },
+    "manifestDownloadStatuses": {
+      "ok": 673
+    },
+    "manifestDateRange": {
+      "first": "2026-02-25",
+      "last": "2026-04-23"
+    },
+    "localMediaFiles": 673,
+    "localFilesNotInManifest": 0,
+    "manifestRowsMissingLocalFile": 0,
+    "matchResults": {
+      "bobbyImageAttachments": 724,
+      "matchedToLocalManifest": 668,
+      "unmatchedCount": 56,
+      "unmatchedReason": "Manifest only covers through 2026-04-23; 56 attachments from 2026-04-24 onwards are not in manifest.",
+      "unmatchedByDate": {
+        "2026-04-27": 26,
+        "2026-04-28": 30
+      }
+    },
+    "parseBobbyImageFeasibility": {
+      "locallyAvailableImages": 668,
+      "requiresBase64Conversion": true,
+      "existingParser": "lib/parse-bobby.js::parseBobbyImage(base64, livePrices)",
+      "requiresAnthropicVisionCall": true,
+      "feasibility": "FEASIBLE for 668 images. 56 images not locally cached and would need CDN download (URLs may be expired).",
+      "cdnDownloadRisk": "56 images need CDN download. Discord CDN URLs have expiry params and may be stale.",
+      "recommendedAction": "Attempt CDN download for unmatched 56 attachments. Log failures explicitly per-attachment. Do not silently drop."
+    }
+  },
+  "manciniText": {
+    "source": "C:\\Users\\conor\\luke\\data\\backtest\\es-long-bracket\\raw\\mancini\\Mancini.txt",
+    "fileSizeBytes": 109027,
+    "lineCount": 2133,
+    "encoding": "UTF-8 with mojibake (Windows-1252 chars mis-decoded)",
+    "mojibakeSamplesFound": false,
+    "mojibakeSamples": [],
+    "mojibakeNote": "No mojibake found in current file. The ONLY non-ASCII characters are U+2013 en-dashes used as post delimiters [–]. Roadmap warned of mojibake (e.g. â€\", Â©) as a precaution — does not apply to this file. Keep precaution in normalizer for defensive coding in case future re-exports differ.",
+    "postSplitter": "[–]Adam_Mankini (UTF-8 en-dash U+2013)",
+    "postCount": 225,
+    "threadHeaders": [
+      "The Duck Boat for Week of 3/29/2026",
+      "The Duck Boat for Week of 4/12/2026",
+      "The Duck Boat for Week of 4/19/2026",
+      "The Duck Boat for Week of 4/26/2026",
+      "The Duck Boat for Week of 4/5/2026",
+      "The Trash Barge for Week of 3/22/2026"
+    ],
+    "threadHeaderCount": 6,
+    "fileOrder": "most-recent-first (newest post at top, oldest at bottom)",
+    "sampleRelativeTimestamps": [
+      "an hour ago",
+      "17 hours ago",
+      "19 hours ago",
+      "20 hours ago",
+      "22 hours ago",
+      "23 hours ago",
+      "1 day ago",
+      "2 days ago",
+      "4 days ago",
+      "5 days ago",
+      "6 days ago",
+      "7 days ago",
+      "8 days ago",
+      "9 days ago",
+      "10 days ago"
+    ],
+    "relativeTimestampRisk": {
+      "description": "Posts use relative timestamps (\"an hour ago\", \"1 day ago\", \"1 month ago\").",
+      "highConfidencePosts": "Posts within current week thread using \"an hour ago\" / \"X hours ago\" / \"X days ago\" (X <= 6) can be anchored to the thread header week.",
+      "lowConfidencePosts": "Posts with \"1 month ago\" or at thread boundary transitions cannot be pinpointed to exact calendar date.",
+      "currentWeekAnchor": "Week of 4/26/2026 thread is present (top of file). High confidence for recent posts.",
+      "reconstruction": "Must parse thread headers to get week anchor, then use post order + relative offset to reconstruct dates.",
+      "lowConfidenceFlag": "Mark any post that cannot be dated to within ±1 day as timestampConfidence: low.",
+      "countWithMonthAgo": 126
+    },
+    "firstPostSnippet": "2 points an hour ago \r\n\r\nToday is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), ",
+    "lastPostSnippet": "6 points 1 month ago \r\n\r\nWe're back to 6592 in #ES_F and 6592-6623 remains a deep chop zone. Per newsletter ystd, 6592=key support. Overnight we held/trapped it, and rallied 60 points. Now, we are bac"
+  },
+  "satyDerivability": {
+    "sourceFunction": "lib/saty-auto-pull.js::_internal.deriveSatyLevelsFromBars(bars, options)",
+    "formula": "Wilder ATR-14 on daily bars. Levels: prev_close ± (ATR * multiplier) for Fibonacci ratios [0.236, 0.382, 0.5, 0.618, 0.786, 1.0].",
+    "instrumentUsed": "SPX (not ES directly)",
+    "testWithSPXIntraday": {
+      "spxDailyBarsAvailable": 49,
+      "minBarsRequired": 35,
+      "testDerivationResult": "VALID",
+      "sampleOutput": {
+        "referenceDate": "2026-04-28",
+        "prevClose": 7138.83,
+        "atrValue": 80.85,
+        "callTrigger": 7157.91,
+        "putTrigger": 7119.75
+      }
+    },
+    "leakageRisk": "LOW - formula reads bars[bars.length-1] as reference. Backtest caller must slice to bars through date D-1 to prevent leakage.",
+    "backtestRequirement": "For each trading date D, call deriveSatyLevelsFromBars with daily bars sliced to include only dates < D. Never include bars from D or later.",
+    "status": "VERIFIED - formula accessible, derives valid levels from historical SPX daily bars, no lookahead if sliced correctly.",
+    "note": "No user-provided Saty source formula supplied. Using existing lib/saty-auto-pull.js. Recommend manual spot-check against a known live Saty output before using in confluence scoring.",
+    "includeInConfluenceScoringNow": false,
+    "includeReason": "Formula is verified and derivable from historical bars, but needs one manual spot-check against known live output before confluence use."
+  },
+  "readinessGates": {
+    "esHistoricalCoverage": "PARTIAL - 3 missing dates in ES merged stream",
+    "spxHistoricalCoverage": "PASS",
+    "bobbyExportShape": "PASS - 892 BOBBY messages, 724 image attachments, timestamps confirmed",
+    "bobbyLocalCacheMatch": "668 of 724 images locally cached. 56 require CDN download. Gate: PROCEED with CDN attempt",
+    "manciniTimestampRisk": "PARTIAL - recent posts high confidence, older posts and \"1 month ago\" references low confidence. Implement conservative reconstruction before entry generation.",
+    "satyFormula": "PASS - formula verified"
+  },
+  "nextSteps": [
+    "1. Implement lib/backtest-data/bobby-export.js to normalize 892 BOBBY messages.",
+    "2. Implement lib/backtest-data/bobby-image-cache.js: match 668 local + attempt CDN download for 56 unmatched.",
+    "3. Implement lib/backtest-data/mancini-text.js: normalize mojibake, split posts, reconstruct dates using thread headers, flag low-confidence.",
+    "4. Implement lib/backtest-data/saty-historical.js: slice SPX daily bars to date D-1, call deriveSatyLevelsFromBars. Do one manual spot-check.",
+    "5. Acquire ES bars for 3 remaining missing date(s): 2026-03-23, 2026-03-24, 2026-03-25.",
+    "6. After coverage gaps documented, proceed to Phase 1 normalizer builds with tests."
+  ]
+}

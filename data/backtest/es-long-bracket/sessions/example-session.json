@@ -1,0 +1,29 @@
+{
+  "example": true,
+  "date": "2026-04-27",
+  "instrument": "ES",
+  "rthOnly": true,
+  "config": {
+    "defaultStopDistancePts": 3,
+    "minTargetDistancePts": 0.25,
+    "dedupeTolerancePts": 0.25,
+    "slippageTicks": 0,
+    "commissionPerContract": 0
+  },
+  "levels": [
+    { "price": 7193, "source": "saty", "label": "example Saty level" },
+    { "price": 7196, "source": "mancini", "label": "example Mancini long target" },
+    { "price": 7200, "source": "dubz", "label": "example Dubz level" }
+  ],
+  "setups": [
+    {
+      "id": "example-long-1",
+      "time": "2026-04-27T09:35:00-04:00",
+      "direction": "long",
+      "entry": 7190.25,
+      "stop": 7187.25,
+      "notes": "Replace this with a real frozen setup before treating output as evidence."
+    }
+  ]
+}
+

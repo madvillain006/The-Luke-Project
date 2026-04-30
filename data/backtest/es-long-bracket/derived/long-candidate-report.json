@@ -1,0 +1,44 @@
+{
+  "generatedAt": "2026-04-30T00:45:23.206Z",
+  "sessionsScanned": 50,
+  "usableSessionsScanned": 37,
+  "totalCandidates": 92,
+  "sessionsWithCandidates": 7,
+  "atmMachineCandidates": 80,
+  "atmMachineClusters": 5,
+  "sessionsWithAtmMachineCandidates": 5,
+  "byDate": {
+    "2026-04-07": 25,
+    "2026-04-09": 1,
+    "2026-04-16": 10,
+    "2026-04-20": 34,
+    "2026-04-22": 8,
+    "2026-04-23": 13,
+    "2026-04-28": 1
+  },
+  "byTrigger": {
+    "trap_reclaim": 10,
+    "support_hold": 82
+  },
+  "bySourceCombo": {
+    "mancini+saty": 78,
+    "bobby+mancini": 14
+  },
+  "atmByDate": {
+    "2026-04-07": 23,
+    "2026-04-16": 8,
+    "2026-04-20": 32,
+    "2026-04-22": 6,
+    "2026-04-23": 11
+  },
+  "atmScalpVariantCounts": {
+    "atm_2_contract_2pt_scalp": {
+      "total": 80,
+      "riskRewardOk": 14
+    },
+    "atm_2_contract_3pt_scalp": {
+      "total": 80,
+      "riskRewardOk": 80
+    }
+  }
+}

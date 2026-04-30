@@ -1,0 +1,191 @@
+{
+  "generatedAt": "2026-04-29T16:56:33.570Z",
+  "mode": "offline-backtest-session-build",
+  "args": {
+    "derivedDir": "C:\\Users\\conor\\luke\\data\\backtest\\es-long-bracket\\derived",
+    "sessionsDir": "C:\\Users\\conor\\luke\\data\\backtest\\es-long-bracket\\sessions",
+    "start": null,
+    "end": null
+  },
+  "summary": {
+    "totalSessions": 50,
+    "eligibleSessions": 37,
+    "excludedSessions": 13,
+    "sessionsWithBobby": 42,
+    "sessionsWithEntryReadyMancini": 22,
+    "sessionsWithSaty": 28,
+    "eligibleSessionsWithBobby": 33,
+    "eligibleSessionsWithEntryReadyMancini": 20,
+    "eligibleSessionsWithSaty": 23,
+    "excludedByReason": {
+      "missing_es_rth_bars,missing_es_session_bars": 10,
+      "missing_es_rth_bars": 3
+    },
+    "excludedSessionDetails": [
+      {
+        "date": "2026-02-19",
+        "reason": "missing_es_rth_bars,missing_es_session_bars",
+        "bobbyMessages": 1,
+        "bobbyImages": 0,
+        "entryReadyMancini": 0,
+        "satyIncluded": false
+      },
+      {
+        "date": "2026-02-23",
+        "reason": "missing_es_rth_bars,missing_es_session_bars",
+        "bobbyMessages": 2,
+        "bobbyImages": 0,
+        "entryReadyMancini": 0,
+        "satyIncluded": false
+      },
+      {
+        "date": "2026-02-25",
+        "reason": "missing_es_rth_bars,missing_es_session_bars",
+        "bobbyMessages": 18,
+        "bobbyImages": 13,
+        "entryReadyMancini": 0,
+        "satyIncluded": false
+      },
+      {
+        "date": "2026-02-26",
+        "reason": "missing_es_rth_bars,missing_es_session_bars",
+        "bobbyMessages": 25,
+        "bobbyImages": 22,
+        "entryReadyMancini": 0,
+        "satyIncluded": false
+      },
+      {
+        "date": "2026-02-27",
+        "reason": "missing_es_rth_bars,missing_es_session_bars",
+        "bobbyMessages": 19,
+        "bobbyImages": 16,
+        "entryReadyMancini": 0,
+        "satyIncluded": false
+      },
+      {
+        "date": "2026-03-20",
+        "reason": "missing_es_rth_bars",
+        "bobbyMessages": 25,
+        "bobbyImages": 21,
+        "entryReadyMancini": 0,
+        "satyIncluded": false
+      },
+      {
+        "date": "2026-03-23",
+        "reason": "missing_es_rth_bars,missing_es_session_bars",
+        "bobbyMessages": 20,
+        "bobbyImages": 18,
+        "entryReadyMancini": 0,
+        "satyIncluded": true
+      },
+      {
+        "date": "2026-03-24",
+        "reason": "missing_es_rth_bars,missing_es_session_bars",
+        "bobbyMessages": 33,
+        "bobbyImages": 28,
+        "entryReadyMancini": 0,
+        "satyIncluded": true
+      },
+      {
+        "date": "2026-03-25",
+        "reason": "missing_es_rth_bars,missing_es_session_bars",
+        "bobbyMessages": 50,
+        "bobbyImages": 42,
+        "entryReadyMancini": 0,
+        "satyIncluded": true
+      },
+      {
+        "date": "2026-04-03",
+        "reason": "missing_es_rth_bars",
+        "bobbyMessages": 0,
+        "bobbyImages": 0,
+        "entryReadyMancini": 7,
+        "satyIncluded": true
+      },
+      {
+        "date": "2026-04-29",
+        "reason": "missing_es_rth_bars",
+        "bobbyMessages": 0,
+        "bobbyImages": 0,
+        "entryReadyMancini": 8,
+        "satyIncluded": true
+      },
+      {
+        "date": "2026-04-30",
+        "reason": "missing_es_rth_bars,missing_es_session_bars",
+        "bobbyMessages": 0,
+        "bobbyImages": 0,
+        "entryReadyMancini": 0,
+        "satyIncluded": false
+      },
+      {
+        "date": "2026-05-01",
+        "reason": "missing_es_rth_bars,missing_es_session_bars",
+        "bobbyMessages": 0,
+        "bobbyImages": 0,
+        "entryReadyMancini": 0,
+        "satyIncluded": false
+      }
+    ]
+  },
+  "housekeeping": {
+    "removedStaleSessionFiles": 48
+  },
+  "targetDates": [
+    "2026-02-19",
+    "2026-02-23",
+    "2026-02-25",
+    "2026-02-26",
+    "2026-02-27",
+    "2026-03-02",
+    "2026-03-03",
+    "2026-03-04",
+    "2026-03-05",
+    "2026-03-06",
+    "2026-03-09",
+    "2026-03-10",
+    "2026-03-11",
+    "2026-03-12",
+    "2026-03-13",
+    "2026-03-16",
+    "2026-03-17",
+    "2026-03-18",
+    "2026-03-19",
+    "2026-03-20",
+    "2026-03-23",
+    "2026-03-24",
+    "2026-03-25",
+    "2026-03-26",
+    "2026-03-27",
+    "2026-03-30",
+    "2026-03-31",
+    "2026-04-01",
+    "2026-04-02",
+    "2026-04-03",
+    "2026-04-06",
+    "2026-04-07",
+    "2026-04-08",
+    "2026-04-09",
+    "2026-04-10",
+    "2026-04-13",
+    "2026-04-14",
+    "2026-04-15",
+    "2026-04-16",
+    "2026-04-17",
+    "2026-04-20",
+    "2026-04-21",
+    "2026-04-22",
+    "2026-04-23",
+    "2026-04-24",
+    "2026-04-27",
+    "2026-04-28",
+    "2026-04-29",
+    "2026-04-30",
+    "2026-05-01"
+  ],
+  "outputs": {
+    "sessionsDir": "C:\\Users\\conor\\luke\\data\\backtest\\es-long-bracket\\sessions",
+    "sessionBuildReportJson": "C:\\Users\\conor\\luke\\data\\backtest\\es-long-bracket\\derived\\session-build-report.json",
+    "sessionBuildReportMd": "C:\\Users\\conor\\luke\\data\\backtest\\es-long-bracket\\derived\\session-build-report.md"
+  }
+}

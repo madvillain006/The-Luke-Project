@@ -1,0 +1,74 @@
+{
+  "generatedAt": "2026-04-29T16:55:57.890Z",
+  "startedAt": "2026-04-29T16:55:56.385Z",
+  "mode": "offline-backtest-data-build",
+  "args": {
+    "bobby": "C:\\Users\\conor\\luke\\data\\backtest\\es-long-bracket\\raw\\bobby json.json",
+    "mancini": "C:\\Users\\conor\\luke\\data\\backtest\\es-long-bracket\\raw\\mancini\\Mancini.txt",
+    "manifest": "C:\\Users\\conor\\luke\\discord-exports\\bobby\\media\\manifest.json",
+    "mediaDir": "C:\\Users\\conor\\luke\\discord-exports\\bobby\\media",
+    "out": "C:\\Users\\conor\\luke\\data\\backtest\\es-long-bracket\\derived",
+    "start": null,
+    "end": null
+  },
+  "bobby": {
+    "totalExportMessages": 934,
+    "bobbyMessagesInExport": 892,
+    "bobbyMessagesAfterFilter": 892,
+    "firstTimestamp": "2026-02-19T15:11:43.073-05:00",
+    "lastTimestamp": "2026-04-28T16:02:35.309-04:00",
+    "totalAttachments": 724,
+    "totalImageAttachments": 724
+  },
+  "bobbyImageCache": {
+    "total": 724,
+    "local_matched": 668,
+    "unmatched": 56
+  },
+  "mancini": {
+    "totalPosts": 225,
+    "highConfidence": 177,
+    "weekConfidence": 48,
+    "lowConfidence": 0,
+    "entryGenerationReady": 177,
+    "scrapeDate": "2026-04-29"
+  },
+  "saty": {
+    "datesRequested": 56,
+    "datesValid": 33,
+    "datesInvalid": 23,
+    "invalidDates": [
+      "2026-02-19",
+      "2026-02-23",
+      "2026-02-25",
+      "2026-02-26",
+      "2026-02-27",
+      "2026-03-01",
+      "2026-03-02",
+      "2026-03-03",
+      "2026-03-04",
+      "2026-03-05",
+      "2026-03-06",
+      "2026-03-08",
+      "2026-03-09",
+      "2026-03-10",
+      "2026-03-11",
+      "2026-03-12",
+      "2026-03-13",
+      "2026-03-15",
+      "2026-03-16",
+      "2026-03-17",
+      "2026-03-18",
+      "2026-03-19",
+      "2026-03-20"
+    ]
+  },
+  "outputs": {
+    "bobbyMessages": "bobby-messages.jsonl",
+    "bobbyImageCache": "bobby-image-cache.jsonl",
+    "manciniPosts": "mancini-posts.jsonl",
+    "satyLevelsByDate": "saty-levels-by-date.json",
+    "datasetBuildReport": "dataset-build-report.json",
+    "datasetBuildMd": "dataset-build-report.md"
+  }
+}

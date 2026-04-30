@@ -201,9 +201,6 @@ function buildEntriesAlignment(signal, modernDubz, modernBobby) {
   }
 
   const freshness = summarizePhase2Freshness(records, modernDubz, modernBobby);
-  if (!freshness.dubz_today && !freshness.bobby_today) {
-    return { ok: false, reason: `No fresh Bobby/Dubz context loaded today for ${instrument}`, freshness };
-  }
 
   const currentPrice = Number.isFinite(signal.entry) ? signal.entry : null;
   const ranked = records
@@ -375,18 +372,47 @@ async function buildAutonomousPreflight(state) {
 
 async function stageTrade(state, signal) {
   const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+
+  const isAtm3pt = signal.strategy === 'atm_3pt_scalp' || signal.strategy === 'atm_3pt';
+  const isLaneB = isAtm3pt;
+  if (isAtm3pt && Number.isFinite(signal.entry)) {
+    const dir = String(signal.direction || '').toUpperCase();
+    const tpOffset = 3.00;
+    const maxStopPts = 3.00;
+    const verifiedTarget = dir === 'SHORT'
+      ? Math.round((signal.entry - tpOffset) * 4) / 4
+      : Math.round((signal.entry + tpOffset) * 4) / 4;
+    if (Number.isFinite(signal.stop)) {
+      const rawRisk = Math.abs(signal.entry - signal.stop);
+      if (rawRisk > maxStopPts) {
+        signal.stop = dir === 'SHORT'
+          ? Math.round((signal.entry + maxStopPts) * 4) / 4
+          : Math.round((signal.entry - maxStopPts) * 4) / 4;
+      }
+    }
+    signal.target = verifiedTarget;
+    signal.contracts = 2;
+    signal.tp_rule = 'atm_3pt_scalp: entry +/- 3.00 ES pts';
+    signal.sl_rule = 'structural stop, capped at <= 3.00 ES pts';
+  }
+
   state.pending_signal = { ...signal, staged_at: new Date().toISOString(), expires_at: expiresAt };
   saveState(state);
   log("autonomous-staged", signal);
 
   const pending = getPendingSignalPayload(state);
+  const ruleLine = isAtm3pt
+    ? `Rules: atm_3pt_scalp Lane B | TP entry+3.00 pts | SL structural <=3 pts | 2 contracts`
+    : `Rules: ${signal.strategy || 'standard'} | dynamic TP/SL`;
   notifyLuke(
     `02B SIGNAL - TAP TO EXECUTE\n` +
     `${signal.direction} ${signal.ticker || "MNQ"}\n` +
     `Entry: ${signal.entry} | Stop: ${signal.stop} | Target: ${signal.target}\n` +
     `Risk: $${pending.risk_dollars} | R:R ${pending.rr}:1\n` +
+    `${ruleLine}\n` +
     `${signal.reason}\n` +
-    `Expires in 5 min - confirm in Luke`
+    `Expires in 5 min - confirm in Luke\n` +
+    `⚠️ REMINDER: Look for fake breakdowns (flushes below a key level that immediately recover). `
   );
 
   if (global.broadcast) {
@@ -537,6 +563,17 @@ router.post("/execute-staged", async (req, res) => {
   if (!state.running) { state.pending_signal = null; saveState(state); return res.json({ executed: false, reason: "02B not running" }); }
 
   const signal = state.pending_signal;
+
+  if (signal.strategy === 'atm_3pt_scalp' || signal.strategy === 'atm_3pt') {
+    const dailyPnl = state.daily_pnl || 0;
+    if (dailyPnl <= -1000) {
+      console.warn('⚠ EXPOSURE CAP TRIGGERED: atm_3pt blocked to protect Apex floor');
+      state.pending_signal = null;
+      saveState(state);
+      return res.status(403).json({ executed: false, reason: 'Apex floor guard: daily PnL at $' + dailyPnl + ', ATM 3pt blocked' });
+    }
+  }
+
   res.json({ executing: true, signal });
 
   try {
@@ -1037,13 +1074,13 @@ router.post("/clear-critical", (req, res) => {
   }
   const state = loadState();
   if (!state.critical_mismatch && !state.execution_blocked) {
-    return res.json({ cleared: false, reason: "No critical_mismatch or execution_blocked flag set â€” nothing to clear" });
+    return res.json({ cleared: false, reason: "No critical_mismatch or execution_blocked flag set - nothing to clear" });
   }
   state.critical_mismatch = false;
   state.execution_blocked = false;
   saveState(state);
   log("autonomous-critical-cleared", { reason: reason.trim(), cleared_by: "operator" });
-  res.json({ cleared: true, note: "critical_mismatch and execution_blocked cleared. Trading remains stopped â€” start manually." });
+  res.json({ cleared: true, note: "critical_mismatch and execution_blocked cleared. Trading remains stopped - start manually." });
 });
 
 router.post("/launch", async (req, res) => {
@@ -1061,7 +1098,7 @@ router.post("/launch", async (req, res) => {
   log("autonomous-launch-windows", { windows: windows.map(w => w.name) });
 });
 
-// â”€â”€ SHADOW MODE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// SHADOW MODE
 router.get("/shadow/summary", (req, res) => {
   res.json(getShadowSummary(loadState()));
 });
@@ -1082,9 +1119,9 @@ router.post("/shadow/reset", (req, res) => {
   res.json({ reset: true, started: state.shadow_session.started });
 });
 
-// â”€â”€ FAULT-INJECTION TEST HOOKS (non-production only) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// FAULT-INJECTION TEST HOOKS (non-production only)
 if (process.env.NODE_ENV === "test") {
-  // Generic state patch â€” lets test scripts inject pending signals, open positions, etc.
+  // Generic state patch - lets test scripts inject pending signals, open positions, etc.
   router.post("/_test/inject-state", (req, res) => {
     const patch = req.body || {};
     const state = loadState();
@@ -1094,7 +1131,7 @@ if (process.env.NODE_ENV === "test") {
     res.json({ ok: true, patched: Object.keys(patch) });
   });
 
-  // Simulate the full protection-failure â†’ emergencyFlatten sequence without Tradovate
+  // Simulate the full protection-failure -> emergencyFlatten sequence without Tradovate
   router.post("/_test/simulate-protection-failure", (req, res) => {
     const { flatten_succeeds = false } = req.body || {};
     const state = loadState();
@@ -1141,7 +1178,7 @@ if (process.env.NODE_ENV === "test") {
     });
   });
 
-  // Run reconcile logic with a synthetic phantom broker position â€” no real Tradovate call
+  // Run reconcile logic with a synthetic phantom broker position - no real Tradovate call
   router.post("/_test/reconcile-phantom", (req, res) => {
     const state = loadState();
     const syntheticOpenPositions = [{ netPos: 1, contractId: 99901 }];
@@ -1162,5 +1199,11 @@ if (process.env.NODE_ENV === "test") {
     res.json(result);
   });
 }
+
+router.get("/force-saty", async (req, res) => {
+  const { runSatyAutoPull } = require('../lib/saty-auto-pull');
+  const result = await runSatyAutoPull();
+  res.json({ message: "Saty levels pulled manually.", result });
+});
 
 module.exports = router;

@@ -1,0 +1,38 @@
+{
+  "file": "scheduler.js",
+  "scanned": "2026-04-19T23:12:19.788Z",
+  "findings": [
+    {
+      "line": 193,
+      "category": "scheduler_waste",
+      "severity": "high",
+      "issue": "EOD update duplicated: setInterval fires at 16:59, but same endpoint called again in main scheduler at hour 17 (line 329-337)",
+      "suggestion": "Remove the 5PM fetch call or consolidate into single EOD logic to avoid double-triggering",
+      "est_impact": "Redundant API calls, potential race conditions on account state updates"
+    },
+    {
+      "line": 265,
+      "category": "error_gap",
+      "severity": "med",
+      "issue": "RSS feed polling makes two sequential HTTP requests per item (scan-context, then intake) without checking if first response indicates rejection—wasted bandwidth",
+      "suggestion": "Only call intake endpoint if scan-context explicitly returns affirmative match",
+      "est_impact": "Token waste on unnecessary API calls for rejected opportunities"
+    },
+    {
+      "line": 281,
+      "category": "duplication",
+      "severity": "med",
+      "issue": "post() helper at line 13 is not used; fetch with manual JSON.stringify repeated 8+ times (lines 89, 120, 227, 265, 269, 313, 323, 330, 345, 350)",
+      "suggestion": "Use post() helper consistently instead of raw fetch calls",
+      "est_impact": "Harder to maintain, inconsistent error handling"
+    },
+    {
+      "line": 313,
+      "category": "token_waste",
+      "severity": "low",
+      "issue": "Discord scrape at 2AM fires without awaiting—runScraper runs async but .catch() means errors silently logged; no retry or alert if it fails",
+      "suggestion": "Add explicit error logging or notify endpoint call on scrape failure",
+      "est_impact": "Silent failures reduce visibility into data collection gaps"
+    }
+  ]
+}

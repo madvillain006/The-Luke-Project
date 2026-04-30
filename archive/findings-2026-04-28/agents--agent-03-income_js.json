@@ -1,0 +1,38 @@
+{
+  "file": "agents\\agent-03-income.js",
+  "scanned": "2026-04-19T23:12:28.418Z",
+  "findings": [
+    {
+      "line": 115,
+      "category": "token_waste",
+      "severity": "med",
+      "issue": "Claude Haiku model called for weekly summary that could be computed with simple arithmetic; no AI reasoning required.",
+      "suggestion": "Remove API call and compute recommendation from shift data directly (e.g., 'Focus on zone X which averages $X/hr' or 'Avoid times below $Y/hr').",
+      "est_impact": "Saves ~$0.01 per summary + eliminates network latency; frees token budget for higher-value agent reasoning."
+    },
+    {
+      "line": 82,
+      "category": "schema_drift",
+      "severity": "med",
+      "issue": "Memory structure uses inconsistent naming: 'income_this_week' vs 'income_last_week' without explicit schema definition; shifts stored separately in JSONL.",
+      "suggestion": "Define explicit memory schema (shifts array in memory.json, or document why JSONL separation is intentional) to prevent field name drift.",
+      "est_impact": "Prevents future bugs where agent assumes wrong field names; improves auditability."
+    },
+    {
+      "line": 95,
+      "category": "error_gap",
+      "severity": "med",
+      "issue": "No validation that 'miles' is non-negative; negative mileage would produce negative gas_cost and inflate hourly rate artificially.",
+      "suggestion": "Add `if (miles < 0) return res.status(400).json({ error: 'miles must be >= 0' })`",
+      "est_impact": "Prevents corrupted shift data that breaks weekly summaries and pace calculations."
+    },
+    {
+      "line": 128,
+      "category": "dead_code",
+      "severity": "low",
+      "issue": "bestShift and worstShift always exist if thisWeek.length > 0, but no guard for empty thisWeek array in /income-summary path (early return only in loadShifts edge case).",
+      "suggestion": "Add `if (thisWeek.length === 0) return res.json({ reply: 'No shifts this week.' })` before bestShift assignment.",
+      "est_impact": "Prevents undefined reference errors in response formatting if week filter matches no shifts."
+    }
+  ]
+}

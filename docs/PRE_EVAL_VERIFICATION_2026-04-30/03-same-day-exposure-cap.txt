@@ -1,0 +1,42 @@
+CHECK 3: SAME-DAY EXPOSURE CAP
+================================
+Date: 2026-04-30
+
+QUESTION: If Lane A (standard_3c or first ATM tap) loses today, is Lane B (ATM tap-3+) 
+          automatically blocked or sized down?
+
+FINDING: NO AUTOMATIC CAP EXISTS FOR THIS SCENARIO. *** CRITICAL FAILURE ***
+
+CODE AUDIT:
+  lib/slash-commands.js (/alert handler):
+    - Has Apex floor guard (balance vs trail_floor) — per-trade absolute check only
+    - Uses STATIC balance from apex-state.json (manually updated via /balance)
+    - Does NOT read today's realized losses or remaining headroom dynamically
+    - No "Lane A lost → reduce Lane B" logic anywhere in this file
+
+  trading/risk.js:
+    - getApexConsistencyReason(): fires when daily_pnl >= 90% of daily consistency cap
+      → This is a PROFIT CAP (blocks when making too much), not a loss-based block
+      → Requires total_eval_pnl > 0 to fire at all
+    - getApexPreTradeFloorBlock(): per-trade absolute floor check (autonomous router only)
+
+  trading/router.js:
+    - kill_day: manual only, set via POST /kill endpoint — not auto-triggered by losses
+    - daily_loss_limit: stored in state, displayed in status, but NO enforcement code found
+      (grep shows it's set via /configure but never checked against daily_pnl to halt trading)
+    - Consistency cap only fires for profit capping, never for "already lost today"
+
+WHAT THIS MEANS FOR MONDAY:
+  If Lane A (standard_3c, 3 contracts × up to $150 max = $450 loss) fires and loses,
+  Lane B (ATM 3pt, 2 contracts × up to $150 max = $300 loss) will still be offered 
+  without any automatic size reduction or block.
+  On a bad day like 04-07: combined loss could be -$2,225 (stop_first) with NO automatic 
+  interlock between lanes.
+
+  OPTIMAL_STRATEGIES.md acknowledges this explicitly:
+    "The most conservative safe approach: monitor same-day combined exposure before taking 
+     the ATM lane on a day where the standard_3c trade has already lost."
+  This is a MANUAL check — there is no automation.
+
+RESULT: CRITICAL FAILURE — no automatic same-day exposure cap between lanes.
+        Operator must manually track and gate Lane B exposure on losing Lane A days.

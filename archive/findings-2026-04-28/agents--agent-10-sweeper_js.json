@@ -1,0 +1,46 @@
+{
+  "file": "agents\\agent-10-sweeper.js",
+  "scanned": "2026-04-19T23:07:13.615Z",
+  "findings": [
+    {
+      "line": 293,
+      "category": "token_waste",
+      "severity": "high",
+      "issue": "Synthesis prompt loads all findings into memory with 12000-char slice, then discards unsliced rejected patterns — inconsistent truncation wastes tokens on rejected data that may exceed budget.",
+      "suggestion": "Slice rejected patterns to same 2000-char limit consistently, or implement priority-based truncation (findings first, patterns only if budget permits).",
+      "est_impact": "~500-1000 tokens per synthesis run"
+    },
+    {
+      "line": 238,
+      "category": "token_waste",
+      "severity": "med",
+      "issue": "SCAN_SYSTEM prompt is set as ephemeral cache control but never re-used across different file scans — caching overhead exceeds benefit for single-use prompts.",
+      "suggestion": "Remove cache_control or batch scans under single message thread to amortize cache cost.",
+      "est_impact": "~50 tokens overhead per scan"
+    },
+    {
+      "line": 265,
+      "category": "error_gap",
+      "severity": "med",
+      "issue": "File content sliced to 45000 chars but no logging of truncation; downstream findings may reference lines beyond actual truncated content, creating false positives.",
+      "suggestion": "Log truncation event and add disclaimer to findings JSON or include actual_bytes_scanned field.",
+      "est_impact": "Silent data loss for large files"
+    },
+    {
+      "line": 376,
+      "category": "schema_drift",
+      "severity": "low",
+      "issue": "Delta scan reorders queue (modified files first) but SWEEPER_MAP last_scanned timestamps only updated after full batch completes — state inconsistency if batch interrupted.",
+      "suggestion": "Update last_scanned timestamps immediately after each file scan completes, not after full batch.",
+      "est_impact": "Potential re-scans of same files"
+    },
+    {
+      "line": 475,
+      "category": "dead_code",
+      "severity": "low",
+      "issue": "loadCosts() called twice per getCombinedDailyCost() invocation (once for ARCH_COSTS, once for SWEEPER_COSTS) — redundant file I/O.",
+      "suggestion": "Load both cost files once, merge them in getCombinedDailyCost().",
+      "est_impact": "2 extra file reads per budget check"
+    }
+  ]
+}

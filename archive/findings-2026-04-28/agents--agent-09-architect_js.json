@@ -1,0 +1,46 @@
+{
+  "file": "agents\\agent-09-architect.js",
+  "scanned": "2026-04-19T23:11:27.143Z",
+  "findings": [
+    {
+      "line": 261,
+      "category": "token_waste",
+      "severity": "high",
+      "issue": "Fetch call to /notify endpoint lacks await and error handling, causing untracked promise rejection and potential resource leak.",
+      "suggestion": "Either await the fetch or add explicit .catch() to prevent silent failures and log errors to ARCH_LOG.",
+      "est_impact": "Multiple unhandled promise rejections accumulate; memory waste on abandoned fetch operations."
+    },
+    {
+      "line": 271,
+      "category": "token_waste",
+      "severity": "high",
+      "issue": "Second fetch call to /notify (line 271) also lacks await, creating identical resource leak pattern.",
+      "suggestion": "Consolidate both notification fetches into a single helper function with proper error logging.",
+      "est_impact": "Repeated resource leaks multiply with each high-severity scan result."
+    },
+    {
+      "line": 235,
+      "category": "duplication",
+      "severity": "med",
+      "issue": "Date string slicing `new Date().toISOString().slice(0, 10)` appears 3 times (lines 74, 305).",
+      "suggestion": "Extract as a utility function `function getToday() { return new Date().toISOString().slice(0, 10); }`.",
+      "est_impact": "Minor code maintenance burden; negligible token cost but poor style."
+    },
+    {
+      "line": 297,
+      "category": "dead_code",
+      "severity": "low",
+      "issue": "REJECTED constant (line 18) and PROPOSALS directory are initialized but REJECTED is never written to or read from anywhere in the code.",
+      "suggestion": "Either implement rejection tracking logic or remove the unused constant and related file paths.",
+      "est_impact": "Dead constant adds confusion and maintains unused file path."
+    },
+    {
+      "line": 225,
+      "category": "error_gap",
+      "severity": "med",
+      "issue": "JSON.parse on line 225 within try-catch silently discards parse errors; malformed ARCH_LOG entries corrupt lastEntry without logging.",
+      "suggestion": "Log parse failures to archLog before catching, or validate JSONL structure on write.",
+      "est_impact": "Silent data corruption makes debugging zero-streak logic failures harder."
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "file": "monitor.py",
+  "scanned": "2026-04-19T23:14:14.177Z",
+  "findings": [
+    {
+      "line": 67,
+      "category": "token_waste",
+      "severity": "med",
+      "issue": "Screenshot is captured but never used in the API request payload",
+      "suggestion": "Remove screenshot capture or include img_base64 in the payload if vision analysis is needed",
+      "est_impact": "Saves ~50KB per channel scan × 16 channels = unnecessary bandwidth/memory"
+    },
+    {
+      "line": 77,
+      "category": "error_gap",
+      "severity": "med",
+      "issue": "API response error handling missing—if /see returns invalid JSON or empty reply, no fallback exists",
+      "suggestion": "Add try-except around res.json() and provide default error message instead of uncaught exception",
+      "est_impact": "Monitor crash if Jarvis API returns malformed response"
+    },
+    {
+      "line": 100,
+      "category": "search_trap",
+      "severity": "low",
+      "issue": "Alert filtering uses uppercase string matching on result, but result parsing depends on case-sensitive line prefixes",
+      "suggestion": "Normalize case once at start: result = result.upper(), then parse lines consistently",
+      "est_impact": "Mixed-case responses may pass filter but fail rating detection, silently dropping alerts"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+CHECK 1: SERVER HEALTH
+======================
+Date: 2026-04-30 ~04:26 ET (pre-market)
+
+PM2 PROCESS LIST:
+  id=0  luke-server    status=online  uptime=14h+  restarts=17
+  id=1  luke-scheduler status=online  uptime=14h+  restarts=16
+  luke-intraday: NOT IN PM2 LIST (not in ecosystem.config.js)
+
+NOTE: User checklist expects "luke-intraday" as third process.
+      ecosystem.config.js defines only luke-server and luke-scheduler.
+      luke-intraday appears to be ad-hoc, not managed by pm2.
+
+HIGH RESTART COUNT: 17/16 restarts. Both processes currently stable at 14h+ uptime.
+
+/health response:
+  {"ok":true,"uptime_sec":74500,"version":"2.0","trades_today":0,"last_signal":null,
+   "market":{"open":false,"session":"pre","message":"Pre-market (before 9:30 AM ET)"}}
+
+/status response:
+  LUKE ONLINE
+  Market: CLOSED - Opens in 4h 55m
+  Levels: not loaded (note: saty loaded via test during verification)
+  Saty: loaded (test data - see WARNING below)
+  Trades: 0 trades, 0W 0L, net +0.00 pts
+  State: CLOSED - Market opens in 4h 55m
+  Regime: NEUTRAL - No signals yet today
+  Kat: no recent context
+  Last signal: none today
+
+/balance response:
+  APEX BALANCE
+  Apex balance: 50,717 | Floor: 48,217 | Headroom: 2,500
+  Last updated: 4/27/2026, 1:35:29 PM
+
+/ready response:
+  READY SESSION READINESS
+  --------------------
+  X Balance NOT set today - run /balance
+  X Saty ATR levels NOT loaded - run /saty
+  X RichyDubz levels NOT loaded - paste /dubz
+  X Bobby heatmap NOT loaded - paste heatmap and run /heatmap
+  OK Apex floor safe ($2,500 headroom)
+  --------------------
+  X NOT READY - fix above before trading
+
+RESULT: PASS (server live, all expected endpoints respond)
+WARNING: luke-intraday not found in pm2 (not configured in ecosystem.config.js)
+WARNING: /balance last updated 2026-04-27 - stale. Must re-run /balance before trading.
+WARNING: Test commands during verification loaded fake saty levels (5800-5920). 
+         Operator must reload real Saty levels before trading.

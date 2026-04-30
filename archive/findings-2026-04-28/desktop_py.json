@@ -1,0 +1,38 @@
+{
+  "file": "desktop.py",
+  "scanned": "2026-04-19T23:13:10.891Z",
+  "findings": [
+    {
+      "line": 24,
+      "category": "error_gap",
+      "severity": "high",
+      "issue": "open_url() closes current window with 'ctrl+w' before opening URL, causing unintended data loss",
+      "suggestion": "Remove pyautogui.hotkey('ctrl', 'w') or add user confirmation before closing",
+      "est_impact": "Users may lose unsaved work when opening URLs"
+    },
+    {
+      "line": 18,
+      "category": "error_gap",
+      "severity": "med",
+      "issue": "type_text() uses pyautogui.typewrite() which fails with special characters and non-ASCII text",
+      "suggestion": "Use pyautogui.write() or handle special characters separately",
+      "est_impact": "Text input will silently fail for passwords, URLs, or non-ASCII input"
+    },
+    {
+      "line": 49,
+      "category": "error_gap",
+      "severity": "med",
+      "issue": "click(), type(), scroll() commands lack bounds validation for screen coordinates",
+      "suggestion": "Validate x,y coordinates against screen size before execution",
+      "est_impact": "Clicks on non-existent screen areas will fail silently without feedback"
+    },
+    {
+      "line": 70,
+      "category": "error_gap",
+      "severity": "med",
+      "issue": "No exception handling for int() conversion in click, scroll, and press commands",
+      "suggestion": "Wrap sys.argv conversions in try-except to handle invalid numeric input",
+      "est_impact": "Script crashes with ValueError on malformed arguments instead of user-friendly error"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+CHECK 4: SLASH COMMAND END-TO-END
+===================================
+Date: 2026-04-30 (pre-market)
+
+All commands tested via POST http://localhost:3000/chat {"message":"<cmd>"}
+
+/status
+  Response: LUKE ONLINE / Market: CLOSED / Trades: 0 / Regime: NEUTRAL
+  Result: PASS ✓ — no errors, no mojibake
+
+/balance
+  Response: APEX BALANCE / Apex balance: 50,717 | Floor: 48,217 | Headroom: 2,500
+  Result: PASS ✓ — fields present, last updated 4/27/2026
+
+/ready
+  Response: READY SESSION READINESS / all X (missing prep) / NOT READY
+  Result: PASS ✓ — correct before session prep
+
+/saty (5 levels — should reject)
+  Response: ERROR expected 13 levels, got 5 - paste the full Saty output
+  Result: PASS ✓ — validation works correctly
+
+/saty (13 levels: 5920 5910...5800)
+  Response: SATY LEVELS SAVED / all 13 levels displayed correctly
+  Result: PASS ✓
+
+/dubz (text paste with ES levels at 5800/5790/5815)
+  Response: Dubz levels updated. NQ: 0 | ES: 0 | ... "no price levels extracted from text"
+  Note: parseDubzText() called directly extracted these same ES levels fine.
+        Discrepancy likely: /dubz slash handler strips "/dubz " prefix then re-routes 
+        through a different parse path. Format or instrument inference mismatch.
+  Result: PARTIAL FAIL — dubz parser extracts levels when called directly but
+          /dubz command produced 0 levels from equivalent text input.
+
+/heatmap
+  Response: HEATMAP / Paste Bobby's heatmap text then run /heatmap [paste text here] /
+            Or paste the image directly into chat
+  Result: PASS ✓ — usage instructions returned correctly
+
+/alert ES long 5800 5797 5810
+  Response: MARKET CLOSED Outside market hours - wait for session open.
+  Result: PASS ✓ — correct gate for after-hours (cannot test Apex guard via HTTP)
+
+/verdict (no prep loaded)
+  Response: No fresh confluence verdict available. Run /saty, /dubz, /heatmap first...
+  Result: PASS ✓ — correct dependency gate
+
+/entries ES (no prep loaded)
+  Response: No fresh entries available for ES. Run /saty, /dubz, /heatmap first...
+  Result: PASS ✓ — correct dependency gate
+
+/alert: UNTESTED for live signal flow — market closed. Apex guard tested via direct logic.
+
+ISSUES:
+  - /dubz: 0 levels extracted via HTTP command vs direct parse which works. Needs investigation.
+  - /balance: Last updated 2026-04-27. Stale before Monday session — must re-run.

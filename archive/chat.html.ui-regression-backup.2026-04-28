@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Luke</title>
+  <style>
+    :root {
+      --bg:  #080c10;
+      --bg2: #0d1117;
+      --bg3: #0d1520;
+      --b1:  #1a2332;
+      --b2:  #2a3a4a;
+      --dim: #4a5568;
+      --med: #8a9ab0;
+      --fg:  #c9d4e0;
+      --green: #4ade80; --gbg: #0d1a0d; --gbr: #1a3a1a;
+      --red:   #f87171; --rbg: #1a0d0d; --rbr: #4a1a1a;
+      --yel:   #e2b96a; --ybg: #0d0900; --ybr: #4a3a00;
+      --blu:   #60a5fa; --bbr: #1a2a4a;
+      --pur:   #8b7cf8;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: -apple-system, "Segoe UI", sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100dvh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .has-tt { position: relative; }
+    .tooltip { display: none; } /* JS handles positioning */
+
+    /* JS tooltip ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â appended to body, never clipped */
+    #js-tooltip {
+      position: fixed;
+      z-index: 99999;
+      background: #1a1f2e;
+      border: 1px solid #444;
+      padding: 4px 9px;
+      border-radius: 4px;
+      font-size: 11px;
+      color: #c9d4e0;
+      pointer-events: none;
+      white-space: nowrap;
+      display: none;
+      font-family: -apple-system, "Segoe UI", sans-serif;
+    }
+
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ TOP BAR ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+    #top-bar {
+      height: 32px;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      border-bottom: 1px solid var(--b1);
+      flex-shrink: 0;
+      font-size: 11px;
+      overflow: hidden;
+      gap: 0;
+    }
+    .tb-seg {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0 7px;
+      height: 100%;
+      white-space: nowrap;
+    }
+    .tb-seg:first-child { padding-left: 2px; }
+    .tb-div { color: var(--b1); font-size: 15px; user-select: none; flex-shrink: 0; }
+    .tb-lbl { color: var(--dim); font-size: 10px; letter-spacing: 0.3px; }
+
+    #tb-dot { font-size: 9px; color: var(--green); }
+    #tb-dot.err { color: var(--red); }
+    #tb-luke-text { color: var(--med); letter-spacing: 1px; font-size: 11px; }
+
+    #chip-mode {
+      font-size: 9px;
+      letter-spacing: 1px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      border: 1px solid var(--b1);
+      color: var(--dim);
+      cursor: default;
+    }
+    #chip-mode.paper { color: var(--yel); border-color: var(--ybr); background: var(--ybg); }
+    #chip-mode.live  { color: var(--green); border-color: var(--gbr); background: var(--gbg); }
+
+    #tb-market-val { color: var(--dim); }
+    #tb-market-val.open    { color: var(--green); }
+    #tb-market-val.prepost { color: var(--yel); }
+
+    #tb-regime-val { color: var(--blu); }
+    #tb-regime-val.risk-on  { color: var(--green); }
+    #tb-regime-val.risk-off { color: var(--red); }
+
+    .tb-px { font-family: "Courier New", monospace; font-size: 11px; color: var(--dim); gap: 5px; display: flex; }
+
+    #tb-trades-val { color: var(--dim); }
+
+    .tb-killbtn {
+      font-size: 9px;
+      padding: 1px 4px;
+      border-radius: 3px;
+      cursor: pointer;
+      background: transparent;
+      letter-spacing: 0.3px;
+    }
+    #look-btn { border: 1px solid var(--b1); color: var(--blu); font-size: 9px; padding: 1px 4px; border-radius: 3px; cursor: pointer; background: transparent; }
+    #look-btn:hover { background: var(--bg3); }
+
+    /* hidden legacy chips (keep in DOM for JS) */
+    #chip-pnl, #chip-pos, #chip-apex, #chip-arch,
+    #chip-sweep, #chip-conn, #chip-canary { display: none !important; }
+
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ MESSAGES ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+    #messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-height: 0;
+      position: relative;
+    }
+    #messages::-webkit-scrollbar { width: 3px; }
+    #messages::-webkit-scrollbar-thumb { background: var(--b1); border-radius: 2px; }
+
+    .msg-row { display: flex; align-items: flex-end; gap: 5px; }
+    .msg-row.user   { flex-direction: row-reverse; }
+    .msg-row.luke { flex-direction: row; }
+
+    .bubble {
+      max-width: 85%;
+      padding: 5px 9px;
+      border-radius: 4px;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: var(--bg2);
+      border: 1px solid var(--b1);
+      border-left-width: 2px;
+      color: var(--fg);
+    }
+    .bubble.user   { background: var(--gbg); border-color: var(--gbr); color: var(--green); border-left-width: 1px; }
+    .bubble.luke { border-left-color: #2a3a4a; }
+    .bubble.setup  { border-left-color: var(--green); }
+    .bubble.skip   { border-left-color: var(--red); }
+    .bubble.weak   { border-left-color: var(--yel); }
+    .bubble.alert  { background: #1a0d00; border-left-color: var(--yel); color: var(--yel); }
+    .bubble.vision { background: #0a0d1a; border-left-color: var(--blu); }
+    .bubble img    { max-width: 200px; max-height: 140px; display: block; border-radius: 2px; border: 1px solid var(--b1); }
+
+    .msg-ts { font-size: 10px; color: var(--dim); flex-shrink: 0; padding-bottom: 3px; }
+
+    .thinking { color: var(--dim); font-size: 10px; letter-spacing: 2px; padding: 3px 0; align-self: flex-start; }
+
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ MORNING CHECKLIST ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+    #morning-checklist {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      z-index: 50;
+      background: var(--bg2);
+      border: 1px solid var(--b1);
+      border-radius: 4px;
+      padding: 6px 9px;
+      min-width: 188px;
+    }
+    #morning-checklist.hidden { display: none; }
+    #mc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+    #mc-title { font-size: 9px; letter-spacing: 1.5px; color: var(--dim); }
+    #mc-close { background: transparent; border: none; color: var(--dim); cursor: pointer; font-size: 13px; line-height: 1; padding: 0; }
+    #mc-close:hover { color: var(--fg); }
+    .mc-item { display: flex; align-items: center; gap: 6px; padding: 2px 0; }
+    .mc-check { font-size: 11px; color: var(--dim); width: 12px; flex-shrink: 0; }
+    .mc-item.done .mc-check { color: var(--green); }
+    .mc-cmd { font-family: "Courier New", monospace; font-size: 11px; color: var(--blu); }
+    .mc-item.done .mc-cmd { color: var(--green); }
+
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ BOTTOM BAR ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+    #bottom-bar {
+      min-height: 86px;
+      flex-shrink: 0;
+      border-top: 1px solid var(--b1);
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      padding: 7px 8px;
+      gap: 6px;
+    }
+    #input-row { display: flex; gap: 6px; }
+    #input {
+      flex: 1;
+      background: var(--bg2);
+      border: 1px solid var(--b1);
+      color: var(--fg);
+      padding: 5px 10px;
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+      border-radius: 4px;
+      min-width: 0;
+      height: 32px;
+    }
+    #input:focus { border-color: var(--b2); }
+    #send {
+      background: var(--yel);
+      border: none;
+      color: var(--bg);
+      padding: 0 12px;
+      height: 32px;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    #send:disabled { opacity: 0.5; cursor: wait; }
+    #quick-btns { display: flex; gap: 4px; flex-wrap: wrap; overflow: visible; }
+    .qbtn {
+      flex: 1 1 auto;
+      background: transparent;
+      border: 1px solid var(--b1);
+      color: var(--dim);
+      padding: 4px 6px;
+      font-family: "Courier New", monospace;
+      font-size: 11px;
+      cursor: pointer;
+      border-radius: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      position: relative;
+    }
+    .qbtn:hover { background: var(--bg3); color: var(--fg); border-color: var(--b2); }
+
+    @media (max-width: 1000px) {
+      .bubble { max-width: 95%; }
+      #tb-prices { display: none; }
+    }
+
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ WIDGET MODE (ÃƒÂ¢Ã¢â‚¬Â°Ã‚Â¤500px) ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+    @media (max-width: 500px) {
+      .qbtn { font-size: 11px; padding: 4px 6px; }
+      .tb-lbl { display: none; }
+      .tb-div { display: none; }
+      .tb-seg { padding: 0 3px; }
+      #tb-luke-text { font-size: 10px; letter-spacing: 0; }
+      #tb-trades-val { font-size: 9px; }
+      .bubble { font-size: 12px; padding: 4px 7px; }
+      #top-bar { gap: 0; }
+      #look-btn { display: none; }
+    }
+
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ STAGED TRADE OVERLAY ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+    #pending-trade {
+      position: absolute;
+      top: 32px; left: 0; right: 0; bottom: 0;
+      z-index: 100;
+      background: #0a0800;
+      display: none;
+      flex-direction: column;
+    }
+    #pending-trade.visible { display: flex; }
+    #pt-chart { height: 162px; flex-shrink: 0; border-bottom: 1px solid #1a1200; position: relative; overflow: hidden; }
+    #pt-chart-inner { height: 162px; }
+    .tradingview-widget-container,
+    .tradingview-widget-container__widget { height: 162px; }
+    #pt-price-labels {
+      position: absolute; right: 6px; top: 0; bottom: 0;
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 18px 0 20px; pointer-events: none; z-index: 10;
+    }
+    .price-label { font-size: 9px; letter-spacing: 1px; padding: 2px 4px; border-radius: 2px; }
+    .price-label.target { color: var(--green); background: rgba(10,30,10,0.85); border: 1px solid var(--gbr); }
+    .price-label.entry  { color: #e2e8f0; background: rgba(10,15,25,0.85); border: 1px solid var(--b2); }
+    .price-label.stop   { color: var(--red); background: rgba(30,10,10,0.85); border: 1px solid var(--rbr); }
+    #pt-body { padding: 8px 10px 6px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    #pt-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .pt-label  { font-size: 8px; letter-spacing: 2px; color: var(--yel); }
+    #pt-signal { font-size: 12px; color: #f5dfa0; letter-spacing: 0.5px; margin-bottom: 2px; }
+    #pt-meta   { font-size: 10px; color: #8a7a4a; margin-bottom: 3px; }
+    #pt-reason { font-size: 10px; color: #a09060; line-height: 1.4; margin-bottom: 6px; }
+    #pt-actions { display: flex; gap: 8px; align-items: center; }
+    .countdown-svg { width: 34px; height: 34px; }
+    .ring-bg       { fill: none; stroke: var(--b1); stroke-width: 3.5; }
+    .ring-progress { fill: none; stroke: var(--yel); stroke-width: 3.5; stroke-dasharray: 100 100; stroke-dashoffset: 25; stroke-linecap: round; transition: stroke-dasharray 1s linear; }
+    .ring-text { font-size: 8px; font-family: inherit; fill: var(--fg); text-anchor: middle; dominant-baseline: middle; }
+    #execute-btn { background: #1a3a1a; border: 1px solid var(--green); color: var(--green); padding: 6px 16px; font-family: inherit; font-size: 10px; font-weight: 700; letter-spacing: 2px; cursor: pointer; border-radius: 4px; }
+    #execute-btn:hover    { background: var(--green); color: var(--bg); }
+    #execute-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    #skip-btn { background: transparent; border: 1px solid #4a2a2a; color: var(--red); padding: 6px 10px; font-family: inherit; font-size: 10px; letter-spacing: 1.5px; cursor: pointer; border-radius: 4px; }
+    #skip-btn:hover { border-color: var(--red); }
+
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ TOAST ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+    #toast {
+      position: absolute;
+      bottom: 108px; left: 8px; right: 8px;
+      background: var(--bg3);
+      border: 1px solid #1a3a5a;
+      color: var(--fg);
+      font-size: 10px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      z-index: 200;
+      display: none;
+      white-space: pre-wrap;
+      max-height: 80px;
+      overflow: hidden;
+    }
+    #toast.show { display: block; }
+
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ DRAG OVERLAY ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+    #drag-overlay {
+      position: absolute; inset: 0; z-index: 300;
+      background: rgba(8,12,16,0.88);
+      display: none; align-items: center; justify-content: center;
+      font-size: 16px; letter-spacing: 3px; color: var(--blu);
+      border: 2px dashed var(--blu); pointer-events: none;
+    }
+    #drag-overlay.show { display: flex; }
+
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ BOOT MODAL ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+    #boot-modal { position: absolute; inset: 0; z-index: 500; background: rgba(8,12,16,0.95); display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+    #boot-modal.show { display: flex; }
+    #boot-modal-inner { background: var(--bg2); border: 1px solid var(--rbr); border-radius: 6px; padding: 16px; width: 100%; max-width: 340px; }
+    #boot-modal h3 { font-size: 11px; letter-spacing: 2px; color: var(--red); margin-bottom: 10px; }
+    #boot-modal ul { list-style: none; font-size: 10px; line-height: 1.8; }
+    #boot-modal li.red    { color: var(--red); }
+    #boot-modal li.yellow { color: var(--yel); }
+    #boot-modal li.green  { color: var(--green); }
+    #boot-modal-close { margin-top: 12px; background: transparent; border: 1px solid var(--b2); color: var(--fg); padding: 4px 12px; font-family: inherit; font-size: 10px; letter-spacing: 1px; cursor: pointer; border-radius: 4px; }
+
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ PANIC MODAL ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+    #panic-modal { position: absolute; inset: 0; z-index: 600; background: rgba(8,12,16,0.95); display: none; align-items: center; justify-content: center; }
+    #panic-modal.show { display: flex; }
+    #panic-inner { background: #1a0000; border: 1px solid var(--red); border-radius: 6px; padding: 16px; max-width: 260px; text-align: center; }
+    #panic-inner p { font-size: 11px; letter-spacing: 1px; color: var(--red); margin-bottom: 12px; }
+    #panic-confirm { background: var(--red); border: none; color: var(--bg); padding: 6px 16px; font-family: inherit; font-size: 10px; font-weight: 700; letter-spacing: 2px; cursor: pointer; border-radius: 4px; margin-right: 8px; }
+    #panic-cancel  { background: transparent; border: 1px solid var(--b2); color: var(--fg); padding: 6px 12px; font-family: inherit; font-size: 10px; cursor: pointer; border-radius: 4px; letter-spacing: 1px; }
+
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ METRICS PANEL ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+    #metrics-panel { position: absolute; top: 32px; left: 0; right: 0; bottom: 0; z-index: 91; background: var(--bg); display: none; flex-direction: column; }
+    #metrics-panel.visible { display: flex; }
+    #mp-header { display: flex; align-items: center; justify-content: space-between; padding: 5px 10px; border-bottom: 1px solid var(--b1); flex-shrink: 0; }
+    #mp-title { font-size: 10px; letter-spacing: 2px; color: #38bdf8; }
+    #mp-close { background: transparent; border: 1px solid var(--b1); color: var(--dim); font-size: 11px; padding: 1px 6px; border-radius: 4px; cursor: pointer; }
+    #mp-close:hover { color: var(--fg); border-color: var(--b2); }
+    #mp-controls { display: flex; gap: 6px; align-items: center; padding: 5px 10px; border-bottom: 1px solid var(--b1); flex-shrink: 0; }
+    #mp-hours-input { width: 44px; background: var(--bg2); border: 1px solid var(--b1); color: var(--fg); padding: 2px 5px; font-family: inherit; font-size: 10px; border-radius: 4px; outline: none; text-align: center; }
+    #mp-load-btn, #mp-copy-btn { background: #0d1a2a; border: 1px solid #38bdf8; color: #38bdf8; padding: 2px 10px; font-family: inherit; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; cursor: pointer; border-radius: 4px; }
+    #mp-load-btn:hover, #mp-copy-btn:hover { background: #38bdf8; color: var(--bg); }
+    #mp-load-btn:disabled { opacity: 0.4; cursor: wait; }
+    #mp-copy-btn { border-color: #64748b; color: #64748b; }
+    #mp-copy-btn:hover { background: #64748b; color: var(--bg); }
+    #mp-body { flex: 1; overflow-y: auto; padding: 8px 10px; }
+    .mp-section { margin-bottom: 12px; }
+    .mp-section-label { font-size: 9px; letter-spacing: 2px; color: var(--dim); margin-bottom: 5px; }
+    .mp-row { display: flex; justify-content: space-between; align-items: baseline; padding: 2px 0; border-bottom: 1px solid var(--bg2); }
+    .mp-key { font-size: 9px; letter-spacing: 1px; color: var(--dim); }
+    .mp-val { font-size: 11px; color: var(--fg); font-variant-numeric: tabular-nums; }
+    .mp-val.pos { color: var(--green); } .mp-val.neg { color: var(--red); } .mp-val.warn { color: #fbbf24; }
+    .mp-critical-item { font-size: 9px; color: var(--red); letter-spacing: 0.5px; padding: 2px 0; border-bottom: 1px solid var(--bg2); }
+    .mp-critical-ts { color: var(--dim); margin-right: 6px; }
+    #mp-status { font-size: 9px; color: var(--dim); letter-spacing: 1px; padding: 2px 0; min-height: 13px; }
+
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ LUKE PANEL ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+    #luke-panel { position: absolute; top: 32px; left: 0; right: 0; bottom: 0; z-index: 90; background: var(--bg); display: none; flex-direction: column; }
+    #luke-panel.visible { display: flex; }
+    #lp-header { display: flex; align-items: center; justify-content: space-between; padding: 5px 10px; border-bottom: 1px solid var(--b1); flex-shrink: 0; }
+    #lp-title { font-size: 10px; letter-spacing: 2px; color: var(--pur); }
+    #lp-close { background: transparent; border: 1px solid var(--b1); color: var(--dim); font-size: 11px; padding: 1px 6px; border-radius: 4px; cursor: pointer; }
+    #lp-close:hover { color: var(--fg); border-color: var(--b2); }
+    #lp-body { flex: 1; overflow-y: auto; padding: 8px 10px; display: flex; flex-direction: column; gap: 12px; }
+    .lp-section-label { font-size: 9px; letter-spacing: 2px; color: var(--dim); margin-bottom: 5px; }
+    .lp-draft { background: var(--bg2); border: 1px solid var(--b1); border-radius: 6px; padding: 7px 10px; margin-bottom: 4px; }
+    .lp-draft-meta { color: var(--dim); font-size: 9px; letter-spacing: 0.5px; margin-bottom: 3px; }
+    .lp-draft-values { color: var(--fg); font-size: 11px; margin-bottom: 5px; line-height: 1.6; }
+    .lp-draft-btns { display: flex; gap: 6px; }
+    .lp-confirm-btn { background: var(--gbg); border: 1px solid var(--gbr); color: var(--green); padding: 2px 10px; font-family: inherit; font-size: 9px; letter-spacing: 1.5px; cursor: pointer; border-radius: 4px; }
+    .lp-confirm-btn:hover { background: var(--green); color: var(--bg); }
+    .lp-confirm-btn:disabled { opacity: 0.4; cursor: wait; }
+    .lp-reject-btn { background: transparent; border: 1px solid #4a2a2a; color: var(--red); padding: 2px 10px; font-family: inherit; font-size: 9px; letter-spacing: 1.5px; cursor: pointer; border-radius: 4px; }
+    .lp-reject-btn:hover { border-color: var(--red); }
+    .lp-reject-btn:disabled { opacity: 0.4; cursor: wait; }
+    .lp-empty { color: var(--dim); font-size: 10px; letter-spacing: 1px; padding: 2px 0; }
+    .lp-flags { color: var(--red); font-size: 9px; letter-spacing: 1px; margin-top: 4px; }
+    .lp-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+    .lp-label { font-size: 9px; letter-spacing: 1.5px; color: var(--dim); width: 44px; flex-shrink: 0; }
+    .lp-input { flex: 1; background: var(--bg2); border: 1px solid var(--b1); color: var(--fg); padding: 3px 7px; font-family: inherit; font-size: 11px; border-radius: 4px; outline: none; min-width: 0; }
+    .lp-input:focus { border-color: var(--b2); }
+    .lp-select { flex: 1; background: var(--bg2); border: 1px solid var(--b1); color: var(--fg); padding: 3px 7px; font-family: inherit; font-size: 11px; border-radius: 4px; outline: none; min-width: 0; }
+    #lp-submit { margin-top: 4px; background: #1a1a3a; border: 1px solid var(--pur); color: var(--pur); padding: 4px 14px; font-family: inherit; font-size: 9px; font-weight: 700; letter-spacing: 2px; cursor: pointer; border-radius: 4px; }
+    #lp-submit:hover { background: var(--pur); color: var(--bg); }
+    #lp-submit:disabled { opacity: 0.4; cursor: wait; }
+    #lp-form-result { font-size: 10px; margin-top: 5px; min-height: 14px; }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div id="top-bar">
+    <div class="tb-seg has-tt">
+      <span id="tb-dot">ÃƒÂ¢Ã¢â‚¬â€Ã‚Â</span>
+      <span id="tb-luke-text">LUKE</span>
+      <span class="tooltip">Connection to Luke backend</span>
+    </div>
+    <span class="tb-div">ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡</span>
+    <div class="tb-seg has-tt">
+      <span id="chip-mode" class="off" title="Trading mode indicator (PAPER/LIVE/OFF). Agent 02B disabled.">OFF</span>
+    </div>
+    <span class="tb-div">ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡</span>
+    <div class="tb-seg has-tt">
+      <span class="tb-lbl">Market:</span>
+      <span id="tb-market-val">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
+      <span class="tooltip">Regular session 9:30AM-4:00PM ET</span>
+    </div>
+    <span class="tb-div">ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡</span>
+    <div class="tb-seg has-tt">
+      <span class="tb-lbl">Regime:</span>
+      <span id="tb-regime-val">NEUTRAL</span>
+      <span class="tooltip">RISK_ON=3 trades, NEUTRAL=2, RISK_OFF=1 max</span>
+    </div>
+    <span class="tb-div">ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡</span>
+    <div class="tb-seg tb-px" id="tb-prices">
+      <span id="tb-spy">SPY:ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
+      <span id="tb-es">ES:ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
+    </div>
+    <span class="tb-div">ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡</span>
+    <div class="tb-seg has-tt">
+      <span id="tb-trades-val">0 trades 0W 0L</span>
+      <span class="tooltip">Today's trades. /review for details</span>
+    </div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:4px;padding-right:2px;">
+      <button id="look-btn" class="tb-killbtn has-tt" title="Take a screenshot of the current screen and ask Claude what's on it">LOOK</button>
+    </div>
+  </div>
+
+  <!-- HIDDEN LEGACY ELEMENTS (JS compatibility) -->
+  <div style="display:none">
+    <span id="chip-pnl">P&amp;L ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
+    <span id="chip-pos">flat</span>
+    <span id="chip-apex"></span>
+    <span id="chip-arch">ARCH:0</span>
+    <span id="chip-sweep">SWEEP:0</span>
+    <span id="chip-conn">CONN</span>
+    <span id="chip-canary">CANARY</span>
+    <span id="ribbon-move">MOVE: ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
+    <span id="ribbon-luke">IN MEMORY OF LUKE</span>
+    <span id="ribbon-wtd">WTD: ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
+    <span id="ribbon-state">ONLINE</span>
+    <span id="sp-levels">LEVELS: ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
+    <span id="sp-confluence">ZONE: ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
+    <span id="sp-trades">TODAY: ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
+    <span id="sp-state">STATE: ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
+    <span id="sp-meds">IN MEMORY OF LUKE</span>
+    <button id="btn-mkt">MKT</button>
+    <button id="btn-audit">AUDIT</button>
+    <button id="btn-replay">REPLAY</button>
+    <button id="btn-sienna">SIENNA</button>
+    <button id="btn-eod">EOD</button>
+    <button id="btn-shift">SHIFT</button>
+    <button id="btn-luke">LUKE</button>
+    <button id="btn-metrics">METRICS</button>
+  </div>
+
+  <!-- MESSAGES -->
+  <div id="messages">
+    <!-- Morning checklist overlay -->
+    <div id="morning-checklist">
+      <div id="mc-header">
+        <span id="mc-title">MORNING CHECKLIST</span>
+        <button id="mc-close" title="Dismiss morning checklist">X</button>
+      </div>
+      <div class="mc-item has-tt" id="mc-balance">
+        <span class="mc-check">[ ]</span>
+        <span class="mc-cmd">/balance</span>
+        <span class="tooltip">Set current Apex balance before trusting floor checks</span>
+      </div>
+      <div class="mc-item has-tt" id="mc-saty">
+        <span class="mc-check">[ ]</span>
+        <span class="mc-cmd">/saty</span>
+        <span class="tooltip">Load the 13 Saty ATR levels by 8:30 AM ET if they are not already in</span>
+      </div>
+      <div class="mc-item has-tt" id="mc-dubz">
+        <span class="mc-check">[ ]</span>
+        <span class="mc-cmd">/dubz</span>
+        <span class="tooltip">Paste RichyDubz morning message after this command</span>
+      </div>
+      <div class="mc-item has-tt" id="mc-heatmap">
+        <span class="mc-check">[ ]</span>
+        <span class="mc-cmd">/heatmap</span>
+        <span class="tooltip">Paste Bobby's heatmap text after this command</span>
+      </div>
+      <div class="mc-item has-tt" id="mc-verdict">
+        <span class="mc-check">[ ]</span>
+        <span class="mc-cmd">/verdict</span>
+        <span class="tooltip">Run after Saty, Dubz, and heatmap to see ranked levels</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div id="bottom-bar">
+    <div id="paste-hint" style="display:none;font-size:10px;color:var(--yel);padding:2px 6px;letter-spacing:0.5px;"></div>
+    <div id="input-row">
+      <input id="input" type="text" placeholder="..." autocomplete="off" />
+      <button id="send" class="has-tt">SEND<span class="tooltip">Send message to Luke</span></button>
+    </div>
+    <div id="quick-btns">
+      <button class="qbtn has-tt" data-cmd="/status">
+        /status<span class="tooltip">Show current trading state, regime, trade count, market status</span>
+      </button>
+      <button class="qbtn has-tt" data-cmd="/alert ">
+        /alert<span class="tooltip">Fire a Ximes/analyst alert for verdict + bracket calculation</span>
+      </button>
+      <button class="qbtn has-tt" data-cmd="/dubz ">
+        /dubz<span class="tooltip">Load today's RichyDubz levels for verdict scoring</span>
+      </button>
+      <button class="qbtn has-tt" data-cmd="/heatmap ">
+        /heatmap<span class="tooltip">Load Bobby's heatmap context (king nodes, air pockets, trinity)</span>
+      </button>
+      <button class="qbtn has-tt" data-cmd="/verdict">
+        /verdict<span class="tooltip">Show today's ranked confluence levels</span>
+      </button>
+      <button class="qbtn has-tt" data-cmd="/entries ES">
+        /entries ES<span class="tooltip">Show ES entry windows, sizing, and abort lines</span>
+      </button>
+      <button class="qbtn has-tt" data-cmd="/review">
+        /review<span class="tooltip">Today's trades summary - W/L, P&amp;L, emotional state</span>
+      </button>
+      <button class="qbtn has-tt" data-cmd="/trading-mode">
+        /trading-mode<span class="tooltip">Set up 4-window layout (ximes, bobby, tradovate, luke)</span>
+      </button>
+      <button class="qbtn has-tt" data-cmd="/balance ">
+        /balance<span class="tooltip">Set current account balance for Apex floor tracking</span>
+      </button>
+      <button class="qbtn has-tt" data-cmd="/reset">
+        /reset<span class="tooltip">Clear today's levels and last signal (NOT trades.jsonl)</span>
+      </button>
+      <button class="qbtn has-tt" data-cmd="/history">
+        /history<span class="tooltip">Last 5 alerts with verdicts</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Staged trade overlay -->
+  <div id="pending-trade">
+    <div id="pt-chart">
+      <div id="pt-chart-inner"></div>
+      <div id="pt-price-labels">
+        <span class="price-label target" id="lbl-target"></span>
+        <span class="price-label entry"  id="lbl-entry"></span>
+        <span class="price-label stop"   id="lbl-stop"></span>
+      </div>
+    </div>
+    <div id="pt-body">
+      <div>
+        <div id="pt-header-row">
+          <div class="pt-label">ÃƒÂ¢Ã…Â¡Ã‚Â¡ 02B SIGNAL ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â CONFIRM</div>
+          <svg class="countdown-svg" viewBox="0 0 36 36">
+            <circle class="ring-bg"       cx="18" cy="18" r="15.9155"/>
+            <circle class="ring-progress" cx="18" cy="18" r="15.9155" id="pt-ring"/>
+            <text class="ring-text" x="18" y="18" id="pt-countdown-text">5:00</text>
+          </svg>
+        </div>
+        <div id="pt-signal"></div>
+        <div id="pt-meta"></div>
+        <div id="pt-reason"></div>
+      </div>
+      <div id="pt-actions">
+        <button id="execute-btn" class="has-tt">EXECUTE<span class="tooltip">Execute this trade signal (E key)</span></button>
+        <button id="skip-btn" class="has-tt">SKIP<span class="tooltip">Skip this trade signal (S key)</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast"></div>
+
+  <!-- JS Tooltip -->
+  <div id="js-tooltip"></div>
+
+  <!-- Drag overlay -->
+  <div id="drag-overlay">DROP IMAGE</div>
+
+  <!-- Metrics Panel -->
+  <div id="metrics-panel">
+    <div id="mp-header">
+      <span id="mp-title">METRICS</span>
+      <button id="mp-close" title="Close metrics panel">ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¢</button>
+    </div>
+    <div id="mp-controls">
+      <input id="mp-hours-input" type="number" min="1" max="720" value="24" />
+      <span style="font-size:9px;color:var(--dim);letter-spacing:1px">hrs</span>
+      <button id="mp-load-btn">LOAD</button>
+      <button id="mp-copy-btn">COPY SUMMARY</button>
+      <span id="mp-status"></span>
+    </div>
+    <div id="mp-body">
+      <div id="mp-content"><span style="font-size:10px;color:var(--dim);letter-spacing:1px">press LOAD to fetch metrics</span></div>
+    </div>
+  </div>
+
+  <!-- Luke Panel -->
+  <div id="luke-panel">
+    <div id="lp-header">
+      <span id="lp-title">LUKE</span>
+      <button id="lp-close" title="Close Luke memorial panel">Ã¢Å“â€¢</button>
+    </div>
+    <div id="lp-body">
+      <div id="lp-drafts-section">
+        <div class="lp-section-label">IN MEMORY OF LUKE</div>
+        <div id="lp-drafts-list"><span class="lp-empty">There is nothing left to log here.</span></div>
+      </div>
+      <div id="lp-form-section">
+        <div class="lp-section-label">MEMORIAL</div>
+        <div id="lp-form-result">Luke passed. This panel is retired.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="boot-modal">
+    <div id="boot-modal-inner">
+      <h3>BOOT CHECK ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ISSUES DETECTED</h3>
+      <ul id="boot-check-list"></ul>
+      <button id="boot-modal-close" title="Dismiss boot issues and continue">DISMISS</button>
+    </div>
+  </div>
+
+  <div id="panic-modal">
+    <div id="panic-inner">
+      <p>CONFIRM PANIC ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â kills 02B and intraday</p>
+      <button id="panic-confirm" title="Confirm panic: kill 02B and stop intraday immediately">PANIC</button>
+      <button id="panic-cancel" title="Cancel panic">CANCEL</button>
+    </div>
+  </div>
+
+  <script>
+    const BASE = window.location.origin.startsWith("http") ? window.location.origin : "http://localhost:3000";
+    const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    const wsHost = window.location.host || "localhost:3000";
+    let ws;
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ JS TOOLTIP ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+    const _jsTip = document.getElementById('js-tooltip');
+    let _tipTimer = null;
+    document.querySelectorAll('.has-tt').forEach(el => {
+      const tip = el.querySelector('.tooltip');
+      if (!tip) return;
+      el.addEventListener('mouseenter', (e) => {
+        _jsTip.textContent = tip.textContent.trim();
+        _jsTip.style.display = 'block';
+        const r = el.getBoundingClientRect();
+        let top = r.top - _jsTip.offsetHeight - 8;
+        let left = r.left + r.width / 2 - _jsTip.offsetWidth / 2;
+        // flip below if no room above
+        if (top < 4) top = r.bottom + 6;
+        // clamp to viewport
+        left = Math.max(4, Math.min(left, window.innerWidth - _jsTip.offsetWidth - 4));
+        _jsTip.style.top = top + 'px';
+        _jsTip.style.left = left + 'px';
+      });
+      el.addEventListener('mouseleave', () => {
+        _jsTip.style.display = 'none';
+      });
+    });
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ END JS TOOLTIP ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+    const messages = document.getElementById("messages");
+    const input    = document.getElementById("input");
+    const sendBtn  = document.getElementById("send");
+    let history = [];
+    let intradayActive = false;
+    let toastTimer = null;
+    let executeFirstTap = 0;
+    fetch(BASE + "/ws-token").then(r => r.json()).then(({ token }) => {
+      ws = new WebSocket(wsProtocol + "//" + wsHost + "/?token=" + encodeURIComponent(token));
+      initWs(ws);
+    }).catch(() => {
+      // Fallback for dev without token (will be rejected server-side)
+      ws = new WebSocket(wsProtocol + "//" + wsHost);
+      initWs(ws);
+    });
+    function initWs(socket) { ws = socket;
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ MARKET STATUS ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+
+    function updateMarketStatus() {
+      const el = document.getElementById("tb-market-val");
+      const now = new Date();
+      const et = new Date(now.toLocaleString("en-US", { timeZone: "America/New_York" }));
+      const day = et.getDay();
+      const mins = et.getHours() * 60 + et.getMinutes();
+      const isWeekend = day === 0 || day === 6;
+      const OPEN = 9 * 60 + 30, CLOSE = 16 * 60, PRE = 4 * 60, POST = 20 * 60;
+
+      function fmt(m) {
+        const h = Math.floor(m / 60), mm = m % 60;
+        return h > 0 ? h + "h" + mm.toString().padStart(2,"0") + "m" : mm + "m";
+      }
+
+      if (isWeekend) { el.textContent = "CLOSED (wknd)"; el.className = ""; return; }
+      if (mins >= OPEN && mins < CLOSE) {
+        el.textContent = "OPEN " + fmt(CLOSE - mins); el.className = "open";
+      } else if (mins >= PRE && mins < OPEN) {
+        el.textContent = "PRE " + fmt(OPEN - mins); el.className = "prepost";
+      } else if (mins >= CLOSE && mins < POST) {
+        el.textContent = "AFTER " + fmt(POST - mins); el.className = "prepost";
+      } else {
+        const until = mins < PRE ? PRE - mins : 24 * 60 - mins + PRE;
+        el.textContent = "CLOSED " + fmt(until); el.className = "";
+      }
+    }
+
+    updateMarketStatus();
+    setInterval(updateMarketStatus, 30000);
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ TOAST ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+
+    function toast(text, ms = 3500) {
+      const el = document.getElementById("toast");
+      el.textContent = String(text).slice(0, 300);
+      el.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove("show"), ms);
+    }
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ RIBBON (legacy compat) ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+    async function syncRibbon() {
+      document.getElementById("ribbon-luke").textContent = "IN MEMORY OF LUKE";
+      try {
+        const r = await fetch(BASE + "/agent/finance/fund-status");
+        const d = await r.json();
+        const bal = typeof d.balance === "number" ? d.balance.toFixed(0) : (d.balance || "ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â");
+        document.getElementById("ribbon-move").textContent = "MOVE: $" + bal + "/$6k";
+      } catch (e) { console.error('[syncRibbon] fund-status error:', e.message); }
+      try {
+        const r = await fetch(BASE + "/agent/income/income-summary");
+        const d = await r.json();
+        const wtd = d.week_total ?? d.weekly_income ?? d.wtd ?? null;
+        document.getElementById("ribbon-wtd").textContent =
+          "WTD: " + (wtd !== null ? "$" + (typeof wtd === "number" ? wtd.toFixed(0) : wtd) : "ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â");
+      } catch {}
+    }
+
+    syncRibbon();
+    setInterval(syncRibbon, 5 * 60 * 1000);
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ STATUS CHIPS ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+
+    async function syncStatus() {
+      try {
+        const r = await fetch(BASE + "/agent/autonomous/status");
+        updateChips(await r.json());
+      } catch {}
+      try {
+        const r = await fetch(BASE + "/agent/architect/status");
+        const d = await r.json();
+        const chip = document.getElementById("chip-arch");
+        chip.textContent = "ARCH:" + (d.last_observations || 0);
+      } catch {}
+      try {
+        const r = await fetch(BASE + "/agent/sweeper/status");
+        const d = await r.json();
+        const chip = document.getElementById("chip-sweep");
+        const n = d.open_sweep_proposals || 0;
+        chip.textContent = "SWEEP:" + n;
+      } catch {}
+    }
+
+    function updateChips(data) {
+      const modeChip = document.getElementById("chip-mode");
+      if (data.running) {
+        modeChip.textContent = data.mode === "live" ? "LIVE" : "PAPER";
+        modeChip.className = data.mode === "live" ? "live" : "paper";
+      } else {
+        modeChip.textContent = "OFF";
+        modeChip.className = "off";
+      }
+
+      const pnl = data.daily_pnl || 0;
+      const pnlChip = document.getElementById("chip-pnl");
+      pnlChip.textContent = (pnl >= 0 ? "+" : "") + "$" + Math.abs(pnl).toFixed(0);
+      pnlChip.className = "chip" + (pnl >= 0 ? " pos" : " neg");
+
+      const posChip = document.getElementById("chip-pos");
+      if (data.open_position) {
+        const p = data.open_position;
+        posChip.textContent = p.ticker + " " + p.direction[0] + (p.size || 1) + "@" + p.entry;
+        posChip.className = "chip";
+      } else {
+        posChip.textContent = "flat";
+        posChip.className = "chip flat";
+      }
+
+      const apexChip = document.getElementById("chip-apex");
+      if (data.apex && data.apex.enabled) {
+        apexChip.textContent = "APEX " + data.apex.pct_to_target;
+      }
+    }
+
+    // document.getElementById("chip-mode").addEventListener("click", async () => {
+    //   const modeChip = document.getElementById("chip-mode");
+    //   if (modeChip.classList.contains("off") || modeChip.className === "off") {
+    //     modeChip.textContent = "...";
+    //     try {
+    //       const sr = await fetch(BASE + "/agent/autonomous/start", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+    //       const sd = await sr.json();
+    //       if (sd.started === false) { addMessage("assistant", "02B blocked: " + sd.reason); await syncStatus(); return; }
+    //       await fetch(BASE + "/agent/autonomous/launch", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+    //       addMessage("assistant", "02B running in PAPER mode.");
+    //     } catch { addMessage("assistant", "02B failed to start."); }
+    //   } else {
+    //     try {
+    //       await fetch(BASE + "/agent/autonomous/stop", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+    //       addMessage("assistant", "02B stopped.");
+    //     } catch {}
+    //   }
+    //   await syncStatus();
+    // });
+
+    syncStatus();
+    setInterval(syncStatus, 30000);
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ ACTION BUTTONS (hidden, legacy) ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+
+    async function withBtn(btnId, fn) {
+      const btn = document.getElementById(btnId);
+      btn.disabled = true;
+      try { await fn(btn); } catch (e) { toast("Error: " + e.message); }
+      btn.disabled = false;
+    }
+
+    document.getElementById("btn-mkt").addEventListener("click", () => withBtn("btn-mkt", async (btn) => {
+      if (!intradayActive) {
+        const r = await fetch(BASE + "/intraday/start", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+        const d = await r.json();
+        if (d.started) { intradayActive = true; btn.classList.add("active"); toast("Intraday started."); }
+      } else {
+        await fetch(BASE + "/intraday/stop", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+        intradayActive = false; btn.classList.remove("active"); toast("Intraday stopped.");
+      }
+    }));
+
+    document.getElementById("btn-audit").addEventListener("click", () => withBtn("btn-audit", async () => {
+      const r = await fetch(BASE + "/agent/autonomous/status");
+      const d = await r.json();
+      toast(
+        "02B: " + (d.running ? d.mode.toUpperCase() : "OFF") +
+        " | P&L: $" + (d.daily_pnl || 0).toFixed(0) +
+        " | Trades: " + (d.paper_trades || 0) + "/25" +
+        (d.open_position ? "\nOpen: " + d.open_position.direction + " " + d.open_position.ticker + " @" + d.open_position.entry : "\nFlat")
+      , 5000);
+      updateChips(d);
+    }));
+
+    document.getElementById("btn-replay").addEventListener("click", () => withBtn("btn-replay", async () => {
+      const r = await fetch(BASE + "/agent/trader/assess");
+      const d = await r.json();
+      toast((d.assessment || JSON.stringify(d)).slice(0, 250), 6000);
+    }));
+
+    document.getElementById("btn-sienna").addEventListener("click", () => withBtn("btn-sienna", async () => {
+      const r = await fetch(BASE + "/agent/sienna/model");
+      const d = await r.json();
+      toast(JSON.stringify(d).slice(0, 250), 5000);
+    }));
+
+      const d = await r.json();
+      toast(d.started ? "Pre-market scan started." : JSON.stringify(d).slice(0, 150));
+    }));
+
+    document.getElementById("btn-eod").addEventListener("click", () => withBtn("btn-eod", async () => {
+      const r = await fetch(BASE + "/agent/autonomous/eod-update", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+      const d = await r.json();
+      toast(d.updated
+        ? (d.new_high ? "New high! Floor: $" + d.eod_threshold : "Floor: $" + d.eod_threshold + " | Balance: $" + d.closing_balance)
+        : JSON.stringify(d).slice(0, 150)
+      , 5000);
+    }));
+
+    document.getElementById("btn-shift").addEventListener("click", () => withBtn("btn-shift", async () => {
+      const r = await fetch(BASE + "/agent/income/income-summary");
+      const d = await r.json();
+      toast(JSON.stringify(d).slice(0, 250), 5000);
+    }));`r`n    document.getElementById("btn-luke").addEventListener("click", () => openLukePanel());
+
+    document.getElementById("btn-metrics").addEventListener("click", () => {
+      const panel = document.getElementById("metrics-panel");
+      if (panel.classList.contains("visible")) closeMetricsPanel();
+      else openMetricsPanel();
+    });
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ LOOK ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+
+    document.getElementById("look-btn").addEventListener("click", () => look());
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ QUICK BUTTONS ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+
+    document.querySelectorAll(".qbtn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const cmd = btn.dataset.cmd;
+        input.value = cmd;
+        input.focus();
+        // auto-send for status (no argument needed)
+        if (cmd === "/status" || cmd === "/verdict" || cmd === "/reset" || cmd === "/trading-mode" || cmd === "/review" || cmd === "/history" || cmd === "/entries ES") {
+          send();
+        }
+      });
+    });
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ MORNING CHECKLIST ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+
+    const mcState = { balance: false, saty: false, dubz: false, heatmap: false, verdict: false };
+
+    function checkMC(text) {
+      if (/^\/balance\b/i.test(text)) { mcState.balance = true; }
+      if (/^\/saty\b/i.test(text))    { mcState.saty = true; }
+      if (/^\/dubz/i.test(text))       { mcState.dubz = true; }
+      if (/^\/heatmap/i.test(text))    { mcState.heatmap = true; }
+      if (/^\/verdict/i.test(text))    { mcState.verdict = true; }
+      updateMC();
+    }
+
+    function updateMC() {
+      ["balance", "saty", "dubz", "heatmap", "verdict"].forEach(key => {
+        const el = document.getElementById("mc-" + key);
+        if (!el) return;
+        if (mcState[key]) {
+          el.classList.add("done");
+          el.querySelector(".mc-check").textContent = "OK";
+        }
+      });
+      if (mcState.balance && mcState.saty && mcState.dubz && mcState.heatmap && mcState.verdict) {
+        setTimeout(() => document.getElementById("morning-checklist").classList.add("hidden"), 1200);
+      }
+    }
+
+    document.getElementById("mc-close").addEventListener("click", () => {
+      document.getElementById("morning-checklist").classList.add("hidden");
+    });
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ STAGED TRADE ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+
+    const pendingTrade = document.getElementById("pending-trade");
+    const executeBtn   = document.getElementById("execute-btn");
+    const skipBtn      = document.getElementById("skip-btn");
+    let countdownInterval = null;
+
+    function showPending(data) {
+      const s = data.signal;
+      const ticker = s.ticker || "MNQ";
+      document.getElementById("pt-signal").textContent =
+        s.direction + " " + ticker + "  Ãƒâ€šÃ‚Â·  E:" + s.entry + "  S:" + s.stop + "  T:" + s.target;
+      const confluencePart = s.confluence_score != null
+        ? "  Ãƒâ€šÃ‚Â·  CONF:" + s.confluence_score + " [" + (s.confluence_confidence || "?") + "]"
+        : "";
+      const sourcesPart = s.confluence_sources && s.confluence_sources.length
+        ? "  src:" + s.confluence_sources.join("+")
+        : "";
+      document.getElementById("pt-meta").textContent =
+        "Risk: $" + data.risk_dollars + "  Ãƒâ€šÃ‚Â·  R:R " + data.rr + ":1" + confluencePart + sourcesPart;
+      document.getElementById("pt-reason").textContent = s.reason || "";
+      document.getElementById("lbl-target").textContent = "T " + s.target;
+      document.getElementById("lbl-entry").textContent  = "E " + s.entry;
+      document.getElementById("lbl-stop").textContent   = "S " + s.stop;
+      pendingTrade.classList.add("visible");
+      loadTVWidget(ticker);
+      startCountdown(data.seconds_left);
+    }
+
+    function hidePending() {
+      pendingTrade.classList.remove("visible");
+      if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
+      document.getElementById("pt-chart-inner").innerHTML = "";
+    }
+
+    function loadTVWidget(ticker) {
+      const container = document.getElementById("pt-chart-inner");
+      container.innerHTML = "";
+      const wrapper = document.createElement("div");
+      wrapper.className = "tradingview-widget-container";
+      const inner = document.createElement("div");
+      inner.className = "tradingview-widget-container__widget";
+      wrapper.appendChild(inner);
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+      script.async = true;
+      script.text = JSON.stringify({
+        autosize: false, width: "100%", height: 162,
+        symbol: ticker === "MES" ? "CME_MINI:MES1!" : "CME_MINI:MNQ1!",
+        interval: "5", timezone: "America/New_York", theme: "dark", style: "1", locale: "en",
+        hide_top_toolbar: true, hide_legend: true, allow_symbol_change: false,
+        calendar: false, hide_volume: true, support_host: "https://www.tradingview.com"
+      });
+      wrapper.appendChild(script);
+      container.appendChild(wrapper);
+    }
+
+    function startCountdown(seconds) {
+      if (countdownInterval) clearInterval(countdownInterval);
+      const total = 300;
+      let s = seconds;
+      const textEl = document.getElementById("pt-countdown-text");
+      const ringEl = document.getElementById("pt-ring");
+      function tick() {
+        if (s <= 0) { hidePending(); return; }
+        textEl.textContent = Math.floor(s / 60) + ":" + (s % 60).toString().padStart(2, "0");
+        ringEl.style.strokeDasharray = ((s / total) * 100) + " 100";
+        ringEl.style.stroke = s < 60 ? "#f87171" : "#e2b96a";
+        s--;
+      }
+      tick();
+      countdownInterval = setInterval(tick, 1000);
+    }
+
+    async function checkPendingSignal() {
+      try {
+        const r = await fetch(BASE + "/agent/autonomous/pending");
+        const d = await r.json();
+        if (d.pending) showPending(d);
+        else hidePending();
+      } catch {}
+    }
+    checkPendingSignal();
+    setInterval(checkPendingSignal, 15000);
+
+    executeBtn.addEventListener("click", async () => {
+      const modeChip = document.getElementById("chip-mode");
+      if (!modeChip || modeChip.className === "off" || modeChip.textContent === "OFF") {
+        hidePending();
+        toast("02B is OFF ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â enter this trade manually in Tradovate.", 5000);
+        addMessage("assistant", "Enter this trade manually in Tradovate ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 02B is OFF and will not send orders.", "alert");
+        return;
+      }
+      const stateClass = document.getElementById("ribbon-state").className || "regulated";
+      if (stateClass === "rule_break") {
+        logIntervention("rule_break", "execute blocked");
+        toast("Rule break detected ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â execute disabled.", 4000);
+        return;
+      }
+      if (stateClass === "spiraling") {
+        const now = Date.now();
+        if (now - executeFirstTap < 1000) {
+          logIntervention("spiraling", "double-confirmed execute");
+        } else {
+          executeFirstTap = now;
+          toast("Spiraling ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â tap EXECUTE again within 1s to confirm.", 3000);
+          return;
+        }
+      }
+      executeBtn.disabled = true; executeBtn.textContent = "...";
+      try {
+        const r = await fetch(BASE + "/agent/autonomous/execute-staged", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+        const d = await r.json();
+        hidePending();
+        if (d.executed === false) addMessage("assistant", "Execute failed: " + d.reason, "alert");
+      } catch { addMessage("assistant", "Execute error.", "alert"); }
+      executeBtn.disabled = false; executeBtn.textContent = "EXECUTE";
+    });
+
+    async function logIntervention(state, action) {
+      try { await fetch(BASE + "/luke/log-intervention", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ state, action }) }); } catch {}
+    }
+
+    skipBtn.addEventListener("click", async () => {
+      try { await fetch(BASE + "/agent/autonomous/skip-staged", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" }); } catch {}
+      hidePending();
+    });
+
+    document.addEventListener("keydown", e => {
+      if (!pendingTrade.classList.contains("visible")) return;
+      if ((e.key === "e" || e.key === "E") && !executeBtn.disabled) executeBtn.click();
+      if (e.key === "s" || e.key === "S") skipBtn.click();
+    });
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ WEBSOCKET ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === "staged_trade") {
+          showPending(data);
+          if (data.canary) {
+            const chip = document.getElementById("chip-canary");
+            chip.textContent = "CANARY";
+            setTimeout(() => { chip.textContent = ""; }, 35000);
+          }
+        }
+        if (data.type === 'staged_trade' && window.electronAPI) {
+            window.electronAPI.showTradePopup(data.trade || data)
+        }
+        else if (data.type === "status_update") updateChips(data);
+        else if (data.type === "levels_warning") {
+          addMessage("assistant", data.message, "alert");
+          const sp = document.getElementById("sp-levels");
+          if (sp) { sp.textContent = "LEVELS: NONE"; sp.className = "sp-item err"; }
+          refreshStatusPanel();
+        }
+        else if (data.type === "notification") {
+          addMessage("assistant", data.message, "alert");
+          if (/02B|KILL|PAPER|LIVE|CLOSED/.test(data.message)) syncStatus();
+        }
+        else if (data.type === "kat_alert") {
+          addMessage("assistant", data.reply, "kat-alert");
+        }
+        else if (data.type === 'kat_vision') {
+          const levels = (data.levels || []).join(', ');
+          const msg = 'ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¸ ' + data.analyst + ' chart: ' +
+            (data.ticker || '?') + ' ' + data.bias +
+            (levels ? ' | levels: ' + levels : '') +
+            (data.notes ? '\n' + data.notes : '');
+          addMessage('kat', msg, 'kat-vision');
+        }
+      } catch (e) { console.error('[ws:onmessage] parse error:', e.message, event.data?.slice(0, 80)); }
+    };
+    } // end initWs
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ STATE INDICATOR ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+
+    function updateStateIndicator(state) {
+      if (!state) return;
+      const el = document.getElementById("ribbon-state");
+      el.className = state === "regulated" ? "" : state;
+      const labels = { regulated: "ONLINE", stressed: "STRESSED", spiraling: "SPIRALING", rule_break: "RULE BREAK" };
+      el.textContent = labels[state] || "ONLINE";
+    }
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ MESSAGES ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+
+    function nowTs() {
+      const d = new Date();
+      return d.getHours().toString().padStart(2,"0") + ":" + d.getMinutes().toString().padStart(2,"0");
+    }
+
+    function detectBubbleType(text, type) {
+      if (type === "alert")  return "alert";
+      if (type === "vision") return "vision";
+      if (/^SETUP[:\s]/i.test(text))  return "setup";
+      if (/^SKIP[:\s]/i.test(text))   return "skip";
+      if (/^WEAK[:\s]/i.test(text))   return "weak";
+      return "luke";
+    }
+
+    function addMessage(role, text, type) {
+      const row = document.createElement("div");
+      row.className = "msg-row " + (role === "user" ? "user" : "luke");
+
+      const bubble = document.createElement("div");
+      const bType = role === "user" ? "user" : detectBubbleType(text, type);
+      bubble.className = "bubble " + bType;
+      bubble.textContent = text;
+      row.appendChild(bubble);
+
+      const ts = document.createElement("span");
+      ts.className = "msg-ts";
+      ts.textContent = nowTs();
+      row.appendChild(ts);
+
+      messages.appendChild(row);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function addImageMessage(dataUrl) {
+      const row = document.createElement("div");
+      row.className = "msg-row user";
+      const bubble = document.createElement("div");
+      bubble.className = "bubble user";
+      const img = document.createElement("img");
+      img.src = dataUrl;
+      bubble.appendChild(img);
+      row.appendChild(bubble);
+      const ts = document.createElement("span");
+      ts.className = "msg-ts";
+      ts.textContent = nowTs();
+      row.appendChild(ts);
+      messages.appendChild(row);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function showThinking(text) {
+      const div = document.createElement("div");
+      div.className = "thinking"; div.id = "thinking";
+      div.textContent = text || "THINKING...";
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function hideThinking() {
+      const t = document.getElementById("thinking");
+      if (t) t.remove();
+    }
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ IMAGE PASTE / DROP ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+
+    async function handleImageBlob(blob, mimeType) {
+      const reader = new FileReader();
+      reader.onload = async (evt) => {
+        const dataUrl = evt.target.result;
+        const base64  = dataUrl.split(",")[1];
+        addImageMessage(dataUrl);
+        const question = input.value.trim();
+        input.value = "";
+        showThinking("ANALYZING...");
+        sendBtn.disabled = true;
+        try {
+          let r, d;
+          if (!question) {
+            // Image-only paste: route through /chat so handlePasteAccumulate
+            // can update daily context, check the checklist, and fire verdict.
+            r = await fetch(BASE + "/chat", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ image: base64, message: "" })
+            });
+            d = await r.json();
+          } else {
+            // Image + text: vision query
+            r = await fetch(BASE + "/see-image", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ image: base64, mime_type: mimeType, question })
+            });
+            d = await r.json();
+          }
+          hideThinking();
+          addMessage("assistant", d.reply || d.error || "No response.", "vision");
+        } catch {
+          hideThinking();
+          addMessage("assistant", "Image analysis failed.");
+        }
+        sendBtn.disabled = false;
+        input.focus();
+      };
+      reader.readAsDataURL(blob);
+    }
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ PASTE DETECTION ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+    const PASTE_ANALYST_RULES = [
+      { re: /\b(ximes|ximestrades|xi[mn]es|followthewhiterabblt)\b/i, command: '/alert',   analyst: 'ximes' },
+      { re: /\b(bobby|followtherabbit|spx[_ -]?coms)\b/i,             command: '/heatmap', analyst: 'bobby' },
+      { re: /\b(richy|richydubz|richyd)\b/i,                          command: '/dubz',    analyst: 'richy' },
+    ];
+    const PASTE_DISCORD_PREFIX = /^[\s\S]*?(?:\[\d{1,2}:\d{2}\s*(?:AM|PM)\][^\n,]*,\s*:|[^\n]+ ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Today at \d{1,2}:\d{2}\s*(?:AM|PM)\s*\n?)/i;
+    const PASTE_OPTION_RE     = /\b[A-Z]{1,5}\s+\d{3,5}[CP]\b/i;
+    const PASTE_HEATMAP_RE    = /\b(king node|air pocket|trinity)\b/i;
+
+    function detectPasteIntent(text, hasImage) {
+      if (hasImage) return { command: '/heatmap', cleanedText: text, detectedAnalyst: 'bobby' };
+      const sample = text.slice(0, 200);
+      for (const r of PASTE_ANALYST_RULES) {
+        if (r.re.test(sample)) return { command: r.command, cleanedText: text.replace(PASTE_DISCORD_PREFIX, '').trimStart(), detectedAnalyst: r.analyst };
+      }
+      if (PASTE_OPTION_RE.test(sample))   return { command: '/alert',   cleanedText: text.replace(PASTE_DISCORD_PREFIX, '').trimStart(), detectedAnalyst: null };
+      if (PASTE_HEATMAP_RE.test(sample))  return { command: '/heatmap', cleanedText: text.replace(PASTE_DISCORD_PREFIX, '').trimStart(), detectedAnalyst: null };
+      return { command: null, cleanedText: text, detectedAnalyst: null };
+    }
+
+    const pasteHint = document.getElementById("paste-hint");
+    let pasteHintTimer = null;
+    function showPasteHint(msg) {
+      pasteHint.textContent = msg;
+      pasteHint.style.display = "block";
+      clearTimeout(pasteHintTimer);
+      pasteHintTimer = setTimeout(() => { pasteHint.style.display = "none"; }, 4000);
+    }
+
+    document.addEventListener("paste", (e) => {
+      const items = Array.from(e.clipboardData?.items || []);
+      const imageItem = items.find(item => item.type.startsWith("image/"));
+      if (imageItem) {
+        e.preventDefault();
+        handleImageBlob(imageItem.getAsFile(), imageItem.type);
+        return;
+      }
+      // text paste detection (only when input is focused or no element is focused)
+      const textItem = items.find(item => item.type === "text/plain");
+      if (!textItem) return;
+      textItem.getAsString(text => {
+        if (!text || text.length < 10) return;
+        if (document.activeElement !== input) return;
+        const { command, cleanedText, detectedAnalyst } = detectPasteIntent(text, false);
+        if (!command) return;
+        e.preventDefault();
+        input.value = command + ' ' + cleanedText;
+        const label = detectedAnalyst ? detectedAnalyst.charAt(0).toUpperCase() + detectedAnalyst.slice(1) + ' detected' : 'pattern detected';
+        showPasteHint('ÃƒÂ¢Ã¢â‚¬Â Ã‚Â³ routing to ' + command + ' (' + label + ')');
+      });
+    });
+
+    let dragDepth = 0;
+    const dragOverlay = document.getElementById("drag-overlay");
+    document.addEventListener("dragenter", (e) => {
+      if (Array.from(e.dataTransfer?.items || []).some(i => i.kind === "file" && i.type.startsWith("image/"))) {
+        dragDepth++;
+        dragOverlay.classList.add("show");
+      }
+    });
+    document.addEventListener("dragleave", () => {
+      dragDepth--;
+      if (dragDepth <= 0) { dragDepth = 0; dragOverlay.classList.remove("show"); }
+    });
+    document.addEventListener("dragover", (e) => e.preventDefault());
+    document.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dragDepth = 0;
+      dragOverlay.classList.remove("show");
+      const file = e.dataTransfer?.files[0];
+      if (file && file.type.startsWith("image/")) handleImageBlob(file, file.type);
+    });
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ CHAT ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+
+    async function look(question) {
+      showThinking("LOOKING...");
+      sendBtn.disabled = true;
+      try {
+        const r = await fetch(BASE + "/see", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question: question || "What's on this screen? Be brief." }) });
+        const d = await r.json();
+        hideThinking();
+        addMessage("assistant", d.reply, "vision");
+      } catch {
+        hideThinking();
+        addMessage("assistant", "Vision error.");
+      }
+      sendBtn.disabled = false;
+      input.focus();
+    }
+
+    async function doAction(text) {
+      showThinking("DOING...");
+      sendBtn.disabled = true;
+      const parts = text.split(" ");
+      try {
+        const r = await fetch(BASE + "/do", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: parts[0].toLowerCase(), value: parts.slice(1).join(" ") }) });
+        const d = await r.json();
+        hideThinking();
+        addMessage("assistant", d.reply || "Done.", "vision");
+      } catch {
+        hideThinking();
+        addMessage("assistant", "Action error.");
+      }
+      sendBtn.disabled = false;
+      input.focus();
+    }
+
+    async function chat(text) {
+      showThinking("THINKING...");
+      sendBtn.disabled = true;
+      try {
+        const r = await fetch(BASE + "/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: text, history }) });
+        const d = await r.json();
+        hideThinking();
+        addMessage("assistant", d.reply);
+        if (d.state) updateStateIndicator(d.state);
+        history = d.history;
+      } catch {
+        hideThinking();
+        addMessage("assistant", "Connection error.");
+      }
+      sendBtn.disabled = false;
+      input.focus();
+    }
+
+    async function send() {
+      try {
+        let text = input.value.trim();
+        if (!text) return;
+        input.value = "";
+        const ph = document.getElementById("paste-hint");
+        if (ph) ph.style.display = "none";
+        if (!text.startsWith('/')) {
+          try {
+            const det = detectPasteIntent(text, false);
+            if (det && det.command) {
+              if (typeof showPasteHint === 'function') {
+                const label = det.detectedAnalyst
+                  ? det.detectedAnalyst.charAt(0).toUpperCase() + det.detectedAnalyst.slice(1) + ' detected'
+                  : 'pattern detected';
+                showPasteHint('ÃƒÂ¢Ã¢â‚¬Â Ã‚Â³ routing to ' + det.command + ' (' + label + ')');
+              }
+              text = det.command + ' ' + det.cleanedText;
+            }
+          } catch (e) {
+            console.error('[send] paste detect threw:', e);
+          }
+        }
+        if (/^panic$/i.test(text)) {
+          document.getElementById("panic-modal").classList.add("show");
+          return;
+        }
+        const overrideMatch = text.match(/^override:\s*(.+)/i);
+        if (overrideMatch) {
+          logIntervention(overrideMatch[1]);
+          return;
+        }
+        if (typeof checkMC === 'function') checkMC(text);
+        addMessage("user", text);
+        if (/^do /i.test(text)) return doAction(text.slice(3));
+        if (/^look($| )/i.test(text)) return look(text.slice(4).trim());
+        return chat(text);
+      } catch (outerErr) {
+        console.error('[send] fatal:', outerErr);
+        addMessage('system', 'Send error: ' + (outerErr.message || outerErr));
+      }
+    }
+
+    sendBtn.addEventListener("click", send);
+    input.addEventListener("keydown", e => { if (e.key === "Enter") send(); });
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ CONNECTION ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+
+    const connChip = document.getElementById("chip-conn");
+    async function checkConn() {
+      try {
+        await fetch(BASE + "/health");
+        connChip.className = "chip ok";
+        document.getElementById("tb-dot").className = "";
+        document.getElementById("actions").style.opacity = "";
+        document.getElementById("actions").style.pointerEvents = "";
+      } catch {
+        connChip.className = "chip err";
+        document.getElementById("tb-dot").className = "err";
+        document.getElementById("actions").style.opacity = "0.3";
+        document.getElementById("actions").style.pointerEvents = "none";
+        toast("Server connection lost.");
+      }
+    }
+    checkConn();
+    setInterval(checkConn, 10000);
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ BOOT CHECK ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+
+    (async () => {
+      try {
+        const r = await fetch(BASE + "/luke/boot-check");
+        const d = await r.json();
+        if (d.overall === "red") {
+          const ul = document.getElementById("boot-check-list");
+          ul.innerHTML = d.checks.map(c =>
+            `<li class="${c.status}">${c.status === "green" ? "ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“" : c.status === "yellow" ? "ÃƒÂ¢Ã…Â¡Ã‚Â " : "ÃƒÂ¢Ã…â€œÃ¢â‚¬â€"} ${c.name}: ${c.detail}</li>`
+          ).join("");
+          document.getElementById("boot-modal").classList.add("show");
+        }
+      } catch {}
+    })();
+
+    document.getElementById("boot-modal-close").addEventListener("click", () => {
+      document.getElementById("boot-modal").classList.remove("show");
+    });
+
+    document.getElementById("panic-confirm").addEventListener("click", async () => {
+      document.getElementById("panic-modal").classList.remove("show");
+      try {
+        await fetch(BASE + "/panic", { method: "POST" });
+        addMessage("assistant", "PANIC executed ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 02B killed, intraday stopped.", "alert");
+      } catch { addMessage("assistant", "PANIC endpoint failed.", "alert"); }
+    });
+    document.getElementById("panic-cancel").addEventListener("click", () => {
+      document.getElementById("panic-modal").classList.remove("show");
+    });
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ METRICS PANEL ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+
+    let metricsTextSummary = "";
+
+    function openMetricsPanel() {
+      document.getElementById("metrics-panel").classList.add("visible");
+      loadMetrics();
+    }
+    function closeMetricsPanel() {
+      document.getElementById("metrics-panel").classList.remove("visible");
+    }
+
+    document.getElementById("mp-close").addEventListener("click", closeMetricsPanel);
+    document.getElementById("mp-load-btn").addEventListener("click", loadMetrics);
+
+    document.getElementById("mp-copy-btn").addEventListener("click", () => {
+      if (!metricsTextSummary) { toast("No metrics loaded yet."); return; }
+      navigator.clipboard.writeText(metricsTextSummary)
+        .then(() => toast("Summary copied to clipboard."))
+        .catch(() => {
+          const ta = document.createElement("textarea");
+          ta.value = metricsTextSummary;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          ta.remove();
+          toast("Summary copied.");
+        });
+    });
+
+    async function loadMetrics() {
+      const loadBtn  = document.getElementById("mp-load-btn");
+      const statusEl = document.getElementById("mp-status");
+      const content  = document.getElementById("mp-content");
+      const hours    = parseInt(document.getElementById("mp-hours-input").value) || 24;
+      loadBtn.disabled = true;
+      statusEl.textContent = "loading...";
+      try {
+        const r = await fetch(BASE + "/agent/autonomous/metrics?hours=" + hours);
+        const m = await r.json();
+        if (m.error) { statusEl.textContent = "error: " + m.error; loadBtn.disabled = false; return; }
+        metricsTextSummary = m.text_summary || "";
+        statusEl.textContent = "since " + (m.since || "").slice(0, 16).replace("T", " ") + " UTC";
+        content.innerHTML = renderMetrics(m);
+      } catch { statusEl.textContent = "fetch failed"; }
+      loadBtn.disabled = false;
+    }
+
+    function renderMetrics(m) {
+      function row(key, val, cls) {
+        return `<div class="mp-row"><span class="mp-key">${key}</span><span class="mp-val${cls ? " " + cls : ""}">${val}</span></div>`;
+      }
+      function section(label, rows) {
+        return `<div class="mp-section"><div class="mp-section-label">${label}</div>${rows.join("")}</div>`;
+      }
+      const pnlCls = m.paper_pnl_total > 0 ? "pos" : m.paper_pnl_total < 0 ? "neg" : "";
+      const avgCls = m.paper_pnl_avg_per_trade > 0 ? "pos" : m.paper_pnl_avg_per_trade < 0 ? "neg" : "";
+      const rejectTotal = Object.values(m.rejects_by_reason || {}).reduce((a, b) => a + b, 0);
+      const rejectStr = rejectTotal === 0 ? "0" :
+        rejectTotal + " ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â " + Object.entries(m.rejects_by_reason)
+          .sort((a, b) => b[1] - a[1])
+          .map(([k, v]) => k.replace(/_/g, " ") + "ÃƒÆ’Ã¢â‚¬â€" + v)
+          .join(", ");
+      const signalsHtml = section("SIGNALS", [
+        row("evaluated", m.signals_evaluated),
+        row("staged", m.signals_staged),
+        row("gate rejections", rejectStr, rejectTotal > 0 ? "warn" : ""),
+      ]);
+      const tradesHtml = section("TRADES", [
+        row("opened", m.paper_trades_opened),
+        row("closed", m.paper_trades_closed),
+        row("total P&L", "$" + m.paper_pnl_total, pnlCls),
+        row("avg/trade", "$" + m.paper_pnl_avg_per_trade, avgCls),
+        m.avg_time_to_protection_confirmed_ms !== null
+          ? row("entryÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢protected", (m.avg_time_to_protection_confirmed_ms / 1000).toFixed(1) + "s")
+          : row("entryÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢protected", "N/A (no live execs)"),
+      ]);
+      const systemHtml = section("SYSTEM", [
+        row("reconcile mismatches", m.reconciliation_mismatches_count, m.reconciliation_mismatches_count > 0 ? "warn" : ""),
+        row("scheduler jobs failed", m.scheduler_jobs_failed_count, m.scheduler_jobs_failed_count > 0 ? "warn" : ""),
+        row("critical events", m.critical_events.length, m.critical_events.length > 0 ? "neg" : ""),
+      ]);
+      let criticalHtml = "";
+      if (m.critical_events && m.critical_events.length > 0) {
+        const items = m.critical_events.map(e =>
+          `<div class="mp-critical-item"><span class="mp-critical-ts">${(e.timestamp || "").slice(11, 16)}</span>${e.type} ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ${e.summary || ""}</div>`
+        ).join("");
+        criticalHtml = `<div class="mp-section"><div class="mp-section-label">CRITICAL LOG</div>${items}</div>`;
+      }
+      return signalsHtml + tradesHtml + systemHtml + criticalHtml;
+    }
+
+    // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ LUKE PANEL ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬    let lukePollInterval = null;
+
+    function openLukePanel() {
+      document.getElementById("luke-panel").classList.add("visible");
+    }
+    function closeLukePanel() {
+      document.getElementById("luke-panel").classList.remove("visible");
+      clearInterval(lukePollInterval);
+      lukePollInterval = null;
+    }
+
+    document.getElementById("lp-close").addEventListener("click", closeLukePanel);
+
+    // Ã¢â‚¬â€Ã¢â‚¬â€ STATUS PANEL AUTO-REFRESH ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+
+    function parseStatusReply(text) {
+      const spEl = (id, val, cls) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = val;
+        el.className = "sp-item" + (cls ? " " + cls : "");
+      };
+
+      const levelsMatch = text.match(/Levels:\s*(ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦[^\n]*|ÃƒÂ¢Ã‚ÂÃ…â€™[^\n]*)/i);
+      if (levelsMatch) {
+        const ok = levelsMatch[1].startsWith("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦");
+        spEl("sp-levels", "LEVELS: " + (ok ? "YES" : "NO"), ok ? "ok" : "err");
+      }
+
+      const zoneMatch = text.match(/Zone:\s*([^\n|]+)/i) || text.match(/ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â\s*([\d.]+)\s+(\S+)\s+(\S+)/);
+      if (zoneMatch) {
+        spEl("sp-confluence", "ZONE: " + (zoneMatch[1] || "").trim().slice(0, 30), "info");
+      } else if (/no HIGH confluence/i.test(text)) {
+        spEl("sp-confluence", "ZONE: none", "warn");
+      }
+
+      const tradeMatch = text.match(/(\d+)\s+trades\s*\|\s*(\d+)W\s+(\d+)L\s*\|\s*Net:\s*([+\-][\d.]+)/i);
+      if (tradeMatch) {
+        const net = parseFloat(tradeMatch[4]);
+        spEl("sp-trades", `TODAY: ${tradeMatch[1]}t ${tradeMatch[2]}W/${tradeMatch[3]}L ${tradeMatch[4]}pts`, net >= 0 ? "ok" : "err");
+        const tbTrades = document.getElementById("tb-trades-val");
+        if (tbTrades) tbTrades.textContent = `${tradeMatch[1]} trades ${tradeMatch[2]}W ${tradeMatch[3]}L`;
+      } else if (/No trades logged/i.test(text)) {
+        spEl("sp-trades", "TODAY: 0 trades", "");
+        const tbTrades = document.getElementById("tb-trades-val");
+        if (tbTrades) tbTrades.textContent = "0 trades 0W 0L";
+      }
+
+      const stateMatch = text.match(/Emotional state:\s*([^\n]+)/i);
+      if (stateMatch) {
+        const s = stateMatch[1];
+        const cls = /ÃƒÂ¢Ã‚ÂÃ…â€™/.test(s) ? "err" : /ÃƒÂ¢Ã…Â¡Ã‚Â /.test(s) ? "warn" : "ok";
+        spEl("sp-state", "STATE: " + (cls === "ok" ? "ÃƒÂ°Ã…Â¸Ã…Â¸Ã‚Â¢" : cls === "warn" ? "ÃƒÂ°Ã…Â¸Ã…Â¸Ã‚Â¡" : "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â´"), cls);
+      }
+
+      spEl("sp-meds", "IN MEMORY OF LUKE", "");
+
+      const regimeMatch = text.match(/[Rr]egime[:\s]+([A-Z_]+)/);
+      if (regimeMatch) {
+        const regEl = document.getElementById("tb-regime-val");
+        if (regEl) {
+          const r = regimeMatch[1].toUpperCase();
+          regEl.textContent = r;
+          regEl.className = r === "RISK_ON" ? "risk-on" : r === "RISK_OFF" ? "risk-off" : "";
+        }
+      }
+    }
+
+    async function refreshStatusPanel() {
+      try {
+        const r = await fetch("/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: "/status" })
+        });
+        const d = await r.json();
+        if (d.reply) parseStatusReply(d.reply);
+      } catch {}
+    }
+
+    refreshStatusPanel();
+    setInterval(refreshStatusPanel, 60000);
+  </script>
+</body>
+</html>

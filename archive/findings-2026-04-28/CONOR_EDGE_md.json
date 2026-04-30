@@ -1,0 +1,38 @@
+{
+  "file": "CONOR_EDGE.md",
+  "scanned": "2026-04-19T23:13:06.993Z",
+  "findings": [
+    {
+      "line": 3,
+      "category": "dead_code",
+      "severity": "low",
+      "issue": "Placeholder comment 'Initialize manually — Jarvis will maintain after first entry' suggests incomplete setup with no automated enforcement",
+      "suggestion": "Replace with actual initialization logic or remove if Jarvis handles this automatically",
+      "est_impact": "Confusion about system responsibilities; potential gap in data consistency"
+    },
+    {
+      "line": 6,
+      "category": "schema_drift",
+      "severity": "med",
+      "issue": "'Entry Criteria' marked 'TBD — fill in after first 10 trades' is a hard rule without defined conditions; blocks rule validation",
+      "suggestion": "Define entry criteria now or mark as optional; establish minimum threshold before trading starts",
+      "est_impact": "Rules cannot be enforced programmatically; trades may execute without meeting stated criteria"
+    },
+    {
+      "line": 18,
+      "category": "error_gap",
+      "severity": "high",
+      "issue": "Hard rule '-25% hard stop at entry' lacks specificity: is this -25% from entry price, or a maximum loss threshold? No calculation method defined",
+      "suggestion": "Clarify: 'Stop loss at entry_price × 0.75' or equivalent; define how it integrates with OCO order",
+      "est_impact": "Ambiguous execution; risk management rule may be applied incorrectly, causing unintended losses"
+    },
+    {
+      "line": 20,
+      "category": "error_gap",
+      "severity": "med",
+      "issue": "'No trading during Instacart shifts' is a behavioral rule with no technical enforcement mechanism listed",
+      "suggestion": "Add implementation detail: calendar check, API toggle, or scheduler lock to block trades during shift hours",
+      "est_impact": "Rule depends on manual discipline; violations go undetected and unlogged"
+    }
+  ]
+}

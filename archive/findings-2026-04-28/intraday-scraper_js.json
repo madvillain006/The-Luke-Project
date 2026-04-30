@@ -1,0 +1,54 @@
+{
+  "file": "intraday-scraper.js",
+  "scanned": "2026-04-19T23:11:38.689Z",
+  "findings": [
+    {
+      "line": 8,
+      "category": "token_waste",
+      "severity": "high",
+      "issue": "Finnhub API key is hardcoded and exposed in source code",
+      "suggestion": "Move API key to environment variable (process.env.FINNHUB_KEY)",
+      "est_impact": "Security breach; key should be rotated immediately"
+    },
+    {
+      "line": 42,
+      "category": "error_gap",
+      "severity": "med",
+      "issue": "runPython() returns null on error but callers don't validate before using result",
+      "suggestion": "Add explicit null checks after each runPython() call before processing b64",
+      "est_impact": "Could cause crashes when screenshot fails silently"
+    },
+    {
+      "line": 68,
+      "category": "token_waste",
+      "severity": "med",
+      "issue": "Two sequential Claude API calls (readResponse then extractResponse) could be combined into single call with chained prompt",
+      "suggestion": "Merge extraction logic into one message to reduce token overhead and latency",
+      "est_impact": "~30% reduction in API calls per channel scan"
+    },
+    {
+      "line": 81,
+      "category": "error_gap",
+      "severity": "med",
+      "issue": "notifyJarvis() and triggerAutonomous*() functions silently swallow all errors with empty catch blocks",
+      "suggestion": "Add minimal logging or retry logic for failed notifications to Jarvis",
+      "est_impact": "Silent failures prevent visibility into system communication breaks"
+    },
+    {
+      "line": 96,
+      "category": "duplication",
+      "severity": "low",
+      "issue": "Market quote fetching (getLiveQuote) duplicates similar API call logic for both spy and nq",
+      "suggestion": "Consolidate into single function accepting array of tickers",
+      "est_impact": "Minimal but cleaner code structure"
+    },
+    {
+      "line": 170,
+      "category": "scheduler_waste",
+      "severity": "med",
+      "issue": "runGlanceCycle() called every 10 intraday cycles (900s) but has no independent rate limiting; could cause overlapping scans",
+      "suggestion": "Track last glance execution time to enforce minimum 15-minute gap independently",
+      "est_impact": "Prevents unintended concurrent screenshot operations"
+    }
+  ]
+}

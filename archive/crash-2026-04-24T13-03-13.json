@@ -1,6 +1,0 @@
-{
-  "timestamp": "2026-04-24T13:03:13.803Z",
-  "reason": "unhandledRejection",
-  "message": "This operation was aborted",
-  "stack": "AbortError: This operation was aborted\n    at new DOMException (node:internal/per_context/domexception:76:18)\n    at AbortController.abort (node:internal/abort_controller:506:18)\n    at Timeout.<anonymous> (C:\\Users\\conor\\jarvis\\node_modules\\@discordjs\\rest\\dist\\index.js:715:47)\n    at listOnTimeout (node:internal/timers:605:17)\n    at process.processTimers (node:internal/timers:541:7)"
-}

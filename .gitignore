@@ -11,6 +11,20 @@ autonomous-state.json
 data/*
 !data/futures-rollover-calendar.json
 !data/.gitkeep
+!data/backtest/
+data/backtest/*
+!data/backtest/es-long-bracket/
+!data/backtest/es-long-bracket/README.md
+!data/backtest/es-long-bracket/raw/
+!data/backtest/es-long-bracket/raw/**/
+data/backtest/es-long-bracket/raw/**/*
+!data/backtest/es-long-bracket/raw/**/.gitkeep
+!data/backtest/es-long-bracket/reports/
+data/backtest/es-long-bracket/reports/*
+!data/backtest/es-long-bracket/reports/.gitkeep
+!data/backtest/es-long-bracket/sessions/
+data/backtest/es-long-bracket/sessions/*
+!data/backtest/es-long-bracket/sessions/example-session.json
 *.jsonl
 discord-exports/
 LOOK AT THIS ONE AND RENAME FOR DISCORD EXPORTS/
@@ -28,3 +42,8 @@ CONOR_CHRONICLE.md
 shifts.jsonl
 state/snapshots/
 crash.log
+repo-map.json
+jarvis-stdout.log
+jarvis-stderr.log
+luke-log-drafts.json
+.ws-token

@@ -211,3 +211,7 @@ Output: per-analyst, per-signal-type, per-instrument edge measurement.
 Drives both confluence-weight tuning and the futures-tightness
 adjustment above.
 
+
+## 2026-04-28 Pre-Open Deferrals
+- Saty auto-load: pull US500 by 8:30 AM ET via Massive/Polygon through the existing scheduler/webhook seam, compute Saty ATR ladder server-side, store as SPX, and surface to ES via existing basis equivalence.
+- LLM failsafe: if Anthropic is unavailable or tokens are exhausted, route non-sacred assistant/research traffic through a clearly-labeled fallback model/provider via the existing fallback-agent seam. Never silently downgrade sacred trade-path decisions.

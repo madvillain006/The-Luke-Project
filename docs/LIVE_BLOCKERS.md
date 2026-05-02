@@ -26,20 +26,20 @@
 - Blocks live execution: yes.
 - Type: provider limitation.
 
-## 3. Pending Staged Signal / Active Chop Veto Not Naturally Observed
-- Why it matters: staging path and chop veto are covered by tests, but live proof needs observed market/session states.
-- File/module: `trading/router.js`, `scripts/run-operator-session.js`, `lib/decision-spine/index.js`.
-- Required fix: market-hours or controlled paper/shadow session that naturally produces aligned staging and active veto cases without executing live.
+## 3. Active Chop Veto Not Naturally Observed At Live Price
+- Why it matters: staging and paper/shadow execute-staged are now route-proven, and chop veto is test-covered, but live proof still needs an observed current-price chop state.
+- File/module: `trading/router.js`, `scripts/run-operator-session.js`, `scripts/prove-staged-flow.js`, `lib/decision-spine/index.js`.
+- Required fix: market-hours or controlled paper/shadow session that naturally produces an active veto case without executing live.
 - Blocks code review: no.
 - Blocks trading companion: no.
-- Blocks staged bot: partially.
+- Blocks staged bot: no for route-level staged/paper/shadow proof; partially for live-observed veto proof.
 - Blocks live execution: yes.
 - Type: live-market observation required.
 
 ## 4. Live Execution Not Environment-Proven
 - Why it matters: modules exist, but no live Tradovate execution should be assumed from unit tests.
 - File/module: `trading/execution-live.js`, `trading/broker-tradovate.js`, `trading/router.js`.
-- Required fix: paper/shadow drill first; live remains credentialed, explicit-confirmation gated, and separate.
+- Required fix: paper/shadow drill is now proven by `npm run prove:staged-flow`; live remains credentialed, explicit-confirmation gated, and separate.
 - Blocks code review: no.
 - Blocks trading companion: no.
 - Blocks staged bot: no for staging/paper/shadow.
@@ -51,3 +51,4 @@
 - SPX/ES and QQQ/NQ policy: confluence-only reference; no silent price substitution.
 - Dubz/Mancini policy: structural levels carry forward until manually replaced/deleted; same-day callouts expire same day.
 - Bobby/Katbot/Jefe heatmap policy: Bobby-style heatmap/actionability remains required before trade plans are actionable.
+- Staged flow: controlled `/execute-staged` route proof passes for paper execution and shadow safe-reject without live execution.

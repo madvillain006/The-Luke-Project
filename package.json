@@ -8,6 +8,7 @@
     "compare:operator": "node scripts/compare-operator-surfaces.js",
     "market:data:test": "node scripts/verify-market-data.js",
     "prove:operator-v2": "node scripts/prove-operator-v2.js",
+    "prove:staged-flow": "node scripts/prove-staged-flow.js",
     "session:operator-v2": "node scripts/run-operator-session.js",
     "test": "vitest run",
     "test:watch": "vitest"

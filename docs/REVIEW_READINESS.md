@@ -24,6 +24,7 @@ Branch: `refactor/decision-spine-cleanup`
 ## Tests Run
 - `cmd /c npx vitest run tests/saty-auto-pull.test.js tests/decision-spine.test.js tests/slash-commands.test.js tests/market-data.test.js`: PASS, 4 files, 38 tests.
 - Full test/proof commands are rerun before commit and recorded in the final response.
+- `npm run prove:staged-flow`: PASS, controlled local paper/shadow route drill.
 
 ## Decision Spine
 - `buildTradeDecision(...)` exists in `lib/decision-spine/index.js`.
@@ -53,6 +54,7 @@ Branch: `refactor/decision-spine-cleanup`
 
 ## Execution Capability
 - `executeLive`, `executePaper`, `executeShadow`, Tradovate broker path, staged signal path, and explicit `/execute-staged` confirmation route exist.
+- `npm run prove:staged-flow` proves `/execute-staged` accepts a seeded paper signal, opens paper only, clears pending, and proves shadow rejects safely without credentials/live execution.
 - `/operator-v2` remains read-only and has no execute button.
 - Autonomous remains gated/staged and still checks risk, pending/open position, kill flags, trading window, freshness, confluence, and spine alignment.
 - Live execution is not environment-proven and must remain blocked without credentials/risk proof.
@@ -60,7 +62,7 @@ Branch: `refactor/decision-spine-cleanup`
 ## Old/New Surface Agreement
 - Proof script previously reported no remaining old shell/API/operator-v2 mismatches.
 - Automated session runs old shell commands through `POST /chat`, checks APIs, and checks `/operator-v2` DOM.
-- Not naturally observed: live actionable price, active current-price chop veto, pending staged signal.
+- Not naturally observed: live actionable price, active current-price chop veto, autonomous-generated pending staged signal.
 
 ## Readiness Scores
 - Code review readiness: 98%.
@@ -71,9 +73,9 @@ Branch: `refactor/decision-spine-cleanup`
 - Why not 99: live Tradovate data and market-hours behavior still need environment proof.
 - To reach 99: futures-grade provider proof plus one market-hours/manual companion proof.
 
-- Staged bot readiness: 89%.
-- Why not 99: pending staged signal and active live chop veto were not naturally observed.
-- To reach 99: controlled paper/shadow staging proof with visible blockers and no execution shortcut.
+- Staged bot readiness: 91%.
+- Why not 99: route-level paper/shadow proof passes, but autonomous-generated pending signal and active live chop veto were not naturally observed.
+- To reach 99: market-hours paper/shadow proof where autonomous naturally stages an aligned candidate and an active veto case is observed.
 
 - Live execution readiness: 42%.
 - Why not 99: no credentialed Tradovate market-data or execution proof.

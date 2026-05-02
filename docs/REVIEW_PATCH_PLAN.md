@@ -1,6 +1,6 @@
 # Review Patch Plan
 
-Review order: Saty/Yahoo fallback, Dubz carry-forward, root cleanup, decision spine, market data, autonomous gating, operator surfaces, parser hardening, state paths, proof tools, docs.
+Review order: Saty/Yahoo fallback, Dubz carry-forward, root cleanup, decision spine, market data, autonomous gating, staged-flow proof, operator surfaces, parser hardening, state paths, proof tools, docs.
 
 ## 1. Decision Spine + Entries
 - Purpose: make `/entries ES` consume one shared decision authority.
@@ -24,7 +24,7 @@ Review order: Saty/Yahoo fallback, Dubz carry-forward, root cleanup, decision sp
 - Behavior changes: candidate/spine disagreement and bad entry distance block staging.
 - Must not change: staged-only behavior, risk gates, confirmation route, kill/open/pending checks.
 - Tests: autonomous preflight/alignment tests in `tests/decision-spine-regression.test.js`.
-- Manual/proof command: `npm run session:operator-v2`.
+- Manual/proof command: `npm run session:operator-v2`, `npm run prove:staged-flow`.
 - Reviewer focus: `buildAutonomousPreflight`, evaluate path, `/execute-staged` remains explicit.
 - Known limitations: pending staged signal not naturally observed.
 - Independent: partially.
@@ -88,13 +88,13 @@ Review order: Saty/Yahoo fallback, Dubz carry-forward, root cleanup, decision sp
 
 ## 7. Proof / Verification Tools
 - Purpose: make old shell/API/operator-v2 and market-data checks repeatable.
-- Files included: `scripts/prove-operator-v2.js`, `scripts/run-operator-session.js`, `scripts/compare-operator-surfaces.js`, `scripts/verify-market-data.js`, related tests, `package.json`.
+- Files included: `scripts/prove-operator-v2.js`, `scripts/prove-staged-flow.js`, `scripts/run-operator-session.js`, `scripts/compare-operator-surfaces.js`, `scripts/verify-market-data.js`, related tests, `package.json`.
 - Risk level: low.
 - Why necessary: reviewers can rerun claims without manual paste testing.
 - Behavior changes: none in production.
 - Must not change: trading state or execution paths.
 - Tests: operator comparison tests plus npm scripts.
-- Manual/proof command: all proof scripts.
+- Manual/proof command: all proof scripts, including `npm run prove:staged-flow`.
 - Reviewer focus: scripts are read-only except ignored artifact reports/screenshots.
 - Known limitations: session proof mutates normal local analyst state through `/chat` test inputs.
 - Independent: yes.

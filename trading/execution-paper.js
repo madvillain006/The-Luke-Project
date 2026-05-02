@@ -25,7 +25,7 @@ function executePaper(state, signal) {
   logPaperTrade(trade);
   log("autonomous-execute-paper", trade);
 
-  // Non-blocking gate check — never blocks paper, builds reject-reason dataset
+  // Non-blocking gate check; never blocks paper, builds reject-reason dataset
   (async () => {
     try {
       const creds = state.tradovate;

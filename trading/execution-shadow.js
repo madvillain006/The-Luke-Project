@@ -41,7 +41,7 @@ async function executeShadow(state, signal) {
   const sess = touchSession(state);
   sess.staged++;
 
-  // Real reconciliation — informational only, does not hard-block shadow
+  // Real reconciliation; informational only, does not hard-block shadow
   try {
     const rec = await reconcileState(state);
     log("shadow-reconcile", { ...rec, simulated: true });
@@ -120,7 +120,7 @@ async function executeShadow(state, signal) {
   log("shadow-execute", trade);
 
   notifyLuke(
-    `02B SHADOW TRADE (SIMULATED — NO ORDER SENT)\n` +
+    `02B SHADOW TRADE (SIMULATED - NO ORDER SENT)\n` +
     `${trade.direction} ${trade.ticker} @ ${fill.fill_price} (${fill.slippage_ticks}t slip)\n` +
     `Stop: ${signal.stop} | Target: ${signal.target}\n` +
     `Risk: $${trade.risk_dollars} | Target P&L: $${trade.target_pnl}\n` +
@@ -169,7 +169,7 @@ async function monitorShadowPosition() {
   saveState(state);
 
   notifyLuke(
-    `02B SHADOW CLOSE — ${closeReason}\n` +
+    `02B SHADOW CLOSE - ${closeReason}\n` +
     `${pos.direction} ${pos.ticker}: ${pnl >= 0 ? "+" : ""}$${pnl.toFixed(0)} (simulated)\n` +
     `Session P&L: $${sess.simulated_pnl.toFixed(0)} | Entries: ${sess.would_have_entered}`
   );
@@ -177,7 +177,7 @@ async function monitorShadowPosition() {
 
 function getShadowSummary(state) {
   const s = state.shadow_session;
-  if (!s) return { active: false, message: "No shadow session — POST /shadow/reset to start one" };
+  if (!s) return { active: false, message: "No shadow session - POST /shadow/reset to start one" };
 
   const byReason = {};
   for (const r of (s.rejected || [])) {

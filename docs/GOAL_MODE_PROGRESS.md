@@ -11,12 +11,16 @@ Branch: `refactor/decision-spine-cleanup`
 - Changed Dubz structural freshness to carry forward across days until manually replaced/deleted.
 - Cleaned root directory by moving legacy root docs under `docs/legacy-root/` and removing duplicate/generated root files.
 - Removed corrupted Dubz status glyphs from a live output path.
+- Added `npm run prove:staged-flow` for local `/execute-staged` paper/shadow route proof.
+- Routed staged-flow runtime messages to plain ASCII safety wording.
 
 ## Fixed
 - Saty is no longer blocked on an unknown formula; formula source is supplied and coefficient-tested.
 - Dubz structural levels no longer get labeled stale solely because the saved date is old.
 - Root no longer visually mixes app entrypoints with old notes, duplicate scripts, and generated runtime JSON.
 - README now points to the archived legacy tech debt doc path.
+- Paper execute-staged route now has automated proof: route accepts a staged signal, opens paper only, and clears pending.
+- Shadow execute-staged route now has automated proof: missing credentials reject safely, clear pending, and do not touch live execution.
 
 ## Restored / Deleted / Ignored
 - Restored earlier accidental tracked deletions before `dff0bbe`.
@@ -26,7 +30,8 @@ Branch: `refactor/decision-spine-cleanup`
 
 ## Tests Run
 - Focused Saty/Dubz/market-data/slash coverage: PASS, 4 files, 38 tests.
-- Full verification commands passed before commit.
+- Full verification commands passed before the prior commit.
+- `cmd /c npm run prove:staged-flow`: PASS, `STAGED_FLOW_PROOF_PASS`.
 - Saty provider generation: Yahoo `^GSPC`, 124 bars, 2026-05-01 data, previous close 7230.12, ATR 77.68, call trigger 7248.45, put trigger 7211.79.
 
 ## Current Stop Condition

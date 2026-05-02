@@ -439,7 +439,7 @@ async function stageTrade(state, signal) {
     `${ruleLine}\n` +
     `${signal.reason}\n` +
     `Expires in 5 min - confirm in Luke\n` +
-    `⚠️ REMINDER: Look for fake breakdowns (flushes below a key level that immediately recover). `
+    `REMINDER: Look for fake breakdowns (flushes below a key level that immediately recover). `
   );
 
   if (global.broadcast) {
@@ -594,7 +594,7 @@ router.post("/execute-staged", async (req, res) => {
   if (signal.strategy === 'atm_3pt_scalp' || signal.strategy === 'atm_3pt') {
     const dailyPnl = state.daily_pnl || 0;
     if (dailyPnl <= -1000) {
-      console.warn('⚠ EXPOSURE CAP TRIGGERED: atm_3pt blocked to protect Apex floor');
+      console.warn('EXPOSURE CAP TRIGGERED: atm_3pt blocked to protect Apex floor');
       state.pending_signal = null;
       saveState(state);
       return res.status(403).json({ executed: false, reason: 'Apex floor guard: daily PnL at $' + dailyPnl + ', ATM 3pt blocked' });

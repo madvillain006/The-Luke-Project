@@ -10,6 +10,7 @@
 7. Operator-v2 read-only shell/API.
 8. Parser/input hardening.
 9. Proof/session tools.
+10. Staged-flow proof command.
 
 ## 2. Product Summary
 Luke trading is packaged as a confluence/confidence trading companion plus staged bot path. Manual `/entries ES`, operator APIs, and `/operator-v2` reflect the same decision spine. Autonomous can propose/stage only through gated confirmation flow. It is not live-execution-proven yet.
@@ -35,6 +36,8 @@ Luke trading is packaged as a confluence/confidence trading companion plus stage
 - Legacy root docs moved to `docs/legacy-root/`.
 - Duplicate/generated root files removed so root shows only live app/config entrypoints.
 - Corrupted Dubz status glyphs replaced with ASCII live output.
+- Added controlled paper/shadow staged-flow proof command.
+- Routed stage/execution messages to plain ASCII safety wording.
 - Decision spine, operator-v2, market data, proof tools, and idempotency work remain from the prior review package.
 
 ## 5. Inspect First
@@ -45,6 +48,7 @@ Luke trading is packaged as a confluence/confidence trading companion plus stage
 - `lib/parse-dubz.js`
 - `tests/decision-spine.test.js`
 - `tests/slash-commands.test.js`
+- `scripts/prove-staged-flow.js`
 - `docs/legacy-root/`
 - root deletions in `git status --short`
 
@@ -53,6 +57,7 @@ Luke trading is packaged as a confluence/confidence trading companion plus stage
 - `npm run prove:operator-v2`
 - `npm run session:operator-v2`
 - `npm run market:data:test`
+- `npm run prove:staged-flow`
 - `node index.js`
 - Inspect:
   - `http://127.0.0.1:3000/`
@@ -68,7 +73,7 @@ Luke trading is packaged as a confluence/confidence trading companion plus stage
 - Tradovate live market data.
 - Futures-grade live provider behavior beyond Yahoo/Finnhub fallback/reference data.
 - Live actionable LONG/SHORT with real current price.
-- Pending staged signal produced naturally.
+- Pending staged signal produced naturally from autonomous evaluation. Controlled route proof exists.
 - Active chop-zone veto at live/current price.
 - Live execution environment proof.
 
@@ -89,6 +94,7 @@ Luke trading is packaged as a confluence/confidence trading companion plus stage
 - Market-data UNKNOWN/stale/delayed safety behavior.
 - Bobby duplicate idempotency.
 - Proof/session tooling.
+- Paper/shadow staged-flow route proof.
 
 ## 10. Reviewer Questions
 SWE:
@@ -96,6 +102,7 @@ SWE:
 - Are provider failures contained without throwing actionable trade plans?
 - Is Yahoo fallback correctly labeled as fallback/stale/reference rather than authoritative futures truth?
 - Are proof scripts acceptably read-only aside from ignored artifacts and normal `/chat` test ingestion?
+- Is `scripts/prove-staged-flow.js` acceptable as route-level proof with state backup/restore?
 - Are there import cycles or server startup risks around the adapters?
 
 Trader:

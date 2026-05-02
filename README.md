@@ -152,8 +152,8 @@ If `/entries ES` refuses because inputs are stale or missing, trust the refusal.
   - main running log of meaningful changes
 - `docs/MONDAY_OPS.md`
   - operational morning checklist
-- `TECH_DEBT.md`
-  - deferred work and known future-phase needs
+- `docs/legacy-root/TECH_DEBT.md`
+  - historical deferred work and known future-phase needs
 - `docs/NAMING_CLEANUP.md`
   - current naming decisions and preserved compatibility names
 

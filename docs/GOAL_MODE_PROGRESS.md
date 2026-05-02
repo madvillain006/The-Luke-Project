@@ -4,35 +4,32 @@ Date: 2026-05-02
 Branch: `refactor/decision-spine-cleanup`
 
 ## Done Automatically
-- Restored 129 tracked deletions.
-- Removed untracked roadmap/audit/proof docs outside the allowed review docs.
-- Redirected generated proof outputs from `docs/` to ignored `artifacts/`.
-- Kept generated screenshots under ignored `artifacts/`.
-- Fixed corrupted market-data wording in `lib/system-prompt.js`.
-- Expanded `docs/REVIEW_PATCH_PLAN.md` into patch-group review guidance.
-- Created `docs/REVIEW_PACKET.md` for senior SWE/trader review.
-- Re-ran test/proof/session/market-data checks.
+- Committed the prior decision-spine/operator/market-data review package as `dff0bbe`.
+- Wired Saty auto-pull to use Polygon/Massive when configured, then Yahoo `^GSPC` as the current practical fallback.
+- Tested Saty day-mode derivation against the supplied Pine formula coefficients for all 13 stored levels.
+- Verified Yahoo `^GSPC` can generate a current SPX Saty ladder when network access is allowed.
+- Changed Dubz structural freshness to carry forward across days until manually replaced/deleted.
+- Cleaned root directory by moving legacy root docs under `docs/legacy-root/` and removing duplicate/generated root files.
+- Removed corrupted Dubz status glyphs from a live output path.
 
 ## Fixed
-- Worktree is now intentional and explainable.
-- No tracked deletions remain.
-- Proof/session scripts no longer dirty `docs/`.
-- Market-data provider failure remains visible as `UNKNOWN`, stale/delayed, confidence 0.
-- Decision spine, `/entries ES`, `/api/decision`, autonomous preflight/evaluate, and `/operator-v2` remain aligned.
+- Saty is no longer blocked on an unknown formula; formula source is supplied and coefficient-tested.
+- Dubz structural levels no longer get labeled stale solely because the saved date is old.
+- Root no longer visually mixes app entrypoints with old notes, duplicate scripts, and generated runtime JSON.
+- README now points to the archived legacy tech debt doc path.
 
 ## Restored / Deleted / Ignored
-- Restored: all tracked deletions from the previous cleanup state.
-- Deleted: untracked phase docs not allowed in goal mode.
-- Ignored: `artifacts/` generated proof markdown and screenshots.
+- Restored earlier accidental tracked deletions before `dff0bbe`.
+- Deleted from root: duplicate launch/helper scripts already represented under `scripts/`, generated runtime JSON, and one old test heatmap artifact.
+- Archived from root: historical notes now under `docs/legacy-root/`.
+- Ignored: generated proof artifacts under `artifacts/`.
 
 ## Tests Run
-- `cmd /c npm test`: PASS, 37 files, 440 tests passed, 1 skipped.
-- `cmd /c npm run prove:operator-v2`: PASS.
-- `cmd /c npm run session:operator-v2`: PASS.
-- `cmd /c npm run market:data:test`: PASS with safe UNKNOWN provider results.
-- `node index.js` endpoint smoke: PASS for old shell, `/operator-v2`, operator APIs, decision, confluence, and autonomous status/preflight.
+- Focused Saty/Dubz/market-data/slash coverage: PASS, 4 files, 38 tests.
+- Full verification commands passed before commit.
+- Saty provider generation: Yahoo `^GSPC`, 124 bars, 2026-05-01 data, previous close 7230.12, ATR 77.68, call trigger 7248.45, put trigger 7211.79.
 
 ## Current Stop Condition
 `REVIEW_PACKET_READY`
 
-The repo is ready for senior SWE/trader review as a grouped patch package. Remaining blockers are environment/provider proof, live-market observation, or human/trader policy signoff.
+The repo is closer to review-clean: remaining blockers are provider credentials/network proof, live-market observation, and live execution proof. No known code-fixable blocker remains before the next test/commit cycle.

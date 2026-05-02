@@ -173,6 +173,33 @@ describe('decision spine buildTradeDecision', () => {
     expect(freshness.bobby.loaded).toBe(true);
     expect(freshness.dubz.loaded).toBe(true);
     expect(freshness.dubz.count).toBe(1);
+    expect(freshness.dubz.same_day).toBe(true);
+  });
+
+  it('carries forward Dubz structural levels across days until manually replaced or deleted', () => {
+    const now = new Date('2026-05-02T15:00:00.000Z');
+    writeFreshInputs(now);
+    const oldTs = '2026-04-29T14:00:00.000Z';
+    writeJson(DUBZ_LEVELS_FILE, {
+      date: '2026-04-29',
+      last_updated: oldTs,
+      source_pastes: [],
+      instruments: {
+        ES: { levels: [{ price: 6809 }] },
+        NQ: { levels: [] },
+        SPY: { levels: [] },
+        QQQ: { levels: [] },
+      },
+      conflicts: [],
+      parse_errors: [],
+    });
+
+    const freshness = _internal.buildFreshness(now);
+
+    expect(freshness.dubz.loaded).toBe(true);
+    expect(freshness.dubz.count).toBe(1);
+    expect(freshness.dubz.same_day).toBe(false);
+    expect(freshness.dubz.persistence).toBe('structural_carry_forward_until_deleted');
   });
 
   it('builds an actionable structured decision from the best confluence anchor', () => {

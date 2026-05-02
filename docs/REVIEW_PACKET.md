@@ -1,23 +1,26 @@
 # Senior SWE + Trader Review Packet
 
 ## 1. Review Order
-1. Decision spine + entries.
-2. Market-data abstraction.
-3. Autonomous spine gating.
-4. Operator-v2 read-only shell/API.
-5. Parser/input hardening.
-6. State path normalization.
-7. Proof/session tools.
-8. Review docs and artifact ignore.
+1. Saty/Yahoo provider fallback.
+2. Dubz carry-forward policy.
+3. Root cleanup / legacy-root archive.
+4. Decision spine + entries.
+5. Market-data abstraction.
+6. Autonomous spine gating.
+7. Operator-v2 read-only shell/API.
+8. Parser/input hardening.
+9. Proof/session tools.
 
 ## 2. Product Summary
-Luke trading is now packaged as a confluence/confidence trading companion plus staged bot path. Manual `/entries ES`, operator APIs, and `/operator-v2` are intended to reflect the same decision spine. Autonomous can propose/stage only through gated confirmation flow. It is not live-execution-proven yet.
+Luke trading is packaged as a confluence/confidence trading companion plus staged bot path. Manual `/entries ES`, operator APIs, and `/operator-v2` reflect the same decision spine. Autonomous can propose/stage only through gated confirmation flow. It is not live-execution-proven yet.
 
 ## 3. Critical Safety Invariants
 - No production fake/static current-price assumptions.
 - UNKNOWN/missing/stale market data must produce WAIT/PASS/non-actionable state.
 - Latest-close/weekend/fallback data must be labeled stale/delayed/reference.
+- SPX/ES and QQQ/NQ are confluence-only references, not silent current-price substitutes.
 - `buildTradeDecision(...)` is the authority for entries-style decisions.
+- Bobby-style heatmap/actionability is required before a trade plan becomes actionable.
 - `/operator-v2` is read-only and not the default shell.
 - Autonomous remains staged-only and confirmation-gated.
 - No direct execution shortcut or operator-v2 execute button.
@@ -25,28 +28,25 @@ Luke trading is now packaged as a confluence/confidence trading companion plus s
 - Mancini chop zones are veto/avoid/pass logic, not entries.
 
 ## 4. What Changed
-- Decision spine extracted and wired into `/entries ES`.
-- Autonomous compares candidate signals against the spine before staging.
-- `/operator-v2` added as a read-only mirror with backend API adapters.
-- Market-data layer added with source/timestamp/stale/delayed/confidence metadata.
-- Old SPY/SPX/QQQ static price approximations removed from production price path.
-- Bobby duplicate/idempotency and Level Memory/parser contract tests added.
-- Generated state/proof artifacts moved to structured paths or ignored artifacts.
-- Repeatable proof scripts added for operator surface parity and market-data safety.
+- Saty auto-generation now uses Polygon/Massive when configured, then Yahoo `^GSPC` fallback.
+- Saty day-mode 13-level coefficient parity is tested against the supplied Pine formula.
+- Dubz structural levels now carry forward until manually replaced/deleted.
+- Same-day callouts are treated separately from Dubz structural levels and expire same day.
+- Legacy root docs moved to `docs/legacy-root/`.
+- Duplicate/generated root files removed so root shows only live app/config entrypoints.
+- Corrupted Dubz status glyphs replaced with ASCII live output.
+- Decision spine, operator-v2, market data, proof tools, and idempotency work remain from the prior review package.
 
 ## 5. Inspect First
+- `lib/saty-auto-pull.js`
+- `lib/market-data/providers/yahoo.js`
+- `tests/saty-auto-pull.test.js`
 - `lib/decision-spine/index.js`
-- `lib/commands/entries-command.js`
-- `lib/renderers/entries-renderer.js`
-- `lib/operator/decision-adapter.js`
-- `lib/market-data/index.js`
-- `lib/market-data/providers/`
-- `trading/router.js`
-- `trading/signals.js`
-- `operator-v2.html`
-- `tests/decision-spine-regression.test.js`
-- `tests/market-data.test.js`
-- `tests/operator-api-adapters.test.js`
+- `lib/parse-dubz.js`
+- `tests/decision-spine.test.js`
+- `tests/slash-commands.test.js`
+- `docs/legacy-root/`
+- root deletions in `git status --short`
 
 ## 6. Commands To Run
 - `npm test`
@@ -63,47 +63,43 @@ Luke trading is now packaged as a confluence/confidence trading companion plus s
   - `http://127.0.0.1:3000/api/confluence?instrument=ES`
   - `http://127.0.0.1:3000/agent/autonomous/status`
   - `http://127.0.0.1:3000/agent/autonomous/preflight`
-- Latest endpoint smoke returned HTTP 200 for all URLs above.
 
 ## 7. Known Unproven Areas
 - Tradovate live market data.
-- Provider fallback latest-close when network/provider access works.
+- Futures-grade live provider behavior beyond Yahoo/Finnhub fallback/reference data.
 - Live actionable LONG/SHORT with real current price.
 - Pending staged signal produced naturally.
 - Active chop-zone veto at live/current price.
-- Saty ATR auto-generation parity with trusted Saty source.
-- Dubz structural persistence versus same-day callout freshness policy.
-- SPX/ES and QQQ/NQ confluence equivalence/basis policy.
 - Live execution environment proof.
 
 ## 8. Do Not Approve For Live Yet
 - Do not approve live execution.
 - Do not approve autonomous self-driving.
 - Do not approve Tradovate live data readiness without credentialed market-hours proof.
-- Do not approve Saty auto-generation as production truth until parity fixture is signed off.
 - Do not approve implicit SPX-to-ES or QQQ-to-NQ current-price substitution.
-- Do not approve Dubz carry-forward policy until trader signs off.
+- Do not approve stale/latest-close data as live.
 
 ## 9. Safe To Review / Merge Now
+- Saty formula implementation and provider fallback behavior.
+- Dubz structural carry-forward behavior.
+- Root cleanup if reviewers accept duplicate/generated root file removal.
 - Decision spine architecture and tests.
 - `/entries ES` spine wiring.
 - Operator-v2 read-only mirror and APIs.
 - Market-data UNKNOWN/stale/delayed safety behavior.
 - Bobby duplicate idempotency.
 - Proof/session tooling.
-- Artifact ignore and state path normalization, with focused review.
 
 ## 10. Reviewer Questions
 SWE:
-- Is the decision-spine API shape stable enough for all consumers?
+- Are root deletions safe given duplicate live files under `scripts/` and structured runtime paths?
 - Are provider failures contained without throwing actionable trade plans?
+- Is Yahoo fallback correctly labeled as fallback/stale/reference rather than authoritative futures truth?
 - Are proof scripts acceptably read-only aside from ignored artifacts and normal `/chat` test ingestion?
-- Is state path normalization too broad for this PR, or acceptable as a separate patch group?
-- Are there import cycles or server startup risks around the new adapters?
+- Are there import cycles or server startup risks around the adapters?
 
 Trader:
-- Confirm Saty ATR source-of-truth and expected parity fixture.
-- Confirm SPX/ES and QQQ/NQ confluence equivalence/basis policy.
-- Confirm Dubz structural persistence versus same-day callout freshness.
-- Confirm whether Bobby heatmap actionability should be required for all staged trades.
-- Confirm whether current PASS/WAIT wording is clear enough for live use.
+- Confirm generated Saty levels match the expected TradingView script output in a live session.
+- Confirm PASS/WAIT wording is clear enough when latest-close data is stale.
+- Confirm Bobby/Jefe/Katbot heatmap actionability requirement is strict enough in `/entries` and autonomous staging.
+- Confirm Dubz/Mancini carry-forward display is operationally clear.

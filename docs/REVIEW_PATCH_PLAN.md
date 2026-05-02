@@ -1,6 +1,6 @@
 # Review Patch Plan
 
-Review order: decision spine, market data, autonomous gating, operator surfaces, parser hardening, state paths, proof tools, docs.
+Review order: Saty/Yahoo fallback, Dubz carry-forward, root cleanup, decision spine, market data, autonomous gating, operator surfaces, parser hardening, state paths, proof tools, docs.
 
 ## 1. Decision Spine + Entries
 - Purpose: make `/entries ES` consume one shared decision authority.
@@ -46,7 +46,7 @@ Review order: decision spine, market data, autonomous gating, operator surfaces,
 
 ## 4. Market-Data Abstraction
 - Purpose: replace static price assumptions with structured provider truth.
-- Files included: `lib/market-data/`, `lib/live-price.js`, `trading/market-context.js`, `lib/saty-auto-pull.js`, `lib/system-prompt.js`, `tests/market-data.test.js`, `scripts/verify-market-data.js`.
+- Files included: `lib/market-data/`, `lib/live-price.js`, `trading/market-context.js`, `lib/saty-auto-pull.js`, `lib/system-prompt.js`, `tests/market-data.test.js`, `tests/saty-auto-pull.test.js`, `scripts/verify-market-data.js`.
 - Risk level: high.
 - Why necessary: Luke must not use fake ES/SPX/NQ/MES/MNQ prices.
 - Behavior changes: provider failure returns `UNKNOWN`; stale/delayed/latest-close metadata is explicit.
@@ -54,18 +54,18 @@ Review order: decision spine, market data, autonomous gating, operator surfaces,
 - Tests: `tests/market-data.test.js`.
 - Manual/proof command: `npm run market:data:test`.
 - Reviewer focus: provider priority, UNKNOWN handling, no SPX-to-ES silent substitution.
-- Known limitations: current environment lacks Tradovate proof and fallback fetches fail.
+- Known limitations: current environment lacks Tradovate proof; Yahoo fallback requires network access and is stale/reference when market is closed.
 - Independent: mostly.
 - Depends on: operator and autonomous adapters for display.
 
 ## 5. Parser / Input Hardening
 - Purpose: protect analyst ingestion contracts without changing strategy.
-- Files included: `lib/bobby-heatmap-idempotency.js`, `lib/parse-bobby.js`, `lib/level-memory.js`, `tests/bobby-heatmap-idempotency.test.js`, `tests/level-memory-contract.test.js`.
+- Files included: `lib/bobby-heatmap-idempotency.js`, `lib/parse-bobby.js`, `lib/parse-dubz.js`, `lib/level-memory.js`, `tests/bobby-heatmap-idempotency.test.js`, `tests/level-memory-contract.test.js`, `tests/slash-commands.test.js`.
 - Risk level: medium.
 - Why necessary: duplicate Bobby input must not inflate Level Memory or alter decisions.
-- Behavior changes: identical Bobby heatmap text/image is idempotent.
+- Behavior changes: identical Bobby heatmap text/image is idempotent; Dubz structural levels carry forward until manually replaced/deleted.
 - Must not change: parser strategy, Level Memory schema, confluence formula.
-- Tests: Bobby idempotency and Level Memory contract tests.
+- Tests: Bobby idempotency, Level Memory contract, Dubz status, and decision-spine freshness tests.
 - Manual/proof command: `npm run session:operator-v2`.
 - Reviewer focus: source-id hashing, duplicate handling, fixture coverage.
 - Known limitations: vision provider behavior still depends on external image parse path.
@@ -115,19 +115,19 @@ Review order: decision spine, market data, autonomous gating, operator surfaces,
 - Depends on: all groups for accuracy.
 
 ## 9. Cleanup / Artifact Ignore
-- Purpose: keep generated proof output out of review.
-- Files included: `.gitignore`, `artifacts/` generated files.
+- Purpose: keep generated proof output out of review and make the repo root inspectable.
+- Files included: `.gitignore`, ignored `artifacts/` generated files, `docs/legacy-root/`, root duplicate/generated file removals.
 - Risk level: low.
-- Why necessary: screenshots/proof markdown should not dirty the repo.
-- Behavior changes: none.
-- Must not change: do not ignore real source, tests, or intended docs.
-- Tests: `git status --short artifacts docs`.
+- Why necessary: screenshots/proof markdown should not dirty the repo, and root should not mix live entrypoints with old notes/generated runtime state.
+- Behavior changes: root launch/helper duplicates are removed; live copies under `scripts/` and structured runtime paths remain.
+- Must not change: do not ignore real source, tests, intended docs, or boot-critical files.
+- Tests: `git status --short`, full `npm test`, proof/session commands.
 - Manual/proof command: proof scripts write to ignored `artifacts/`.
-- Reviewer focus: ignore patterns are scoped.
+- Reviewer focus: root deletion list, duplicate script coverage under `scripts/`, ignore patterns are scoped.
 - Known limitations: local `.config/git/ignore` permission warning is environmental.
 - Independent: yes.
 - Depends on: proof scripts.
 
 ## REVIEW_NEEDS_ATTENTION
-- None. All changed/untracked files are covered by the patch groups above.
-- No tracked deletions remain.
+- Root cleanup intentionally includes tracked deletions. Review these as cleanup-only, not trading behavior.
+- No ungrouped files are known after the final status check.

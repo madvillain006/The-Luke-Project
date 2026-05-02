@@ -163,7 +163,7 @@ describe('slash-commands Phase 2 workflow status', () => {
     expect(status.dubzCount).toBeGreaterThan(0);
   });
 
-  it('bare /dubz clearly refuses stale saved levels', async () => {
+  it('bare /dubz treats old structural levels as carry-forward context', async () => {
     fs.writeFileSync(DUBZ_LEVELS_FILE, JSON.stringify({
       date: '2026-04-27',
       last_updated: '2026-04-27T13:00:00.000Z',
@@ -180,8 +180,9 @@ describe('slash-commands Phase 2 workflow status', () => {
 
     await handleSlashCommand('/dubz', res);
 
-    expect(payload.reply).toMatch(/^STALE Dubz levels saved for 2026-04-27/);
-    expect(payload.reply).toContain('/ready will NOT count these levels');
+    expect(payload.reply).toMatch(/^Dubz structural levels loaded from 2026-04-27/);
+    expect(payload.reply).toContain('Structural levels carry forward until manually replaced or deleted');
+    expect(payload.reply).toContain('Same-day callouts');
     expect(payload.reply).not.toContain('ES: 7185.75');
   });
 

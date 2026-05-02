@@ -282,7 +282,7 @@ async function checkTradovateHealth() {
   if (!r.ok) throw new Error("Tradovate health check failed: HTTP " + r.status);
   const result = await r.json();
   const health = { ts: new Date().toISOString(), ok: result.connected === true || result.ok === true, detail: result.message || result.status || "" };
-  writeJson(path.join(__dirname, "tradovate-health.json"), health);
+  writeJson(snapshots.tradovateHealth, health);
   if (!health.ok) await post("/notify", { message: "TRADOVATE CONNECTION FAILED - check credentials\n" + health.detail });
   log("tradovate-health", health);
   return health.ok ? "ok" : "failed";

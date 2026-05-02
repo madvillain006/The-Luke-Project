@@ -114,10 +114,10 @@ const SCHEMA_ERRORS_FILE     = events.schemaErrors;
 const SCHED_HEARTBEAT_FILE   = snapshots.schedulerHeartbeat;
 const SCHED_JOBS_FILE        = snapshots.schedulerJobs;
 const CANARY_LOG_FILE        = events.canaryLog;
-const TRADOVATE_HEALTH_FILE  = path.join(__dirname, "tradovate-health.json");
-const STATE_INTERVENTIONS    = path.join(__dirname, "state-interventions.jsonl");
-const BOOT_CHECKS_FILE       = path.join(__dirname, "boot-checks.jsonl");
-const SCRAPE_RESULT_FILE     = path.join(__dirname, "scrape-result.json");
+const TRADOVATE_HEALTH_FILE  = snapshots.tradovateHealth;
+const STATE_INTERVENTIONS    = events.stateInterventions;
+const BOOT_CHECKS_FILE       = events.bootChecks;
+const SCRAPE_RESULT_FILE     = runtime.scrapeResult;
 
 const JOB_INTERVALS = {
   "morning-briefing":  24 * 3600000,

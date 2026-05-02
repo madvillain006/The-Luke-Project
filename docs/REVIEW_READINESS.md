@@ -62,7 +62,7 @@ Branch: `refactor/decision-spine-cleanup`
 ## Old/New Surface Agreement
 - Proof script previously reported no remaining old shell/API/operator-v2 mismatches.
 - Automated session runs old shell commands through `POST /chat`, checks APIs, and checks `/operator-v2` DOM.
-- Not naturally observed: live actionable price, active current-price chop veto, autonomous-generated pending staged signal.
+- Not naturally observed: live actionable price, autonomous-generated pending staged signal.
 
 ## Readiness Scores
 - Code review readiness: 98%.
@@ -73,9 +73,9 @@ Branch: `refactor/decision-spine-cleanup`
 - Why not 99: live Tradovate data and market-hours behavior still need environment proof.
 - To reach 99: futures-grade provider proof plus one market-hours/manual companion proof.
 
-- Staged bot readiness: 91%.
-- Why not 99: route-level paper/shadow proof passes, but autonomous-generated pending signal and active live chop veto were not naturally observed.
-- To reach 99: market-hours paper/shadow proof where autonomous naturally stages an aligned candidate and an active veto case is observed.
+- Staged bot readiness: 93%.
+- Why not 99: route-level paper/shadow proof passes and Mancini veto is observed, but autonomous-generated pending signal was not naturally produced by evaluation.
+- To reach 99: market-hours paper/shadow proof where autonomous naturally stages an aligned candidate without executing live.
 
 - Live execution readiness: 42%.
 - Why not 99: no credentialed Tradovate market-data or execution proof.

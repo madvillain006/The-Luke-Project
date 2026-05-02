@@ -24,7 +24,7 @@ Review order: Saty/Yahoo fallback, Dubz carry-forward, root cleanup, decision sp
 - Behavior changes: candidate/spine disagreement and bad entry distance block staging.
 - Must not change: staged-only behavior, risk gates, confirmation route, kill/open/pending checks.
 - Tests: autonomous preflight/alignment tests in `tests/decision-spine-regression.test.js`.
-- Manual/proof command: `npm run session:operator-v2`, `npm run prove:staged-flow`.
+- Manual/proof command: `npm run session:operator-v2` verifies Mancini chop veto observation; `npm run prove:staged-flow` verifies paper/shadow execute-staged routing.
 - Reviewer focus: `buildAutonomousPreflight`, evaluate path, `/execute-staged` remains explicit.
 - Known limitations: pending staged signal not naturally observed.
 - Independent: partially.

@@ -26,13 +26,13 @@
 - Blocks live execution: yes.
 - Type: provider limitation.
 
-## 3. Active Chop Veto Not Naturally Observed At Live Price
-- Why it matters: staging and paper/shadow execute-staged are now route-proven, and chop veto is test-covered, but live proof still needs an observed current-price chop state.
+## 3. Autonomous-Generated Pending Signal Not Naturally Observed
+- Why it matters: staging, paper/shadow execute-staged, and Mancini chop veto are now proof-covered, but live proof still needs an autonomous evaluation that naturally creates a pending staged signal.
 - File/module: `trading/router.js`, `scripts/run-operator-session.js`, `scripts/prove-staged-flow.js`, `lib/decision-spine/index.js`.
-- Required fix: market-hours or controlled paper/shadow session that naturally produces an active veto case without executing live.
+- Required fix: market-hours or controlled paper/shadow session that naturally produces an aligned candidate and pending staged signal without executing live.
 - Blocks code review: no.
 - Blocks trading companion: no.
-- Blocks staged bot: no for route-level staged/paper/shadow proof; partially for live-observed veto proof.
+- Blocks staged bot: partially for natural autonomous staging proof.
 - Blocks live execution: yes.
 - Type: live-market observation required.
 
@@ -52,3 +52,4 @@
 - Dubz/Mancini policy: structural levels carry forward until manually replaced/deleted; same-day callouts expire same day.
 - Bobby/Katbot/Jefe heatmap policy: Bobby-style heatmap/actionability remains required before trade plans are actionable.
 - Staged flow: controlled `/execute-staged` route proof passes for paper execution and shadow safe-reject without live execution.
+- Mancini chop veto: automated session now observes a chop veto in trusted decision output.

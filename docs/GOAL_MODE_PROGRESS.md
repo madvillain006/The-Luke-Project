@@ -32,6 +32,7 @@ Branch: `refactor/decision-spine-cleanup`
 - Focused Saty/Dubz/market-data/slash coverage: PASS, 4 files, 38 tests.
 - Full verification commands passed before the prior commit.
 - `cmd /c npm run prove:staged-flow`: PASS, `STAGED_FLOW_PROOF_PASS`.
+- `cmd /c npm run session:operator-v2`: PASS and now records `Mancini chop veto observed: yes`.
 - Saty provider generation: Yahoo `^GSPC`, 124 bars, 2026-05-01 data, previous close 7230.12, ATR 77.68, call trigger 7248.45, put trigger 7211.79.
 
 ## Current Stop Condition

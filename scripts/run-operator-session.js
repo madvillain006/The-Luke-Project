@@ -403,6 +403,14 @@ function duplicateObservation(before, after) {
   };
 }
 
+function hasManciniChopVeto(snapshot) {
+  if (!snapshot) return false;
+  const entriesText = String(reply(snapshot.entries));
+  const decisionText = JSON.stringify(snapshot.decision?.body || {});
+  return /mancini_chop_zone|Mancini chop zone|Vetoes:\s*(?!none active)/i.test(entriesText) ||
+    /mancini_chop_zone|Mancini chop zone/i.test(decisionText);
+}
+
 function renderValue(value) {
   if (value === null || value === undefined || value === '') return '-';
   if (Array.isArray(value) || typeof value === 'object') return `\`${JSON.stringify(value).replace(/`/g, '\\`')}\``;
@@ -417,8 +425,9 @@ function renderReport({ app, dom, groups, snapshots, mismatches, duplicate, npmT
   const readiness = latest?.readiness?.body;
   const blockedByLogic = [];
   const notTestable = [];
-  if (!String(reply(latest?.entries)).match(/Mancini|chop|Vetoes:\s*(?!none active)/i)) {
-    notTestable.push('Active chop-zone/veto was not naturally produced by the submitted inputs/current price.');
+  const chopObserved = snapshots.some(hasManciniChopVeto);
+  if (!chopObserved) {
+    notTestable.push('Active chop-zone/veto was not produced by the submitted inputs and trusted decision spine.');
   }
   if (!latest?.autonomousStatus?.body?.pending_signal) {
     notTestable.push('Pending staged signal was not present; runner did not create or confirm one.');
@@ -459,6 +468,7 @@ function renderReport({ app, dom, groups, snapshots, mismatches, duplicate, npmT
     lines.push(`- ${group.name}: ${group.status} - ${notes}`);
   }
   lines.push(`- Bobby duplicate: ${duplicate.bobbyBefore} -> ${duplicate.bobbyAfter} Bobby mentions; decision stable: ${duplicate.decisionStable ? 'yes' : 'no'}`);
+  lines.push(`- Mancini chop veto observed: ${chopObserved ? 'yes' : 'no'}`);
   lines.push('');
   lines.push('## Comparison Results');
   lines.push('| Field | Trusted source | Operator V2/API | Result | Note |');

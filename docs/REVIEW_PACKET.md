@@ -49,6 +49,7 @@ Luke trading is packaged as a confluence/confidence trading companion plus stage
 - `tests/decision-spine.test.js`
 - `tests/slash-commands.test.js`
 - `scripts/prove-staged-flow.js`
+- `scripts/run-operator-session.js`
 - `docs/legacy-root/`
 - root deletions in `git status --short`
 
@@ -74,7 +75,6 @@ Luke trading is packaged as a confluence/confidence trading companion plus stage
 - Futures-grade live provider behavior beyond Yahoo/Finnhub fallback/reference data.
 - Live actionable LONG/SHORT with real current price.
 - Pending staged signal produced naturally from autonomous evaluation. Controlled route proof exists.
-- Active chop-zone veto at live/current price.
 - Live execution environment proof.
 
 ## 8. Do Not Approve For Live Yet
@@ -95,6 +95,7 @@ Luke trading is packaged as a confluence/confidence trading companion plus stage
 - Bobby duplicate idempotency.
 - Proof/session tooling.
 - Paper/shadow staged-flow route proof.
+- Mancini chop-zone veto observation through automated session.
 
 ## 10. Reviewer Questions
 SWE:

@@ -3,7 +3,11 @@ process.on('uncaughtException', (err, origin) => {
   const path = require('path');
   const ts = new Date().toISOString();
   const entry = `[${ts}] uncaughtException origin=${origin}\n${err.stack || err}\n\n`;
-  try { fs.appendFileSync(path.join(__dirname, 'crash.log'), entry); } catch (e) { /* swallow */ }
+  try {
+    const dir = path.join(__dirname, 'state', 'events');
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.appendFileSync(path.join(dir, 'crash.log'), entry);
+  } catch (e) { /* swallow */ }
   console.error(entry);
   process.exit(1);
 });
@@ -13,7 +17,11 @@ process.on('unhandledRejection', (reason, promise) => {
   const path = require('path');
   const ts = new Date().toISOString();
   const entry = `[${ts}] unhandledRejection\nreason: ${reason?.stack || reason}\n\n`;
-  try { fs.appendFileSync(path.join(__dirname, 'crash.log'), entry); } catch (e) { /* swallow */ }
+  try {
+    const dir = path.join(__dirname, 'state', 'events');
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.appendFileSync(path.join(dir, 'crash.log'), entry);
+  } catch (e) { /* swallow */ }
   console.error(entry);
   // Do NOT exit  log and continue. Node 15+ would crash by default; we want to survive
   // transient promise rejections but capture them.
@@ -40,6 +48,10 @@ const { handleSlashCommand } = require("./lib/slash-commands");
 const { validateMemoryKey, MAX_TEXT_BYTES, MAX_URL_LENGTH } = require("./lib/validators");
 const { detectPasteIntent } = require("./lib/detect-paste");
 const { handlePasteAccumulate } = require("./lib/daily-accumulator");
+const { events, runtime, snapshots } = require("./lib/paths");
+const { buildOperatorStatus, buildOperatorReadiness, readTradingStateReadOnly } = require("./lib/operator/operator-status-adapter");
+const { buildDecisionResponse } = require("./lib/operator/decision-adapter");
+const { buildConfluenceResponse } = require("./lib/operator/confluence-adapter");
 const {
   getTodayLevelsFile,
   hasLevelsLoadedToday,
@@ -47,6 +59,11 @@ const {
   makeLevelsWarningPayload,
   appendBobbyVisionResult,
 } = require("./lib/today-levels-shim");
+const {
+  buildBobbyHeatmapSourceId,
+  countBobbyNodes,
+  findBobbyBySourceId,
+} = require("./lib/bobby-heatmap-idempotency");
 
 const rateLimit = require("express-rate-limit");
 const app = express();
@@ -87,17 +104,16 @@ app.use((req, res, next) => {
   });
 });
 
-const MEMORY_FILE        = path.join(__dirname, "memory.json");
-const MEMORY_SUMMARY_FILE = path.join(__dirname, "MEMORY_SUMMARY.md");
-const SESSION_FILE       = path.join(__dirname, "session.jsonl");
-const REPO_MAP_FILE          = path.join(__dirname, "repo-map.json");
-const TOOL_FAILURES_FILE     = path.join(__dirname, "tool-failures.jsonl");
-const TOOL_CALLS_FILE        = path.join(__dirname, "tool-calls.jsonl");
-const TOOL_HEALTH_FILE       = path.join(__dirname, "tool-health.jsonl");
-const SCHEMA_ERRORS_FILE     = path.join(__dirname, "schema-errors.jsonl");
-const SCHED_HEARTBEAT_FILE   = path.join(__dirname, "scheduler-heartbeat.json");
-const SCHED_JOBS_FILE        = path.join(__dirname, "scheduler-jobs.json");
-const CANARY_LOG_FILE        = path.join(__dirname, "canary-log.jsonl");
+const MEMORY_FILE        = snapshots.memory;
+const SESSION_FILE       = events.session;
+const REPO_MAP_FILE          = snapshots.repoMap;
+const TOOL_FAILURES_FILE     = events.toolFailures;
+const TOOL_CALLS_FILE        = events.toolCalls;
+const TOOL_HEALTH_FILE       = events.toolHealth;
+const SCHEMA_ERRORS_FILE     = events.schemaErrors;
+const SCHED_HEARTBEAT_FILE   = snapshots.schedulerHeartbeat;
+const SCHED_JOBS_FILE        = snapshots.schedulerJobs;
+const CANARY_LOG_FILE        = events.canaryLog;
 const TRADOVATE_HEALTH_FILE  = path.join(__dirname, "tradovate-health.json");
 const STATE_INTERVENTIONS    = path.join(__dirname, "state-interventions.jsonl");
 const BOOT_CHECKS_FILE       = path.join(__dirname, "boot-checks.jsonl");
@@ -105,7 +121,6 @@ const SCRAPE_RESULT_FILE     = path.join(__dirname, "scrape-result.json");
 
 const JOB_INTERVALS = {
   "morning-briefing":  24 * 3600000,
-    "generate-documents": 24 * 3600000,
   "agent-assessments": 24 * 3600000,
   "discord-scrape":    24 * 3600000,
   "apex-eod-update":   24 * 3600000,
@@ -339,6 +354,11 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/chat.html");
 });
 
+app.get("/operator-v2", (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.sendFile(__dirname + "/operator-v2.html");
+});
+
 app.post("/chat", async (req, res) => {
   const { message, history, image } = req.body;
   if (!message && !image) return res.status(400).json({ error: "No message" });
@@ -516,6 +536,21 @@ app.post("/see-image", async (req, res) => {
   const { image } = req.body;
   if (!image) return res.status(400).json({ error: "No image" });
   try {
+    const sourceId = buildBobbyHeatmapSourceId({ image });
+    const existing = (() => {
+      try {
+        const obj = JSON.parse(fs.readFileSync(getTodayLevelsFile(__dirname), 'utf8'));
+        return findBobbyBySourceId(obj, sourceId);
+      } catch { return null; }
+    })();
+    if (existing) {
+      const kings  = (existing.king_nodes || []).join(", ") || "none";
+      const walls  = (existing.resistance || []).join(", ") || "none";
+      const floors = (existing.support || []).join(", ") || "none";
+      const summary = `King nodes: ${kings}. Walls: ${walls}. Floors: ${floors}. Nodes: ${countBobbyNodes(existing)}. Bias: ${existing.bias}.`;
+      return res.json({ reply: `${summary} Bobby heatmap already loaded; duplicate ignored.` });
+    }
+
     const result = await parseBobbyImage(image);
     if (!result) return res.status(422).json({ error: "No levels extracted from image" });
 
@@ -623,7 +658,6 @@ app.get("/scheduler/status", (req, res) => {
   const jobs = readJsonFile(SCHED_JOBS_FILE, {});
   const staleHours = {
     "morning-briefing": 30,
-    "generate-documents": 30,
     "discord-scrape": 30,
     "agent-assessments": 30,
         "weekly-income-reset": 8 * 24,
@@ -655,7 +689,7 @@ app.post("/notify", (req, res) => {
 app.post("/scrape", async (req, res) => {
   const { priority } = req.body;
   try {
-    const { runScraper } = require("./discord-scraper");
+    const { runScraper } = require("./scripts/discord-scraper");
     const filter = priority || ["HIGH"];
     res.json({ started: true, priority: filter });
     runScraper(filter).catch(console.error);
@@ -681,7 +715,7 @@ app.post("/paste-signals", async (req, res) => {
 
     const insights = response.content[0].text;
     const entry = { date: new Date().toISOString(), source: source || "manual-paste", results: [{ scroll: 1, raw: text.slice(0, 500), insights }] };
-    fs.appendFileSync(path.join(__dirname, "discord-history.jsonl"), JSON.stringify(entry) + "\n");
+    fs.appendFileSync(events.discordHistory, JSON.stringify(entry) + "\n");
     log("paste-signals", { source, length: text.length });
     res.json({ reply: insights });
   } catch (err) {
@@ -694,20 +728,22 @@ app.get("/signals", (req, res) => {
   res.json({ count: signals.length, signals });
 });
 
-//  PRICE  SPX real-time via Polygon (MASSIVE_API_KEY) 
+// PRICE - structured market data; stale/latest-close is labeled explicitly.
 app.get("/price/spx", async (req, res) => {
-  const { getLivePrice } = require('./lib/live-price');
-  const data = await getLivePrice();
-  if (!data) return res.status(503).json({ error: 'price unavailable  Polygon fetch failed or market closed' });
+  const { getMarketPrice } = require('./lib/market-data');
+  const data = await getMarketPrice('SPX');
+  if (!data || !Number.isFinite(data.price)) return res.status(503).json({ error: 'price unavailable', marketData: data || null });
   res.json({
     ticker: 'SPX',
-    price: data.spx,
-    spy_price: data.spy,
-    timestamp: new Date(data.cached_at).toISOString(),
-    data_date: data.data_date,
-    source: 'massive_market',
-    price_approximation: true,
-    delayed: data.delayed || false
+    price: data.price,
+    timestamp: data.timestamp,
+    data_date: data.timestamp ? data.timestamp.slice(0, 10) : null,
+    source: data.source,
+    price_approximation: false,
+    stale: data.stale,
+    delayed: data.delayed,
+    confidence: data.confidence,
+    marketData: data,
   });
 });
 
@@ -775,6 +811,60 @@ app.get("/state", (req, res) => {
   res.json({ current_state: mem.current_state || "regulated", emotional_log: (mem.emotional_log || []).slice(-10) });
 });
 
+app.get("/api/operator/status", async (req, res) => {
+  try {
+    const payload = await buildOperatorStatus({
+      instrument: req.query.instrument || "ES",
+      mode: req.query.mode || "manual",
+    });
+    res.json(payload);
+  } catch (err) {
+    res.status(500).json({ ok: false, blockers: [`operator status failed: ${err.message}`] });
+  }
+});
+
+app.get("/api/operator/readiness", async (req, res) => {
+  try {
+    const payload = await buildOperatorReadiness({
+      instrument: req.query.instrument || "ES",
+      mode: req.query.mode || "manual",
+    });
+    res.json(payload);
+  } catch (err) {
+    res.status(500).json({ ok: false, blockers: [`operator readiness failed: ${err.message}`] });
+  }
+});
+
+app.get("/api/decision", async (req, res) => {
+  try {
+    const stateRead = readTradingStateReadOnly();
+    const payload = await buildDecisionResponse({
+      instrument: req.query.instrument || "ES",
+      mode: req.query.mode || "manual",
+      currentPrice: req.query.currentPrice,
+      state: stateRead.ok ? stateRead.value : null,
+    });
+    if (!stateRead.ok) {
+      payload.ok = false;
+      payload.blockers = stateRead.blockers || [`trading state unavailable: ${stateRead.error}`];
+    }
+    res.json(payload);
+  } catch (err) {
+    res.status(500).json({ ok: false, blockers: [`decision failed: ${err.message}`] });
+  }
+});
+
+app.get("/api/confluence", async (req, res) => {
+  try {
+    const payload = await buildConfluenceResponse({
+      instrument: req.query.instrument || "ES",
+    });
+    res.json(payload);
+  } catch (err) {
+    res.status(500).json({ ok: false, blockers: [`confluence failed: ${err.message}`] });
+  }
+});
+
 app.post("/edit", (req, res) => {
   const { file, description } = req.body || {};
   log("blocked-http-edit", { route: "/edit", file: file || null, description: description || null });
@@ -796,7 +886,7 @@ app.post("/agent/autonomous/canary", async (req, res) => {
     setTimeout(() => {
       const record = { ts: new Date().toISOString(), canary_id: canaryId, duration_ms: Date.now() - start, auto_skipped: true, ok: true };
       try { fs.appendFileSync(CANARY_LOG_FILE, JSON.stringify(record) + "\n"); } catch {}
-      try { fs.writeFileSync(path.join(__dirname, "canary-last.json"), JSON.stringify(record, null, 2)); } catch {}
+      try { fs.writeFileSync(snapshots.canaryLast, JSON.stringify(record, null, 2)); } catch {}
       log("canary", record);
     }, 30000);
     res.json({ ok: true, canary_id: canaryId });
@@ -822,8 +912,6 @@ app.use("/agent/health", require("./agents/agent-04-health"));
 app.use("/agent/finance", require("./agents/agent-05-finance"));
 app.use("/agent/opportunity", require("./agents/agent-07-opportunity"));
 app.use("/agent/sienna", require("./agents/agent-08-sienna"));
-app.use("/agent/architect", require("./agents/agent-09-architect"));
-app.use("/agent/sweeper",  require("./agents/agent-10-sweeper"));
 const { router: tokensRouter, trackUsage, getDailyStatus, isHardCap, isSoftCap } = require("./agents/agent-11-tokens");
 app.use("/agent/tokens", tokensRouter);
 let _fallbackMod = null;
@@ -857,7 +945,7 @@ app.post("/intraday/stop", (req, res) => {
 app.get("/health", (req, res) => {
   const { isMarketOpen } = require("./lib/market-hours");
   const today = new Date().toISOString().slice(0, 10);
-  const tradesFile = path.join(__dirname, "trades.jsonl");
+  const tradesFile = events.trades;
   const lastSigFile = path.join(__dirname, "data", "last-signal.json");
 
   let trades_today = 0;
@@ -914,25 +1002,9 @@ app.get("/luke/self-diagnose", (req, res) => {
     if (out.open_proposals > 5) out.stale_data.push(out.open_proposals + " unreviewed proposals in proposals/");
   } catch {}
 
-  // Memory staleness
-  try {
-    const stat = fs.statSync(MEMORY_SUMMARY_FILE);
-    const days = (Date.now() - stat.mtimeMs) / 86400000;
-    if (days > 3) out.stale_data.push("MEMORY_SUMMARY.md last updated " + Math.round(days) + " days ago");
-  } catch {}
-
-  // Arch log recent errors
-  try {
-    const archLines = fs.readFileSync(path.join(__dirname, "ARCHITECT_LOG.jsonl"), "utf8").split("\n").filter(Boolean);
-    const recent = archLines.slice(-20).map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
-    const errors = recent.filter(e => e.scan_error || e.skipped);
-    if (errors.length > 0) out.stale_data.push("agent-09 recent issues: " + errors.map(e => e.scan_error || e.skipped).join(", "));
-  } catch {}
-
   // Derive suggestions
   if (out.missing_capabilities.length > 0) out.suggested_priorities.push("run GET /luke/self-diagnose after fixing repo-map");
   if (out.broken_tools.length > 0) out.suggested_priorities.push("review tool-failures.jsonl for search scope issues");
-  if (out.stale_data.some(s => s.includes("MEMORY"))) out.suggested_priorities.push("refresh MEMORY_SUMMARY.md");
 
   res.json(out);
 });
@@ -969,7 +1041,7 @@ app.get("/luke/boot-check", (req, res) => {
   });
   check("memory-cap", () => (fs.existsSync(MEMORY_FILE) ? fs.statSync(MEMORY_FILE).size : 0) < MEM_CAP_BYTES ? "ok" : null);
   check("canary-recent", () => {
-    const f = path.join(__dirname, "canary-last.json");
+    const f = snapshots.canaryLast;
     if (!fs.existsSync(f)) return null;
     const c = JSON.parse(fs.readFileSync(f, "utf8"));
     return c.ok && Date.now() - new Date(c.ts).getTime() < 48 * 3600000 ? "ok" : null;
@@ -1008,7 +1080,8 @@ const clients = new Set();
 //  WS TOKEN  generated each boot, written for preload to read 
 const crypto = require("crypto");
 const WS_TOKEN = crypto.randomBytes(24).toString("hex");
-const WS_TOKEN_FILE = path.join(__dirname, ".ws-token");
+const WS_TOKEN_FILE = runtime.wsToken;
+try { fs.mkdirSync(path.dirname(WS_TOKEN_FILE), { recursive: true }); } catch {}
 try { fs.writeFileSync(WS_TOKEN_FILE, WS_TOKEN); } catch {}
 
 function broadcast(data) {
@@ -1106,7 +1179,7 @@ function writeCrashState(reason, err) {
   } catch {}
 }
 
-// disabled in Phase 1B.6.3  superseded by crash handlers at top of file (write to crash.log).
+// disabled in Phase 1B.6.3  superseded by crash handlers at top of file (write to state/events/crash.log).
 // unhandledRejection was dual-logging: both the handler below and the top-of-file handler fired.
 // process.on("uncaughtException", (err) => {
 //   writeCrashState("uncaughtException", err);
@@ -1126,7 +1199,7 @@ function writeCrashState(reason, err) {
     }
   }
   // write-permission check on logs directory
-  const testFile = path.join(__dirname, "luke-log.jsonl");
+  const testFile = events.lukeLog;
   try { fs.accessSync(path.dirname(testFile), fs.constants.W_OK); }
   catch { console.error("[boot] FATAL: log directory is not writable"); process.exit(1); }
 
@@ -1177,7 +1250,7 @@ server.listen(PORT, "127.0.0.1", () => {
   const _tradesToday = (() => {
     try {
       const _t = new Date().toISOString().slice(0, 10);
-      return fs.readFileSync(path.join(__dirname, "trades.jsonl"), "utf8").split("\n").filter(Boolean)
+      return fs.readFileSync(events.trades, "utf8").split("\n").filter(Boolean)
         .map(l => { try { return JSON.parse(l); } catch { return null; } })
         .filter(t => t && ((t.date || "").startsWith(_t) || (t.timestamp || "").startsWith(_t))).length;
     } catch { return 0; }

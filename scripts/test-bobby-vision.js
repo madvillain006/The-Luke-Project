@@ -5,14 +5,15 @@
  * Usage:
  *   node scripts/test-bobby-vision.js [path-to-image]
  *
- * Default image path: test-heatmap.png in luke root.
+ * Default image path: state/runtime/test-heatmap.png.
  * Drag any Bobby heatmap screenshot to that path, then run this.
  */
 const fs   = require('fs');
 const path = require('path');
 const { parseBobbyImage } = require('../lib/parse-bobby');
+const { runtime } = require('../lib/paths');
 
-const imgPath = process.argv[2] || path.join(__dirname, '../test-heatmap.png');
+const imgPath = process.argv[2] || runtime.bobbyVisionFixture;
 
 if (!fs.existsSync(imgPath)) {
   console.error(`Image not found: ${imgPath}`);

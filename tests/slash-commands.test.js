@@ -239,7 +239,10 @@ describe('slash-commands /entries hardening', () => {
 
     await handleSlashCommand('/entries ES', res);
 
-    expect(payload.reply).toBe('No fresh entries available for ES. Run /saty, /heatmap first, then /ready before /entries ES.');
+    expect(payload.reply).toContain('No fresh entries available for ES.');
+    expect(payload.reply).toContain('Freshness: Saty MISSING');
+    expect(payload.reply).toContain('Missing/stale: /saty, /heatmap');
+    expect(payload.reply).toContain('Next: run /saty, /heatmap, then /ready before /entries ES.');
   });
 
   it('surfaces Mancini chop zones inside /entries output', async () => {
@@ -307,7 +310,74 @@ describe('slash-commands /entries hardening', () => {
 
     expect(payload.reply).toContain('## Futures Entries ES');
     expect(payload.reply).toContain('AVOID: 6793-6830 (Mancini chop zone)');
-    expect(payload.reply).toContain('Recommendation:');
+    expect(payload.reply).toContain('Recommendation: PASS');
+    expect(payload.reply).toContain('Mancini chop zone 6793-6830');
+    expect(payload.reply).toContain('Vetoes: Mancini chop zone 6793-6830');
+    expect(payload.reply).toContain('Reference only: entry');
+    expect(payload.reply).not.toContain('Plan: entry');
+  });
+
+  it('/entries ES renders the decision spine trade plan fields', async () => {
+    const todayET = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+    const todayCT = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Chicago' });
+    const ts = new Date().toISOString();
+
+    fs.writeFileSync(SATY_LEVELS_FILE, JSON.stringify({ valid: true, updated: ts, put_trigger: 6809, call_trigger: 6860, prev_close: 6830 }), 'utf8');
+    fs.writeFileSync(DUBZ_LEVELS_FILE, JSON.stringify({
+      date: todayET,
+      last_updated: ts,
+      source_pastes: [],
+      instruments: { ES: { levels: [{ price: 6809 }] } },
+      conflicts: [],
+      parse_errors: [],
+    }), 'utf8');
+    fs.writeFileSync(DAILY_CTX_FILE, JSON.stringify({
+      date: todayCT,
+      heatmap: { source: 'test', stored_at: ts },
+    }), 'utf8');
+    fs.writeFileSync(LEVEL_MEMORY_FILE, JSON.stringify({
+      version: 1,
+      last_updated: ts,
+      levels: [
+        {
+          canonical_price: 6809,
+          instrument: 'ES',
+          first_seen: ts,
+          last_seen: ts,
+          total_mentions: 4,
+          mentions: [
+            { analyst: 'dubz', date: todayET, timestamp: ts, significance: 'key', direction: 'support', intent: null, source_type: 'text', source_snippet: 'ES support 6809', crossSourceConfirmed: true },
+            { analyst: 'bobby', date: todayET, timestamp: ts, significance: 'key', direction: 'support', intent: null, source_type: 'vision', source_snippet: 'support 6809', crossSourceConfirmed: false },
+            { analyst: 'saty', date: todayET, timestamp: ts, significance: 'key', direction: null, intent: null, source_type: 'saty_atr', source_snippet: 'put trigger 6809', crossSourceConfirmed: false },
+            { analyst: 'mancini', date: todayET, timestamp: ts, significance: 'key', direction: null, intent: 'long_trigger', source_type: 'text', source_snippet: '6809 reclaim long trigger', crossSourceConfirmed: false },
+          ],
+        },
+        {
+          canonical_price: 6860,
+          instrument: 'ES',
+          first_seen: ts,
+          last_seen: ts,
+          total_mentions: 1,
+          mentions: [
+            { analyst: 'mancini', date: todayET, timestamp: ts, significance: 'key', direction: 'resistance', intent: 'first_target', source_type: 'text', source_snippet: 'target 6860', crossSourceConfirmed: false },
+          ],
+        },
+      ],
+    }), 'utf8');
+
+    let payload = null;
+    const res = { json(obj) { payload = obj; return obj; } };
+
+    await handleSlashCommand('/entries ES', res);
+
+    expect(payload.reply).toContain('## Futures Entries ES');
+    expect(payload.reply).toContain('Freshness: Saty OK | Dubz OK (1) | Bobby OK');
+    expect(payload.reply).toContain('Recommendation: WAIT - market price unavailable | LONG ES 6809 | A grade | full size');
+    expect(payload.reply).toContain('Anchor: ES 6809 | A grade | full size | side LONG');
+    expect(payload.reply).toContain('Vetoes: none active');
+    expect(payload.reply).toContain('Plan: entry 6809.25 | ok 6809.75 | stop');
+    expect(payload.reply).toContain('| target 6860');
+    expect(payload.reply).toContain('Other levels:');
   });
 });
 
@@ -330,6 +400,8 @@ describe('slash-commands output cleanliness - mojibake guard', () => {
     await handleSlashCommand('/status', res);
     expect(payload.reply).toMatch(/^LUKE ONLINE/);
     expect(payload.reply).toContain('Market:');
+    expect(payload.reply).toContain('Freshness:');
+    expect(payload.reply).toContain('Autonomous: staged-only');
     expect(payload.reply).toContain('In memory of Luke');
     expect(MOJIBAKE_RE.test(payload.reply)).toBe(false);
   });

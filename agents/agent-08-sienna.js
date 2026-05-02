@@ -3,11 +3,12 @@ const router = express.Router();
 const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
 const path = require("path");
+const { events } = require("../lib/paths");
 
 const client = new Anthropic();
-const HISTORY_FILE = path.join(__dirname, "../discord-history.jsonl");
+const HISTORY_FILE = events.discordHistory;
 const EXPORTS_DIR = path.join(__dirname, "../discord-exports");
-const LOG_FILE = path.join(__dirname, "../jarvis-log.jsonl");
+const LOG_FILE = events.jarvisLog;
 const PROFILE_FILE = path.join(__dirname, "../SIENNA_PROFILE.md");
 
 function log(type, data) {

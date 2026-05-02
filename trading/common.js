@@ -1,13 +1,12 @@
 const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
-const path = require("path");
 const { loadTradingState, saveTradingState } = require("../state/trading-store");
+const { ROOT, events } = require("../lib/paths");
 
 const client = new Anthropic();
-const ROOT = path.join(__dirname, "..");
-const PAPER_TRADES_FILE = path.join(ROOT, "paper-trades.jsonl");
-const HISTORY_FILE = path.join(ROOT, "discord-history.jsonl");
-const LOG_FILE = path.join(ROOT, "jarvis-log.jsonl");
+const PAPER_TRADES_FILE = events.paperTrades;
+const HISTORY_FILE = events.discordHistory;
+const LOG_FILE = events.jarvisLog;
 
 function loadState() {
   return loadTradingState();

@@ -2,11 +2,11 @@ const express = require("express");
 const router = express.Router();
 const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
-const path = require("path");
+const { snapshots, events } = require("../lib/paths");
 
 const client = new Anthropic();
-const MEMORY_FILE = path.join(__dirname, "../memory.json");
-const LOG_FILE = path.join(__dirname, "../jarvis-log.jsonl");
+const MEMORY_FILE = snapshots.memory;
+const LOG_FILE = events.jarvisLog;
 
 function loadMemory() {
   try { return JSON.parse(fs.readFileSync(MEMORY_FILE, "utf8")); } catch { return {}; }

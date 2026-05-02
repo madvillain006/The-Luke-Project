@@ -1,13 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const fs = require("fs");
-const path = require("path");
+const { events, snapshots } = require("../lib/paths");
 
-const ROOT         = path.join(__dirname, "..");
-const USAGE_FILE   = path.join(ROOT, "token-usage.jsonl");
-const DAILY_FILE   = path.join(ROOT, "token-usage-daily.json");
-const WEEKLY_FILE  = path.join(ROOT, "token-usage-weekly.json");
-const HISTORY_FILE = path.join(ROOT, "token-usage-history.jsonl");
+const USAGE_FILE   = events.tokenUsage;
+const DAILY_FILE   = snapshots.tokenUsageDaily;
+const WEEKLY_FILE  = snapshots.tokenUsageWeekly;
+const HISTORY_FILE = events.tokenUsageHistory;
 
 const SOFT_CAP = 5.00;
 const HARD_CAP = 10.00;

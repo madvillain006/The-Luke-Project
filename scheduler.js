@@ -3,7 +3,11 @@ process.on('uncaughtException', (err, origin) => {
   const path = require('path');
   const ts = new Date().toISOString();
   const entry = `[${ts}] uncaughtException origin=${origin}\n${err.stack || err}\n\n`;
-  try { fs.appendFileSync(path.join(__dirname, 'crash.log'), entry); } catch (e) { /* swallow */ }
+  try {
+    const dir = path.join(__dirname, 'state', 'events');
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.appendFileSync(path.join(dir, 'crash.log'), entry);
+  } catch (e) { /* swallow */ }
   console.error(entry);
   process.exit(1);
 });
@@ -13,7 +17,11 @@ process.on('unhandledRejection', (reason, promise) => {
   const path = require('path');
   const ts = new Date().toISOString();
   const entry = `[${ts}] unhandledRejection\nreason: ${reason?.stack || reason}\n\n`;
-  try { fs.appendFileSync(path.join(__dirname, 'crash.log'), entry); } catch (e) { /* swallow */ }
+  try {
+    const dir = path.join(__dirname, 'state', 'events');
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.appendFileSync(path.join(dir, 'crash.log'), entry);
+  } catch (e) { /* swallow */ }
   console.error(entry);
   // Do NOT exit  log and continue. Node 15+ would crash by default; we want to survive
   // transient promise rejections but capture them.
@@ -27,10 +35,11 @@ process.on('SIGINT', () => {
 const fs = require("fs");
 const path = require("path");
 const { log } = require("./lib/logger");
+const { snapshots } = require("./lib/paths");
 
 const LUKE_URL = "http://localhost:3000";
-const HEARTBEAT_FILE = path.join(__dirname, "scheduler-heartbeat.json");
-const JOB_STATUS_FILE = path.join(__dirname, "scheduler-jobs.json");
+const HEARTBEAT_FILE = snapshots.schedulerHeartbeat;
+const JOB_STATUS_FILE = snapshots.schedulerJobs;
 
 function readJson(filePath, fallback) {
   try { return JSON.parse(fs.readFileSync(filePath, "utf8")); } catch { return fallback; }
@@ -150,16 +159,6 @@ async function morningBriefing() {
   await post("/notify", { message: briefing });
   log("morning-briefing", { sections: sections.length });
   return `${sections.length} sections`;
-}
-
-async function generateDocuments() {
-  const r = await fetch(`${LUKE_URL}/agent/research/generate-documents`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({})
-  });
-  if (!r.ok) throw new Error("Document generation failed: HTTP " + r.status);
-  return "generated";
 }
 
 async function runAgentAssessments() {
@@ -372,10 +371,8 @@ async function runScheduler() {
   //     }
   //   }
   //
-  //   if (hour === 1) await runJob("generate-documents", generateDocuments);
-  //
   //   if (hour === 2) {
-  //     const { runScraper } = require("./discord-scraper");
+  //     const { runScraper } = require("./scripts/discord-scraper");
   //     await runJob("discord-scrape", async () => {
   //       await runScraper(["HIGH"]);
   //       return "triggered";
@@ -390,15 +387,6 @@ async function runScheduler() {
   //   }
   //
   //   if (hour === 3) {
-  //     await runJob("research-background-cycle", async () => {
-  //       const r = await fetch(`${LUKE_URL}/agent/research/background-cycle`, {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify({})
-  //       });
-  //       if (!r.ok) throw new Error("HTTP " + r.status);
-  //       return "triggered";
-  //     });
   //     await runJob("agent-assessments", runAgentAssessments);
   //     await runJob("tool-health-nightly", async () => {
   //       const r = await fetch(`${LUKE_URL}/luke/tool-health-nightly`, { method: "POST" });

@@ -41,6 +41,8 @@ function buildStatusPayload(state) {
   return {
     mode: state.mode,
     running: state.running,
+    staged_only: true,
+    operator_note: "Autonomous stages candidates only; execution requires explicit staged confirmation.",
     execution: state.execution || null,
     trading_window: window,
     kill_day: state.kill_day,

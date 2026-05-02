@@ -6,9 +6,10 @@ const path = require("path");
 
 const { log } = require("../lib/logger");
 const { loadMemory, saveMemory } = require("../lib/memory");
+const { events } = require("../lib/paths");
 
 const client = new Anthropic();
-const TRADES_FILE = path.join(__dirname, "../trades.jsonl");
+const TRADES_FILE = events.trades;
 const FINNHUB_KEY = process.env.FINNHUB_KEY || "d7ibl19r01qu8vfo2410d7ibl19r01qu8vfo241g";
 
 function logTrade(trade) {

@@ -78,7 +78,7 @@ if DRY_RUN:
 
 
 def launch_luke():
-    launcher = os.path.join(os.path.dirname(__file__), '..', 'LAUNCH-LUKE.cmd')
+    launcher = os.path.join(os.path.dirname(__file__), 'windows', 'LAUNCH-LUKE.cmd')
     electron = os.path.join(os.path.dirname(__file__), '..', 'node_modules', 'electron', 'dist', 'electron.exe')
     entry = os.path.join(os.path.dirname(__file__), '..', 'electron.js')
     if os.path.exists(launcher):

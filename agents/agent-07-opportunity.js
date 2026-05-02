@@ -3,9 +3,10 @@ const router = express.Router();
 const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
 const path = require("path");
+const { events } = require("../lib/paths");
 
 const client = new Anthropic();
-const LOG_FILE = path.join(__dirname, "../jarvis-log.jsonl");
+const LOG_FILE = events.jarvisLog;
 const PIPELINE_FILE = path.join(__dirname, "../OPPORTUNITY_PIPELINE.md");
 const OPPS_FILE = path.join(__dirname, "../opportunities.jsonl");
 

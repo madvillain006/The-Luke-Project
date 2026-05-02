@@ -55,8 +55,8 @@ const FILES_TO_BACKUP = [
   'data/active-trade.json',
   'data/last-signal.json',
   'data/apex-state.json',
-  'bobby-context.jsonl',
-  'trades.jsonl',
+  'state/events/bobby-context.jsonl',
+  'state/events/trades.jsonl',
   'data/session-replay.jsonl',
 ];
 

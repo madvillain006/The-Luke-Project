@@ -25,9 +25,10 @@ Do not add features before protecting the core.
 
 ## Start Here
 
-Read this file first, then read the current roadmap:
+Read this file first, then read the current architecture and user-facing repo docs:
 
-`C:\Users\conor\luke\docs\CORE_STABILIZATION_ROADMAP_2026-04-28_v2.md`
+- `C:\Users\conor\luke\README.md`
+- `C:\Users\conor\luke\docs\ARCHITECTURE_CURRENT.md`
 
 Do not trust old docs over current code. Old docs may contain stale claims from earlier repair sessions.
 
@@ -62,7 +63,7 @@ Do not weaken stale-input checks, chop-zone protections, readiness checks, Apex 
 
 As of the latest stabilization pass:
 
-- Full Vitest suite: `264 passed`, `1 skipped` future short-strategy test.
+- Run the current Vitest suite before claiming readiness; historical pass counts are intentionally not repeated here because this repo is changing quickly.
 - `vitest.config.mjs` disables file parallelism because legacy tests mutate shared `data/*.json` fixture files.
 - PM2 reload and live smoke passed for `/status`, `/ready`, and `/balance`.
 - Scheduler error log was empty after reload.
@@ -113,23 +114,12 @@ Work in this order unless Conor redirects:
 
 1. Help assemble and run real backtest sessions when Bobby/Mancini/Saty/Dubz data lands.
 2. Add full Express/WebSocket integration harness before removing `today-levels.json`.
-3. Feature-flag or disable mutating architect/sweeper routes before archiving their root artifacts.
-4. Continue splitting `lib/slash-commands.js` only with behavior tests around each move.
-5. Run browser/UI smoke before splitting `chat.html`.
-6. Gate Katbot only after caller audit.
-7. Split `index.js` route mounting only after index behavior tests exist.
+3. Continue splitting `lib/slash-commands.js` only with behavior tests around each move.
+4. Run browser/UI smoke before splitting `chat.html`.
+5. Gate Katbot only after caller audit.
+6. Split `index.js` route mounting only after index behavior tests exist.
 
-Dormant architect/sweeper residue:
-
-- `ARCHITECT_LOG.jsonl`
-- `ARCH_TOKENS.jsonl`
-- `architect-costs.json`
-- `SWEEPER_LOG.jsonl`
-- `SWEEPER_MAP.json`
-- `SWEEPER_STATE.json`
-- `sweeper-costs.json`
-
-Do not archive these while mutating `/agent/architect/*` or `/agent/sweeper/*` routes remain reachable.
+The old architect/sweeper sidecars are intentionally removed. Do not reintroduce `/agent/architect/*`, `/agent/sweeper/*`, or their root artifacts.
 
 ## Testing Rules
 

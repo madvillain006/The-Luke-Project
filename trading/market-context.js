@@ -1,5 +1,4 @@
-const { getFrontMonthSymbol } = require("./common");
-const { getTradovateToken, getBaseUrl } = require("./broker-tradovate");
+const { getMarketPrice } = require("../lib/market-data");
 
 const TICK_SIZE = 0.25; // MNQ / MES / NQ / ES all tick at 0.25 points
 
@@ -16,42 +15,20 @@ async function getMarketContext(creds, ticker) {
     error: null
   };
 
-  if (!creds || !creds.username || !creds.cid || !creds.sec) {
-    ctx.stale = true;
-    ctx.error = "tradovate_credentials_missing";
-    return ctx;
-  }
-
   try {
-    const token = await getTradovateToken(creds);
-    const baseUrl = getBaseUrl(creds);
-    const symbol = getFrontMonthSymbol(ticker);
+    const quote = await getMarketPrice(ticker, { tradovate: creds });
+    ctx.bid = quote.bid;
+    ctx.ask = quote.ask;
+    ctx.price = quote.price;
+    ctx.spread_ticks = (quote.bid !== null && quote.ask !== null)
+      ? Math.round((quote.ask - quote.bid) / TICK_SIZE) : null;
+    ctx.fetched_at = quote.timestamp || ctx.fetched_at;
+    ctx.source = quote.source;
+    ctx.marketData = quote;
 
-    const r = await fetch(`${baseUrl}/quote/find?name=${symbol}`, {
-      headers: { "Authorization": "Bearer " + token },
-      signal: AbortSignal.timeout(4000)
-    });
-    if (!r.ok) {
+    if (ctx.price === null || quote.stale === true || quote.delayed === true || quote.confidence < 0.6) {
       ctx.stale = true;
-      ctx.error = `quote_http_${r.status}`;
-      return ctx;
-    }
-    const q = await r.json();
-
-    const bid  = typeof q.bidPrice  === "number" ? q.bidPrice  : null;
-    const ask  = typeof q.askPrice  === "number" ? q.askPrice  : null;
-    const last = typeof q.lastPrice === "number" ? q.lastPrice : null;
-
-    ctx.bid  = bid;
-    ctx.ask  = ask;
-    ctx.price = last !== null ? last
-      : (bid !== null && ask !== null ? (bid + ask) / 2 : null);
-    ctx.spread_ticks = (bid !== null && ask !== null)
-      ? Math.round((ask - bid) / TICK_SIZE) : null;
-
-    if (ctx.price === null) {
-      ctx.stale = true;
-      ctx.error = "quote_missing_price";
+      ctx.error = quote.error || "quote_missing_or_stale";
     } else {
       ctx.source_ok = true;
     }

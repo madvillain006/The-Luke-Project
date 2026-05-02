@@ -1,11 +1,7 @@
 const fs = require("fs");
 const { client, HISTORY_FILE } = require("./common");
+const { getMarketPrice } = require("../lib/market-data");
 
-const FINNHUB_KEY = process.env.FINNHUB_KEY;
-if (!FINNHUB_KEY) {
-  // Price fetching will return null — signals will degrade gracefully
-  console.warn("[signals] FINNHUB_KEY not set — price fetching disabled");
-}
 const ALLOWED_TICKERS = new Set(["NQ", "MNQ", "ES", "MES"]);
 const INTRADAY_REJECT_PATTERNS = [
   /long-?term/i,
@@ -25,30 +21,11 @@ const LEVEL_LINE_PATTERN = /(LEVEL|ENTRY|STOP|TARGET):\s*([^\n]+)/i;
 const NUMBER_PATTERN = /-?\d+(?:,\d{3})*(?:\.\d+)?/g;
 const PREMARKET_WINDOW_MINUTES = 12 * 60;
 
-async function getPrice(finnhubSymbol, yahooSymbol) {
-  try {
-    const r = await fetch(`https://finnhub.io/api/v1/quote?symbol=${finnhubSymbol}&token=${FINNHUB_KEY}`);
-    const d = await r.json();
-    if (d.c && d.c > 0) return d.c;
-  } catch {}
-  if (yahooSymbol) {
-    try {
-      const r = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${yahooSymbol}`, {
-        headers: { "User-Agent": "Mozilla/5.0" },
-        signal: AbortSignal.timeout(5000)
-      });
-      const d = await r.json();
-      const price = d.chart?.result?.[0]?.meta?.regularMarketPrice;
-      if (price && price > 0) return price;
-    } catch {}
-  }
-  return null;
-}
 
-function getFuturesPrice(ticker) {
-  if (ticker === "MNQ" || ticker === "NQ") return getPrice("NQ1!", "NQ=F");
-  if (ticker === "MES" || ticker === "ES") return getPrice("ES1!", "ES=F");
-  return getPrice(ticker, null);
+async function getFuturesPrice(ticker) {
+  const quote = await getMarketPrice(ticker);
+  if (!Number.isFinite(quote.price) || quote.stale === true || quote.delayed === true || quote.confidence < 0.6) return null;
+  return quote.price;
 }
 
 function normalizeTicker(ticker) {

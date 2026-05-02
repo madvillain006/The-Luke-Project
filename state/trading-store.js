@@ -1,10 +1,11 @@
 const path = require("path");
 const { appendJsonl, readJsonFile, writeJsonAtomic } = require("./lib");
+const { snapshots } = require("../lib/paths");
 
 const ROOT = path.join(__dirname, "..");
 const SNAPSHOT_FILE = path.join(ROOT, "state", "snapshots", "trading-state.json");
 const EVENTS_FILE = path.join(ROOT, "state", "events", "trading-events.jsonl");
-const LEGACY_FILE = path.join(ROOT, "autonomous-state.json");
+const LEGACY_FILE = snapshots.autonomousState;
 
 function defaultTradingState() {
   return {

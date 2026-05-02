@@ -524,10 +524,10 @@
         /heatmap<span class="tooltip">Load Bobby's heatmap context (king nodes, air pockets, trinity)</span>
       </button>
       <button class="qbtn has-tt" data-cmd="/verdict">
-        /verdict<span class="tooltip">Show today's ranked confluence levels</span>
+        /verdict<span class="tooltip">Show today's ranked confluence levels; use /entries ES for pass/trade plan</span>
       </button>
       <button class="qbtn has-tt" data-cmd="/entries ES">
-        /entries ES<span class="tooltip">Show ES entry windows, sizing, and abort lines</span>
+        /entries ES<span class="tooltip">Show ES anchor, freshness, vetoes, entry window, sizing, and abort line</span>
       </button>
       <button class="qbtn has-tt" data-cmd="/review">
         /review<span class="tooltip">Today's trades summary - W/L, P&amp;L, emotional state</span>
@@ -560,7 +560,7 @@
     <div id="pt-body">
       <div>
         <div id="pt-header-row">
-          <div class="pt-label">02B SIGNAL - CONFIRM</div>
+          <div class="pt-label">02B STAGED - CONFIRM</div>
           <svg class="countdown-svg" viewBox="0 0 36 36">
             <circle class="ring-bg"       cx="18" cy="18" r="15.9155"/>
             <circle class="ring-progress" cx="18" cy="18" r="15.9155" id="pt-ring"/>
@@ -986,7 +986,7 @@
         ? "  src:" + s.confluence_sources.join("+")
         : "";
       document.getElementById("pt-meta").textContent =
- "Risk: $" + data.risk_dollars + " R:R " + data.rr + ":1" + confluencePart + sourcesPart;
+ "STAGED ONLY - confirm to execute | Risk: $" + data.risk_dollars + " R:R " + data.rr + ":1" + confluencePart + sourcesPart;
       document.getElementById("pt-reason").textContent = s.reason || "";
       document.getElementById("lbl-target").textContent = "T " + s.target;
       document.getElementById("lbl-entry").textContent  = "E " + s.entry;

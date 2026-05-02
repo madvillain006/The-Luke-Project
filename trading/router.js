@@ -32,6 +32,7 @@ const { loadDubzState } = require("../lib/parse-dubz");
 const { loadMemory: loadLevelMemory } = require("../lib/level-memory");
 const { queryLevelsAcrossEquivalents, scoreLevel } = require("../lib/confluence-engine");
 const { computeFuturesEntryZone } = require("../lib/futures-entry-zones");
+const { buildTradeDecision } = require("../lib/decision-spine");
 
 const router = express.Router();
 
@@ -189,7 +190,7 @@ function summarizePhase2Freshness(records, modernDubz, modernBobby) {
   };
 }
 
-function buildEntriesAlignment(signal, modernDubz, modernBobby) {
+function buildEntriesAlignment(signal, modernDubz, modernBobby, state = null, now = new Date()) {
   const instrument = normalizeSignalInstrument(signal.ticker);
   if (!instrument) {
     return { ok: false, reason: `Unsupported signal ticker ${signal.ticker || "unknown"}` };
@@ -203,40 +204,6 @@ function buildEntriesAlignment(signal, modernDubz, modernBobby) {
   const freshness = summarizePhase2Freshness(records, modernDubz, modernBobby);
 
   const currentPrice = Number.isFinite(signal.entry) ? signal.entry : null;
-  const ranked = records
-    .map(record => ({ record, scored: scoreLevel(record, { currentPrice }) }))
-    .sort((a, b) => b.scored.score - a.scored.score);
-
-  const enriched = ranked.map(item => {
-    const zone = computeFuturesEntryZone(item.record, {
-      instrument,
-      currentPrice,
-      confluenceGrade: item.scored.grade,
-      confluenceScore: item.scored.score,
-    });
-    const side = zone.entry_window.abort_below != null ? "LONG" : "SHORT";
-    return { item, zone, side };
-  });
-
-  const best = enriched.find(row => ["full", "half", "quarter"].includes(row.zone.sizing_guidance)) || enriched[0];
-  if (!best) {
-    return { ok: false, reason: `No ranked levels available for ${instrument}`, freshness };
-  }
-
-  if (best.zone.sizing_guidance === "pass") {
-    return {
-      ok: false,
-      reason: `/entries best level is ${best.item.scored.grade} grade PASS, not actionable`,
-      freshness,
-      best: {
-        canonical_price: best.zone.canonical_price,
-        side: best.side,
-        grade: best.item.scored.grade,
-        score: best.item.scored.score,
-      },
-    };
-  }
-
   const avoidZones = deriveAvoidZones(records);
   const avoidHit = Number.isFinite(signal.entry)
     ? avoidZones.find(zone => signal.entry >= zone.low && signal.entry <= zone.high)
@@ -250,73 +217,84 @@ function buildEntriesAlignment(signal, modernDubz, modernBobby) {
     };
   }
 
-  if (String(signal.direction || "").toUpperCase() !== best.side) {
+  const spineDecision = buildTradeDecision({
+    instrument,
+    mode: state?.mode || "autonomous",
+    currentPrice,
+    state,
+    now,
+  });
+  const best = spineDecision.confluence ? {
+    canonical_price: spineDecision.confluence.anchor,
+    side: spineDecision.action,
+    grade: spineDecision.confluence.grade,
+    score: spineDecision.confluence.score,
+    sizing: spineDecision.sizing,
+    optimal_entry: spineDecision.entry,
+    acceptable_entry: spineDecision.acceptable_entry,
+    stop: spineDecision.stop,
+  } : null;
+
+  if (!spineDecision.ok || spineDecision.action === "PASS") {
     return {
       ok: false,
-      reason: `Signal side ${signal.direction || "unknown"} disagrees with /entries ${best.side} ${instrument} ${best.zone.canonical_price}`,
+      reason: `Decision spine PASS: ${spineDecision.reason}`,
       freshness,
-      best: {
-        canonical_price: best.zone.canonical_price,
-        side: best.side,
-        grade: best.item.scored.grade,
-        score: best.item.scored.score,
-      },
+      best,
+      spine_decision: spineDecision,
+    };
+  }
+
+  if (String(signal.direction || "").toUpperCase() !== spineDecision.action) {
+    return {
+      ok: false,
+      reason: `Signal side ${signal.direction || "unknown"} disagrees with /entries ${spineDecision.action} ${instrument} ${spineDecision.confluence.anchor}`,
+      freshness,
+      best,
+      spine_decision: spineDecision,
     };
   }
 
   const maxGap = instrument === "NQ" ? 15 : 10;
-  const anchorGap = Number.isFinite(signal.entry) ? Math.abs(signal.entry - best.zone.canonical_price) : Infinity;
+  const anchorGap = Number.isFinite(signal.entry) ? Math.abs(signal.entry - spineDecision.confluence.anchor) : Infinity;
   if (anchorGap > maxGap) {
     return {
       ok: false,
-      reason: `Signal entry ${signal.entry} is ${anchorGap.toFixed(2)} pts from /entries anchor ${best.zone.canonical_price}`,
+      reason: `Signal entry ${signal.entry} is ${anchorGap.toFixed(2)} pts from /entries anchor ${spineDecision.confluence.anchor}`,
       freshness,
-      best: {
-        canonical_price: best.zone.canonical_price,
-        side: best.side,
-        grade: best.item.scored.grade,
-        score: best.item.scored.score,
-      },
+      best,
+      spine_decision: spineDecision,
     };
   }
 
   return {
     ok: true,
     freshness,
-    best: {
-      canonical_price: best.zone.canonical_price,
-      side: best.side,
-      grade: best.item.scored.grade,
-      score: best.item.scored.score,
-      sizing: best.zone.sizing_guidance,
-      optimal_entry: best.zone.entry_window.optimal_entry,
-      acceptable_entry: best.zone.entry_window.acceptable_entry,
-      stop: best.zone.entry_window.abort_below ?? best.zone.entry_window.abort_above,
-    },
+    best,
     avoid_zones: avoidZones,
     entry_gap: anchorGap,
+    spine_decision: spineDecision,
   };
 }
 
+function describeDecisionVetoes(decision) {
+  const vetoes = Array.isArray(decision?.vetoes) ? decision.vetoes : [];
+  return vetoes.map(veto => {
+    if (veto.type === "mancini_chop_zone" && veto.zone) return `Mancini chop zone ${veto.zone.low}-${veto.zone.high}`;
+    if (veto.type === "apex_floor") return "Apex floor";
+    if (veto.type === "stale_or_missing_input") return `stale/missing ${veto.source || veto.command || "input"}`;
+    return veto.type || "unknown veto";
+  });
+}
+
 async function buildAutonomousPreflight(state) {
+  const now = new Date();
   const modernDubz = loadModernDubzContextSignals();
   const modernBobby = loadModernBobbyContext();
   const records = queryLevelsAcrossEquivalents("ES");
   const freshness = summarizePhase2Freshness(records, modernDubz, modernBobby);
   const window = getTradingWindowStatus();
   const consistencyReason = getApexConsistencyReason(state);
-  const bestRecord = records
-    .map(record => ({ record, scored: scoreLevel(record) }))
-    .sort((a, b) => b.scored.score - a.scored.score)
-    .find(row => ["A", "B", "C"].includes(row.scored.grade));
-
-  const bestEntriesLevel = bestRecord
-    ? computeFuturesEntryZone(bestRecord.record, {
-        instrument: "ES",
-        confluenceGrade: bestRecord.scored.grade,
-        confluenceScore: bestRecord.scored.score,
-      })
-    : null;
 
   let marketCtx = null;
   try {
@@ -333,7 +311,25 @@ async function buildAutonomousPreflight(state) {
     };
   }
 
+  const decision = buildTradeDecision({
+    instrument: "ES",
+    mode: state.mode,
+    currentPrice: Number.isFinite(marketCtx?.price) ? marketCtx.price : null,
+    state,
+    now,
+  });
+
+  const riskStatus = {
+    apex_consistency: consistencyReason ? { ok: false, reason: consistencyReason } : { ok: true, reason: "ok" },
+    staged_only: true,
+    daily_kill: !!state.kill_day,
+    weekly_kill: !!state.kill_week,
+    open_position: !!state.open_position,
+    pending_signal: !!(state.pending_signal && new Date() < new Date(state.pending_signal.expires_at)),
+  };
+
   const blockers = [];
+  const warnings = [];
   if (!state.running) blockers.push("02B not running");
   if (state.kill_day) blockers.push("daily kill active");
   if (state.kill_week) blockers.push("weekly kill active");
@@ -341,32 +337,63 @@ async function buildAutonomousPreflight(state) {
   if (state.pending_signal && new Date() < new Date(state.pending_signal.expires_at)) blockers.push("pending signal awaiting confirmation");
   if (!window.ok) blockers.push(window.reason);
   if (consistencyReason) blockers.push(consistencyReason);
-  if (!freshness.dubz_today && !freshness.bobby_today) blockers.push("fresh same-day Bobby/Dubz context missing");
-  if (!bestEntriesLevel) blockers.push("no actionable ES confluence level");
+  if (!freshness.dubz_today || !freshness.bobby_today) blockers.push("fresh same-day Bobby/Dubz context missing");
+  if (!decision.freshness?.saty?.loaded) blockers.push("fresh Saty context missing");
+  if (!freshness.mancini_today) warnings.push("Mancini context missing - chop-zone veto coverage may be incomplete");
+  if (!decision.ok || decision.action === "PASS") blockers.push(`decision spine not actionable: ${decision.reason}`);
   if (marketCtx && marketCtx.stale) blockers.push(`market context stale: ${marketCtx.error || "unknown"}`);
+
+  const readiness = {
+    status: blockers.length === 0 ? "READY_TO_STAGE_IF_CANDIDATE_ALIGNS" : "BLOCKED",
+    staged_only: true,
+    next_action: blockers.length > 0
+      ? `Fix first blocker: ${blockers[0]}`
+      : "Wait for aligned candidate; execution still requires explicit staged confirmation.",
+    anchor: decision.confluence?.anchor ?? null,
+    side: decision.action,
+    sizing: decision.sizing,
+    active_vetoes: describeDecisionVetoes(decision),
+  };
 
   return {
     ok: blockers.length === 0,
     blockers,
+    readiness,
     mode: state.mode,
     running: state.running,
     trading_window: window,
+    risk_status: riskStatus,
+    freshness: {
+      ...freshness,
+      decision: decision.freshness,
+    },
+    decision,
+    market_context: marketCtx,
+    state_counts: {
+      es_records: records.length,
+      dubz_context: modernDubz.length,
+      bobby_context: modernBobby.length,
+      has_open_position: !!state.open_position,
+      has_pending_signal: !!(state.pending_signal && new Date() < new Date(state.pending_signal.expires_at)),
+    },
+    warnings,
+    staged_only: true,
+
+    // Backward-compatible fields for older dashboard consumers.
     consistency: consistencyReason || "ok",
-    freshness,
     counts: {
       es_records: records.length,
       dubz_context: modernDubz.length,
       bobby_context: modernBobby.length,
     },
-    best_entries_level: bestRecord ? {
-      canonical_price: bestRecord.record.canonical_price,
-      grade: bestRecord.scored.grade,
-      score: bestRecord.scored.score,
-      sizing: bestEntriesLevel.sizing_guidance,
-      optimal_entry: bestEntriesLevel.entry_window.optimal_entry,
-      stop: bestEntriesLevel.entry_window.abort_below ?? bestEntriesLevel.entry_window.abort_above,
+    best_entries_level: decision.confluence ? {
+      canonical_price: decision.confluence.anchor,
+      grade: decision.confluence.grade,
+      score: decision.confluence.score,
+      sizing: decision.sizing,
+      optimal_entry: decision.entry,
+      stop: decision.stop,
     } : null,
-    market_context: marketCtx,
   };
 }
 
@@ -648,6 +675,32 @@ router.post("/evaluate", async (req, res) => {
       return;
     }
 
+    const spinePrecheck = buildTradeDecision({
+      instrument: "ES",
+      mode: state.mode,
+      currentPrice: null,
+      state,
+      now: new Date(),
+    });
+    log("autonomous-spine-precheck", {
+      ok: spinePrecheck.ok,
+      action: spinePrecheck.action,
+      reason: spinePrecheck.reason,
+      entry: spinePrecheck.entry,
+      acceptable_entry: spinePrecheck.acceptable_entry,
+      stop: spinePrecheck.stop,
+      target: spinePrecheck.target,
+      sizing: spinePrecheck.sizing,
+      confluence: spinePrecheck.confluence,
+      freshness: spinePrecheck.freshness,
+      vetoes: spinePrecheck.vetoes,
+      evidence: spinePrecheck.evidence,
+    });
+    if (!spinePrecheck.ok || spinePrecheck.action === "PASS") {
+      log("autonomous-spine-skip", { reason: spinePrecheck.reason, action: spinePrecheck.action });
+      return;
+    }
+
     // Attach confluence score using modern Phase 2 stores while preserving the old detector contract.
     const confluenceZones = detectConfluence(
       [...ximes, ...modernDubz],
@@ -674,8 +727,26 @@ router.post("/evaluate", async (req, res) => {
     }
 
     const signal = await scoreSignals(highConfluenceXimes.length > 0 ? highConfluenceXimes : ximes, bobby, state.mode);
-    log("autonomous-score", { execute: signal.execute, reason: signal.reason });
-    if (!signal.execute) return;
+    log("autonomous-score", {
+      execute: signal.execute,
+      reason: signal.reason,
+      candidate: signal.execute ? {
+        ticker: signal.ticker,
+        direction: signal.direction,
+        entry: signal.entry,
+        stop: signal.stop,
+        target: signal.target,
+        confidence: signal.confidence || null,
+      } : null,
+    });
+    if (!signal.execute) {
+      log("autonomous-candidate-skip", {
+        reason: signal.reason,
+        spine_action: spinePrecheck.action,
+        spine_anchor: spinePrecheck.confluence?.anchor ?? null,
+      });
+      return;
+    }
 
     // Attach confluence data to signal for overlay display
     if (signal.entry && confluenceZones.length > 0) {
@@ -687,12 +758,33 @@ router.post("/evaluate", async (req, res) => {
       }
     }
 
-    const entriesAlignment = buildEntriesAlignment(signal, modernDubz, modernBobby);
+    const entriesAlignment = buildEntriesAlignment(signal, modernDubz, modernBobby, state);
     log("autonomous-alignment", {
       execute: entriesAlignment.ok,
       reason: entriesAlignment.reason || "aligned",
       freshness: entriesAlignment.freshness || phase2Freshness,
       best: entriesAlignment.best || null,
+      spine_decision: entriesAlignment.spine_decision ? {
+        ok: entriesAlignment.spine_decision.ok,
+        action: entriesAlignment.spine_decision.action,
+        reason: entriesAlignment.spine_decision.reason,
+        entry: entriesAlignment.spine_decision.entry,
+        acceptable_entry: entriesAlignment.spine_decision.acceptable_entry,
+        stop: entriesAlignment.spine_decision.stop,
+        target: entriesAlignment.spine_decision.target,
+        sizing: entriesAlignment.spine_decision.sizing,
+        confluence: entriesAlignment.spine_decision.confluence,
+        vetoes: entriesAlignment.spine_decision.vetoes,
+        evidence: entriesAlignment.spine_decision.evidence,
+      } : null,
+      candidate: {
+        ticker: signal.ticker,
+        direction: signal.direction,
+        entry: signal.entry,
+        stop: signal.stop,
+        target: signal.target,
+        confidence: signal.confidence || null,
+      },
       entry_gap: entriesAlignment.entry_gap ?? null,
       avoid_zone: entriesAlignment.avoid_zone || null,
       ximes_count: ximes.length,
@@ -913,8 +1005,8 @@ router.post("/test-connection", async (req, res) => {
       setup_steps: [
         "1. Create account at tradovate.com",
         "2. Go to Settings > API Credentials",
-        "3. Create new application named 'Jarvis' - get CID (numeric) and SEC (string)",  // must match appId in broker-tradovate.js
-        "4. deviceId can be any stable string, e.g. 'jarvis-device-01'",
+        "3. Create or reuse the Tradovate API app registered for Luke. Existing setups may still use legacy appId 'Jarvis' in broker-tradovate.js - get CID (numeric) and SEC (string)",
+        "4. deviceId can be any stable string, e.g. 'luke-device-01'. Existing 'jarvis-device-01' values remain valid if already configured",
         "5. Set env: 'demo' for paper account, 'live' for real money",
         "6. POST /agent/autonomous/set-mode with all credentials"
       ]
@@ -1205,5 +1297,15 @@ router.get("/force-saty", async (req, res) => {
   const result = await runSatyAutoPull();
   res.json({ message: "Saty levels pulled manually.", result });
 });
+
+router._internal = {
+  buildEntriesAlignment,
+  buildAutonomousPreflight,
+  stageTrade,
+  loadModernDubzContextSignals,
+  loadModernBobbyContext,
+  summarizePhase2Freshness,
+  deriveAvoidZones,
+};
 
 module.exports = router;

@@ -4,11 +4,11 @@ const express = require("express");
 const router = express.Router();
 const fs = require("fs");
 const path = require("path");
+const { config, EVENTS_DIR, SNAPSHOTS_DIR } = require("../lib/paths");
 
-const ROOT          = path.join(__dirname, "..");
-const STATE_FILE    = path.join(ROOT, "fallback-state.json");
-const CONFIG_FILE   = path.join(ROOT, "fallback-config.json");
-const CALLS_FILE    = path.join(ROOT, "fallback-calls.jsonl");
+const STATE_FILE    = path.join(SNAPSHOTS_DIR, "fallback-state.json");
+const CONFIG_FILE   = config.fallback;
+const CALLS_FILE    = path.join(EVENTS_DIR, "fallback-calls.jsonl");
 
 // Features allowed in fallback mode
 const ALLOWED_FEATURES = [

@@ -2,16 +2,16 @@ const express = require("express");
 const router = express.Router();
 const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
-const path = require("path");
 const { readJsonFile, writeJsonAtomic } = require("../state/lib");
 const { recordConorHealthLog, recordLukeLog } = require("../state/health-store");
+const { events, snapshots } = require("../lib/paths");
 
 const { log } = require("../lib/logger");
 const { loadMemory, saveMemory } = require("../lib/memory");
 
 const client = new Anthropic();
-const LUKE_LOG_FILE = path.join(__dirname, "../luke-log.jsonl");
-const LUKE_DRAFTS_FILE = path.join(__dirname, "../luke-log-drafts.json");
+const LUKE_LOG_FILE = events.lukeLog;
+const LUKE_DRAFTS_FILE = snapshots.lukeLogDrafts;
 
 function logLuke(entry) {
   fs.appendFileSync(LUKE_LOG_FILE, JSON.stringify({ timestamp: new Date().toISOString(), ...entry }) + "\n");

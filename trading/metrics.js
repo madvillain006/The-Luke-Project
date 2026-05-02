@@ -1,11 +1,10 @@
 const fs   = require("fs");
-const path = require("path");
 const { loadTradingState } = require("../state/trading-store");
+const { events, snapshots } = require("../lib/paths");
 
-const ROOT             = path.join(__dirname, "..");
-const LOG_FILE         = path.join(ROOT, "jarvis-log.jsonl");
-const PAPER_TRADES_FILE = path.join(ROOT, "paper-trades.jsonl");
-const SCHED_JOBS_FILE  = path.join(ROOT, "scheduler-jobs.json");
+const LOG_FILE         = events.jarvisLog;
+const PAPER_TRADES_FILE = events.paperTrades;
+const SCHED_JOBS_FILE  = snapshots.schedulerJobs;
 
 const MAX_RANGE_HOURS = 30 * 24;
 

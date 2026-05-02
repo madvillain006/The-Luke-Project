@@ -72,8 +72,12 @@ Main user-facing commands:
   - modern Dubz state
 - `data/historical/`
   - intraday historical bars for backtest/replay
+- `state/snapshots/trading-state.json`
+  - primary autonomous staging/risk state snapshot
+- `state/events/trading-events.jsonl`
+  - append-only trading state event log
 - `autonomous-state.json`
-  - staged autonomous mode state
+  - legacy compatibility mirror for recovery; not the primary state name
 
 ## Main subsystems
 
@@ -150,10 +154,8 @@ If `/entries ES` refuses because inputs are stale or missing, trust the refusal.
   - operational morning checklist
 - `TECH_DEBT.md`
   - deferred work and known future-phase needs
-- `docs/STRATEGY_SOURCE_MAP.md`
-  - which source feeds which system
-- `docs/CLAUDE_HANDOFF_2026-04-28.md`
-  - current handoff packet for Claude/Codex continuation
+- `docs/NAMING_CLEANUP.md`
+  - current naming decisions and preserved compatibility names
 
 ## Current posture
 

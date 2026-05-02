@@ -6,8 +6,8 @@ const ROOT = path.join(__dirname, "..");
 
 const SNAPSHOT_FILE   = path.join(ROOT, "state", "snapshots", "trading-state.json");
 const EVENTS_FILE     = path.join(ROOT, "state", "events",    "trading-events.jsonl");
-const SCHED_JOBS_FILE = path.join(ROOT, "scheduler-jobs.json");
-const LOG_FILE        = path.join(ROOT, "jarvis-log.jsonl");
+const SCHED_JOBS_FILE = path.join(ROOT, "state", "snapshots", "scheduler-jobs.json");
+const LOG_FILE        = path.join(ROOT, "state", "events", "jarvis-log.jsonl");
 
 function api(method, endpoint, body) {
   return new Promise((resolve, reject) => {

@@ -32,6 +32,7 @@ findings/
 token-usage*.json
 sweeper-costs.json
 screenshot.png
+artifacts/
 icon.ico
 luke-log.jsonl
 action-log.jsonl
@@ -41,6 +42,11 @@ tool-health.jsonl
 CONOR_CHRONICLE.md
 shifts.jsonl
 state/snapshots/
+state/events/*.jsonl
+state/events/*.log
+state/runtime/
+state/legacy-root/
+config/fallback-config.json
 crash.log
 repo-map.json
 jarvis-stdout.log

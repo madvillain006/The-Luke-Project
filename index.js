@@ -390,23 +390,44 @@ app.get("/brain-dashboard", (req, res) => {
   res.sendFile(__dirname + "/brain-dashboard.html");
 });
 
+function isTradingSurfaceCommand(text) {
+  return /^\/(?:alert|balance|dubz|entries|heatmap|mancini|ready|review|saty|trade|verdict)\b/i.test(String(text || "").trim());
+}
+
+const SYSTEM_CHAT_PROMPT = [
+  "You are Luke's system chat for the local dashboard.",
+  "Be concise, practical, and collaborative.",
+  "You can discuss the state of the overall Luke system, daily planning, research, automation business work, developer workflow, and where trading fits in the architecture.",
+  "Do not parse trading signals, ingest market levels, stage trades, or alter trading state from this surface.",
+  "If the user asks for trading-specific ingestion or recommendations, tell them to use the Trading tab so that process stays isolated.",
+  "No em dashes.",
+].join(" ");
+
 app.post("/chat", async (req, res) => {
-  const { message, history, image } = req.body;
+  const { message = "", history, image, surface } = req.body || {};
+  const isSystemSurface = surface === "system";
   if (!message && !image) return res.status(400).json({ error: "No message" });
 
   //  accumulator: auto-classify paste, store piece, ack, fire verdict 
-  if (!message.startsWith("/")) {
+  if (!isSystemSurface && !message.startsWith("/")) {
     const accResult = await handlePasteAccumulate(message, image, res);
     if (accResult) return;
   }
 
   //  slash command intercept 
   let routedMessage = message;
-  if (!message.startsWith("/")) {
+  if (!isSystemSurface && !message.startsWith("/")) {
     const { command, cleanedText } = detectPasteIntent(message, !!image);
     if (command) routedMessage = command + " " + cleanedText;
   }
   if (routedMessage.startsWith("/")) {
+    if (isSystemSurface && isTradingSurfaceCommand(routedMessage)) {
+      return res.json({
+        reply: "That belongs in the Trading tab so the trading process stays isolated. Open Trading (Analysis) for level ingestion, verdicts, entries, trade logs, and reviews.",
+        state: "regulated",
+        history: [...(history || []), { role: "user", content: message }, { role: "assistant", content: "That belongs in the Trading tab so the trading process stays isolated." }],
+      });
+    }
     if (image && routedMessage.startsWith("/heatmap")) res._heatmapImage = image;
     if (image && routedMessage.startsWith("/dubz"))    res._dubzImage    = image;
     const handled = await handleSlashCommand(routedMessage, res);
@@ -416,7 +437,7 @@ app.post("/chat", async (req, res) => {
   //  end slash commands 
 
   //  parseXimes intercept  catch signals before Claude fallthrough 
-  if (message.length >= 8 && !message.startsWith("/")) {
+  if (!isSystemSurface && message.length >= 8 && !message.startsWith("/")) {
     const parsed = parseXimes(null, message);
     if (parsed && parsed.signal_type === "LIVE_ENTRY" && parsed.strike) {
       const alertMsg = "/alert " + message;
@@ -440,7 +461,7 @@ app.post("/chat", async (req, res) => {
   }
   //  end parseXimes intercept 
 
-  if (!message.startsWith("/")) {
+  if (!isSystemSurface && !message.startsWith("/")) {
     const heatmapAnswer = buildStoredHeatmapAnswer(message);
     if (heatmapAnswer) {
       saveSessionMessage("user", message);
@@ -455,19 +476,20 @@ app.post("/chat", async (req, res) => {
   }
 
   const messages = [...(history || []), { role: "user", content: message }];
-  const _exitWarnings = checkEmotionalState(loadTodayContext());
-  const state = _exitWarnings.find(w => w.type === "HARD") ? "rule_break"
+  const _exitWarnings = isSystemSurface ? [] : checkEmotionalState(loadTodayContext());
+  const state = isSystemSurface ? "regulated"
+    : _exitWarnings.find(w => w.type === "HARD") ? "rule_break"
     : _exitWarnings.length > 0 ? "stressed"
     : "regulated";
-  logEmotionalState(state, message);
-  const alerts = checkProactiveAlerts();
+  if (!isSystemSurface) logEmotionalState(state, message);
+  const alerts = isSystemSurface ? [] : checkProactiveAlerts();
 
   saveSessionMessage("user", message);
 
   const ACK_SYSTEM = "You are Luke. Acknowledge this agent result in one sentence. Be brief. No em dashes.";
 
   try {
-    const routed = await routeToAgent(message);
+    const routed = isSystemSurface ? null : await routeToAgent(message);
     if (routed) {
       const ackResponse = await client.messages.create({
         model: "claude-haiku-4-5-20251001",
@@ -492,7 +514,7 @@ app.post("/chat", async (req, res) => {
   if (_requireFallback().isActive()) {
     try {
       const fb = await _requireFallback().callFallback(
-        "You are Luke - concise trading and ops copilot. Keep it brief and direct.",
+        isSystemSurface ? SYSTEM_CHAT_PROMPT : "You are Luke - concise trading and ops copilot. Keep it brief and direct.",
         message
       );
       let reply = fb.reply;
@@ -516,7 +538,7 @@ app.post("/chat", async (req, res) => {
 
   const useHaiku = isSimpleMessage(message);
   const chatModel = useHaiku ? "claude-haiku-4-5-20251001" : "claude-opus-4-7";
-  const chatSystemPrompt = useHaiku
+  const chatSystemPrompt = isSystemSurface ? SYSTEM_CHAT_PROMPT : useHaiku
     ? "You are Luke - sharp, brief, no filler. No em dashes."
     : buildSystemPrompt(state, message);
 
@@ -578,9 +600,27 @@ app.post("/see", async (req, res) => {
 });
 
 app.post("/see-image", async (req, res) => {
-  const { image } = req.body;
+  const { image, mime_type, question, surface } = req.body || {};
   if (!image) return res.status(400).json({ error: "No image" });
   try {
+    if (surface === "system") {
+      const mediaType = typeof mime_type === "string" && /^image\//i.test(mime_type) ? mime_type : "image/png";
+      const response = await client.messages.create({
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 384,
+        system: SYSTEM_CHAT_PROMPT,
+        messages: [{
+          role: "user",
+          content: [
+            { type: "image", source: { type: "base64", media_type: mediaType, data: image } },
+            { type: "text", text: question || "Describe this image briefly." },
+          ],
+        }],
+      });
+      trackUsage("system-image", "claude-haiku-4-5-20251001", response.usage?.input_tokens || 0, response.usage?.output_tokens || 0);
+      return res.json({ reply: response.content[0].text });
+    }
+
     const sourceId = buildBobbyHeatmapSourceId({ image });
     const existing = (() => {
       try {

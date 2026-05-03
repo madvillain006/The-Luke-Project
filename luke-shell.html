@@ -118,7 +118,8 @@
       display: none;
     }
 
-    .trading-panel {
+    .trading-panel,
+    .system-chat-panel {
       display: none;
       min-height: 620px;
       border: 1px solid var(--line);
@@ -127,7 +128,8 @@
       overflow: hidden;
     }
 
-    .trading-panel.is-open {
+    .trading-panel.is-open,
+    .system-chat-panel.is-open {
       display: flex;
       flex-direction: column;
     }
@@ -173,7 +175,8 @@
       background: #0d1520;
     }
 
-    .trading-frame {
+    .trading-frame,
+    .system-frame {
       width: 100%;
       min-height: 0;
       flex: 1;
@@ -244,6 +247,15 @@
       place-items: stretch;
       text-align: left;
       grid-template-rows: auto 1fr auto;
+    }
+
+    .system-button.is-hidden {
+      display: none;
+    }
+
+    .system-chat-panel {
+      grid-column: 1 / -1;
+      min-height: 560px;
     }
 
     .system-button .intro-copy {
@@ -426,11 +438,13 @@
       }
 
       .hero-card,
-      .trading-panel {
+      .trading-panel,
+      .system-chat-panel {
         min-height: 310px;
       }
 
-      .trading-panel {
+      .trading-panel,
+      .system-chat-panel {
         min-height: 640px;
       }
 
@@ -482,7 +496,8 @@
         min-height: 0;
       }
 
-      .trading-panel {
+      .trading-panel,
+      .system-chat-panel {
         min-height: 680px;
       }
 
@@ -561,6 +576,16 @@
           <span>&gt; Runtime: <strong id="runtime-line">loading</strong></span>
         </span>
       </a>
+      <section class="system-chat-panel" id="system-panel" aria-hidden="true" aria-label="Luke system chat">
+        <div class="trading-panel-top">
+          <span>Luke System / General Chat</span>
+          <div class="trading-panel-actions">
+            <a class="panel-action" href="/luke" title="Open Luke system chat as a full page">FULL</a>
+            <button class="panel-action" id="system-close" type="button" title="Return to the Luke System tile">BACK</button>
+          </div>
+        </div>
+        <iframe class="system-frame" id="system-frame" title="Luke system chat" data-src="/luke?embed=1"></iframe>
+      </section>
       <a class="filter-button active" href="/shell">Show All</a>
       <a class="filter-button" href="/brain-dashboard">Brain Status</a>
       <a class="filter-button" href="/brain-dashboard#spine-trading">Agents (A)</a>
@@ -632,6 +657,13 @@
       } catch {}
     }
 
+    function focusSystemInput() {
+      const frame = $('system-frame');
+      try {
+        frame?.contentWindow?.document?.getElementById('input')?.focus();
+      } catch {}
+    }
+
     function openTradingPanel() {
       const launch = $('trading-launch');
       const panel = $('trading-panel');
@@ -651,6 +683,32 @@
     function closeTradingPanel() {
       const launch = $('trading-launch');
       const panel = $('trading-panel');
+      if (!launch || !panel) return;
+      panel.classList.remove('is-open');
+      panel.setAttribute('aria-hidden', 'true');
+      launch.classList.remove('is-hidden');
+      launch.focus();
+    }
+
+    function openSystemPanel() {
+      const launch = document.querySelector('.system-button');
+      const panel = $('system-panel');
+      const frame = $('system-frame');
+      if (!launch || !panel || !frame) return;
+      launch.classList.add('is-hidden');
+      panel.classList.add('is-open');
+      panel.setAttribute('aria-hidden', 'false');
+      if (!frame.getAttribute('src')) {
+        frame.setAttribute('src', frame.dataset.src || '/luke?embed=1');
+        frame.addEventListener('load', focusSystemInput, { once: true });
+      } else {
+        focusSystemInput();
+      }
+    }
+
+    function closeSystemPanel() {
+      const launch = document.querySelector('.system-button');
+      const panel = $('system-panel');
       if (!launch || !panel) return;
       panel.classList.remove('is-open');
       panel.setAttribute('aria-hidden', 'true');
@@ -690,6 +748,11 @@
           openTradingPanel();
           return;
         }
+        if (route === '/luke') {
+          event.preventDefault();
+          openSystemPanel();
+          return;
+        }
         if (route) {
           event.preventDefault();
           window.location.href = route;
@@ -698,6 +761,7 @@
     });
 
     $('trading-close')?.addEventListener('click', closeTradingPanel);
+    $('system-close')?.addEventListener('click', closeSystemPanel);
 
     refresh();
     setInterval(refresh, 30000);

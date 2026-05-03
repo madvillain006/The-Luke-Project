@@ -111,7 +111,9 @@ describe('/brain dashboard shell', () => {
       'Market microstructure analysis, order flow tracking, and strategy recommendations.',
       'Human-gated. Read-only. No autonomous execution controls.',
       'Trading (Analysis) / Luke Chat',
+      'Luke System / General Chat',
       'data-src="/trading?embed=1"',
+      'data-src="/luke?embed=1"',
       'href="/luke"',
     ]) {
       expect(html).toContain(label);
@@ -143,10 +145,13 @@ describe('/brain dashboard shell', () => {
     }
     expect(html).toContain('class="hero-card" id="trading-launch" data-route="/trading" href="/trading"');
     expect(html).toContain('id="trading-panel"');
+    expect(html).toContain('id="system-panel"');
     expect(html).toContain('openTradingPanel()');
+    expect(html).toContain('openSystemPanel()');
     expect(html).toContain("frame.setAttribute('src', frame.dataset.src || '/trading?embed=1')");
+    expect(html).toContain("frame.setAttribute('src', frame.dataset.src || '/luke?embed=1')");
     expect(html).toContain("document.querySelectorAll('[data-route]')");
-    expect(html).toContain('window.location.href = route');
+    expect(html).toContain("if (route === '/luke')");
     expect(html).toContain('window.getSelection().toString().length > 0');
   });
 
@@ -158,6 +163,8 @@ describe('/brain dashboard shell', () => {
     expect(html).toContain('<button id="send"');
     expect(html).toContain('fetch(BASE + "/chat"');
     expect(html).toContain('const chatSurface = window.location.pathname === "/luke" ? "system" : "trading"');
+    expect(html).toContain('surface: chatSurface');
+    expect(html).toContain('chatSurface !== "system" && !text.startsWith');
     expect(html).toContain('body.system-chat #quick-btns');
     expect(html).toContain('href="/shell"');
     expect(html).toContain('grid-template-columns: repeat(auto-fit, minmax(96px, 1fr))');

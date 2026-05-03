@@ -1335,21 +1335,21 @@
         sendBtn.disabled = true;
         try {
           let r, d;
-          if (!question) {
+          if (!question && chatSurface !== "system") {
             // Image-only paste: route through /chat so handlePasteAccumulate
             // can update daily context, check the checklist, and fire verdict.
             r = await fetch(BASE + "/chat", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ image: base64, message: "" })
+              body: JSON.stringify({ image: base64, message: "", surface: chatSurface })
             });
             d = await r.json();
           } else {
-            // Image + text: vision query
+            // Image + text, or any image inside the system chat: vision query.
             r = await fetch(BASE + "/see-image", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ image: base64, mime_type: mimeType, question })
+              body: JSON.stringify({ image: base64, mime_type: mimeType, question: question || "Describe this image briefly.", surface: chatSurface })
             });
             d = await r.json();
           }
@@ -1409,6 +1409,7 @@
       textItem.getAsString(text => {
         if (!text || text.length < 10) return;
         if (document.activeElement !== input) return;
+        if (chatSurface === "system") return;
         const { command, cleanedText, detectedAnalyst } = detectPasteIntent(text, false);
         if (!command) return;
         e.preventDefault();
@@ -1478,7 +1479,7 @@
       showThinking("THINKING...");
       sendBtn.disabled = true;
       try {
-        const r = await fetch(BASE + "/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: text, history }) });
+        const r = await fetch(BASE + "/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: text, history, surface: chatSurface }) });
         const d = await r.json();
         hideThinking();
         addMessage("assistant", d.reply);
@@ -1500,7 +1501,7 @@
         input.value = "";
         const ph = document.getElementById("paste-hint");
         if (ph) ph.style.display = "none";
-        if (!text.startsWith('/')) {
+        if (chatSurface !== "system" && !text.startsWith('/')) {
           try {
             const det = detectPasteIntent(text, false);
             if (det && det.command) {

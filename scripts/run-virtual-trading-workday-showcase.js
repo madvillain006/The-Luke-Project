@@ -10,10 +10,15 @@ const { events, snapshots } = require('../lib/paths');
 const ROOT = path.join(__dirname, '..');
 const BASE_URL = process.env.LUKE_OPERATOR_BASE_URL || 'http://127.0.0.1:3000';
 const TIMEOUT_MS = Number(process.env.LUKE_VIRTUAL_SHOWCASE_TIMEOUT_MS || 20000);
+const VISION_TIMEOUT_MS = Number(process.env.LUKE_VIRTUAL_SHOWCASE_VISION_TIMEOUT_MS || 90000);
 const RUN_ID = new Date().toISOString().replace(/[:.]/g, '-');
 const OUT_DIR = path.join(ROOT, 'artifacts', `virtual-trading-workday-${RUN_ID}`);
 const REPORT_MD = path.join(OUT_DIR, 'VIRTUAL_TRADING_WORKDAY_SHOWCASE.md');
 const REPORT_JSON = path.join(OUT_DIR, 'virtual-trading-workday-showcase.json');
+const HEATMAP_IMAGE_CANDIDATES = [
+  path.join(ROOT, 'state', 'runtime', 'test-heatmap.png'),
+  path.join(ROOT, 'fixtures', 'bobby', '2026-04-27_0953_bobby_3panel.png'),
+];
 
 const DATA_FILES = [
   path.join(ROOT, 'data', 'apex-state.json'),
@@ -27,6 +32,18 @@ const DATA_FILES = [
   snapshots.autonomousState,
   path.join(ROOT, 'state', 'snapshots', 'trading-state.json'),
   path.join(ROOT, 'state', 'events', 'trading-events.jsonl'),
+  events.bobbyContext,
+  events.trades,
+];
+
+const SHOWCASE_RESET_FILES = [
+  path.join(ROOT, 'data', 'active-trade.json'),
+  path.join(ROOT, 'data', 'daily-context.json'),
+  path.join(ROOT, 'data', 'dubz-levels.json'),
+  path.join(ROOT, 'data', 'last-signal.json'),
+  path.join(ROOT, 'data', 'level-memory.json'),
+  path.join(ROOT, 'data', 'saty-levels.json'),
+  path.join(ROOT, 'data', 'today-levels.json'),
   events.bobbyContext,
   events.trades,
 ];
@@ -69,21 +86,20 @@ const COMMANDS = [
     screenshot: null,
   },
   {
-    label: 'bobby heatmap prep',
-    command: [
-      '/heatmap',
-      'Bobby virtual heatmap notes.',
-      'SPX king nodes: 7245, 7198, 7300.',
-      'Support: 7245, 7198, 7265.',
-      'Resistance: 7297, 7300, 7310, 7328, 7345, 7395.',
-      'Purple node above 7300 can expand volatility toward 7345. Yellow 7245/7198 can dampen and reverse.',
-    ].join(' '),
-    screenshot: '04-prep-stack-loaded.png',
+    label: 'bobby heatmap image paste',
+    imageFile: true,
+    command: '[pasted Bobby heatmap image]',
+    screenshot: '04-actual-heatmap-image-pasted.png',
+  },
+  {
+    label: 'heatmap context sanity',
+    command: 'tell me about the heatmap',
+    screenshot: '05-heatmap-context-sanity.png',
   },
   {
     label: 'ready check',
     command: '/ready',
-    screenshot: '05-ready-check.png',
+    screenshot: '06-ready-check.png',
   },
   {
     label: 'confluence verdict',
@@ -93,7 +109,7 @@ const COMMANDS = [
   {
     label: 'entry plan',
     command: '/entries ES',
-    screenshot: '06-verdict-and-entries.png',
+    screenshot: '07-verdict-and-entries.png',
   },
   {
     label: 'trade one',
@@ -108,17 +124,17 @@ const COMMANDS = [
   {
     label: 'trade three',
     command: '/trade LONG ES 7300 7294 LOSS',
-    screenshot: '07-virtual-trades-logged.png',
+    screenshot: '08-virtual-trades-logged.png',
   },
   {
     label: 'eod review',
     command: '/review',
-    screenshot: '08-eod-review.png',
+    screenshot: '09-eod-review.png',
   },
   {
     label: 'final status',
     command: '/status',
-    screenshot: '09-final-trading-status.png',
+    screenshot: '10-final-trading-status.png',
   },
 ];
 
@@ -145,6 +161,18 @@ function backupFiles(files) {
 
 function restoreFiles(snapshot) {
   for (const [file, original] of snapshot.entries()) restoreMaybe(file, original);
+}
+
+function prepareShowcaseState() {
+  for (const file of SHOWCASE_RESET_FILES) restoreMaybe(file, null);
+}
+
+function resolveHeatmapImage() {
+  const found = HEATMAP_IMAGE_CANDIDATES.find(file => fs.existsSync(file));
+  if (!found) {
+    throw new Error(`No heatmap image fixture found. Checked: ${HEATMAP_IMAGE_CANDIDATES.join(', ')}`);
+  }
+  return found;
 }
 
 function shell(command) {
@@ -233,7 +261,7 @@ async function driveCommand(frame, item) {
   await input.fill(item.command.replace(/\s*\r?\n\s*/g, ' ').trim(), { timeout: TIMEOUT_MS });
   await send.click({ timeout: TIMEOUT_MS });
   await waitForEnabled(send);
-  await waitForNewAssistantBubble(frame, before);
+  await waitForNewAssistantBubble(frame, before, TIMEOUT_MS);
   const reply = await latestAssistantReply(frame);
   return {
     label: item.label,
@@ -242,8 +270,42 @@ async function driveCommand(frame, item) {
   };
 }
 
-async function waitForEnabled(locator) {
-  const deadline = Date.now() + TIMEOUT_MS;
+async function driveImagePaste(frame, browserFrame, item, imageFile) {
+  if (!browserFrame) throw new Error('trading iframe was not available for image paste');
+  const before = await assistantBubbleCount(frame);
+  const send = frame.locator('#send');
+  const base64 = fs.readFileSync(imageFile, 'base64');
+
+  await browserFrame.evaluate(async ({ base64, fileName }) => {
+    const response = await fetch(`data:image/png;base64,${base64}`);
+    const blob = await response.blob();
+    const file = new File([blob], fileName, { type: 'image/png' });
+    const transfer = new DataTransfer();
+    transfer.items.add(file);
+    let event;
+    try {
+      event = new ClipboardEvent('paste', { clipboardData: transfer, bubbles: true, cancelable: true });
+    } catch {
+      event = new Event('paste', { bubbles: true, cancelable: true });
+    }
+    if (!event.clipboardData) {
+      Object.defineProperty(event, 'clipboardData', { value: transfer });
+    }
+    document.dispatchEvent(event);
+  }, { base64, fileName: path.basename(imageFile) });
+
+  await waitForNewAssistantBubble(frame, before, VISION_TIMEOUT_MS);
+  await waitForEnabled(send, VISION_TIMEOUT_MS);
+  const reply = await latestAssistantReply(frame);
+  return {
+    label: item.label,
+    command: `${item.command} ${path.relative(ROOT, imageFile).replace(/\\/g, '/')}`,
+    reply: oneLine(reply),
+  };
+}
+
+async function waitForEnabled(locator, timeoutMs = TIMEOUT_MS) {
+  const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
     if (await locator.isEnabled().catch(() => false)) return;
     await delay(100);
@@ -255,13 +317,14 @@ async function assistantBubbleCount(frame) {
   return frame.locator('.msg-row.luke .bubble').count().catch(() => 0);
 }
 
-async function waitForNewAssistantBubble(frame, beforeCount) {
-  const deadline = Date.now() + TIMEOUT_MS;
+async function waitForNewAssistantBubble(frame, beforeCount, timeoutMs = TIMEOUT_MS) {
+  const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
     const afterCount = await assistantBubbleCount(frame);
     if (afterCount > beforeCount) return;
     await delay(150);
   }
+  throw new Error('timed out waiting for assistant reply');
 }
 
 async function latestAssistantReply(frame) {
@@ -282,13 +345,20 @@ function parseEod(commandResults) {
   } : null;
 }
 
-function renderReport({ app, screenshots, commandResults, restored, consoleErrors }) {
+function heatmapVisionParsed(commandResults) {
+  const imageResult = commandResults.find(item => item.label === 'bobby heatmap image paste')?.reply || '';
+  const followup = commandResults.find(item => item.label === 'heatmap context sanity')?.reply || '';
+  return /vision parsed|nodes found|Bobby heatmap loaded|King nodes:/i.test(`${imageResult}\n${followup}`);
+}
+
+function renderReport({ app, screenshots, commandResults, restored, consoleErrors, heatmapImage }) {
   const eod = parseEod(commandResults);
+  const visionParsed = heatmapVisionParsed(commandResults);
   const lines = [];
   lines.push('# Virtual Trading Workday Showcase');
   lines.push('');
   lines.push(`Generated: ${new Date().toISOString()}`);
-  lines.push(`Verdict: ${eod && eod.trades >= 3 && restored ? 'VIRTUAL_TRADING_WORKDAY_PASS' : 'VIRTUAL_TRADING_WORKDAY_REVIEW'}`);
+  lines.push(`Verdict: ${eod && eod.trades >= 3 && restored && visionParsed ? 'VIRTUAL_TRADING_WORKDAY_PASS' : 'VIRTUAL_TRADING_WORKDAY_REVIEW'}`);
   lines.push('');
   lines.push('## Scope');
   lines.push('- Browser-driven remote showcase against the real Luke dashboard shell and embedded `/trading` chat.');
@@ -300,6 +370,8 @@ function renderReport({ app, screenshots, commandResults, restored, consoleError
   lines.push(`- Branch: ${shell('git branch --show-current')}`);
   lines.push(`- Commit: ${shell('git log -1 --oneline')}`);
   lines.push(`- State restored: ${restored ? 'yes' : 'no'}`);
+  lines.push(`- Heatmap image: ${path.relative(ROOT, heatmapImage).replace(/\\/g, '/')}`);
+  lines.push(`- Heatmap vision parsed: ${visionParsed ? 'yes' : 'no'}`);
   lines.push(`- Browser console errors: ${consoleErrors.length}`);
   lines.push('');
   lines.push('## Command Timeline');
@@ -315,7 +387,7 @@ function renderReport({ app, screenshots, commandResults, restored, consoleError
     lines.push(`- Wins/Losses: ${eod.wins}W / ${eod.losses}L`);
     lines.push(`- Net: ${eod.netPts >= 0 ? '+' : ''}${eod.netPts.toFixed(2)} pts`);
   } else {
-    lines.push('- EOD summary did not parse; inspect screenshot 08 and command transcript.');
+    lines.push('- EOD summary did not parse; inspect screenshot 09 and command transcript.');
   }
   lines.push('');
   lines.push('## Screenshots');
@@ -334,19 +406,23 @@ function renderReport({ app, screenshots, commandResults, restored, consoleError
 async function runShowcase() {
   ensureDir(OUT_DIR);
   const backups = backupFiles(DATA_FILES);
-  const app = await ensureApp();
+  const heatmapImage = resolveHeatmapImage();
+  let app = { started: false, process: null, result: 'not started' };
   const screenshots = [];
   const commandResults = [];
   const consoleErrors = [];
   let restored = false;
-
-  const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-  page.on('console', msg => {
-    if (msg.type() === 'error') consoleErrors.push(msg.text());
-  });
+  let browser = null;
 
   try {
+    app = await ensureApp();
+    prepareShowcaseState();
+    browser = await chromium.launch({ headless: true });
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    page.on('console', msg => {
+      if (msg.type() === 'error') consoleErrors.push(msg.text());
+    });
+
     await page.goto(`${BASE_URL}/shell`, { waitUntil: 'domcontentloaded', timeout: TIMEOUT_MS });
     await page.locator('body').waitFor({ state: 'visible', timeout: TIMEOUT_MS });
     screenshots.push(await screenshot(page, '01-dashboard-shell.png'));
@@ -358,30 +434,36 @@ async function runShowcase() {
     const frame = page.frameLocator('#trading-frame');
     await frame.locator('#input').waitFor({ state: 'visible', timeout: TIMEOUT_MS });
     await frame.locator('#send').waitFor({ state: 'visible', timeout: TIMEOUT_MS });
+    const tradingFrameHandle = await page.locator('#trading-frame').elementHandle({ timeout: TIMEOUT_MS });
+    const browserFrame = await tradingFrameHandle.contentFrame();
     screenshots.push(await screenshot(page, '02-trading-chat-open.png'));
 
     for (const item of COMMANDS) {
-      commandResults.push(await driveCommand(frame, item));
+      if (item.imageFile) {
+        commandResults.push(await driveImagePaste(frame, browserFrame, item, heatmapImage));
+      } else {
+        commandResults.push(await driveCommand(frame, item));
+      }
       if (item.screenshot) screenshots.push(await screenshot(page, item.screenshot));
     }
 
     await page.goto(`${BASE_URL}/operator-v2`, { waitUntil: 'domcontentloaded', timeout: TIMEOUT_MS });
     await page.locator('body').waitFor({ state: 'visible', timeout: TIMEOUT_MS });
     await delay(750);
-    screenshots.push(await screenshot(page, '10-operator-v2-final-readout.png'));
+    screenshots.push(await screenshot(page, '11-operator-v2-final-readout.png'));
   } finally {
-    await browser.close();
+    if (browser) await browser.close();
     restoreFiles(backups);
     restored = true;
     stopApp(app.process);
   }
 
-  const report = renderReport({ app, screenshots, commandResults, restored, consoleErrors });
+  const report = renderReport({ app, screenshots, commandResults, restored, consoleErrors, heatmapImage });
   fs.writeFileSync(REPORT_MD, report, 'utf8');
-  fs.writeFileSync(REPORT_JSON, JSON.stringify({ app, screenshots, commandResults, restored, consoleErrors }, null, 2), 'utf8');
+  fs.writeFileSync(REPORT_JSON, JSON.stringify({ app, screenshots, commandResults, restored, consoleErrors, heatmapImage, heatmapVisionParsed: heatmapVisionParsed(commandResults) }, null, 2), 'utf8');
 
   const eod = parseEod(commandResults);
-  console.log(`virtual trading workday showcase: ${eod && eod.trades >= 3 ? 'PASS' : 'REVIEW'}`);
+  console.log(`virtual trading workday showcase: ${eod && eod.trades >= 3 && heatmapVisionParsed(commandResults) ? 'PASS' : 'REVIEW'}`);
   console.log(`screenshots: ${screenshots.length}`);
   console.log(`report: ${path.relative(ROOT, REPORT_MD)}`);
   if (consoleErrors.length) console.log(`console errors: ${consoleErrors.length}`);

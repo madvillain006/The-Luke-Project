@@ -228,6 +228,8 @@ describe('parseManciniTweet additional fields', () => {
       "Little to do now but let the runner pay, which is now +280 points from Tuesday's 6592 reclaim long."
     );
     expect(result.runner_active).toEqual({ trigger_price: 6592, points_paid: 280 });
+    expect(result.levels.map(level => level.price)).not.toContain(6592);
+    expect(result.parse_errors.some(error => error.includes('context only'))).toBe(true);
   });
 
   it('T10-hitStatus: hit_status=hit when (hit) follows price', () => {

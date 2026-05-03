@@ -91,6 +91,17 @@ describe('parseBobby', () => {
     expect(result.resistance).toContain(7140);
     expect(result.king_nodes).not.toContain(714);
   });
+
+  it('regression: calendar dates and years are not heatmap levels', () => {
+    const result = parseBobby(
+      'Bobby historical heatmap parse for 2026-04-28. SPX king nodes: 7100, 7145. Support: 7100. Resistance: 7145.'
+    );
+    expect(result).not.toBeNull();
+    const all = [...result.king_nodes, ...result.support, ...result.resistance];
+    expect(all).not.toContain(2026);
+    expect(all).toContain(7100);
+    expect(all).toContain(7145);
+  });
 });
 
 describe('detectMediaType', () => {

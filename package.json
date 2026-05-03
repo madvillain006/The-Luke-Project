@@ -10,6 +10,7 @@
     "prove:operator-v2": "node scripts/prove-operator-v2.js",
     "prove:staged-flow": "node scripts/prove-staged-flow.js",
     "replay:history": "node scripts/replay-decision-spine-history.js",
+    "replay:operator-history": "node scripts/run-historical-operator-replay.js",
     "session:operator-v2": "node scripts/run-operator-session.js",
     "test": "vitest run",
     "test:watch": "vitest"

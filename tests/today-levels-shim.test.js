@@ -15,6 +15,13 @@ function tempFile() {
   return path.join(dir, 'today-levels.json');
 }
 
+function tempRootLevelsFile() {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'luke-root-levels-'));
+  const dataDir = path.join(root, 'data');
+  fs.mkdirSync(dataDir, { recursive: true });
+  return { root, file: path.join(dataDir, 'today-levels.json') };
+}
+
 describe('today-levels-shim', () => {
   it('reports loaded only when Bobby or Richy levels exist for the current date', () => {
     const file = tempFile();
@@ -63,5 +70,18 @@ describe('today-levels-shim', () => {
     });
     expect(hasLevelsLoadedToday(file, now)).toBe(true);
   });
-});
 
+  it('treats same-day durable Bobby event context as levels loaded when today-levels is absent', () => {
+    const { root, file } = tempRootLevelsFile();
+    const now = new Date('2026-05-03T10:00:00.000Z');
+    const eventsDir = path.join(root, 'state', 'events');
+    fs.mkdirSync(eventsDir, { recursive: true });
+    fs.writeFileSync(path.join(eventsDir, 'bobby-context.jsonl'), [
+      JSON.stringify({ source: 'bobby-vision', vision_parsed: true, date: '2026-05-02T18:30:00.000Z', king_nodes: [7125] }),
+      JSON.stringify({ source: 'bobby-vision', vision_parsed: true, date: '2026-05-03T09:53:36.373Z', king_nodes: [7175, 715, 664] }),
+    ].join('\n'), 'utf8');
+
+    expect(hasLevelsLoadedToday(file, now)).toBe(true);
+    expect(levelsLoadedLabel(file, now)).toBe('YES');
+  });
+});

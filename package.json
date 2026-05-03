@@ -12,6 +12,7 @@
     "replay:history": "node scripts/replay-decision-spine-history.js",
     "replay:operator-history": "node scripts/run-historical-operator-replay.js",
     "session:operator-v2": "node scripts/run-operator-session.js",
+    "showcase:trading-workday": "node scripts/run-virtual-trading-workday-showcase.js",
     "test": "vitest run",
     "test:watch": "vitest"
   },

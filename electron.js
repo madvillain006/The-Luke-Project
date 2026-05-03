@@ -64,7 +64,6 @@ function createWindow() {
         y:      bounds.y,
         minWidth: 960,
         minHeight: 640,
-        alwaysOnTop: true,
         resizable: true,
         title: 'Luke',
         autoHideMenuBar: true,
@@ -77,7 +76,7 @@ function createWindow() {
         }
     })
     win.setMenuBarVisibility(false)
-    win.loadURL('http://localhost:3000')
+    win.loadURL('http://localhost:3000/shell')
     win.on('resize', () => saveWindowState(win))
     win.on('move',   () => saveWindowState(win))
     win.on('closed', () => {
@@ -105,7 +104,6 @@ ipcMain.on('show-trade-popup', (event, trade) => {
         height: 520,
         x: 1010,
         y: 580,
-        alwaysOnTop: true,
         frame: false,
         resizable: false,
         webPreferences: {

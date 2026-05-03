@@ -7,370 +7,500 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #000;
-      --text: #f7f7f7;
-      --muted: #b9b9b9;
-      --line: #d8d8d8;
-      --soft-line: rgba(255,255,255,0.5);
-      --panel: #050505;
-      --ok: #8bf0b0;
-      --warn: #ffd166;
-      --bad: #ff7b7b;
+      --bg: #000000;
+      --panel: #1e1e1e;
+      --panel-2: #111111;
+      --hero: #3f3f3f;
+      --line: #2b2b2b;
+      --line-strong: #3a3a3a;
+      --text: #f2f2f2;
+      --muted: #b8b8b8;
+      --dim: #777777;
+      --ok: #ffffff;
+      --font: "JetBrains Mono", "Fira Code", "Space Mono", "Cascadia Mono", Consolas, monospace;
     }
 
     * { box-sizing: border-box; }
 
+    html,
     body {
       margin: 0;
       min-height: 100vh;
       background: var(--bg);
       color: var(--text);
-      font: 15px/1.25 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.2;
       letter-spacing: 0;
-      overflow: hidden;
     }
 
-    button, input {
+    body {
+      padding: 26px;
+      overflow-x: hidden;
+    }
+
+    button,
+    a {
       font: inherit;
-      color: inherit;
-      background: transparent;
     }
 
     .app {
-      height: 100vh;
+      min-height: calc(100vh - 52px);
       display: grid;
-      grid-template-rows: 72px 1fr 72px;
-      background: #000;
+      grid-template-rows: 28px auto auto 1fr;
+      gap: 26px;
     }
 
     .topbar {
       display: grid;
-      grid-template-columns: 180px 1fr 180px 180px;
-      align-items: center;
-      border-bottom: 1px solid var(--line);
-      font-weight: 850;
-      font-size: 23px;
-    }
-
-    .brand,
-    .nav-item {
-      height: 100%;
-      display: flex;
-      align-items: center;
-      padding: 0 15px;
-    }
-
-    .brand {
-      gap: 22px;
-    }
-
-    .brand .mark {
-      font-weight: 950;
-      letter-spacing: 0;
-    }
-
-    .nav-item.center {
-      justify-content: center;
-    }
-
-    .nav-item.right {
-      justify-content: flex-end;
-    }
-
-    .content {
-      min-height: 0;
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(300px, 0.75fr);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .fork-grid {
-      min-height: 0;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(220px, 1fr));
-      grid-auto-rows: minmax(220px, 1fr);
-      border-right: 1px solid var(--line);
-    }
-
-    .tile {
-      position: relative;
-      min-width: 0;
-      min-height: 0;
-      border-right: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      padding: 13px 15px;
-      background: var(--panel);
-      overflow: hidden;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      gap: 8px;
-    }
-
-    .tile:nth-child(3n) {
-      border-right: 0;
-    }
-
-    .tile-head {
-      display: flex;
-      align-items: baseline;
-      gap: 18px;
-      min-width: 0;
-    }
-
-    .tile-index {
-      font-size: 20px;
-      font-weight: 850;
-      flex: 0 0 auto;
-    }
-
-    .tile-title {
-      font-size: 20px;
-      font-weight: 850;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .tile-body {
-      min-height: 0;
-      display: grid;
-      align-content: end;
-      gap: 8px;
-    }
-
-    .tile-large {
-      font-size: clamp(38px, 6vw, 84px);
-      line-height: 0.92;
-      font-weight: 950;
-      letter-spacing: 0;
-    }
-
-    .tile-copy {
-      color: var(--muted);
-      font-size: 13px;
-      max-width: 36ch;
-    }
-
-    .tile-foot {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 12px;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: start;
       color: var(--text);
-      font-size: 12px;
-      font-weight: 750;
     }
 
-    .tags {
-      min-width: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .plus {
-      border: 0;
-      font-size: 27px;
-      line-height: 1;
-      font-weight: 900;
-      padding: 0 4px;
-      cursor: pointer;
-    }
-
-    .status {
-      color: var(--muted);
-    }
-
-    .status.nominal,
-    .status.active,
-    .status.done {
-      color: var(--ok);
-    }
-
-    .status.open,
-    .status.searching,
-    .status.attention {
-      color: var(--warn);
-    }
-
-    .status.blocked,
-    .status.unavailable {
-      color: var(--bad);
-    }
-
-    .side {
-      min-height: 0;
-      padding: 17px 20px;
-      overflow: auto;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      gap: 22px;
-    }
-
-    .side h2 {
-      margin: 0 0 10px;
-      font-size: 26px;
-      line-height: 1;
-      letter-spacing: 0;
-    }
-
-    .side p {
-      margin: 0 0 14px;
-      font-weight: 750;
-      max-width: 34ch;
-    }
-
-    .side-list {
-      display: grid;
-      gap: 10px;
-      font-weight: 750;
-    }
-
-    .side-section {
-      display: grid;
-      gap: 8px;
-    }
-
-    .side-label {
-      color: var(--muted);
-      font-weight: 850;
-    }
-
-    .bottom {
-      display: grid;
-      grid-template-columns: 76px 1fr 170px;
-      align-items: center;
-      gap: 0;
-      padding: 0 15px;
-    }
-
-    .play {
-      width: 34px;
-      height: 34px;
-      border: 0;
-      position: relative;
-      cursor: pointer;
-    }
-
-    .play::before {
-      content: "";
-      position: absolute;
-      left: 3px;
-      top: 5px;
-      width: 0;
-      height: 0;
-      border-top: 12px solid transparent;
-      border-bottom: 12px solid transparent;
-      border-left: 18px solid var(--text);
-    }
-
-    .timeline {
-      height: 31px;
-      border-left: 2px solid var(--line);
-      border-bottom: 2px solid var(--line);
-      display: grid;
-      grid-template-columns: repeat(24, 1fr);
-      align-items: end;
-      padding-left: 8px;
-    }
-
-    .tick {
-      width: 2px;
-      background: var(--line);
+    .topbar-center {
       justify-self: center;
     }
 
-    .tick.major {
-      height: 30px;
+    .topbar-right {
+      justify-self: end;
     }
 
-    .tick.minor {
-      height: 15px;
-    }
-
-    .like {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 14px;
-      font-weight: 850;
-    }
-
-    .modal {
-      position: fixed;
-      inset: 72px 0 72px 0;
-      background: #000;
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      display: none;
-      grid-template-rows: 48px 1fr;
-      z-index: 5;
-    }
-
-    .modal.open {
+    .hero-grid {
       display: grid;
+      grid-template-columns: 1fr;
+      gap: 26px;
+      min-height: 446px;
     }
 
-    .modal-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--line);
-      padding: 0 15px;
-      font-weight: 850;
-      font-size: 20px;
+    .hero-card,
+    .filter-button,
+    .module-art {
+      border-radius: 8px;
+      background: var(--panel);
     }
 
-    .modal iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
-      background: #111;
+    .intro-title,
+    .hero-title {
+      color: var(--text);
+      font-size: 16px;
     }
 
-    .close {
-      border: 0;
-      font-size: 28px;
-      font-weight: 900;
+    .intro-copy {
+      align-self: end;
+      max-width: 40ch;
+      color: var(--text);
+      font-size: 16px;
+    }
+
+    .status-copy {
+      display: grid;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 22px;
+    }
+
+    .hero-card {
+      position: relative;
+      min-height: 446px;
+      padding: 26px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      color: var(--text);
+      text-decoration: none;
+      background: var(--hero);
+      overflow: hidden;
       cursor: pointer;
     }
 
-    @media (max-width: 980px) {
+    .hero-card.is-hidden {
+      display: none;
+    }
+
+    .trading-panel {
+      display: none;
+      min-height: 620px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #080c10;
+      overflow: hidden;
+    }
+
+    .trading-panel.is-open {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .trading-panel-top {
+      min-height: 38px;
+      padding: 9px 12px;
+      border-bottom: 1px solid #1a2332;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: #c9d4e0;
+      background: #080c10;
+      font-size: 12px;
+    }
+
+    .trading-panel-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
+    .panel-action {
+      min-height: 24px;
+      border: 1px solid #1a2332;
+      border-radius: 4px;
+      background: transparent;
+      color: #8a9ab0;
+      padding: 3px 8px;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 11px;
+    }
+
+    .panel-action:hover,
+    .panel-action:focus-visible {
+      outline: none;
+      color: #c9d4e0;
+      border-color: #2a3a4a;
+      background: #0d1520;
+    }
+
+    .trading-frame {
+      width: 100%;
+      min-height: 0;
+      flex: 1;
+      border: 0;
+      background: #080c10;
+    }
+
+    .hero-card:hover,
+    .hero-card:focus-visible,
+    .filter-button:hover,
+    .filter-button:focus-visible,
+    .module-link:hover .module-art,
+    .module-link:focus-visible .module-art {
+      outline: none;
+      border-color: #666666;
+      background: #252525;
+    }
+
+    .hero-card:hover {
+      background: #474747;
+    }
+
+    .trading-rig {
+      position: absolute;
+      inset: 62px 5% 10px 46%;
+      opacity: 0.78;
+      pointer-events: none;
+    }
+
+    .trading-rig svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .hero-body {
+      position: relative;
+      z-index: 1;
+      align-self: end;
+      display: grid;
+      gap: 8px;
+      max-width: min(37%, 42ch);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .filter-row {
+      display: grid;
+      grid-template-columns: minmax(280px, 1.4fr) repeat(3, minmax(160px, 0.65fr));
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    .filter-button {
+      min-height: 62px;
+      border: 1px solid var(--line);
+      color: var(--text);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      text-decoration: none;
+      background: var(--panel-2);
+    }
+
+    .system-button {
+      min-height: 184px;
+      padding: 22px 26px;
+      place-items: stretch;
+      text-align: left;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .system-button .intro-copy {
+      align-self: end;
+      max-width: 46ch;
+    }
+
+    .filter-button.active {
+      background: var(--panel);
+      border-color: transparent;
+    }
+
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(130px, 1fr));
+      gap: 26px;
+      align-items: start;
+    }
+
+    .module-link {
+      min-width: 0;
+      color: var(--text);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .module-art {
+      height: 210px;
+      border: 1px solid transparent;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: var(--panel);
+      transition: background 140ms ease, border-color 140ms ease;
+    }
+
+    .module-caption {
+      padding-top: 16px;
+      display: grid;
+      gap: 2px;
+      font-size: 16px;
+      color: var(--text);
+      min-height: 48px;
+    }
+
+    .module-caption .name {
+      overflow-wrap: anywhere;
+      white-space: normal;
+    }
+
+    .module-meta {
+      color: var(--muted);
+    }
+
+    .toggle-icon {
+      width: 48px;
+      height: 18px;
+      border-radius: 999px;
+      background: #ffffff;
+      position: relative;
+    }
+
+    .toggle-icon::before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 0;
+      top: 0;
+      border-radius: 50%;
+      background: #000000;
+      box-shadow: 30px 0 0 #ffffff;
+    }
+
+    .weather-stack,
+    .system-stack {
+      display: grid;
+      gap: 8px;
+      color: var(--text);
+      text-align: center;
+    }
+
+    .weather-temp {
+      font-size: 34px;
+    }
+
+    .small-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 12px);
+      gap: 10px;
+      color: #f0f0f0;
+      font-size: 18px;
+    }
+
+    .text-globe {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 1px solid #333333;
+      color: #d8d8d8;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      transform: rotate(-8deg);
+    }
+
+    .text-globe span {
+      width: 90px;
+      color: #d8d8d8;
+      font-size: 9px;
+      line-height: 1.35;
+      text-align: center;
+      word-spacing: 4px;
+    }
+
+    .device {
+      width: 96px;
+      height: 150px;
+      border: 2px solid #3a3a3a;
+      border-radius: 22px;
+      transform: rotate(-22deg) translateY(14px);
+      display: grid;
+      place-items: center;
+      color: var(--text);
+      background: #090909;
+      box-shadow: inset 0 0 0 4px #161616;
+    }
+
+    .check {
+      width: 19px;
+      height: 19px;
+      border-radius: 4px;
+      background: #ffffff;
+      color: #000000;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .spray {
+      width: 118px;
+      height: 130px;
+      position: relative;
+      background:
+        linear-gradient(90deg, transparent 0 48%, #777 48% 52%, transparent 52%),
+        radial-gradient(ellipse at bottom, rgba(255,255,255,0.22), transparent 62%);
+    }
+
+    .spray::before {
+      content: "";
+      position: absolute;
+      left: 43px;
+      top: 24px;
+      width: 32px;
+      height: 78px;
+      border-radius: 18px 18px 7px 7px;
+      background: #272727;
+      border: 1px solid #555;
+    }
+
+    .spray::after {
+      content: "LUKE";
+      position: absolute;
+      left: 38px;
+      top: 52px;
+      color: #d8d8d8;
+      transform: rotate(90deg);
+      font-size: 12px;
+    }
+
+    @media (max-width: 1199px) {
       body {
-        overflow: auto;
+        padding: 18px;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        min-height: 0;
+      }
+
+      .hero-card,
+      .trading-panel {
+        min-height: 310px;
+      }
+
+      .trading-panel {
+        min-height: 640px;
+      }
+
+      .trading-rig {
+        inset: 54px 6% 8px 50%;
+      }
+
+      .hero-body {
+        max-width: min(38%, 42ch);
+      }
+
+      .filter-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .module-grid {
+        grid-template-columns: repeat(3, minmax(160px, 1fr));
+      }
+    }
+
+    @media (max-width: 767px) {
+      body {
+        padding: 12px;
       }
 
       .app {
-        min-height: 100vh;
-        height: auto;
-        grid-template-rows: auto 1fr auto;
+        gap: 16px;
       }
 
       .topbar {
-        grid-template-columns: 1fr 1fr;
-        font-size: 20px;
+        grid-template-columns: 1fr auto;
+        row-gap: 10px;
       }
 
-      .content {
+      .topbar-center {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        justify-self: start;
+      }
+
+      .hero-grid,
+      .filter-row,
+      .module-grid {
         grid-template-columns: 1fr;
+        gap: 16px;
       }
 
-      .fork-grid {
-        grid-template-columns: 1fr;
-        border-right: 0;
+      .hero-card {
+        min-height: 0;
       }
 
-      .tile {
-        min-height: 260px;
-        border-right: 0;
+      .trading-panel {
+        min-height: 680px;
       }
 
-      .side {
-        border-top: 1px solid var(--line);
+      .trading-rig {
+        position: relative;
+        inset: auto;
+        width: 100%;
+        height: 150px;
+        margin: 12px 0 4px;
+        opacity: 0.42;
       }
 
-      .bottom {
-        grid-template-columns: 48px 1fr 80px;
+      .hero-body {
+        max-width: none;
+      }
+
+      .module-art {
+        height: 210px;
       }
     }
   </style>
@@ -378,230 +508,199 @@
 <body>
   <div class="app">
     <header class="topbar">
-      <div class="brand"><span class="mark">LUKE</span><span>Brain</span></div>
-      <div class="nav-item center">Search</div>
-      <div class="nav-item center">News</div>
-      <div class="nav-item right">Follow</div>
+      <div>In memory of my best friend</div>
+      <div class="topbar-center">LUKE</div>
+      <div class="topbar-right">Status 0</div>
     </header>
 
-    <main class="content">
-      <section class="fork-grid" aria-label="Luke spines">
-        <article class="tile" data-spine="brain">
-          <div class="tile-head"><span class="tile-index">000</span><span class="tile-title">Brain</span></div>
-          <div class="tile-body">
-            <div class="tile-large">LUKE</div>
-            <div class="tile-copy" id="brain-summary">Local control plane loading.</div>
-          </div>
-          <div class="tile-foot"><span class="tags" id="brain-tags">Brain, Routes, Inbox</span><button class="plus" data-open="brain">+</button></div>
-        </article>
+    <section class="hero-grid" aria-label="Luke command surface">
+      <a class="hero-card" id="trading-launch" data-route="/trading" href="/trading" aria-label="Open Trading analysis">
+        <div class="hero-title">Trading (Analysis)</div>
+        <div class="trading-rig" aria-hidden="true">
+          <svg viewBox="0 0 520 360">
+            <rect x="115" y="36" width="300" height="270" rx="2" fill="#252525" stroke="#151515" stroke-width="10"/>
+            <rect x="128" y="49" width="274" height="244" fill="none" stroke="#4b4b4b" stroke-width="1"/>
+            <path d="M125 49 H405" stroke="#111" stroke-width="8"/>
+            <path d="M132 42 H398" stroke="#5b5b5b" stroke-width="6"/>
+            <circle cx="130" cy="43" r="10" fill="#242424" stroke="#5f5f5f"/>
+            <circle cx="396" cy="43" r="10" fill="#242424" stroke="#5f5f5f"/>
+            <path d="M266 44 V126" stroke="#777" stroke-width="1" stroke-dasharray="2 2"/>
+            <path d="M266 126 C246 137 245 156 266 166 C287 156 286 137 266 126 Z" fill="none" stroke="#bdbdbd" stroke-width="2"/>
+            <path d="M266 166 V176" stroke="#bdbdbd" stroke-width="2"/>
+            <path d="M193 288 C202 198 232 165 266 165 C306 165 340 208 350 288 Z" fill="#141414"/>
+            <path d="M214 174 L266 148 L319 174 C330 183 341 198 351 288 H181 C186 220 198 190 214 174 Z" fill="#191919" stroke="#262626"/>
+            <text x="266" y="235" text-anchor="middle" font-family="Consolas, monospace" font-size="58" fill="#bcbcbc">ES</text>
+            <path d="M112 36 h-18 m0 0 v18 m318-18 h18 m0 0 v18 M112 306 h-18 m0 0 v-18 m318 18 h18 m0 0 v-18" stroke="#1a1a1a" stroke-width="5"/>
+          </svg>
+        </div>
+        <div class="hero-body">
+          <div>Market microstructure analysis, order flow tracking, and strategy recommendations.</div>
+          <div>Human-gated. Read-only. No autonomous execution controls.</div>
+        </div>
+      </a>
 
-        <article class="tile" data-spine="trading">
-          <div class="tile-head"><span class="tile-index">001</span><span class="tile-title">Trading</span></div>
-          <div class="tile-body">
-            <div class="tile-large" id="trading-mode">--</div>
-            <div class="tile-copy">Existing Luke trading bot lives here. No route rename. No broker authority added.</div>
+      <section class="trading-panel" id="trading-panel" aria-hidden="true" aria-label="Luke trading chat">
+        <div class="trading-panel-top">
+          <span>Trading (Analysis) / Luke Chat</span>
+          <div class="trading-panel-actions">
+            <a class="panel-action" href="/trading" title="Open the trading chat as a full page">FULL</a>
+            <button class="panel-action" id="trading-close" type="button" title="Return to the dashboard trading tile">BACK</button>
           </div>
-          <div class="tile-foot"><span class="tags" id="trading-tags">Status, Verdict, Entries</span><button class="plus" data-open="trading">+</button></div>
-        </article>
-
-        <article class="tile" data-spine="daily">
-          <div class="tile-head"><span class="tile-index">002</span><span class="tile-title">Daily</span></div>
-          <div class="tile-body">
-            <div class="tile-large" id="daily-status">--</div>
-            <div class="tile-copy" id="daily-summary">Check-in, weather, priorities.</div>
-          </div>
-          <div class="tile-foot"><span class="tags">Check-in, Weather, Today</span><button class="plus" data-open="daily">+</button></div>
-        </article>
-
-        <article class="tile" data-spine="automation">
-          <div class="tile-head"><span class="tile-index">003</span><span class="tile-title">AI Automation Business</span></div>
-          <div class="tile-body">
-            <div class="tile-large" id="automation-state">--</div>
-            <div class="tile-copy">Large business-building sub-agent: toolkit, niche, case study, offer, leads, outreach, delivery, revenue.</div>
-          </div>
-          <div class="tile-foot"><span class="tags">Toolkit, Leads, Revenue</span><button class="plus" data-open="automation">+</button></div>
-        </article>
-
-        <article class="tile" data-spine="history">
-          <div class="tile-head"><span class="tile-index">004</span><span class="tile-title">History Career</span></div>
-          <div class="tile-body">
-            <div class="tile-large" id="history-count">--</div>
-            <div class="tile-copy">Public history, museum, curator, research, consulting, AI-adjacent. MLIS filtered.</div>
-          </div>
-          <div class="tile-foot"><span class="tags">Museums, Research, Consulting</span><button class="plus" data-open="history">+</button></div>
-        </article>
-
-        <article class="tile" data-spine="developer">
-          <div class="tile-head"><span class="tile-index">005</span><span class="tile-title">Developer AI Stack</span></div>
-          <div class="tile-body">
-            <div class="tile-large" id="developer-state">--</div>
-            <div class="tile-copy">Claude first, Gemini second, local Ollama fallback for free/private long loops.</div>
-          </div>
-          <div class="tile-foot"><span class="tags">Claude, Gemini, Ollama</span><button class="plus" data-open="developer">+</button></div>
-        </article>
-
-        <article class="tile" data-spine="research">
-          <div class="tile-head"><span class="tile-index">006</span><span class="tile-title">Research</span></div>
-          <div class="tile-body">
-            <div class="tile-large">AI</div>
-            <div class="tile-copy">Historical research and AI-engineering material gets routed into the history-career spine first.</div>
-          </div>
-          <div class="tile-foot"><span class="tags">Papers, Methods, Leads</span><button class="plus" data-open="history">+</button></div>
-        </article>
-
-        <article class="tile" data-spine="system">
-          <div class="tile-head"><span class="tile-index">007</span><span class="tile-title">System</span></div>
-          <div class="tile-body">
-            <div class="tile-large" id="system-state">--</div>
-            <div class="tile-copy" id="system-copy">Runtime and inbox state loading.</div>
-          </div>
-          <div class="tile-foot"><span class="tags">Health, Logs, Runtime</span><button class="plus" data-open="brain">+</button></div>
-        </article>
+        </div>
+        <iframe class="trading-frame" id="trading-frame" title="Luke trading chat" data-src="/trading?embed=1"></iframe>
       </section>
+    </section>
 
-      <aside class="side">
-        <div>
-          <h2>INFO</h2>
-          <p>Luke is the overall local brain. Trading is one contained spine inside it, not the whole project identity.</p>
-          <p>The shell keeps legacy trading routes intact while making the larger brain the executable entrypoint.</p>
-          <p>Naming rule: do not move trading internals; mount them as surfaces. The shell is Luke overall.</p>
-        </div>
+    <nav class="filter-row" aria-label="Luke categories">
+      <a class="filter-button system-button" data-route="/luke" href="/luke" aria-label="Open Luke system chat">
+        <span class="intro-title">Luke System</span>
+        <span class="intro-copy">A local operations dashboard for trading analysis, daily planning, research, automation business work, and developer stack routing.</span>
+        <span class="status-copy">
+          <span>&gt; Buffalo weather: <strong id="weather-line">loading</strong></span>
+          <span>&gt; Brain: <strong id="brain-line">loading</strong></span>
+          <span>&gt; Runtime: <strong id="runtime-line">loading</strong></span>
+        </span>
+      </a>
+      <a class="filter-button active" href="/shell">Show All</a>
+      <a class="filter-button" href="/brain-dashboard">Brain Status</a>
+      <a class="filter-button" href="/brain-dashboard#spine-trading">Agents (A)</a>
+    </nav>
 
-        <div class="side-list" id="side-status">
-          <div class="side-section">
-            <span class="side-label">Brain</span>
-            <span id="side-brain">Loading</span>
-          </div>
-          <div class="side-section">
-            <span class="side-label">Trading</span>
-            <span id="side-trading">Loading</span>
-          </div>
-          <div class="side-section">
-            <span class="side-label">Daily</span>
-            <span id="side-daily">Loading</span>
-          </div>
-          <div class="side-section">
-            <span class="side-label">AI Automation Business</span>
-            <span id="side-automation">Loading</span>
-          </div>
-          <div class="side-section">
-            <span class="side-label">Developer AI Stack</span>
-            <span id="side-developer">Loading</span>
-          </div>
-        </div>
+    <section class="module-grid" aria-label="Luke agent modules">
+      <a class="module-link" data-route="/luke" href="/luke" aria-label="Open Luke system chat">
+        <div class="module-art"><div class="toggle-icon" aria-hidden="true"></div></div>
+        <div class="module-caption"><span>C 000</span><span class="name">Brain Core</span></div>
+      </a>
 
-        <div class="side-list">
-          <div class="side-section">
-            <span class="side-label">Surfaces</span>
-            <span>/trading</span>
-            <span>/operator-v2</span>
-            <span>/brain-dashboard</span>
-          </div>
-        </div>
-      </aside>
-    </main>
+      <a class="module-link" data-route="/brain-dashboard#spine-daily" href="/brain-dashboard#spine-daily">
+        <div class="module-art"><div class="weather-stack"><span class="weather-temp" id="weather-temp">--</span><span id="weather-cond">loading</span></div></div>
+        <div class="module-caption"><span>D 002</span><span class="name">Daily Weather</span></div>
+      </a>
 
-    <footer class="bottom">
-      <button class="play" id="refresh" aria-label="Refresh"></button>
-      <div class="timeline" aria-hidden="true">
-        <span class="tick major"></span><span class="tick minor"></span><span class="tick minor"></span><span class="tick minor"></span>
-        <span class="tick major"></span><span class="tick minor"></span><span class="tick minor"></span><span class="tick minor"></span>
-        <span class="tick major"></span><span class="tick minor"></span><span class="tick minor"></span><span class="tick minor"></span>
-        <span class="tick major"></span><span class="tick minor"></span><span class="tick minor"></span><span class="tick minor"></span>
-        <span class="tick major"></span><span class="tick minor"></span><span class="tick minor"></span><span class="tick minor"></span>
-        <span class="tick major"></span><span class="tick minor"></span><span class="tick minor"></span><span class="tick minor"></span>
-      </div>
-      <div class="like"><span>◔</span><span>Like</span></div>
-    </footer>
-  </div>
+      <a class="module-link" data-route="/brain-dashboard#spine-automation" href="/brain-dashboard#spine-automation">
+        <div class="module-art"><div class="text-globe"><span>AI OPS AI OPS AI OPS AI OPS AI OPS AI OPS AI OPS AI OPS</span></div></div>
+        <div class="module-caption"><span>C 015</span><span class="name">AI Automation Business</span></div>
+      </a>
 
-  <div class="modal" id="modal">
-    <div class="modal-bar">
-      <span id="modal-title">Surface</span>
-      <button class="close" id="close" aria-label="Close">×</button>
-    </div>
-    <iframe id="surface" title="Luke surface"></iframe>
+      <a class="module-link" data-route="/brain-dashboard#spine-developer" href="/brain-dashboard#spine-developer">
+        <div class="module-art"><div class="small-grid" aria-hidden="true"><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span></div></div>
+        <div class="module-caption"><span>C 014</span><span class="name">Developer Stack</span></div>
+      </a>
+
+      <a class="module-link" data-route="/brain-dashboard#spine-history" href="/brain-dashboard#spine-history">
+        <div class="module-art"><div class="device">RCH</div></div>
+        <div class="module-caption"><span>M 028</span><span class="name">Research Leads</span></div>
+      </a>
+
+      <a class="module-link" data-route="/brain-dashboard#spine-history" href="/brain-dashboard#spine-history">
+        <div class="module-art"><div class="check">OK</div></div>
+        <div class="module-caption"><span>C 013</span><span class="name">History Career</span></div>
+      </a>
+    </section>
   </div>
 
   <script>
-    const surfaces = {
-      brain: { title: 'Brain Dashboard', url: '/brain-dashboard' },
-      trading: { title: 'Trading Bot', url: '/trading' },
-      daily: { title: 'Daily Spine', url: '/brain-dashboard' },
-      automation: { title: 'AI Automation Business Spine', url: '/brain-dashboard' },
-      developer: { title: 'Developer AI Stack Spine', url: '/brain-dashboard' },
-      history: { title: 'History-Career Spine', url: '/brain-dashboard' },
-    };
-
     const $ = (id) => document.getElementById(id);
 
-    function text(id, value) {
-      $(id).textContent = value == null || value === '' ? '--' : String(value);
-    }
-
-    function statusWord(value) {
-      return String(value || 'unknown').toUpperCase();
-    }
-
-    function openSurface(key) {
-      const surface = surfaces[key] || surfaces.brain;
-      $('modal-title').textContent = surface.title;
-      $('surface').src = surface.url;
-      $('modal').classList.add('open');
-    }
-
-    function closeSurface() {
-      $('modal').classList.remove('open');
-      $('surface').src = 'about:blank';
+    function setText(id, value) {
+      const el = $(id);
+      if (el) el.textContent = value == null || value === '' ? '--' : String(value);
     }
 
     async function getJson(url) {
-      const res = await fetch(url);
+      const res = await fetch(url, { cache: 'no-store' });
       if (!res.ok) throw new Error(`${url} ${res.status}`);
       return res.json();
     }
 
-    async function refresh() {
+    function formatMemory(bytes) {
+      const gb = Number(bytes) / (1024 ** 3);
+      return Number.isFinite(gb) ? `${gb.toFixed(2)}GB` : '--';
+    }
+
+    function formatUptime(seconds) {
+      const total = Math.max(0, Math.floor(Number(seconds) || 0));
+      const hours = Math.floor(total / 3600);
+      const minutes = Math.floor((total % 3600) / 60);
+      return `${hours}h ${minutes}m`;
+    }
+
+    function focusTradingInput() {
+      const frame = $('trading-frame');
       try {
-        const [brain, daily, history, automation, developer] = await Promise.all([
-          getJson('/agent/brain/status'),
-          getJson('/agent/brain/daily'),
-          getJson('/agent/brain/history-career'),
-          getJson('/agent/brain/automation-business'),
-          getJson('/agent/brain/developer-stack'),
-        ]);
+        frame?.contentWindow?.document?.getElementById('input')?.focus();
+      } catch {}
+    }
 
-        const trading = brain.subagents?.trading || {};
-        text('brain-summary', `${Object.keys(brain.subagents || {}).length} spines / ${brain.report_inbox?.count || 0} reports`);
-        text('trading-mode', statusWord(trading.mode));
-        text('daily-status', statusWord(daily.status));
-        text('automation-state', statusWord(automation.status));
-        text('developer-state', statusWord(developer.status));
-        text('daily-summary', daily.weather?.summary || 'Weather needs location.');
-        text('history-count', `${history.pipeline?.accepted || 0}/${history.pipeline?.rejected_mlis || 0}`);
-        text('system-state', brain.attention?.length ? 'ATTN' : 'OK');
-        text('system-copy', `${brain.attention?.length || 0} attention items. ${brain.next_actions?.[0] || 'No immediate blocker.'}`);
-
-        text('side-brain', brain.attention?.length ? `${brain.attention.length} attention items` : 'Nominal');
-        text('side-trading', `${trading.status || 'unknown'} / ${trading.human_gate || 'gate unknown'}`);
-        text('side-daily', `${daily.status || 'unknown'} / ${daily.weather?.status || 'weather unknown'}`);
-        text('side-automation', `${automation.status || 'unknown'} / $${automation.pipeline?.monthly_run_rate || 0} run rate`);
-        text('side-developer', `${developer.status || 'unknown'} / ${(developer.pipeline?.configured_providers || []).join(', ') || 'no providers configured'}`);
-      } catch (err) {
-        text('system-state', 'ERR');
-        text('system-copy', err.message);
+    function openTradingPanel() {
+      const launch = $('trading-launch');
+      const panel = $('trading-panel');
+      const frame = $('trading-frame');
+      if (!launch || !panel || !frame) return;
+      launch.classList.add('is-hidden');
+      panel.classList.add('is-open');
+      panel.setAttribute('aria-hidden', 'false');
+      if (!frame.getAttribute('src')) {
+        frame.setAttribute('src', frame.dataset.src || '/trading?embed=1');
+        frame.addEventListener('load', focusTradingInput, { once: true });
+      } else {
+        focusTradingInput();
       }
     }
 
-    document.querySelectorAll('[data-open]').forEach((btn) => {
-      btn.addEventListener('click', () => openSurface(btn.dataset.open));
+    function closeTradingPanel() {
+      const launch = $('trading-launch');
+      const panel = $('trading-panel');
+      if (!launch || !panel) return;
+      panel.classList.remove('is-open');
+      panel.setAttribute('aria-hidden', 'true');
+      launch.classList.remove('is-hidden');
+      launch.focus();
+    }
+
+    async function refresh() {
+      try {
+        const [brain, daily, telemetry] = await Promise.all([
+          getJson('/agent/brain/status'),
+          getJson('/agent/brain/daily'),
+          getJson('/agent/brain/telemetry'),
+        ]);
+        const weather = daily.weather || {};
+        setText('weather-line', weather.summary || 'Buffalo weather unavailable');
+        setText('weather-temp', weather.temperature_f == null ? '--' : `${weather.temperature_f}F`);
+        setText('weather-cond', weather.condition || weather.status || 'unknown');
+        setText('brain-line', `${Object.keys(brain.subagents || {}).length} agents / ${brain.report_inbox?.count || 0} reports`);
+        setText('runtime-line', `${formatMemory(telemetry.process?.rss_bytes)} RSS / ${formatUptime(telemetry.process?.uptime_seconds)}`);
+      } catch (err) {
+        setText('weather-line', 'offline');
+        setText('brain-line', 'offline');
+        setText('runtime-line', err.message);
+      }
+    }
+
+    document.querySelectorAll('[data-route]').forEach(tile => {
+      tile.addEventListener('click', event => {
+        if (window.getSelection().toString().length > 0) {
+          event.preventDefault();
+          return;
+        }
+        const route = tile.getAttribute('data-route');
+        if (route === '/trading') {
+          event.preventDefault();
+          openTradingPanel();
+          return;
+        }
+        if (route) {
+          event.preventDefault();
+          window.location.href = route;
+        }
+      });
     });
-    $('close').addEventListener('click', closeSurface);
-    $('refresh').addEventListener('click', refresh);
-    window.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') closeSurface();
-    });
+
+    $('trading-close')?.addEventListener('click', closeTradingPanel);
+
     refresh();
+    setInterval(refresh, 30000);
   </script>
 </body>
 </html>

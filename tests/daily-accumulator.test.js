@@ -27,6 +27,16 @@ describe('Richy/Dubz paste routing regressions', () => {
     const result = classifyPaste('RichyDubz ES flipped 7185.75 and SPY 712.38 premarket.');
     expect(result.type).toBeNull();
   });
+
+  it('does not classify conversational questions mentioning Saty as partial Saty input', () => {
+    const result = classifyPaste('based on the loaded Saty, Mancini, Dubz, and Bobby context, what is possible today and what should I avoid?');
+    expect(result.type).toBeNull();
+  });
+
+  it('does not route conversational Bobby context questions to /heatmap', () => {
+    const result = detectPasteIntent('based on loaded Saty, Mancini, Dubz, and Bobby context, what is possible today?', false);
+    expect(result.command).toBeNull();
+  });
 });
 
 describe('/reset clears daily accumulator context', () => {

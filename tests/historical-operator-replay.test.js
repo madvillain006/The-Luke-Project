@@ -48,9 +48,11 @@ describe('historical operator replay harness', () => {
   it('renders skip-chase and wait counts as first-class replay findings', () => {
     const report = replay.renderReport({
       app: { result: 'test app' },
+      dates: ['2026-03-24'],
       commandLog: [{ timestampLabel: '2026-04-23 09:44 ET', command: '/heatmap test', ok: true }],
       blocked: [],
       dom: { header: true, readOnly: true, noExecuteButton: true, panelCount: 6 },
+      shellDom: { title: true, tradingBox: true, tradingRoute: true, tradingEmbedded: true, tradingFrameReady: true },
       minuteScans: [{
         date: '2026-04-23',
         barsScanned: 390,
@@ -88,7 +90,26 @@ describe('historical operator replay harness', () => {
     expect(report.counts.skipChase).toBe(1);
     expect(report.counts.minute.barsScanned).toBe(390);
     expect(report.markdown).toContain('SKIP CHASE');
+    expect(report.markdown).toContain('Dates: 2026-03-24');
+    expect(report.markdown).toContain('Shell dashboard opens first and embeds Trading chat in place: yes');
     expect(report.markdown).toContain('Full-Minute Session Scan');
     expect(report.markdown).toContain('Historical candidate generator and Luke decision spine are not the same authority');
+  });
+
+  it('accepts explicit dry-run date selection', () => {
+    expect(replay.parseArgs(['--dates', '2026-03-24,2026-03-25'])).toEqual({
+      dates: ['2026-03-24', '2026-03-25'],
+    });
+  });
+
+  it('clicks the current full-surface trading tile into the embedded chat smoke path', () => {
+    const source = fs.readFileSync(path.join(ROOT, 'scripts/run-historical-operator-replay.js'), 'utf8');
+
+    expect(source).toContain("page.locator('[data-route=\"/trading\"]')");
+    expect(source).toContain("page.locator('#trading-panel.is-open')");
+    expect(source).toContain("page.frameLocator('#trading-frame').locator('#input')");
+    expect(source).toContain('embedded `/trading` chat iframe');
+    expect(source).not.toContain(".agent-tile[data-route=\"/trading\"]");
+    expect(source).not.toContain("page.waitForURL('**/trading'");
   });
 });

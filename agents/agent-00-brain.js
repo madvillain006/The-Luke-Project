@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const os = require('os');
 const {
   answerInquiry,
   buildBrainSnapshot,
@@ -38,6 +39,28 @@ router.get('/brief', (req, res) => {
 
 router.get('/trading-report', (req, res) => {
   res.json(buildTradingReport());
+});
+
+router.get('/telemetry', (req, res) => {
+  const memory = process.memoryUsage();
+  res.json({
+    ok: true,
+    generated_at: new Date().toISOString(),
+    process: {
+      pid: process.pid,
+      uptime_seconds: Math.round(process.uptime()),
+      rss_bytes: memory.rss,
+      heap_used_bytes: memory.heapUsed,
+      heap_total_bytes: memory.heapTotal,
+    },
+    system: {
+      platform: process.platform,
+      cpu_count: os.cpus().length,
+      load_average: os.loadavg(),
+      free_memory_bytes: os.freemem(),
+      total_memory_bytes: os.totalmem(),
+    },
+  });
 });
 
 router.get('/automation-business', (req, res) => {

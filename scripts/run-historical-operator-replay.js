@@ -26,6 +26,19 @@ const STATE_FILES = [
 
 const DEFAULT_DATES = ['2026-04-07', '2026-04-20', '2026-04-22', '2026-04-23', '2026-04-28'];
 
+function parseArgs(argv = process.argv.slice(2)) {
+  const args = { dates: DEFAULT_DATES };
+  for (let i = 0; i < argv.length; i += 1) {
+    const flag = argv[i];
+    const next = argv[i + 1];
+    if (flag === '--dates' && next) {
+      args.dates = next.split(',').map(item => item.trim()).filter(Boolean);
+      i += 1;
+    }
+  }
+  return args;
+}
+
 function ensureDir(dir) {
   fs.mkdirSync(dir, { recursive: true });
 }
@@ -418,9 +431,18 @@ async function driveUiCommand(page, command, timestampLabel) {
   const send = page.locator('#send');
   await input.fill(flat, { timeout: TIMEOUT_MS });
   await send.click({ timeout: TIMEOUT_MS });
-  await page.waitForFunction(() => !document.querySelector('#send')?.disabled, { timeout: TIMEOUT_MS });
+  await waitForEnabled(send);
   await delay(650);
   return { timestampLabel, command: commandPreview(command), ok: true };
+}
+
+async function waitForEnabled(locator, timeoutMs = TIMEOUT_MS) {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    if (await locator.isEnabled().catch(() => false)) return true;
+    await delay(100);
+  }
+  throw new Error(`timed out waiting for ${timeoutMs}ms for locator to become enabled`);
 }
 
 async function inspectOperatorDom(page) {
@@ -441,7 +463,39 @@ async function inspectOperatorDom(page) {
   };
 }
 
-async function runReplay() {
+async function inspectShellDom(page) {
+  await page.goto(`${BASE_URL}/shell`, { waitUntil: 'domcontentloaded', timeout: TIMEOUT_MS });
+  await page.locator('body').waitFor({ state: 'visible', timeout: TIMEOUT_MS });
+  await delay(500);
+  await page.screenshot({ path: path.join(ARTIFACT_DIR, 'historical-luke-shell-dashboard.png'), fullPage: true });
+  const text = await page.locator('body').innerText({ timeout: TIMEOUT_MS }).catch(() => '');
+  const tradingTile = page.locator('[data-route="/trading"]').first();
+  const hasTradingTile = await tradingTile.count().then(count => count > 0).catch(() => false);
+  let tradingEmbedded = false;
+  let tradingFrameReady = false;
+  if (hasTradingTile) {
+    await tradingTile.click({ timeout: TIMEOUT_MS });
+    await page.locator('#trading-panel.is-open').waitFor({ state: 'visible', timeout: TIMEOUT_MS });
+    tradingEmbedded = true;
+    await page.frameLocator('#trading-frame').locator('#input').waitFor({ state: 'visible', timeout: TIMEOUT_MS });
+    await page.frameLocator('#trading-frame').locator('#send').waitFor({ state: 'visible', timeout: TIMEOUT_MS });
+    tradingFrameReady = true;
+  }
+  return {
+    title: text.includes('LUKE') && /brain/i.test(text),
+    tradingBox: /trading\s*\(analysis\)|trading\s*\[analysis\]/i.test(text) && hasTradingTile,
+    automationBox: /automation/i.test(text),
+    developerBox: /developer/i.test(text),
+    dailyBox: /daily/i.test(text),
+    historyBox: /history career/i.test(text),
+    tradingRoute: page.url().endsWith('/shell') && tradingEmbedded && tradingFrameReady,
+    tradingEmbedded,
+    tradingFrameReady,
+  };
+}
+
+async function runReplay(options = {}) {
+  const dates = options.dates || DEFAULT_DATES;
   ensureDir(ARTIFACT_DIR);
   const backups = backupFiles(STATE_FILES);
   const app = await ensureApp();
@@ -458,12 +512,15 @@ async function runReplay() {
   const decisions = [];
   const minuteScans = [];
   const blocked = [];
+  let shellDom = null;
 
   try {
-    await page.goto(`${BASE_URL}/`, { waitUntil: 'domcontentloaded', timeout: TIMEOUT_MS });
-    await page.screenshot({ path: path.join(ARTIFACT_DIR, 'historical-old-shell-start.png'), fullPage: true });
+    shellDom = await inspectShellDom(page);
+    const chatSurface = page.frameLocator('#trading-frame');
+    await chatSurface.locator('#input').waitFor({ state: 'visible', timeout: TIMEOUT_MS });
+    await page.screenshot({ path: path.join(ARTIFACT_DIR, 'historical-trading-chat-start.png'), fullPage: true });
 
-    for (const date of DEFAULT_DATES) {
+    for (const date of dates) {
       resetReplayState();
       const sessionPath = path.join(SESSION_DIR, `${date}.json`);
       if (!fs.existsSync(sessionPath)) {
@@ -493,11 +550,11 @@ async function runReplay() {
       ].filter(([command]) => Boolean(command));
 
       for (const [command, timestampLabel] of commands) {
-        commandLog.push(await driveUiCommand(page, command, timestampLabel));
+        commandLog.push(await driveUiCommand(chatSurface, command, timestampLabel));
       }
 
       for (const candidate of checkpoints.slice(0, 2)) {
-        commandLog.push(await driveUiCommand(page, '/entries ES', candidate.time));
+        commandLog.push(await driveUiCommand(chatSurface, '/entries ES', candidate.time));
       }
 
       minuteScans.push(await scanMinuteBars(date, bars));
@@ -537,9 +594,9 @@ async function runReplay() {
       }
     }
 
-    await page.screenshot({ path: path.join(ARTIFACT_DIR, 'historical-old-shell-after-replay.png'), fullPage: true });
+    await page.screenshot({ path: path.join(ARTIFACT_DIR, 'historical-trading-chat-after-replay.png'), fullPage: true });
     const dom = await inspectOperatorDom(page);
-    return { app, commandLog, decisions, minuteScans, blocked, dom };
+    return { app, dates, commandLog, decisions, minuteScans, blocked, dom, shellDom };
   } finally {
     await browser.close();
     restoreFiles(backups);
@@ -581,13 +638,14 @@ function renderReport(result) {
   lines.push(`- Branch: ${shell('git branch --show-current')}`);
   lines.push(`- Commit: ${shell('git log -1 --oneline')}`);
   lines.push(`- App: ${result.app.result}`);
-  lines.push('- Driving method: headless Playwright against `/`, filling `#input` and clicking `#send` like the operator shell.');
+  lines.push(`- Dates: ${(result.dates || []).join(', ')}`);
+  lines.push('- Driving method: headless Playwright verifies `/shell`, clicks the Trading tile, then drives the embedded `/trading` chat iframe by filling `#input` and clicking `#send` like the operator chat.');
   lines.push('- Price simulation: `/api/decision?currentPrice=<historical ES minute close>` at each candidate timestamp.');
   lines.push('- Execution: none. No start/stop, no execute-staged, no confirmation route.');
   lines.push('- State safety: live data files were backed up before replay, reset between historical dates, and restored after replay.');
   lines.push('');
   lines.push('## Summary');
-  lines.push(`- Commands pasted through old shell UI: ${result.commandLog.length}`);
+  lines.push(`- Commands pasted through trading chat UI: ${result.commandLog.length}`);
   lines.push(`- Candidate checkpoints: ${result.decisions.length}`);
   lines.push(`- Raw spine plans: ${counts.spinePlans}`);
   lines.push(`- Actionable recommendations after timing/veto adapter: ${counts.actionable}`);
@@ -599,6 +657,7 @@ function renderReport(result) {
   lines.push(`- Full-minute actionable recommendations: ${minuteCounts.actionable}`);
   lines.push(`- Full-minute raw spine plans: ${minuteCounts.spinePlans}`);
   lines.push(`- Full-minute WAIT/SKIP recommendations: ${minuteCounts.waits}/${minuteCounts.skipChase}`);
+  lines.push(`- Shell dashboard opens first and embeds Trading chat in place: ${result.shellDom?.title && result.shellDom?.tradingBox && result.shellDom?.tradingRoute ? 'yes' : 'no'}`);
   lines.push(`- Operator-v2 DOM safe/read-only: ${result.dom.header && result.dom.readOnly && result.dom.noExecuteButton && result.dom.panelCount === 6 ? 'yes' : 'no'}`);
   lines.push('');
   lines.push('## Operator Command Timeline');
@@ -669,14 +728,15 @@ function renderReport(result) {
   lines.push('## Artifacts');
   lines.push('- `artifacts/HISTORICAL_OPERATOR_LIVE_DRY_RUN.md`');
   lines.push('- `artifacts/historical-operator-live-dry-run.json`');
-  lines.push('- `artifacts/historical-old-shell-start.png`');
-  lines.push('- `artifacts/historical-old-shell-after-replay.png`');
+  lines.push('- `artifacts/historical-luke-shell-dashboard.png`');
+  lines.push('- `artifacts/historical-trading-chat-start.png`');
+  lines.push('- `artifacts/historical-trading-chat-after-replay.png`');
   lines.push('- `artifacts/historical-operator-v2.png`');
   return { markdown: lines.join('\n') + '\n', verdict, counts: { ...counts, minute: minuteCounts } };
 }
 
 async function main() {
-  const result = await runReplay();
+  const result = await runReplay(parseArgs());
   const rendered = renderReport(result);
   fs.writeFileSync(REPORT_JSON, JSON.stringify({ ...result, verdict: rendered.verdict, counts: rendered.counts }, null, 2));
   fs.writeFileSync(REPORT_MD, rendered.markdown);
@@ -712,4 +772,5 @@ module.exports = {
   flattenCommand,
   outcomeFromPlan,
   renderReport,
+  parseArgs,
 };

@@ -36,7 +36,15 @@ const {
   buildDeveloperStackSpine,
   recordDeveloperStackEvent,
 } = require('../lib/brain/developer-stack-spine');
-const { buildDailySpine, buildWeatherUrl, recordDailyCheckin, summarizeWeather } = require('../lib/brain/daily-spine');
+const {
+  DEFAULT_LOCATION,
+  buildDailySpine,
+  buildWeatherUrl,
+  fetchWeather,
+  recordDailyCheckin,
+  summarizeWeather,
+  weatherCodeText,
+} = require('../lib/brain/daily-spine');
 const { buildHistoryCareerSpine, evaluateOpportunity, recordOpportunity } = require('../lib/brain/history-career-spine');
 
 function makePaths() {
@@ -180,10 +188,34 @@ describe('Luke brain agent core', () => {
 
     expect(spine.agent).toBe('daily');
     expect(spine.weather.summary).toContain('71F');
+    expect(spine.weather.summary).toContain('unknown');
     expect(spine.checklist.find(item => item.id === 'daily-checkin').status).toBe('done');
     expect(spine.briefs.morning.endpoint).toContain('kind=morning');
     expect(spine.live_news.social_watchlist.some(item => item.id === 'deitaone')).toBe(true);
     expect(buildWeatherUrl({ lat: 40, lon: -75 })).toContain('latitude=40');
+  });
+
+  it('defaults weather to Buffalo through Open-Meteo when no location is supplied', async () => {
+    let requestedUrl = null;
+    const weather = await fetchWeather({
+      fetchFn: async url => {
+        requestedUrl = url;
+        return {
+          ok: true,
+          json: async () => ({
+            current: { temperature_2m: 41, apparent_temperature: 36, weather_code: 3, wind_speed_10m: 11 },
+            daily: { temperature_2m_max: [43], temperature_2m_min: [34], precipitation_probability_max: [20] },
+          }),
+        };
+      },
+    });
+
+    expect(DEFAULT_LOCATION.label).toBe('Buffalo, NY');
+    expect(requestedUrl).toContain('latitude=42.8864');
+    expect(requestedUrl).toContain('longitude=-78.8784');
+    expect(weather.summary).toContain('41F and cloudy');
+    expect(weather.location).toBe('Buffalo, NY');
+    expect(weatherCodeText(3)).toBe('cloudy');
   });
 
   it('builds morning and afternoon briefs from live news feeds', async () => {

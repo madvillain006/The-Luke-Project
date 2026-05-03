@@ -143,6 +143,64 @@ describe('parseManciniText', () => {
     expect(parseManciniText('6809 reclaim was long trigger').instrument).toBe('ES');
     expect(parseManciniText('$SPX 5100 reclaim was long trigger').instrument).toBe('SPX');
   });
+
+  it('parses Mancini support and target list clauses from May 1 style plan text', () => {
+    const parsed = parseManciniText(
+      'May 1 8am #ES_F plan: ES needs to digest and backtest. ' +
+      '7245, 7198 (backtest) = supports. Sets up 7300, 7345, 7395 next. ' +
+      'Prior working support 7265 and 7248 are supports. ' +
+      'Bonus set were 7297, 7310, 7328. ' +
+      'Just ride runner, now +155 from the most recent 7137 Failed Breakdown Wednesday.'
+    );
+    const byPrice = new Map(parsed.levels.map(level => [level.price, level]));
+
+    for (const price of [7245, 7198, 7265, 7248]) {
+      expect(byPrice.get(price)).toEqual(expect.objectContaining({
+        direction: 'support',
+      }));
+    }
+
+    for (const price of [7300, 7345, 7395]) {
+      expect(byPrice.get(price)).toEqual(expect.objectContaining({
+        direction: 'resistance',
+      }));
+    }
+
+    expect(byPrice.get(7297)?.intent).toBe('bonus_target');
+    expect(byPrice.get(7310)?.direction).toBe('resistance');
+    expect(byPrice.has(7137)).toBe(false);
+    expect(parsed.runner_active).toEqual({ trigger_price: 7137, points_paid: 155 });
+  });
+
+  it('keeps real May 1 Mancini supports and ignores all-hit target lists as fresh levels', () => {
+    const parsed = parseManciniText(
+      'Big Picture View: 1 week ago, when #ES_F was 7180, I posted it spent the week building a bull flag 7198-7080. I was looking for a breakout to 7300+, we got it\n\n' +
+      'Plan Next Week: ES needs to digest this and backtest. 7245, 7198 (backtest) = supports. Sets up 7300, 7345, 7395 next\n\n' +
+      'All targets hit #ES_F. Given at 8am they were 7287 main (hit). Bonus set were 7297 (exact high of day), 7310, 7328. I posted 2hrs ago 7265 was 1st support. Levels working - we hit 7266 and bounced.\n\n' +
+      'Just ride runner, now +155 from the most recent 7137 Failed Breakdown Wednesday\n\n' +
+      "May 1\nUntradable mid-day chop in #ES_F. Today's targets given at 8am were 7265, 7276, 7287 (all hit). Just nothing to do but hold runner until we get a sell. We are +154 points from Wednesday's 420PM Failed Breakdown\n\n" +
+      '7265, 7248=supports x.com/AdamMancini4/s...\n1:56 PM · May 1, 2026'
+    );
+    const byPrice = new Map(parsed.levels.map(level => [level.price, level]));
+
+    for (const price of [7198, 7245, 7248, 7265]) {
+      expect(byPrice.get(price)).toEqual(expect.objectContaining({
+        direction: 'support',
+        intent: null,
+      }));
+    }
+
+    for (const price of [7300, 7345, 7395]) {
+      expect(byPrice.get(price)).toEqual(expect.objectContaining({
+        direction: 'resistance',
+      }));
+    }
+
+    expect(byPrice.has(7276)).toBe(false);
+    expect(byPrice.has(7287)).toBe(false);
+    expect(byPrice.has(7137)).toBe(false);
+    expect(parsed.parse_errors.join('\n')).toContain('all-hit target list recorded as context only');
+  });
 });
 
 describe('appendManciniToMemory', () => {

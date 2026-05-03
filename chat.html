@@ -52,8 +52,9 @@
 
  /* TOP BAR */
     #top-bar {
-      height: 32px;
+      min-height: 32px;
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       padding: 0 8px;
       border-bottom: 1px solid var(--b1);
@@ -112,6 +113,38 @@
     }
     #look-btn { border: 1px solid var(--b1); color: var(--blu); font-size: 9px; padding: 1px 4px; border-radius: 3px; cursor: pointer; background: transparent; }
     #look-btn:hover { background: var(--bg3); }
+
+    #dashboard-link {
+      border: 1px solid var(--b1);
+      color: var(--blu);
+      font-size: 9px;
+      padding: 1px 6px;
+      border-radius: 3px;
+      text-decoration: none;
+      letter-spacing: 0.3px;
+    }
+    #dashboard-link:hover { background: var(--bg3); }
+
+    body.system-chat #chip-mode,
+    body.system-chat #tb-market-wrap,
+    body.system-chat #tb-regime-wrap,
+    body.system-chat #tb-prices,
+    body.system-chat #tb-trades-wrap,
+    body.system-chat .tb-div.system-hide,
+    body.system-chat #morning-checklist,
+    body.system-chat #quick-btns {
+      display: none !important;
+    }
+
+    body.system-chat #messages {
+      padding: 18px;
+      gap: 8px;
+    }
+
+    body.system-chat .bubble {
+      max-width: min(820px, 90%);
+      font-size: 14px;
+    }
 
     /* hidden legacy chips (keep in DOM for JS) */
     #chip-pnl, #chip-pos, #chip-apex, #chip-arch,
@@ -195,7 +228,7 @@
       padding: 7px 8px;
       gap: 6px;
     }
-    #input-row { display: flex; gap: 6px; }
+    #input-row { display: flex; flex-wrap: wrap; gap: 6px; }
     #input {
       flex: 1;
       background: var(--bg2);
@@ -206,7 +239,7 @@
       font-size: 13px;
       outline: none;
       border-radius: 4px;
-      min-width: 0;
+      min-width: 180px;
       height: 32px;
     }
     #input:focus { border-color: var(--b2); }
@@ -223,11 +256,16 @@
       cursor: pointer;
       border-radius: 4px;
       flex-shrink: 0;
+      min-width: 64px;
     }
     #send:disabled { opacity: 0.5; cursor: wait; }
-    #quick-btns { display: flex; gap: 4px; flex-wrap: wrap; overflow: visible; }
+    #quick-btns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+      gap: 4px;
+      overflow: visible;
+    }
     .qbtn {
-      flex: 1 1 auto;
       background: transparent;
       border: 1px solid var(--b1);
       color: var(--dim);
@@ -236,8 +274,11 @@
       font-size: 11px;
       cursor: pointer;
       border-radius: 4px;
-      white-space: nowrap;
-      overflow: hidden;
+      white-space: normal;
+      overflow: visible;
+      overflow-wrap: anywhere;
+      line-height: 1.2;
+      min-height: 26px;
       position: relative;
     }
     .qbtn:hover { background: var(--bg3); color: var(--fg); border-color: var(--b2); }
@@ -250,6 +291,7 @@
  /* WIDGET MODE (500px) */
     @media (max-width: 500px) {
       .qbtn { font-size: 11px; padding: 4px 6px; }
+      #input { min-width: 140px; }
       .tb-lbl { display: none; }
       .tb-div { display: none; }
       .tb-seg { padding: 0 3px; }
@@ -413,33 +455,34 @@
       <span id="tb-luke-text">LUKE</span>
       <span class="tooltip">Connection to Luke backend</span>
     </div>
-    <span class="tb-div">|</span>
+    <span class="tb-div system-hide">|</span>
     <div class="tb-seg has-tt">
       <span id="chip-mode" class="off" title="Trading mode indicator (PAPER/LIVE/OFF). Agent 02B disabled.">OFF</span>
     </div>
-    <span class="tb-div">|</span>
-    <div class="tb-seg has-tt">
+    <span class="tb-div system-hide">|</span>
+    <div class="tb-seg has-tt" id="tb-market-wrap">
       <span class="tb-lbl">Market:</span>
       <span id="tb-market-val">-</span>
       <span class="tooltip">Regular session 9:30AM-4:00PM ET</span>
     </div>
-    <span class="tb-div">|</span>
-    <div class="tb-seg has-tt">
+    <span class="tb-div system-hide">|</span>
+    <div class="tb-seg has-tt" id="tb-regime-wrap">
       <span class="tb-lbl">Regime:</span>
       <span id="tb-regime-val">NEUTRAL</span>
       <span class="tooltip">RISK_ON=3 trades, NEUTRAL=2, RISK_OFF=1 max</span>
     </div>
-    <span class="tb-div">|</span>
+    <span class="tb-div system-hide">|</span>
     <div class="tb-seg tb-px" id="tb-prices">
       <span id="tb-spy">SPY:-</span>
       <span id="tb-es">ES:-</span>
     </div>
-    <span class="tb-div">|</span>
-    <div class="tb-seg has-tt">
+    <span class="tb-div system-hide">|</span>
+    <div class="tb-seg has-tt" id="tb-trades-wrap">
       <span id="tb-trades-val">0 trades 0W 0L</span>
       <span class="tooltip">Today's trades. /review for details</span>
     </div>
     <div style="margin-left:auto;display:flex;align-items:center;gap:4px;padding-right:2px;">
+      <a id="dashboard-link" href="/shell" title="Return to Luke dashboard">DASHBOARD</a>
       <button id="look-btn" class="tb-killbtn has-tt" title="Take a screenshot of the current screen and ask Claude what's on it">LOOK</button>
     </div>
   </div>
@@ -674,10 +717,25 @@
     const messages = document.getElementById("messages");
     const input    = document.getElementById("input");
     const sendBtn  = document.getElementById("send");
+    const chatSurface = window.location.pathname === "/luke" ? "system" : "trading";
     let history = [];
     let intradayActive = false;
     let toastTimer = null;
     let executeFirstTap = 0;
+
+    function applyChatSurface() {
+      if (chatSurface !== "system") return;
+      document.body.classList.add("system-chat");
+      document.title = "Luke Chat";
+      const label = document.getElementById("tb-luke-text");
+      if (label) label.textContent = "LUKE CHAT";
+      if (input) input.placeholder = "Talk to Luke...";
+      const checklist = document.getElementById("morning-checklist");
+      if (checklist) checklist.classList.add("hidden");
+    }
+
+    applyChatSurface();
+
     fetch(BASE + "/ws-token").then(r => r.json()).then(({ token }) => {
       ws = new WebSocket(wsProtocol + "//" + wsHost + "/?token=" + encodeURIComponent(token));
       initWs(ws);

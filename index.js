@@ -45,6 +45,7 @@ const { loadMemory, saveMemory } = require("./lib/memory");
 const { buildSystemPrompt, loadDiscordSignals, pruneDiscordHistory } = require("./lib/system-prompt");
 const { handleAction, runPython } = require("./lib/actions");
 const { handleSlashCommand } = require("./lib/slash-commands");
+const { buildStoredHeatmapAnswer } = require("./lib/heatmap-context");
 const { validateMemoryKey, MAX_TEXT_BYTES, MAX_URL_LENGTH } = require("./lib/validators");
 const { detectPasteIntent } = require("./lib/detect-paste");
 const { handlePasteAccumulate } = require("./lib/daily-accumulator");
@@ -79,12 +80,17 @@ app.use((req, res, next) => {
 
 //  RATE LIMITING 
 const rl = (max, windowMs = 60000) => rateLimit({ windowMs, max, standardHeaders: true, legacyHeaders: false });
+const agentLimiter = rl(30);
 app.use("/chat",           rl(60));
 app.use("/notify",         rl(10));
-app.use("/agent",          rl(30));
+app.use("/agent/brain",    rl(240));
+app.use("/agent",          (req, res, next) => {
+  if (req.path.startsWith("/brain")) return next();
+  return agentLimiter(req, res, next);
+});
 app.use("/research",       rl(20));
 app.use("/paste-signals",  rl(20));
-app.use(rl(100)); // global fallback
+app.use(rl(600)); // global fallback for local dashboard/static route smoke checks
 
 app.use((req, res, next) => {
   const ct = req.headers['content-type'] || '';
@@ -351,7 +357,7 @@ async function routeToAgent(message) {
 
 app.get("/", (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
-  res.sendFile(__dirname + "/chat.html");
+  res.sendFile(__dirname + "/luke-shell.html");
 });
 
 app.get("/shell", (req, res) => {
@@ -360,6 +366,11 @@ app.get("/shell", (req, res) => {
 });
 
 app.get("/trading", (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.sendFile(__dirname + "/chat.html");
+});
+
+app.get("/luke", (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.sendFile(__dirname + "/chat.html");
 });
@@ -428,6 +439,20 @@ app.post("/chat", async (req, res) => {
     }
   }
   //  end parseXimes intercept 
+
+  if (!message.startsWith("/")) {
+    const heatmapAnswer = buildStoredHeatmapAnswer(message);
+    if (heatmapAnswer) {
+      saveSessionMessage("user", message);
+      saveSessionMessage("assistant", heatmapAnswer);
+      log("chat-heatmap-context", { user: message, answered: true });
+      return res.json({
+        reply: heatmapAnswer,
+        state: "regulated",
+        history: [...(history || []), { role: "user", content: message }, { role: "assistant", content: heatmapAnswer }],
+      });
+    }
+  }
 
   const messages = [...(history || []), { role: "user", content: message }];
   const _exitWarnings = checkEmotionalState(loadTodayContext());

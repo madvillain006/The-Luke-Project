@@ -80,7 +80,8 @@
       padding: 6px 8px;
     }
 
-    button {
+    button,
+    .nav-link {
       min-height: 34px;
       border: 1px solid var(--line);
       border-radius: 6px;
@@ -88,9 +89,13 @@
       background: var(--panel-2);
       padding: 6px 10px;
       cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
     }
 
-    button:hover { border-color: var(--info); }
+    button:hover,
+    .nav-link:hover { border-color: var(--info); }
 
     main {
       padding: 16px;
@@ -111,6 +116,7 @@
       border-radius: 8px;
       background: var(--panel);
       padding: 14px;
+      min-width: 0;
     }
 
     .brain-node {
@@ -120,20 +126,28 @@
 
     .node-top {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
       gap: 12px;
       margin-bottom: 8px;
+      min-width: 0;
+    }
+
+    .node-top > div {
+      min-width: 0;
     }
 
     .node-title {
       font-weight: 850;
       font-size: 16px;
+      line-height: 1.2;
+      overflow-wrap: anywhere;
     }
 
     .node-meta {
       color: var(--muted);
       font-size: 12px;
+      overflow-wrap: anywhere;
     }
 
     .fork-lines {
@@ -158,7 +172,7 @@
     .spines {
       width: 100%;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 12px;
       align-items: stretch;
     }
@@ -169,6 +183,7 @@
       display: grid;
       grid-template-rows: auto 1fr;
       gap: 8px;
+      overflow: hidden;
     }
 
     .status {
@@ -182,6 +197,7 @@
       font-size: 12px;
       font-weight: 750;
       white-space: nowrap;
+      max-width: 100%;
     }
 
     .status.nominal,
@@ -195,7 +211,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(140px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       gap: 10px;
     }
 
@@ -226,9 +242,15 @@
       gap: 6px;
     }
 
-    li { color: var(--text); }
+    li {
+      color: var(--text);
+      overflow-wrap: anywhere;
+    }
 
-    .muted { color: var(--muted); }
+    .muted {
+      color: var(--muted);
+      overflow-wrap: anywhere;
+    }
 
     .panel-grid {
       display: grid;
@@ -252,6 +274,7 @@
       font-weight: 850;
       text-transform: uppercase;
       font-size: 12px;
+      overflow-wrap: anywhere;
     }
 
     .panel-body {
@@ -312,8 +335,10 @@
         <div class="subtitle">Local control plane with reporting spines</div>
       </div>
       <div class="toolbar">
-        <input id="lat" inputmode="decimal" placeholder="lat">
-        <input id="lon" inputmode="decimal" placeholder="lon">
+        <a class="nav-link" href="/shell">Dashboard</a>
+        <a class="nav-link" href="/luke">Luke Chat</a>
+        <input id="lat" inputmode="decimal" placeholder="Buffalo lat">
+        <input id="lon" inputmode="decimal" placeholder="Buffalo lon">
         <button id="refresh">Refresh</button>
       </div>
     </header>
@@ -421,6 +446,20 @@
       }[ch]));
     }
 
+    async function fetchJson(url) {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`${url} ${res.status}`);
+      return res.json();
+    }
+
+    async function fetchOptional(url, fallback) {
+      try {
+        return await fetchJson(url);
+      } catch {
+        return fallback;
+      }
+    }
+
     function renderSpine(el, spine, bodyRows) {
       el.innerHTML = `
         <div>
@@ -520,15 +559,18 @@
       localStorage.setItem('luke.brain.lon', lon);
       const weatherQuery = lat && lon ? `?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}` : '';
       try {
-        const [brainRes, dailyRes, historyRes, automationRes, developerRes] = await Promise.all([
-          fetch('/agent/brain/status'),
-          fetch('/agent/brain/daily' + weatherQuery),
-          fetch('/agent/brain/history-career'),
-          fetch('/agent/brain/automation-business'),
-          fetch('/agent/brain/developer-stack'),
+        const snapshot = await fetchJson('/agent/brain/status');
+        const subagents = snapshot.subagents || {};
+        const [daily, history, automation, developer] = await Promise.all([
+          fetchOptional('/agent/brain/daily' + weatherQuery, subagents.daily || {}),
+          fetchOptional('/agent/brain/history-career', subagents.history_career || {}),
+          fetchOptional('/agent/brain/automation-business', subagents.automation_business || {}),
+          fetchOptional('/agent/brain/developer-stack', subagents.developer_stack || {}),
         ]);
-        if (!brainRes.ok || !dailyRes.ok || !historyRes.ok || !automationRes.ok || !developerRes.ok) throw new Error('brain API unavailable');
-        render(await brainRes.json(), await dailyRes.json(), await historyRes.json(), await automationRes.json(), await developerRes.json());
+        render(snapshot, daily, history, automation, developer);
+        requestAnimationFrame(() => {
+          if (location.hash) document.querySelector(location.hash)?.scrollIntoView({ block: 'start' });
+        });
       } catch (err) {
         $('brain-meta').innerHTML = `<span class="error">${escapeHtml(err.message)}</span>`;
       }
@@ -576,8 +618,8 @@
       }
     }
 
-    $('lat').value = localStorage.getItem('luke.brain.lat') || '';
-    $('lon').value = localStorage.getItem('luke.brain.lon') || '';
+    $('lat').value = localStorage.getItem('luke.brain.lat') || '42.8864';
+    $('lon').value = localStorage.getItem('luke.brain.lon') || '-78.8784';
     $('refresh').addEventListener('click', load);
     document.querySelectorAll('[data-artifact]').forEach(button => {
       button.addEventListener('click', () => runArtifact(button.dataset.artifact));

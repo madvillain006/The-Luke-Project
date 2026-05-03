@@ -307,6 +307,7 @@ async function processLiveVision(entry, parsedSignal) {
   try {
     const Anthropic  = require('@anthropic-ai/sdk');
     const https      = require('https');
+    const { buildHeatseekerReferencePrompt } = require('../lib/heatseeker-reference');
     const att        = entry.attachments[0];
     if (!att || !att.url) return;
 
@@ -325,15 +326,19 @@ async function processLiveVision(entry, parsedSignal) {
     const base64 = imageBuffer.toString('base64');
 
     const client   = new Anthropic();
+    const heatseekerReference = buildHeatseekerReferencePrompt();
     const response = await client.messages.create({
       model:      'claude-sonnet-4-6',
       max_tokens: 500,
       system: 'You are analyzing a financial chart or heatmap image posted by a trader. ' +
               'Extract key price levels and directional bias. ' +
+              'For heatmap images, apply the Heatseeker node reference below. Treat it as confluence only, not a trade trigger. ' +
+              '\n\nHEATSEEKER NODE REFERENCE:\n' + heatseekerReference + '\n\n' +
               'Return ONLY valid JSON: ' +
               '{"chart_type":"candlestick"|"heatmap"|"technical"|"unknown",' +
               '"ticker":string|null,"key_levels":[numbers],' +
               '"support_levels":[numbers],"resistance_levels":[numbers],' +
+              '"heatmap_context":{"king_nodes":[numbers],"gatekeeper_nodes":[numbers],"air_pockets":[numbers],"node_read":string|null},' +
               '"bias":"BULLISH"|"BEARISH"|"NEUTRAL","patterns":[strings],' +
               '"notes":string}. ' +
               'Return empty arrays if not identifiable. No markdown.',
@@ -379,6 +384,7 @@ async function processLiveVision(entry, parsedSignal) {
         bias:       vision.bias,
         levels:     allLevels,
         chart_type: vision.chart_type,
+        heatmap_context: vision.heatmap_context || null,
         notes:      vision.notes,
         ts:         entry.ts
       });

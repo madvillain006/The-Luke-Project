@@ -32,14 +32,20 @@ describe('/brain dashboard shell', () => {
       'Luke Brain',
       'Local control plane with reporting spines',
       'spine-trading',
+      'spine-automation',
+      'spine-developer',
       'spine-daily',
       'spine-history',
+      'AI Automation Business Spine',
+      'Developer AI Stack Spine',
       'History-Career Search Spine',
     ]) {
       expect(html).toContain(label);
     }
 
     expect(html).toContain('/agent/brain/status');
+    expect(html).toContain('/agent/brain/automation-business');
+    expect(html).toContain('/agent/brain/developer-stack');
     expect(html).toContain('/agent/brain/daily');
     expect(html).toContain('/agent/brain/history-career');
   });
@@ -49,7 +55,11 @@ describe('/brain dashboard shell', () => {
     const buttonLabels = Array.from(html.matchAll(/<button[^>]*>(.*?)<\/button>/gis))
       .map(match => match[1].replace(/<[^>]+>/g, '').trim().toLowerCase());
 
-    expect(buttonLabels).toEqual(['refresh']);
+    expect(buttonLabels).toContain('refresh');
+    expect(buttonLabels).toContain('context file');
+    expect(buttonLabels).toContain('mcp workflow');
+    expect(buttonLabels).toContain('schedule');
+    expect(buttonLabels).toContain('outreach');
     expect(html).not.toContain('/agent/autonomous/execute');
     expect(html).not.toContain('/agent/autonomous/confirm');
     expect(html).not.toContain('/agent/autonomous/start');
@@ -63,8 +73,12 @@ describe('/brain dashboard shell', () => {
       'LUKE',
       'Brain',
       'Trading',
+      'AI Automation Business',
+      'Developer AI Stack',
       'Daily',
       'History Career',
+      'Large business-building sub-agent',
+      'Claude first, Gemini second, local Ollama fallback',
       'Existing Luke trading bot lives here',
       'Naming rule: do not move trading internals',
     ]) {

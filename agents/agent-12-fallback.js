@@ -31,8 +31,15 @@ function saveState(s) {
 }
 
 function loadConfig() {
-  try { return JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8")); }
-  catch { return { gemini_key: "", groq_key: "", ollama_host: "http://localhost:11434" }; }
+  let fileConfig = {};
+  try { fileConfig = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8")); }
+  catch { fileConfig = {}; }
+  return {
+    gemini_key: process.env.GEMINI_API_KEY || fileConfig.gemini_key || "",
+    groq_key: process.env.GROQ_API_KEY || fileConfig.groq_key || "",
+    ollama_host: process.env.OLLAMA_HOST || fileConfig.ollama_host || "http://localhost:11434",
+    ollama_model: process.env.OLLAMA_MODEL || fileConfig.ollama_model || "llama3",
+  };
 }
 
 function isActive() { return loadState().active === true; }
@@ -81,9 +88,9 @@ async function callGroq(key, systemPrompt, userMessage) {
   return text;
 }
 
-async function callOllama(host, systemPrompt, userMessage) {
+async function callOllama(host, model, systemPrompt, userMessage) {
   const body = {
-    model: "llama3",
+    model,
     messages: [
       ...(systemPrompt ? [{ role: "system", content: systemPrompt }] : []),
       { role: "user", content: userMessage }
@@ -98,7 +105,7 @@ async function callOllama(host, systemPrompt, userMessage) {
   });
   const d = await r.json();
   const text = d?.message?.content || "";
-  logCall("ollama", "llama3", userMessage.length, text.length);
+  logCall("ollama", model, userMessage.length, text.length);
   return text;
 }
 
@@ -116,7 +123,8 @@ async function callFallback(systemPrompt, userMessage) {
   }
   try {
     const ollamaHost = config.ollama_host || "http://localhost:11434";
-    return { reply: await callOllama(ollamaHost, systemPrompt, userMessage), provider: "ollama" };
+    const ollamaModel = config.ollama_model || "llama3";
+    return { reply: await callOllama(ollamaHost, ollamaModel, systemPrompt, userMessage), provider: "ollama" };
   } catch (e) { errors.push("ollama: " + e.message); }
 
   throw new Error("All fallback providers failed: " + errors.join("; "));

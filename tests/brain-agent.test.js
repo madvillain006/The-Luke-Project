@@ -10,6 +10,32 @@ const {
   buildTradingReport,
   recordSubagentReport,
 } = require('../lib/brain/brain-core');
+const {
+  buildAutomationArtifact,
+  buildAutomationBusinessSpine,
+  buildCaseStudyPlan,
+  buildContextFile,
+  buildOfferPackage,
+  buildMcpWorkflow,
+  buildNichePlan,
+  buildScheduledAutomation,
+  buildSkillFile,
+  draftOutreach,
+  evaluateNiche,
+  qualifyLead,
+  recordAutomationEvent,
+} = require('../lib/brain/automation-business-spine');
+const {
+  buildDailyBrief,
+  fetchDailyNews,
+  formatBriefForNotification,
+  getDailyNewsConfig,
+  parseFeedItems,
+} = require('../lib/brain/daily-brief');
+const {
+  buildDeveloperStackSpine,
+  recordDeveloperStackEvent,
+} = require('../lib/brain/developer-stack-spine');
 const { buildDailySpine, buildWeatherUrl, recordDailyCheckin, summarizeWeather } = require('../lib/brain/daily-spine');
 const { buildHistoryCareerSpine, evaluateOpportunity, recordOpportunity } = require('../lib/brain/history-career-spine');
 
@@ -28,17 +54,21 @@ function makePaths() {
     events: {
       brainReports: path.join(eventsDir, 'brain-reports.jsonl'),
       dailyCheckins: path.join(eventsDir, 'daily-checkins.jsonl'),
+      developerStackEvents: path.join(eventsDir, 'developer-stack-events.jsonl'),
       trades: path.join(eventsDir, 'trades.jsonl'),
       paperTrades: path.join(eventsDir, 'paper-trades.jsonl'),
       bobbyContext: path.join(eventsDir, 'bobby-context.jsonl'),
       discordHistory: path.join(eventsDir, 'discord-history.jsonl'),
       historyCareerFindings: path.join(eventsDir, 'history-career-findings.jsonl'),
+      automationBusinessEvents: path.join(eventsDir, 'automation-business-events.jsonl'),
     },
     snapshots: {
       autonomousState: path.join(snapshotsDir, 'autonomous-state.json'),
       brainState: path.join(snapshotsDir, 'brain-state.json'),
       dailySpine: path.join(snapshotsDir, 'daily-spine.json'),
+      developerStackSpine: path.join(snapshotsDir, 'developer-stack-spine.json'),
       historyCareerSpine: path.join(snapshotsDir, 'history-career-spine.json'),
+      automationBusinessSpine: path.join(snapshotsDir, 'automation-business-spine.json'),
       schedulerHeartbeat: path.join(snapshotsDir, 'scheduler-heartbeat.json'),
       schedulerJobs: path.join(snapshotsDir, 'scheduler-jobs.json'),
     },
@@ -108,7 +138,9 @@ describe('Luke brain agent core', () => {
     expect(snapshot.report_inbox.count).toBe(1);
     expect(snapshot.report_inbox.recent[0].agent).toBe('trading');
     expect(snapshot.subagents.daily.agent).toBe('daily');
+    expect(snapshot.subagents.developer_stack.agent).toBe('developer-stack');
     expect(snapshot.subagents.history_career.agent).toBe('history-career');
+    expect(snapshot.subagents.automation_business.agent).toBe('automation-business');
   });
 
   it('routes trading inquiries to trading status without execution authority', () => {
@@ -149,7 +181,79 @@ describe('Luke brain agent core', () => {
     expect(spine.agent).toBe('daily');
     expect(spine.weather.summary).toContain('71F');
     expect(spine.checklist.find(item => item.id === 'daily-checkin').status).toBe('done');
+    expect(spine.briefs.morning.endpoint).toContain('kind=morning');
+    expect(spine.live_news.social_watchlist.some(item => item.id === 'deitaone')).toBe(true);
     expect(buildWeatherUrl({ lat: 40, lon: -75 })).toContain('latitude=40');
+  });
+
+  it('builds morning and afternoon briefs from live news feeds', async () => {
+    const marketXml = `
+      <rss><channel>
+        <item>
+          <title>Fed headline moves S&amp;P futures</title>
+          <link>https://example.com/markets</link>
+          <description>Yields moved after a fresh policy headline.</description>
+          <pubDate>Sat, 02 May 2026 13:00:00 GMT</pubDate>
+        </item>
+      </channel></rss>
+    `;
+    const billsXml = `
+      <rss><channel>
+        <item>
+          <title>Bills add receiver before camp</title>
+          <link>https://example.com/bills</link>
+          <description>Buffalo adds roster depth for Josh Allen.</description>
+          <pubDate>Sat, 02 May 2026 14:00:00 GMT</pubDate>
+        </item>
+      </channel></rss>
+    `;
+    const sources = [
+      { id: 'mock-market', label: 'Mock Markets', category: 'markets', url: 'https://feed.test/markets', priority: 90, keywords: ['fed'] },
+      { id: 'mock-bills', label: 'Mock Bills', category: 'bills', url: 'https://feed.test/bills', priority: 90, keywords: ['bills'] },
+    ];
+    const fetchFn = async url => ({
+      ok: true,
+      text: async () => String(url).includes('bills') ? billsXml : marketXml,
+    });
+
+    const news = await fetchDailyNews({
+      sources,
+      categories: ['markets', 'bills'],
+      fetchFn,
+      now: new Date('2026-05-02T15:00:00.000Z'),
+    });
+    const brief = buildDailyBrief({
+      kind: 'afternoon',
+      news,
+      weather: { summary: '71F and clear' },
+      now: new Date('2026-05-02T15:00:00.000Z'),
+    });
+
+    expect(news.status).toBe('ok');
+    expect(news.by_category.markets[0].title).toContain('Fed headline');
+    expect(news.by_category.bills[0].title).toContain('Bills add receiver');
+    expect(brief.label).toBe('Afternoon brief');
+    expect(brief.sections.find(section => section.category === 'markets').status).toBe('live');
+    expect(formatBriefForNotification(brief)).toContain('AFTERNOON BRIEF');
+  });
+
+  it('keeps social wire feeds configurable without hard-coding X access', () => {
+    const config = getDailyNewsConfig({
+      env: {
+        LUKE_DEITAONE_FEED_URL: 'https://feeds.test/deitaone.xml',
+        LUKE_SCHEFTER_FEED_URL: 'https://feeds.test/schefter.xml',
+      },
+    });
+    const items = parseFeedItems('<feed><entry><title>Adam Schefter: Bills injury update</title><link href="https://example.com/schefter"/></entry></feed>', {
+      id: 'schefter-feed',
+      label: 'Adam Schefter',
+      category: 'nfl',
+    });
+
+    expect(config.sources.some(source => source.id === 'deitaone-feed')).toBe(true);
+    expect(config.sources.some(source => source.id === 'schefter-feed')).toBe(true);
+    expect(config.social_watchlist.find(source => source.id === 'schefter').configured).toBe(true);
+    expect(items[0]).toEqual(expect.objectContaining({ source: 'Adam Schefter', category: 'nfl' }));
   });
 
   it('filters MLIS opportunities and keeps public-history adjacent tracks', () => {
@@ -173,6 +277,205 @@ describe('Luke brain agent core', () => {
     expect(spine.pipeline.accepted).toBe(1);
     expect(spine.pipeline.rejected_mlis).toBe(1);
     expect(spine.next_searches.some(item => item.query.includes('public history'))).toBe(true);
+  });
+
+  it('builds the automation business spine as a large brain sub-agent', () => {
+    const paths = makePaths();
+    const spine = buildAutomationBusinessSpine({ paths, now: new Date('2026-05-02T15:00:00.000Z') });
+
+    expect(spine.agent).toBe('automation-business');
+    expect(spine.status).toBe('building');
+    expect(Object.keys(spine.subagents)).toEqual([
+      'toolkit',
+      'niche',
+      'case-study',
+      'offer',
+      'leads',
+      'outreach',
+      'delivery',
+      'revenue',
+    ]);
+    expect(spine.monthly_goal).toBe(10000);
+    expect(spine.artifact_factory.status).toBe('available');
+    expect(spine.capabilities.some(capability => capability.id === 'context-file')).toBe(true);
+    expect(spine.capabilities.some(capability => capability.id === 'mcp-workflow')).toBe(true);
+    expect(spine.capabilities.some(capability => capability.id === 'scheduled-automation')).toBe(true);
+    expect(spine.recommended_start.niche).toContain('Public history');
+    expect(spine.first_30_days).toHaveLength(4);
+  });
+
+  it('builds the developer stack spine with Claude, Gemini, then local Ollama order', () => {
+    const paths = makePaths();
+    const spine = buildDeveloperStackSpine({
+      paths,
+      now: new Date('2026-05-02T18:00:00.000Z'),
+      env: {
+        ANTHROPIC_API_KEY: 'anthropic-test',
+        GEMINI_API_KEY: 'gemini-test',
+      },
+    });
+
+    expect(spine.agent).toBe('developer-stack');
+    expect(spine.status).toBe('building');
+    expect(spine.provider_order.map(provider => provider.id)).toEqual(['claude', 'gemini', 'ollama']);
+    expect(spine.provider_order.find(provider => provider.id === 'claude').configured).toBe(true);
+    expect(spine.provider_order.find(provider => provider.id === 'gemini').configured).toBe(true);
+    expect(spine.local_only_truth).toContain('Only the Ollama/local-model lane');
+    expect(Object.keys(spine.subagents)).toEqual([
+      'provider-router',
+      'local-runtime',
+      'gemini-key',
+      'cost-guard',
+      'privacy-guard',
+    ]);
+  });
+
+  it('records developer stack events and refreshes its snapshot', () => {
+    const paths = makePaths();
+    const now = new Date('2026-05-02T18:30:00.000Z');
+
+    const event = recordDeveloperStackEvent({
+      subagent: 'local-runtime',
+      type: 'ollama_installed',
+      summary: 'Ollama installed locally',
+    }, { paths, now });
+
+    expect(event).toEqual(expect.objectContaining({
+      ts: now.toISOString(),
+      subagent: 'local-runtime',
+      type: 'ollama_installed',
+    }));
+    expect(fs.existsSync(paths.events.developerStackEvents)).toBe(true);
+    expect(fs.existsSync(paths.snapshots.developerStackSpine)).toBe(true);
+
+    const spine = buildDeveloperStackSpine({ paths, now });
+    expect(spine.pipeline.events).toBe(1);
+    expect(spine.subagents['local-runtime'].completed_event_types).toContain('ollama_installed');
+  });
+
+  it('records automation business events and refreshes its snapshot', () => {
+    const paths = makePaths();
+    const now = new Date('2026-05-02T16:00:00.000Z');
+
+    const event = recordAutomationEvent({
+      subagent: 'toolkit',
+      type: 'context_file',
+      summary: 'Museum context file drafted',
+    }, { paths, now });
+
+    expect(event).toEqual(expect.objectContaining({
+      ts: now.toISOString(),
+      subagent: 'toolkit',
+      type: 'context_file',
+    }));
+    expect(fs.existsSync(paths.events.automationBusinessEvents)).toBe(true);
+    expect(fs.existsSync(paths.snapshots.automationBusinessSpine)).toBe(true);
+
+    const spine = buildAutomationBusinessSpine({ paths, now });
+    expect(spine.pipeline.events).toBe(1);
+    expect(spine.subagents.toolkit.completed_event_types).toContain('context_file');
+  });
+
+  it('scores automation niches with a conservative recommendation', () => {
+    expect(evaluateNiche({
+      niche: 'museum research automation',
+      scores: {
+        workflow_fit: 5,
+        budget: 4,
+        domain_advantage: 5,
+        low_compliance_drag: 5,
+        not_too_technical: 4,
+      },
+    }).recommendation).toBe('strong');
+
+    expect(evaluateNiche({
+      niche: 'small local group',
+      scores: {
+        workflow_fit: 2,
+        budget: 1,
+        domain_advantage: 4,
+        low_compliance_drag: 4,
+        not_too_technical: 4,
+      },
+    }).recommendation).toBe('park');
+  });
+
+  it('generates usable automation business artifacts', () => {
+    const input = {
+      organization: 'City History Museum',
+      workflow: 'exhibit research brief production',
+      signals: ['weekly research backlog', 'grant deadline', 'director contact'],
+      manual_minutes: 180,
+      automated_minutes: 25,
+      weekly_saved_hours: 8,
+    };
+
+    const context = buildContextFile(input);
+    const skill = buildSkillFile(input);
+    const mcp = buildMcpWorkflow(input);
+    const schedule = buildScheduledAutomation(input);
+    const niche = buildNichePlan();
+    const caseStudy = buildCaseStudyPlan(input);
+    const offer = buildOfferPackage(input);
+    const lead = qualifyLead(input);
+    const outreach = draftOutreach({ ...input, contact_name: 'Alex' });
+
+    expect(context.filename).toBe('city-history-museum-context.md');
+    expect(context.markdown).toContain('## Quality Standards');
+    expect(skill.markdown).toContain('## Process');
+    expect(mcp.tool_chain.length).toBeGreaterThan(2);
+    expect(schedule.missing_data_behavior).toContain('Do not hallucinate missing source facts.');
+    expect(niche.first_10_leads).toContain('regional history museums');
+    expect(caseStudy.metrics.weekly_saved_hours).toBeGreaterThan(0);
+    expect(offer.value_case.recommended_build_price).toBeGreaterThanOrEqual(3000);
+    expect(lead.priority).toBe('high');
+    expect(outreach.cold_email).toContain('Alex');
+  });
+
+  it('dispatches and records generated automation artifacts', () => {
+    const paths = makePaths();
+    const result = buildAutomationArtifact({
+      kind: 'outreach',
+      organization: 'City History Museum',
+      workflow: 'donor newsletter drafting',
+      contact_name: 'Morgan',
+    }, { paths, now: new Date('2026-05-02T18:00:00.000Z') });
+
+    expect(result.artifact.kind).toBe('outreach_draft');
+    expect(result.event.subagent).toBe('outreach');
+    expect(result.event.type).toBe('outreach_sent');
+
+    const spine = buildAutomationBusinessSpine({ paths, now: new Date('2026-05-02T18:01:00.000Z') });
+    expect(spine.pipeline.artifacts).toBe(1);
+    expect(spine.pipeline.recent_artifacts[0].kind).toBe('outreach_draft');
+  });
+
+  it('routes automation business inquiries to the automation-business sub-agent', () => {
+    const paths = makePaths();
+    const answer = answerInquiry({
+      message: 'what niche and outreach should the AI automation business do next?',
+    }, { paths, now: new Date('2026-05-02T17:00:00.000Z') });
+
+    expect(answer.routed_to).toBe('automation-business');
+    expect(answer.reply).toContain('Automation-business sub-agent');
+    expect(answer.reply).toContain('Public history');
+    expect(answer.snapshot.subagents.automation_business.agent).toBe('automation-business');
+  });
+
+  it('routes Claude, Gemini, and Ollama inquiries to the developer-stack sub-agent', () => {
+    const paths = makePaths();
+    const answer = answerInquiry({
+      message: 'make a Claude Code fallback ladder with Gemini and Ollama local model',
+    }, {
+      paths,
+      now: new Date('2026-05-02T19:00:00.000Z'),
+    });
+
+    expect(answer.routed_to).toBe('developer-stack');
+    expect(answer.reply).toContain('Developer stack spine');
+    expect(answer.reply).toContain('Regular Claude');
+    expect(answer.reply).toContain('Gemini API');
+    expect(answer.reply).toContain('Ollama local open model');
   });
 
   it('rejects reports without an agent name', () => {

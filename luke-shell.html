@@ -413,8 +413,17 @@
           <div class="tile-foot"><span class="tags">Check-in, Weather, Today</span><button class="plus" data-open="daily">+</button></div>
         </article>
 
+        <article class="tile" data-spine="automation">
+          <div class="tile-head"><span class="tile-index">003</span><span class="tile-title">AI Automation Business</span></div>
+          <div class="tile-body">
+            <div class="tile-large" id="automation-state">--</div>
+            <div class="tile-copy">Large business-building sub-agent: toolkit, niche, case study, offer, leads, outreach, delivery, revenue.</div>
+          </div>
+          <div class="tile-foot"><span class="tags">Toolkit, Leads, Revenue</span><button class="plus" data-open="automation">+</button></div>
+        </article>
+
         <article class="tile" data-spine="history">
-          <div class="tile-head"><span class="tile-index">003</span><span class="tile-title">History Career</span></div>
+          <div class="tile-head"><span class="tile-index">004</span><span class="tile-title">History Career</span></div>
           <div class="tile-body">
             <div class="tile-large" id="history-count">--</div>
             <div class="tile-copy">Public history, museum, curator, research, consulting, AI-adjacent. MLIS filtered.</div>
@@ -422,8 +431,17 @@
           <div class="tile-foot"><span class="tags">Museums, Research, Consulting</span><button class="plus" data-open="history">+</button></div>
         </article>
 
+        <article class="tile" data-spine="developer">
+          <div class="tile-head"><span class="tile-index">005</span><span class="tile-title">Developer AI Stack</span></div>
+          <div class="tile-body">
+            <div class="tile-large" id="developer-state">--</div>
+            <div class="tile-copy">Claude first, Gemini second, local Ollama fallback for free/private long loops.</div>
+          </div>
+          <div class="tile-foot"><span class="tags">Claude, Gemini, Ollama</span><button class="plus" data-open="developer">+</button></div>
+        </article>
+
         <article class="tile" data-spine="research">
-          <div class="tile-head"><span class="tile-index">004</span><span class="tile-title">Research</span></div>
+          <div class="tile-head"><span class="tile-index">006</span><span class="tile-title">Research</span></div>
           <div class="tile-body">
             <div class="tile-large">AI</div>
             <div class="tile-copy">Historical research and AI-engineering material gets routed into the history-career spine first.</div>
@@ -432,7 +450,7 @@
         </article>
 
         <article class="tile" data-spine="system">
-          <div class="tile-head"><span class="tile-index">005</span><span class="tile-title">System</span></div>
+          <div class="tile-head"><span class="tile-index">007</span><span class="tile-title">System</span></div>
           <div class="tile-body">
             <div class="tile-large" id="system-state">--</div>
             <div class="tile-copy" id="system-copy">Runtime and inbox state loading.</div>
@@ -461,6 +479,14 @@
           <div class="side-section">
             <span class="side-label">Daily</span>
             <span id="side-daily">Loading</span>
+          </div>
+          <div class="side-section">
+            <span class="side-label">AI Automation Business</span>
+            <span id="side-automation">Loading</span>
+          </div>
+          <div class="side-section">
+            <span class="side-label">Developer AI Stack</span>
+            <span id="side-developer">Loading</span>
           </div>
         </div>
 
@@ -502,6 +528,8 @@
       brain: { title: 'Brain Dashboard', url: '/brain-dashboard' },
       trading: { title: 'Trading Bot', url: '/trading' },
       daily: { title: 'Daily Spine', url: '/brain-dashboard' },
+      automation: { title: 'AI Automation Business Spine', url: '/brain-dashboard' },
+      developer: { title: 'Developer AI Stack Spine', url: '/brain-dashboard' },
       history: { title: 'History-Career Spine', url: '/brain-dashboard' },
     };
 
@@ -535,16 +563,20 @@
 
     async function refresh() {
       try {
-        const [brain, daily, history] = await Promise.all([
+        const [brain, daily, history, automation, developer] = await Promise.all([
           getJson('/agent/brain/status'),
           getJson('/agent/brain/daily'),
           getJson('/agent/brain/history-career'),
+          getJson('/agent/brain/automation-business'),
+          getJson('/agent/brain/developer-stack'),
         ]);
 
         const trading = brain.subagents?.trading || {};
         text('brain-summary', `${Object.keys(brain.subagents || {}).length} spines / ${brain.report_inbox?.count || 0} reports`);
         text('trading-mode', statusWord(trading.mode));
         text('daily-status', statusWord(daily.status));
+        text('automation-state', statusWord(automation.status));
+        text('developer-state', statusWord(developer.status));
         text('daily-summary', daily.weather?.summary || 'Weather needs location.');
         text('history-count', `${history.pipeline?.accepted || 0}/${history.pipeline?.rejected_mlis || 0}`);
         text('system-state', brain.attention?.length ? 'ATTN' : 'OK');
@@ -553,6 +585,8 @@
         text('side-brain', brain.attention?.length ? `${brain.attention.length} attention items` : 'Nominal');
         text('side-trading', `${trading.status || 'unknown'} / ${trading.human_gate || 'gate unknown'}`);
         text('side-daily', `${daily.status || 'unknown'} / ${daily.weather?.status || 'weather unknown'}`);
+        text('side-automation', `${automation.status || 'unknown'} / $${automation.pipeline?.monthly_run_rate || 0} run rate`);
+        text('side-developer', `${developer.status || 'unknown'} / ${(developer.pipeline?.configured_providers || []).join(', ') || 'no providers configured'}`);
       } catch (err) {
         text('system-state', 'ERR');
         text('system-copy', err.message);

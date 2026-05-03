@@ -36,6 +36,7 @@ const fs = require("fs");
 const path = require("path");
 const { log } = require("./lib/logger");
 const { snapshots } = require("./lib/paths");
+const { formatBriefForNotification } = require("./lib/brain/daily-brief");
 
 const LUKE_URL = "http://localhost:3000";
 const HEARTBEAT_FILE = snapshots.schedulerHeartbeat;
@@ -107,6 +108,18 @@ async function get(endpoint) {
   const r = await fetch(`${LUKE_URL}${endpoint}`);
   if (!r.ok) throw new Error(`GET ${endpoint} failed: HTTP ${r.status}`);
   return r.json();
+}
+
+async function dailyBriefing(kind = "morning") {
+  const safeKind = kind === "afternoon" ? "afternoon" : "morning";
+  const brief = await get(`/agent/brain/daily/brief?kind=${safeKind}`);
+  const message = formatBriefForNotification(brief);
+  await post("/notify", { message });
+  log(`daily-${safeKind}-briefing`, {
+    sections: Array.isArray(brief.sections) ? brief.sections.length : 0,
+    news_status: brief.news_status || "unknown"
+  });
+  return `${safeKind} brief`;
 }
 
 async function morningBriefing() {
@@ -396,6 +409,14 @@ async function runScheduler() {
   //   }
   //
   //   if (hour === 4) await runJob("morning-briefing", morningBriefing);
+  //
+  //   if (hour === 8 && now.getDay() !== 0 && now.getDay() !== 6) {
+  //     await runJob("daily-morning-briefing", () => dailyBriefing("morning"));
+  //   }
+  //
+  //   if (hour === 14 && now.getDay() !== 0 && now.getDay() !== 6) {
+  //     await runJob("daily-afternoon-briefing", () => dailyBriefing("afternoon"));
+  //   }
   //
   //   if (hour === 6 && now.getDay() !== 0 && now.getDay() !== 6) {
   //     await runJob("tradovate-health", checkTradovateHealth);

@@ -158,7 +158,7 @@
     .spines {
       width: 100%;
       display: grid;
-      grid-template-columns: repeat(3, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 12px;
       align-items: stretch;
     }
@@ -269,6 +269,25 @@
       gap: 4px;
     }
 
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    pre {
+      margin: 0;
+      max-height: 420px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #0f1316;
+      color: var(--text);
+      padding: 10px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
     .error {
       color: var(--bad);
       font-weight: 750;
@@ -333,6 +352,8 @@
 
         <div class="spines">
           <article class="spine-node" id="spine-trading"></article>
+          <article class="spine-node" id="spine-automation"></article>
+          <article class="spine-node" id="spine-developer"></article>
           <article class="spine-node" id="spine-daily"></article>
           <article class="spine-node" id="spine-history"></article>
         </div>
@@ -344,6 +365,30 @@
           <div class="panel-body">
             <ul id="next-actions"></ul>
           </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">AI Automation Business Spine</div>
+          <div class="panel-body" id="automation-actions"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">Automation Factory</div>
+          <div class="panel-body">
+            <div class="action-row">
+              <button data-artifact="context-file">Context File</button>
+              <button data-artifact="skill-file">Skill File</button>
+              <button data-artifact="mcp-workflow">MCP Workflow</button>
+              <button data-artifact="scheduled-automation">Schedule</button>
+              <button data-artifact="niche-plan">Niche</button>
+              <button data-artifact="case-study">Case Study</button>
+              <button data-artifact="offer">Offer</button>
+              <button data-artifact="outreach">Outreach</button>
+            </div>
+            <pre id="artifact-output">Ready</pre>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">Developer AI Stack Spine</div>
+          <div class="panel-body" id="developer-actions"></div>
         </div>
         <div class="panel">
           <div class="panel-header">History-Career Search Spine</div>
@@ -391,7 +436,7 @@
       `;
     }
 
-    function render(snapshot, daily, history) {
+    function render(snapshot, daily, history, automation, developer) {
       $('brain-title').textContent = snapshot.label || 'Luke brain';
       $('brain-meta').textContent = snapshot.role || '';
       setStatus($('brain-status'), snapshot.attention?.length ? 'attention' : 'nominal');
@@ -412,6 +457,28 @@
         ${list(trading.blockers || [])}
       `);
 
+      renderSpine($('spine-automation'), automation, `
+        <div class="grid">
+          <div class="metric"><div class="metric-label">Goal</div><div class="metric-value">$${automation.monthly_goal ?? 10000}</div></div>
+          <div class="metric"><div class="metric-label">Run Rate</div><div class="metric-value">$${automation.pipeline?.monthly_run_rate ?? 0}</div></div>
+          <div class="metric"><div class="metric-label">Sub-Agents</div><div class="metric-value">${Object.keys(automation.subagents || {}).length}</div></div>
+          <div class="metric"><div class="metric-label">Events</div><div class="metric-value">${automation.pipeline?.events ?? 0}</div></div>
+        </div>
+        <div class="muted">${escapeHtml(automation.recommended_start?.niche || '')}</div>
+        ${list(automation.next_actions || [])}
+      `);
+
+      renderSpine($('spine-developer'), developer, `
+        <div class="grid">
+          <div class="metric"><div class="metric-label">Providers</div><div class="metric-value">${developer.provider_order?.length ?? 0}</div></div>
+          <div class="metric"><div class="metric-label">Configured</div><div class="metric-value">${developer.pipeline?.configured_providers?.length ?? 0}</div></div>
+          <div class="metric"><div class="metric-label">Events</div><div class="metric-value">${developer.pipeline?.events ?? 0}</div></div>
+          <div class="metric"><div class="metric-label">Local</div><div class="metric-value">${escapeHtml((developer.provider_order || []).find(provider => provider.id === 'ollama')?.status || 'unknown')}</div></div>
+        </div>
+        <div class="muted">${escapeHtml(developer.local_only_truth || '')}</div>
+        ${list((developer.provider_order || []).map(provider => `${provider.priority}. ${provider.label}: ${provider.status}`))}
+      `);
+
       renderSpine($('spine-daily'), daily, `
         <div class="metric"><div class="metric-label">Weather</div><div class="metric-value">${escapeHtml(daily.weather?.summary)}</div></div>
         ${list((daily.checklist || []).map(item => `${item.label}: ${item.status} - ${item.detail}`))}
@@ -426,6 +493,18 @@
       `);
 
       $('next-actions').innerHTML = (snapshot.next_actions || []).map(item => `<li>${escapeHtml(item)}</li>`).join('');
+      $('automation-actions').innerHTML = (automation.first_30_days || []).map(item => `
+        <div class="search-row">
+          <strong>${escapeHtml(automation.label)}</strong>
+          <span>${escapeHtml(item)}</span>
+        </div>
+      `).join('');
+      $('developer-actions').innerHTML = (developer.setup_plan || []).map(item => `
+        <div class="search-row">
+          <strong>${escapeHtml(developer.label)}</strong>
+          <span>${escapeHtml(item)}</span>
+        </div>
+      `).join('');
       $('searches').innerHTML = (history.next_searches || []).slice(0, 16).map(item => `
         <div class="search-row">
           <strong>${escapeHtml(item.track)}</strong>
@@ -441,21 +520,68 @@
       localStorage.setItem('luke.brain.lon', lon);
       const weatherQuery = lat && lon ? `?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}` : '';
       try {
-        const [brainRes, dailyRes, historyRes] = await Promise.all([
+        const [brainRes, dailyRes, historyRes, automationRes, developerRes] = await Promise.all([
           fetch('/agent/brain/status'),
           fetch('/agent/brain/daily' + weatherQuery),
           fetch('/agent/brain/history-career'),
+          fetch('/agent/brain/automation-business'),
+          fetch('/agent/brain/developer-stack'),
         ]);
-        if (!brainRes.ok || !dailyRes.ok || !historyRes.ok) throw new Error('brain API unavailable');
-        render(await brainRes.json(), await dailyRes.json(), await historyRes.json());
+        if (!brainRes.ok || !dailyRes.ok || !historyRes.ok || !automationRes.ok || !developerRes.ok) throw new Error('brain API unavailable');
+        render(await brainRes.json(), await dailyRes.json(), await historyRes.json(), await automationRes.json(), await developerRes.json());
       } catch (err) {
         $('brain-meta').innerHTML = `<span class="error">${escapeHtml(err.message)}</span>`;
+      }
+    }
+
+    const artifactSample = {
+      organization: 'regional history museum',
+      niche: 'public history, museums, cultural orgs, and research teams',
+      workflow: 'exhibit research brief production',
+      task: 'exhibit research brief production',
+      contact_name: 'Director',
+      signals: [
+        'small staff produces repeat research briefs',
+        'grant and exhibit deadlines create backlog',
+        'source material is scattered across files and email'
+      ],
+      weekly_saved_hours: 8,
+      manual_minutes: 180,
+      automated_minutes: 25,
+      weekly_runs: 2
+    };
+
+    function artifactText(result) {
+      const artifact = result.artifact || {};
+      if (artifact.markdown) return artifact.markdown;
+      if (artifact.cold_email) return `${artifact.subject}\n\n${artifact.cold_email}\n\nFollow-up:\n${artifact.follow_up}`;
+      return JSON.stringify(artifact, null, 2);
+    }
+
+    async function runArtifact(kind) {
+      const output = $('artifact-output');
+      output.textContent = 'Working...';
+      try {
+        const res = await fetch(`/agent/brain/automation-business/${kind}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(artifactSample),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.ok) throw new Error(data.error || 'artifact build failed');
+        output.textContent = artifactText(data);
+        load();
+      } catch (err) {
+        output.textContent = err.message;
       }
     }
 
     $('lat').value = localStorage.getItem('luke.brain.lat') || '';
     $('lon').value = localStorage.getItem('luke.brain.lon') || '';
     $('refresh').addEventListener('click', load);
+    document.querySelectorAll('[data-artifact]').forEach(button => {
+      button.addEventListener('click', () => runArtifact(button.dataset.artifact));
+    });
     load();
   </script>
 </body>

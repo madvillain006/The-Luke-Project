@@ -210,4 +210,22 @@ router.post("/generate-documents", (req, res) => disabledDocRoute(res, "/agent/r
 router.post("/background-cycle", (req, res) => disabledDocRoute(res, "/agent/research/background-cycle"));
 router.post("/trader-deep-dive", (req, res) => disabledDocRoute(res, "/agent/research/trader-deep-dive"));
 
+router.get("/status", (req, res) => {
+  res.json({
+    ok: true,
+    agent: "research",
+    mode: "on-demand",
+    endpoints: [
+      "synthesize",
+      "validate",
+      "structure",
+      "create-skill",
+      "flowchart",
+      "review-code",
+      "ui-advice",
+      "improve"
+    ]
+  });
+});
+
 module.exports = router;

@@ -1097,6 +1097,16 @@ app.post("/panic", (req, res) => {
   res.json({ ok: true });
 });
 
+app.use((err, req, res, next) => {
+  log("express-error", {
+    method: req.method,
+    path: req.path,
+    message: err?.message || String(err),
+  });
+  if (res.headersSent) return next(err);
+  res.status(err?.status || 500).json({ ok: false, error: "Internal server error" });
+});
+
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 const clients = new Set();
@@ -1124,6 +1134,8 @@ wss.on("connection", (ws, req) => {
     log("ws-auth-rejected", { ip: req.socket?.remoteAddress });
     return;
   }
+  ws.isAlive = true;
+  ws.on("pong", () => { ws.isAlive = true; });
   clients.add(ws);
   ws.on("close", () => clients.delete(ws));
   // Morning levels warning  fire immediately on connect if levels missing/stale
@@ -1138,6 +1150,19 @@ wss.on("connection", (ws, req) => {
     }
   } catch {}
 });
+
+const wsHeartbeat = setInterval(() => {
+  for (const ws of clients) {
+    if (ws.isAlive === false) {
+      clients.delete(ws);
+      try { ws.terminate(); } catch {}
+      continue;
+    }
+    ws.isAlive = false;
+    try { ws.ping(); } catch {}
+  }
+}, 30000);
+wsHeartbeat.unref?.();
 
 global.broadcast = broadcast;
 

@@ -644,6 +644,8 @@
     const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
     const wsHost = window.location.host || "localhost:3000";
     let ws;
+    let wsReconnectTimer = null;
+    let wsReconnectAttempts = 0;
 
  // JS TOOLTIP 
     const _jsTip = document.getElementById('js-tooltip');
@@ -1104,7 +1106,47 @@
 
  // WEBSOCKET 
 
-    ws.onmessage = (event) => {
+    function setWsConnected(connected) {
+      const chip = document.getElementById("chip-conn");
+      const dot = document.getElementById("tb-dot");
+      if (chip) chip.className = connected ? "chip ok" : "chip err";
+      if (dot) dot.className = connected ? "" : "err";
+    }
+
+    function scheduleWsReconnect() {
+      if (wsReconnectTimer) return;
+      const delay = Math.min(30000, 1000 * Math.pow(2, Math.min(wsReconnectAttempts, 5)));
+      wsReconnectAttempts += 1;
+      setWsConnected(false);
+      wsReconnectTimer = setTimeout(() => {
+        wsReconnectTimer = null;
+        openWs();
+      }, delay);
+    }
+
+    function openWs() {
+      fetch(BASE + "/ws-token").then(r => r.json()).then(({ token }) => {
+        bindWs(new WebSocket(wsProtocol + "//" + wsHost + "/?token=" + encodeURIComponent(token)));
+      }).catch(() => {
+        scheduleWsReconnect();
+      });
+    }
+
+    function bindWs(socket) {
+      ws = socket;
+      ws.onopen = () => {
+        wsReconnectAttempts = 0;
+        setWsConnected(true);
+      };
+      ws.onclose = scheduleWsReconnect;
+      ws.onerror = () => {
+        setWsConnected(false);
+        try { ws.close(); } catch {}
+      };
+      ws.onmessage = handleWsMessage;
+    }
+
+    function handleWsMessage(event) {
       try {
         const data = JSON.parse(event.data);
         if (data.type === "staged_trade") {
@@ -1141,7 +1183,9 @@
           addMessage('kat', msg, 'kat-vision');
         }
       } catch (e) { console.error('[ws:onmessage] parse error:', e.message, event.data?.slice(0, 80)); }
-    };
+    }
+
+    bindWs(ws);
     } // end initWs
 
  // STATE INDICATOR 

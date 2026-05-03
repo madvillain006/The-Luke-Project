@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync, spawn } = require('child_process');
+const { spawn } = require('child_process');
 
 const {
   collectSurfaces,
@@ -129,12 +129,38 @@ function stopApp(child) {
   if (!child.killed) child[terminate]();
 }
 
-function shell(command) {
+function readGitInfo() {
+  const gitDir = path.join(ROOT, '.git');
   try {
-    return execSync(command, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    const head = fs.readFileSync(path.join(gitDir, 'HEAD'), 'utf8').trim();
+    const branch = head.startsWith('ref:')
+      ? head.replace(/^ref:\s*refs\/heads\//, '')
+      : 'detached';
+    let commit = head.startsWith('ref:')
+      ? fs.readFileSync(path.join(gitDir, head.replace(/^ref:\s*/, '')), 'utf8').trim()
+      : head;
+    let subject = '';
+    try {
+      const logLines = fs.readFileSync(path.join(gitDir, 'logs', 'HEAD'), 'utf8').trim().split('\n');
+      const lastLine = logLines[logLines.length - 1] || '';
+      const tabIndex = lastLine.indexOf('\t');
+      const message = tabIndex >= 0 ? lastLine.slice(tabIndex + 1) : '';
+      subject = message.replace(/^(commit|checkout|reset|merge):\s*/i, '').trim();
+    } catch {}
+    commit = commit ? `${commit.slice(0, 7)}${subject ? ` ${subject}` : ''}` : 'unknown';
+    return { branch: branch || 'unknown', commit };
   } catch {
-    return 'unknown';
+    return { branch: 'unknown', commit: 'unknown' };
   }
+}
+
+function routeSendsFile(index, route, fileName) {
+  const start = index.indexOf(`app.get("${route}"`);
+  if (start < 0) return false;
+  const end = index.indexOf('\n});', start);
+  if (end < 0) return false;
+  const block = index.slice(start, end);
+  return block.includes(`sendFile(__dirname + "/${fileName}")`);
 }
 
 function statusOf(response) {
@@ -185,8 +211,10 @@ function criticalSafetyChecks(html, index) {
     stagedOnlyVisible: has(html, /recommendation-only/i) && has(html, /does not stage or execute/i),
     noExecuteButton: buttonLabels.length === 1 && buttonLabels[0] === 'refresh',
     noDirectExecutionShortcut: !has(html, /agent\/autonomous\/(?:execute|confirm|start|stop|set-mode)/i),
-    oldChatAvailable: has(index, /app\.get\("\/", \(req, res\) => \{[\s\S]*?chat\.html/),
-    operatorNotDefault: has(index, /app\.get\("\/operator-v2"/) && has(index, /app\.get\("\/", \(req, res\) => \{[\s\S]*?chat\.html/),
+    lukeChatAvailable: routeSendsFile(index, '/luke', 'chat.html'),
+    tradingChatAvailable: routeSendsFile(index, '/trading', 'chat.html'),
+    dashboardDefault: routeSendsFile(index, '/', 'luke-shell.html'),
+    operatorNotDefault: has(index, /app\.get\("\/operator-v2"/) && !routeSendsFile(index, '/', 'operator-v2.html'),
   };
 }
 
@@ -195,7 +223,7 @@ function yesNo(value) {
 }
 
 function proofVerdict(comparison, safety, collected) {
-  if (!safety.passNonActionable || !safety.noExecuteButton || !safety.noDirectExecutionShortcut || !safety.oldChatAvailable) {
+  if (!safety.passNonActionable || !safety.noExecuteButton || !safety.noDirectExecutionShortcut || !safety.lukeChatAvailable || !safety.tradingChatAvailable) {
     return 'UNSAFE_KEEP_OLD_SHELL';
   }
   if (collected.errors.length > 0 || comparison.rows.some(row => row.status === 'MISMATCH')) {
@@ -205,8 +233,7 @@ function proofVerdict(comparison, safety, collected) {
 }
 
 function renderProof({ baseUrl, collected, comparison, autonomousStatus, safety, html, index }) {
-  const branch = shell('git branch --show-current');
-  const commit = shell('git log -1 --oneline');
+  const { branch, commit } = readGitInfo();
   const operatorPage = has(html, /Luke Operator V2/) ? { ok: true, status: 200 } : { ok: false, error: 'operator HTML missing header' };
   const surfaces = [
     ['Top Status Band', valuesFor(['freshness', 'risk blockers', 'autonomous recommendation-only state'], comparison.rows)],
@@ -225,7 +252,8 @@ function renderProof({ baseUrl, collected, comparison, autonomousStatus, safety,
   lines.push('## Environment');
   lines.push(`- Branch: ${branch}`);
   lines.push(`- Commit: ${commit}`);
-  lines.push('- Test result: npm test pending in this file; update after run');
+  lines.push(`- Proof generated: ${new Date().toISOString()}`);
+  lines.push('- Test result: read-only operator proof runner completed');
   lines.push('- App run command: node index.js');
   lines.push(`- Operator URL: ${baseUrl}/operator-v2`);
   lines.push('');
@@ -251,14 +279,15 @@ function renderProof({ baseUrl, collected, comparison, autonomousStatus, safety,
   lines.push(`- Autonomous recommendation-only visible: ${yesNo(safety.stagedOnlyVisible)}`);
   lines.push(`- No execute button: ${yesNo(safety.noExecuteButton)}`);
   lines.push(`- No direct execution shortcut: ${yesNo(safety.noDirectExecutionShortcut)}`);
-  lines.push(`- Old chat shell still available: ${yesNo(safety.oldChatAvailable)}`);
+  lines.push(`- Luke chat route still available: ${yesNo(safety.lukeChatAvailable)}`);
+  lines.push(`- Trading chat route still available: ${yesNo(safety.tradingChatAvailable)}`);
+  lines.push(`- Dashboard remains default route: ${yesNo(safety.dashboardDefault)}`);
   lines.push(`- /operator-v2 is not default: ${yesNo(safety.operatorNotDefault)}`);
   lines.push('');
-  lines.push('## Fixes Applied');
-  lines.push('- `trading/common.js`: restored the exported `ROOT` import so the app can start for browser/API proof.');
-  lines.push('- `lib/operator/decision-adapter.js`: mirrors old `/entries ES` WAIT/PASS behavior when live price is unavailable while preserving the raw `spine_decision`.');
-  lines.push('- `scripts/compare-operator-surfaces.js`: normalizes equivalent verdict arrows and empty vetoes as `none active` for proof comparison.');
-  lines.push('- `scripts/prove-operator-v2.js`: writes this single proof file from read-only local endpoint checks.');
+  lines.push('## Proof Runner Scope');
+  lines.push('- No trade state mutations.');
+  lines.push('- No execution, start, stop, confirm, or set-mode routes called.');
+  lines.push('- This artifact is generated from read-only local endpoint checks and static source inspection.');
   lines.push('');
   lines.push('## Remaining Mismatches');
   if (mismatches.length) {

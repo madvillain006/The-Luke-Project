@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Luke Brain</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #101214;
+      --band: #15191d;
+      --panel: #1b2025;
+      --panel-2: #22282e;
+      --line: #394047;
+      --text: #edf1f4;
+      --muted: #aab3bb;
+      --ok: #62c98f;
+      --warn: #e3b653;
+      --bad: #e06f6f;
+      --info: #72aeea;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font: 14px/1.45 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    button, input { font: inherit; }
+
+    .shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      background: var(--band);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 26px;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    input {
+      width: 100px;
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--text);
+      background: #121619;
+      padding: 6px 8px;
+    }
+
+    button {
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--text);
+      background: var(--panel-2);
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    button:hover { border-color: var(--info); }
+
+    main {
+      padding: 16px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .brain-map {
+      display: grid;
+      gap: 12px;
+      justify-items: center;
+    }
+
+    .brain-node,
+    .spine-node {
+      width: min(720px, 100%);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 14px;
+    }
+
+    .brain-node {
+      background: #182129;
+      border-color: #50606c;
+    }
+
+    .node-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .node-title {
+      font-weight: 850;
+      font-size: 16px;
+    }
+
+    .node-meta {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .fork-lines {
+      width: min(760px, 100%);
+      height: 34px;
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      border-top: 1px solid var(--line);
+      position: relative;
+    }
+
+    .fork-lines::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -12px;
+      width: 1px;
+      height: 46px;
+      background: var(--line);
+    }
+
+    .spines {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(240px, 1fr));
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .spine-node {
+      width: 100%;
+      min-height: 240px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 8px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .status.nominal,
+    .status.active,
+    .status.done { color: var(--ok); border-color: rgba(98, 201, 143, 0.55); }
+    .status.open,
+    .status.searching,
+    .status.attention { color: var(--warn); border-color: rgba(227, 182, 83, 0.6); }
+    .status.unavailable,
+    .status.blocked { color: var(--bad); border-color: rgba(224, 111, 111, 0.65); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(140px, 1fr));
+      gap: 10px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #14181c;
+      padding: 10px;
+      min-width: 0;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 6px;
+    }
+
+    li { color: var(--text); }
+
+    .muted { color: var(--muted); }
+
+    .panel-grid {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.9fr) minmax(360px, 1.1fr);
+      gap: 12px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .panel-header {
+      padding: 10px 12px;
+      background: var(--panel-2);
+      border-bottom: 1px solid var(--line);
+      font-weight: 850;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    .panel-body {
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .search-row {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 9px;
+      background: #14181c;
+      display: grid;
+      gap: 4px;
+    }
+
+    .error {
+      color: var(--bad);
+      font-weight: 750;
+    }
+
+    @media (max-width: 980px) {
+      header { align-items: flex-start; flex-direction: column; }
+      .toolbar { justify-content: flex-start; }
+      .spines,
+      .grid,
+      .panel-grid { grid-template-columns: 1fr; }
+      .fork-lines { display: none; }
+      input { width: min(120px, 28vw); }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div>
+        <h1>Luke Brain</h1>
+        <div class="subtitle">Local control plane with reporting spines</div>
+      </div>
+      <div class="toolbar">
+        <input id="lat" inputmode="decimal" placeholder="lat">
+        <input id="lon" inputmode="decimal" placeholder="lon">
+        <button id="refresh">Refresh</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="brain-map">
+        <div class="brain-node">
+          <div class="node-top">
+            <div>
+              <div class="node-title" id="brain-title">Brain</div>
+              <div class="node-meta" id="brain-meta">Loading</div>
+            </div>
+            <span class="status" id="brain-status">loading</span>
+          </div>
+          <div class="grid">
+            <div class="metric">
+              <div class="metric-label">Sub-agents</div>
+              <div class="metric-value" id="metric-subagents">-</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Inbox</div>
+              <div class="metric-value" id="metric-inbox">-</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Attention</div>
+              <div class="metric-value" id="metric-attention">-</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Generated</div>
+              <div class="metric-value" id="metric-generated">-</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fork-lines"></div>
+
+        <div class="spines">
+          <article class="spine-node" id="spine-trading"></article>
+          <article class="spine-node" id="spine-daily"></article>
+          <article class="spine-node" id="spine-history"></article>
+        </div>
+      </section>
+
+      <section class="panel-grid">
+        <div class="panel">
+          <div class="panel-header">Brain Next Actions</div>
+          <div class="panel-body">
+            <ul id="next-actions"></ul>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">History-Career Search Spine</div>
+          <div class="panel-body" id="searches"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    function statusClass(status) {
+      return `status ${String(status || 'unknown').toLowerCase()}`;
+    }
+
+    function setStatus(el, status) {
+      el.className = statusClass(status);
+      el.textContent = status || 'unknown';
+    }
+
+    function list(items) {
+      if (!items || !items.length) return '<div class="muted">None</div>';
+      return `<ul>${items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, (ch) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[ch]));
+    }
+
+    function renderSpine(el, spine, bodyRows) {
+      el.innerHTML = `
+        <div>
+          <div class="node-top">
+            <div>
+              <div class="node-title">${escapeHtml(spine.label)}</div>
+              <div class="node-meta">${escapeHtml(spine.agent)}</div>
+            </div>
+            <span class="${statusClass(spine.status)}">${escapeHtml(spine.status)}</span>
+          </div>
+        </div>
+        <div>${bodyRows}</div>
+      `;
+    }
+
+    function render(snapshot, daily, history) {
+      $('brain-title').textContent = snapshot.label || 'Luke brain';
+      $('brain-meta').textContent = snapshot.role || '';
+      setStatus($('brain-status'), snapshot.attention?.length ? 'attention' : 'nominal');
+      $('metric-subagents').textContent = Object.keys(snapshot.subagents || {}).length;
+      $('metric-inbox').textContent = snapshot.report_inbox?.count ?? 0;
+      $('metric-attention').textContent = snapshot.attention?.length ?? 0;
+      $('metric-generated').textContent = new Date(snapshot.generated_at).toLocaleTimeString();
+
+      const trading = snapshot.subagents?.trading || {};
+      renderSpine($('spine-trading'), trading, `
+        <div class="grid">
+          <div class="metric"><div class="metric-label">Mode</div><div class="metric-value">${escapeHtml(trading.mode)}</div></div>
+          <div class="metric"><div class="metric-label">Gate</div><div class="metric-value">${escapeHtml(trading.human_gate)}</div></div>
+          <div class="metric"><div class="metric-label">Trades</div><div class="metric-value">${trading.counts?.trades ?? 0}</div></div>
+          <div class="metric"><div class="metric-label">Bobby</div><div class="metric-value">${trading.counts?.bobby_context ?? 0}</div></div>
+        </div>
+        <div class="muted">Recommendation-only. No broker execution authority.</div>
+        ${list(trading.blockers || [])}
+      `);
+
+      renderSpine($('spine-daily'), daily, `
+        <div class="metric"><div class="metric-label">Weather</div><div class="metric-value">${escapeHtml(daily.weather?.summary)}</div></div>
+        ${list((daily.checklist || []).map(item => `${item.label}: ${item.status} - ${item.detail}`))}
+      `);
+
+      renderSpine($('spine-history'), history, `
+        <div class="grid">
+          <div class="metric"><div class="metric-label">Accepted</div><div class="metric-value">${history.pipeline?.accepted ?? 0}</div></div>
+          <div class="metric"><div class="metric-label">MLIS Filtered</div><div class="metric-value">${history.pipeline?.rejected_mlis ?? 0}</div></div>
+        </div>
+        ${list((history.tracks || []).map(track => track.label))}
+      `);
+
+      $('next-actions').innerHTML = (snapshot.next_actions || []).map(item => `<li>${escapeHtml(item)}</li>`).join('');
+      $('searches').innerHTML = (history.next_searches || []).slice(0, 16).map(item => `
+        <div class="search-row">
+          <strong>${escapeHtml(item.track)}</strong>
+          <span>${escapeHtml(item.query)}</span>
+        </div>
+      `).join('');
+    }
+
+    async function load() {
+      const lat = $('lat').value.trim();
+      const lon = $('lon').value.trim();
+      localStorage.setItem('luke.brain.lat', lat);
+      localStorage.setItem('luke.brain.lon', lon);
+      const weatherQuery = lat && lon ? `?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}` : '';
+      try {
+        const [brainRes, dailyRes, historyRes] = await Promise.all([
+          fetch('/agent/brain/status'),
+          fetch('/agent/brain/daily' + weatherQuery),
+          fetch('/agent/brain/history-career'),
+        ]);
+        if (!brainRes.ok || !dailyRes.ok || !historyRes.ok) throw new Error('brain API unavailable');
+        render(await brainRes.json(), await dailyRes.json(), await historyRes.json());
+      } catch (err) {
+        $('brain-meta').innerHTML = `<span class="error">${escapeHtml(err.message)}</span>`;
+      }
+    }
+
+    $('lat').value = localStorage.getItem('luke.brain.lat') || '';
+    $('lon').value = localStorage.getItem('luke.brain.lon') || '';
+    $('refresh').addEventListener('click', load);
+    load();
+  </script>
+</body>
+</html>

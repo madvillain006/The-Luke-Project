@@ -69,8 +69,8 @@ Then run:
 - `/verdict`
 - `/entries ES`
 
-Trust `/entries ES` over the older autonomous staging lane if they ever
-conflict.
+Trust `/entries ES` over any autonomous chat recommendation if they ever
+conflict. Autonomous should not stage or execute trades.
 
 If `/entries ES` refuses because inputs are stale or missing: do not
 force it. Load the missing inputs first.

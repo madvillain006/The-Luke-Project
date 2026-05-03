@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Luke</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #000;
+      --text: #f7f7f7;
+      --muted: #b9b9b9;
+      --line: #d8d8d8;
+      --soft-line: rgba(255,255,255,0.5);
+      --panel: #050505;
+      --ok: #8bf0b0;
+      --warn: #ffd166;
+      --bad: #ff7b7b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font: 15px/1.25 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+      overflow: hidden;
+    }
+
+    button, input {
+      font: inherit;
+      color: inherit;
+      background: transparent;
+    }
+
+    .app {
+      height: 100vh;
+      display: grid;
+      grid-template-rows: 72px 1fr 72px;
+      background: #000;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 180px 1fr 180px 180px;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      font-weight: 850;
+      font-size: 23px;
+    }
+
+    .brand,
+    .nav-item {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 15px;
+    }
+
+    .brand {
+      gap: 22px;
+    }
+
+    .brand .mark {
+      font-weight: 950;
+      letter-spacing: 0;
+    }
+
+    .nav-item.center {
+      justify-content: center;
+    }
+
+    .nav-item.right {
+      justify-content: flex-end;
+    }
+
+    .content {
+      min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(300px, 0.75fr);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .fork-grid {
+      min-height: 0;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(220px, 1fr));
+      grid-auto-rows: minmax(220px, 1fr);
+      border-right: 1px solid var(--line);
+    }
+
+    .tile {
+      position: relative;
+      min-width: 0;
+      min-height: 0;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 13px 15px;
+      background: var(--panel);
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 8px;
+    }
+
+    .tile:nth-child(3n) {
+      border-right: 0;
+    }
+
+    .tile-head {
+      display: flex;
+      align-items: baseline;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    .tile-index {
+      font-size: 20px;
+      font-weight: 850;
+      flex: 0 0 auto;
+    }
+
+    .tile-title {
+      font-size: 20px;
+      font-weight: 850;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tile-body {
+      min-height: 0;
+      display: grid;
+      align-content: end;
+      gap: 8px;
+    }
+
+    .tile-large {
+      font-size: clamp(38px, 6vw, 84px);
+      line-height: 0.92;
+      font-weight: 950;
+      letter-spacing: 0;
+    }
+
+    .tile-copy {
+      color: var(--muted);
+      font-size: 13px;
+      max-width: 36ch;
+    }
+
+    .tile-foot {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .tags {
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .plus {
+      border: 0;
+      font-size: 27px;
+      line-height: 1;
+      font-weight: 900;
+      padding: 0 4px;
+      cursor: pointer;
+    }
+
+    .status {
+      color: var(--muted);
+    }
+
+    .status.nominal,
+    .status.active,
+    .status.done {
+      color: var(--ok);
+    }
+
+    .status.open,
+    .status.searching,
+    .status.attention {
+      color: var(--warn);
+    }
+
+    .status.blocked,
+    .status.unavailable {
+      color: var(--bad);
+    }
+
+    .side {
+      min-height: 0;
+      padding: 17px 20px;
+      overflow: auto;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 22px;
+    }
+
+    .side h2 {
+      margin: 0 0 10px;
+      font-size: 26px;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .side p {
+      margin: 0 0 14px;
+      font-weight: 750;
+      max-width: 34ch;
+    }
+
+    .side-list {
+      display: grid;
+      gap: 10px;
+      font-weight: 750;
+    }
+
+    .side-section {
+      display: grid;
+      gap: 8px;
+    }
+
+    .side-label {
+      color: var(--muted);
+      font-weight: 850;
+    }
+
+    .bottom {
+      display: grid;
+      grid-template-columns: 76px 1fr 170px;
+      align-items: center;
+      gap: 0;
+      padding: 0 15px;
+    }
+
+    .play {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .play::before {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 5px;
+      width: 0;
+      height: 0;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+      border-left: 18px solid var(--text);
+    }
+
+    .timeline {
+      height: 31px;
+      border-left: 2px solid var(--line);
+      border-bottom: 2px solid var(--line);
+      display: grid;
+      grid-template-columns: repeat(24, 1fr);
+      align-items: end;
+      padding-left: 8px;
+    }
+
+    .tick {
+      width: 2px;
+      background: var(--line);
+      justify-self: center;
+    }
+
+    .tick.major {
+      height: 30px;
+    }
+
+    .tick.minor {
+      height: 15px;
+    }
+
+    .like {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 14px;
+      font-weight: 850;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 72px 0 72px 0;
+      background: #000;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      display: none;
+      grid-template-rows: 48px 1fr;
+      z-index: 5;
+    }
+
+    .modal.open {
+      display: grid;
+    }
+
+    .modal-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+      padding: 0 15px;
+      font-weight: 850;
+      font-size: 20px;
+    }
+
+    .modal iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #111;
+    }
+
+    .close {
+      border: 0;
+      font-size: 28px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    @media (max-width: 980px) {
+      body {
+        overflow: auto;
+      }
+
+      .app {
+        min-height: 100vh;
+        height: auto;
+        grid-template-rows: auto 1fr auto;
+      }
+
+      .topbar {
+        grid-template-columns: 1fr 1fr;
+        font-size: 20px;
+      }
+
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      .fork-grid {
+        grid-template-columns: 1fr;
+        border-right: 0;
+      }
+
+      .tile {
+        min-height: 260px;
+        border-right: 0;
+      }
+
+      .side {
+        border-top: 1px solid var(--line);
+      }
+
+      .bottom {
+        grid-template-columns: 48px 1fr 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><span class="mark">LUKE</span><span>Brain</span></div>
+      <div class="nav-item center">Search</div>
+      <div class="nav-item center">News</div>
+      <div class="nav-item right">Follow</div>
+    </header>
+
+    <main class="content">
+      <section class="fork-grid" aria-label="Luke spines">
+        <article class="tile" data-spine="brain">
+          <div class="tile-head"><span class="tile-index">000</span><span class="tile-title">Brain</span></div>
+          <div class="tile-body">
+            <div class="tile-large">LUKE</div>
+            <div class="tile-copy" id="brain-summary">Local control plane loading.</div>
+          </div>
+          <div class="tile-foot"><span class="tags" id="brain-tags">Brain, Routes, Inbox</span><button class="plus" data-open="brain">+</button></div>
+        </article>
+
+        <article class="tile" data-spine="trading">
+          <div class="tile-head"><span class="tile-index">001</span><span class="tile-title">Trading</span></div>
+          <div class="tile-body">
+            <div class="tile-large" id="trading-mode">--</div>
+            <div class="tile-copy">Existing Luke trading bot lives here. No route rename. No broker authority added.</div>
+          </div>
+          <div class="tile-foot"><span class="tags" id="trading-tags">Status, Verdict, Entries</span><button class="plus" data-open="trading">+</button></div>
+        </article>
+
+        <article class="tile" data-spine="daily">
+          <div class="tile-head"><span class="tile-index">002</span><span class="tile-title">Daily</span></div>
+          <div class="tile-body">
+            <div class="tile-large" id="daily-status">--</div>
+            <div class="tile-copy" id="daily-summary">Check-in, weather, priorities.</div>
+          </div>
+          <div class="tile-foot"><span class="tags">Check-in, Weather, Today</span><button class="plus" data-open="daily">+</button></div>
+        </article>
+
+        <article class="tile" data-spine="history">
+          <div class="tile-head"><span class="tile-index">003</span><span class="tile-title">History Career</span></div>
+          <div class="tile-body">
+            <div class="tile-large" id="history-count">--</div>
+            <div class="tile-copy">Public history, museum, curator, research, consulting, AI-adjacent. MLIS filtered.</div>
+          </div>
+          <div class="tile-foot"><span class="tags">Museums, Research, Consulting</span><button class="plus" data-open="history">+</button></div>
+        </article>
+
+        <article class="tile" data-spine="research">
+          <div class="tile-head"><span class="tile-index">004</span><span class="tile-title">Research</span></div>
+          <div class="tile-body">
+            <div class="tile-large">AI</div>
+            <div class="tile-copy">Historical research and AI-engineering material gets routed into the history-career spine first.</div>
+          </div>
+          <div class="tile-foot"><span class="tags">Papers, Methods, Leads</span><button class="plus" data-open="history">+</button></div>
+        </article>
+
+        <article class="tile" data-spine="system">
+          <div class="tile-head"><span class="tile-index">005</span><span class="tile-title">System</span></div>
+          <div class="tile-body">
+            <div class="tile-large" id="system-state">--</div>
+            <div class="tile-copy" id="system-copy">Runtime and inbox state loading.</div>
+          </div>
+          <div class="tile-foot"><span class="tags">Health, Logs, Runtime</span><button class="plus" data-open="brain">+</button></div>
+        </article>
+      </section>
+
+      <aside class="side">
+        <div>
+          <h2>INFO</h2>
+          <p>Luke is the overall local brain. Trading is one contained spine inside it, not the whole project identity.</p>
+          <p>The shell keeps legacy trading routes intact while making the larger brain the executable entrypoint.</p>
+          <p>Naming rule: do not move trading internals; mount them as surfaces. The shell is Luke overall.</p>
+        </div>
+
+        <div class="side-list" id="side-status">
+          <div class="side-section">
+            <span class="side-label">Brain</span>
+            <span id="side-brain">Loading</span>
+          </div>
+          <div class="side-section">
+            <span class="side-label">Trading</span>
+            <span id="side-trading">Loading</span>
+          </div>
+          <div class="side-section">
+            <span class="side-label">Daily</span>
+            <span id="side-daily">Loading</span>
+          </div>
+        </div>
+
+        <div class="side-list">
+          <div class="side-section">
+            <span class="side-label">Surfaces</span>
+            <span>/trading</span>
+            <span>/operator-v2</span>
+            <span>/brain-dashboard</span>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="bottom">
+      <button class="play" id="refresh" aria-label="Refresh"></button>
+      <div class="timeline" aria-hidden="true">
+        <span class="tick major"></span><span class="tick minor"></span><span class="tick minor"></span><span class="tick minor"></span>
+        <span class="tick major"></span><span class="tick minor"></span><span class="tick minor"></span><span class="tick minor"></span>
+        <span class="tick major"></span><span class="tick minor"></span><span class="tick minor"></span><span class="tick minor"></span>
+        <span class="tick major"></span><span class="tick minor"></span><span class="tick minor"></span><span class="tick minor"></span>
+        <span class="tick major"></span><span class="tick minor"></span><span class="tick minor"></span><span class="tick minor"></span>
+        <span class="tick major"></span><span class="tick minor"></span><span class="tick minor"></span><span class="tick minor"></span>
+      </div>
+      <div class="like"><span>◔</span><span>Like</span></div>
+    </footer>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-bar">
+      <span id="modal-title">Surface</span>
+      <button class="close" id="close" aria-label="Close">×</button>
+    </div>
+    <iframe id="surface" title="Luke surface"></iframe>
+  </div>
+
+  <script>
+    const surfaces = {
+      brain: { title: 'Brain Dashboard', url: '/brain-dashboard' },
+      trading: { title: 'Trading Bot', url: '/trading' },
+      daily: { title: 'Daily Spine', url: '/brain-dashboard' },
+      history: { title: 'History-Career Spine', url: '/brain-dashboard' },
+    };
+
+    const $ = (id) => document.getElementById(id);
+
+    function text(id, value) {
+      $(id).textContent = value == null || value === '' ? '--' : String(value);
+    }
+
+    function statusWord(value) {
+      return String(value || 'unknown').toUpperCase();
+    }
+
+    function openSurface(key) {
+      const surface = surfaces[key] || surfaces.brain;
+      $('modal-title').textContent = surface.title;
+      $('surface').src = surface.url;
+      $('modal').classList.add('open');
+    }
+
+    function closeSurface() {
+      $('modal').classList.remove('open');
+      $('surface').src = 'about:blank';
+    }
+
+    async function getJson(url) {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`${url} ${res.status}`);
+      return res.json();
+    }
+
+    async function refresh() {
+      try {
+        const [brain, daily, history] = await Promise.all([
+          getJson('/agent/brain/status'),
+          getJson('/agent/brain/daily'),
+          getJson('/agent/brain/history-career'),
+        ]);
+
+        const trading = brain.subagents?.trading || {};
+        text('brain-summary', `${Object.keys(brain.subagents || {}).length} spines / ${brain.report_inbox?.count || 0} reports`);
+        text('trading-mode', statusWord(trading.mode));
+        text('daily-status', statusWord(daily.status));
+        text('daily-summary', daily.weather?.summary || 'Weather needs location.');
+        text('history-count', `${history.pipeline?.accepted || 0}/${history.pipeline?.rejected_mlis || 0}`);
+        text('system-state', brain.attention?.length ? 'ATTN' : 'OK');
+        text('system-copy', `${brain.attention?.length || 0} attention items. ${brain.next_actions?.[0] || 'No immediate blocker.'}`);
+
+        text('side-brain', brain.attention?.length ? `${brain.attention.length} attention items` : 'Nominal');
+        text('side-trading', `${trading.status || 'unknown'} / ${trading.human_gate || 'gate unknown'}`);
+        text('side-daily', `${daily.status || 'unknown'} / ${daily.weather?.status || 'weather unknown'}`);
+      } catch (err) {
+        text('system-state', 'ERR');
+        text('system-copy', err.message);
+      }
+    }
+
+    document.querySelectorAll('[data-open]').forEach((btn) => {
+      btn.addEventListener('click', () => openSurface(btn.dataset.open));
+    });
+    $('close').addEventListener('click', closeSurface);
+    $('refresh').addEventListener('click', refresh);
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeSurface();
+    });
+    refresh();
+  </script>
+</body>
+</html>

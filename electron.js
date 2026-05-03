@@ -55,13 +55,15 @@ async function startServer() {
 
 function createWindow() {
     const saved = loadWindowState()
+    const defaultBounds = { width: 1280, height: 820, x: 80, y: 60 }
+    const bounds = saved && saved.width >= 960 && saved.height >= 640 ? saved : defaultBounds
     const win = new BrowserWindow({
-        width:  saved ? saved.width  : 400,
-        height: saved ? saved.height : 520,
-        x:      saved ? saved.x      : 1340,
-        y:      saved ? saved.y      : 580,
-        minWidth: 320,
-        minHeight: 400,
+        width:  bounds.width,
+        height: bounds.height,
+        x:      bounds.x,
+        y:      bounds.y,
+        minWidth: 960,
+        minHeight: 640,
         alwaysOnTop: true,
         resizable: true,
         title: 'Luke',

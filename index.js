@@ -354,9 +354,29 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/chat.html");
 });
 
+app.get("/shell", (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.sendFile(__dirname + "/luke-shell.html");
+});
+
+app.get("/trading", (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.sendFile(__dirname + "/chat.html");
+});
+
 app.get("/operator-v2", (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.sendFile(__dirname + "/operator-v2.html");
+});
+
+app.get("/brain", (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.sendFile(__dirname + "/brain-dashboard.html");
+});
+
+app.get("/brain-dashboard", (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.sendFile(__dirname + "/brain-dashboard.html");
 });
 
 app.post("/chat", async (req, res) => {
@@ -905,6 +925,7 @@ app.get("/agent/autonomous/metrics", (req, res) => {
 });
 
 app.use("/agent/research", require("./agents/agent-06-research"));
+app.use("/agent/brain", require("./agents/agent-00-brain"));
 app.use("/agent/trader", require("./agents/agent-02-trader"));
 app.use("/agent/autonomous", require("./agents/agent-02b-autonomous"));
 app.use("/agent/income", require("./agents/agent-03-income"));

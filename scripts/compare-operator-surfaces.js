@@ -6,7 +6,7 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const OUT_FILE = path.join(ROOT, 'artifacts', 'OPERATOR_SURFACE_COMPARISON_LATEST.md');
 const DEFAULT_BASE_URL = process.env.LUKE_OPERATOR_BASE_URL || 'http://127.0.0.1:3000';
-const TIMEOUT_MS = Number(process.env.LUKE_OPERATOR_COMPARE_TIMEOUT_MS || 5000);
+const TIMEOUT_MS = Number(process.env.LUKE_OPERATOR_COMPARE_TIMEOUT_MS || 15000);
 
 const OLD_COMMANDS = {
   status: '/status',
@@ -31,37 +31,52 @@ function withTimeout(ms = TIMEOUT_MS) {
   return { controller, done: () => clearTimeout(timer) };
 }
 
+function retryDelayMs(response) {
+  const seconds = Number(response.headers.get('retry-after'));
+  if (Number.isFinite(seconds) && seconds > 0) return Math.min(seconds * 1000, 65000);
+  return 1500;
+}
+
 async function fetchJson(baseUrl, endpoint, options = {}) {
-  const { controller, done } = withTimeout();
-  try {
-    const response = await fetch(new URL(endpoint, baseUrl), {
-      ...options,
-      signal: controller.signal,
-      headers: {
-        'Content-Type': 'application/json',
-        ...(options.headers || {}),
-      },
-    });
-    const text = await response.text();
-    let body = null;
-    try { body = text ? JSON.parse(text) : null; } catch { body = { raw: text }; }
-    return {
-      ok: response.ok,
-      status: response.status,
-      endpoint,
-      body,
-      error: response.ok ? null : `HTTP ${response.status}`,
-    };
-  } catch (err) {
-    return {
-      ok: false,
-      status: null,
-      endpoint,
-      body: null,
-      error: err.name === 'AbortError' ? `timeout after ${TIMEOUT_MS}ms` : err.message,
-    };
-  } finally {
-    done();
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    const { controller, done } = withTimeout();
+    try {
+      const response = await fetch(new URL(endpoint, baseUrl), {
+        ...options,
+        signal: controller.signal,
+        headers: {
+          'Content-Type': 'application/json',
+          ...(options.headers || {}),
+        },
+      });
+      const text = await response.text();
+      let body = null;
+      try { body = text ? JSON.parse(text) : null; } catch { body = { raw: text }; }
+      if (response.status === 429 && attempt < 2) {
+        await new Promise(resolve => setTimeout(resolve, retryDelayMs(response)));
+        continue;
+      }
+      return {
+        ok: response.ok,
+        status: response.status,
+        endpoint,
+        body,
+        error: response.ok ? null : `HTTP ${response.status}`,
+      };
+    } catch (err) {
+      if (attempt === 2) {
+        return {
+          ok: false,
+          status: null,
+          endpoint,
+          body: null,
+          error: err.name === 'AbortError' ? `timeout after ${TIMEOUT_MS}ms` : err.message,
+        };
+      }
+      await new Promise(resolve => setTimeout(resolve, 300));
+    } finally {
+      done();
+    }
   }
 }
 
@@ -131,7 +146,8 @@ function parseStatusReply(text) {
   const reply = String(text || '');
   return {
     freshness: parseFreshnessText(reply),
-    staged_only: /staged-only/i.test(reply),
+    recommendation_only: /recommendation-only/i.test(reply),
+    staged_only: /staged-only|recommendation-only/i.test(reply),
     risk_blockers: [
       ...reply.split('\n').filter(line => /Apex|kill|blocked|floor|pending|open position/i.test(line)),
     ],
@@ -232,17 +248,21 @@ function normalizeConfluenceApi(value) {
 }
 
 function normalizeOperatorStatus(value) {
+  const recommendationOnly = value?.autonomous?.recommendation_only ?? value?.risk_status?.recommendation_only ?? null;
   return {
     freshness: freshnessFromApi(value),
     risk_blockers: value?.blockers || value?.risk_status?.blockers || null,
+    recommendation_only: recommendationOnly,
     staged_only: value?.autonomous?.staged_only ?? value?.risk_status?.staged_only ?? null,
   };
 }
 
 function normalizePreflight(value) {
+  const recommendationOnly = value?.recommendation_only ?? value?.risk_status?.recommendation_only ?? null;
   return {
     freshness: freshnessFromApi(value),
     risk_blockers: value?.blockers || null,
+    recommendation_only: recommendationOnly,
     staged_only: value?.staged_only ?? value?.risk_status?.staged_only ?? null,
     action: value?.decision?.action || null,
     anchor: value?.decision?.confluence?.anchor ?? null,
@@ -305,7 +325,7 @@ function buildComparison(collected) {
     ['sizing', oldEntries.sizing || oldPreflight.sizing, newDecision.sizing || newReadiness.sizing],
     ['vetoes', oldEntries.vetoes || oldPreflight.vetoes, newDecision.vetoes || newReadiness.vetoes],
     ['risk blockers', oldStatus.risk_blockers || oldPreflight.risk_blockers, newStatus.risk_blockers || newReadiness.risk_blockers],
-    ['autonomous staged-only state', oldStatus.staged_only || oldPreflight.staged_only, newStatus.staged_only || newReadiness.staged_only],
+    ['autonomous recommendation-only state', oldStatus.recommendation_only || oldPreflight.recommendation_only, newStatus.recommendation_only || newReadiness.recommendation_only],
     ['confluence row count', oldVerdict.row_count, newConfluence.row_count],
     ['confluence top rows', oldVerdict.top_rows, newConfluence.top_rows],
   ].map(([field, oldValue, newValue]) => ({

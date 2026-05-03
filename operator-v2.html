@@ -329,7 +329,7 @@
             <div class="band-item"><div class="band-label">Freshness</div><div class="band-value" id="band-freshness">Loading</div></div>
             <div class="band-item"><div class="band-label">Market Data</div><div class="band-value" id="band-market-data">UNKNOWN</div></div>
             <div class="band-item"><div class="band-label">Risk</div><div class="band-value" id="band-risk">Loading</div></div>
-            <div class="band-item"><div class="band-label">Autonomous</div><div class="band-value" id="band-auto">Staged-only</div></div>
+            <div class="band-item"><div class="band-label">Autonomous</div><div class="band-value" id="band-auto">Recommendation-only</div></div>
           </div>
         </div>
       </article>
@@ -378,14 +378,14 @@
         <article class="panel" aria-labelledby="autonomous-title">
           <div class="panel-header">
             <div class="panel-title" id="autonomous-title">Autonomous</div>
-            <span class="pill warn">Confirmation required</span>
+            <span class="pill warn">Recommendation-only</span>
           </div>
           <div class="panel-body" id="autonomous-panel"></div>
         </article>
 
         <div class="panel" aria-label="Read-only safety note">
           <div class="panel-body">
-            <div class="line warn-text">No execute button exists here. Use the existing chat confirmation flow for any staged signal.</div>
+            <div class="line warn-text">No execute button exists here. Autonomous recommendations do not stage or execute trades.</div>
           </div>
         </div>
       </section>
@@ -523,13 +523,13 @@
       el('autonomous-panel').innerHTML = `
         <div class="pill-row">
           ${pill(readiness?.ok ? 'Preflight OK' : 'Preflight blocked', readiness?.ok ? 'ok' : 'bad')}
-          ${pill('staged-only', 'warn')}
+          ${pill('recommendation-only', 'warn')}
           ${pill(operatorStatus?.autonomous?.running ? 'running' : 'stopped', operatorStatus?.autonomous?.running ? 'ok' : 'warn')}
         </div>
-        <div class="reason">Staged candidates require explicit confirmation in the existing confirmation flow.</div>
+        <div class="reason">Autonomous can only publish a recommendation to Luke chat. It does not stage or execute trades.</div>
         ${renderKv([
           ['Mode', operatorStatus?.autonomous?.mode],
-          ['Pending staged signal', pending ? 'yes' : 'none'],
+          ['Pending manual staged signal', pending ? 'yes' : 'none'],
           ['Spine anchor', decision?.confluence?.anchor ?? operatorStatus?.latest_decision?.anchor ?? null],
           ['Spine side', decision?.action ?? operatorStatus?.latest_decision?.action ?? null],
           ['Sizing', decision?.sizing ?? operatorStatus?.latest_decision?.sizing ?? null]
@@ -577,7 +577,7 @@
       el('band-system').textContent = status?.ok ? 'OK' : 'BLOCKED';
       el('band-freshness').textContent = freshnessText(status?.freshness);
       el('band-risk').textContent = risk?.ok ? 'OK' : 'BLOCKED';
-      el('band-auto').textContent = status?.autonomous?.staged_only ? 'staged-only' : 'unknown';
+      el('band-auto').textContent = status?.autonomous?.recommendation_only ? 'recommendation-only' : (status?.autonomous?.staged_only ? 'staged-only' : 'unknown');
       const md = status?.market_data || status?.decision?.market_data;
       el('band-market-data').textContent = md?.price
         ? `${md.source || 'UNKNOWN'} ${md.stale ? 'STALE' : md.delayed ? 'DELAYED' : 'LIVE'} ${md.price}`

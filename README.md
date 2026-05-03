@@ -73,7 +73,7 @@ Main user-facing commands:
 - `data/historical/`
   - intraday historical bars for backtest/replay
 - `state/snapshots/trading-state.json`
-  - primary autonomous staging/risk state snapshot
+  - primary trading risk/recommendation state snapshot
 - `state/events/trading-events.jsonl`
   - append-only trading state event log
 - `autonomous-state.json`
@@ -104,8 +104,9 @@ Main user-facing commands:
 - `lib/slash-commands.js`
   - user-facing command surface
 - `trading/router.js`
-  - autonomous staging system
-  - stage-only, not blind execution
+  - autonomous evaluation and explicit staged-execution routes
+  - autonomous evaluation is recommendation-only through Luke chat
+  - staged/paper/shadow execution remains a separate explicit confirmation flow
 - `trading/signals.js`
   - Ximes-style signal parsing and scoring path
 - `agents/agent-14-kat.js`
@@ -118,7 +119,7 @@ Main user-facing commands:
 - valid model/API credentials for LLM-backed paths
 - live analyst inputs loaded each session
 - writable local state files
-- fresh same-day Bobby/Dubz context before recommendations or autonomous staging should be trusted
+- fresh same-day Bobby/Dubz context before recommendations should be trusted
 
 ## Morning workflow
 

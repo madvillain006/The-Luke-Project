@@ -421,12 +421,12 @@ describe('decision spine regression harness', () => {
       sizing: 'full',
       active_vetoes: [],
     }));
-    expect(['READY_TO_STAGE_IF_CANDIDATE_ALIGNS', 'BLOCKED']).toContain(result.readiness.status);
+    expect(['READY_TO_RECOMMEND_IF_CANDIDATE_ALIGNS', 'BLOCKED']).toContain(result.readiness.status);
     expect(result.readiness.next_action).toMatch(/Wait for aligned candidate|Fix first blocker/);
     expect(result.market_context).toBeNull();
   });
 
-  it('autonomous remains staged-only and does not execute without explicit staged execution', async () => {
+  it('manual staged flow does not execute without explicit staged execution', async () => {
     const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({ ok: true, json: async () => ({ ok: true }) });
 
     const state = {

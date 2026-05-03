@@ -23,12 +23,13 @@ describe('operator surface comparison script', () => {
     const status = parseStatusReply([
       'LUKE ONLINE',
       'Freshness: Dubz OK (3) | Bobby OK (26) | Saty OK',
-      'Autonomous: staged-only; use preflight before trusting staging',
+      'Autonomous: recommendation-only; no autonomous staging or execution',
     ].join('\n'));
 
     expect(status.freshness.dubz).toEqual({ loaded: true, count: 3 });
     expect(status.freshness.bobby).toEqual({ loaded: true, count: 26 });
     expect(status.freshness.saty).toEqual({ loaded: true, count: null });
+    expect(status.recommendation_only).toBe(true);
     expect(status.staged_only).toBe(true);
 
     const entries = parseEntriesReply([
@@ -89,13 +90,14 @@ describe('operator surface comparison script', () => {
 
     const status = normalizeOperatorStatus({
       blockers: ['fresh Saty context missing'],
-      autonomous: { staged_only: true },
+      autonomous: { recommendation_only: true, staged_only: true },
       freshness: {
         saty: { loaded: false },
         dubz: { loaded: true, count: 1 },
         bobby: { loaded: true, count: 3 },
       },
     });
+    expect(status.recommendation_only).toBe(true);
     expect(status.staged_only).toBe(true);
     expect(status.risk_blockers).toEqual(['fresh Saty context missing']);
   });
@@ -115,16 +117,16 @@ describe('operator surface comparison script', () => {
       errors: [],
       limitations: ['test limitation'],
       old: {
-        status: { response: { ok: true, status: 200, body: { reply: 'Freshness: Dubz OK (1) | Bobby OK (1) | Saty OK\nAutonomous: staged-only' } } },
+        status: { response: { ok: true, status: 200, body: { reply: 'Freshness: Dubz OK (1) | Bobby OK (1) | Saty OK\nAutonomous: recommendation-only' } } },
         entries: { response: { ok: true, status: 200, body: { reply: 'Recommendation: LONG ES 6809 | A grade | full size\nAnchor: ES 6809 | A grade | full size | side LONG\nVetoes: none active\nPlan: entry 6810 | ok 6811 | stop 6807 | target 6860' } } },
         verdict: { response: { ok: true, status: 200, body: { reply: '- **ES 6809**  ->  **A** (0.90)  dubz, bobby' } } },
       },
       autonomous: {
-        preflight: { response: { ok: true, status: 200, body: { staged_only: true, blockers: [], decision: { action: 'LONG', confluence: { anchor: 6809 }, entry: 6810, acceptable_entry: 6811, stop: 6807, target: 6860, sizing: 'full', vetoes: [] } } } },
+        preflight: { response: { ok: true, status: 200, body: { recommendation_only: true, staged_only: true, blockers: [], decision: { action: 'LONG', confluence: { anchor: 6809 }, entry: 6810, acceptable_entry: 6811, stop: 6807, target: 6860, sizing: 'full', vetoes: [] } } } },
       },
       new: {
-        operatorStatus: { response: { ok: true, status: 200, body: { autonomous: { staged_only: true }, freshness: { saty: { loaded: true }, dubz: { loaded: true, count: 1 }, bobby: { loaded: true, count: 1 } }, blockers: [] } } },
-        operatorReadiness: { response: { ok: true, status: 200, body: { staged_only: true, blockers: [], decision: { action: 'LONG', confluence: { anchor: 6809 }, entry: 6810, acceptable_entry: 6811, stop: 6807, target: 6860, sizing: 'full', vetoes: [] } } } },
+        operatorStatus: { response: { ok: true, status: 200, body: { autonomous: { recommendation_only: true, staged_only: true }, freshness: { saty: { loaded: true }, dubz: { loaded: true, count: 1 }, bobby: { loaded: true, count: 1 } }, blockers: [] } } },
+        operatorReadiness: { response: { ok: true, status: 200, body: { recommendation_only: true, staged_only: true, blockers: [], decision: { action: 'LONG', confluence: { anchor: 6809 }, entry: 6810, acceptable_entry: 6811, stop: 6807, target: 6860, sizing: 'full', vetoes: [] } } } },
         decision: { response: { ok: true, status: 200, body: { decision: { action: 'LONG', confluence: { anchor: 6809 }, entry: 6810, acceptable_entry: 6811, stop: 6807, target: 6860, sizing: 'full', vetoes: [], freshness: { saty: { loaded: true }, dubz: { loaded: true, count: 1 }, bobby: { loaded: true, count: 1 } } } } } },
         confluence: { response: { ok: true, status: 200, body: { rows: [{ markdown: '- **ES 6809**  ->  **A** (0.90)  dubz, bobby' }] } } },
       },

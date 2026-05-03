@@ -344,11 +344,12 @@ async function buildAutonomousPreflight(state) {
   if (marketCtx && marketCtx.stale) blockers.push(`market context stale: ${marketCtx.error || "unknown"}`);
 
   const readiness = {
-    status: blockers.length === 0 ? "READY_TO_STAGE_IF_CANDIDATE_ALIGNS" : "BLOCKED",
+    status: blockers.length === 0 ? "READY_TO_RECOMMEND_IF_CANDIDATE_ALIGNS" : "BLOCKED",
     staged_only: true,
+    recommendation_only: true,
     next_action: blockers.length > 0
       ? `Fix first blocker: ${blockers[0]}`
-      : "Wait for aligned candidate; execution still requires explicit staged confirmation.",
+      : "Wait for aligned candidate; autonomous will send a chat recommendation only.",
     anchor: decision.confluence?.anchor ?? null,
     side: decision.action,
     sizing: decision.sizing,
@@ -378,6 +379,7 @@ async function buildAutonomousPreflight(state) {
     },
     warnings,
     staged_only: true,
+    recommendation_only: true,
 
     // Backward-compatible fields for older dashboard consumers.
     consistency: consistencyReason || "ok",
@@ -839,10 +841,26 @@ router.post("/evaluate", async (req, res) => {
       return;
     }
 
-    // DISABLED - requires human confirm
-    // if (freshState.mode === "paper") executePaper(freshState, signal);
-    // else if (freshState.mode === "shadow") await executeShadow(freshState, signal);
-    else await stageTrade(freshState, signal);
+    log("autonomous-recommendation", {
+      ticker: signal.ticker,
+      direction: signal.direction,
+      entry: signal.entry,
+      stop: signal.stop,
+      target: signal.target,
+      confidence: signal.confidence || null,
+      reason: signal.reason,
+      spine_anchor: entriesAlignment.best?.canonical_price ?? null,
+      spine_action: entriesAlignment.spine_decision?.action ?? null,
+      mode: freshState.mode,
+    });
+    notifyLuke(
+      `02B RECOMMENDATION ONLY\n` +
+      `${signal.direction} ${signal.ticker || "ES"}\n` +
+      `Entry: ${signal.entry} | Stop: ${signal.stop} | Target: ${signal.target}\n` +
+      `Spine: ${entriesAlignment.spine_decision?.action || "PASS"} ${entriesAlignment.best?.canonical_price ?? "no anchor"}\n` +
+      `${signal.reason}\n` +
+      `No signal staged. Autonomous is recommendation-only until operator proof is complete.`
+    );
   } catch (err) {
     log("autonomous-evaluate-error", { error: err.message });
   }

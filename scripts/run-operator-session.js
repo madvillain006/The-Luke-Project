@@ -17,8 +17,9 @@ const {
 
 const ROOT = path.join(__dirname, '..');
 const OUT_FILE = path.join(ROOT, 'artifacts', 'AUTOMATED_NATURAL_SESSION.md');
+const DEBUG_FILE = path.join(ROOT, 'artifacts', 'operator-session-debug.json');
 const BASE_URL = process.env.LUKE_OPERATOR_BASE_URL || 'http://127.0.0.1:3000';
-const TIMEOUT_MS = Number(process.env.LUKE_OPERATOR_SESSION_TIMEOUT_MS || 7000);
+const TIMEOUT_MS = Number(process.env.LUKE_OPERATOR_SESSION_TIMEOUT_MS || 15000);
 
 const SATY_TEXT = `/saty
 SPX Saty ATR Levels
@@ -110,36 +111,60 @@ function withTimeout(ms = TIMEOUT_MS) {
   return { controller, done: () => clearTimeout(timer) };
 }
 
+function retryDelayMs(response) {
+  const seconds = Number(response.headers.get('retry-after'));
+  if (Number.isFinite(seconds) && seconds > 0) return Math.min(seconds * 1000, 65000);
+  return 1500;
+}
+
 async function fetchText(endpoint) {
-  const { controller, done } = withTimeout();
-  try {
-    const response = await fetch(new URL(endpoint, BASE_URL), { method: 'GET', signal: controller.signal });
-    const body = await response.text();
-    return { ok: response.ok, status: response.status, body, error: response.ok ? null : `HTTP ${response.status}` };
-  } catch (err) {
-    return { ok: false, status: null, body: '', error: err.name === 'AbortError' ? `timeout after ${TIMEOUT_MS}ms` : err.message };
-  } finally {
-    done();
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    const { controller, done } = withTimeout();
+    try {
+      const response = await fetch(new URL(endpoint, BASE_URL), { method: 'GET', signal: controller.signal });
+      const body = await response.text();
+      if (response.status === 429 && attempt < 2) {
+        await new Promise(resolve => setTimeout(resolve, retryDelayMs(response)));
+        continue;
+      }
+      return { ok: response.ok, status: response.status, body, error: response.ok ? null : `HTTP ${response.status}` };
+    } catch (err) {
+      if (attempt === 2) {
+        return { ok: false, status: null, body: '', error: err.name === 'AbortError' ? `timeout after ${TIMEOUT_MS}ms` : err.message };
+      }
+      await new Promise(resolve => setTimeout(resolve, 300));
+    } finally {
+      done();
+    }
   }
 }
 
 async function fetchJson(endpoint, options = {}) {
-  const { controller, done } = withTimeout();
-  try {
-    const response = await fetch(new URL(endpoint, BASE_URL), {
-      method: 'GET',
-      signal: controller.signal,
-      headers: { 'Content-Type': 'application/json' },
-      ...options,
-    });
-    const text = await response.text();
-    let body = null;
-    try { body = text ? JSON.parse(text) : null; } catch { body = { raw: text }; }
-    return { ok: response.ok, status: response.status, body, error: response.ok ? null : `HTTP ${response.status}` };
-  } catch (err) {
-    return { ok: false, status: null, body: null, error: err.name === 'AbortError' ? `timeout after ${TIMEOUT_MS}ms` : err.message };
-  } finally {
-    done();
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    const { controller, done } = withTimeout();
+    try {
+      const response = await fetch(new URL(endpoint, BASE_URL), {
+        method: 'GET',
+        signal: controller.signal,
+        headers: { 'Content-Type': 'application/json' },
+        ...options,
+      });
+      const text = await response.text();
+      let body = null;
+      try { body = text ? JSON.parse(text) : null; } catch { body = { raw: text }; }
+      if (response.status === 429 && attempt < 2) {
+        await new Promise(resolve => setTimeout(resolve, retryDelayMs(response)));
+        continue;
+      }
+      return { ok: response.ok, status: response.status, body, error: response.ok ? null : `HTTP ${response.status}` };
+    } catch (err) {
+      if (attempt === 2) {
+        return { ok: false, status: null, body: null, error: err.name === 'AbortError' ? `timeout after ${TIMEOUT_MS}ms` : err.message };
+      }
+      await new Promise(resolve => setTimeout(resolve, 300));
+    } finally {
+      done();
+    }
   }
 }
 
@@ -235,8 +260,8 @@ function compareCheckpoint(snapshot) {
   const apiConfluence = normalizeConfluenceApi(snapshot.confluence?.body);
   const decisionMarketData = snapshot.decision?.body?.market_data || snapshot.decision?.body?.marketData || null;
   const statusMarketData = snapshot.operatorStatus?.body?.market_data || null;
-  const oldStagedOnly = oldStatus.staged_only === true ? true : null;
-  const newStagedOnly = apiStatus.staged_only === true || apiReadiness.staged_only === true ? true : null;
+  const oldRecommendationOnly = oldStatus.recommendation_only === true ? true : null;
+  const newRecommendationOnly = apiStatus.recommendation_only === true || apiReadiness.recommendation_only === true ? true : null;
 
   const pairs = [
     ['freshness', oldEntries.freshness || oldStatus.freshness, apiDecision.freshness || apiStatus.freshness || apiReadiness.freshness],
@@ -249,7 +274,7 @@ function compareCheckpoint(snapshot) {
     ['target', oldEntries.target, apiDecision.target],
     ['sizing', oldEntries.sizing, apiDecision.sizing],
     ['vetoes', oldEntries.vetoes, apiDecision.vetoes],
-    ['staged-only', oldStagedOnly, newStagedOnly],
+    ['recommendation-only', oldRecommendationOnly, newRecommendationOnly],
     ['confluence row count', oldVerdict.row_count, apiConfluence.row_count],
     ['confluence top rows', oldVerdict.top_rows, apiConfluence.top_rows],
     ['market data source', decisionMarketData?.source || null, statusMarketData?.source || null],
@@ -314,7 +339,7 @@ async function inspectDom() {
         readOnlyWarning: lower.includes('read-only mirror'),
         panels: panels.filter(panel => lower.includes(panel.toLowerCase())),
         passNonActionable: lower.includes('no actionable trade') || lower.includes('not actionable'),
-        stagedOnly: /staged-only/i.test(text) && /confirmation/i.test(text),
+        stagedOnly: /recommendation-only/i.test(text) && /does not stage or execute/i.test(text),
         marketDataShown: /market data/i.test(text) && /(UNKNOWN|STALE|DELAYED|LIVE|tradovate|polygon|yahoo)/i.test(text),
         noExecuteButton: buttons.every(label => label === 'refresh'),
         buttons,
@@ -430,7 +455,7 @@ function renderReport({ app, dom, groups, snapshots, mismatches, duplicate, npmT
     notTestable.push('Active chop-zone/veto was not produced by the submitted inputs and trusted decision spine.');
   }
   if (!latest?.autonomousStatus?.body?.pending_signal) {
-    notTestable.push('Pending staged signal was not present; runner did not create or confirm one.');
+    notTestable.push('Pending manual staged signal was not present; runner did not create or confirm one.');
   }
   if (latestDecision.action === 'PASS') {
     notTestable.push('Fresh actionable LONG/SHORT was not available because the trusted surface remained PASS/WAIT.');
@@ -492,7 +517,9 @@ function renderReport({ app, dom, groups, snapshots, mismatches, duplicate, npmT
   lines.push(blockedByLogic.length ? blockedByLogic.map(item => `- ${item}`).join('\n') : '- None.');
   lines.push('');
   lines.push('## Remaining Mismatches');
-  lines.push(mismatches.length ? mismatches.map(item => `- ${item.checkpoint} ${item.field}: ${item.status}`).join('\n') : '- None.');
+  lines.push(mismatches.length
+    ? mismatches.map(item => `- ${item.checkpoint} ${item.field}: ${item.status} (old ${renderValue(item.oldValue)} vs new ${renderValue(item.newValue)})`).join('\n')
+    : '- None.');
   lines.push('');
   lines.push('## Not Testable / Not Naturally Observed');
   lines.push(notTestable.length ? notTestable.map(item => `- ${item}`).join('\n') : '- None.');
@@ -541,6 +568,7 @@ async function main() {
     });
     fs.mkdirSync(path.dirname(OUT_FILE), { recursive: true });
     fs.writeFileSync(OUT_FILE, report.markdown, 'utf8');
+    fs.writeFileSync(DEBUG_FILE, JSON.stringify({ groups, snapshots, mismatches, duplicate }, null, 2), 'utf8');
     console.log(`Wrote ${OUT_FILE}`);
     if (report.verdict === 'AUTOMATED_SESSION_BLOCKED_BY_MISMATCH') process.exitCode = 1;
   } finally {

@@ -3,7 +3,7 @@
 ## Classification Summary
 - Code-fixable now: none known.
 - Environment/provider proof: blockers 1, 2, 4.
-- Live-market observation required: blocker 3.
+- Live-market observation required: blockers 3, 4.
 - Human/trader design choice: none currently blocking code review.
 
 ## 1. Tradovate Live Market Data Not Proven
@@ -26,14 +26,14 @@
 - Blocks live execution: yes.
 - Type: provider limitation.
 
-## 3. Autonomous-Generated Pending Signal Not Naturally Observed
-- Why it matters: staging, paper/shadow execute-staged, and Mancini chop veto are now proof-covered, but live proof still needs an autonomous evaluation that naturally creates a pending staged signal.
-- File/module: `trading/router.js`, `scripts/run-operator-session.js`, `scripts/prove-staged-flow.js`, `lib/decision-spine/index.js`.
-- Required fix: market-hours or controlled paper/shadow session that naturally produces an aligned candidate and pending staged signal without executing live.
+## 3. Live Autonomous Recommendation Not Naturally Observed
+- Why it matters: autonomous is now recommendation-only, so the next proof is whether it emits the same safe chat recommendation the operator would expect from `/entries ES` during real market conditions.
+- File/module: `trading/router.js`, `scripts/run-operator-session.js`, `lib/decision-spine/index.js`.
+- Required fix: market-hours or controlled paper/shadow session that naturally produces an aligned candidate and confirms the output is chat recommendation only.
 - Blocks code review: no.
 - Blocks trading companion: no.
-- Blocks staged bot: partially for natural autonomous staging proof.
-- Blocks live execution: yes.
+- Blocks staged bot: no.
+- Blocks live execution: no.
 - Type: live-market observation required.
 
 ## 4. Live Execution Not Environment-Proven
@@ -53,3 +53,5 @@
 - Bobby/Katbot/Jefe heatmap policy: Bobby-style heatmap/actionability remains required before trade plans are actionable.
 - Staged flow: controlled `/execute-staged` route proof passes for paper execution and shadow safe-reject without live execution.
 - Mancini chop veto: automated session now observes a chop veto in trusted decision output.
+- Historical replay: `npm run replay:history` runs local ES minute bars, Saty, Mancini, Bobby text, and cached Bobby image parses through the spine. It observed 3 Mancini vetoes and kept every replay checkpoint non-actionable at the adapter layer.
+- Autonomous posture: evaluation is recommendation-only to Luke chat; it no longer creates autonomous pending staged signals.

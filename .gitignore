@@ -11,6 +11,8 @@ autonomous-state.json
 data/*
 !data/futures-rollover-calendar.json
 !data/.gitkeep
+!data/trading-context/
+!data/trading-context/**
 !data/backtest/
 data/backtest/*
 !data/backtest/es-long-bracket/

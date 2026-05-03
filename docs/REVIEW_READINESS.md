@@ -17,21 +17,25 @@ Branch: `refactor/decision-spine-cleanup`
 - Saty/Yahoo provider fallback.
 - Parser/input hardening and Dubz carry-forward.
 - State path normalization.
+- Local brain agent reporting layer.
 - Root cleanup / legacy-root archive.
 - Proof/session tools.
 - Review docs.
 
 ## Tests Run
-- `cmd /c npx vitest run tests/saty-auto-pull.test.js tests/decision-spine.test.js tests/slash-commands.test.js tests/market-data.test.js`: PASS, 4 files, 38 tests.
-- Full test/proof commands are rerun before commit and recorded in the final response.
+- `C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -Command "cd 'C:\Users\conor\luke'; npx vitest run"`: PASS, 40 files, 454 tests passed, 1 skipped.
+- `npm run prove:operator-v2`: PASS, read-only mirror proof starts/connects to Luke and exits clean.
+- `npm run session:operator-v2`: PASS, automated old-shell/API/operator-v2 session proof.
+- `npm run market:data:test`: PASS, safe UNKNOWN behavior when providers fail in this sandbox.
 - `npm run prove:staged-flow`: PASS, controlled local paper/shadow route drill.
+- `npm run replay:history`: PASS, 7 historical sessions, 26 checkpoints, 19 Bobby-parsed checkpoints, 3 Mancini vetoes, 0 actionable adapter decisions.
 
 ## Decision Spine
 - `buildTradeDecision(...)` exists in `lib/decision-spine/index.js`.
 - `/entries ES` uses `buildTradeDecision(...)`.
 - `/api/decision` calls the same spine through `lib/operator/decision-adapter.js`.
 - `/operator-v2` displays backend API payloads; it does not compute trade side, entry, stop, target, sizing, freshness, or vetoes client-side.
-- Autonomous preflight/evaluate consumes or compares against the spine before staging.
+- Autonomous preflight/evaluate consumes or compares against the spine before emitting chat recommendations.
 - `scoreSignals(...)` remains secondary/proposer evidence, not lead authority.
 - WAIT/PASS/refusal states remain covered for stale/missing/UNKNOWN context.
 
@@ -51,18 +55,21 @@ Branch: `refactor/decision-spine-cleanup`
 - Dubz: structural levels now carry forward across days until manually replaced/deleted; same-day callouts are separate and expire same day.
 - Bobby: duplicate heatmap idempotency prevents repeated identical input from inflating Level Memory or changing decisions.
 - Katbot/Jefe: secondary context only; missing context is nonfatal and must not outrank spine.
+- Historical corpus: `npm run replay:history` runs local ES minute bars, historical Saty, Mancini levels/chop zones, Bobby text, and cached Bobby image parses through the current spine without live data.
 
 ## Execution Capability
 - `executeLive`, `executePaper`, `executeShadow`, Tradovate broker path, staged signal path, and explicit `/execute-staged` confirmation route exist.
 - `npm run prove:staged-flow` proves `/execute-staged` accepts a seeded paper signal, opens paper only, clears pending, and proves shadow rejects safely without credentials/live execution.
 - `/operator-v2` remains read-only and has no execute button.
-- Autonomous remains gated/staged and still checks risk, pending/open position, kill flags, trading window, freshness, confluence, and spine alignment.
+- Autonomous is currently recommendation-only: evaluation may notify Luke chat, but it does not stage or execute trades.
+- Manual staged flow remains explicit-confirmation gated and still checks risk, pending/open position, kill flags, trading window, and market context.
 - Live execution is not environment-proven and must remain blocked without credentials/risk proof.
 
 ## Old/New Surface Agreement
 - Proof script previously reported no remaining old shell/API/operator-v2 mismatches.
-- Automated session runs old shell commands through `POST /chat`, checks APIs, and checks `/operator-v2` DOM.
-- Not naturally observed: live actionable price, autonomous-generated pending staged signal.
+- Automated session runs old shell commands through `POST /chat`, checks APIs, checks `/operator-v2` DOM, and handles local 429 proof-rate limits without hiding real mismatches.
+- Historical replay observed local Bobby/Mancini/Saty data through the spine; adapter correctly kept all replay checkpoints PASS/WAIT.
+- Not naturally observed: live actionable price, autonomous chat recommendation from live evaluation.
 
 ## Readiness Scores
 - Code review readiness: 98%.
@@ -73,9 +80,9 @@ Branch: `refactor/decision-spine-cleanup`
 - Why not 99: live Tradovate data and market-hours behavior still need environment proof.
 - To reach 99: futures-grade provider proof plus one market-hours/manual companion proof.
 
-- Staged bot readiness: 93%.
-- Why not 99: route-level paper/shadow proof passes and Mancini veto is observed, but autonomous-generated pending signal was not naturally produced by evaluation.
-- To reach 99: market-hours paper/shadow proof where autonomous naturally stages an aligned candidate without executing live.
+- Staged bot readiness: 94%.
+- Why not 99: route-level paper/shadow proof passes, but manual staged flow still needs a controlled market-hours proof with real/latest market data.
+- To reach 99: market-hours paper/shadow proof where a human-confirmed staged signal validates price/risk gates without live execution.
 
 - Live execution readiness: 42%.
 - Why not 99: no credentialed Tradovate market-data or execution proof.
@@ -86,6 +93,11 @@ Branch: `refactor/decision-spine-cleanup`
 - `lib/market-data/providers/yahoo.js`
 - `lib/decision-spine/index.js`
 - `lib/parse-dubz.js`
+- `trading/router.js`
+- `scripts/replay-decision-spine-history.js`
+- `agents/agent-00-brain.js`
+- `brain-dashboard.html`
+- `luke-shell.html`
 - `docs/legacy-root/`
 - staged root deletions in `git status --short`
 
@@ -95,6 +107,7 @@ Branch: `refactor/decision-spine-cleanup`
 - Provider failure degrades to UNKNOWN; Luke should WAIT/PASS rather than guess.
 - SPX/ES and QQQ/NQ are confluence-only references, not price substitutes.
 - Tests cover safety behavior but cannot prove live market data or broker execution without credentials.
+- Historical replay found current adapter safety is conservative: raw spine plans were converted to PASS/WAIT when the live-style entry timing was not acceptable.
 
 ## Verdict
 `REVIEW_PACKET_READY` for senior SWE/trader review.  

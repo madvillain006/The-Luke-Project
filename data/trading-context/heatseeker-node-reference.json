@@ -1,0 +1,73 @@
+{
+  "id": "heatseeker-node-reference",
+  "title": "Heatseeker Node Reference",
+  "source": "SelzTrades Discord relay of Skylit Heatseeker education material",
+  "captured_from_user": "2026-05-02",
+  "durability": "protected_trading_context",
+  "applies_to": ["SPX", "SPY", "QQQ", "0DTE", "Heatseeker", "Bobby heatmap", "Skylit"],
+  "bot_context_summary": [
+    "Heatseeker maps describe dealer-positioning nodes. Luke should treat this as interpretive context, not as a standalone trade trigger.",
+    "Focus on absolute node value more than sign or color. Higher absolute value means stronger pull, pin, rejection, or volatility effect.",
+    "Yellow nodes dampen price movement, behave like magnets/pins, and often form reversal or range edges.",
+    "Purple nodes amplify movement and volatility. Purple zones can create fast moves once price enters, and may also act as reversal/deflection zones.",
+    "Light green nodes are ambiguous; watch for green nodes turning yellow.",
+    "King Nodes are the highest absolute value nodes. They often matter more than other map signals and can become end-of-day pin targets.",
+    "Gatekeeper Nodes sit between spot and King Nodes. They can reject price, reshuffle the map, and create high-probability directional shifts.",
+    "Midpoints inside a range are poor directional R:R. Prefer waiting for range edges and fading extremes when context supports it.",
+    "Fresh untouched nodes deserve more respect than repeatedly tested nodes. Each touch usually weakens bounce/rejection odds unless the node grows again.",
+    "Node rate of change matters: rapid accumulation strengthens magnet behavior; rapid unwinding weakens prior levels.",
+    "Rolling ceilings lower is bearish evidence. Rolling floors higher is bullish evidence.",
+    "Robinhood power-hour liquidation around 3:30 PM ET can create forced flow, fakeouts, breakouts, volatility spikes, and map reshuffles.",
+    "Hedge Nodes around macro events are often far from spot and slow-moving. Treat them as protective positioning, not active magnets by default.",
+    "Air pockets are low-volume/low-node zones price can move through, but only with broader confluence.",
+    "OPEX week distorts node reliability. Treat levels with caution until post-OPEX clarity returns.",
+    "SPX node interaction margin is roughly 5-10 points; do not expect exact-cent rejection."
+  ],
+  "image_reference_summary": {
+    "purple": [
+      "Negative exposure; reacts with bounce or reject.",
+      "Reaction matters more than speed.",
+      "Acts as a magnet for price.",
+      "Purple right over yellow implies upside move.",
+      "Purple right below yellow implies downside move.",
+      "Upside from purple to yellow can be a strong setup."
+    ],
+    "yellow": [
+      "Positive exposure; dampens price action.",
+      "Acts as a magnet for price.",
+      "Yellow as a ceiling is stronger than as a floor.",
+      "Farther yellow target implies higher profit potential.",
+      "Double yellow is a hard sell level.",
+      "Green turning yellow deserves close attention."
+    ],
+    "light_green": [
+      "Somewhat ambiguous; treat as a cloud.",
+      "Watch for green nodes turning yellow."
+    ],
+    "core_rules": [
+      "King node is king.",
+      "Check magnets above and below before trade.",
+      "Node weakness increases after repeated taps.",
+      "Respect broader market direction; SPY and QQQ set tone.",
+      "Gatekeepers near King Nodes must be respected like King Nodes.",
+      "Distance to yellow or purple target node equals profit potential."
+    ],
+    "setup_combinations": [
+      "Purple below yellow suggests bullish setup.",
+      "Purple above yellow suggests bearish setup.",
+      "Double yellow means hard sell level."
+    ],
+    "margin_guidelines": [
+      "SPY: 0.50 margin",
+      "QQQ: 0.50 margin",
+      "SPX: 5.00 margin"
+    ]
+  },
+  "trading_rules": [
+    "Use Heatseeker as confluence with Saty, Dubz, Mancini, live price, and broader market context.",
+    "Do not trade midpoint chop unless using a deliberate premium-selling or spread plan.",
+    "Prefer edge-of-range reactions, untouched nodes, and high absolute-value node context.",
+    "Do not treat color alone as direction. Context, location, freshness, and rate of change matter.",
+    "Fail closed when Heatseeker context conflicts with Luke's existing risk rules."
+  ]
+}

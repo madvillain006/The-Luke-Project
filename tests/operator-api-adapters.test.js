@@ -203,7 +203,7 @@ describe('operator API adapters', () => {
     expect(api.actionable).toBe(true);
   });
 
-  it('/api/operator/status agrees with /status freshness and staged-only facts', async () => {
+  it('/api/operator/status agrees with /status freshness and recommendation-only facts', async () => {
     const ts = new Date().toISOString();
     writeFreshFixture(ts);
     fs.copyFileSync(LEVEL_MEMORY_FILE, tempMemoryFile);
@@ -239,9 +239,10 @@ describe('operator API adapters', () => {
     expect(api.freshness.dubz.count).toBe(1);
     expect(api.freshness.bobby.count).toBe(1);
     expect(api.autonomous.staged_only).toBe(true);
-    expect(api.autonomous.wording).toContain('explicit staged confirmation');
+    expect(api.autonomous.recommendation_only).toBe(true);
+    expect(api.autonomous.wording).toContain('recommendations to Luke chat');
     expect(res.payload.reply).toContain('Freshness: Dubz OK (1) | Bobby OK (1) | Saty OK');
-    expect(res.payload.reply).toContain('Autonomous: staged-only');
+    expect(res.payload.reply).toContain('Autonomous: recommendation-only');
   });
 
   it('/api/confluence agrees with /verdict rows and remains confluence-only', async () => {

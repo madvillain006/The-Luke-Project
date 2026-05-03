@@ -1,6 +1,6 @@
 # Review Patch Plan
 
-Review order: Saty/Yahoo fallback, Dubz carry-forward, root cleanup, decision spine, market data, autonomous gating, staged-flow proof, operator surfaces, parser hardening, state paths, proof tools, docs.
+Review order: Saty/Yahoo fallback, Dubz carry-forward, root cleanup, decision spine, market data, autonomous recommendation-only gating, historical replay proof, staged-flow proof, operator surfaces, parser hardening, state paths, local brain reporting, proof tools, docs.
 
 ## 1. Decision Spine + Entries
 - Purpose: make `/entries ES` consume one shared decision authority.
@@ -16,17 +16,17 @@ Review order: Saty/Yahoo fallback, Dubz carry-forward, root cleanup, decision sp
 - Independent: mostly yes.
 - Depends on: market-data metadata for live/current price truth.
 
-## 2. Autonomous Spine Gating
-- Purpose: make autonomous staging follow the spine instead of competing with it.
+## 2. Autonomous Recommendation-Only Gating
+- Purpose: make autonomous evaluation follow the spine and emit Luke chat recommendations instead of competing with it or staging trades.
 - Files included: `trading/router.js`, `trading/signals.js`, `trading/risk.js`, autonomous regression tests.
 - Risk level: high.
 - Why necessary: keeps `scoreSignals(...)` as candidate proposer while the spine remains authority.
-- Behavior changes: candidate/spine disagreement and bad entry distance block staging.
-- Must not change: staged-only behavior, risk gates, confirmation route, kill/open/pending checks.
-- Tests: autonomous preflight/alignment tests in `tests/decision-spine-regression.test.js`.
-- Manual/proof command: `npm run session:operator-v2` verifies Mancini chop veto observation; `npm run prove:staged-flow` verifies paper/shadow execute-staged routing.
-- Reviewer focus: `buildAutonomousPreflight`, evaluate path, `/execute-staged` remains explicit.
-- Known limitations: pending staged signal not naturally observed.
+- Behavior changes: candidate/spine disagreement and bad entry distance block recommendations; aligned candidates notify Luke chat only.
+- Must not change: risk gates, explicit staged confirmation route, kill/open/pending checks, no direct execution.
+- Tests: autonomous preflight/alignment tests in `tests/decision-spine-regression.test.js`; recommendation-only source guard in `tests/autonomous-recommendation-only.test.js`.
+- Manual/proof command: `npm run session:operator-v2` verifies Mancini chop veto observation; `npm run replay:history` replays local ES/analyst corpus; `npm run prove:staged-flow` verifies the separate paper/shadow execute-staged route.
+- Reviewer focus: `buildAutonomousPreflight`, evaluate path, `/execute-staged` remains explicit and separate.
+- Known limitations: live autonomous chat recommendation not naturally observed.
 - Independent: partially.
 - Depends on: decision spine.
 
@@ -39,7 +39,7 @@ Review order: Saty/Yahoo fallback, Dubz carry-forward, root cleanup, decision sp
 - Must not change: `/` default chat shell, slash commands, state writes, execution flow.
 - Tests: `tests/operator-v2-ui.test.js`, `tests/operator-api-adapters.test.js`.
 - Manual/proof command: `npm run prove:operator-v2`, `npm run session:operator-v2`.
-- Reviewer focus: no client-side decision computation, PASS is non-actionable, no execute button.
+- Reviewer focus: no client-side decision computation, PASS is non-actionable, autonomous is recommendation-only, no execute button.
 - Known limitations: mirror only; not a control surface.
 - Independent: yes.
 - Depends on: decision spine and market-data adapters.
@@ -88,19 +88,33 @@ Review order: Saty/Yahoo fallback, Dubz carry-forward, root cleanup, decision sp
 
 ## 7. Proof / Verification Tools
 - Purpose: make old shell/API/operator-v2 and market-data checks repeatable.
-- Files included: `scripts/prove-operator-v2.js`, `scripts/prove-staged-flow.js`, `scripts/run-operator-session.js`, `scripts/compare-operator-surfaces.js`, `scripts/verify-market-data.js`, related tests, `package.json`.
+- Files included: `scripts/prove-operator-v2.js`, `scripts/prove-staged-flow.js`, `scripts/replay-decision-spine-history.js`, `scripts/run-operator-session.js`, `scripts/compare-operator-surfaces.js`, `scripts/verify-market-data.js`, related tests, `package.json`.
 - Risk level: low.
 - Why necessary: reviewers can rerun claims without manual paste testing.
 - Behavior changes: none in production.
 - Must not change: trading state or execution paths.
 - Tests: operator comparison tests plus npm scripts.
-- Manual/proof command: all proof scripts, including `npm run prove:staged-flow`.
+- Manual/proof command: all proof scripts, including `npm run replay:history` and `npm run prove:staged-flow`.
 - Reviewer focus: scripts are read-only except ignored artifact reports/screenshots.
 - Known limitations: session proof mutates normal local analyst state through `/chat` test inputs.
 - Independent: yes.
 - Depends on: app can start locally.
 
-## 8. Review Docs
+## 8. Local Brain Agent Reporting Layer
+- Purpose: expose a read/report-only brain summary for operator context without giving it trading authority.
+- Files included: `agents/agent-00-brain.js`, `lib/brain/brain-core.js`, `lib/brain/daily-spine.js`, `lib/brain/history-career-spine.js`, `brain-dashboard.html`, `luke-shell.html`, `electron.js`, `lib/paths.js`, `index.js`, `tests/brain-agent.test.js`, `tests/brain-dashboard.test.js`.
+- Risk level: medium.
+- Why necessary: centralizes high-level status reporting without touching the decision spine.
+- Behavior changes: adds `/brain`, `/brain-dashboard`, `/shell`, and read/report brain surfaces; `/` remains the old `chat.html` shell.
+- Must not change: trading decisions, parser writes, execution flow, autonomous gates, old chat default.
+- Tests: `tests/brain-agent.test.js`, `tests/brain-dashboard.test.js`, full `npm test`.
+- Manual/proof command: `npm test`.
+- Reviewer focus: read-only report behavior, no execution authority, no decision recomputation.
+- Known limitations: reporting aid only.
+- Independent: yes.
+- Depends on: operator/status adapters for source data.
+
+## 9. Review Docs
 - Purpose: provide concise review entrypoints and honest blockers.
 - Files included: `docs/REVIEW_PACKET.md`, `docs/REVIEW_PATCH_PLAN.md`, `docs/REVIEW_READINESS.md`, `docs/LIVE_BLOCKERS.md`, `docs/GOAL_MODE_PROGRESS.md`.
 - Risk level: low.
@@ -114,7 +128,7 @@ Review order: Saty/Yahoo fallback, Dubz carry-forward, root cleanup, decision sp
 - Independent: yes.
 - Depends on: all groups for accuracy.
 
-## 9. Cleanup / Artifact Ignore
+## 10. Cleanup / Artifact Ignore
 - Purpose: keep generated proof output out of review and make the repo root inspectable.
 - Files included: `.gitignore`, ignored `artifacts/` generated files, `docs/legacy-root/`, root duplicate/generated file removals.
 - Risk level: low.

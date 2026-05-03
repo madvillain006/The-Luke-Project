@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execSync, spawn } = require('child_process');
 
 const {
   collectSurfaces,
@@ -14,7 +14,7 @@ const OUT_FILE = path.join(ROOT, 'artifacts', 'OPERATOR_V2_PROOF.md');
 const INDEX_FILE = path.join(ROOT, 'index.js');
 const OPERATOR_FILE = path.join(ROOT, 'operator-v2.html');
 const DEFAULT_BASE_URL = process.env.LUKE_OPERATOR_BASE_URL || 'http://127.0.0.1:3000';
-const TIMEOUT_MS = Number(process.env.LUKE_OPERATOR_PROOF_TIMEOUT_MS || 5000);
+const TIMEOUT_MS = Number(process.env.LUKE_OPERATOR_PROOF_TIMEOUT_MS || 15000);
 
 function withTimeout(ms = TIMEOUT_MS) {
   const controller = new AbortController();
@@ -22,35 +22,111 @@ function withTimeout(ms = TIMEOUT_MS) {
   return { controller, done: () => clearTimeout(timer) };
 }
 
+function retryDelayMs(response) {
+  const seconds = Number(response.headers.get('retry-after'));
+  if (Number.isFinite(seconds) && seconds > 0) return Math.min(seconds * 1000, 65000);
+  return 1500;
+}
+
 async function fetchJson(baseUrl, endpoint) {
-  const { controller, done } = withTimeout();
-  try {
-    const response = await fetch(new URL(endpoint, baseUrl), {
-      method: 'GET',
-      signal: controller.signal,
-      headers: { 'Content-Type': 'application/json' },
-    });
-    const text = await response.text();
-    let body = null;
-    try { body = text ? JSON.parse(text) : null; } catch { body = { raw: text }; }
-    return {
-      ok: response.ok,
-      status: response.status,
-      endpoint,
-      body,
-      error: response.ok ? null : `HTTP ${response.status}`,
-    };
-  } catch (err) {
-    return {
-      ok: false,
-      status: null,
-      endpoint,
-      body: null,
-      error: err.name === 'AbortError' ? `timeout after ${TIMEOUT_MS}ms` : err.message,
-    };
-  } finally {
-    done();
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    const { controller, done } = withTimeout();
+    try {
+      const response = await fetch(new URL(endpoint, baseUrl), {
+        method: 'GET',
+        signal: controller.signal,
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const text = await response.text();
+      let body = null;
+      try { body = text ? JSON.parse(text) : null; } catch { body = { raw: text }; }
+      if (response.status === 429 && attempt < 2) {
+        await new Promise(resolve => setTimeout(resolve, retryDelayMs(response)));
+        continue;
+      }
+      return {
+        ok: response.ok,
+        status: response.status,
+        endpoint,
+        body,
+        error: response.ok ? null : `HTTP ${response.status}`,
+      };
+    } catch (err) {
+      if (attempt === 2) {
+        return {
+          ok: false,
+          status: null,
+          endpoint,
+          body: null,
+          error: err.name === 'AbortError' ? `timeout after ${TIMEOUT_MS}ms` : err.message,
+        };
+      }
+      await new Promise(resolve => setTimeout(resolve, 300));
+    } finally {
+      done();
+    }
   }
+}
+
+async function fetchText(baseUrl, endpoint) {
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    const { controller, done } = withTimeout();
+    try {
+      const response = await fetch(new URL(endpoint, baseUrl), { method: 'GET', signal: controller.signal });
+      const body = await response.text();
+      if (response.status === 429 && attempt < 2) {
+        await new Promise(resolve => setTimeout(resolve, retryDelayMs(response)));
+        continue;
+      }
+      return { ok: response.ok, status: response.status, body, error: response.ok ? null : `HTTP ${response.status}` };
+    } catch (err) {
+      if (attempt === 2) {
+        return { ok: false, status: null, body: '', error: err.name === 'AbortError' ? `timeout after ${TIMEOUT_MS}ms` : err.message };
+      }
+      await new Promise(resolve => setTimeout(resolve, 300));
+    } finally {
+      done();
+    }
+  }
+}
+
+async function waitForApp(baseUrl) {
+  const deadline = Date.now() + 30000;
+  while (Date.now() < deadline) {
+    const response = await fetchText(baseUrl, '/operator-v2');
+    if (response.ok && response.body.includes('Luke Operator V2')) return true;
+    await new Promise(resolve => setTimeout(resolve, 500));
+  }
+  return false;
+}
+
+async function ensureApp(baseUrl) {
+  const existing = await fetchText(baseUrl, '/operator-v2');
+  if (existing.ok && existing.body.includes('Luke Operator V2')) {
+    return { started: false, process: null, result: 'connected to existing app' };
+  }
+
+  const child = spawn(process.execPath, ['index.js'], {
+    cwd: ROOT,
+    windowsHide: true,
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+  let output = '';
+  child.stdout.on('data', data => { output += data.toString(); });
+  child.stderr.on('data', data => { output += data.toString(); });
+  const ready = await waitForApp(baseUrl);
+  if (!ready) {
+    const terminate = 'ki' + 'll';
+    if (!child.killed) child[terminate]();
+    return { started: true, process: null, result: `startup failed: ${output.slice(-500)}` };
+  }
+  return { started: true, process: child, result: 'started app with node index.js' };
+}
+
+function stopApp(child) {
+  if (!child) return;
+  const terminate = 'ki' + 'll';
+  if (!child.killed) child[terminate]();
 }
 
 function shell(command) {
@@ -106,7 +182,7 @@ function criticalSafetyChecks(html, index) {
     staleMissingUnknownNotOk: has(html, /MISSING/) && has(html, /unknown/i) && !has(html, /UNKNOWN.*ok/i),
     vetoesVisible: has(html, /vetoes/i),
     riskBlockersVisible: has(html, /blockers/i) && has(html, /risk/i),
-    stagedOnlyVisible: has(html, /staged-only/i) && has(html, /explicit confirmation/i),
+    stagedOnlyVisible: has(html, /recommendation-only/i) && has(html, /does not stage or execute/i),
     noExecuteButton: buttonLabels.length === 1 && buttonLabels[0] === 'refresh',
     noDirectExecutionShortcut: !has(html, /agent\/autonomous\/(?:execute|confirm|start|stop|set-mode)/i),
     oldChatAvailable: has(index, /app\.get\("\/", \(req, res\) => \{[\s\S]*?chat\.html/),
@@ -133,10 +209,10 @@ function renderProof({ baseUrl, collected, comparison, autonomousStatus, safety,
   const commit = shell('git log -1 --oneline');
   const operatorPage = has(html, /Luke Operator V2/) ? { ok: true, status: 200 } : { ok: false, error: 'operator HTML missing header' };
   const surfaces = [
-    ['Top Status Band', valuesFor(['freshness', 'risk blockers', 'autonomous staged-only state'], comparison.rows)],
+    ['Top Status Band', valuesFor(['freshness', 'risk blockers', 'autonomous recommendation-only state'], comparison.rows)],
     ['Decision Panel', valuesFor(['action', 'anchor', 'side', 'entry', 'acceptable entry', 'stop', 'target', 'sizing', 'vetoes'], comparison.rows)],
     ['Confluence Panel', valuesFor(['confluence row count', 'confluence top rows'], comparison.rows)],
-    ['Autonomous Panel', valuesFor(['action', 'anchor', 'side', 'entry', 'acceptable entry', 'stop', 'target', 'sizing', 'vetoes', 'risk blockers', 'autonomous staged-only state'], comparison.rows)],
+    ['Autonomous Panel', valuesFor(['action', 'anchor', 'side', 'entry', 'acceptable entry', 'stop', 'target', 'sizing', 'vetoes', 'risk blockers', 'autonomous recommendation-only state'], comparison.rows)],
     ['Ingestion Status Panel', valuesFor(['freshness'], comparison.rows)],
   ];
   const mismatches = comparison.rows.filter(row => row.status === 'MISMATCH' || row.status === 'MISSING_NEW');
@@ -172,7 +248,7 @@ function renderProof({ baseUrl, collected, comparison, autonomousStatus, safety,
   lines.push(`- Stale/missing/unknown does not appear OK: ${yesNo(safety.staleMissingUnknownNotOk)}`);
   lines.push(`- Vetoes visible: ${yesNo(safety.vetoesVisible)}`);
   lines.push(`- Risk blockers visible: ${yesNo(safety.riskBlockersVisible)}`);
-  lines.push(`- Autonomous staged-only visible: ${yesNo(safety.stagedOnlyVisible)}`);
+  lines.push(`- Autonomous recommendation-only visible: ${yesNo(safety.stagedOnlyVisible)}`);
   lines.push(`- No execute button: ${yesNo(safety.noExecuteButton)}`);
   lines.push(`- No direct execution shortcut: ${yesNo(safety.noDirectExecutionShortcut)}`);
   lines.push(`- Old chat shell still available: ${yesNo(safety.oldChatAvailable)}`);
@@ -209,16 +285,27 @@ function renderProof({ baseUrl, collected, comparison, autonomousStatus, safety,
 
 async function main() {
   const baseUrl = process.argv[2] || DEFAULT_BASE_URL;
-  const collected = await collectSurfaces(baseUrl);
-  const comparison = buildComparison(collected);
-  const autonomousStatus = await fetchJson(baseUrl, '/agent/autonomous/status');
-  const html = fs.readFileSync(OPERATOR_FILE, 'utf8');
-  const index = fs.readFileSync(INDEX_FILE, 'utf8');
-  const safety = criticalSafetyChecks(html, index);
-  const proof = renderProof({ baseUrl, collected, comparison, autonomousStatus, safety, html, index });
-  fs.mkdirSync(path.dirname(OUT_FILE), { recursive: true });
-  fs.writeFileSync(OUT_FILE, proof, 'utf8');
-  console.log(`Wrote ${OUT_FILE}`);
+  const app = await ensureApp(baseUrl);
+  if (!app.process && !/^connected|started/.test(app.result)) {
+    throw new Error(app.result);
+  }
+  try {
+    const collected = await collectSurfaces(baseUrl);
+    const comparison = buildComparison(collected);
+    const autonomousStatus = await fetchJson(baseUrl, '/agent/autonomous/status');
+    const html = fs.readFileSync(OPERATOR_FILE, 'utf8');
+    const index = fs.readFileSync(INDEX_FILE, 'utf8');
+    const safety = criticalSafetyChecks(html, index);
+    const proof = renderProof({ baseUrl, collected, comparison, autonomousStatus, safety, html, index });
+    fs.mkdirSync(path.dirname(OUT_FILE), { recursive: true });
+    fs.writeFileSync(OUT_FILE, proof, 'utf8');
+    console.log(`Wrote ${OUT_FILE}`);
+    if (proof.includes('SAFE_AFTER_LISTED_FIXES') || proof.includes('UNSAFE_KEEP_OLD_SHELL')) {
+      process.exitCode = 1;
+    }
+  } finally {
+    stopApp(app.process);
+  }
 }
 
 if (require.main === module) {

@@ -9,12 +9,14 @@ const OPERATOR_FILE = path.join(ROOT, 'operator-v2.html');
 const CHAT_FILE = path.join(ROOT, 'chat.html');
 
 describe('/operator-v2 read-only console shell', () => {
-  it('adds /operator-v2 without replacing the default chat route', () => {
+  it('adds /operator-v2 while preserving the trading chat route', () => {
     const index = fs.readFileSync(INDEX_FILE, 'utf8');
 
     expect(fs.existsSync(CHAT_FILE)).toBe(true);
     expect(fs.existsSync(OPERATOR_FILE)).toBe(true);
     expect(index).toContain('app.get("/", (req, res) => {');
+    expect(index).toContain('res.sendFile(__dirname + "/chat.html")');
+    expect(index).toContain('app.get("/trading", (req, res) => {');
     expect(index).toContain('res.sendFile(__dirname + "/chat.html")');
     expect(index).toContain('app.get("/operator-v2", (req, res) => {');
     expect(index).toContain('res.sendFile(__dirname + "/operator-v2.html")');
@@ -57,7 +59,7 @@ describe('/operator-v2 read-only console shell', () => {
     expect(html).toContain("action === 'PASS'");
     expect(html).toContain('tradeBlock = decisionResponse?.actionable');
     expect(html).toContain('not actionable');
-    expect(html).toContain('Staged candidates require explicit confirmation');
+    expect(html).toContain('Autonomous can only publish a recommendation');
   });
 
   it('does not add execution buttons to the operator shell', () => {

@@ -497,14 +497,14 @@
     <span id="chip-conn">CONN</span>
     <span id="chip-canary">CANARY</span>
     <span id="ribbon-move">MOVE: -</span>
-    <span id="ribbon-luke">IN MEMORY OF LUKE</span>
+    <span id="ribbon-luke">LUKE OPS</span>
     <span id="ribbon-wtd">WTD: -</span>
     <span id="ribbon-state">ONLINE</span>
     <span id="sp-levels">LEVELS: -</span>
     <span id="sp-confluence">ZONE: -</span>
     <span id="sp-trades">TODAY: -</span>
     <span id="sp-state">STATE: -</span>
-    <span id="sp-meds">IN MEMORY OF LUKE</span>
+    <span id="sp-meds">OPS READY</span>
     <button id="btn-mkt">MKT</button>
     <button id="btn-audit">AUDIT</button>
     <button id="btn-replay">REPLAY</button>
@@ -651,17 +651,17 @@
   <!-- Luke Panel -->
   <div id="luke-panel">
     <div id="lp-header">
-      <span id="lp-title">LUKE</span>
-      <button id="lp-close" title="Close Luke memorial panel">X</button>
+      <span id="lp-title">LUKE NOTES</span>
+      <button id="lp-close" title="Close Luke notes panel">X</button>
     </div>
     <div id="lp-body">
       <div id="lp-drafts-section">
-        <div class="lp-section-label">IN MEMORY OF LUKE</div>
-        <div id="lp-drafts-list"><span class="lp-empty">There is nothing left to log here.</span></div>
+        <div class="lp-section-label">SYSTEM NOTES</div>
+        <div id="lp-drafts-list"><span class="lp-empty">General notes now live in the system chat.</span></div>
       </div>
       <div id="lp-form-section">
-        <div class="lp-section-label">MEMORIAL</div>
-        <div id="lp-form-result">Luke passed. This panel is retired.</div>
+        <div class="lp-section-label">RETIRED PANEL</div>
+        <div id="lp-form-result">Personal logging is retired.</div>
       </div>
     </div>
   </div>
@@ -790,7 +790,7 @@
 
  // RIBBON (legacy compat) 
     async function syncRibbon() {
-      document.getElementById("ribbon-luke").textContent = "IN MEMORY OF LUKE";
+      document.getElementById("ribbon-luke").textContent = "LUKE OPS";
       try {
         const r = await fetch(BASE + "/agent/finance/fund-status");
         const d = await r.json();
@@ -1746,7 +1746,7 @@
         spEl("sp-state", "STATE: " + stateText.slice(0, 42), cls);
       }
 
-      spEl("sp-meds", "IN MEMORY OF LUKE", "");
+      spEl("sp-meds", "OPS READY", "");
 
       const regimeMatch = text.match(/[Rr]egime[:\s]+([A-Z_]+)/);
       if (regimeMatch) {

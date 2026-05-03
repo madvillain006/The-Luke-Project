@@ -166,7 +166,7 @@ async function runScan(trigger = "scheduled", forceRun = false) {
   const selfSource = fs.readFileSync(__filename, "utf8");
 
   // Dynamic: log data (not cached — changes every run)
-  const logFiles = ["jarvis-log.jsonl", "action-log.jsonl"];
+  const logFiles = ["state/events/luke-log.jsonl", "state/events/action-log.jsonl"];
   const logBlocks = logFiles
     .map(f => {
       const raw = tailLog(path.join(ROOT, f), 80);

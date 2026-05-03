@@ -6,7 +6,7 @@ const { snapshots, events } = require("../lib/paths");
 
 const client = new Anthropic();
 const MEMORY_FILE = snapshots.memory;
-const LOG_FILE = events.jarvisLog;
+const LOG_FILE = events.lukeLog;
 
 function loadMemory() {
   try { return JSON.parse(fs.readFileSync(MEMORY_FILE, "utf8")); } catch { return {}; }

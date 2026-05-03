@@ -403,7 +403,7 @@ describe('slash-commands output cleanliness - mojibake guard', () => {
     expect(payload.reply).toContain('Market:');
     expect(payload.reply).toContain('Freshness:');
     expect(payload.reply).toContain('Autonomous: recommendation-only');
-    expect(payload.reply).toContain('In memory of Luke');
+    expect(payload.reply).toContain('System chat:');
     expect(MOJIBAKE_RE.test(payload.reply)).toBe(false);
   });
 

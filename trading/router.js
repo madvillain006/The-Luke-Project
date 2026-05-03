@@ -1023,8 +1023,8 @@ router.post("/test-connection", async (req, res) => {
       setup_steps: [
         "1. Create account at tradovate.com",
         "2. Go to Settings > API Credentials",
-        "3. Create or reuse the Tradovate API app registered for Luke. Existing setups may still use legacy appId 'Jarvis' in broker-tradovate.js - get CID (numeric) and SEC (string)",
-        "4. deviceId can be any stable string, e.g. 'luke-device-01'. Existing 'jarvis-device-01' values remain valid if already configured",
+        "3. Create or reuse the Tradovate API app registered for Luke - get CID (numeric) and SEC (string)",
+        "4. deviceId can be any stable string, e.g. 'luke-device-01'",
         "5. Set env: 'demo' for paper account, 'live' for real money",
         "6. POST /agent/autonomous/set-mode with all credentials"
       ]

@@ -18,7 +18,7 @@ const STATE_FILES = [
   path.join(ROOT, 'state', 'snapshots', 'trading-state.json'),
   events.tradingEvents || path.join(ROOT, 'state', 'events', 'trading-events.jsonl'),
   events.paperTrades,
-  events.jarvisLog,
+  events.lukeLog,
 ];
 
 function readFileMaybe(file) {

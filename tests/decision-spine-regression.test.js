@@ -22,7 +22,7 @@ const SATY_LEVELS_FILE = path.join(DATA_DIR, 'saty-levels.json');
 const TRADING_STATE_FILE = path.join(LUKE_ROOT, 'state', 'snapshots', 'trading-state.json');
 const TRADING_EVENTS_FILE = path.join(LUKE_ROOT, 'state', 'events', 'trading-events.jsonl');
 const AUTONOMOUS_STATE_FILE = path.join(LUKE_ROOT, 'state', 'snapshots', 'autonomous-state.json');
-const JARVIS_LOG_FILE = path.join(LUKE_ROOT, 'state', 'events', 'jarvis-log.jsonl');
+const LUKE_LOG_FILE = path.join(LUKE_ROOT, 'state', 'events', 'luke-log.jsonl');
 
 const DEFAULT_MEMORY_FILE = LEVEL_MEMORY_FILE;
 
@@ -162,7 +162,7 @@ describe('decision spine regression harness', () => {
       TRADING_STATE_FILE,
       TRADING_EVENTS_FILE,
       AUTONOMOUS_STATE_FILE,
-      JARVIS_LOG_FILE,
+      LUKE_LOG_FILE,
     ]);
   });
 

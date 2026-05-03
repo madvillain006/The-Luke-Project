@@ -1,8 +1,8 @@
 .env
+.claude/
 node_modules/
 memory.json
 session.jsonl
-jarvis-log.jsonl
 trades.jsonl
 discord-history.jsonl
 discord-history.jsonl.bak
@@ -29,7 +29,7 @@ data/backtest/es-long-bracket/sessions/*
 !data/backtest/es-long-bracket/sessions/example-session.json
 *.jsonl
 discord-exports/
-LOOK AT THIS ONE AND RENAME FOR DISCORD EXPORTS/
+local-discord-exports/
 findings/
 token-usage*.json
 sweeper-costs.json
@@ -41,7 +41,6 @@ action-log.jsonl
 boot-checks.jsonl
 schema-errors.jsonl
 tool-health.jsonl
-CONOR_CHRONICLE.md
 shifts.jsonl
 state/snapshots/
 state/events/*.jsonl
@@ -51,7 +50,7 @@ state/legacy-root/
 config/fallback-config.json
 crash.log
 repo-map.json
-jarvis-stdout.log
-jarvis-stderr.log
+luke-stdout.log
+luke-stderr.log
 luke-log-drafts.json
 .ws-token

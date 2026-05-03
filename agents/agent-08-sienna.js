@@ -8,7 +8,7 @@ const { events } = require("../lib/paths");
 const client = new Anthropic();
 const HISTORY_FILE = events.discordHistory;
 const EXPORTS_DIR = path.join(__dirname, "../discord-exports");
-const LOG_FILE = events.jarvisLog;
+const LOG_FILE = events.lukeLog;
 const PROFILE_FILE = path.join(__dirname, "../SIENNA_PROFILE.md");
 
 function log(type, data) {

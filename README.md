@@ -1,6 +1,6 @@
 # Luke
 
-Luke is a local trading copilot for Conor's index/futures workflow.
+Luke is a local supervised trading copilot for index/futures workflows.
 
 It turns daily analyst inputs into a cleaner decision surface:
 - what levels matter
@@ -10,6 +10,18 @@ It turns daily analyst inputs into a cleaner decision surface:
 - when the system is not ready and should refuse to bluff
 
 This README is the front door and table of contents for the repo.
+
+## Launch
+
+Double-click `Launch Luke.cmd` from this folder to open Luke.
+
+The launcher opens the Electron shell at `http://localhost:3000/shell`. If the local server is not already running, Electron starts `node index.js`; if Luke is already running on port `3000`, it reuses that server and opens the dashboard.
+
+Terminal fallback:
+
+```powershell
+npm start
+```
 
 ## What Luke does
 
@@ -153,10 +165,12 @@ If `/entries ES` refuses because inputs are stale or missing, trust the refusal.
   - main running log of meaningful changes
 - `docs/MONDAY_OPS.md`
   - operational morning checklist
-- `docs/legacy-root/TECH_DEBT.md`
-  - historical deferred work and known future-phase needs
-- `docs/NAMING_CLEANUP.md`
-  - current naming decisions and preserved compatibility names
+- `docs/ARCHITECTURE_CURRENT.md`
+  - current routes, launch path, state locations, and agent boundaries
+- `docs/STRATEGY_SOURCE_MAP.md`
+  - analyst/source mapping for trading inputs
+- `docs/LIVE_BLOCKERS.md`
+  - known blockers before live confidence claims
 
 ## Current posture
 

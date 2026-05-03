@@ -70,4 +70,4 @@ This is the main running change log for Luke.
 ## Notes
 
 - Uncommitted local leftovers like `.ws-token`, `repo-map.json`, `LAUNCH-LUKE.cmd`, and `scripts/__pycache__/` are not part of the product story.
-- Archive docs may still mention Jarvis or older personal context; those are not the live truth surfaces.
+- GitHub-facing docs now keep only current Luke surfaces; historical cleanup debris is kept out of the live tree.

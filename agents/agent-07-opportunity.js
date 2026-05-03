@@ -6,7 +6,7 @@ const path = require("path");
 const { events } = require("../lib/paths");
 
 const client = new Anthropic();
-const LOG_FILE = events.jarvisLog;
+const LOG_FILE = events.lukeLog;
 const PIPELINE_FILE = path.join(__dirname, "../OPPORTUNITY_PIPELINE.md");
 const OPPS_FILE = path.join(__dirname, "../opportunities.jsonl");
 

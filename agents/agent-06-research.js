@@ -9,7 +9,7 @@ const client = new Anthropic();
 
 const MEMORY_FILE = snapshots.memory;
 const HISTORY_FILE = events.discordHistory;
-const LOG_FILE = events.jarvisLog;
+const LOG_FILE = events.lukeLog;
 const SKILLS_DIR = path.join(__dirname, "../skills");
 
 function loadMemory() {

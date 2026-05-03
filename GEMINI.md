@@ -1,6 +1,6 @@
 # Luke Project Instructions
 
-Luke is Conor's trading decision-support assistant. Conor makes all final trading decisions. Treat this repo as a live trading support system, not a playground.
+Luke is a trading decision-support assistant. The human operator makes all final trading decisions. Treat this repo as a live trading support system, not a playground.
 
 ## Current Mission
 
@@ -17,7 +17,7 @@ Do not add features before protecting the core.
 ## Hard Safety Rules
 
 - Never enable autonomous or unattended trading execution.
-- Never call broker/live execution endpoints unless Conor explicitly asks.
+- Never call broker/live execution endpoints unless the operator explicitly asks.
 - Never weaken stop/target requirements, stale-input refusals, Apex rule checks, chop-zone protections, low-confidence no-trade behavior, or human-in-the-loop gates.
 - Never restart PM2 or mutate live trading state casually. For server/runtime changes, run tests first, explain the reload reason, then reload only when needed.
 - Always check the current worktree before editing. Preserve unrelated user work and dirty files.
@@ -27,8 +27,8 @@ Do not add features before protecting the core.
 
 Read this file first, then read the current architecture and user-facing repo docs:
 
-- `C:\Users\conor\luke\README.md`
-- `C:\Users\conor\luke\docs\ARCHITECTURE_CURRENT.md`
+- `README.md`
+- `docs/ARCHITECTURE_CURRENT.md`
 
 Do not trust old docs over current code. Old docs may contain stale claims from earlier repair sessions.
 
@@ -110,7 +110,7 @@ Important: one example session exists only to prove plumbing. It is marked `exam
 
 ## Cleanup Priorities
 
-Work in this order unless Conor redirects:
+Work in this order unless the operator redirects:
 
 1. Help assemble and run real backtest sessions when Bobby/Mancini/Saty/Dubz data lands.
 2. Add full Express/WebSocket integration harness before removing `today-levels.json`.
@@ -119,7 +119,7 @@ Work in this order unless Conor redirects:
 5. Gate Katbot only after caller audit.
 6. Split `index.js` route mounting only after index behavior tests exist.
 
-The old architect/sweeper sidecars are intentionally removed. Do not reintroduce `/agent/architect/*`, `/agent/sweeper/*`, or their root artifacts.
+Architect and sweeper routes are legacy maintenance surfaces. Do not expand them or let them affect trading flow unless explicitly requested.
 
 ## Testing Rules
 
@@ -138,7 +138,7 @@ node --check lib\slash-commands-ingest.js
 For live server changes:
 
 ```powershell
-pm2 reload C:\Users\conor\luke\ecosystem.config.js
+pm2 reload ecosystem.config.js
 pm2 logs luke-server --lines 20 --nostream
 pm2 logs luke-scheduler --lines 20 --nostream
 ```

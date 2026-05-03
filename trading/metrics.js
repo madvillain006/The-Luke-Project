@@ -2,7 +2,7 @@ const fs   = require("fs");
 const { loadTradingState } = require("../state/trading-store");
 const { events, snapshots } = require("../lib/paths");
 
-const LOG_FILE         = events.jarvisLog;
+const LOG_FILE         = events.lukeLog;
 const PAPER_TRADES_FILE = events.paperTrades;
 const SCHED_JOBS_FILE  = snapshots.schedulerJobs;
 

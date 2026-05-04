@@ -678,7 +678,7 @@ async function processLiveVision(entry, parsedSignal) {
           levels: record.levels,
           entry_context: stored.processed ? stored.processed.entry_context : null,
           chart_type: record.chart_type,
-          heatmap_context: record.heatmap_context || null,
+          heatmap_context: vision.heatmap_context || null,
           notes: record.notes,
           ts: record.ts,
           message_id: record.message_id,

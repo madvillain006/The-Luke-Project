@@ -252,6 +252,49 @@
       gap: 6px;
     }
 
+    .case-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .case-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #15191c;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .case-card-header {
+      padding: 8px 10px;
+      display: grid;
+      gap: 3px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .case-card-title {
+      font-weight: 800;
+    }
+
+    .case-card img {
+      display: block;
+      width: 100%;
+      height: 210px;
+      object-fit: contain;
+      background: #f5f7fa;
+    }
+
+    .link-line {
+      color: var(--info);
+      text-decoration: none;
+      font-weight: 750;
+    }
+
+    .link-line:hover {
+      text-decoration: underline;
+    }
+
     .line {
       padding: 8px;
       border: 1px solid var(--line);
@@ -259,6 +302,57 @@
       background: #15191c;
       overflow-wrap: anywhere;
     }
+
+    .level-row {
+      display: grid;
+      grid-template-columns: minmax(76px, 0.7fr) minmax(0, 1.25fr) minmax(86px, 0.8fr);
+      gap: 8px;
+      align-items: center;
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #15191c;
+      min-width: 0;
+    }
+
+    .level-price {
+      font-weight: 850;
+    }
+
+    .bracket-visual {
+      position: relative;
+      height: 260px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #11161a;
+      overflow: hidden;
+    }
+
+    .bracket-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      border-top: 2px solid var(--line);
+    }
+
+    .bracket-label {
+      position: absolute;
+      right: 8px;
+      top: -11px;
+      padding: 2px 6px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: #15191c;
+      font-size: 12px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .bracket-line.entry { border-color: var(--info); }
+    .bracket-line.stop { border-color: var(--bad); }
+    .bracket-line.tp { border-color: var(--ok); }
+    .bracket-line.price { border-color: var(--warn); border-top-style: dashed; }
+    .bracket-line.level { border-color: #58636b; border-top-style: dotted; }
 
     .mono {
       font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
@@ -305,6 +399,8 @@
       .topbar { grid-template-columns: 1fr; }
       .main { padding: 8px; }
       .kv { grid-template-columns: 1fr; }
+      .case-grid { grid-template-columns: 1fr; }
+      .level-row { grid-template-columns: 1fr; }
       .decision-action { font-size: 24px; }
     }
   </style>
@@ -369,6 +465,14 @@
           <div class="panel-body" id="fake-breakdown-panel"></div>
         </article>
 
+        <article class="panel" aria-labelledby="ladder-reclaim-title">
+          <div class="panel-header">
+            <div class="panel-title" id="ladder-reclaim-title">Ladder Reclaim Watchlist</div>
+            <span class="pill info" id="ladder-reclaim-status">PAPER_CANDIDATE_SIM</span>
+          </div>
+          <div class="panel-body" id="ladder-reclaim-panel"></div>
+        </article>
+
         <article class="panel" aria-labelledby="evidence-title">
           <div class="panel-header">
             <div class="panel-title" id="evidence-title">Evidence / Logs</div>
@@ -383,6 +487,46 @@
       </section>
 
       <section class="column">
+        <article class="panel" aria-labelledby="live-level-state-title">
+          <div class="panel-header">
+            <div class="panel-title" id="live-level-state-title">Live Level State</div>
+            <span class="pill warn">Research/Paper Candidate only</span>
+          </div>
+          <div class="panel-body" id="live-level-state-panel"></div>
+        </article>
+
+        <article class="panel" aria-labelledby="trade-candidate-title">
+          <div class="panel-header">
+            <div class="panel-title" id="trade-candidate-title">Trade Candidates</div>
+            <span class="pill warn">Not live</span>
+          </div>
+          <div class="panel-body" id="trade-candidate-panel"></div>
+        </article>
+
+        <article class="panel" aria-labelledby="bracket-title">
+          <div class="panel-header">
+            <div class="panel-title" id="bracket-title">Bracket Plan Visual</div>
+            <span class="pill warn">Simulated plan</span>
+          </div>
+          <div class="panel-body" id="bracket-panel"></div>
+        </article>
+
+        <article class="panel" aria-labelledby="trading-alerts-title">
+          <div class="panel-header">
+            <div class="panel-title" id="trading-alerts-title">Trading Alerts</div>
+            <span class="pill info">Read-only feed</span>
+          </div>
+          <div class="panel-body" id="trading-alerts-panel"></div>
+        </article>
+
+        <article class="panel" aria-labelledby="data-health-title">
+          <div class="panel-header">
+            <div class="panel-title" id="data-health-title">Data Health</div>
+            <span class="pill" id="data-health-status">UNKNOWN</span>
+          </div>
+          <div class="panel-body" id="data-health-panel"></div>
+        </article>
+
         <article class="panel" aria-labelledby="autonomous-title">
           <div class="panel-header">
             <div class="panel-title" id="autonomous-title">Autonomous</div>
@@ -394,6 +538,7 @@
         <div class="panel" aria-label="Read-only safety note">
           <div class="panel-body">
             <div class="line warn-text">No execute button exists here. Autonomous recommendations do not stage or execute trades.</div>
+            <div class="line"><a class="link-line" href="/trading-window">Open read-only replay trading window</a></div>
           </div>
         </div>
       </section>
@@ -407,6 +552,11 @@
       decision: '/api/decision?instrument=ES&mode=manual',
       confluence: '/api/confluence?instrument=ES',
       fakeBreakdownWatchlist: '/api/research/fake-breakdown-watchlist?instrument=ES',
+      ladderReclaimWatchlist: '/api/research/ladder-reclaim-watchlist?instrument=ES',
+      levelState: '/api/trading/level-state?instrument=ES',
+      tradeCandidates: '/api/trading/trade-candidates?instrument=ES',
+      tradingAlerts: '/api/trading/alerts?instrument=ES',
+      candleStatus: '/api/trading/candle-status?instrument=ES',
       autonomousStatus: '/agent/autonomous/status'
     };
 
@@ -429,9 +579,9 @@
     function freshnessText(freshness) {
       if (!freshness) return 'Unknown';
       const saty = freshness.saty?.loaded ? 'Saty OK' : 'Saty missing';
-      const dubz = freshness.dubz?.loaded ? `Dubz OK (${freshness.dubz?.count ?? 0})` : 'Dubz missing';
-      const bobby = freshness.bobby?.loaded ? `Bobby OK (${freshness.bobby?.count ?? 0})` : 'Bobby missing';
-      return `${saty} | ${dubz} | ${bobby}`;
+      const dubz = freshness.dubz_structural?.loaded || freshness.dubz_callout?.loaded ? `Dubz OK (${(freshness.dubz_structural?.count ?? 0) + (freshness.dubz_callout?.count ?? 0)})` : 'Dubz missing';
+      const heatmap = freshness.heatmap_gex?.loaded ? `heatmap_gex OK (${freshness.heatmap_gex?.count ?? 0})` : 'heatmap_gex missing';
+      return `${saty} | ${dubz} | ${heatmap}`;
     }
 
     function pill(label, state = '') {
@@ -551,6 +701,224 @@
       `;
     }
 
+    function fmtMoney(value) {
+      return Number.isFinite(value) ? `$${value.toFixed(2)}` : '-';
+    }
+
+    function pct(value) {
+      return Number.isFinite(value) ? `${(value * 100).toFixed(1)}%` : '-';
+    }
+
+    function renderLadderReclaimWatchlist(watchlist) {
+      const panel = el('ladder-reclaim-panel');
+      if (!watchlist || watchlist.error) {
+        panel.innerHTML = `<div class="line bad-text">${esc(watchlist?.error || 'Ladder watchlist unavailable')}</div>`;
+        return;
+      }
+      const candidate = watchlist.candidate || {};
+      const stats = watchlist.research_stats || {};
+      const artifact = watchlist.artifact_summary || {};
+      const acct25 = stats.account_25k_1es || {};
+      const acct50 = stats.account_50k_2es || {};
+      const examples = watchlist.example_images || {};
+      const positive = examples.positive || {};
+      const negative = examples.negative || {};
+      const reviewRoute = artifact.visual_review_route || artifact.visual_review_path || '/research/ladder-reclaim-watchlist';
+      el('ladder-reclaim-status').textContent = candidate.status || 'PAPER_CANDIDATE_SIM';
+      panel.innerHTML = `
+        <div class="line warn-text">Visual watchlist only. This is not an entry instruction and there are no execution controls.</div>
+        <div class="pill-row">
+          ${pill('Bobby + Mancini focus', 'info')}
+          ${pill('manual paper-review candidate', 'info')}
+          ${pill('not paper-only', 'warn')}
+          ${pill('not live', 'warn')}
+        </div>
+        <div class="eyebrow">Pattern</div>
+        <div class="reason">Price flushes through trusted levels, reclaims the first lower level, then holds the retest. Upper levels become targets.</div>
+        <div class="case-grid">
+          <div class="case-card">
+            <div class="case-card-header">
+              <div class="case-card-title ok-text">Good example: first reclaim worked</div>
+              <div class="meta">${esc(positive.date || '-')} ${esc(String(positive.timestamp_et || '').slice(11, 16))} | ${esc(positive.source_combo || '-')} | ${esc(positive.result || '-')}</div>
+            </div>
+            ${positive.image_route ? `<img src="${esc(positive.image_route)}" alt="Positive ladder reclaim example">` : '<div class="line muted">Positive image unavailable</div>'}
+          </div>
+          <div class="case-card">
+            <div class="case-card-header">
+              <div class="case-card-title bad-text">Bad example: stop-first / failed reclaim</div>
+              <div class="meta">${esc(negative.date || '-')} ${esc(String(negative.timestamp_et || '').slice(11, 16))} | ${esc(negative.source_combo || '-')} | ${esc(negative.result || '-')}</div>
+            </div>
+            ${negative.image_route ? `<img src="${esc(negative.image_route)}" alt="Negative ladder reclaim example">` : '<div class="line muted">Negative image unavailable</div>'}
+          </div>
+        </div>
+        ${renderKv([
+          ['Historical read', `${stats.examples ?? '-'} Bobby+Mancini examples: TP +2 ${pct(stats.tp_plus_2_rate)}, stop-first ${pct(stats.stop_first_rate)}`],
+          ['25k mode', `1ES survived (${fmtMoney(acct25.cumulative_pnl)} PnL, ${fmtMoney(acct25.max_drawdown)} maxDD); 2ES failed broader sim.`],
+          ['50k mode', `2ES survived (${fmtMoney(acct50.cumulative_pnl)} PnL, ${fmtMoney(acct50.max_drawdown)} maxDD).`]
+        ])}
+        <div class="list">
+          <div class="line"><a class="link-line" href="${esc(reviewRoute)}" target="_blank" rel="noreferrer">Open full visual review with all cases</a></div>
+          <div class="line muted">Use this to compare examples and decide what the live read-only detector should watch for next.</div>
+          ${(watchlist.blockers || []).map(blocker => `<div class="line bad-text">${esc(blocker)}</div>`).join('')}
+        </div>
+      `;
+    }
+
+    function renderLiveLevelState(levelState) {
+      const panel = el('live-level-state-panel');
+      if (!levelState || levelState.error) {
+        panel.innerHTML = `<div class="line bad-text">${esc(levelState?.error || 'Level state unavailable')}</div>`;
+        return;
+      }
+      const clusters = (levelState.clusters || []).filter(cluster => cluster.is_executable_es).slice(0, 8);
+      const candle = levelState.candle_feed || {};
+      panel.innerHTML = `
+        <div class="line warn-text">Read-only. No execution controls. Not a live trade recommendation.</div>
+        <div class="pill-row">
+          ${pill(levelState.state || 'UNKNOWN', levelState.state === 'NO_DATA' ? 'warn' : 'info')}
+          ${pill(levelState.market_data?.status || 'UNKNOWN', levelState.market_data?.status === 'FRESH' ? 'ok' : 'warn')}
+          ${pill(candle.replay ? 'local/replay 1m candles' : '1m candles UNKNOWN', candle.usable_for_replay ? 'info' : 'warn')}
+          ${pill('No live execution', 'warn')}
+        </div>
+        <div class="line warn-text">${esc(candle.usable_for_replay ? 'Using local/replay 1m candles - proof only, not live arming.' : '1m ES candles unavailable - candle-confirmed candidates disabled.')}</div>
+        <div class="list">
+          ${clusters.length ? clusters.map(cluster => `
+            <div class="level-row">
+              <div class="level-price">${esc(fmt(cluster.canonical_price_es))}</div>
+              <div>
+                <div>${esc((cluster.sources || []).join(' + ') || 'unknown')}</div>
+                <div class="muted">${esc((cluster.roles || []).join(', ') || 'level')}</div>
+              </div>
+              <div>${pill(cluster.state || 'LEVELS_LOADED', cluster.state === 'ARMED' ? 'warn' : cluster.state === 'INVALIDATED' ? 'bad' : 'info')}</div>
+            </div>
+          `).join('') : '<div class="line muted">No executable ES level clusters loaded</div>'}
+        </div>
+      `;
+    }
+
+    function renderTradeCandidates(candidatesResponse) {
+      const panel = el('trade-candidate-panel');
+      if (!candidatesResponse || candidatesResponse.error) {
+        panel.innerHTML = `<div class="line bad-text">${esc(candidatesResponse?.error || 'Trade candidates unavailable')}</div>`;
+        return;
+      }
+      const candidates = candidatesResponse.candidates || [];
+      panel.innerHTML = `
+        <div class="line warn-text">PAPER CANDIDATE / WATCH ONLY / NOT LIVE. Human review required.</div>
+        <div class="list">
+          ${candidates.length ? candidates.slice(0, 5).map(candidate => `
+            <div class="line">
+              <div class="pill-row">
+                ${pill(candidate.status || 'WATCH_ONLY', candidate.status === 'PAPER_CANDIDATE_SIM' || candidate.status === 'PAPER_CANDIDATE_LIVE_DATA' ? 'warn' : candidate.status?.startsWith('PASS') ? 'bad' : 'info')}
+                ${pill(candidate.strategy || 'strategy_unknown', 'info')}
+                ${pill(`${candidate.size_recommendation?.contracts ?? 0}ES`, 'warn')}
+              </div>
+              ${renderKv([
+                ['Entry zone', candidate.entry_zone ? `${fmt(candidate.entry_zone.low)}-${fmt(candidate.entry_zone.high)}` : 'not armed'],
+                ['Stop', fmt(candidate.stop)],
+                ['TP1', fmt(candidate.tp1)],
+                ['TP2 / next level', fmt(candidate.tp2)],
+                ['Risk dollars', fmtMoney(candidate.risk?.risk_dollars)],
+                ['Account gate', candidate.risk?.account_gate || candidate.status],
+                ['Invalidation', candidate.invalidation || '-']
+              ])}
+            </div>
+          `).join('') : '<div class="line muted">No candidates returned</div>'}
+        </div>
+      `;
+    }
+
+    function renderBracketVisual(candidatesResponse, levelState) {
+      const panel = el('bracket-panel');
+      const candidates = candidatesResponse?.candidates || [];
+      const candidate = candidates.find(item => item.bracket) || candidates[0] || null;
+      const currentPrice = levelState?.market_data?.price;
+      const clusters = (levelState?.clusters || []).filter(cluster => cluster.is_executable_es).slice(0, 10);
+      if (!candidate || !candidate.bracket) {
+        panel.innerHTML = `
+          <div class="line warn-text">No simulated bracket plan. Candidate must be armed with fresh data and candle structure.</div>
+          <div class="line muted">If candles are unavailable, Luke shows the level ladder but will not arm a candidate.</div>
+        `;
+        return;
+      }
+      const values = [
+        candidate.bracket.entry,
+        candidate.bracket.stop,
+        candidate.bracket.tp1,
+        candidate.bracket.tp2,
+        currentPrice,
+        ...clusters.map(cluster => cluster.canonical_price_es)
+      ].filter(Number.isFinite);
+      const min = Math.min(...values) - 1;
+      const max = Math.max(...values) + 1;
+      const y = value => Math.max(5, Math.min(95, 100 - ((value - min) / (max - min)) * 90));
+      const line = (value, cls, label) => Number.isFinite(value)
+        ? `<div class="bracket-line ${cls}" style="top:${y(value)}%"><span class="bracket-label">${esc(label)} ${esc(fmt(value))}</span></div>`
+        : '';
+      panel.innerHTML = `
+        <div class="line warn-text">Simulated bracket order plan only. Live enabled: false.</div>
+        <div class="bracket-visual" aria-label="Simulated bracket plan visual">
+          ${clusters.map(cluster => line(cluster.canonical_price_es, 'level', 'Level')).join('')}
+          ${line(currentPrice, 'price', 'Current')}
+          ${line(candidate.bracket.tp2, 'tp', 'TP2')}
+          ${line(candidate.bracket.tp1, 'tp', 'TP1')}
+          ${line(candidate.bracket.entry, 'entry', 'Entry')}
+          ${line(candidate.bracket.stop, 'stop', 'Stop')}
+        </div>
+      `;
+    }
+
+    function renderTradingAlerts(alertsResponse) {
+      const panel = el('trading-alerts-panel');
+      if (!alertsResponse || alertsResponse.error) {
+        panel.innerHTML = `<div class="line bad-text">${esc(alertsResponse?.error || 'Trading alerts unavailable')}</div>`;
+        return;
+      }
+      const alerts = alertsResponse.alerts || [];
+      panel.innerHTML = `
+        <div class="line warn-text">Read-only operator signals only. No chat spam and no broker calls.</div>
+        <div class="list">
+          ${alerts.length ? alerts.slice(0, 8).map(alert => `<div class="line mono">${esc(alert.message)}\n${esc(alert.detail || '')}</div>`).join('') : '<div class="line muted">No state-transition alerts</div>'}
+        </div>
+      `;
+    }
+
+    function renderDataHealth(levelState, candleStatus) {
+      const panel = el('data-health-panel');
+      const status = levelState?.market_data?.status || 'UNKNOWN';
+      el('data-health-status').textContent = status;
+      el('data-health-status').className = `pill ${status === 'FRESH' ? 'ok' : 'warn'}`;
+      const freshness = levelState?.source_freshness || {};
+      const esCandle = candleStatus?.feeds?.ES || levelState?.candle_feed || {};
+      const spxCandle = candleStatus?.feeds?.SPX || {};
+      const candleLabel = candle => candle?.source
+        ? `${candle.source_label || candle.source} ${candle.live ? 'LIVE' : candle.replay ? 'REPLAY' : 'UNKNOWN'} ${candle.stale ? 'STALE' : 'SIM'}`
+        : 'UNKNOWN';
+      panel.innerHTML = `
+        ${renderKv([
+          ['API mode', levelState?.mode || candleStatus?.mode || 'unknown'],
+          ['ES price source', `${levelState?.market_data?.source || 'UNKNOWN'} ${fmt(levelState?.market_data?.price)}`],
+          ['Market freshness', status],
+          ['ES 1m candles', candleLabel(esCandle)],
+          ['ES latest candle', esCandle.latest_candle_timestamp || 'unknown'],
+          ['ES candle age', esCandle.latest_candle_age_minutes != null ? `${esCandle.latest_candle_age_minutes}m` : 'unknown'],
+          ['ES live arming', esCandle.usable_for_live_arming ? 'enabled' : 'disabled'],
+          ['SPX 1m candles', candleLabel(spxCandle)],
+          ['SPX latest candle', spxCandle.latest_candle_timestamp || 'unknown'],
+          ['Candle mode', esCandle.usable_for_replay ? 'usable for replay only' : 'unavailable'],
+          ['Candle disabled reason', esCandle.reason || '1m ES candles unavailable - candle-confirmed candidates disabled'],
+          ['Saty status', freshness.saty?.loaded ? `loaded (${freshness.saty.count})` : 'missing/reference only'],
+          ['Mancini status', freshness.mancini?.loaded ? `loaded (${freshness.mancini.count})` : 'missing'],
+          ['Dubz status', freshness.dubz_structural?.loaded || freshness.dubz_callout?.loaded ? `loaded (${(freshness.dubz_structural?.count ?? 0) + (freshness.dubz_callout?.count ?? 0)})` : 'missing'],
+          ['heatmap_gex status', freshness.heatmap_gex?.loaded ? `loaded (${freshness.heatmap_gex.count})` : 'missing'],
+          ['GEX/Heatseeker status', freshness.heatmap_gex?.loaded ? 'normalized to heatmap_gex' : 'missing'],
+          ['SPX reference', 'reference-only unless explicit basis exists']
+        ])}
+        <div class="line warn-text">${esc(esCandle.usable_for_replay ? 'Using local/replay 1m candles - proof only, not live arming.' : '1m ES candles unavailable - candle-confirmed candidates disabled.')}</div>
+        <div class="list">${(levelState?.warnings || []).map(warning => `<div class="line warn-text">${esc(warning)}</div>`).join('')}</div>
+      `;
+    }
+
     function renderIngestion(status) {
       const ingestion = status?.ingestion || {};
       const freshness = ingestion.freshness || status?.freshness || {};
@@ -601,7 +969,7 @@
       `;
     }
 
-    function renderEvidence(status, readiness, decision, confluence, autonomousStatus) {
+    function renderEvidence(status, readiness, decision, confluence, autonomousStatus, levelState, tradeCandidates, tradingAlerts, candleStatus) {
       const logs = status?.logs?.logs || {};
       const evidence = readiness?.decision?.evidence || status?.latest_decision?.evidence || [];
       const eventLines = Object.entries(logs).flatMap(([name, result]) =>
@@ -616,6 +984,10 @@
             <div class="line mono">readiness ${esc(readiness?.error ? `ERROR ${readiness.error}` : 'OK')}</div>
             <div class="line mono">decision ${esc(decision?.error ? `ERROR ${decision.error}` : 'OK')}</div>
             <div class="line mono">confluence ${esc(confluence?.error ? `ERROR ${confluence.error}` : 'OK')}</div>
+            <div class="line mono">level-state ${esc(levelState?.error ? `ERROR ${levelState.error}` : 'OK')}</div>
+            <div class="line mono">trade-candidates ${esc(tradeCandidates?.error ? `ERROR ${tradeCandidates.error}` : 'OK')}</div>
+            <div class="line mono">trading-alerts ${esc(tradingAlerts?.error ? `ERROR ${tradingAlerts.error}` : 'OK')}</div>
+            <div class="line mono">candle-status ${esc(candleStatus?.error ? `ERROR ${candleStatus.error}` : 'OK')}</div>
             <div class="line mono">autonomous ${esc(autonomousStatus?.error ? `ERROR ${autonomousStatus.error}` : 'OK')}</div>
           </div>
         </details>
@@ -646,21 +1018,32 @@
 
     async function refresh() {
       el('updated-at').textContent = 'Refreshing';
-      const [status, readiness, decision, confluence, fakeBreakdownWatchlist, autonomousStatus] = await Promise.all([
+      const [status, readiness, decision, confluence, fakeBreakdownWatchlist, ladderReclaimWatchlist, levelState, tradeCandidates, tradingAlerts, candleStatus, autonomousStatus] = await Promise.all([
         optionalJson(endpoints.status),
         optionalJson(endpoints.readiness),
         optionalJson(endpoints.decision),
         optionalJson(endpoints.confluence),
         optionalJson(endpoints.fakeBreakdownWatchlist),
+        optionalJson(endpoints.ladderReclaimWatchlist),
+        optionalJson(endpoints.levelState),
+        optionalJson(endpoints.tradeCandidates),
+        optionalJson(endpoints.tradingAlerts),
+        optionalJson(endpoints.candleStatus),
         optionalJson(endpoints.autonomousStatus)
       ]);
       renderTopBand(status);
       renderDecision(decision);
       renderConfluence(confluence);
       renderFakeBreakdownWatchlist(fakeBreakdownWatchlist);
+      renderLadderReclaimWatchlist(ladderReclaimWatchlist);
+      renderLiveLevelState(levelState);
+      renderTradeCandidates(tradeCandidates);
+      renderBracketVisual(tradeCandidates, levelState);
+      renderTradingAlerts(tradingAlerts);
+      renderDataHealth(levelState, candleStatus);
       renderIngestion(status);
       renderAutonomous(readiness, autonomousStatus, status);
-      renderEvidence(status, readiness, decision, confluence, autonomousStatus);
+      renderEvidence(status, readiness, decision, confluence, autonomousStatus, levelState, tradeCandidates, tradingAlerts, candleStatus);
       el('decision-mode').textContent = `${decision.mode || 'manual'} ${decision.instrument || 'ES'}`;
       el('updated-at').textContent = `Updated ${new Date().toLocaleTimeString()}`;
     }

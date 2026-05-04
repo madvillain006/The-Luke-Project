@@ -11,7 +11,7 @@
 ## 3. Data Sources
 - ES 1m bars: 52927 (2026-03-01 to 2026-04-29).
 - SPX 1m bars: 19999 (2026-02-18 to 2026-04-28).
-- Source timeline events: 13706, usable 13468.
+- Source timeline events: 13736, usable 13498.
 - Sources considered: Saty, Mancini, Dubz, Bobby/heatmap, GEX/Heatseeker when present, SPX reference levels with explicit basis handling.
 
 ## 4. Level Clustering Approach

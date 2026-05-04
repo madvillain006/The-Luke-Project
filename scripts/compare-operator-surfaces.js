@@ -287,7 +287,13 @@ function stable(value) {
   if (Array.isArray(value)) return JSON.stringify(value.map(stable).sort());
   if (value && typeof value === 'object') {
     const out = {};
-    for (const key of Object.keys(value).sort()) out[key] = stable(value[key]);
+    for (const key of Object.keys(value).sort()) {
+      if (key === 'count' && value.loaded === false && (value[key] === null || value[key] === undefined)) {
+        out[key] = 0;
+      } else {
+        out[key] = stable(value[key]);
+      }
+    }
     return out;
   }
   return value;

@@ -22,6 +22,7 @@
 
 ## 5. Staged Add
 - Best staged variant: 1ES_ADD_AFTER_RETEST_HOLD, PnL 2850, max drawdown 487.5, failed false.
+- 50K best staged variant: 1ES_ADD_AFTER_RETEST_HOLD, PnL 2850, max drawdown 487.5, failed false.
 - Staged add remains diagnostic. It should not become paper/live until fill assumptions and add timing are visually checked.
 
 ## 6. Average Drawdown By Entry

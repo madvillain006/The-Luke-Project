@@ -1,0 +1,42 @@
+//@version=5
+indicator("Saty ATR Levels - Luke Reference", shorttitle="Saty ATR Ref", overlay=true)
+
+// Local reference for the Saty ATR ladder used by Luke's TradingView bridge.
+// The original standalone source was not present in the repo; this preserves the
+// known Pine v5 ATR trigger/fib/extension structure without wiring any strategy
+// or broker behavior.
+
+mode = input.string("Daily", "Mode", options=["Daily", "Multi-day", "Swing"])
+atr_length = input.int(14, "ATR length", minval=1)
+trigger_percentage = input.float(0.236, "Trigger percentage", step=0.001)
+
+tf = mode == "Daily" ? "D" : mode == "Multi-day" ? "W" : "M"
+previous_close = request.security(syminfo.tickerid, tf, close[1], barmerge.gaps_off, barmerge.lookahead_on)
+atr_value = request.security(syminfo.tickerid, tf, ta.atr(atr_length)[1], barmerge.gaps_off, barmerge.lookahead_on)
+
+call_trigger = previous_close + atr_value * trigger_percentage
+put_trigger = previous_close - atr_value * trigger_percentage
+ext_plus_1 = previous_close + atr_value * 0.382
+ext_plus_2 = previous_close + atr_value * 0.500
+ext_plus_3 = previous_close + atr_value * 0.618
+ext_plus_4 = previous_close + atr_value * 0.786
+atr_plus_1 = previous_close + atr_value
+ext_minus_1 = previous_close - atr_value * 0.382
+ext_minus_2 = previous_close - atr_value * 0.500
+ext_minus_3 = previous_close - atr_value * 0.618
+ext_minus_4 = previous_close - atr_value * 0.786
+atr_minus_1 = previous_close - atr_value
+
+plot(previous_close, "Previous close", color=color.gray)
+plot(call_trigger, "Call trigger", color=color.lime)
+plot(put_trigger, "Put trigger", color=color.red)
+plot(ext_plus_1, "Ext +1", color=color.new(color.lime, 35))
+plot(ext_plus_2, "Ext +2", color=color.new(color.lime, 45))
+plot(ext_plus_3, "Ext +3", color=color.new(color.lime, 55))
+plot(ext_plus_4, "Ext +4", color=color.new(color.lime, 65))
+plot(atr_plus_1, "ATR +1", color=color.new(color.lime, 15))
+plot(ext_minus_1, "Ext -1", color=color.new(color.red, 35))
+plot(ext_minus_2, "Ext -2", color=color.new(color.red, 45))
+plot(ext_minus_3, "Ext -3", color=color.new(color.red, 55))
+plot(ext_minus_4, "Ext -4", color=color.new(color.red, 65))
+plot(atr_minus_1, "ATR -1", color=color.new(color.red, 15))

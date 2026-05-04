@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Luke Trading Window</title>
+  <style>
+    :root {
+      --bg: #0b1014;
+      --panel: #12191f;
+      --panel-2: #172028;
+      --line: #26333d;
+      --text: #eef4f8;
+      --muted: #9fb0bb;
+      --good: #40c486;
+      --warn: #f0b94a;
+      --bad: #ef6a65;
+      --info: #58a6ff;
+      --entry: #f0b94a;
+      --stop: #ef6a65;
+      --tp: #40c486;
+      --price: #d8e4ed;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--bg);
+      min-width: 320px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+      background: #0e151a;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    h1, h2, h3, p { margin: 0; }
+    h1 { font-size: 18px; font-weight: 700; letter-spacing: 0; }
+    h2 { font-size: 15px; font-weight: 700; letter-spacing: 0; }
+    h3 { font-size: 13px; font-weight: 700; letter-spacing: 0; color: var(--muted); }
+    .subhead { color: var(--muted); font-size: 12px; margin-top: 3px; }
+    .status-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 4px 8px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--muted);
+      background: #0d1419;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .pill.good { color: var(--good); border-color: rgba(64,196,134,.45); }
+    .pill.warn { color: var(--warn); border-color: rgba(240,185,74,.45); }
+    .pill.bad { color: var(--bad); border-color: rgba(239,106,101,.45); }
+    .pill.info { color: var(--info); border-color: rgba(88,166,255,.45); }
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(360px, .95fr);
+      gap: 12px;
+      padding: 12px;
+    }
+    section {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 8px;
+      min-width: 0;
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .section-body { padding: 12px; }
+    .left-stack, .right-stack {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+    .chart-shell {
+      height: 560px;
+      position: relative;
+    }
+    svg#price-chart {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: #0a0f13;
+      border-radius: 6px;
+    }
+    .chart-empty {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      color: var(--warn);
+      background: rgba(10,15,19,.86);
+      border-radius: 6px;
+      text-align: center;
+      padding: 20px;
+    }
+    .controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    button {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #111a21;
+      color: var(--text);
+      min-height: 32px;
+      padding: 6px 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    button.active { border-color: rgba(88,166,255,.8); color: var(--info); }
+    button:hover { background: #18232b; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    th, td {
+      text-align: left;
+      padding: 8px 6px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th { color: var(--muted); font-weight: 600; }
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+    }
+    .queue {
+      display: grid;
+      gap: 8px;
+    }
+    .item {
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      border-radius: 6px;
+      padding: 10px;
+    }
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      background: #10171d;
+      min-height: 58px;
+    }
+    .metric .label { color: var(--muted); font-size: 11px; }
+    .metric .value { font-size: 14px; margin-top: 5px; overflow-wrap: anywhere; }
+    .alerts {
+      display: grid;
+      gap: 8px;
+      max-height: 300px;
+      overflow: auto;
+    }
+    .alert {
+      border-left: 3px solid var(--info);
+      background: #10171d;
+      border-radius: 4px;
+      padding: 8px;
+      white-space: pre-wrap;
+    }
+    .alert.warn { border-left-color: var(--warn); }
+    .alert.bad { border-left-color: var(--bad); }
+    .alert.good { border-left-color: var(--good); }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .swatch {
+      display: inline-block;
+      width: 16px;
+      height: 3px;
+      border-radius: 2px;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+    .swatch.entry { background: var(--entry); }
+    .swatch.stop { background: var(--stop); }
+    .swatch.tp { background: var(--tp); }
+    .swatch.price { background: var(--price); }
+    .warning-band {
+      display: grid;
+      gap: 6px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      background: #181714;
+      color: var(--warn);
+      font-size: 12px;
+    }
+    @media (max-width: 980px) {
+      main { grid-template-columns: 1fr; }
+      .chart-shell { height: 420px; }
+      header { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Luke Trading Window</h1>
+      <p class="subhead">Live-shaped bracket workflow using replay/dev candles until a verified provider is connected.</p>
+    </div>
+    <div class="status-strip" id="top-status">
+      <span class="pill warn">Read-only</span>
+      <span class="pill warn">Replay/dev simulated</span>
+      <span class="pill bad">No execution controls</span>
+      <span class="pill info">Not a live trade recommendation</span>
+    </div>
+  </header>
+
+  <div class="warning-band">
+    <div>Using local/replay 1m candles when replay mode is selected. Proof only, not live arming.</div>
+    <div>No broker route is available from this window. Brackets are visual plan objects only.</div>
+  </div>
+
+  <main>
+    <div class="left-stack">
+      <section id="chart-panel">
+        <div class="section-head">
+          <div>
+            <h2>Chart Panel</h2>
+            <p class="subhead" id="chart-subtitle">Loading replay example</p>
+          </div>
+          <div class="controls" id="replay-selector">
+            <button data-example="positive" class="active" type="button">Positive Replay</button>
+            <button data-example="negative" type="button">Negative Replay</button>
+            <button data-example="staged" type="button">Staged Add Replay</button>
+            <button data-refresh="true" type="button">Refresh</button>
+          </div>
+        </div>
+        <div class="section-body">
+          <div class="legend">
+            <span><span class="swatch price"></span>Current/replay price</span>
+            <span><span class="swatch entry"></span>Entry plan</span>
+            <span><span class="swatch stop"></span>Stop plan</span>
+            <span><span class="swatch tp"></span>TP lines</span>
+          </div>
+          <div class="chart-shell">
+            <svg id="price-chart" role="img" aria-label="Replay candle chart with level and bracket lines"></svg>
+            <div class="chart-empty" id="chart-empty">1m ES candles unavailable - ladder-only fallback active.</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="levels-panel">
+        <div class="section-head">
+          <h2>Active Level Clusters</h2>
+          <span class="pill info" id="cluster-count">0 clusters</span>
+        </div>
+        <div class="section-body">
+          <table>
+            <thead>
+              <tr>
+                <th>Price</th>
+                <th>Families</th>
+                <th>Transport</th>
+                <th>Lifecycle</th>
+                <th>State</th>
+                <th>Basis</th>
+              </tr>
+            </thead>
+            <tbody id="cluster-rows"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <div class="right-stack">
+      <section id="candidate-panel">
+        <div class="section-head">
+          <h2>Candidate Queue</h2>
+          <span class="pill warn">Paper/sim only</span>
+        </div>
+        <div class="section-body">
+          <div class="queue" id="candidate-queue"></div>
+        </div>
+      </section>
+
+      <section id="bracket-panel">
+        <div class="section-head">
+          <h2>Bracket Plan</h2>
+          <span class="pill bad">Plan object only</span>
+        </div>
+        <div class="section-body">
+          <div class="grid-2" id="bracket-metrics"></div>
+        </div>
+      </section>
+
+      <section id="alerts-panel">
+        <div class="section-head">
+          <h2>Alerts Feed</h2>
+          <span class="pill info">State transitions only</span>
+        </div>
+        <div class="section-body">
+          <div class="alerts" id="alerts-feed"></div>
+        </div>
+      </section>
+
+      <section id="health-panel">
+        <div class="section-head">
+          <h2>Data Health</h2>
+          <span class="pill warn" id="arming-status">Live arming disabled</span>
+        </div>
+        <div class="section-body">
+          <div class="grid-2" id="health-grid"></div>
+        </div>
+      </section>
+
+      <section id="research-panel">
+        <div class="section-head">
+          <h2>Research Status</h2>
+          <span class="pill info">Watchlist</span>
+        </div>
+        <div class="section-body">
+          <div class="item">
+            <div class="item-row"><strong>ladder_reclaim_bobby_mancini_staged_v1</strong><span class="pill warn">WATCHLIST_ONLY</span></div>
+            <div class="subhead">1ES starter preferred; add second ES only after retest hold / confirmation. Replay/dev proof does not create a live candidate.</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const state = { example: 'positive', chart: null, sourceHealth: null };
+    const qs = (sel) => document.querySelector(sel);
+    const esc = (value) => String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+    const fmt = (n) => Number.isFinite(Number(n)) ? Number(n).toFixed(2) : 'n/a';
+    const statusClass = (value) => /PASS|BLOCK|INVALID|UNKNOWN|STALE/i.test(value || '') ? 'bad' : /PAPER|REPLAY|ARMED|WATCH/i.test(value || '') ? 'warn' : 'info';
+
+    function apiUrl(path) {
+      return `${path}?instrument=ES&mode=replay&example=${encodeURIComponent(state.example)}`;
+    }
+
+    async function getJson(path) {
+      const response = await fetch(apiUrl(path), { method: 'GET' });
+      return response.json();
+    }
+
+    function setActiveButtons() {
+      document.querySelectorAll('#replay-selector button[data-example]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.example === state.example);
+      });
+    }
+
+    function yScale(values, height) {
+      const finite = values.map(Number).filter(Number.isFinite);
+      if (!finite.length) return () => height / 2;
+      const min = Math.min(...finite);
+      const max = Math.max(...finite);
+      const pad = Math.max(2, (max - min) * 0.12);
+      const lo = min - pad;
+      const hi = max + pad;
+      return (value) => {
+        const n = Number(value);
+        if (!Number.isFinite(n) || hi === lo) return height / 2;
+        return height - ((n - lo) / (hi - lo)) * height;
+      };
+    }
+
+    function drawChart(data) {
+      const svg = qs('#price-chart');
+      const empty = qs('#chart-empty');
+      const width = svg.clientWidth || 900;
+      const height = svg.clientHeight || 520;
+      const bracket = data.bracket_visual || null;
+      const candles = (data.candles || []).slice(-120);
+      const current = Number(data.current_price);
+      const bracketPrices = (bracket?.lines || []).map(line => Number(line.price)).filter(Number.isFinite);
+      const allLevels = (data.levels || []).filter(level => Number.isFinite(Number(level.price)));
+      const levels = allLevels
+        .filter(level => {
+          if (!Number.isFinite(current)) return true;
+          const price = Number(level.price);
+          return Math.abs(price - current) <= 120 || bracketPrices.some(bracketPrice => Math.abs(bracketPrice - price) <= 1.5);
+        })
+        .sort((a, b) => {
+          if (!Number.isFinite(current)) return Number(b.price) - Number(a.price);
+          return Math.abs(Number(a.price) - current) - Math.abs(Number(b.price) - current);
+        })
+        .slice(0, 22)
+        .sort((a, b) => Number(b.price) - Number(a.price));
+      const linePrices = [
+        ...candles.flatMap(c => [c.high, c.low]),
+        ...levels.map(l => l.price),
+        ...bracketPrices,
+        data.current_price,
+      ];
+      const y = yScale(linePrices, height - 36);
+      const left = 46;
+      const right = width - 12;
+      const top = 12;
+      const chartHeight = height - 48;
+      const step = candles.length ? Math.max(4, (right - left) / candles.length) : 8;
+      const candleWidth = Math.max(3, Math.min(8, step * 0.55));
+      let html = `<rect x="0" y="0" width="${width}" height="${height}" fill="#0a0f13"></rect>`;
+      html += Array.from({ length: 6 }).map((_, i) => {
+        const gy = top + (chartHeight / 5) * i;
+        return `<line x1="${left}" x2="${right}" y1="${gy}" y2="${gy}" stroke="#1d2830" stroke-width="1"></line>`;
+      }).join('');
+      if (!candles.length) empty.style.display = 'flex';
+      else empty.style.display = 'none';
+      const labelYs = [];
+      levels.forEach(level => {
+        const yy = top + y(level.price);
+        const color = level.is_reference_only ? '#7b8790' : '#58a6ff';
+        html += `<line x1="${left}" x2="${right}" y1="${yy}" y2="${yy}" stroke="${color}" stroke-width="1" stroke-dasharray="${level.is_reference_only ? '4 4' : '0'}"></line>`;
+        if (!labelYs.some(existing => Math.abs(existing - yy) < 14)) {
+          labelYs.push(yy);
+          html += `<text x="${left + 4}" y="${yy - 4}" fill="${color}" font-size="11">${esc(level.source_families?.join('+') || 'level')} ${fmt(level.price)}</text>`;
+        }
+      });
+      candles.forEach((candle, index) => {
+        const x = left + index * step + step / 2;
+        const openY = top + y(candle.open);
+        const closeY = top + y(candle.close);
+        const highY = top + y(candle.high);
+        const lowY = top + y(candle.low);
+        const up = Number(candle.close) >= Number(candle.open);
+        const color = up ? '#40c486' : '#ef6a65';
+        html += `<line x1="${x}" x2="${x}" y1="${highY}" y2="${lowY}" stroke="${color}" stroke-width="1"></line>`;
+        html += `<rect x="${x - candleWidth / 2}" y="${Math.min(openY, closeY)}" width="${candleWidth}" height="${Math.max(2, Math.abs(openY - closeY))}" fill="${color}" opacity=".78"></rect>`;
+      });
+      (bracket?.lines || []).forEach(line => {
+        const yy = top + y(line.price);
+        const color = line.kind === 'stop' ? 'var(--stop)' : line.kind === 'entry' ? 'var(--entry)' : 'var(--tp)';
+        html += `<line x1="${left}" x2="${right}" y1="${yy}" y2="${yy}" stroke="${color}" stroke-width="2"></line>`;
+        html += `<text x="${right - 150}" y="${yy - 5}" fill="${color}" font-size="12">${esc(line.label)} ${fmt(line.price)}</text>`;
+      });
+      if (Number.isFinite(Number(data.current_price))) {
+        const yy = top + y(data.current_price);
+        html += `<line x1="${left}" x2="${right}" y1="${yy}" y2="${yy}" stroke="#d8e4ed" stroke-width="1.5" stroke-dasharray="2 4"></line>`;
+        html += `<text x="${right - 160}" y="${yy + 15}" fill="#d8e4ed" font-size="12">Current/replay ${fmt(data.current_price)}</text>`;
+      }
+      (data.markers || []).forEach(marker => {
+        const candleIndex = candles.findIndex(c => c.timestamp === marker.timestamp);
+        if (candleIndex < 0) return;
+        const x = left + candleIndex * step + step / 2;
+        const yy = top + y(marker.price);
+        html += `<circle cx="${x}" cy="${yy}" r="4" fill="${marker.kind === 'flush' ? '#ef6a65' : '#f0b94a'}"></circle>`;
+      });
+      svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      svg.innerHTML = html;
+    }
+
+    function renderClusters(data) {
+      const rows = (data.clusters || []).slice(0, 18);
+      qs('#cluster-count').textContent = `${rows.length} clusters`;
+      qs('#cluster-rows').innerHTML = rows.map(cluster => {
+        const lifecycle = (cluster.original_levels || []).map(l => l.lifecycle).filter(Boolean).slice(0, 2).join(', ') || 'n/a';
+        return `<tr>
+          <td class="mono">${fmt(cluster.canonical_price_es ?? cluster.original_levels?.[0]?.price)}</td>
+          <td>${esc((cluster.source_families || cluster.sources || []).join(' + ') || 'unknown')}</td>
+          <td>${esc((cluster.transports || []).join(', ') || 'unknown')}</td>
+          <td>${esc(lifecycle)}</td>
+          <td><span class="pill ${statusClass(cluster.state)}">${esc(cluster.state)}</span></td>
+          <td>${esc(cluster.basis_method || 'unknown')}${cluster.is_reference_only ? ' reference-only' : ''}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    function renderCandidates(data) {
+      const candidates = (data.candidates || []).slice(0, 5);
+      qs('#candidate-queue').innerHTML = candidates.length ? candidates.map(candidate => `
+        <div class="item">
+          <div class="item-row">
+            <strong>${esc(candidate.strategy)}</strong>
+            <span class="pill ${statusClass(candidate.status)}">${esc(candidate.status)}</span>
+          </div>
+          <div class="grid-2">
+            <div class="metric"><div class="label">Entry</div><div class="value mono">${fmt(candidate.entry_zone?.low)}-${fmt(candidate.entry_zone?.high)}</div></div>
+            <div class="metric"><div class="label">Stop</div><div class="value mono">${fmt(candidate.stop)}</div></div>
+            <div class="metric"><div class="label">TP1 / TP2</div><div class="value mono">${fmt(candidate.tp1)} / ${fmt(candidate.tp2)}</div></div>
+            <div class="metric"><div class="label">Risk</div><div class="value mono">$${fmt(candidate.risk?.risk_dollars)}</div></div>
+          </div>
+          <p class="subhead">${esc(candidate.status === 'LIVE_BLOCKED' ? (candidate.size_plan?.reason || 'blocked; bracket retained for visualization only') : (candidate.add_rule || 'Waiting for confirmed state.'))}</p>
+        </div>
+      `).join('') : '<div class="item">No candidate. Watch-only until valid candles, levels, and risk gates align.</div>';
+    }
+
+    function renderBracket(data) {
+      const candidate = (data.candidates || [])[0] || {};
+      const bracket = candidate.bracket || {};
+      const metrics = [
+        ['Entry plan', fmt(bracket.entry)],
+        ['Stop plan', fmt(bracket.stop)],
+        ['TP1', fmt(bracket.tp1)],
+        ['TP2 / runner', fmt(bracket.tp2)],
+        ['Size plan', candidate.status === 'LIVE_BLOCKED' ? '0ES (blocked)' : (candidate.size_plan ? `${candidate.size_plan.starter_contracts}ES starter` : 'n/a')],
+        ['Block reason', candidate.status === 'LIVE_BLOCKED' ? (candidate.size_plan?.reason || 'blocked') : 'none'],
+        ['Add rule', candidate.add_rule || 'n/a'],
+        ['Risk dollars', `$${fmt(candidate.risk?.risk_dollars)}`],
+        ['Can submit', 'false'],
+      ];
+      qs('#bracket-metrics').innerHTML = metrics.map(([label, value]) => `
+        <div class="metric"><div class="label">${esc(label)}</div><div class="value">${esc(value)}</div></div>
+      `).join('');
+    }
+
+    function renderAlerts(data) {
+      qs('#alerts-feed').innerHTML = (data.alerts || []).slice(0, 8).map(alert => `
+        <div class="alert ${statusClass(alert.type)}">
+          <strong>${esc(alert.message)}</strong>
+          <div class="mono">${esc(alert.detail || alert.state || '')}</div>
+        </div>
+      `).join('') || '<div class="alert">No transition alerts for this replay window.</div>';
+    }
+
+    function renderHealth(chart, health) {
+      const feed = chart.candle_feed || {};
+      const spx = health.feeds?.SPX || {};
+      qs('#arming-status').textContent = chart.live_arming_enabled ? 'Live arming enabled' : 'Live arming disabled';
+      qs('#arming-status').className = `pill ${chart.live_arming_enabled ? 'good' : 'warn'}`;
+      const values = [
+        ['Mode', chart.data_mode?.mode || chart.mode || 'unknown'],
+        ['ES candle source', `${feed.source_label || feed.source || 'UNKNOWN'} (${feed.candle_count || 0})`],
+        ['Latest/replay candle', feed.latest_candle_timestamp || 'unknown'],
+        ['Replay usable', String(feed.usable_for_replay === true)],
+        ['Live arming usable', String(feed.usable_for_live_arming === true)],
+        ['SPX candle source', spx.source_label || spx.source || 'UNKNOWN'],
+        ['heatmap_gex stale/superseded', `${health.heatmap_gex?.stale_count || 0}/${health.heatmap_gex?.superseded_count || 0}`],
+        ['Basis status', health.basis_status?.fixed_spx_to_es_conversion_used === false ? 'SPX reference-only' : 'unknown'],
+      ];
+      qs('#health-grid').innerHTML = values.map(([label, value]) => `
+        <div class="metric"><div class="label">${esc(label)}</div><div class="value">${esc(value)}</div></div>
+      `).join('');
+      qs('#chart-subtitle').textContent = `${chart.mode} ${chart.replay_example?.key || 'current'} - ${feed.latest_candle_timestamp || 'no candle'}`;
+    }
+
+    async function refresh() {
+      setActiveButtons();
+      const [chart, health] = await Promise.all([
+        getJson('/api/trading/chart-data'),
+        getJson('/api/trading/source-health'),
+      ]);
+      state.chart = chart;
+      state.sourceHealth = health;
+      drawChart(chart);
+      renderClusters(chart);
+      renderCandidates(chart);
+      renderBracket(chart);
+      renderAlerts(chart);
+      renderHealth(chart, health);
+    }
+
+    document.querySelectorAll('#replay-selector button[data-example]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.example = btn.dataset.example;
+        refresh();
+      });
+    });
+    document.querySelector('#replay-selector button[data-refresh]').addEventListener('click', refresh);
+    window.addEventListener('resize', () => state.chart && drawChart(state.chart));
+    refresh().catch(err => {
+      qs('#chart-subtitle').textContent = `Trading window failed: ${err.message}`;
+      qs('#chart-empty').style.display = 'flex';
+    });
+  </script>
+</body>
+</html>

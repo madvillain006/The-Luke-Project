@@ -6,7 +6,9 @@ const path = require('path');
 const { chromium } = require('playwright');
 
 const ROOT = path.join(__dirname, '..');
-const OUT_DIR = path.join(ROOT, 'artifacts', 'proof', 'tonight-wrapup');
+const OUT_DIR = process.env.PROOF_OUT_DIR
+  ? path.resolve(ROOT, process.env.PROOF_OUT_DIR)
+  : path.join(ROOT, 'artifacts', 'proof', 'current-status');
 const BASE_URL = process.env.LUKE_BASE_URL || 'http://127.0.0.1:3000';
 
 function ensureDir(dir) {
@@ -23,24 +25,6 @@ async function fetchJson(route) {
     return { ok: response.ok, status: response.status, route, url, response: json };
   } catch (err) {
     return { ok: false, status: null, route, url, error: err.message };
-  }
-}
-
-async function postChat(command) {
-  const route = '/chat';
-  const url = `${BASE_URL}${route}`;
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: command, history: [] }),
-    });
-    const text = await response.text();
-    let json = null;
-    try { json = JSON.parse(text); } catch (_err) { json = { raw: text.slice(0, 2000) }; }
-    return { ok: response.ok, status: response.status, route, url, command, response: json };
-  } catch (err) {
-    return { ok: false, status: null, route, url, command, error: err.message };
   }
 }
 
@@ -120,6 +104,7 @@ async function main() {
     ['/api/decision?instrument=ES&mode=manual', 'api-decision.json'],
     ['/api/confluence?instrument=ES', 'api-confluence.json'],
     ['/api/research/fake-breakdown-watchlist?instrument=ES', 'api-watchlist.json'],
+    ['/api/research/ladder-reclaim-watchlist?instrument=ES', 'api-ladder-reclaim-watchlist.json'],
     ['/agent/autonomous/status', 'api-autonomous-status.json'],
     ['/agent/autonomous/preflight', 'api-autonomous-preflight.json'],
   ];
@@ -128,16 +113,6 @@ async function main() {
   for (const [route, fileName] of apiRoutes) {
     const result = await fetchJson(route);
     api[route] = result;
-    fs.writeFileSync(path.join(OUT_DIR, fileName), JSON.stringify(result, null, 2), 'utf8');
-  }
-
-  const chat = {};
-  for (const [command, fileName] of [
-    ['/saty', 'chat-saty.json'],
-    ['/verdict ES', 'chat-verdict-es.json'],
-  ]) {
-    const result = await postChat(command);
-    chat[command] = result;
     fs.writeFileSync(path.join(OUT_DIR, fileName), JSON.stringify(result, null, 2), 'utf8');
   }
 
@@ -155,8 +130,15 @@ async function main() {
     waitForText: 'Fake Breakdown Watchlist',
     locator: 'article[aria-labelledby="fake-breakdown-title"]',
   }));
+  screenshots.push(await screenshot(page, '/operator-v2', 'operator-v2-ladder-reclaim-card.png', {
+    waitForText: 'Ladder Reclaim Watchlist',
+    locator: 'article[aria-labelledby="ladder-reclaim-title"]',
+  }));
   screenshots.push(await screenshot(page, '/research/fake-breakdown-watchlist', 'fake-breakdown-watchlist.png', {
     waitForText: 'Fake Breakdown Watchlist Replay',
+  }));
+  screenshots.push(await screenshot(page, '/research/ladder-reclaim-watchlist', 'ladder-reclaim-watchlist.png', {
+    waitForText: 'Ladder First-Reclaim Visual Review',
   }));
   const layout = {
     shell: await layoutMetrics(page, '/'),
@@ -167,28 +149,28 @@ async function main() {
   fs.writeFileSync(path.join(OUT_DIR, 'ui-layout-metrics.json'), JSON.stringify(layout, null, 2), 'utf8');
 
   const proof = {
-    ok: screenshots.every(item => item.ok) && Object.values(api).every(item => item.ok) && Object.values(chat).every(item => item.ok),
+    ok: screenshots.every(item => item.ok) && Object.values(api).every(item => item.ok),
     generated_at: new Date().toISOString(),
     base_url: BASE_URL,
     screenshots,
     api,
-    chat,
     layout,
     safety: {
-      get_only_and_read_only_chat_commands: true,
+      get_only: true,
       no_execution_controls_added: true,
       watchlist_status: 'WATCHLIST_ONLY',
+      ladder_reclaim_candidate_status: api['/api/research/ladder-reclaim-watchlist?instrument=ES']?.response?.candidate?.status || null,
     },
   };
   fs.writeFileSync(path.join(OUT_DIR, 'virtual-operator-proof.json'), JSON.stringify(proof, null, 2), 'utf8');
   console.log(`proof ok: ${proof.ok}`);
-  console.log(`artifact: ${path.join('artifacts', 'proof', 'tonight-wrapup', 'virtual-operator-proof.json')}`);
+  console.log(`artifact: ${path.relative(ROOT, path.join(OUT_DIR, 'virtual-operator-proof.json')).replace(/\\/g, '/')}`);
   if (!proof.ok) process.exitCode = 1;
 }
 
 if (require.main === module) {
   main().catch(err => {
-    console.error(`tonight wrap-up proof failed: ${err.stack || err.message}`);
+    console.error(`current status proof failed: ${err.stack || err.message}`);
     process.exitCode = 1;
   });
 }

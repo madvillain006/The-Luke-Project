@@ -65,6 +65,7 @@ local-discord-exports/
 findings/
 token-usage*.json
 sweeper-costs.json
+runs/
 screenshot.png
 artifacts/
 icon.ico

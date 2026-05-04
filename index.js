@@ -55,6 +55,18 @@ const { buildDecisionResponse } = require("./lib/operator/decision-adapter");
 const { buildConfluenceResponse } = require("./lib/operator/confluence-adapter");
 const { buildFakeBreakdownWatchlistResponse } = require("./lib/operator/fake-breakdown-watchlist-adapter");
 const {
+  buildLevelStateResponse,
+  buildTradeCandidatesResponse,
+  buildTradingAlertsResponse,
+  buildCandleStatusResponse,
+  buildTradingChartDataResponse,
+  buildTradingSourceHealthResponse,
+} = require("./lib/operator/trading-state-adapter");
+const {
+  buildLadderReclaimWatchlistResponse,
+  getLadderReclaimCaseImagePath,
+} = require("./lib/operator/ladder-reclaim-watchlist-adapter");
+const {
   getTodayLevelsFile,
   hasLevelsLoadedToday,
   levelsLoadedLabel,
@@ -381,9 +393,19 @@ app.get("/operator-v2", (req, res) => {
   res.sendFile(__dirname + "/operator-v2.html");
 });
 
+app.get("/trading-window", (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.sendFile(__dirname + "/trading-window.html");
+});
+
 app.get("/research/fake-breakdown-watchlist", (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.sendFile(path.join(__dirname, "artifacts", "research", "fake-breakdown-watchlist.html"));
+});
+
+app.get("/research/ladder-reclaim-watchlist", (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.sendFile(path.join(__dirname, "artifacts", "research", "ladder-reclaim-visual-review.html"));
 });
 
 app.get("/brain", (req, res) => {
@@ -966,6 +988,114 @@ app.get("/api/confluence", async (req, res) => {
   }
 });
 
+app.get("/api/trading/level-state", async (req, res) => {
+  try {
+    const payload = await buildLevelStateResponse({
+      instrument: req.query.instrument || "ES",
+      mode: req.query.mode || "live",
+      date: req.query.date,
+      time: req.query.time,
+      start: req.query.start,
+      end: req.query.end,
+      limit: req.query.limit,
+      example: req.query.example,
+    });
+    res.json(payload);
+  } catch (err) {
+    res.status(500).json({ ok: false, read_only: true, no_live_execution: true, blockers: [`level-state failed: ${err.message}`] });
+  }
+});
+
+app.get("/api/trading/trade-candidates", async (req, res) => {
+  try {
+    const payload = await buildTradeCandidatesResponse({
+      instrument: req.query.instrument || "ES",
+      mode: req.query.mode || "live",
+      date: req.query.date,
+      time: req.query.time,
+      start: req.query.start,
+      end: req.query.end,
+      limit: req.query.limit,
+      example: req.query.example,
+    });
+    res.json(payload);
+  } catch (err) {
+    res.status(500).json({ ok: false, read_only: true, no_live_execution: true, blockers: [`trade-candidates failed: ${err.message}`] });
+  }
+});
+
+app.get("/api/trading/alerts", async (req, res) => {
+  try {
+    const payload = await buildTradingAlertsResponse({
+      instrument: req.query.instrument || "ES",
+      mode: req.query.mode || "live",
+      date: req.query.date,
+      time: req.query.time,
+      start: req.query.start,
+      end: req.query.end,
+      limit: req.query.limit,
+      example: req.query.example,
+    });
+    res.json(payload);
+  } catch (err) {
+    res.status(500).json({ ok: false, read_only: true, no_live_execution: true, blockers: [`trading alerts failed: ${err.message}`] });
+  }
+});
+
+app.get("/api/trading/candle-status", async (req, res) => {
+  try {
+    const payload = await buildCandleStatusResponse({
+      instrument: req.query.instrument || "ES",
+      mode: req.query.mode || "live",
+      date: req.query.date,
+      time: req.query.time,
+      start: req.query.start,
+      end: req.query.end,
+      limit: req.query.limit,
+      example: req.query.example,
+    });
+    res.json(payload);
+  } catch (err) {
+    res.status(500).json({ ok: false, read_only: true, no_live_execution: true, blockers: [`candle status failed: ${err.message}`] });
+  }
+});
+
+app.get("/api/trading/chart-data", async (req, res) => {
+  try {
+    const payload = await buildTradingChartDataResponse({
+      instrument: req.query.instrument || "ES",
+      mode: req.query.mode || "live",
+      date: req.query.date,
+      time: req.query.time,
+      start: req.query.start,
+      end: req.query.end,
+      limit: req.query.limit,
+      example: req.query.example,
+    });
+    res.json(payload);
+  } catch (err) {
+    res.status(500).json({ ok: false, read_only: true, no_live_execution: true, blockers: [`chart-data failed: ${err.message}`] });
+  }
+});
+
+app.get("/api/trading/source-health", async (req, res) => {
+  try {
+    const payload = await buildTradingSourceHealthResponse({
+      instrument: req.query.instrument || "ES",
+      mode: req.query.mode || "live",
+      date: req.query.date,
+      time: req.query.time,
+      start: req.query.start,
+      end: req.query.end,
+      limit: req.query.limit,
+      example: req.query.example,
+    });
+    res.json(payload);
+  } catch (err) {
+    res.status(500).json({ ok: false, read_only: true, no_live_execution: true, blockers: [`source-health failed: ${err.message}`] });
+  }
+});
+
 app.get("/api/research/fake-breakdown-watchlist", async (req, res) => {
   try {
     const payload = await buildFakeBreakdownWatchlistResponse({
@@ -974,6 +1104,31 @@ app.get("/api/research/fake-breakdown-watchlist", async (req, res) => {
     res.json(payload);
   } catch (err) {
     res.status(500).json({ ok: false, read_only: true, blockers: [`fake breakdown watchlist failed: ${err.message}`] });
+  }
+});
+
+app.get("/api/research/ladder-reclaim-watchlist", async (req, res) => {
+  try {
+    const payload = buildLadderReclaimWatchlistResponse({
+      instrument: req.query.instrument || "ES",
+    });
+    res.json(payload);
+  } catch (err) {
+    res.status(500).json({ ok: false, read_only: true, no_execution: true, blockers: [`ladder reclaim watchlist failed: ${err.message}`] });
+  }
+});
+
+app.get("/api/research/ladder-reclaim-watchlist/image", (req, res) => {
+  try {
+    const imagePath = getLadderReclaimCaseImagePath({
+      kind: req.query.kind || "positive",
+      index: req.query.index || 0,
+    });
+    if (!imagePath) return res.status(404).json({ ok: false, read_only: true, error: "ladder reclaim case image unavailable" });
+    res.setHeader("Cache-Control", "no-store");
+    return res.sendFile(imagePath);
+  } catch (err) {
+    return res.status(500).json({ ok: false, read_only: true, error: `ladder reclaim case image failed: ${err.message}` });
   }
 });
 
@@ -1058,11 +1213,21 @@ app.post("/intraday/stop", (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-app.get("/health", (req, res) => {
+function gitShaIfAvailable() {
+  try {
+    return execSync("git rev-parse --short HEAD", { cwd: __dirname, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+  } catch {
+    return null;
+  }
+}
+
+function buildHealthPayload() {
   const { isMarketOpen } = require("./lib/market-hours");
   const today = new Date().toISOString().slice(0, 10);
   const tradesFile = events.trades;
   const lastSigFile = path.join(__dirname, "data", "last-signal.json");
+  let pkg = {};
+  try { pkg = JSON.parse(fs.readFileSync(path.join(__dirname, "package.json"), "utf8")); } catch {}
 
   let trades_today = 0;
   try {
@@ -1077,14 +1242,28 @@ app.get("/health", (req, res) => {
     last_signal = { type: ls.signal_type, analyst: ls.analyst, ts: ls.date || ls.timestamp || null };
   } catch {}
 
-  res.json({
+  return {
     ok: true,
+    app: "Luke",
+    version: pkg.version || "unknown",
+    pid: process.pid,
+    port: Number(process.env.PORT || 3000),
+    started_at: new Date(SERVER_START).toISOString(),
+    git_sha_if_available: gitShaIfAvailable(),
+    build_marker_if_available: process.env.LUKE_BUILD_MARKER || null,
     uptime_sec: Math.floor((Date.now() - SERVER_START) / 1000),
-    version: "2.0",
     trades_today,
     last_signal,
     market: isMarketOpen(),
-  });
+  };
+}
+
+app.get("/api/health", (req, res) => {
+  res.json(buildHealthPayload());
+});
+
+app.get("/health", (req, res) => {
+  res.json(buildHealthPayload());
 });
 
 app.get("/luke/self-diagnose", (req, res) => {
@@ -1384,7 +1563,7 @@ function gracefulShutdown(signal) {
 process.on("SIGINT",  () => gracefulShutdown("SIGINT"));
 process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
 
-const PORT = 3000;
+const PORT = Number(process.env.PORT || 3000);
 server.listen(PORT, "127.0.0.1", () => {
   console.log("Luke running on http://localhost:" + PORT);
   const _lvlsLoaded = levelsLoadedLabel(getTodayLevelsFile(__dirname));

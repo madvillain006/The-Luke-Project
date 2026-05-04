@@ -2,6 +2,7 @@ const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
 const { loadTradingState, saveTradingState } = require("../state/trading-store");
 const { ROOT, events } = require("../lib/paths");
+const { isFuturesMarketOpen } = require("../lib/market-hours");
 
 const client = new Anthropic();
 const PAPER_TRADES_FILE = events.paperTrades;
@@ -32,14 +33,26 @@ function notifyLuke(message) {
   }).catch(() => {});
 }
 
-function getETTime() {
-  return new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
+function getETTime(now = new Date()) {
+  const date = now instanceof Date ? now : new Date(now);
+  return new Date(date.toLocaleString("en-US", { timeZone: "America/New_York" }));
 }
 
-function getTradingWindowStatus() {
-  const et = getETTime();
+function getTradingWindowStatus(now = new Date()) {
+  const et = getETTime(now);
   const day = et.getDay();
-  if (day === 0 || day === 6) return { ok: false, reason: "Weekend" };
+  if (day === 0 || day === 6) {
+    const futures = isFuturesMarketOpen(now);
+    if (futures.open) {
+      return {
+        ok: false,
+        reason: "Futures overnight open - outside approved cash trading window",
+        futures_open: true,
+        session: futures.session,
+      };
+    }
+    return { ok: false, reason: "Weekend", futures_open: false };
+  }
   const h = et.getHours();
   const m = et.getMinutes();
   const t = h * 100 + m;

@@ -186,7 +186,7 @@ describe('slash-commands Phase 2 workflow status', () => {
     expect(payload.reply).not.toContain('ES: 7185.75');
   });
 
-  it('/verdict refuses when prep inputs are missing or stale', async () => {
+  it('/verdict renders confluence-only output with warnings when prep inputs are missing or stale', async () => {
     for (const f of [LEVEL_MEMORY_FILE, DUBZ_LEVELS_FILE, DAILY_CTX_FILE, TODAY_LEVELS_FILE, SATY_LEVELS_FILE]) {
       if (fs.existsSync(f)) fs.unlinkSync(f);
     }
@@ -196,7 +196,10 @@ describe('slash-commands Phase 2 workflow status', () => {
 
     await handleSlashCommand('/verdict ES', res);
 
-    expect(payload.reply).toBe('No fresh confluence verdict available. Run /saty, /heatmap first, then /ready before /verdict.');
+    expect(payload.reply).toContain('Context warning: missing /saty, /heatmap.');
+    expect(payload.reply).toContain('This is confluence-only; use /entries for PASS/trade truth.');
+    expect(payload.reply).toContain('## Confluence verdict');
+    expect(payload.reply).toContain('No levels recorded yet.');
   });
 });
 

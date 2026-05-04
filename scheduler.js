@@ -310,8 +310,9 @@ async function runScheduler() {
 
 
   const { runSatyAutoPull, loadAutoPullState } = require("./lib/saty-auto-pull");
+  const { loadSatyLevels } = require("./lib/saty-levels");
+  const { isFuturesMarketOpen } = require("./lib/market-hours");
   setInterval(async () => {
-    if (!process.env.MASSIVE_API_KEY) return;
     const now = new Date();
     const parts = new Intl.DateTimeFormat('en-US', {
       timeZone: 'America/New_York',
@@ -324,17 +325,18 @@ async function runScheduler() {
       minute: '2-digit',
     }).formatToParts(now);
     const map = Object.fromEntries(parts.map(p => [p.type, p.value]));
-    if (map.weekday === 'Sat' || map.weekday === 'Sun') return;
     const mins = (Number(map.hour) * 60) + Number(map.minute);
-    if (mins < 505 || mins > 515) return; // 8:25-8:35 ET
+    const normalCashWindow = map.weekday !== 'Sat' && map.weekday !== 'Sun' && mins >= 505 && mins <= 515;
+    const futuresCatchup = isFuturesMarketOpen(now).open && !loadSatyLevels();
+    if (!normalCashWindow && !futuresCatchup) return;
     const todayET = `${map.year}-${map.month}-${map.day}`;
     const state = loadAutoPullState();
     const lastAttemptET = state?.last_attempt
       ? new Date(state.last_attempt).toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
       : null;
     if (lastAttemptET === todayET) return;
-    await runJob("saty-auto-pull-0830", async () => {
-      const result = await runSatyAutoPull();
+    await runJob(normalCashWindow ? "saty-auto-pull-0830" : "saty-auto-pull-futures-catchup", async () => {
+      const result = await runSatyAutoPull({ preferUs500: futuresCatchup && !normalCashWindow });
       if (!result.ok && !result.pending) throw new Error(result.error || result.reason || 'Saty auto-pull failed');
       return result.pending ? `pending: ${result.reason || 'pending'}` : `saved ${result.level_count} levels`;
     });

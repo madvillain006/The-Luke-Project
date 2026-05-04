@@ -119,6 +119,7 @@ describe('Luke brain agent core', () => {
     expect(report.recommendation_only).toBe(true);
     expect(report.human_gate).toBe('required');
     expect(report.pending_signal).toEqual(expect.objectContaining({ ticker: 'ES' }));
+    expect(report.stale_data_warnings).toEqual([]);
     expect(report.counts.bobby_context).toBe(1);
     expect(report.scheduler.known_jobs).toBe(1);
   });
@@ -187,6 +188,9 @@ describe('Luke brain agent core', () => {
     const spine = buildDailySpine({ paths, now, weather });
 
     expect(spine.agent).toBe('daily');
+    expect(Array.isArray(spine.blockers)).toBe(true);
+    expect(spine.next_actions.length).toBeGreaterThan(0);
+    expect(spine.pipeline.checkins_today).toBe(1);
     expect(spine.weather.summary).toContain('71F');
     expect(spine.weather.summary).toContain('unknown');
     expect(spine.checklist.find(item => item.id === 'daily-checkin').status).toBe('done');
@@ -317,6 +321,7 @@ describe('Luke brain agent core', () => {
 
     expect(spine.agent).toBe('automation-business');
     expect(spine.status).toBe('building');
+    expect(spine.blockers).toEqual([]);
     expect(Object.keys(spine.subagents)).toEqual([
       'toolkit',
       'niche',
@@ -351,7 +356,9 @@ describe('Luke brain agent core', () => {
     expect(spine.status).toBe('building');
     expect(spine.provider_order.map(provider => provider.id)).toEqual(['claude', 'gemini', 'ollama']);
     expect(spine.provider_order.find(provider => provider.id === 'claude').configured).toBe(true);
+    expect(spine.provider_order.find(provider => provider.id === 'claude').lane).toBe('remote/API');
     expect(spine.provider_order.find(provider => provider.id === 'gemini').configured).toBe(true);
+    expect(spine.provider_order.find(provider => provider.id === 'ollama').lane).toBe('local/private');
     expect(spine.local_only_truth).toContain('Only the Ollama/local-model lane');
     expect(Object.keys(spine.subagents)).toEqual([
       'provider-router',
@@ -385,6 +392,19 @@ describe('Luke brain agent core', () => {
     expect(spine.subagents['local-runtime'].completed_event_types).toContain('ollama_installed');
   });
 
+  it('reports developer stack blockers without halting the brain when no provider lane is configured', () => {
+    const paths = makePaths();
+    const spine = buildDeveloperStackSpine({
+      paths,
+      now: new Date('2026-05-02T18:45:00.000Z'),
+      env: {},
+    });
+
+    expect(spine.status).toBe('degraded');
+    expect(spine.blockers).toContain('no developer LLM providers configured');
+    expect(spine.health_checks.ollama_runtime).toBe('not_checked');
+  });
+
   it('records automation business events and refreshes its snapshot', () => {
     const paths = makePaths();
     const now = new Date('2026-05-02T16:00:00.000Z');
@@ -406,6 +426,23 @@ describe('Luke brain agent core', () => {
     const spine = buildAutomationBusinessSpine({ paths, now });
     expect(spine.pipeline.events).toBe(1);
     expect(spine.subagents.toolkit.completed_event_types).toContain('context_file');
+  });
+
+  it('flags automation ideas that have no next action', () => {
+    const paths = makePaths();
+    appendJsonl(paths.events.automationBusinessEvents, {
+      ts: '2026-05-02T16:00:00.000Z',
+      subagent: 'niche',
+      type: 'automation_idea',
+      summary: 'Automate museum newsletters somehow',
+      data: {},
+    });
+
+    const spine = buildAutomationBusinessSpine({ paths, now: new Date('2026-05-02T16:05:00.000Z') });
+
+    expect(spine.status).toBe('attention');
+    expect(spine.blockers[0]).toContain('idea needs next action');
+    expect(spine.pipeline.ideas_without_next_action).toBe(1);
   });
 
   it('scores automation niches with a conservative recommendation', () => {
@@ -492,6 +529,23 @@ describe('Luke brain agent core', () => {
     expect(answer.reply).toContain('Automation-business sub-agent');
     expect(answer.reply).toContain('Public history');
     expect(answer.snapshot.subagents.automation_business.agent).toBe('automation-business');
+  });
+
+  it('flags closed history-career opportunities that are missing a reason', () => {
+    const paths = makePaths();
+    appendJsonl(paths.events.historyCareerFindings, {
+      ts: '2026-05-02T14:00:00.000Z',
+      title: 'Museum Research Lead',
+      accepted: true,
+      track: 'museum-curatorial',
+      status: 'closed',
+    });
+
+    const spine = buildHistoryCareerSpine({ paths, now: new Date('2026-05-02T14:10:00.000Z') });
+
+    expect(spine.status).toBe('attention');
+    expect(spine.blockers[0]).toContain('closed opportunity missing reason');
+    expect(spine.pipeline.closed_without_reason).toBe(1);
   });
 
   it('routes Claude, Gemini, and Ollama inquiries to the developer-stack sub-agent', () => {

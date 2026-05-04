@@ -53,6 +53,7 @@ const { events, runtime, snapshots } = require("./lib/paths");
 const { buildOperatorStatus, buildOperatorReadiness, readTradingStateReadOnly } = require("./lib/operator/operator-status-adapter");
 const { buildDecisionResponse } = require("./lib/operator/decision-adapter");
 const { buildConfluenceResponse } = require("./lib/operator/confluence-adapter");
+const { buildFakeBreakdownWatchlistResponse } = require("./lib/operator/fake-breakdown-watchlist-adapter");
 const {
   getTodayLevelsFile,
   hasLevelsLoadedToday,
@@ -380,6 +381,11 @@ app.get("/operator-v2", (req, res) => {
   res.sendFile(__dirname + "/operator-v2.html");
 });
 
+app.get("/research/fake-breakdown-watchlist", (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.sendFile(path.join(__dirname, "artifacts", "research", "fake-breakdown-watchlist.html"));
+});
+
 app.get("/brain", (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.sendFile(__dirname + "/brain-dashboard.html");
@@ -393,6 +399,16 @@ app.get("/brain-dashboard", (req, res) => {
 function isTradingSurfaceCommand(text) {
   return /^\/(?:alert|balance|dubz|entries|heatmap|mancini|ready|review|saty|trade|verdict)\b/i.test(String(text || "").trim());
 }
+
+const PROTECTED_TRADING_SMOKE_PATHS = ["/status", "/balance", "/saty", "/ready", "/alert"];
+
+app.all(PROTECTED_TRADING_SMOKE_PATHS, async (req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  const command = `/${String(req.path || "").replace(/^\/+/, "")}`;
+  const handled = await handleSlashCommand(command, res);
+  if (handled !== null) return;
+  return res.status(404).json({ error: "Unknown protected trading command" });
+});
 
 const SYSTEM_CHAT_PROMPT = [
   "You are Luke's system chat for the local dashboard.",
@@ -950,6 +966,17 @@ app.get("/api/confluence", async (req, res) => {
   }
 });
 
+app.get("/api/research/fake-breakdown-watchlist", async (req, res) => {
+  try {
+    const payload = await buildFakeBreakdownWatchlistResponse({
+      instrument: req.query.instrument || "ES",
+    });
+    res.json(payload);
+  } catch (err) {
+    res.status(500).json({ ok: false, read_only: true, blockers: [`fake breakdown watchlist failed: ${err.message}`] });
+  }
+});
+
 app.post("/edit", (req, res) => {
   const { file, description } = req.body || {};
   log("blocked-http-edit", { route: "/edit", file: file || null, description: description || null });
@@ -1087,8 +1114,8 @@ app.get("/luke/self-diagnose", (req, res) => {
 
   // Open proposals
   try {
-    out.open_proposals = fs.readdirSync(path.join(__dirname, "proposals")).filter(f => f.endsWith(".md")).length;
-    if (out.open_proposals > 5) out.stale_data.push(out.open_proposals + " unreviewed proposals in proposals/");
+    out.open_proposals = fs.readdirSync(path.join(__dirname, "state", "runtime", "proposals")).filter(f => f.endsWith(".md")).length;
+    if (out.open_proposals > 5) out.stale_data.push(out.open_proposals + " unreviewed proposals in state/runtime/proposals/");
   } catch {}
 
   // Derive suggestions

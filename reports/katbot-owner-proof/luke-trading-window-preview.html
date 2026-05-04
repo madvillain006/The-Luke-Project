@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Luke Trading Window Kat Preview</title>
+  <style>
+    body { margin:0; font-family: Inter, Segoe UI, Arial, sans-serif; background:#07111f; color:#e5edf8; }
+    main { max-width: 980px; margin: 0 auto; padding: 28px; }
+    .event { border:1px solid #1e3a5f; background:#0d1b2e; border-radius:8px; padding:14px; margin:12px 0; }
+    .type { color:#7dd3fc; font-weight:700; }
+    .gate { color:#fbbf24; }
+    pre { white-space:pre-wrap; overflow-wrap:anywhere; background:#030712; border:1px solid #1e293b; border-radius:8px; padding:12px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Luke Trading Window: Kat Incoming Events</h1>
+  <p>Internal preview only. These are Luke-side payloads, not Discord messages.</p>
+  
+    <section class="event">
+      <div class="type">kat_signal · SPY</div>
+      <div>Source: katbot-discord · Analyst: mathemeatloaf7 · Message: 1498724694176694443</div>
+      <div class="gate">Human gate required: true</div>
+      <pre>{
+  &quot;type&quot;: &quot;kat_signal&quot;,
+  &quot;source&quot;: &quot;katbot-discord&quot;,
+  &quot;ticker&quot;: &quot;SPY&quot;,
+  &quot;bias&quot;: &quot;BEARISH&quot;,
+  &quot;levels&quot;: [
+    698,
+    690,
+    660
+  ],
+  &quot;analyst&quot;: &quot;mathemeatloaf7&quot;,
+  &quot;channel&quot;: &quot;☔︱spy-qqq-es-nq-vix&quot;,
+  &quot;message_id&quot;: &quot;1498724694176694443&quot;,
+  &quot;human_gate_required&quot;: true
+}</pre>
+    </section>
+  
+    <section class="event">
+      <div class="type">kat_watchlist_signal · MU</div>
+      <div>Source: katbot-discord · Analyst: kaprik0rn3 · Message: 1496891939268722860</div>
+      <div class="gate">Human gate required: true</div>
+      <pre>{
+  &quot;type&quot;: &quot;kat_watchlist_signal&quot;,
+  &quot;source&quot;: &quot;katbot-discord&quot;,
+  &quot;ticker&quot;: &quot;MU&quot;,
+  &quot;asset_class&quot;: &quot;equity&quot;,
+  &quot;option_context&quot;: null,
+  &quot;equity_context&quot;: {
+    &quot;asset_class&quot;: &quot;equity&quot;,
+    &quot;underlying&quot;: &quot;MU&quot;,
+    &quot;side&quot;: null,
+    &quot;strike&quot;: null,
+    &quot;expiry&quot;: null,
+    &quot;premium&quot;: null,
+    &quot;confidence&quot;: &quot;low&quot;,
+    &quot;parse_note&quot;: &quot;Equity shadow context only; needs market data and scoring before recommendations.&quot;
+  },
+  &quot;analyst&quot;: &quot;kaprik0rn3&quot;,
+  &quot;message_id&quot;: &quot;1496891939268722860&quot;,
+  &quot;policy&quot;: &quot;equity/options shadow-watch only; not SPX-equivalent and not execution authority&quot;,
+  &quot;human_gate_required&quot;: true
+}</pre>
+    </section>
+  
+</main>
+</body>
+</html>

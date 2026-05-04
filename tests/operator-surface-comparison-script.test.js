@@ -54,6 +54,7 @@ describe('operator surface comparison script', () => {
     }));
 
     const verdict = parseVerdictReply([
+      'Context warning: missing /saty. This is confluence-only; use /entries for PASS/trade truth.',
       '## Confluence Verdict',
       '- **ES 7155**  ->  **C** (0.45)  bobby vision',
       '- **ES 7180**  ->  **C** (0.42)  dubz key',

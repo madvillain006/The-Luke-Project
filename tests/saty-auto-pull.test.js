@@ -108,4 +108,22 @@ describe('saty-auto-pull internal derivation', () => {
       global.fetch = originalFetch;
     }
   });
+
+  it('prefers US500-style reference bars when futures are open and cash is closed', () => {
+    const sundayEvening = new Date('2026-05-03T22:30:00Z');
+    const mondayCashOpen = new Date('2026-05-04T14:30:00Z');
+
+    expect(_internal.shouldPreferUs500Reference({ now: sundayEvening })).toBe(true);
+    expect(_internal.shouldPreferUs500Reference({ now: mondayCashOpen })).toBe(false);
+    expect(_internal.shouldPreferUs500Reference({ preferUs500: true, now: mondayCashOpen })).toBe(true);
+    expect(_internal.shouldPreferUs500Reference({ preferUs500: false, now: sundayEvening })).toBe(false);
+  });
+
+  it('dedupes configurable US500 Yahoo symbol lists before fallback symbols', () => {
+    expect(_internal.parseSymbolList('US500, US500,ALT', ['ALT', 'BACKUP'])).toEqual([
+      'US500',
+      'ALT',
+      'BACKUP',
+    ]);
+  });
 });

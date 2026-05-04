@@ -1,57 +1,61 @@
 # Live Blockers
 
-## Classification Summary
-- Code-fixable now: none known.
-- Environment/provider proof: blockers 1, 2, 4.
-- Live-market observation required: blockers 3, 4.
-- Human/trader design choice: none currently blocking code review.
+Date: 2026-05-03
 
-## 1. Tradovate Live Market Data Not Proven
-- Why it matters: ES/MES/NQ/MNQ need futures-appropriate live quotes for live trading confidence.
-- File/module: `lib/market-data/providers/tradovate.js`, `lib/market-data/index.js`, `trading/market-context.js`.
-- Required fix: configure Tradovate credentials/market-data subscription and run market-hours proof.
-- Blocks code review: no.
-- Blocks trading companion: no, if UNKNOWN/PASS behavior is accepted.
-- Blocks staged bot: partially.
-- Blocks live execution: yes.
-- Type: environment/provider proof.
+## Summary
 
-## 2. Non-Tradovate Provider Is Fallback/Reference Only
-- Why it matters: Yahoo/Finnhub fallback currently returns stale/delayed latest-close/reference data, not authoritative live futures truth.
-- File/module: `lib/market-data/providers/yahoo.js`, `lib/market-data/providers/polygon.js`, `scripts/verify-market-data.js`, `lib/saty-auto-pull.js`.
-- Required fix: keep fallback clearly labeled; use Tradovate or another futures-grade provider before live execution confidence.
-- Blocks code review: no.
-- Blocks trading companion: no.
-- Blocks staged bot: no.
-- Blocks live execution: yes.
-- Type: provider limitation.
+Luke is not live-execution ready. Tonight's work added read-only research/watchlist visibility only. No fake-breakdown rule is approved for paper or live trading.
 
-## 3. Live Autonomous Recommendation Not Naturally Observed
-- Why it matters: autonomous is now recommendation-only, so the next proof is whether it emits the same safe chat recommendation the operator would expect from `/entries ES` during real market conditions.
-- File/module: `trading/router.js`, `scripts/run-operator-session.js`, `lib/decision-spine/index.js`.
-- Required fix: market-hours or controlled paper/shadow session that naturally produces an aligned candidate and confirms the output is chat recommendation only.
-- Blocks code review: no.
-- Blocks trading companion: no.
-- Blocks staged bot: no.
-- Blocks live execution: no.
-- Type: live-market observation required.
+## Blocking Items
 
-## 4. Live Execution Not Environment-Proven
-- Why it matters: modules exist, but no live Tradovate execution should be assumed from unit tests.
-- File/module: `trading/execution-live.js`, `trading/broker-tradovate.js`, `trading/router.js`.
-- Required fix: paper/shadow drill is now proven by `npm run prove:staged-flow`; live remains credentialed, explicit-confirmation gated, and separate.
-- Blocks code review: no.
-- Blocks trading companion: no.
-- Blocks staged bot: no for staging/paper/shadow.
-- Blocks live execution: yes.
-- Type: environment plus safety/policy.
+### 1. Futures Live Market Data Not Proven
 
-## Resolved By Current Goal-Mode Inputs
-- Saty source: user supplied Pine source-of-truth; tests now cover the 13 stored day-mode coefficients against that formula.
-- SPX/ES and QQQ/NQ policy: confluence-only reference; no silent price substitution.
-- Dubz/Mancini policy: structural levels carry forward until manually replaced/deleted; same-day callouts expire same day.
-- Bobby/Katbot/Jefe heatmap policy: Bobby-style heatmap/actionability remains required before trade plans are actionable.
-- Staged flow: controlled `/execute-staged` route proof passes for paper execution and shadow safe-reject without live execution.
-- Mancini chop veto: automated session now observes a chop veto in trusted decision output.
-- Historical replay: `npm run replay:history` runs local ES minute bars, Saty, Mancini, Bobby text, and cached Bobby image parses through the spine. It observed 3 Mancini vetoes and kept every replay checkpoint non-actionable at the adapter layer.
-- Autonomous posture: evaluation is recommendation-only to Luke chat; it no longer creates autonomous pending staged signals.
+- Current proof: `npm run market:data:test` passed structurally but returned UNKNOWN/stale/delayed for ES/MES/NQ/MNQ due missing Tradovate credentials and failed fallback fetches.
+- Blocks: live execution and high-confidence staged/paper proof.
+- Next proof: run market-hours provider verification with credentialed futures data.
+
+### 2. Live-Grade ES Market Data Still Missing
+
+- Current proof: Saty is fresh, but ES market data still comes from delayed/stale Yahoo chart data.
+- Blocks: actionable manual/operator confidence and any watchlist arming.
+- Next proof: configure/live-test futures-grade ES quotes.
+
+### 3. Trading Window Is Still Not Approved
+
+- Current proof: ES futures are open, but autonomous preflight correctly remains blocked outside approved cash trading hours.
+- Blocks: staged/paper/live action.
+- Next proof: repeat during approved cash window with fresh market data.
+
+### 4. Fake-Breakdown Rules Remain Research Only
+
+- Rule A: WATCHLIST_ONLY; strong TP +2 rate but only 33 signals and clustered days.
+- Rule B: WATCHLIST_ONLY; no-repeat throttle improved survival but did not hit the 25k target.
+- Rule C: WATCHLIST_ONLY; promising TP +2 rate but needs visual review.
+- Blocks: paper/live promotion.
+- Next proof: visual review plus fresh-market watchlist observation without execution.
+
+### 5. Live Execution Was Not Tested
+
+- Current proof: `prove:staged-flow` passes staged paper/shadow proof only.
+- Blocks: live execution readiness.
+- Next proof: explicit credentialed broker proof, paper/shadow proof under live market data, then separate human-approved live micro proof if ever desired.
+
+## Not Blockers For Read-Only Use
+
+- The fake-breakdown watchlist endpoint is read-only.
+- `/operator-v2` has no execute button.
+- The static replay artifact is served read-only.
+- Research artifacts live under ignored `artifacts/`.
+
+## Safety Verdict
+
+`LIVE_BLOCKED`
+
+Luke can be used as a read-only research/operator surface with caveats. It should not be used as a live execution system from the current evidence.
+
+## Resolved Tonight
+
+- Old shell `/verdict ES` and `/api/confluence?instrument=ES` now match on confluence row count and top rows.
+- Operator-v2 proof and automated natural session proof pass.
+- Sunday evening ES futures open is labeled as futures overnight instead of plain Weekend.
+- Saty is fresh from auto-pull; US500 was attempted first and `^GSPC` was used only after Yahoo returned HTTP 404 for `US500`.

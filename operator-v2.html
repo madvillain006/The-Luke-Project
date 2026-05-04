@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Luke Operator V2 — Read Only</title>
+  <title>Luke Operator V2 - Read Only</title>
   <style>
     :root {
       color-scheme: dark;
@@ -312,7 +312,7 @@
 <body>
   <div class="shell">
     <header class="hero">
-      <h1>Luke Operator V2 — Read Only</h1>
+      <h1>Luke Operator V2 - Read Only</h1>
       <div class="warning-banner">Read-only mirror. No execution controls. Existing chat shell remains the fallback.</div>
     </header>
 
@@ -361,6 +361,14 @@
           <div class="panel-body" id="confluence-panel"></div>
         </article>
 
+        <article class="panel" aria-labelledby="fake-breakdown-title">
+          <div class="panel-header">
+            <div class="panel-title" id="fake-breakdown-title">Fake Breakdown Watchlist</div>
+            <span class="pill warn">WATCHLIST_ONLY</span>
+          </div>
+          <div class="panel-body" id="fake-breakdown-panel"></div>
+        </article>
+
         <article class="panel" aria-labelledby="evidence-title">
           <div class="panel-header">
             <div class="panel-title" id="evidence-title">Evidence / Logs</div>
@@ -398,6 +406,7 @@
       readiness: '/api/operator/readiness',
       decision: '/api/decision?instrument=ES&mode=manual',
       confluence: '/api/confluence?instrument=ES',
+      fakeBreakdownWatchlist: '/api/research/fake-breakdown-watchlist?instrument=ES',
       autonomousStatus: '/agent/autonomous/status'
     };
 
@@ -488,6 +497,57 @@
         <div class="list">
           ${rows.length ? rows.map(row => `<div class="line">${esc(row.markdown).replace(/\*\*/g, '')}</div>`).join('') : '<div class="line muted">No confluence rows</div>'}
         </div>
+      `;
+    }
+
+    function renderFakeBreakdownWatchlist(watchlist) {
+      if (!watchlist || watchlist.error) {
+        el('fake-breakdown-panel').innerHTML = `<div class="line bad-text">${esc(watchlist?.error || 'Watchlist unavailable')}</div>`;
+        return;
+      }
+      const md = watchlist.market_data || {};
+      const level = watchlist.active_level || {};
+      const overhead = watchlist.nearest_overhead_level || {};
+      const plan = watchlist.suggested_research_plan || {};
+      const throttle = watchlist.no_repeat_after_loss_throttle || {};
+      const artifact = watchlist.artifact_summary || {};
+      const rules = artifact.rules || {};
+      const candidate = watchlist.rule_candidate && watchlist.rule_candidate !== 'none' ? `Rule ${watchlist.rule_candidate}` : 'none';
+      const candidatePills = Array.isArray(watchlist.rule_candidates) && watchlist.rule_candidates.length
+        ? watchlist.rule_candidates.map(rule => pill(`${rule.label}: ${rule.status}${rule.blocker ? ` ${rule.blocker}` : ''}`, rule.blocked ? 'bad' : 'warn')).join('')
+        : pill('No A/B/C rule armed', 'warn');
+      el('fake-breakdown-panel').innerHTML = `
+        <div class="line warn-text">WATCHLIST ONLY - not a trade recommendation.</div>
+        <div class="pill-row">
+          ${pill(watchlist.state || 'NO_SETUP', watchlist.state && watchlist.state.startsWith('ARMED') ? 'warn' : 'info')}
+          ${pill(candidate, candidate === 'none' ? 'warn' : 'info')}
+          ${pill(md.status || 'UNKNOWN_OR_STALE', md.status === 'fresh' ? 'ok' : 'warn')}
+        </div>
+        ${renderKv([
+          ['Active level', fmt(level.price)],
+          ['Source combo', watchlist.source_combo || level.source_combo || '-'],
+          ['Current price', fmt(watchlist.current_price)],
+          ['Distance to level', fmt(watchlist.distance_to_level)],
+          ['Required next condition', watchlist.required_next_condition],
+          ['Target space above', fmt(watchlist.target_space_above)],
+          ['Nearest overhead', overhead.price ? `${fmt(overhead.price)} ${overhead.source_combo || ''}` : '-'],
+          ['Prior loss same level today', watchlist.prior_loss_same_level_today ? 'yes' : 'no'],
+          ['No-repeat throttle', throttle.status || 'not_applicable'],
+          ['Research entry zone', plan.entry_zone],
+          ['Invalidation reference', plan.invalidation],
+          ['TP1 reference', fmt(plan.tp1_reference)],
+          ['Replay artifact', artifact.artifact_route || artifact.artifact_path || '-']
+        ])}
+        <div class="pill-row">${candidatePills}</div>
+        <table class="table">
+          <thead><tr><th>Rule</th><th>Status</th><th>Sample</th><th>TP +2</th><th>Stop first</th><th>Caveat</th></tr></thead>
+          <tbody>
+            ${['A','B','C'].map(id => {
+              const row = rules[id] || {};
+              return `<tr><td>${esc(id)}</td><td>${esc(row.status || 'WATCHLIST_ONLY')}</td><td>${esc(row.signals ?? '-')}</td><td>${esc(Number.isFinite(row.tp2_hit_rate) ? (row.tp2_hit_rate * 100).toFixed(1) + '%' : '-')}</td><td>${esc(Number.isFinite(row.stop_first_rate) ? (row.stop_first_rate * 100).toFixed(1) + '%' : '-')}</td><td>${esc(row.caveat || '-')}</td></tr>`;
+            }).join('')}
+          </tbody>
+        </table>
       `;
     }
 
@@ -586,16 +646,18 @@
 
     async function refresh() {
       el('updated-at').textContent = 'Refreshing';
-      const [status, readiness, decision, confluence, autonomousStatus] = await Promise.all([
+      const [status, readiness, decision, confluence, fakeBreakdownWatchlist, autonomousStatus] = await Promise.all([
         optionalJson(endpoints.status),
         optionalJson(endpoints.readiness),
         optionalJson(endpoints.decision),
         optionalJson(endpoints.confluence),
+        optionalJson(endpoints.fakeBreakdownWatchlist),
         optionalJson(endpoints.autonomousStatus)
       ]);
       renderTopBand(status);
       renderDecision(decision);
       renderConfluence(confluence);
+      renderFakeBreakdownWatchlist(fakeBreakdownWatchlist);
       renderIngestion(status);
       renderAutonomous(readiness, autonomousStatus, status);
       renderEvidence(status, readiness, decision, confluence, autonomousStatus);

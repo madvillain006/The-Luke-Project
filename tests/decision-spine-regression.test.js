@@ -4,6 +4,19 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
+vi.mock('../lib/market-data', () => ({
+  getMarketSnapshot: async () => ({}),
+  getMarketPrice: async () => ({
+    price: null,
+    source: 'test-unavailable',
+    timestamp: new Date().toISOString(),
+    stale: true,
+    delayed: false,
+    confidence: 'none',
+    error: 'test_market_data_unavailable',
+  }),
+}));
+
 const router = require('../trading/router');
 const { getApexConsistencyReason, getApexPreTradeFloorBlock, validateStagedTrade } = require('../trading/risk');
 const { queryLevels, _internal: levelMemoryInternal } = require('../lib/level-memory');

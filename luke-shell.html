@@ -35,7 +35,7 @@
     }
 
     body {
-      padding: 26px;
+      padding: 10px;
       overflow-x: hidden;
     }
 
@@ -45,10 +45,10 @@
     }
 
     .app {
-      min-height: calc(100vh - 52px);
+      min-height: calc(100vh - 20px);
       display: grid;
       grid-template-rows: 28px auto auto 1fr;
-      gap: 26px;
+      gap: 10px;
     }
 
     .topbar {
@@ -69,8 +69,8 @@
     .hero-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 26px;
-      min-height: 446px;
+      gap: 10px;
+      min-height: 230px;
     }
 
     .hero-card,
@@ -103,8 +103,8 @@
 
     .hero-card {
       position: relative;
-      min-height: 446px;
-      padding: 26px;
+      min-height: 230px;
+      padding: 14px;
       display: grid;
       grid-template-rows: auto 1fr auto;
       color: var(--text);
@@ -121,7 +121,7 @@
     .trading-panel,
     .system-chat-panel {
       display: none;
-      min-height: 620px;
+      min-height: 540px;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: #080c10;
@@ -201,7 +201,7 @@
 
     .trading-rig {
       position: absolute;
-      inset: 62px 5% 10px 46%;
+      inset: 34px 6% 6px 52%;
       opacity: 0.78;
       pointer-events: none;
     }
@@ -225,8 +225,8 @@
 
     .filter-row {
       display: grid;
-      grid-template-columns: minmax(280px, 1.4fr) repeat(3, minmax(160px, 0.65fr));
-      gap: 26px;
+      grid-template-columns: minmax(260px, 1.3fr) repeat(3, minmax(145px, 0.65fr));
+      gap: 10px;
       align-items: stretch;
     }
 
@@ -242,11 +242,14 @@
     }
 
     .system-button {
-      min-height: 184px;
-      padding: 22px 26px;
+      min-height: 94px;
+      padding: 12px 14px;
       place-items: stretch;
       text-align: left;
-      grid-template-rows: auto 1fr auto;
+      grid-template-columns: minmax(180px, 0.9fr) minmax(220px, 1.1fr);
+      grid-template-rows: auto auto;
+      column-gap: 16px;
+      row-gap: 6px;
     }
 
     .system-button.is-hidden {
@@ -255,12 +258,21 @@
 
     .system-chat-panel {
       grid-column: 1 / -1;
-      min-height: 560px;
+      min-height: 520px;
     }
 
     .system-button .intro-copy {
-      align-self: end;
-      max-width: 46ch;
+      align-self: start;
+      max-width: none;
+      font-size: 13px;
+    }
+
+    .system-button .status-copy {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      margin-top: 0;
+      gap: 3px;
+      font-size: 11px;
     }
 
     .filter-button.active {
@@ -270,8 +282,8 @@
 
     .module-grid {
       display: grid;
-      grid-template-columns: repeat(6, minmax(130px, 1fr));
-      gap: 26px;
+      grid-template-columns: repeat(5, minmax(120px, 1fr));
+      gap: 10px;
       align-items: start;
     }
 
@@ -282,8 +294,17 @@
       cursor: pointer;
     }
 
+    .module-static {
+      cursor: default;
+    }
+
+    .module-static:hover .module-art {
+      border-color: transparent;
+      background: var(--panel);
+    }
+
     .module-art {
-      height: 210px;
+      height: 104px;
       border: 1px solid transparent;
       display: grid;
       place-items: center;
@@ -293,12 +314,12 @@
     }
 
     .module-caption {
-      padding-top: 16px;
+      padding-top: 8px;
       display: grid;
       gap: 2px;
-      font-size: 16px;
+      font-size: 14px;
       color: var(--text);
-      min-height: 48px;
+      min-height: 38px;
     }
 
     .module-caption .name {
@@ -342,6 +363,11 @@
       font-size: 34px;
     }
 
+    .weather-emoji {
+      font-size: 24px;
+      line-height: 1;
+    }
+
     .small-grid {
       display: grid;
       grid-template-columns: repeat(5, 12px);
@@ -372,11 +398,11 @@
     }
 
     .device {
-      width: 96px;
-      height: 150px;
+      width: 78px;
+      height: 106px;
       border: 2px solid #3a3a3a;
-      border-radius: 22px;
-      transform: rotate(-22deg) translateY(14px);
+      border-radius: 18px;
+      transform: rotate(-18deg) translateY(8px);
       display: grid;
       place-items: center;
       color: var(--text);
@@ -514,8 +540,17 @@
         max-width: none;
       }
 
+      .system-button {
+        grid-template-columns: 1fr;
+      }
+
+      .system-button .status-copy {
+        grid-column: auto;
+        grid-row: auto;
+      }
+
       .module-art {
-        height: 210px;
+        height: 150px;
       }
     }
   </style>
@@ -573,6 +608,7 @@
         <span class="status-copy">
           <span>&gt; Buffalo weather: <strong id="weather-line">loading</strong></span>
           <span>&gt; Brain: <strong id="brain-line">loading</strong></span>
+          <span>&gt; Blockers: <strong id="blocker-line">loading</strong></span>
           <span>&gt; Runtime: <strong id="runtime-line">loading</strong></span>
         </span>
       </a>
@@ -597,9 +633,14 @@
         <div class="module-caption"><span>C 000</span><span class="name">Brain Core</span></div>
       </a>
 
-      <a class="module-link" data-route="/brain-dashboard#spine-daily" href="/brain-dashboard#spine-daily">
-        <div class="module-art"><div class="weather-stack"><span class="weather-temp" id="weather-temp">--</span><span id="weather-cond">loading</span></div></div>
+      <article class="module-link module-static" aria-label="Daily weather status">
+        <div class="module-art"><div class="weather-stack"><span class="weather-emoji" id="weather-emoji" aria-hidden="true">·</span><span class="weather-temp" id="weather-temp">--</span><span id="weather-cond">loading</span></div></div>
         <div class="module-caption"><span>D 002</span><span class="name">Daily Weather</span></div>
+      </article>
+
+      <a class="module-link" data-route="/brain-dashboard#spine-daily" href="/brain-dashboard#spine-daily">
+        <div class="module-art"><div class="system-stack"><span class="weather-temp" id="daily-brief-state">--</span><span id="daily-brief-note">brief loading</span></div></div>
+        <div class="module-caption"><span>D 003</span><span class="name">Daily Brief</span><span class="module-meta">Check-ins and next actions</span></div>
       </a>
 
       <a class="module-link" data-route="/brain-dashboard#spine-automation" href="/brain-dashboard#spine-automation">
@@ -614,12 +655,7 @@
 
       <a class="module-link" data-route="/brain-dashboard#spine-history" href="/brain-dashboard#spine-history">
         <div class="module-art"><div class="device">RCH</div></div>
-        <div class="module-caption"><span>M 028</span><span class="name">Research Leads</span></div>
-      </a>
-
-      <a class="module-link" data-route="/brain-dashboard#spine-history" href="/brain-dashboard#spine-history">
-        <div class="module-art"><div class="check">OK</div></div>
-        <div class="module-caption"><span>C 013</span><span class="name">History Career</span></div>
+        <div class="module-caption"><span>M 028</span><span class="name">Research Leads</span><span class="module-meta">History Career fork</span></div>
       </a>
     </section>
   </div>
@@ -648,6 +684,19 @@
       const hours = Math.floor(total / 3600);
       const minutes = Math.floor((total % 3600) / 60);
       return `${hours}h ${minutes}m`;
+    }
+
+    function weatherEmoji(weather) {
+      const condition = String(weather?.condition || weather?.status || '').toLowerCase();
+      const code = Number(weather?.weather_code);
+      if (condition.includes('storm') || [95, 96, 99].includes(code)) return '⛈️';
+      if (condition.includes('snow') || [71, 73, 75, 77, 85, 86].includes(code)) return '❄️';
+      if (condition.includes('rain') || condition.includes('drizzle') || [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return '🌧️';
+      if (condition.includes('fog') || [45, 48].includes(code)) return '🌫️';
+      if (condition.includes('cloud') || [1, 2, 3].includes(code)) return '☁️';
+      if (condition.includes('clear') || code === 0) return '☀️';
+      if (weather?.status === 'unavailable') return '⚠️';
+      return '🌡️';
     }
 
     function focusTradingInput() {
@@ -725,13 +774,21 @@
         ]);
         const weather = daily.weather || {};
         setText('weather-line', weather.summary || 'Buffalo weather unavailable');
+        setText('weather-emoji', weatherEmoji(weather));
         setText('weather-temp', weather.temperature_f == null ? '--' : `${weather.temperature_f}F`);
         setText('weather-cond', weather.condition || weather.status || 'unknown');
+        setText('daily-brief-state', String(daily.status || 'brief').toUpperCase());
+        setText('daily-brief-note', daily.next_actions?.[0] || daily.blockers?.[0] || 'no daily blocker');
         setText('brain-line', `${Object.keys(brain.subagents || {}).length} agents / ${brain.report_inbox?.count || 0} reports`);
+        setText('blocker-line', brain.attention?.length ? brain.attention.map(item => item.agent).join(', ') : 'none');
         setText('runtime-line', `${formatMemory(telemetry.process?.rss_bytes)} RSS / ${formatUptime(telemetry.process?.uptime_seconds)}`);
       } catch (err) {
         setText('weather-line', 'offline');
+        setText('weather-emoji', '⚠️');
+        setText('daily-brief-state', '--');
+        setText('daily-brief-note', 'brief offline');
         setText('brain-line', 'offline');
+        setText('blocker-line', 'offline');
         setText('runtime-line', err.message);
       }
     }

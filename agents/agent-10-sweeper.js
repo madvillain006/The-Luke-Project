@@ -14,7 +14,7 @@ const SWEEPER_MAP   = path.join(ROOT, "SWEEPER_MAP.json");
 const SWEEPER_COSTS = path.join(ROOT, "sweeper-costs.json");
 const ARCH_COSTS    = path.join(ROOT, "architect-costs.json");
 const FINDINGS_DIR  = path.join(ROOT, "findings");
-const PROPOSALS_DIR = path.join(ROOT, "proposals");
+const PROPOSALS_DIR = path.join(ROOT, "state", "runtime", "proposals");
 const REJECTED      = path.join(ROOT, "REJECTED_PATTERNS.jsonl");
 const SWEEPER_LOG   = path.join(ROOT, "SWEEPER_LOG.jsonl");
 
@@ -49,7 +49,7 @@ const EXCLUDED = [
   /SWEEPER_STATE\.json$/i,
   /SWEEPER_MAP\.json$/i,
   /sweeper-costs\.json$/i,
-  /^proposals[/\\]/i,
+  /^state[/\\]runtime[/\\]proposals[/\\]/i,
   /^findings[/\\]/i,
   /tool-calls\.jsonl$/i,
   /tool-health\.jsonl$/i,
@@ -138,7 +138,7 @@ function walkRepo(dir, results = []) {
   for (const e of entries) {
     const full = path.join(dir, e.name);
     if (e.isDirectory()) {
-      if (!["node_modules", ".git", "discord-exports", "findings", "proposals"].includes(e.name)) {
+      if (!["node_modules", ".git", "discord-exports", "findings"].includes(e.name)) {
         walkRepo(full, results);
       }
     } else if (/\.(js|json|md|html|py)$/.test(e.name) && !isExcluded(full)) {

@@ -2,11 +2,13 @@
 
 describe('market-hours module', () => {
   // Test module shape without mocking time — just verify exports exist and return expected shapes
-  it('exports isMarketOpen, isGoodTradingTime, minsUntilOpen, isWeekend', () => {
+  it('exports cash and futures market-hour helpers', () => {
     const mh = require('../lib/market-hours');
     expect(typeof mh.isMarketOpen).toBe('function');
+    expect(typeof mh.isFuturesMarketOpen).toBe('function');
     expect(typeof mh.isGoodTradingTime).toBe('function');
     expect(typeof mh.minsUntilOpen).toBe('function');
+    expect(typeof mh.minsUntilFuturesOpen).toBe('function');
     expect(typeof mh.isWeekend).toBe('function');
   });
 
@@ -45,6 +47,23 @@ describe('market-hours module', () => {
     const { isMarketOpen } = require('../lib/market-hours');
     const VALID = ['closed', 'pre', 'after', 'regular'];
     expect(VALID).toContain(isMarketOpen().session);
+  });
+
+  it('treats Sunday evening as an open futures overnight session without opening cash market', () => {
+    const { isMarketOpen, isFuturesMarketOpen, minsUntilFuturesOpen } = require('../lib/market-hours');
+    const sundayEvening = new Date('2026-05-03T22:30:00Z'); // 6:30 PM ET
+
+    expect(isMarketOpen(sundayEvening)).toEqual(expect.objectContaining({ open: false, session: 'closed' }));
+    expect(isFuturesMarketOpen(sundayEvening)).toEqual(expect.objectContaining({ open: true, session: 'futures_overnight' }));
+    expect(minsUntilFuturesOpen(sundayEvening)).toBe(0);
+  });
+
+  it('keeps the daily futures maintenance break closed', () => {
+    const { isFuturesMarketOpen, minsUntilFuturesOpen } = require('../lib/market-hours');
+    const mondayBreak = new Date('2026-05-04T21:30:00Z'); // 5:30 PM ET
+
+    expect(isFuturesMarketOpen(mondayBreak)).toEqual(expect.objectContaining({ open: false, session: 'maintenance' }));
+    expect(minsUntilFuturesOpen(mondayBreak)).toBe(30);
   });
 
   it('window values are one of known valid strings', () => {

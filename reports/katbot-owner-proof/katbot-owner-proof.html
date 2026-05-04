@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Katbot Owner Proof Pack</title>
+  <style>
+    body { margin: 0; font-family: Inter, Segoe UI, Arial, sans-serif; background: #101114; color: #eee; }
+    main { max-width: 1180px; margin: 0 auto; padding: 32px; }
+    h1, h2 { margin: 0 0 12px; }
+    h1 { font-size: 34px; }
+    h2 { font-size: 20px; margin-top: 28px; color: #9ecbff; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .card { border: 1px solid #2e3340; border-radius: 8px; background: #171a21; padding: 16px; }
+    .wide { grid-column: 1 / -1; }
+    .status { display: inline-block; padding: 4px 8px; border-radius: 6px; background: #263516; color: #c8f6aa; font-weight: 700; }
+    .blocked { background: #442018; color: #ffc2ad; }
+    .muted { color: #aab0bd; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; background: #0b0d11; border: 1px solid #2a2f3b; border-radius: 8px; padding: 12px; }
+    .flow { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .node { padding: 10px 12px; border: 1px solid #3a4252; border-radius: 8px; background: #202532; }
+    .arrow { color: #7e8798; }
+    img { max-width: 100%; border-radius: 8px; border: 1px solid #2a2f3b; background: #050505; }
+    .discord { background: #313338; border-color: #3f4147; }
+    .luke { background: #111827; border-color: #334155; }
+    .badge { display:inline-block; margin:2px 4px 2px 0; padding:3px 7px; border-radius:999px; background:#263143; color:#d9e8ff; font-size:12px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Katbot Owner Proof Pack</h1>
+  <p><span class="status">owner_review_ready</span> <span class="muted">Ready for owner review as silent capture and Luke-only shadow evidence, not public Discord answering.</span></p>
+  <section class="card wide">
+    <h2>Pipeline</h2>
+    <div class="flow">
+      <span class="node">Discord message</span><span class="arrow">→</span><span class="node">Kat capture gate</span><span class="arrow">→</span><span class="node">raw-feed.jsonl</span><span class="arrow">→</span><span class="node">parse-kat</span><span class="arrow">→</span><span class="node">processed-signals.jsonl</span><span class="arrow">→</span><span class="node">index lane</span><span class="arrow">→</span><span class="node">equity/options lane</span><span class="arrow">→</span><span class="node">Luke trading window</span><span class="arrow">→</span><span class="node">owner review</span><span class="arrow">→</span><span class="node">Discord output gate</span>
+    </div>
+  </section>
+  <section class="grid">
+    <div class="card">
+      <h2>Evidence Counts</h2>
+      <p>Raw messages: <b>12255</b></p>
+      <p>Processed signals: <b>2604</b></p>
+      <p>Heatmap candidates: <b>700</b></p>
+      <p>SPX/SPY evaluated: <b>114</b></p>
+      <p><span class="badge">TSLA</span><span class="badge">CAR</span><span class="badge">AAOI</span><span class="badge">MU</span><span class="badge">SNDK</span><span class="badge">LITE</span><span class="badge">ASML</span><span class="badge">ARM</span><span class="badge">COST</span><span class="badge">MSFT</span></p>
+    </div>
+    <div class="card">
+      <h2>Safety Gate</h2>
+      <p>Discord replies enabled: <b>false</b></p>
+      <p>Discord posts enabled: <b>false</b></p>
+      <p class="muted">Output stays suppressed until explicitly approved. Mentions are disabled.</p>
+    </div>
+    <div class="card">
+      <h2>Index Parsed Message</h2>
+      <p><b>SPY</b> BEARISH</p>
+      <p class="muted">mathemeatloaf7 / #☔︱spy-qqq-es-nq-vix / 1498724694176694443</p>
+      <p>$spy if peaking at this TL resistance next target would be 698-690 below 690 can start opening the door to the large gap below at 660 imo</p>
+      <pre>{
+  &quot;signal_type&quot;: &quot;CHART_ANALYSIS&quot;,
+  &quot;ticker&quot;: &quot;SPY&quot;,
+  &quot;timeframe&quot;: null,
+  &quot;bias&quot;: &quot;BEARISH&quot;,
+  &quot;pattern&quot;: &quot;resistance&quot;,
+  &quot;levels&quot;: [
+    698,
+    690,
+    660
+  ],
+  &quot;has_image&quot;: true,
+  &quot;raw&quot;: &quot;$spy\n\nif peaking at this TL resistance\n\nnext target would be 698-690\n\nbelow 690 can start opening the door to the large gap below at 660 imo&quot;,
+  &quot;analyst&quot;: &quot;mathemeatloaf7&quot;,
+  &quot;ts&quot;: &quot;2026-04-28T16:36:52.050Z&quot;,
+  &quot;message_id&quot;: &quot;1498724694176694443&quot;,
+  &quot;channel&quot;: &quot;☔︱spy-qqq-es-nq-vix&quot;,
+  &quot;user_id&quot;: &quot;755259514068009041&quot;
+}</pre>
+    </div>
+    <div class="card">
+      <h2>Equity/Options Parsed Message</h2>
+      <p><b>MU</b> equity</p>
+      <p class="muted">kaprik0rn3 / #🟢︱trade-floor / 1496891939268722860</p>
+      <p>MU 10min. Almost 3% move off LOD</p>
+      <pre>{
+  &quot;asset_class&quot;: &quot;equity&quot;,
+  &quot;underlying&quot;: &quot;MU&quot;,
+  &quot;side&quot;: null,
+  &quot;strike&quot;: null,
+  &quot;expiry&quot;: null,
+  &quot;premium&quot;: null,
+  &quot;confidence&quot;: &quot;low&quot;,
+  &quot;parse_note&quot;: &quot;Equity shadow context only; needs market data and scoring before recommendations.&quot;
+}</pre>
+    </div>
+    <div class="card wide">
+      <h2>Image Proof Candidate</h2>
+      <p class="muted">mathemeatloaf7 / #🟢︱trade-floor / 1500171801278550036</p>
+      <p>$zs weekly chart just reclaimed this 6 year old TL. this setup has only 3 full weeks to play out before ER week key is to reclaim 140.56. doing so shoudl start setting up a squeeze to 160-165 im eyeing 5/22 far otm calls next week</p>
+      <img src="https://cdn.discordapp.com/attachments/1040400353490911292/1500171801001721876/image.png?ex=69f8201d&amp;is=69f6ce9d&amp;hm=74aa2499a427901a017de46d195f88b7fcb3d5f221d5c368d1d0d87d5bfe0956&amp;" alt="Kat evidence image from Discord CDN">
+    </div>
+    <div class="card wide">
+      <h2>Timestamped Message Bin</h2>
+      <p>Confluence examples: <b>4</b></p>
+      <p>Latest parsed examples: <b>10</b></p>
+      <p class="muted">Files: message-bin/katbot-message-examples.html, message-bin/katbot-message-examples.md, message-bin/katbot-output-bin.jsonl</p>
+    </div>
+    <div class="card discord">
+      <h2>Discord Preview</h2>
+      <pre>**Kat owner-review preview**
+Status: owner_review_ready
+Evidence: 12255 raw messages, 2604 processed signals
+Watchlist: TSLA, CAR, AAOI, MU, SNDK, LITE
+Discord output: gated off until Conor explicitly approves generated wording.
+_No autonomous execution. Human-gated evidence only._</pre>
+    </div>
+    <div class="card luke">
+      <h2>Luke Trading Window Preview</h2>
+      <pre>[
+  {
+    &quot;type&quot;: &quot;kat_signal&quot;,
+    &quot;source&quot;: &quot;katbot-discord&quot;,
+    &quot;ticker&quot;: &quot;SPY&quot;,
+    &quot;bias&quot;: &quot;BEARISH&quot;,
+    &quot;levels&quot;: [
+      698,
+      690,
+      660
+    ],
+    &quot;analyst&quot;: &quot;mathemeatloaf7&quot;,
+    &quot;channel&quot;: &quot;☔︱spy-qqq-es-nq-vix&quot;,
+    &quot;message_id&quot;: &quot;1498724694176694443&quot;,
+    &quot;human_gate_required&quot;: true
+  },
+  {
+    &quot;type&quot;: &quot;kat_watchlist_signal&quot;,
+    &quot;source&quot;: &quot;katbot-discord&quot;,
+    &quot;ticker&quot;: &quot;MU&quot;,
+    &quot;asset_class&quot;: &quot;equity&quot;,
+    &quot;option_context&quot;: null,
+    &quot;equity_context&quot;: {
+      &quot;asset_class&quot;: &quot;equity&quot;,
+      &quot;underlying&quot;: &quot;MU&quot;,
+      &quot;side&quot;: null,
+      &quot;strike&quot;: null,
+      &quot;expiry&quot;: null,
+      &quot;premium&quot;: null,
+      &quot;confidence&quot;: &quot;low&quot;,
+      &quot;parse_note&quot;: &quot;Equity shadow context only; needs market data and scoring before recommendations.&quot;
+    },
+    &quot;analyst&quot;: &quot;kaprik0rn3&quot;,
+    &quot;message_id&quot;: &quot;1496891939268722860&quot;,
+    &quot;policy&quot;: &quot;equity/options shadow-watch only; not SPX-equivalent and not execution authority&quot;,
+    &quot;human_gate_required&quot;: true
+  }
+]</pre>
+    </div>
+  </section>
+</main>
+</body>
+</html>

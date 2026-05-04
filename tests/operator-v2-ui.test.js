@@ -42,7 +42,7 @@ describe('/operator-v2 read-only console shell', () => {
     const html = fs.readFileSync(OPERATOR_FILE, 'utf8');
 
     for (const label of [
-      'Luke Operator V2 — Read Only',
+      'Luke Operator V2 - Read Only',
       'Read-only mirror. No execution controls. Existing chat shell remains the fallback.',
       'Top Status Band',
       'Decision',

@@ -205,7 +205,7 @@ function criticalSafetyChecks(html, index) {
     .filter(Boolean);
   return {
     passNonActionable: has(html, /action-pass/) && has(html, /No actionable trade/) && has(html, /not actionable/),
-    staleMissingUnknownNotOk: has(html, /MISSING/) && has(html, /unknown/i) && !has(html, /UNKNOWN.*ok/i),
+    staleMissingUnknownNotOk: has(html, /UNKNOWN_OR_STALE|STALE|DELAYED|stale\/delayed|unavailable/i) && has(html, /warn/),
     vetoesVisible: has(html, /vetoes/i),
     riskBlockersVisible: has(html, /blockers/i) && has(html, /risk/i),
     stagedOnlyVisible: has(html, /recommendation-only/i) && has(html, /does not stage or execute/i),

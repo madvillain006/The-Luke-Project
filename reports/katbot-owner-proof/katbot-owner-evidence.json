@@ -1,0 +1,2893 @@
+{
+  "generated_at": "2026-05-03T21:05:57.545Z",
+  "readiness": {
+    "generated_at": "2026-05-03T21:05:57.545Z",
+    "recommendation": {
+      "status": "owner_review_ready",
+      "label": "Ready for owner review as silent capture and Luke-only shadow evidence, not public Discord answering."
+    },
+    "discord_output_gate": {
+      "responses_enabled": false,
+      "posts_enabled": false,
+      "env_override_supported": true,
+      "approval_required": true
+    },
+    "evidence": {
+      "raw_messages": 12255,
+      "processed_signals": 2604,
+      "heatmap_candidates": 700,
+      "replay_records": 1078,
+      "spx_spy_evaluated": 114,
+      "watchlist_candidates": [
+        "TSLA",
+        "CAR",
+        "AAOI",
+        "MU",
+        "SNDK",
+        "LITE",
+        "ASML",
+        "ARM",
+        "COST",
+        "MSFT"
+      ],
+      "equity_options_ready_for_backtest": [
+        "MU",
+        "LITE",
+        "ASML"
+      ]
+    },
+    "checks": [
+      {
+        "ok": true,
+        "label": "monitored analysts configured",
+        "detail": "4 configured",
+        "severity": "info"
+      },
+      {
+        "ok": true,
+        "label": "monitored channels configured",
+        "detail": "5 names / 5 ids",
+        "severity": "info"
+      },
+      {
+        "ok": true,
+        "label": "historical capture depth",
+        "detail": "12255 raw messages captured",
+        "severity": "info"
+      },
+      {
+        "ok": true,
+        "label": "raw feed parses cleanly",
+        "detail": "0 malformed raw JSONL lines",
+        "severity": "info"
+      },
+      {
+        "ok": true,
+        "label": "processed signal feed parses cleanly",
+        "detail": "0 malformed processed JSONL lines",
+        "severity": "info"
+      },
+      {
+        "ok": true,
+        "label": "index replay artifacts exist",
+        "detail": "1078 replay records",
+        "severity": "info"
+      },
+      {
+        "ok": true,
+        "label": "SPX/SPY evaluation artifacts exist",
+        "detail": "114/606 evaluated",
+        "severity": "info"
+      },
+      {
+        "ok": false,
+        "label": "SPX/SPY sample size",
+        "detail": "114 evaluated direct records",
+        "severity": "warning"
+      },
+      {
+        "ok": true,
+        "label": "non-index shadow watchlist exists",
+        "detail": "10 candidates",
+        "severity": "info"
+      },
+      {
+        "ok": true,
+        "label": "equity/options shadow profiles exist",
+        "detail": "20 profiles",
+        "severity": "info"
+      },
+      {
+        "ok": true,
+        "label": "downstream validation queue exists",
+        "detail": "3 ticker(s) ready for backtest",
+        "severity": "warning"
+      },
+      {
+        "ok": true,
+        "label": "Discord output gate present",
+        "detail": "safeReply/safeSend suppress Discord output unless explicitly approved",
+        "severity": "info"
+      },
+      {
+        "ok": true,
+        "label": "Discord mention safety present",
+        "detail": "allowedMentions disables parsing and reply pings",
+        "severity": "info"
+      },
+      {
+        "ok": true,
+        "label": "Discord command replies gated off",
+        "detail": "responses are disabled unless explicitly approved",
+        "severity": "info"
+      },
+      {
+        "ok": true,
+        "label": "Discord channel posts gated off",
+        "detail": "magnet/confluence posts are disabled unless explicitly approved",
+        "severity": "info"
+      }
+    ],
+    "blockers": [],
+    "warnings": [
+      "SPX/SPY sample size: 114 evaluated direct records"
+    ],
+    "owner_review_notes": [
+      "Recommend silent capture and Luke-only shadow evidence before any public Discord answering.",
+      "Do not enable Discord replies or channel posts until Conor explicitly approves generated wording.",
+      "No autonomous execution exists here; all outputs remain human-gated evidence.",
+      "Backtesting/scoring remains owned by the separate backtesting lane."
+    ]
+  },
+  "insights": {
+    "generated_at": "2026-05-03T21:05:57.545Z",
+    "status": "degraded",
+    "config": {
+      "enabled": true,
+      "monitored_users_count": 4,
+      "monitored_channels_count": 5,
+      "magnet_channel": "1496353652615413760",
+      "command_channels": [
+        "1496353652615413760"
+      ]
+    },
+    "runtime": {
+      "bot_online": null,
+      "poll_active": null,
+      "bot_tag": null
+    },
+    "activity": {
+      "latest_capture": "2026-05-03T20:53:41.212Z",
+      "latest_capture_age": "12m ago",
+      "by_user": {
+        "kaprik0rn3": "2026-05-03T12:45:40.619Z",
+        "mathemeatloaf7": "2026-05-03T12:48:57.655Z",
+        "general_dollars": "2026-05-03T20:53:41.212Z",
+        "barrysanders329": "2026-05-03T12:45:40.585Z"
+      }
+    },
+    "audit": {
+      "raw_messages": 12255,
+      "processed_signals": 2604,
+      "image_posts": 2329,
+      "heatmap_candidates": 700,
+      "index_mention_posts": 1070,
+      "duplicate_message_ids": 2
+    },
+    "replay": {
+      "generated_at": "2026-05-03T19:08:55.131Z",
+      "parser_version": "parse-kat:v1",
+      "raw_messages": 12254,
+      "raw_bad_lines": 0,
+      "duplicate_message_ids_skipped": 2,
+      "parsed_records": 1078,
+      "signal_records": 1019,
+      "image_evidence_records": 59,
+      "spx_options_direct_records": 606,
+      "by_lane": {
+        "spx_futures_context": 349,
+        "spx_options_direct": 606,
+        "qqq_ndx_nq_context": 123
+      },
+      "by_signal_type": {
+        "CHART_ANALYSIS": 721,
+        "LEVEL_WATCH": 163,
+        "DIRECTIONAL": 135,
+        "IMAGE_EVIDENCE": 59
+      },
+      "by_bias": {
+        "NEUTRAL": 710,
+        "BULLISH": 147,
+        "BEARISH": 221
+      },
+      "by_ticker": {
+        "ES": 323,
+        "SPY": 219,
+        "QQQ": 99,
+        "SPX": 387,
+        "MES": 26,
+        "NQ": 24
+      },
+      "date_range": {
+        "first_ts": "2026-01-29T14:44:58.628Z",
+        "last_ts": "2026-05-01T21:03:57.189Z"
+      }
+    },
+    "evaluation": {
+      "generated_at": "2026-05-03T19:09:05.488Z",
+      "total": 606,
+      "evaluated": 114,
+      "skipped_or_missing": 492,
+      "by_ticker": {
+        "SPY": {
+          "total": 219,
+          "evaluated": 43
+        },
+        "SPX": {
+          "total": 387,
+          "evaluated": 71
+        }
+      },
+      "by_analyst": {
+        "mathemeatloaf7": {
+          "total": 458,
+          "evaluated": 70,
+          "wins_30m": 37,
+          "losses_30m": 32
+        },
+        "kaprik0rn3": {
+          "total": 128,
+          "evaluated": 36,
+          "wins_30m": 18,
+          "losses_30m": 18
+        },
+        "barrysanders329": {
+          "total": 19,
+          "evaluated": 8,
+          "wins_30m": 6,
+          "losses_30m": 2
+        },
+        "general_dollars": {
+          "total": 1,
+          "evaluated": 0,
+          "wins_30m": 0,
+          "losses_30m": 0
+        }
+      },
+      "win_rate_5m": {
+        "eligible": 114,
+        "wins": 57,
+        "losses": 56,
+        "scratches": 1,
+        "pct": 50
+      },
+      "win_rate_15m": {
+        "eligible": 114,
+        "wins": 58,
+        "losses": 55,
+        "scratches": 1,
+        "pct": 50.88
+      },
+      "win_rate_30m": {
+        "eligible": 114,
+        "wins": 61,
+        "losses": 52,
+        "scratches": 1,
+        "pct": 53.51
+      },
+      "win_rate_60m": {
+        "eligible": 114,
+        "wins": 58,
+        "losses": 55,
+        "scratches": 1,
+        "pct": 50.88
+      },
+      "win_rate_eod": {
+        "eligible": 114,
+        "wins": 57,
+        "losses": 56,
+        "scratches": 1,
+        "pct": 50
+      }
+    },
+    "watchlist": {
+      "generated_at": "2026-05-03T21:05:57.545Z",
+      "window_days": 14,
+      "min_mentions": 2,
+      "candidates": [
+        {
+          "ticker": "TSLA",
+          "mentions": 6,
+          "signal_count": 5,
+          "image_posts": 4,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "NEUTRAL",
+          "bias_counts": {
+            "NEUTRAL": 4,
+            "BEARISH": 1
+          },
+          "latest_ts": "2026-05-01T15:34:00.959Z",
+          "latest_snippet": "TSLA 15min. Anything is possible with this one on a Friday",
+          "status": "shadow_watch",
+          "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+        },
+        {
+          "ticker": "CAR",
+          "mentions": 6,
+          "signal_count": 6,
+          "image_posts": 2,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "NEUTRAL",
+          "bias_counts": {
+            "NEUTRAL": 5,
+            "BULLISH": 1
+          },
+          "latest_ts": "2026-04-22T18:35:51.323Z",
+          "latest_snippet": "CAR 513 now",
+          "status": "shadow_watch",
+          "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+        },
+        {
+          "ticker": "AAOI",
+          "mentions": 5,
+          "signal_count": 3,
+          "image_posts": 5,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "BEARISH",
+          "bias_counts": {
+            "BEARISH": 3
+          },
+          "latest_ts": "2026-05-01T15:35:05.031Z",
+          "latest_snippet": "AAOI 15min",
+          "status": "shadow_watch",
+          "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+        },
+        {
+          "ticker": "MU",
+          "mentions": 4,
+          "signal_count": 4,
+          "image_posts": 4,
+          "analysts": [
+            "barrysanders329",
+            "kaprik0rn3"
+          ],
+          "analyst_count": 2,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "NEUTRAL",
+          "bias_counts": {
+            "BULLISH": 1,
+            "NEUTRAL": 3
+          },
+          "latest_ts": "2026-04-23T15:14:09.229Z",
+          "latest_snippet": "MU 10min. Almost 3% move off LOD",
+          "status": "shadow_watch",
+          "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+        },
+        {
+          "ticker": "SNDK",
+          "mentions": 4,
+          "signal_count": 2,
+          "image_posts": 3,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "NEUTRAL",
+          "bias_counts": {
+            "NEUTRAL": 2
+          },
+          "latest_ts": "2026-05-01T22:02:17.568Z",
+          "latest_snippet": "SNDK 1D. They really bought that fake dip and then some. What a candle!",
+          "status": "shadow_watch",
+          "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+        },
+        {
+          "ticker": "LITE",
+          "mentions": 4,
+          "signal_count": 1,
+          "image_posts": 2,
+          "analysts": [
+            "barrysanders329",
+            "kaprik0rn3"
+          ],
+          "analyst_count": 2,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "NEUTRAL",
+          "bias_counts": {
+            "NEUTRAL": 1
+          },
+          "latest_ts": "2026-04-30T17:41:36.210Z",
+          "latest_snippet": "LITE 1D. Still largely in consolidation. ER next week",
+          "status": "shadow_watch",
+          "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+        },
+        {
+          "ticker": "ASML",
+          "mentions": 3,
+          "signal_count": 2,
+          "image_posts": 2,
+          "analysts": [
+            "kaprik0rn3",
+            "mathemeatloaf7"
+          ],
+          "analyst_count": 2,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "BULLISH",
+          "bias_counts": {
+            "BULLISH": 2
+          },
+          "latest_ts": "2026-04-22T19:03:32.901Z",
+          "latest_snippet": "$ASML\n\nTSMC SAYS ASML’S LATEST EQUIPMENT IS TOO PRICEY TO USE",
+          "status": "shadow_watch",
+          "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+        },
+        {
+          "ticker": "ARM",
+          "mentions": 3,
+          "signal_count": 2,
+          "image_posts": 2,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "BULLISH",
+          "bias_counts": {
+            "BULLISH": 2
+          },
+          "latest_ts": "2026-04-23T20:16:55.271Z",
+          "latest_snippet": "ARM about to add 30+ points after that resistance break around 183",
+          "status": "shadow_watch",
+          "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+        },
+        {
+          "ticker": "COST",
+          "mentions": 3,
+          "signal_count": 1,
+          "image_posts": 3,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "NEUTRAL",
+          "bias_counts": {
+            "NEUTRAL": 1
+          },
+          "latest_ts": "2026-05-01T18:27:37.438Z",
+          "latest_snippet": "COST 1W",
+          "status": "shadow_watch",
+          "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+        },
+        {
+          "ticker": "MSFT",
+          "mentions": 3,
+          "signal_count": 1,
+          "image_posts": 3,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "BULLISH",
+          "bias_counts": {
+            "BULLISH": 1
+          },
+          "latest_ts": "2026-04-30T18:43:45.113Z",
+          "latest_snippet": "MSFT 15min. Will end of month rebalancing shank it or pump it?",
+          "status": "shadow_watch",
+          "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+        }
+      ],
+      "next_action": "Start shadow evaluation for these tickers only after matching market data is available."
+    },
+    "equity_options": {
+      "generated_at": "2026-05-03T21:05:57.545Z",
+      "window_days": 14,
+      "tickers": [
+        {
+          "ticker": "CAR",
+          "status": "shadow_collecting",
+          "asset_scope": "equity",
+          "mentions": 12,
+          "parsed_signals": 12,
+          "equity_mentions": 12,
+          "option_mentions": 0,
+          "image_posts": 4,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "NEUTRAL",
+          "dominant_option_side": null,
+          "option_contracts": [],
+          "levels": [
+            100,
+            513,
+            570,
+            580,
+            1000
+          ],
+          "latest_ts": "2026-04-22T18:35:51.323Z",
+          "latest_snippet": "CAR 513 now",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Keep collecting analyst and chart evidence before scoring."
+        },
+        {
+          "ticker": "TSLA",
+          "status": "shadow_collecting",
+          "asset_scope": "equity",
+          "mentions": 11,
+          "parsed_signals": 11,
+          "equity_mentions": 11,
+          "option_mentions": 0,
+          "image_posts": 7,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "NEUTRAL",
+          "dominant_option_side": null,
+          "option_contracts": [],
+          "levels": [
+            369
+          ],
+          "latest_ts": "2026-05-01T15:34:00.959Z",
+          "latest_snippet": "TSLA 15min. Anything is possible with this one on a Friday",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Keep collecting analyst and chart evidence before scoring."
+        },
+        {
+          "ticker": "MU",
+          "status": "shadow_ready",
+          "asset_scope": "equity",
+          "mentions": 8,
+          "parsed_signals": 8,
+          "equity_mentions": 8,
+          "option_mentions": 0,
+          "image_posts": 8,
+          "analysts": [
+            "barrysanders329",
+            "kaprik0rn3"
+          ],
+          "analyst_count": 2,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "NEUTRAL",
+          "dominant_option_side": null,
+          "option_contracts": [],
+          "levels": [
+            530
+          ],
+          "latest_ts": "2026-04-23T15:14:09.229Z",
+          "latest_snippet": "MU 10min. Almost 3% move off LOD",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Ready for downstream market-data validation by the backtesting lane."
+        },
+        {
+          "ticker": "AAOI",
+          "status": "shadow_collecting",
+          "asset_scope": "equity",
+          "mentions": 8,
+          "parsed_signals": 8,
+          "equity_mentions": 8,
+          "option_mentions": 0,
+          "image_posts": 8,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "BEARISH",
+          "dominant_option_side": null,
+          "option_contracts": [],
+          "levels": [],
+          "latest_ts": "2026-05-01T15:35:05.031Z",
+          "latest_snippet": "AAOI 15min",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Keep collecting analyst and chart evidence before scoring."
+        },
+        {
+          "ticker": "SNDK",
+          "status": "shadow_collecting",
+          "asset_scope": "equity",
+          "mentions": 6,
+          "parsed_signals": 6,
+          "equity_mentions": 6,
+          "option_mentions": 0,
+          "image_posts": 5,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "NEUTRAL",
+          "dominant_option_side": null,
+          "option_contracts": [],
+          "levels": [
+            58,
+            244,
+            1058
+          ],
+          "latest_ts": "2026-05-01T22:02:17.568Z",
+          "latest_snippet": "SNDK 1D. They really bought that fake dip and then some. What a candle!",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Keep collecting analyst and chart evidence before scoring."
+        },
+        {
+          "ticker": "LITE",
+          "status": "shadow_ready",
+          "asset_scope": "equity_and_options",
+          "mentions": 5,
+          "parsed_signals": 4,
+          "equity_mentions": 4,
+          "option_mentions": 1,
+          "image_posts": 3,
+          "analysts": [
+            "barrysanders329",
+            "kaprik0rn3"
+          ],
+          "analyst_count": 2,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "NEUTRAL",
+          "dominant_option_side": "CALL",
+          "option_contracts": [
+            {
+              "side": "CALL",
+              "strike": null,
+              "expiry": null,
+              "premium": null,
+              "analyst": "barrysanders329",
+              "ts": "2026-04-24T16:06:00.405Z",
+              "message_id": "1497267376352264263"
+            }
+          ],
+          "levels": [
+            83
+          ],
+          "latest_ts": "2026-04-30T17:41:36.210Z",
+          "latest_snippet": "LITE 1D. Still largely in consolidation. ER next week",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Ready for downstream market-data validation by the backtesting lane."
+        },
+        {
+          "ticker": "ARM",
+          "status": "shadow_collecting",
+          "asset_scope": "equity",
+          "mentions": 5,
+          "parsed_signals": 5,
+          "equity_mentions": 5,
+          "option_mentions": 0,
+          "image_posts": 4,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "BULLISH",
+          "dominant_option_side": null,
+          "option_contracts": [],
+          "levels": [
+            183
+          ],
+          "latest_ts": "2026-04-23T20:16:55.271Z",
+          "latest_snippet": "ARM about to add 30+ points after that resistance break around 183",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Keep collecting analyst and chart evidence before scoring."
+        },
+        {
+          "ticker": "ASML",
+          "status": "shadow_ready",
+          "asset_scope": "equity",
+          "mentions": 5,
+          "parsed_signals": 4,
+          "equity_mentions": 5,
+          "option_mentions": 0,
+          "image_posts": 4,
+          "analysts": [
+            "kaprik0rn3",
+            "mathemeatloaf7"
+          ],
+          "analyst_count": 2,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "BULLISH",
+          "dominant_option_side": null,
+          "option_contracts": [],
+          "levels": [],
+          "latest_ts": "2026-04-22T19:03:32.901Z",
+          "latest_snippet": "$ASML\n\nTSMC SAYS ASML’S LATEST EQUIPMENT IS TOO PRICEY TO USE",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Ready for downstream market-data validation by the backtesting lane."
+        },
+        {
+          "ticker": "AMAT",
+          "status": "shadow_collecting",
+          "asset_scope": "equity",
+          "mentions": 4,
+          "parsed_signals": 4,
+          "equity_mentions": 4,
+          "option_mentions": 0,
+          "image_posts": 4,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "NEUTRAL",
+          "dominant_option_side": null,
+          "option_contracts": [],
+          "levels": [],
+          "latest_ts": "2026-04-22T17:32:09.644Z",
+          "latest_snippet": "AMAT 1D. Almost ready. Bullish hammer daily candle",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Keep collecting analyst and chart evidence before scoring."
+        },
+        {
+          "ticker": "AVGO",
+          "status": "shadow_collecting",
+          "asset_scope": "equity",
+          "mentions": 4,
+          "parsed_signals": 4,
+          "equity_mentions": 4,
+          "option_mentions": 0,
+          "image_posts": 4,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "BULLISH",
+          "dominant_option_side": null,
+          "option_contracts": [],
+          "levels": [],
+          "latest_ts": "2026-04-22T17:26:50.890Z",
+          "latest_snippet": "AVGO 1D. nATH today",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Keep collecting analyst and chart evidence before scoring."
+        },
+        {
+          "ticker": "BRK",
+          "status": "shadow_collecting",
+          "asset_scope": "equity",
+          "mentions": 4,
+          "parsed_signals": 4,
+          "equity_mentions": 4,
+          "option_mentions": 0,
+          "image_posts": 4,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "NEUTRAL",
+          "dominant_option_side": null,
+          "option_contracts": [],
+          "levels": [],
+          "latest_ts": "2026-04-28T14:54:56.767Z",
+          "latest_snippet": "BRK.B 1D. Dissociated from the markets suggesting value at this price",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Keep collecting analyst and chart evidence before scoring."
+        },
+        {
+          "ticker": "COIN",
+          "status": "shadow_collecting",
+          "asset_scope": "equity",
+          "mentions": 4,
+          "parsed_signals": 4,
+          "equity_mentions": 4,
+          "option_mentions": 0,
+          "image_posts": 4,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "NEUTRAL",
+          "dominant_option_side": null,
+          "option_contracts": [],
+          "levels": [],
+          "latest_ts": "2026-04-27T18:33:48.904Z",
+          "latest_snippet": "COIN 10min. Same pattern on a slightly larger TF. It's not define the r/r for any swings. This is just intraday",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Keep collecting analyst and chart evidence before scoring."
+        },
+        {
+          "ticker": "COST",
+          "status": "shadow_collecting",
+          "asset_scope": "equity",
+          "mentions": 4,
+          "parsed_signals": 4,
+          "equity_mentions": 4,
+          "option_mentions": 0,
+          "image_posts": 4,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "NEUTRAL",
+          "dominant_option_side": null,
+          "option_contracts": [],
+          "levels": [],
+          "latest_ts": "2026-05-01T18:27:37.438Z",
+          "latest_snippet": "COST 1W",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Keep collecting analyst and chart evidence before scoring."
+        },
+        {
+          "ticker": "MSFT",
+          "status": "shadow_collecting",
+          "asset_scope": "equity",
+          "mentions": 4,
+          "parsed_signals": 4,
+          "equity_mentions": 4,
+          "option_mentions": 0,
+          "image_posts": 4,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "BULLISH",
+          "dominant_option_side": null,
+          "option_contracts": [],
+          "levels": [],
+          "latest_ts": "2026-04-30T18:43:45.113Z",
+          "latest_snippet": "MSFT 15min. Will end of month rebalancing shank it or pump it?",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Keep collecting analyst and chart evidence before scoring."
+        },
+        {
+          "ticker": "BA",
+          "status": "shadow_collecting",
+          "asset_scope": "equity",
+          "mentions": 4,
+          "parsed_signals": 4,
+          "equity_mentions": 4,
+          "option_mentions": 0,
+          "image_posts": 2,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "BULLISH",
+          "dominant_option_side": null,
+          "option_contracts": [],
+          "levels": [
+            260
+          ],
+          "latest_ts": "2026-04-23T19:48:57.483Z",
+          "latest_snippet": "BA 1D. B/o and retest of the TL today. Ultimately, still very weak until 260 is reclaimed",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Keep collecting analyst and chart evidence before scoring."
+        },
+        {
+          "ticker": "BUT",
+          "status": "shadow_collecting",
+          "asset_scope": "equity_and_options",
+          "mentions": 3,
+          "parsed_signals": 2,
+          "equity_mentions": 0,
+          "option_mentions": 3,
+          "image_posts": 0,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "BEARISH",
+          "dominant_option_side": "PUT",
+          "option_contracts": [
+            {
+              "side": "PUT",
+              "strike": null,
+              "expiry": null,
+              "premium": null,
+              "analyst": "kaprik0rn3",
+              "ts": "2026-04-24T16:13:10.971Z",
+              "message_id": "1497269182276960337"
+            },
+            {
+              "side": "CALL",
+              "strike": null,
+              "expiry": null,
+              "premium": null,
+              "analyst": "kaprik0rn3",
+              "ts": "2026-04-24T16:12:34.464Z",
+              "message_id": "1497269029155373207"
+            },
+            {
+              "side": "PUT",
+              "strike": null,
+              "expiry": null,
+              "premium": null,
+              "analyst": "kaprik0rn3",
+              "ts": "2026-04-21T16:30:59.200Z",
+              "message_id": "1496186499157327882"
+            }
+          ],
+          "levels": [],
+          "latest_ts": "2026-04-24T16:13:10.971Z",
+          "latest_snippet": "But puts while VIX is below 19.30 is hopium",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Keep collecting analyst and chart evidence before scoring."
+        },
+        {
+          "ticker": "CIEN",
+          "status": "shadow_collecting",
+          "asset_scope": "equity_and_options",
+          "mentions": 3,
+          "parsed_signals": 3,
+          "equity_mentions": 2,
+          "option_mentions": 1,
+          "image_posts": 3,
+          "analysts": [
+            "barrysanders329"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "BULLISH",
+          "dominant_option_side": "CALL",
+          "option_contracts": [
+            {
+              "side": "CALL",
+              "strike": 550,
+              "expiry": null,
+              "premium": null,
+              "analyst": "barrysanders329",
+              "ts": "2026-04-23T15:07:23.041Z",
+              "message_id": "1496890235592642711"
+            }
+          ],
+          "levels": [],
+          "latest_ts": "2026-04-23T15:07:23.041Z",
+          "latest_snippet": "CIEN 65m 550c for tomorrow not an awful use of some lotto funds",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Keep collecting analyst and chart evidence before scoring."
+        },
+        {
+          "ticker": "CVNA",
+          "status": "shadow_collecting",
+          "asset_scope": "equity",
+          "mentions": 4,
+          "parsed_signals": 4,
+          "equity_mentions": 4,
+          "option_mentions": 0,
+          "image_posts": 2,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "BULLISH",
+          "dominant_option_side": null,
+          "option_contracts": [],
+          "levels": [
+            408
+          ],
+          "latest_ts": "2026-04-20T19:59:44.767Z",
+          "latest_snippet": "CVNA 10min",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Keep collecting analyst and chart evidence before scoring."
+        },
+        {
+          "ticker": "GLW",
+          "status": "shadow_collecting",
+          "asset_scope": "equity",
+          "mentions": 3,
+          "parsed_signals": 3,
+          "equity_mentions": 3,
+          "option_mentions": 0,
+          "image_posts": 3,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "NEUTRAL",
+          "dominant_option_side": null,
+          "option_contracts": [],
+          "levels": [],
+          "latest_ts": "2026-04-23T15:36:22.403Z",
+          "latest_snippet": "GLW 1W",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Keep collecting analyst and chart evidence before scoring."
+        },
+        {
+          "ticker": "TXN",
+          "status": "shadow_collecting",
+          "asset_scope": "equity",
+          "mentions": 3,
+          "parsed_signals": 3,
+          "equity_mentions": 3,
+          "option_mentions": 0,
+          "image_posts": 3,
+          "analysts": [
+            "kaprik0rn3"
+          ],
+          "analyst_count": 1,
+          "channels": [
+            "🟢︱trade-floor"
+          ],
+          "dominant_bias": "BULLISH",
+          "dominant_option_side": null,
+          "option_contracts": [],
+          "levels": [],
+          "latest_ts": "2026-04-29T14:19:31.486Z",
+          "latest_snippet": "TXN 1D",
+          "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+          "next_step": "Keep collecting analyst and chart evidence before scoring."
+        }
+      ],
+      "ready_for_backtest": [
+        "MU",
+        "LITE",
+        "ASML"
+      ],
+      "policy": "Shadow evidence only. Backtesting/scoring stays in the separate backtesting lane."
+    },
+    "readiness": {
+      "recommendation": {
+        "status": "owner_review_ready",
+        "label": "Ready for owner review as silent capture and Luke-only shadow evidence, not public Discord answering."
+      },
+      "blockers": [],
+      "warnings": [
+        "SPX/SPY sample size: 114 evaluated direct records"
+      ],
+      "discord_output_gate": {
+        "responses_enabled": false,
+        "posts_enabled": false,
+        "env_override_supported": true,
+        "approval_required": true
+      }
+    },
+    "recent_evaluated_examples": [
+      {
+        "ts": "2026-04-28T19:08:06.259Z",
+        "analyst": "kaprik0rn3",
+        "ticker": "SPX",
+        "direction": "LONG",
+        "entry": {
+          "timestamp": "2026-04-28T15:09:00-04:00",
+          "price": 7142.88
+        },
+        "outcome_30m": {
+          "exit_price": 7138.61,
+          "pnl_pts": -4.27,
+          "verdict": "LOSS",
+          "max_favorable_pts": 2.08,
+          "max_adverse_pts": 7.45,
+          "high": 7144.96,
+          "low": 7135.43
+        },
+        "heatmap_candidate": true,
+        "recommendation": "long"
+      },
+      {
+        "ts": "2026-04-28T16:14:13.097Z",
+        "analyst": "mathemeatloaf7",
+        "ticker": "SPX",
+        "direction": "LONG",
+        "entry": {
+          "timestamp": "2026-04-28T12:15:00-04:00",
+          "price": 7125.57
+        },
+        "outcome_30m": {
+          "exit_price": 7119.69,
+          "pnl_pts": -5.88,
+          "verdict": "LOSS",
+          "max_favorable_pts": 3.55,
+          "max_adverse_pts": 8.07,
+          "high": 7129.12,
+          "low": 7117.5
+        },
+        "heatmap_candidate": true,
+        "recommendation": "long"
+      },
+      {
+        "ts": "2026-04-28T13:58:43.196Z",
+        "analyst": "mathemeatloaf7",
+        "ticker": "SPX",
+        "direction": "SHORT",
+        "entry": {
+          "timestamp": "2026-04-28T09:59:00-04:00",
+          "price": 7139.45
+        },
+        "outcome_30m": {
+          "exit_price": 7135.13,
+          "pnl_pts": 4.32,
+          "verdict": "WIN",
+          "max_favorable_pts": 6.3,
+          "max_adverse_pts": 6.93,
+          "high": 7146.38,
+          "low": 7133.15
+        },
+        "heatmap_candidate": true,
+        "recommendation": "short"
+      },
+      {
+        "ts": "2026-04-24T17:54:35.093Z",
+        "analyst": "kaprik0rn3",
+        "ticker": "SPX",
+        "direction": "LONG",
+        "entry": {
+          "timestamp": "2026-04-24T13:55:00-04:00",
+          "price": 7161.41
+        },
+        "outcome_30m": {
+          "exit_price": 7157.06,
+          "pnl_pts": -4.35,
+          "verdict": "LOSS",
+          "max_favorable_pts": 2.46,
+          "max_adverse_pts": 7.89,
+          "high": 7163.87,
+          "low": 7153.52
+        },
+        "heatmap_candidate": false,
+        "recommendation": "long"
+      },
+      {
+        "ts": "2026-04-24T13:51:18.664Z",
+        "analyst": "mathemeatloaf7",
+        "ticker": "SPX",
+        "direction": "SHORT",
+        "entry": {
+          "timestamp": "2026-04-24T09:52:00-04:00",
+          "price": 7123.26
+        },
+        "outcome_30m": {
+          "exit_price": 7125.91,
+          "pnl_pts": -2.65,
+          "verdict": "LOSS",
+          "max_favorable_pts": 10.44,
+          "max_adverse_pts": 6.79,
+          "high": 7130.05,
+          "low": 7112.82
+        },
+        "heatmap_candidate": false,
+        "recommendation": "short"
+      },
+      {
+        "ts": "2026-04-23T17:42:25.090Z",
+        "analyst": "mathemeatloaf7",
+        "ticker": "SPX",
+        "direction": "SHORT",
+        "entry": {
+          "timestamp": "2026-04-23T13:43:00-04:00",
+          "price": 7061.05
+        },
+        "outcome_30m": {
+          "exit_price": 7100.31,
+          "pnl_pts": -39.26,
+          "verdict": "LOSS",
+          "max_favorable_pts": 14.5,
+          "max_adverse_pts": 43.62,
+          "high": 7104.67,
+          "low": 7046.55
+        },
+        "heatmap_candidate": true,
+        "recommendation": "short"
+      },
+      {
+        "ts": "2026-04-23T17:42:19.031Z",
+        "analyst": "kaprik0rn3",
+        "ticker": "SPX",
+        "direction": "LONG",
+        "entry": {
+          "timestamp": "2026-04-23T13:43:00-04:00",
+          "price": 7061.05
+        },
+        "outcome_30m": {
+          "exit_price": 7100.31,
+          "pnl_pts": 39.26,
+          "verdict": "WIN",
+          "max_favorable_pts": 43.62,
+          "max_adverse_pts": 14.5,
+          "high": 7104.67,
+          "low": 7046.55
+        },
+        "heatmap_candidate": true,
+        "recommendation": "long"
+      },
+      {
+        "ts": "2026-04-23T17:19:02.866Z",
+        "analyst": "mathemeatloaf7",
+        "ticker": "SPX",
+        "direction": "SHORT",
+        "entry": {
+          "timestamp": "2026-04-23T13:20:00-04:00",
+          "price": 7088.06
+        },
+        "outcome_30m": {
+          "exit_price": 7058.56,
+          "pnl_pts": 29.5,
+          "verdict": "WIN",
+          "max_favorable_pts": 41.51,
+          "max_adverse_pts": 11.63,
+          "high": 7099.69,
+          "low": 7046.55
+        },
+        "heatmap_candidate": true,
+        "recommendation": "short"
+      },
+      {
+        "ts": "2026-04-23T14:32:36.218Z",
+        "analyst": "barrysanders329",
+        "ticker": "SPX",
+        "direction": "LONG",
+        "entry": {
+          "timestamp": "2026-04-23T10:33:00-04:00",
+          "price": 7132.53
+        },
+        "outcome_30m": {
+          "exit_price": 7142.28,
+          "pnl_pts": 9.75,
+          "verdict": "WIN",
+          "max_favorable_pts": 12.06,
+          "max_adverse_pts": 4.33,
+          "high": 7144.59,
+          "low": 7128.2
+        },
+        "heatmap_candidate": true,
+        "recommendation": "long"
+      },
+      {
+        "ts": "2026-04-22T19:50:59.636Z",
+        "analyst": "mathemeatloaf7",
+        "ticker": "SPX",
+        "direction": "LONG",
+        "entry": {
+          "timestamp": "2026-04-22T15:51:00-04:00",
+          "price": 7133.01
+        },
+        "outcome_30m": {
+          "exit_price": 7137.9,
+          "pnl_pts": 4.89,
+          "verdict": "WIN",
+          "max_favorable_pts": 5.63,
+          "max_adverse_pts": 2.29,
+          "high": 7138.64,
+          "low": 7130.72
+        },
+        "heatmap_candidate": true,
+        "recommendation": "long"
+      }
+    ],
+    "blockers": [
+      "2 duplicate Discord message ids are present in raw feed; replay skips them.",
+      "SPX/SPY evaluation sample is still thin; do not promote to trade recommendation authority."
+    ],
+    "helpful_outputs": [
+      "Luke can consume Kat replay summaries through /agent/kat/insights.",
+      "Discord users can query !kat status or !kat summary instead of waiting for rare confluence alerts.",
+      "Discord users can query !kat watchlist to see repeated non-index tickers under shadow review.",
+      "Discord users can query !kat equity TICKER or !kat options TICKER to inspect shadow equity/options evidence.",
+      "The backtesting agent can use data/kat/derived/kat-index-replay.jsonl and kat-spx-spy-evaluations.jsonl when it finishes its current lane."
+    ],
+    "next_actions": [
+      "Import more SPX/SPY market bars covering the raw Kat date range so more than 114 direct signals can be scored.",
+      "Run historical image parsing for the 700 heatmap candidates and attach parsed levels by message_id.",
+      "Collect market data for the top non-index Kat watchlist symbols before scoring or recommending them.",
+      "Split analyst scorecards by ticker, time of day, signal type, and heatmap agreement before trusting any single aggregate win rate.",
+      "Add a scheduled Discord EOD summary only after the command-based summary is verified in the live server."
+    ]
+  },
+  "watchlist": {
+    "generated_at": "2026-05-03T21:05:57.545Z",
+    "window_days": 14,
+    "min_mentions": 2,
+    "candidates": [
+      {
+        "ticker": "TSLA",
+        "mentions": 6,
+        "signal_count": 5,
+        "image_posts": 4,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "NEUTRAL",
+        "bias_counts": {
+          "NEUTRAL": 4,
+          "BEARISH": 1
+        },
+        "latest_ts": "2026-05-01T15:34:00.959Z",
+        "latest_snippet": "TSLA 15min. Anything is possible with this one on a Friday",
+        "status": "shadow_watch",
+        "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+      },
+      {
+        "ticker": "CAR",
+        "mentions": 6,
+        "signal_count": 6,
+        "image_posts": 2,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "NEUTRAL",
+        "bias_counts": {
+          "NEUTRAL": 5,
+          "BULLISH": 1
+        },
+        "latest_ts": "2026-04-22T18:35:51.323Z",
+        "latest_snippet": "CAR 513 now",
+        "status": "shadow_watch",
+        "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+      },
+      {
+        "ticker": "AAOI",
+        "mentions": 5,
+        "signal_count": 3,
+        "image_posts": 5,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "BEARISH",
+        "bias_counts": {
+          "BEARISH": 3
+        },
+        "latest_ts": "2026-05-01T15:35:05.031Z",
+        "latest_snippet": "AAOI 15min",
+        "status": "shadow_watch",
+        "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+      },
+      {
+        "ticker": "MU",
+        "mentions": 4,
+        "signal_count": 4,
+        "image_posts": 4,
+        "analysts": [
+          "barrysanders329",
+          "kaprik0rn3"
+        ],
+        "analyst_count": 2,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "NEUTRAL",
+        "bias_counts": {
+          "BULLISH": 1,
+          "NEUTRAL": 3
+        },
+        "latest_ts": "2026-04-23T15:14:09.229Z",
+        "latest_snippet": "MU 10min. Almost 3% move off LOD",
+        "status": "shadow_watch",
+        "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+      },
+      {
+        "ticker": "SNDK",
+        "mentions": 4,
+        "signal_count": 2,
+        "image_posts": 3,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "NEUTRAL",
+        "bias_counts": {
+          "NEUTRAL": 2
+        },
+        "latest_ts": "2026-05-01T22:02:17.568Z",
+        "latest_snippet": "SNDK 1D. They really bought that fake dip and then some. What a candle!",
+        "status": "shadow_watch",
+        "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+      },
+      {
+        "ticker": "LITE",
+        "mentions": 4,
+        "signal_count": 1,
+        "image_posts": 2,
+        "analysts": [
+          "barrysanders329",
+          "kaprik0rn3"
+        ],
+        "analyst_count": 2,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "NEUTRAL",
+        "bias_counts": {
+          "NEUTRAL": 1
+        },
+        "latest_ts": "2026-04-30T17:41:36.210Z",
+        "latest_snippet": "LITE 1D. Still largely in consolidation. ER next week",
+        "status": "shadow_watch",
+        "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+      },
+      {
+        "ticker": "ASML",
+        "mentions": 3,
+        "signal_count": 2,
+        "image_posts": 2,
+        "analysts": [
+          "kaprik0rn3",
+          "mathemeatloaf7"
+        ],
+        "analyst_count": 2,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "BULLISH",
+        "bias_counts": {
+          "BULLISH": 2
+        },
+        "latest_ts": "2026-04-22T19:03:32.901Z",
+        "latest_snippet": "$ASML\n\nTSMC SAYS ASML’S LATEST EQUIPMENT IS TOO PRICEY TO USE",
+        "status": "shadow_watch",
+        "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+      },
+      {
+        "ticker": "ARM",
+        "mentions": 3,
+        "signal_count": 2,
+        "image_posts": 2,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "BULLISH",
+        "bias_counts": {
+          "BULLISH": 2
+        },
+        "latest_ts": "2026-04-23T20:16:55.271Z",
+        "latest_snippet": "ARM about to add 30+ points after that resistance break around 183",
+        "status": "shadow_watch",
+        "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+      },
+      {
+        "ticker": "COST",
+        "mentions": 3,
+        "signal_count": 1,
+        "image_posts": 3,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "NEUTRAL",
+        "bias_counts": {
+          "NEUTRAL": 1
+        },
+        "latest_ts": "2026-05-01T18:27:37.438Z",
+        "latest_snippet": "COST 1W",
+        "status": "shadow_watch",
+        "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+      },
+      {
+        "ticker": "MSFT",
+        "mentions": 3,
+        "signal_count": 1,
+        "image_posts": 3,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "BULLISH",
+        "bias_counts": {
+          "BULLISH": 1
+        },
+        "latest_ts": "2026-04-30T18:43:45.113Z",
+        "latest_snippet": "MSFT 15min. Will end of month rebalancing shank it or pump it?",
+        "status": "shadow_watch",
+        "policy": "single-name watchlist only; not SPX-equivalent and not execution authority"
+      }
+    ],
+    "next_action": "Start shadow evaluation for these tickers only after matching market data is available."
+  },
+  "equityUniverse": {
+    "generated_at": "2026-05-03T21:05:57.545Z",
+    "window_days": 14,
+    "tickers": [
+      {
+        "ticker": "CAR",
+        "status": "shadow_collecting",
+        "asset_scope": "equity",
+        "mentions": 12,
+        "parsed_signals": 12,
+        "equity_mentions": 12,
+        "option_mentions": 0,
+        "image_posts": 4,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "NEUTRAL",
+        "dominant_option_side": null,
+        "option_contracts": [],
+        "levels": [
+          100,
+          513,
+          570,
+          580,
+          1000
+        ],
+        "latest_ts": "2026-04-22T18:35:51.323Z",
+        "latest_snippet": "CAR 513 now",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Keep collecting analyst and chart evidence before scoring."
+      },
+      {
+        "ticker": "TSLA",
+        "status": "shadow_collecting",
+        "asset_scope": "equity",
+        "mentions": 11,
+        "parsed_signals": 11,
+        "equity_mentions": 11,
+        "option_mentions": 0,
+        "image_posts": 7,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "NEUTRAL",
+        "dominant_option_side": null,
+        "option_contracts": [],
+        "levels": [
+          369
+        ],
+        "latest_ts": "2026-05-01T15:34:00.959Z",
+        "latest_snippet": "TSLA 15min. Anything is possible with this one on a Friday",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Keep collecting analyst and chart evidence before scoring."
+      },
+      {
+        "ticker": "MU",
+        "status": "shadow_ready",
+        "asset_scope": "equity",
+        "mentions": 8,
+        "parsed_signals": 8,
+        "equity_mentions": 8,
+        "option_mentions": 0,
+        "image_posts": 8,
+        "analysts": [
+          "barrysanders329",
+          "kaprik0rn3"
+        ],
+        "analyst_count": 2,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "NEUTRAL",
+        "dominant_option_side": null,
+        "option_contracts": [],
+        "levels": [
+          530
+        ],
+        "latest_ts": "2026-04-23T15:14:09.229Z",
+        "latest_snippet": "MU 10min. Almost 3% move off LOD",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Ready for downstream market-data validation by the backtesting lane."
+      },
+      {
+        "ticker": "AAOI",
+        "status": "shadow_collecting",
+        "asset_scope": "equity",
+        "mentions": 8,
+        "parsed_signals": 8,
+        "equity_mentions": 8,
+        "option_mentions": 0,
+        "image_posts": 8,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "BEARISH",
+        "dominant_option_side": null,
+        "option_contracts": [],
+        "levels": [],
+        "latest_ts": "2026-05-01T15:35:05.031Z",
+        "latest_snippet": "AAOI 15min",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Keep collecting analyst and chart evidence before scoring."
+      },
+      {
+        "ticker": "SNDK",
+        "status": "shadow_collecting",
+        "asset_scope": "equity",
+        "mentions": 6,
+        "parsed_signals": 6,
+        "equity_mentions": 6,
+        "option_mentions": 0,
+        "image_posts": 5,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "NEUTRAL",
+        "dominant_option_side": null,
+        "option_contracts": [],
+        "levels": [
+          58,
+          244,
+          1058
+        ],
+        "latest_ts": "2026-05-01T22:02:17.568Z",
+        "latest_snippet": "SNDK 1D. They really bought that fake dip and then some. What a candle!",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Keep collecting analyst and chart evidence before scoring."
+      },
+      {
+        "ticker": "LITE",
+        "status": "shadow_ready",
+        "asset_scope": "equity_and_options",
+        "mentions": 5,
+        "parsed_signals": 4,
+        "equity_mentions": 4,
+        "option_mentions": 1,
+        "image_posts": 3,
+        "analysts": [
+          "barrysanders329",
+          "kaprik0rn3"
+        ],
+        "analyst_count": 2,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "NEUTRAL",
+        "dominant_option_side": "CALL",
+        "option_contracts": [
+          {
+            "side": "CALL",
+            "strike": null,
+            "expiry": null,
+            "premium": null,
+            "analyst": "barrysanders329",
+            "ts": "2026-04-24T16:06:00.405Z",
+            "message_id": "1497267376352264263"
+          }
+        ],
+        "levels": [
+          83
+        ],
+        "latest_ts": "2026-04-30T17:41:36.210Z",
+        "latest_snippet": "LITE 1D. Still largely in consolidation. ER next week",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Ready for downstream market-data validation by the backtesting lane."
+      },
+      {
+        "ticker": "ARM",
+        "status": "shadow_collecting",
+        "asset_scope": "equity",
+        "mentions": 5,
+        "parsed_signals": 5,
+        "equity_mentions": 5,
+        "option_mentions": 0,
+        "image_posts": 4,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "BULLISH",
+        "dominant_option_side": null,
+        "option_contracts": [],
+        "levels": [
+          183
+        ],
+        "latest_ts": "2026-04-23T20:16:55.271Z",
+        "latest_snippet": "ARM about to add 30+ points after that resistance break around 183",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Keep collecting analyst and chart evidence before scoring."
+      },
+      {
+        "ticker": "ASML",
+        "status": "shadow_ready",
+        "asset_scope": "equity",
+        "mentions": 5,
+        "parsed_signals": 4,
+        "equity_mentions": 5,
+        "option_mentions": 0,
+        "image_posts": 4,
+        "analysts": [
+          "kaprik0rn3",
+          "mathemeatloaf7"
+        ],
+        "analyst_count": 2,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "BULLISH",
+        "dominant_option_side": null,
+        "option_contracts": [],
+        "levels": [],
+        "latest_ts": "2026-04-22T19:03:32.901Z",
+        "latest_snippet": "$ASML\n\nTSMC SAYS ASML’S LATEST EQUIPMENT IS TOO PRICEY TO USE",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Ready for downstream market-data validation by the backtesting lane."
+      },
+      {
+        "ticker": "AMAT",
+        "status": "shadow_collecting",
+        "asset_scope": "equity",
+        "mentions": 4,
+        "parsed_signals": 4,
+        "equity_mentions": 4,
+        "option_mentions": 0,
+        "image_posts": 4,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "NEUTRAL",
+        "dominant_option_side": null,
+        "option_contracts": [],
+        "levels": [],
+        "latest_ts": "2026-04-22T17:32:09.644Z",
+        "latest_snippet": "AMAT 1D. Almost ready. Bullish hammer daily candle",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Keep collecting analyst and chart evidence before scoring."
+      },
+      {
+        "ticker": "AVGO",
+        "status": "shadow_collecting",
+        "asset_scope": "equity",
+        "mentions": 4,
+        "parsed_signals": 4,
+        "equity_mentions": 4,
+        "option_mentions": 0,
+        "image_posts": 4,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "BULLISH",
+        "dominant_option_side": null,
+        "option_contracts": [],
+        "levels": [],
+        "latest_ts": "2026-04-22T17:26:50.890Z",
+        "latest_snippet": "AVGO 1D. nATH today",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Keep collecting analyst and chart evidence before scoring."
+      },
+      {
+        "ticker": "BRK",
+        "status": "shadow_collecting",
+        "asset_scope": "equity",
+        "mentions": 4,
+        "parsed_signals": 4,
+        "equity_mentions": 4,
+        "option_mentions": 0,
+        "image_posts": 4,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "NEUTRAL",
+        "dominant_option_side": null,
+        "option_contracts": [],
+        "levels": [],
+        "latest_ts": "2026-04-28T14:54:56.767Z",
+        "latest_snippet": "BRK.B 1D. Dissociated from the markets suggesting value at this price",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Keep collecting analyst and chart evidence before scoring."
+      },
+      {
+        "ticker": "COIN",
+        "status": "shadow_collecting",
+        "asset_scope": "equity",
+        "mentions": 4,
+        "parsed_signals": 4,
+        "equity_mentions": 4,
+        "option_mentions": 0,
+        "image_posts": 4,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "NEUTRAL",
+        "dominant_option_side": null,
+        "option_contracts": [],
+        "levels": [],
+        "latest_ts": "2026-04-27T18:33:48.904Z",
+        "latest_snippet": "COIN 10min. Same pattern on a slightly larger TF. It's not define the r/r for any swings. This is just intraday",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Keep collecting analyst and chart evidence before scoring."
+      },
+      {
+        "ticker": "COST",
+        "status": "shadow_collecting",
+        "asset_scope": "equity",
+        "mentions": 4,
+        "parsed_signals": 4,
+        "equity_mentions": 4,
+        "option_mentions": 0,
+        "image_posts": 4,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "NEUTRAL",
+        "dominant_option_side": null,
+        "option_contracts": [],
+        "levels": [],
+        "latest_ts": "2026-05-01T18:27:37.438Z",
+        "latest_snippet": "COST 1W",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Keep collecting analyst and chart evidence before scoring."
+      },
+      {
+        "ticker": "MSFT",
+        "status": "shadow_collecting",
+        "asset_scope": "equity",
+        "mentions": 4,
+        "parsed_signals": 4,
+        "equity_mentions": 4,
+        "option_mentions": 0,
+        "image_posts": 4,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "BULLISH",
+        "dominant_option_side": null,
+        "option_contracts": [],
+        "levels": [],
+        "latest_ts": "2026-04-30T18:43:45.113Z",
+        "latest_snippet": "MSFT 15min. Will end of month rebalancing shank it or pump it?",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Keep collecting analyst and chart evidence before scoring."
+      },
+      {
+        "ticker": "BA",
+        "status": "shadow_collecting",
+        "asset_scope": "equity",
+        "mentions": 4,
+        "parsed_signals": 4,
+        "equity_mentions": 4,
+        "option_mentions": 0,
+        "image_posts": 2,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "BULLISH",
+        "dominant_option_side": null,
+        "option_contracts": [],
+        "levels": [
+          260
+        ],
+        "latest_ts": "2026-04-23T19:48:57.483Z",
+        "latest_snippet": "BA 1D. B/o and retest of the TL today. Ultimately, still very weak until 260 is reclaimed",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Keep collecting analyst and chart evidence before scoring."
+      },
+      {
+        "ticker": "BUT",
+        "status": "shadow_collecting",
+        "asset_scope": "equity_and_options",
+        "mentions": 3,
+        "parsed_signals": 2,
+        "equity_mentions": 0,
+        "option_mentions": 3,
+        "image_posts": 0,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "BEARISH",
+        "dominant_option_side": "PUT",
+        "option_contracts": [
+          {
+            "side": "PUT",
+            "strike": null,
+            "expiry": null,
+            "premium": null,
+            "analyst": "kaprik0rn3",
+            "ts": "2026-04-24T16:13:10.971Z",
+            "message_id": "1497269182276960337"
+          },
+          {
+            "side": "CALL",
+            "strike": null,
+            "expiry": null,
+            "premium": null,
+            "analyst": "kaprik0rn3",
+            "ts": "2026-04-24T16:12:34.464Z",
+            "message_id": "1497269029155373207"
+          },
+          {
+            "side": "PUT",
+            "strike": null,
+            "expiry": null,
+            "premium": null,
+            "analyst": "kaprik0rn3",
+            "ts": "2026-04-21T16:30:59.200Z",
+            "message_id": "1496186499157327882"
+          }
+        ],
+        "levels": [],
+        "latest_ts": "2026-04-24T16:13:10.971Z",
+        "latest_snippet": "But puts while VIX is below 19.30 is hopium",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Keep collecting analyst and chart evidence before scoring."
+      },
+      {
+        "ticker": "CIEN",
+        "status": "shadow_collecting",
+        "asset_scope": "equity_and_options",
+        "mentions": 3,
+        "parsed_signals": 3,
+        "equity_mentions": 2,
+        "option_mentions": 1,
+        "image_posts": 3,
+        "analysts": [
+          "barrysanders329"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "BULLISH",
+        "dominant_option_side": "CALL",
+        "option_contracts": [
+          {
+            "side": "CALL",
+            "strike": 550,
+            "expiry": null,
+            "premium": null,
+            "analyst": "barrysanders329",
+            "ts": "2026-04-23T15:07:23.041Z",
+            "message_id": "1496890235592642711"
+          }
+        ],
+        "levels": [],
+        "latest_ts": "2026-04-23T15:07:23.041Z",
+        "latest_snippet": "CIEN 65m 550c for tomorrow not an awful use of some lotto funds",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Keep collecting analyst and chart evidence before scoring."
+      },
+      {
+        "ticker": "CVNA",
+        "status": "shadow_collecting",
+        "asset_scope": "equity",
+        "mentions": 4,
+        "parsed_signals": 4,
+        "equity_mentions": 4,
+        "option_mentions": 0,
+        "image_posts": 2,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "BULLISH",
+        "dominant_option_side": null,
+        "option_contracts": [],
+        "levels": [
+          408
+        ],
+        "latest_ts": "2026-04-20T19:59:44.767Z",
+        "latest_snippet": "CVNA 10min",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Keep collecting analyst and chart evidence before scoring."
+      },
+      {
+        "ticker": "GLW",
+        "status": "shadow_collecting",
+        "asset_scope": "equity",
+        "mentions": 3,
+        "parsed_signals": 3,
+        "equity_mentions": 3,
+        "option_mentions": 0,
+        "image_posts": 3,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "NEUTRAL",
+        "dominant_option_side": null,
+        "option_contracts": [],
+        "levels": [],
+        "latest_ts": "2026-04-23T15:36:22.403Z",
+        "latest_snippet": "GLW 1W",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Keep collecting analyst and chart evidence before scoring."
+      },
+      {
+        "ticker": "TXN",
+        "status": "shadow_collecting",
+        "asset_scope": "equity",
+        "mentions": 3,
+        "parsed_signals": 3,
+        "equity_mentions": 3,
+        "option_mentions": 0,
+        "image_posts": 3,
+        "analysts": [
+          "kaprik0rn3"
+        ],
+        "analyst_count": 1,
+        "channels": [
+          "🟢︱trade-floor"
+        ],
+        "dominant_bias": "BULLISH",
+        "dominant_option_side": null,
+        "option_contracts": [],
+        "levels": [],
+        "latest_ts": "2026-04-29T14:19:31.486Z",
+        "latest_snippet": "TXN 1D",
+        "policy": "equity/options shadow input only; not SPX-equivalent and not execution authority",
+        "next_step": "Keep collecting analyst and chart evidence before scoring."
+      }
+    ],
+    "ready_for_backtest": [
+      "MU",
+      "LITE",
+      "ASML"
+    ],
+    "policy": "Shadow evidence only. Backtesting/scoring stays in the separate backtesting lane."
+  },
+  "messageBin": {
+    "generated_at": "2026-05-03T21:05:57.545Z",
+    "source_files": {
+      "raw_feed": "data\\kat\\raw-feed.jsonl",
+      "processed_signals": "data\\kat\\processed-signals.jsonl"
+    },
+    "confluence_examples": [
+      {
+        "kind": "index_confluence",
+        "group": "SPX/SPY/ES index lane",
+        "group_id": "index:spx",
+        "bias": "BEARISH",
+        "analysts": [
+          "mathemeatloaf7",
+          "kaprik0rn3"
+        ],
+        "signal_count": 2,
+        "window_minutes": 21,
+        "confluence_rule": "2 analysts aligned bearish inside 30 minutes",
+        "first_ts": "2026-03-04T15:14:33.374Z",
+        "last_ts": "2026-03-04T15:35:34.415Z",
+        "messages": [
+          {
+            "ts": "2026-03-04T15:14:33.374Z",
+            "analyst": "mathemeatloaf7",
+            "channel": "☔︱spy-qqq-es-nq-vix",
+            "message_id": "1478772647260196931",
+            "raw_input": "$spy resistance is at 685-686 right now",
+            "attachments": [
+              {
+                "id": "1478772646966464622",
+                "url": "https://cdn.discordapp.com/attachments/755261886932713583/1478772646966464622/image.png?ex=69e8e5d9&is=69e79459&hm=d72ba6498dede71e23a4d4096290ea77025251270a77a511f1c4e46caceaea9e&",
+                "filename": "image.png",
+                "content_type": "image/webp"
+              }
+            ],
+            "parsed": {
+              "ticker": "SPY",
+              "signal_type": "CHART_ANALYSIS",
+              "bias": "BEARISH",
+              "levels": [
+                685,
+                686
+              ],
+              "timeframe": null,
+              "pattern": "resistance",
+              "has_image": true,
+              "asset_context": null
+            }
+          },
+          {
+            "ts": "2026-03-04T15:35:34.415Z",
+            "analyst": "kaprik0rn3",
+            "channel": "🟢︱trade-floor",
+            "message_id": "1478777936449638541",
+            "raw_input": "SPY 30min. First attempt to close the bear gap we left open yesterday. Will act as resistance. Good place to take some off",
+            "attachments": [
+              {
+                "id": "1478777936072020140",
+                "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1478777936072020140/image.png?ex=69e8eac6&is=69e79946&hm=653e64d0437f606075d978af0f345fc2ad02b1d259e9a6c5a01e803670df48bb&",
+                "filename": "image.png",
+                "content_type": "image/webp"
+              }
+            ],
+            "parsed": {
+              "ticker": "SPY",
+              "signal_type": "CHART_ANALYSIS",
+              "bias": "BEARISH",
+              "levels": [],
+              "timeframe": null,
+              "pattern": "resistance",
+              "has_image": true,
+              "asset_context": null
+            }
+          }
+        ]
+      },
+      {
+        "kind": "index_confluence",
+        "group": "SPX/SPY/ES index lane",
+        "group_id": "index:spx",
+        "bias": "BULLISH",
+        "analysts": [
+          "barrysanders329",
+          "kaprik0rn3"
+        ],
+        "signal_count": 2,
+        "window_minutes": 8,
+        "confluence_rule": "2 analysts aligned bullish inside 30 minutes",
+        "first_ts": "2026-04-21T19:45:28.282Z",
+        "last_ts": "2026-04-21T19:53:48.548Z",
+        "messages": [
+          {
+            "ts": "2026-04-21T19:45:28.282Z",
+            "analyst": "barrysanders329",
+            "channel": "🟢︱trade-floor",
+            "message_id": "1496235442834509946",
+            "raw_input": "SPY inside day breaking downward",
+            "attachments": [
+              {
+                "id": "1496235442817728732",
+                "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1496235442817728732/image.png?ex=69e92558&is=69e7d3d8&hm=0c2164c0186b359a3a8fd2da30a7b5c463e0a9c868ea1126fe88917517b01159&",
+                "filename": "image.png",
+                "content_type": "image/webp"
+              }
+            ],
+            "parsed": {
+              "ticker": "SPY",
+              "signal_type": "CHART_ANALYSIS",
+              "bias": "BULLISH",
+              "levels": [],
+              "timeframe": null,
+              "pattern": "inside day",
+              "has_image": true,
+              "asset_context": null
+            }
+          },
+          {
+            "ts": "2026-04-21T19:53:48.548Z",
+            "analyst": "kaprik0rn3",
+            "channel": "🟢︱trade-floor",
+            "message_id": "1496237541102321798",
+            "raw_input": "The cliche line here is no one goes broke taking profits. That's even truer with SPX plays if you do it long enough",
+            "attachments": [],
+            "parsed": {
+              "ticker": "SPX",
+              "signal_type": "DIRECTIONAL",
+              "bias": "BULLISH",
+              "levels": [],
+              "timeframe": null,
+              "pattern": "long",
+              "has_image": false,
+              "asset_context": null
+            }
+          }
+        ]
+      },
+      {
+        "kind": "index_confluence",
+        "group": "SPX/SPY/ES index lane",
+        "group_id": "index:spx",
+        "bias": "BEARISH",
+        "analysts": [
+          "kaprik0rn3",
+          "mathemeatloaf7"
+        ],
+        "signal_count": 2,
+        "window_minutes": 24,
+        "confluence_rule": "2 analysts aligned bearish inside 30 minutes",
+        "first_ts": "2026-04-21T15:27:14.623Z",
+        "last_ts": "2026-04-21T15:50:54.201Z",
+        "messages": [
+          {
+            "ts": "2026-04-21T15:27:14.623Z",
+            "analyst": "kaprik0rn3",
+            "channel": "🟢︱trade-floor",
+            "message_id": "1496170457718587473",
+            "raw_input": "SPX 5min. Bear flag. SIMPOL",
+            "attachments": [
+              {
+                "id": "1496170457152618687",
+                "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1496170457152618687/image.png?ex=69e8e8d2&is=69e79752&hm=8c28cb7053248431896943ae231a29a8514a8047b751b901dbfed628841337da&",
+                "filename": "image.png",
+                "content_type": "image/png"
+              }
+            ],
+            "parsed": {
+              "ticker": "SPX",
+              "signal_type": "CHART_ANALYSIS",
+              "bias": "BEARISH",
+              "levels": [],
+              "timeframe": null,
+              "pattern": "bear flag",
+              "has_image": true,
+              "asset_context": null
+            }
+          },
+          {
+            "ts": "2026-04-21T15:50:54.201Z",
+            "analyst": "mathemeatloaf7",
+            "channel": "🟢︱trade-floor",
+            "message_id": "1496176411860402266",
+            "raw_input": "whos shorting $spy a couple weeks out up here",
+            "attachments": [],
+            "parsed": {
+              "ticker": "SPY",
+              "signal_type": "DIRECTIONAL",
+              "bias": "BEARISH",
+              "levels": [],
+              "timeframe": null,
+              "pattern": "short",
+              "has_image": false,
+              "asset_context": null
+            }
+          }
+        ]
+      },
+      {
+        "kind": "index_confluence",
+        "group": "SPX/SPY/ES index lane",
+        "group_id": "index:spx",
+        "bias": "BEARISH",
+        "analysts": [
+          "mathemeatloaf7",
+          "kaprik0rn3"
+        ],
+        "signal_count": 3,
+        "window_minutes": 28,
+        "confluence_rule": "2 analysts aligned bearish inside 30 minutes",
+        "first_ts": "2026-04-21T14:59:23.938Z",
+        "last_ts": "2026-04-21T15:27:14.623Z",
+        "messages": [
+          {
+            "ts": "2026-04-21T14:59:23.938Z",
+            "analyst": "mathemeatloaf7",
+            "channel": "🟢︱trade-floor",
+            "message_id": "1496163450358071468",
+            "raw_input": "$spx\n\nsecond time to tag TL resistance",
+            "attachments": [
+              {
+                "id": "1496163449854759167",
+                "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1496163449854759167/image.png?ex=69e8e24b&is=69e790cb&hm=caf3bccac7645d3b96079380c6be2dfbb78c6f5e10aa3809914f2bac3ee379ee&",
+                "filename": "image.png",
+                "content_type": "image/webp"
+              }
+            ],
+            "parsed": {
+              "ticker": "SPX",
+              "signal_type": "CHART_ANALYSIS",
+              "bias": "BEARISH",
+              "levels": [],
+              "timeframe": null,
+              "pattern": "resistance",
+              "has_image": true,
+              "asset_context": null
+            }
+          },
+          {
+            "ts": "2026-04-21T15:14:49.093Z",
+            "analyst": "kaprik0rn3",
+            "channel": "🟢︱trade-floor",
+            "message_id": "1496167330739257364",
+            "raw_input": "If SPX 5min bear flags here, expect lower comes. It's also dead money time so we can stay here for another couple hours",
+            "attachments": [],
+            "parsed": {
+              "ticker": "SPX",
+              "signal_type": "DIRECTIONAL",
+              "bias": "BEARISH",
+              "levels": [],
+              "timeframe": null,
+              "pattern": "bear flag",
+              "has_image": false,
+              "asset_context": null
+            }
+          },
+          {
+            "ts": "2026-04-21T15:27:14.623Z",
+            "analyst": "kaprik0rn3",
+            "channel": "🟢︱trade-floor",
+            "message_id": "1496170457718587473",
+            "raw_input": "SPX 5min. Bear flag. SIMPOL",
+            "attachments": [
+              {
+                "id": "1496170457152618687",
+                "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1496170457152618687/image.png?ex=69e8e8d2&is=69e79752&hm=8c28cb7053248431896943ae231a29a8514a8047b751b901dbfed628841337da&",
+                "filename": "image.png",
+                "content_type": "image/png"
+              }
+            ],
+            "parsed": {
+              "ticker": "SPX",
+              "signal_type": "CHART_ANALYSIS",
+              "bias": "BEARISH",
+              "levels": [],
+              "timeframe": null,
+              "pattern": "bear flag",
+              "has_image": true,
+              "asset_context": null
+            }
+          }
+        ]
+      }
+    ],
+    "latest_examples": [
+      {
+        "kind": "latest_index_signal",
+        "group": "SPX/SPY/ES index lane",
+        "messages": [
+          {
+            "ts": "2026-04-28T19:09:35.220Z",
+            "analyst": "kaprik0rn3",
+            "channel": "🟢︱trade-floor",
+            "message_id": "1498763127297409035",
+            "raw_input": "Alternatively, You could have gone long after the 8EMA (blue line) was reclaimed. Waiting for stronger confirmations reduces the chances of getting faked out",
+            "attachments": [],
+            "parsed": {
+              "ticker": "ES",
+              "signal_type": "DIRECTIONAL",
+              "bias": "BULLISH",
+              "levels": [],
+              "timeframe": null,
+              "pattern": "long",
+              "has_image": false,
+              "asset_context": null
+            }
+          }
+        ]
+      },
+      {
+        "kind": "latest_index_signal",
+        "group": "SPX/SPY/ES index lane",
+        "messages": [
+          {
+            "ts": "2026-04-28T19:08:06.259Z",
+            "analyst": "kaprik0rn3",
+            "channel": "🟢︱trade-floor",
+            "message_id": "1498762754167935079",
+            "raw_input": "SPX 15min. Both EMAs reclaimed. Bullish EMA crossovers imminent. This is an example of what a reversal could look like for you",
+            "attachments": [
+              {
+                "id": "1498762754025193634",
+                "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1498762754025193634/image.png?ex=69f25716&is=69f10596&hm=60cfde0d31478875c0f423bfdce40d76079be3129ce2d8fd3520b47b9b8a1f67&",
+                "filename": "image.png",
+                "content_type": "image/webp"
+              }
+            ],
+            "parsed": {
+              "ticker": "SPX",
+              "signal_type": "CHART_ANALYSIS",
+              "bias": "BULLISH",
+              "levels": [],
+              "timeframe": null,
+              "pattern": "bullish",
+              "has_image": true,
+              "asset_context": null
+            }
+          }
+        ]
+      },
+      {
+        "kind": "latest_index_signal",
+        "group": "SPX/SPY/ES index lane",
+        "messages": [
+          {
+            "ts": "2026-04-28T17:46:54.812Z",
+            "analyst": "kaprik0rn3",
+            "channel": "🟢︱trade-floor",
+            "message_id": "1498742321838162061",
+            "raw_input": "Crude oil Futures 1W. If you would long this here, it should give you pause in loading calls too heavily in equities especially tech",
+            "attachments": [
+              {
+                "id": "1498742321561342063",
+                "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1498742321561342063/image.png?ex=69f2440e&is=69f0f28e&hm=7566fbf733f879c55817ce2fd73f73ebf0f7319fc4bac78ba69477d704517763&",
+                "filename": "image.png",
+                "content_type": "image/png"
+              }
+            ],
+            "parsed": {
+              "ticker": "ES",
+              "signal_type": "CHART_ANALYSIS",
+              "bias": "BULLISH",
+              "levels": [],
+              "timeframe": "1W",
+              "pattern": "long",
+              "has_image": true,
+              "asset_context": null
+            }
+          }
+        ]
+      },
+      {
+        "kind": "latest_index_signal",
+        "group": "SPX/SPY/ES index lane",
+        "messages": [
+          {
+            "ts": "2026-04-28T17:05:16.381Z",
+            "analyst": "mathemeatloaf7",
+            "channel": "☔︱spy-qqq-es-nq-vix",
+            "message_id": "1498731842659155979",
+            "raw_input": "$iwm\n\nbreakdown continues, the gaps below look juicy from here\n\ngaps are at 270, 265, 253",
+            "attachments": [
+              {
+                "id": "1498731842340261998",
+                "url": "https://cdn.discordapp.com/attachments/755261886932713583/1498731842340261998/image.png?ex=69f23a4c&is=69f0e8cc&hm=ceb1597dca67ba30eeebad0a747f4c74e5198c30992d4e03d5b61ed7372b9433&",
+                "filename": "image.png",
+                "content_type": "image/webp"
+              }
+            ],
+            "parsed": {
+              "ticker": "ES",
+              "signal_type": "CHART_ANALYSIS",
+              "bias": "BEARISH",
+              "levels": [],
+              "timeframe": null,
+              "pattern": "breakdown",
+              "has_image": true,
+              "asset_context": null
+            }
+          }
+        ]
+      },
+      {
+        "kind": "latest_index_signal",
+        "group": "SPX/SPY/ES index lane",
+        "messages": [
+          {
+            "ts": "2026-04-28T16:36:52.050Z",
+            "analyst": "mathemeatloaf7",
+            "channel": "☔︱spy-qqq-es-nq-vix",
+            "message_id": "1498724694176694443",
+            "raw_input": "$spy\n\nif peaking at this TL resistance\n\nnext target would be 698-690\n\nbelow 690 can start opening the door to the large gap below at 660 imo",
+            "attachments": [
+              {
+                "id": "1498724692507230238",
+                "url": "https://cdn.discordapp.com/attachments/755261886932713583/1498724692507230238/image.png?ex=69f233a3&is=69f0e223&hm=7a88483759ae2884238ade9a28bced47da8b4aa18620f0a7b4faf0db9df0d22e&",
+                "filename": "image.png",
+                "content_type": "image/webp"
+              }
+            ],
+            "parsed": {
+              "ticker": "SPY",
+              "signal_type": "CHART_ANALYSIS",
+              "bias": "BEARISH",
+              "levels": [
+                698,
+                690,
+                660
+              ],
+              "timeframe": null,
+              "pattern": "resistance",
+              "has_image": true,
+              "asset_context": null
+            }
+          }
+        ]
+      },
+      {
+        "kind": "latest_equity_options_signal",
+        "group": "UNH equity/options shadow lane",
+        "messages": [
+          {
+            "ts": "2026-04-28T16:07:25.842Z",
+            "analyst": "kaprik0rn3",
+            "channel": "🟢︱trade-floor",
+            "message_id": "1498717286163283998",
+            "raw_input": "UNH 1W. It's only Tuesday but that 364 resistance has held for almost a year",
+            "attachments": [
+              {
+                "id": "1498717285492199614",
+                "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1498717285492199614/image.png?ex=69f22cbd&is=69f0db3d&hm=a716dbcffb783a1655c33206af19ddcbb52047d1d07de175587a24b790055cdc&",
+                "filename": "image.png",
+                "content_type": "image/webp"
+              }
+            ],
+            "parsed": {
+              "ticker": "UNH",
+              "signal_type": "CHART_ANALYSIS",
+              "bias": "BEARISH",
+              "levels": [
+                364
+              ],
+              "timeframe": "1W",
+              "pattern": "resistance",
+              "has_image": true,
+              "asset_context": {
+                "asset_class": "equity",
+                "underlying": "UNH",
+                "side": null,
+                "strike": null,
+                "expiry": null,
+                "premium": null,
+                "confidence": "low",
+                "parse_note": "Equity shadow context only; needs market data and scoring before recommendations."
+              }
+            }
+          }
+        ]
+      },
+      {
+        "kind": "latest_index_signal",
+        "group": "SPX/SPY/ES index lane",
+        "messages": [
+          {
+            "ts": "2026-04-28T15:11:42.589Z",
+            "analyst": "kaprik0rn3",
+            "channel": "🟢︱trade-floor",
+            "message_id": "1498703263543853206",
+            "raw_input": "You're not likely selling based on anything UPS does today lol",
+            "attachments": [],
+            "parsed": {
+              "ticker": "ES",
+              "signal_type": "DIRECTIONAL",
+              "bias": "BULLISH",
+              "levels": [],
+              "timeframe": null,
+              "pattern": "base",
+              "has_image": false,
+              "asset_context": null
+            }
+          }
+        ]
+      },
+      {
+        "kind": "latest_index_signal",
+        "group": "SPX/SPY/ES index lane",
+        "messages": [
+          {
+            "ts": "2026-04-28T15:04:02.095Z",
+            "analyst": "kaprik0rn3",
+            "channel": "🟢︱trade-floor",
+            "message_id": "1498701332092293172",
+            "raw_input": "You have to develop your system for gauging a reversal. Is it the 5min/10min/15min reclaim of an EMA or the VWAP or bullish crossover of EMAs? Reversals often show something objective and measurable. Of course, you can always go with a hunch and vibes and try to pre-empt it and it works out.",
+            "attachments": [],
+            "parsed": {
+              "ticker": "ES",
+              "signal_type": "DIRECTIONAL",
+              "bias": "BULLISH",
+              "levels": [],
+              "timeframe": null,
+              "pattern": "bullish",
+              "has_image": false,
+              "asset_context": null
+            }
+          }
+        ]
+      },
+      {
+        "kind": "latest_index_signal",
+        "group": "SPX/SPY/ES index lane",
+        "messages": [
+          {
+            "ts": "2026-04-28T14:03:09.991Z",
+            "analyst": "mathemeatloaf7",
+            "channel": "🟢︱trade-floor",
+            "message_id": "1498686014057873451",
+            "raw_input": "main thing im in right now is $dia puts. and considering spy and or iwm puts for june as well",
+            "attachments": [],
+            "parsed": {
+              "ticker": "SPY",
+              "signal_type": "DIRECTIONAL",
+              "bias": "BEARISH",
+              "levels": [],
+              "timeframe": null,
+              "pattern": "put",
+              "has_image": false,
+              "asset_context": null
+            }
+          }
+        ]
+      },
+      {
+        "kind": "latest_index_signal",
+        "group": "SPX/SPY/ES index lane",
+        "messages": [
+          {
+            "ts": "2026-04-28T13:58:43.196Z",
+            "analyst": "mathemeatloaf7",
+            "channel": "☔︱spy-qqq-es-nq-vix",
+            "message_id": "1498684895038541824",
+            "raw_input": "$spx\n\nrising wedge cracked and back under TL resistance",
+            "attachments": [
+              {
+                "id": "1498684894618849390",
+                "url": "https://cdn.discordapp.com/attachments/755261886932713583/1498684894618849390/image.png?ex=69f20e93&is=69f0bd13&hm=ac45cb807592a8ebfa5e7882187f67ba4e998541f6e68f83e075d7e1e2c3b8b1&",
+                "filename": "image.png",
+                "content_type": "image/webp"
+              }
+            ],
+            "parsed": {
+              "ticker": "SPX",
+              "signal_type": "CHART_ANALYSIS",
+              "bias": "BEARISH",
+              "levels": [],
+              "timeframe": null,
+              "pattern": "resistance",
+              "has_image": true,
+              "asset_context": null
+            }
+          }
+        ]
+      }
+    ],
+    "output_sink": {
+      "binDir": "C:\\Users\\conor\\luke\\reports\\katbot-owner-proof\\message-bin",
+      "outputJsonl": "C:\\Users\\conor\\luke\\reports\\katbot-owner-proof\\message-bin\\katbot-output-bin.jsonl",
+      "outputLatest": "C:\\Users\\conor\\luke\\reports\\katbot-owner-proof\\message-bin\\latest-output.json"
+    }
+  },
+  "samples": {
+    "index": {
+      "signal": {
+        "signal_type": "CHART_ANALYSIS",
+        "ticker": "SPY",
+        "timeframe": null,
+        "bias": "BEARISH",
+        "pattern": "resistance",
+        "levels": [
+          698,
+          690,
+          660
+        ],
+        "has_image": true,
+        "raw": "$spy\n\nif peaking at this TL resistance\n\nnext target would be 698-690\n\nbelow 690 can start opening the door to the large gap below at 660 imo",
+        "analyst": "mathemeatloaf7",
+        "ts": "2026-04-28T16:36:52.050Z",
+        "message_id": "1498724694176694443",
+        "channel": "☔︱spy-qqq-es-nq-vix",
+        "user_id": "755259514068009041"
+      },
+      "entry": {
+        "ts": "2026-04-28T16:36:52.050Z",
+        "message_id": "1498724694176694443",
+        "guild_id": "755261229748191313",
+        "channel_id": "755261886932713583",
+        "channel_name": "☔︱spy-qqq-es-nq-vix",
+        "user_id": "755259514068009041",
+        "username": "mathemeatloaf7",
+        "content": "$spy\n\nif peaking at this TL resistance\n\nnext target would be 698-690\n\nbelow 690 can start opening the door to the large gap below at 660 imo",
+        "attachments": [
+          {
+            "id": "1498724692507230238",
+            "url": "https://cdn.discordapp.com/attachments/755261886932713583/1498724692507230238/image.png?ex=69f233a3&is=69f0e223&hm=7a88483759ae2884238ade9a28bced47da8b4aa18620f0a7b4faf0db9df0d22e&",
+            "filename": "image.png",
+            "content_type": "image/webp"
+          }
+        ],
+        "backfill": true
+      }
+    },
+    "equityOption": {
+      "signal": {
+        "signal_type": "CHART_ANALYSIS",
+        "ticker": "MU",
+        "timeframe": null,
+        "bias": "NEUTRAL",
+        "pattern": null,
+        "levels": [],
+        "has_image": true,
+        "raw": "MU 10min. Almost 3% move off LOD",
+        "analyst": "kaprik0rn3",
+        "ts": "2026-04-23T15:14:09.229Z",
+        "message_id": "1496891939268722860",
+        "channel": "🟢︱trade-floor",
+        "user_id": "727227550459232287"
+      },
+      "entry": {
+        "ts": "2026-04-23T15:14:09.229Z",
+        "message_id": "1496891939268722860",
+        "guild_id": "755261229748191313",
+        "channel_id": "1040400353490911292",
+        "channel_name": "🟢︱trade-floor",
+        "user_id": "727227550459232287",
+        "username": "kaprik0rn3",
+        "content": "MU 10min. Almost 3% move off LOD",
+        "attachments": [
+          {
+            "id": "1496891939285635304",
+            "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1496891939285635304/image.png?ex=69eb88c1&is=69ea3741&hm=b9c6e46f3acd73f9f58322b18776705cc28d9475f381af48cf016beb173be3cf&",
+            "filename": "image.png",
+            "content_type": "image/webp"
+          }
+        ]
+      },
+      "context": {
+        "asset_class": "equity",
+        "underlying": "MU",
+        "side": null,
+        "strike": null,
+        "expiry": null,
+        "premium": null,
+        "confidence": "low",
+        "parse_note": "Equity shadow context only; needs market data and scoring before recommendations."
+      }
+    },
+    "image": {
+      "ts": "2026-05-02T16:27:09.269Z",
+      "message_id": "1500171801278550036",
+      "guild_id": "755261229748191313",
+      "channel_id": "1040400353490911292",
+      "channel_name": "🟢︱trade-floor",
+      "user_id": "755259514068009041",
+      "username": "mathemeatloaf7",
+      "content": "$zs\n\nweekly chart just reclaimed this 6 year old TL. this setup has only 3 full weeks to play out before ER week\n\nkey is to reclaim 140.56. doing so shoudl start setting up a squeeze to 160-165\n\nim eyeing 5/22 far otm calls next week",
+      "attachments": [
+        {
+          "id": "1500171801001721876",
+          "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1500171801001721876/image.png?ex=69f8201d&is=69f6ce9d&hm=74aa2499a427901a017de46d195f88b7fcb3d5f221d5c368d1d0d87d5bfe0956&",
+          "filename": "image.png",
+          "content_type": "image/png"
+        }
+      ],
+      "backfill": true
+    }
+  },
+  "previews": {
+    "discord": "**Kat owner-review preview**\nStatus: owner_review_ready\nEvidence: 12255 raw messages, 2604 processed signals\nWatchlist: TSLA, CAR, AAOI, MU, SNDK, LITE\nDiscord output: gated off until Conor explicitly approves generated wording.\n_No autonomous execution. Human-gated evidence only._",
+    "lukePayloads": [
+      {
+        "type": "kat_signal",
+        "source": "katbot-discord",
+        "ticker": "SPY",
+        "bias": "BEARISH",
+        "levels": [
+          698,
+          690,
+          660
+        ],
+        "analyst": "mathemeatloaf7",
+        "channel": "☔︱spy-qqq-es-nq-vix",
+        "message_id": "1498724694176694443",
+        "human_gate_required": true
+      },
+      {
+        "type": "kat_watchlist_signal",
+        "source": "katbot-discord",
+        "ticker": "MU",
+        "asset_class": "equity",
+        "option_context": null,
+        "equity_context": {
+          "asset_class": "equity",
+          "underlying": "MU",
+          "side": null,
+          "strike": null,
+          "expiry": null,
+          "premium": null,
+          "confidence": "low",
+          "parse_note": "Equity shadow context only; needs market data and scoring before recommendations."
+        },
+        "analyst": "kaprik0rn3",
+        "message_id": "1496891939268722860",
+        "policy": "equity/options shadow-watch only; not SPX-equivalent and not execution authority",
+        "human_gate_required": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,588 @@
+{
+  "generated_at": "2026-05-03T21:05:57.545Z",
+  "source_files": {
+    "raw_feed": "data\\kat\\raw-feed.jsonl",
+    "processed_signals": "data\\kat\\processed-signals.jsonl"
+  },
+  "confluence_examples": [
+    {
+      "kind": "index_confluence",
+      "group": "SPX/SPY/ES index lane",
+      "group_id": "index:spx",
+      "bias": "BEARISH",
+      "analysts": [
+        "mathemeatloaf7",
+        "kaprik0rn3"
+      ],
+      "signal_count": 2,
+      "window_minutes": 21,
+      "confluence_rule": "2 analysts aligned bearish inside 30 minutes",
+      "first_ts": "2026-03-04T15:14:33.374Z",
+      "last_ts": "2026-03-04T15:35:34.415Z",
+      "messages": [
+        {
+          "ts": "2026-03-04T15:14:33.374Z",
+          "analyst": "mathemeatloaf7",
+          "channel": "☔︱spy-qqq-es-nq-vix",
+          "message_id": "1478772647260196931",
+          "raw_input": "$spy resistance is at 685-686 right now",
+          "attachments": [
+            {
+              "id": "1478772646966464622",
+              "url": "https://cdn.discordapp.com/attachments/755261886932713583/1478772646966464622/image.png?ex=69e8e5d9&is=69e79459&hm=d72ba6498dede71e23a4d4096290ea77025251270a77a511f1c4e46caceaea9e&",
+              "filename": "image.png",
+              "content_type": "image/webp"
+            }
+          ],
+          "parsed": {
+            "ticker": "SPY",
+            "signal_type": "CHART_ANALYSIS",
+            "bias": "BEARISH",
+            "levels": [
+              685,
+              686
+            ],
+            "timeframe": null,
+            "pattern": "resistance",
+            "has_image": true,
+            "asset_context": null
+          }
+        },
+        {
+          "ts": "2026-03-04T15:35:34.415Z",
+          "analyst": "kaprik0rn3",
+          "channel": "🟢︱trade-floor",
+          "message_id": "1478777936449638541",
+          "raw_input": "SPY 30min. First attempt to close the bear gap we left open yesterday. Will act as resistance. Good place to take some off",
+          "attachments": [
+            {
+              "id": "1478777936072020140",
+              "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1478777936072020140/image.png?ex=69e8eac6&is=69e79946&hm=653e64d0437f606075d978af0f345fc2ad02b1d259e9a6c5a01e803670df48bb&",
+              "filename": "image.png",
+              "content_type": "image/webp"
+            }
+          ],
+          "parsed": {
+            "ticker": "SPY",
+            "signal_type": "CHART_ANALYSIS",
+            "bias": "BEARISH",
+            "levels": [],
+            "timeframe": null,
+            "pattern": "resistance",
+            "has_image": true,
+            "asset_context": null
+          }
+        }
+      ]
+    },
+    {
+      "kind": "index_confluence",
+      "group": "SPX/SPY/ES index lane",
+      "group_id": "index:spx",
+      "bias": "BULLISH",
+      "analysts": [
+        "barrysanders329",
+        "kaprik0rn3"
+      ],
+      "signal_count": 2,
+      "window_minutes": 8,
+      "confluence_rule": "2 analysts aligned bullish inside 30 minutes",
+      "first_ts": "2026-04-21T19:45:28.282Z",
+      "last_ts": "2026-04-21T19:53:48.548Z",
+      "messages": [
+        {
+          "ts": "2026-04-21T19:45:28.282Z",
+          "analyst": "barrysanders329",
+          "channel": "🟢︱trade-floor",
+          "message_id": "1496235442834509946",
+          "raw_input": "SPY inside day breaking downward",
+          "attachments": [
+            {
+              "id": "1496235442817728732",
+              "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1496235442817728732/image.png?ex=69e92558&is=69e7d3d8&hm=0c2164c0186b359a3a8fd2da30a7b5c463e0a9c868ea1126fe88917517b01159&",
+              "filename": "image.png",
+              "content_type": "image/webp"
+            }
+          ],
+          "parsed": {
+            "ticker": "SPY",
+            "signal_type": "CHART_ANALYSIS",
+            "bias": "BULLISH",
+            "levels": [],
+            "timeframe": null,
+            "pattern": "inside day",
+            "has_image": true,
+            "asset_context": null
+          }
+        },
+        {
+          "ts": "2026-04-21T19:53:48.548Z",
+          "analyst": "kaprik0rn3",
+          "channel": "🟢︱trade-floor",
+          "message_id": "1496237541102321798",
+          "raw_input": "The cliche line here is no one goes broke taking profits. That's even truer with SPX plays if you do it long enough",
+          "attachments": [],
+          "parsed": {
+            "ticker": "SPX",
+            "signal_type": "DIRECTIONAL",
+            "bias": "BULLISH",
+            "levels": [],
+            "timeframe": null,
+            "pattern": "long",
+            "has_image": false,
+            "asset_context": null
+          }
+        }
+      ]
+    },
+    {
+      "kind": "index_confluence",
+      "group": "SPX/SPY/ES index lane",
+      "group_id": "index:spx",
+      "bias": "BEARISH",
+      "analysts": [
+        "kaprik0rn3",
+        "mathemeatloaf7"
+      ],
+      "signal_count": 2,
+      "window_minutes": 24,
+      "confluence_rule": "2 analysts aligned bearish inside 30 minutes",
+      "first_ts": "2026-04-21T15:27:14.623Z",
+      "last_ts": "2026-04-21T15:50:54.201Z",
+      "messages": [
+        {
+          "ts": "2026-04-21T15:27:14.623Z",
+          "analyst": "kaprik0rn3",
+          "channel": "🟢︱trade-floor",
+          "message_id": "1496170457718587473",
+          "raw_input": "SPX 5min. Bear flag. SIMPOL",
+          "attachments": [
+            {
+              "id": "1496170457152618687",
+              "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1496170457152618687/image.png?ex=69e8e8d2&is=69e79752&hm=8c28cb7053248431896943ae231a29a8514a8047b751b901dbfed628841337da&",
+              "filename": "image.png",
+              "content_type": "image/png"
+            }
+          ],
+          "parsed": {
+            "ticker": "SPX",
+            "signal_type": "CHART_ANALYSIS",
+            "bias": "BEARISH",
+            "levels": [],
+            "timeframe": null,
+            "pattern": "bear flag",
+            "has_image": true,
+            "asset_context": null
+          }
+        },
+        {
+          "ts": "2026-04-21T15:50:54.201Z",
+          "analyst": "mathemeatloaf7",
+          "channel": "🟢︱trade-floor",
+          "message_id": "1496176411860402266",
+          "raw_input": "whos shorting $spy a couple weeks out up here",
+          "attachments": [],
+          "parsed": {
+            "ticker": "SPY",
+            "signal_type": "DIRECTIONAL",
+            "bias": "BEARISH",
+            "levels": [],
+            "timeframe": null,
+            "pattern": "short",
+            "has_image": false,
+            "asset_context": null
+          }
+        }
+      ]
+    },
+    {
+      "kind": "index_confluence",
+      "group": "SPX/SPY/ES index lane",
+      "group_id": "index:spx",
+      "bias": "BEARISH",
+      "analysts": [
+        "mathemeatloaf7",
+        "kaprik0rn3"
+      ],
+      "signal_count": 3,
+      "window_minutes": 28,
+      "confluence_rule": "2 analysts aligned bearish inside 30 minutes",
+      "first_ts": "2026-04-21T14:59:23.938Z",
+      "last_ts": "2026-04-21T15:27:14.623Z",
+      "messages": [
+        {
+          "ts": "2026-04-21T14:59:23.938Z",
+          "analyst": "mathemeatloaf7",
+          "channel": "🟢︱trade-floor",
+          "message_id": "1496163450358071468",
+          "raw_input": "$spx\n\nsecond time to tag TL resistance",
+          "attachments": [
+            {
+              "id": "1496163449854759167",
+              "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1496163449854759167/image.png?ex=69e8e24b&is=69e790cb&hm=caf3bccac7645d3b96079380c6be2dfbb78c6f5e10aa3809914f2bac3ee379ee&",
+              "filename": "image.png",
+              "content_type": "image/webp"
+            }
+          ],
+          "parsed": {
+            "ticker": "SPX",
+            "signal_type": "CHART_ANALYSIS",
+            "bias": "BEARISH",
+            "levels": [],
+            "timeframe": null,
+            "pattern": "resistance",
+            "has_image": true,
+            "asset_context": null
+          }
+        },
+        {
+          "ts": "2026-04-21T15:14:49.093Z",
+          "analyst": "kaprik0rn3",
+          "channel": "🟢︱trade-floor",
+          "message_id": "1496167330739257364",
+          "raw_input": "If SPX 5min bear flags here, expect lower comes. It's also dead money time so we can stay here for another couple hours",
+          "attachments": [],
+          "parsed": {
+            "ticker": "SPX",
+            "signal_type": "DIRECTIONAL",
+            "bias": "BEARISH",
+            "levels": [],
+            "timeframe": null,
+            "pattern": "bear flag",
+            "has_image": false,
+            "asset_context": null
+          }
+        },
+        {
+          "ts": "2026-04-21T15:27:14.623Z",
+          "analyst": "kaprik0rn3",
+          "channel": "🟢︱trade-floor",
+          "message_id": "1496170457718587473",
+          "raw_input": "SPX 5min. Bear flag. SIMPOL",
+          "attachments": [
+            {
+              "id": "1496170457152618687",
+              "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1496170457152618687/image.png?ex=69e8e8d2&is=69e79752&hm=8c28cb7053248431896943ae231a29a8514a8047b751b901dbfed628841337da&",
+              "filename": "image.png",
+              "content_type": "image/png"
+            }
+          ],
+          "parsed": {
+            "ticker": "SPX",
+            "signal_type": "CHART_ANALYSIS",
+            "bias": "BEARISH",
+            "levels": [],
+            "timeframe": null,
+            "pattern": "bear flag",
+            "has_image": true,
+            "asset_context": null
+          }
+        }
+      ]
+    }
+  ],
+  "latest_examples": [
+    {
+      "kind": "latest_index_signal",
+      "group": "SPX/SPY/ES index lane",
+      "messages": [
+        {
+          "ts": "2026-04-28T19:09:35.220Z",
+          "analyst": "kaprik0rn3",
+          "channel": "🟢︱trade-floor",
+          "message_id": "1498763127297409035",
+          "raw_input": "Alternatively, You could have gone long after the 8EMA (blue line) was reclaimed. Waiting for stronger confirmations reduces the chances of getting faked out",
+          "attachments": [],
+          "parsed": {
+            "ticker": "ES",
+            "signal_type": "DIRECTIONAL",
+            "bias": "BULLISH",
+            "levels": [],
+            "timeframe": null,
+            "pattern": "long",
+            "has_image": false,
+            "asset_context": null
+          }
+        }
+      ]
+    },
+    {
+      "kind": "latest_index_signal",
+      "group": "SPX/SPY/ES index lane",
+      "messages": [
+        {
+          "ts": "2026-04-28T19:08:06.259Z",
+          "analyst": "kaprik0rn3",
+          "channel": "🟢︱trade-floor",
+          "message_id": "1498762754167935079",
+          "raw_input": "SPX 15min. Both EMAs reclaimed. Bullish EMA crossovers imminent. This is an example of what a reversal could look like for you",
+          "attachments": [
+            {
+              "id": "1498762754025193634",
+              "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1498762754025193634/image.png?ex=69f25716&is=69f10596&hm=60cfde0d31478875c0f423bfdce40d76079be3129ce2d8fd3520b47b9b8a1f67&",
+              "filename": "image.png",
+              "content_type": "image/webp"
+            }
+          ],
+          "parsed": {
+            "ticker": "SPX",
+            "signal_type": "CHART_ANALYSIS",
+            "bias": "BULLISH",
+            "levels": [],
+            "timeframe": null,
+            "pattern": "bullish",
+            "has_image": true,
+            "asset_context": null
+          }
+        }
+      ]
+    },
+    {
+      "kind": "latest_index_signal",
+      "group": "SPX/SPY/ES index lane",
+      "messages": [
+        {
+          "ts": "2026-04-28T17:46:54.812Z",
+          "analyst": "kaprik0rn3",
+          "channel": "🟢︱trade-floor",
+          "message_id": "1498742321838162061",
+          "raw_input": "Crude oil Futures 1W. If you would long this here, it should give you pause in loading calls too heavily in equities especially tech",
+          "attachments": [
+            {
+              "id": "1498742321561342063",
+              "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1498742321561342063/image.png?ex=69f2440e&is=69f0f28e&hm=7566fbf733f879c55817ce2fd73f73ebf0f7319fc4bac78ba69477d704517763&",
+              "filename": "image.png",
+              "content_type": "image/png"
+            }
+          ],
+          "parsed": {
+            "ticker": "ES",
+            "signal_type": "CHART_ANALYSIS",
+            "bias": "BULLISH",
+            "levels": [],
+            "timeframe": "1W",
+            "pattern": "long",
+            "has_image": true,
+            "asset_context": null
+          }
+        }
+      ]
+    },
+    {
+      "kind": "latest_index_signal",
+      "group": "SPX/SPY/ES index lane",
+      "messages": [
+        {
+          "ts": "2026-04-28T17:05:16.381Z",
+          "analyst": "mathemeatloaf7",
+          "channel": "☔︱spy-qqq-es-nq-vix",
+          "message_id": "1498731842659155979",
+          "raw_input": "$iwm\n\nbreakdown continues, the gaps below look juicy from here\n\ngaps are at 270, 265, 253",
+          "attachments": [
+            {
+              "id": "1498731842340261998",
+              "url": "https://cdn.discordapp.com/attachments/755261886932713583/1498731842340261998/image.png?ex=69f23a4c&is=69f0e8cc&hm=ceb1597dca67ba30eeebad0a747f4c74e5198c30992d4e03d5b61ed7372b9433&",
+              "filename": "image.png",
+              "content_type": "image/webp"
+            }
+          ],
+          "parsed": {
+            "ticker": "ES",
+            "signal_type": "CHART_ANALYSIS",
+            "bias": "BEARISH",
+            "levels": [],
+            "timeframe": null,
+            "pattern": "breakdown",
+            "has_image": true,
+            "asset_context": null
+          }
+        }
+      ]
+    },
+    {
+      "kind": "latest_index_signal",
+      "group": "SPX/SPY/ES index lane",
+      "messages": [
+        {
+          "ts": "2026-04-28T16:36:52.050Z",
+          "analyst": "mathemeatloaf7",
+          "channel": "☔︱spy-qqq-es-nq-vix",
+          "message_id": "1498724694176694443",
+          "raw_input": "$spy\n\nif peaking at this TL resistance\n\nnext target would be 698-690\n\nbelow 690 can start opening the door to the large gap below at 660 imo",
+          "attachments": [
+            {
+              "id": "1498724692507230238",
+              "url": "https://cdn.discordapp.com/attachments/755261886932713583/1498724692507230238/image.png?ex=69f233a3&is=69f0e223&hm=7a88483759ae2884238ade9a28bced47da8b4aa18620f0a7b4faf0db9df0d22e&",
+              "filename": "image.png",
+              "content_type": "image/webp"
+            }
+          ],
+          "parsed": {
+            "ticker": "SPY",
+            "signal_type": "CHART_ANALYSIS",
+            "bias": "BEARISH",
+            "levels": [
+              698,
+              690,
+              660
+            ],
+            "timeframe": null,
+            "pattern": "resistance",
+            "has_image": true,
+            "asset_context": null
+          }
+        }
+      ]
+    },
+    {
+      "kind": "latest_equity_options_signal",
+      "group": "UNH equity/options shadow lane",
+      "messages": [
+        {
+          "ts": "2026-04-28T16:07:25.842Z",
+          "analyst": "kaprik0rn3",
+          "channel": "🟢︱trade-floor",
+          "message_id": "1498717286163283998",
+          "raw_input": "UNH 1W. It's only Tuesday but that 364 resistance has held for almost a year",
+          "attachments": [
+            {
+              "id": "1498717285492199614",
+              "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1498717285492199614/image.png?ex=69f22cbd&is=69f0db3d&hm=a716dbcffb783a1655c33206af19ddcbb52047d1d07de175587a24b790055cdc&",
+              "filename": "image.png",
+              "content_type": "image/webp"
+            }
+          ],
+          "parsed": {
+            "ticker": "UNH",
+            "signal_type": "CHART_ANALYSIS",
+            "bias": "BEARISH",
+            "levels": [
+              364
+            ],
+            "timeframe": "1W",
+            "pattern": "resistance",
+            "has_image": true,
+            "asset_context": {
+              "asset_class": "equity",
+              "underlying": "UNH",
+              "side": null,
+              "strike": null,
+              "expiry": null,
+              "premium": null,
+              "confidence": "low",
+              "parse_note": "Equity shadow context only; needs market data and scoring before recommendations."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "kind": "latest_index_signal",
+      "group": "SPX/SPY/ES index lane",
+      "messages": [
+        {
+          "ts": "2026-04-28T15:11:42.589Z",
+          "analyst": "kaprik0rn3",
+          "channel": "🟢︱trade-floor",
+          "message_id": "1498703263543853206",
+          "raw_input": "You're not likely selling based on anything UPS does today lol",
+          "attachments": [],
+          "parsed": {
+            "ticker": "ES",
+            "signal_type": "DIRECTIONAL",
+            "bias": "BULLISH",
+            "levels": [],
+            "timeframe": null,
+            "pattern": "base",
+            "has_image": false,
+            "asset_context": null
+          }
+        }
+      ]
+    },
+    {
+      "kind": "latest_index_signal",
+      "group": "SPX/SPY/ES index lane",
+      "messages": [
+        {
+          "ts": "2026-04-28T15:04:02.095Z",
+          "analyst": "kaprik0rn3",
+          "channel": "🟢︱trade-floor",
+          "message_id": "1498701332092293172",
+          "raw_input": "You have to develop your system for gauging a reversal. Is it the 5min/10min/15min reclaim of an EMA or the VWAP or bullish crossover of EMAs? Reversals often show something objective and measurable. Of course, you can always go with a hunch and vibes and try to pre-empt it and it works out.",
+          "attachments": [],
+          "parsed": {
+            "ticker": "ES",
+            "signal_type": "DIRECTIONAL",
+            "bias": "BULLISH",
+            "levels": [],
+            "timeframe": null,
+            "pattern": "bullish",
+            "has_image": false,
+            "asset_context": null
+          }
+        }
+      ]
+    },
+    {
+      "kind": "latest_index_signal",
+      "group": "SPX/SPY/ES index lane",
+      "messages": [
+        {
+          "ts": "2026-04-28T14:03:09.991Z",
+          "analyst": "mathemeatloaf7",
+          "channel": "🟢︱trade-floor",
+          "message_id": "1498686014057873451",
+          "raw_input": "main thing im in right now is $dia puts. and considering spy and or iwm puts for june as well",
+          "attachments": [],
+          "parsed": {
+            "ticker": "SPY",
+            "signal_type": "DIRECTIONAL",
+            "bias": "BEARISH",
+            "levels": [],
+            "timeframe": null,
+            "pattern": "put",
+            "has_image": false,
+            "asset_context": null
+          }
+        }
+      ]
+    },
+    {
+      "kind": "latest_index_signal",
+      "group": "SPX/SPY/ES index lane",
+      "messages": [
+        {
+          "ts": "2026-04-28T13:58:43.196Z",
+          "analyst": "mathemeatloaf7",
+          "channel": "☔︱spy-qqq-es-nq-vix",
+          "message_id": "1498684895038541824",
+          "raw_input": "$spx\n\nrising wedge cracked and back under TL resistance",
+          "attachments": [
+            {
+              "id": "1498684894618849390",
+              "url": "https://cdn.discordapp.com/attachments/755261886932713583/1498684894618849390/image.png?ex=69f20e93&is=69f0bd13&hm=ac45cb807592a8ebfa5e7882187f67ba4e998541f6e68f83e075d7e1e2c3b8b1&",
+              "filename": "image.png",
+              "content_type": "image/webp"
+            }
+          ],
+          "parsed": {
+            "ticker": "SPX",
+            "signal_type": "CHART_ANALYSIS",
+            "bias": "BEARISH",
+            "levels": [],
+            "timeframe": null,
+            "pattern": "resistance",
+            "has_image": true,
+            "asset_context": null
+          }
+        }
+      ]
+    }
+  ],
+  "output_sink": {
+    "binDir": "C:\\Users\\conor\\luke\\reports\\katbot-owner-proof\\message-bin",
+    "outputJsonl": "C:\\Users\\conor\\luke\\reports\\katbot-owner-proof\\message-bin\\katbot-output-bin.jsonl",
+    "outputLatest": "C:\\Users\\conor\\luke\\reports\\katbot-owner-proof\\message-bin\\latest-output.json"
+  }
+}

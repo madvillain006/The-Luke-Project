@@ -316,6 +316,14 @@
       font-weight: 750;
     }
 
+    .blockers {
+      border-color: rgba(224, 111, 111, 0.65);
+    }
+
+    .blockers strong {
+      color: var(--bad);
+    }
+
     @media (max-width: 980px) {
       header { align-items: flex-start; flex-direction: column; }
       .toolbar { justify-content: flex-start; }
@@ -475,6 +483,11 @@
       `;
     }
 
+    function blockerSection(items) {
+      if (!items || !items.length) return '';
+      return `<div class="search-row blockers"><strong>Blockers</strong>${list(items)}</div>`;
+    }
+
     function render(snapshot, daily, history, automation, developer) {
       $('brain-title').textContent = snapshot.label || 'Luke brain';
       $('brain-meta').textContent = snapshot.role || '';
@@ -493,7 +506,8 @@
           <div class="metric"><div class="metric-label">Bobby</div><div class="metric-value">${trading.counts?.bobby_context ?? 0}</div></div>
         </div>
         <div class="muted">Recommendation-only. No broker execution authority.</div>
-        ${list(trading.blockers || [])}
+        ${blockerSection(trading.blockers || [])}
+        ${list(trading.stale_data_warnings || [])}
       `);
 
       renderSpine($('spine-automation'), automation, `
@@ -504,6 +518,7 @@
           <div class="metric"><div class="metric-label">Events</div><div class="metric-value">${automation.pipeline?.events ?? 0}</div></div>
         </div>
         <div class="muted">${escapeHtml(automation.recommended_start?.niche || '')}</div>
+        ${blockerSection(automation.blockers || [])}
         ${list(automation.next_actions || [])}
       `);
 
@@ -515,11 +530,13 @@
           <div class="metric"><div class="metric-label">Local</div><div class="metric-value">${escapeHtml((developer.provider_order || []).find(provider => provider.id === 'ollama')?.status || 'unknown')}</div></div>
         </div>
         <div class="muted">${escapeHtml(developer.local_only_truth || '')}</div>
-        ${list((developer.provider_order || []).map(provider => `${provider.priority}. ${provider.label}: ${provider.status}`))}
+        ${blockerSection(developer.blockers || [])}
+        ${list((developer.provider_order || []).map(provider => `${provider.priority}. ${provider.label} [${provider.lane}]: ${provider.status}`))}
       `);
 
       renderSpine($('spine-daily'), daily, `
         <div class="metric"><div class="metric-label">Weather</div><div class="metric-value">${escapeHtml(daily.weather?.summary)}</div></div>
+        ${blockerSection(daily.blockers || [])}
         ${list((daily.checklist || []).map(item => `${item.label}: ${item.status} - ${item.detail}`))}
       `);
 
@@ -528,6 +545,7 @@
           <div class="metric"><div class="metric-label">Accepted</div><div class="metric-value">${history.pipeline?.accepted ?? 0}</div></div>
           <div class="metric"><div class="metric-label">MLIS Filtered</div><div class="metric-value">${history.pipeline?.rejected_mlis ?? 0}</div></div>
         </div>
+        ${blockerSection(history.blockers || [])}
         ${list((history.tracks || []).map(track => track.label))}
       `);
 

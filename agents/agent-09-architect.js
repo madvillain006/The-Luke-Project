@@ -12,7 +12,7 @@ const ROOT = path.join(__dirname, "..");
 const ARCH_LOG    = path.join(ROOT, "ARCHITECT_LOG.jsonl");
 const ARCH_TOKENS = path.join(ROOT, "ARCH_TOKENS.jsonl");
 const COSTS_FILE  = path.join(ROOT, "architect-costs.json");
-const PROPOSALS   = path.join(ROOT, "proposals");
+const PROPOSALS   = path.join(ROOT, "state", "runtime", "proposals");
 const REJECTED    = path.join(ROOT, "REJECTED_PATTERNS.jsonl");
 const ZERO_FILE   = path.join(ROOT, "arch-zero-streak.json");
 

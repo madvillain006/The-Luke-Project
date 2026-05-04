@@ -108,10 +108,13 @@ async function screenshot(page, route, fileName, options = {}) {
   const output = path.join(OUT_DIR, fileName);
   try {
     await page.goto(new URL(route, BASE_URL).toString(), { waitUntil: 'networkidle', timeout: 30000 });
-    if (options.waitForText) await page.getByText(options.waitForText).first().waitFor({ timeout: 15000 });
     if (options.locator) {
-      await page.locator(options.locator).first().screenshot({ path: output });
+      const target = page.locator(options.locator).first();
+      await target.waitFor({ state: 'visible', timeout: 15000 });
+      if (options.waitForText) await target.getByText(options.waitForText).first().waitFor({ timeout: 15000 });
+      await target.screenshot({ path: output });
     } else {
+      if (options.waitForText) await page.getByText(options.waitForText).first().waitFor({ timeout: 15000 });
       await page.screenshot({ path: output, fullPage: options.fullPage !== false });
     }
     return { ok: true, route, path: path.relative(ROOT, output).replace(/\\/g, '/') };

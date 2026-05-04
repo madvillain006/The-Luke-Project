@@ -87,19 +87,30 @@ function stopApp(child) {
 async function captureScreenshots() {
   const outputs = {
     trading_window: path.join(OUT_DIR, 'trading-window.png'),
+    operator_dashboard: path.join(OUT_DIR, 'operator-dashboard-full.png'),
     chart_bracket: path.join(OUT_DIR, 'chart-bracket.png'),
     replay_example: path.join(OUT_DIR, 'replay-example.png'),
+    heatmap_image_a: path.join(OUT_DIR, 'heatmap-proof-image-a.png'),
+    heatmap_image_b: path.join(OUT_DIR, 'heatmap-proof-image-b.png'),
   };
+  let browser = null;
   try {
-    const browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ headless: true });
     const page = await browser.newPage({ viewport: { width: 1500, height: 1100 } });
     await page.goto(new URL('/trading-window', BASE_URL).toString(), { waitUntil: 'networkidle', timeout: 30000 });
     await page.getByText('Luke Trading Window').waitFor({ timeout: 15000 });
     await page.screenshot({ path: outputs.trading_window, fullPage: true });
     await page.locator('#chart-panel').screenshot({ path: outputs.chart_bracket });
     await page.locator('#candidate-panel').screenshot({ path: outputs.replay_example });
-    const unsafeButtons = await page.$$eval('button', buttons => buttons.map(button => button.textContent.trim()).filter(text => /execute|submit|broker/i.test(text)));
-    await browser.close();
+    const tradingUnsafeButtons = await page.$$eval('button', buttons => buttons.map(button => button.textContent.trim()).filter(text => /execute|submit|broker/i.test(text)));
+    await page.goto(new URL('/operator-v2?proof=heatmap', BASE_URL).toString(), { waitUntil: 'networkidle', timeout: 30000 });
+    await page.getByText('Replay Trading Window Embedded In Dashboard').waitFor({ timeout: 15000 });
+    await page.getByText('Katbot / Heatmap Input Proof').waitFor({ timeout: 15000 });
+    await page.screenshot({ path: outputs.operator_dashboard, fullPage: true });
+    await page.locator('[data-heatmap-fixture]').nth(0).screenshot({ path: outputs.heatmap_image_a });
+    await page.locator('[data-heatmap-fixture]').nth(1).screenshot({ path: outputs.heatmap_image_b });
+    const operatorUnsafeButtons = await page.$$eval('button', buttons => buttons.map(button => button.textContent.trim()).filter(text => /execute|submit|broker/i.test(text)));
+    const unsafeButtons = [...tradingUnsafeButtons, ...operatorUnsafeButtons];
     return {
       ok: unsafeButtons.length === 0,
       paths: Object.fromEntries(Object.entries(outputs).map(([key, value]) => [key, path.relative(ROOT, value).replace(/\\/g, '/')])),
@@ -111,6 +122,8 @@ async function captureScreenshots() {
       error: err.message,
       paths: Object.fromEntries(Object.entries(outputs).map(([key, value]) => [key, path.relative(ROOT, value).replace(/\\/g, '/')])),
     };
+  } finally {
+    if (browser) await browser.close();
   }
 }
 
@@ -118,15 +131,18 @@ function safety(api, screenshots) {
   const chart = api.chart_data?.body || {};
   const source = api.source_health?.body || {};
   const candidates = api.trade_candidates?.body || {};
+  const heatmapProof = api.heatmap_proof?.body || {};
   return {
-    read_only: [chart, source, candidates].every(body => body.read_only === true),
-    no_live_execution: [chart, source, candidates].every(body => body.no_live_execution === true),
+    read_only: [chart, source, candidates, heatmapProof].every(body => body.read_only === true),
+    no_live_execution: [chart, source, candidates, heatmapProof].every(body => body.no_live_execution === true),
     chart_has_candles: Array.isArray(chart.candles) && chart.candles.length > 0,
     chart_uses_replay: chart.mode === 'replay' && chart.candle_feed?.source === 'local_csv',
     live_false: chart.market_data?.live === false || chart.data_mode?.live === false,
     live_arming_disabled: chart.live_arming_enabled === false && chart.data_mode?.can_generate_live_candidate === false,
     candidate_not_live_ready: (candidates.candidates || []).every(candidate => candidate.status !== 'LIVE_READY' && candidate.can_execute_live !== true),
     source_health_has_heatmap_gex: Boolean(source.heatmap_gex),
+    operator_heatmap_two_images: heatmapProof.checks?.two_distinct_images === true,
+    operator_heatmap_ack_levels: heatmapProof.checks?.every_fixture_has_levels === true,
     no_unsafe_buttons: screenshots.ok === true,
     same_engine_path: 'trading-window -> /api/trading/chart-data -> trading-state adapter -> buildTradingState -> candle-feed provider',
   };
@@ -157,6 +173,7 @@ async function main() {
   const query = '?instrument=ES&mode=replay&example=positive';
   proof.api.chart_data = await fetchJson(`/api/trading/chart-data${query}`, 'chart-data.json');
   proof.api.source_health = await fetchJson(`/api/trading/source-health${query}`, 'source-health.json');
+  proof.api.heatmap_proof = await fetchJson('/api/operator/heatmap-proof', 'heatmap-proof.json');
   proof.api.active_levels = await fetchJson(`/api/trading/level-state${query}`, 'active-levels.json');
   proof.api.trade_candidates = await fetchJson(`/api/trading/trade-candidates${query}`, 'trade-candidates.json');
   proof.api.alerts = await fetchJson(`/api/trading/alerts${query}`, 'alerts.json');

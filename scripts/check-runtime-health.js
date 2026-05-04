@@ -83,12 +83,19 @@ async function checkRuntimeHealth(options = {}) {
   const port = Number(options.port || process.env.PORT || 3000);
   const pid = options.pid !== undefined ? options.pid : getListeningPid(port, options.execFile);
   const processInfo = pid ? getProcessInfo(pid, options.execFile) : null;
-  const health = pid ? await fetchHealth(port, options.fetchFn || fetch) : null;
+  const health = await fetchHealth(port, options.fetchFn || fetch);
   const luke = looksLikeLuke(processInfo, health);
   const currentLuke = isCurrentLuke(health);
-  const status = pid ? (currentLuke ? 'current Luke' : (luke ? 'stale Luke' : 'occupied unknown')) : 'free';
+  let status = 'free';
+  if (currentLuke) {
+    status = 'current Luke';
+  } else if (pid) {
+    status = luke ? 'stale Luke' : 'occupied unknown';
+  } else if (health?.ok) {
+    status = 'occupied unknown';
+  }
   return {
-    ok: !pid || currentLuke,
+    ok: currentLuke || (!pid && !health?.ok),
     app: 'Luke',
     port,
     status,

@@ -354,6 +354,205 @@
     .bracket-line.price { border-color: var(--warn); border-top-style: dashed; }
     .bracket-line.level { border-color: #58636b; border-top-style: dotted; }
 
+    .operator-trading-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(360px, 0.95fr);
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .operator-chart-shell {
+      height: 330px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #0d1115;
+      overflow: hidden;
+    }
+
+    #operator-price-chart {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .dashboard-stack {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .compact-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .compact-table th,
+    .compact-table td {
+      padding: 7px 6px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .compact-table th {
+      color: var(--muted);
+      font-weight: 750;
+    }
+
+    .heatmap-proof-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .heatmap-proof-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #15191c;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .heatmap-proof-card img {
+      display: block;
+      width: 100%;
+      height: 170px;
+      object-fit: contain;
+      background: #07090b;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .heatmap-proof-card .proof-body {
+      padding: 8px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .demo-only[hidden] {
+      display: none !important;
+    }
+
+    .demo-showcase-grid {
+      display: grid;
+      grid-template-columns: minmax(320px, 0.95fr) minmax(360px, 1.05fr) minmax(280px, 0.8fr);
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .demo-trade-window {
+      border: 1px solid rgba(101, 168, 232, 0.5);
+      border-radius: 8px;
+      background: #12171a;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .demo-window-layout {
+      display: grid;
+      grid-template-columns: minmax(520px, 1.35fr) minmax(360px, 0.65fr);
+      gap: 12px;
+      padding: 12px;
+      align-items: start;
+    }
+
+    .demo-window-chart-shell {
+      min-height: 260px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #0a0f13;
+      overflow: hidden;
+    }
+
+    #demo-trade-window-chart {
+      display: block;
+      width: 100%;
+      height: 260px;
+    }
+
+    .demo-window-side {
+      display: grid;
+      gap: 8px;
+      align-content: start;
+      min-width: 0;
+    }
+
+    .demo-katbot-ack {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #15191c;
+      padding: 8px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .demo-trade-popover {
+      border: 1px solid rgba(232, 184, 76, 0.72);
+      border-radius: 8px;
+      background: #171c1f;
+      box-shadow: 0 12px 34px rgba(0, 0, 0, 0.34);
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .demo-trade-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      background: #241f14;
+    }
+
+    .demo-trade-body {
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .demo-plan-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .demo-metric {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 8px;
+      background: #12171a;
+      min-width: 0;
+    }
+
+    .demo-metric-label {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .demo-metric-value {
+      font-weight: 850;
+      overflow-wrap: anywhere;
+    }
+
+    .demo-script-panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #15191c;
+      padding: 12px;
+      display: grid;
+      align-content: start;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .demo-script-panel .pill-row {
+      align-self: start;
+      align-items: center;
+    }
+
     .mono {
       font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
       font-size: 12px;
@@ -393,6 +592,9 @@
     @media (max-width: 1100px) {
       .topbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .main { grid-template-columns: 1fr; }
+      .operator-trading-grid { grid-template-columns: 1fr; }
+      .demo-showcase-grid { grid-template-columns: 1fr; }
+      .demo-window-layout { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 620px) {
@@ -400,6 +602,8 @@
       .main { padding: 8px; }
       .kv { grid-template-columns: 1fr; }
       .case-grid { grid-template-columns: 1fr; }
+      .heatmap-proof-grid { grid-template-columns: 1fr; }
+      .demo-plan-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .level-row { grid-template-columns: 1fr; }
       .decision-action { font-size: 24px; }
     }
@@ -426,6 +630,95 @@
             <div class="band-item"><div class="band-label">Market Data</div><div class="band-value" id="band-market-data">UNKNOWN</div></div>
             <div class="band-item"><div class="band-label">Risk</div><div class="band-value" id="band-risk">Loading</div></div>
             <div class="band-item"><div class="band-label">Autonomous</div><div class="band-value" id="band-auto">Recommendation-only</div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel status-panel" aria-labelledby="operator-trading-title">
+        <div class="panel-header">
+          <div class="panel-title" id="operator-trading-title">Replay Trading Window Embedded In Dashboard</div>
+          <span class="pill warn">local/replay proof, not live</span>
+        </div>
+        <div class="panel-body">
+          <div class="operator-trading-grid">
+            <div>
+              <div class="pill-row">
+                <span class="pill warn">Read-only</span>
+                <span class="pill warn">Tight chart +/-30 pts</span>
+                <span class="pill bad">No execution controls</span>
+                <span class="pill info" id="operator-chart-focus">Loading chart</span>
+              </div>
+              <div class="operator-chart-shell" id="operator-chart-panel">
+                <svg id="operator-price-chart" role="img" aria-label="Embedded replay chart with candles, nearby levels, and bracket plan"></svg>
+              </div>
+            </div>
+            <div class="dashboard-stack">
+              <div>
+                <div class="eyebrow">Candidate Queue</div>
+                <div id="operator-candidate-table" class="line muted">Loading candidates</div>
+              </div>
+              <div>
+                <div class="eyebrow">Katbot / Heatmap Input Proof</div>
+                <div id="operator-heatmap-proof" class="line muted">Loading heatmap proof</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel status-panel demo-only" id="client-demo-showcase" aria-labelledby="client-demo-title" hidden>
+        <div class="panel-header">
+          <div class="panel-title" id="client-demo-title">Client Demo Replay Trade Plan</div>
+          <span class="pill warn">Hypothetical replay only</span>
+        </div>
+        <div class="panel-body">
+          <section class="demo-trade-window" id="demo-trade-window" aria-label="Full dashboard hypothetical trade window">
+            <div class="demo-trade-header">
+              <div>
+                <div class="panel-title">Dashboard Trade Window Preview</div>
+                <div class="muted">Chart, levels, bracket plan, Katbot/heatmap input, and Pine watch script in the same operator surface</div>
+              </div>
+              <span class="pill warn">Window in dashboard - no submit path</span>
+            </div>
+            <div class="demo-window-layout">
+              <div class="demo-window-chart-shell">
+                <svg id="demo-trade-window-chart" role="img" aria-label="Hypothetical replay trade window chart with bracket and levels"></svg>
+              </div>
+              <div class="demo-window-side" id="demo-trade-window-summary">
+                <div class="line muted">Loading dashboard trade window</div>
+              </div>
+            </div>
+          </section>
+          <div class="demo-showcase-grid">
+            <section class="demo-trade-popover" id="demo-trade-popover" aria-label="Hypothetical replay trade plan pop-up">
+              <div class="demo-trade-header">
+                <div>
+                  <div class="panel-title">Replay Trade Plan Pop-Up</div>
+                  <div class="muted">Generated from local 1m candles and timestamp-scoped levels</div>
+                </div>
+                <span class="pill warn">No submit control</span>
+              </div>
+              <div class="demo-trade-body" id="demo-trade-body">
+                <div class="line muted">Loading replay plan</div>
+              </div>
+            </section>
+            <section class="demo-script-panel" id="demo-watch-script" aria-label="TradingView watch script status">
+              <div class="panel-title">Luke Level Reclaim Watch Script</div>
+              <div class="line warn-text">Current Pine indicator/watchlist bridge only. No strategy declaration and no order submission.</div>
+              <div class="pill-row">
+                <span class="pill info">WATCH</span>
+                <span class="pill info">ARMED</span>
+                <span class="pill warn">LONG CANDIDATE</span>
+                <span class="pill bad">BLOCKED</span>
+              </div>
+              <div class="line">Used for visual watch signals; Luke remains the source of bracket-plan truth.</div>
+              <div class="mono">tradingview/luke-level-reclaim-watch.pine</div>
+            </section>
+            <section class="demo-script-panel" id="demo-client-script" aria-label="Client demo narration">
+              <div class="panel-title">Demo Narration</div>
+              <div class="line">Open with data health, show the replay chart, then show the plan pop-up. Emphasize that local/replay is proof-only and live data is the remaining provider swap.</div>
+              <div class="line warn-text">No live candidate can be armed from replay, stale, or UNKNOWN data.</div>
+            </section>
           </div>
         </div>
       </article>
@@ -546,6 +839,8 @@
   </div>
 
   <script>
+    const queryParams = new URLSearchParams(window.location.search);
+    const clientDemoMode = queryParams.get('demo') === 'client' || queryParams.get('proof') === 'client-demo';
     const endpoints = {
       status: '/api/operator/status',
       readiness: '/api/operator/readiness',
@@ -557,8 +852,17 @@
       tradeCandidates: '/api/trading/trade-candidates?instrument=ES',
       tradingAlerts: '/api/trading/alerts?instrument=ES',
       candleStatus: '/api/trading/candle-status?instrument=ES',
+      tradingChartData: '/api/trading/chart-data?instrument=ES&mode=replay&example=positive',
+      tradingSourceHealth: '/api/trading/source-health?instrument=ES&mode=replay&example=positive',
+      heatmapProof: '/api/operator/heatmap-proof',
       autonomousStatus: '/agent/autonomous/status'
     };
+
+    if (clientDemoMode) {
+      document.body.classList.add('client-demo');
+      endpoints.tradingChartData = '/api/trading/chart-data?instrument=ES&mode=replay&example=positive';
+      endpoints.tradingSourceHealth = '/api/trading/source-health?instrument=ES&mode=replay&example=positive';
+    }
 
     const el = id => document.getElementById(id);
     const text = value => value === null || value === undefined || value === '' ? '-' : String(value);
@@ -805,26 +1109,21 @@
       const candidates = candidatesResponse.candidates || [];
       panel.innerHTML = `
         <div class="line warn-text">PAPER CANDIDATE / WATCH ONLY / NOT LIVE. Human review required.</div>
-        <div class="list">
-          ${candidates.length ? candidates.slice(0, 5).map(candidate => `
-            <div class="line">
-              <div class="pill-row">
-                ${pill(candidate.status || 'WATCH_ONLY', candidate.status === 'PAPER_CANDIDATE_SIM' || candidate.status === 'PAPER_CANDIDATE_LIVE_DATA' ? 'warn' : candidate.status?.startsWith('PASS') ? 'bad' : 'info')}
-                ${pill(candidate.strategy || 'strategy_unknown', 'info')}
-                ${pill(`${candidate.size_recommendation?.contracts ?? 0}ES`, 'warn')}
-              </div>
-              ${renderKv([
-                ['Entry zone', candidate.entry_zone ? `${fmt(candidate.entry_zone.low)}-${fmt(candidate.entry_zone.high)}` : 'not armed'],
-                ['Stop', fmt(candidate.stop)],
-                ['TP1', fmt(candidate.tp1)],
-                ['TP2 / next level', fmt(candidate.tp2)],
-                ['Risk dollars', fmtMoney(candidate.risk?.risk_dollars)],
-                ['Account gate', candidate.risk?.account_gate || candidate.status],
-                ['Invalidation', candidate.invalidation || '-']
-              ])}
-            </div>
-          `).join('') : '<div class="line muted">No candidates returned</div>'}
-        </div>
+        ${candidates.length ? `
+          <table class="compact-table">
+            <thead><tr><th>Status</th><th>Level</th><th>Entry</th><th>Stop</th><th>TP1</th><th>TP2</th><th>Risk</th></tr></thead>
+            <tbody>${candidates.slice(0, 6).map(candidate => `
+              <tr>
+                <td>${pill(candidate.status || 'WATCH_ONLY', candidate.status === 'PAPER_CANDIDATE_SIM' || candidate.status === 'PAPER_CANDIDATE_LIVE_DATA' ? 'warn' : candidate.status?.startsWith('PASS') || candidate.status === 'LIVE_BLOCKED' ? 'bad' : 'info')}</td>
+                <td class="mono">${esc(fmt(candidate.level_cluster?.price))}</td>
+                <td class="mono">${esc(candidate.entry_zone ? `${fmt(candidate.entry_zone.low)}-${fmt(candidate.entry_zone.high)}` : 'not armed')}</td>
+                <td class="mono">${esc(fmt(candidate.stop))}</td>
+                <td class="mono">${esc(fmt(candidate.tp1))}</td>
+                <td class="mono">${esc(fmt(candidate.tp2))}</td>
+                <td class="mono">${esc(fmtMoney(candidate.risk?.risk_dollars))}</td>
+              </tr>`).join('')}</tbody>
+          </table>
+        ` : '<div class="line muted">No candidates returned</div>'}
       `;
     }
 
@@ -881,6 +1180,325 @@
           ${alerts.length ? alerts.slice(0, 8).map(alert => `<div class="line mono">${esc(alert.message)}\n${esc(alert.detail || '')}</div>`).join('') : '<div class="line muted">No state-transition alerts</div>'}
         </div>
       `;
+    }
+
+    function yScale(values, height, low, high) {
+      const finite = values.map(Number).filter(Number.isFinite);
+      const lo = Number.isFinite(low) ? low : Math.min(...finite);
+      const hi = Number.isFinite(high) ? high : Math.max(...finite);
+      return value => {
+        const n = Number(value);
+        if (!Number.isFinite(n) || !Number.isFinite(lo) || !Number.isFinite(hi) || hi === lo) return height / 2;
+        return height - ((n - lo) / (hi - lo)) * height;
+      };
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function drawEmbeddedChart(chart) {
+      const svg = el('operator-price-chart');
+      if (!svg) return;
+      const width = svg.clientWidth || 980;
+      const height = svg.clientHeight || 330;
+      const left = 44;
+      const right = width - 14;
+      const top = 14;
+      const chartHeight = height - 42;
+      const current = Number(chart?.current_price);
+      const focus = Number.isFinite(current) ? { low: current - 30, high: current + 30 } : null;
+      const candles = (chart?.candles || []).slice(-90);
+      const bracketLines = chart?.bracket_visual?.lines || [];
+      const levels = (chart?.levels || [])
+        .filter(level => Number.isFinite(Number(level.price)))
+        .filter(level => !focus || (Number(level.price) >= focus.low && Number(level.price) <= focus.high))
+        .sort((a, b) => Math.abs(Number(a.price) - current) - Math.abs(Number(b.price) - current))
+        .slice(0, 10)
+        .sort((a, b) => Number(b.price) - Number(a.price));
+      const y = yScale([
+        ...candles.flatMap(candle => [candle.high, candle.low]),
+        ...levels.map(level => level.price),
+        ...bracketLines.map(line => line.price),
+        current,
+      ], chartHeight, focus?.low, focus?.high);
+      const yy = value => clamp(top + y(value), top, top + chartHeight);
+      const step = candles.length ? Math.max(4, (right - left) / candles.length) : 8;
+      const candleWidth = Math.max(3, Math.min(7, step * 0.55));
+      let html = `<rect x="0" y="0" width="${width}" height="${height}" fill="#0d1115"></rect>`;
+      for (let i = 0; i < 5; i += 1) {
+        const gy = top + (chartHeight / 4) * i;
+        html += `<line x1="${left}" x2="${right}" y1="${gy}" y2="${gy}" stroke="#293238"></line>`;
+      }
+      levels.forEach(level => {
+        const yLevel = yy(level.price);
+        const color = level.is_reference_only ? '#87919a' : '#65a8e8';
+        html += `<line x1="${left}" x2="${right}" y1="${yLevel}" y2="${yLevel}" stroke="${color}" stroke-width="1" stroke-dasharray="${level.is_reference_only ? '4 4' : '0'}"></line>`;
+        html += `<text x="${left + 4}" y="${yLevel - 4}" fill="${color}" font-size="11">${esc((level.source_families || []).join('+') || 'level')} ${esc(fmt(Number(level.price)))}</text>`;
+      });
+      candles.forEach((candle, index) => {
+        const x = left + index * step + step / 2;
+        const up = Number(candle.close) >= Number(candle.open);
+        const color = up ? '#55c883' : '#ed6b6b';
+        const openY = yy(candle.open);
+        const closeY = yy(candle.close);
+        html += `<line x1="${x}" x2="${x}" y1="${yy(candle.high)}" y2="${yy(candle.low)}" stroke="${color}"></line>`;
+        html += `<rect x="${x - candleWidth / 2}" y="${Math.min(openY, closeY)}" width="${candleWidth}" height="${Math.max(2, Math.abs(openY - closeY))}" fill="${color}" opacity=".8"></rect>`;
+      });
+      bracketLines.forEach(line => {
+        const price = Number(line.price);
+        const outside = focus && (price < focus.low || price > focus.high);
+        if (outside && line.kind !== 'tp2') return;
+        const color = line.kind === 'stop' ? '#ed6b6b' : line.kind === 'entry' ? '#e8b84c' : '#55c883';
+        const yLine = outside ? (price > focus.high ? top + 10 : top + chartHeight - 6) : yy(price);
+        const offset = line.kind === 'entry' ? 17 : line.kind === 'stop' ? 15 : line.kind === 'tp1' ? -15 : -6;
+        const labelY = outside ? yLine + 12 : clamp(yLine + offset, top + 12, top + chartHeight - 6);
+        html += `<line x1="${left}" x2="${right}" y1="${yLine}" y2="${yLine}" stroke="${color}" stroke-width="2" stroke-dasharray="${outside ? '5 4' : '0'}"></line>`;
+        html += `<text x="${right - 172}" y="${labelY}" fill="${color}" font-size="12">${esc(outside ? `${line.label} outside focus` : line.label)} ${esc(fmt(price))}</text>`;
+      });
+      if (Number.isFinite(current)) {
+        html += `<line x1="${left}" x2="${right}" y1="${yy(current)}" y2="${yy(current)}" stroke="#c1c7cd" stroke-width="1.5" stroke-dasharray="2 4"></line>`;
+        html += `<text x="${right - 172}" y="${yy(current) + 15}" fill="#c1c7cd" font-size="12">Replay ${esc(fmt(current))}</text>`;
+      }
+      svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      svg.innerHTML = html;
+      el('operator-chart-focus').textContent = `${levels.length} nearby levels shown; ${(chart?.levels || []).length - levels.length} hidden`;
+    }
+
+    function drawDemoTradeWindowChart(chart, plan) {
+      const svg = el('demo-trade-window-chart');
+      if (!svg) return;
+      const width = svg.clientWidth || 1100;
+      const height = svg.clientHeight || 260;
+      const left = 52;
+      const right = width - 18;
+      const top = 16;
+      const chartHeight = height - 52;
+      const candles = (chart?.candles || []).slice(-80);
+      const current = firstFinite(chart?.current_price, chart?.replay?.current_candle?.close);
+      const focus = current != null ? { low: current - 30, high: current + 30 } : null;
+      const lines = plan?.bracket_visual?.lines || [];
+      const levels = (chart?.levels || [])
+        .filter(level => Number.isFinite(Number(level.price)))
+        .filter(level => !focus || (Number(level.price) >= focus.low && Number(level.price) <= focus.high))
+        .sort((a, b) => Math.abs(Number(a.price) - current) - Math.abs(Number(b.price) - current))
+        .slice(0, 8)
+        .sort((a, b) => Number(b.price) - Number(a.price));
+      const y = yScale([
+        ...candles.flatMap(candle => [candle.high, candle.low]),
+        ...levels.map(level => level.price),
+        ...lines.map(line => line.price),
+        current,
+      ], chartHeight, focus?.low, focus?.high);
+      const yy = value => clamp(top + y(value), top, top + chartHeight);
+      const step = candles.length ? Math.max(4, (right - left) / candles.length) : 8;
+      const candleWidth = Math.max(3, Math.min(7, step * 0.55));
+      let html = `<rect x="0" y="0" width="${width}" height="${height}" fill="#0a0f13"></rect>`;
+      for (let i = 0; i < 5; i += 1) {
+        const gy = top + (chartHeight / 4) * i;
+        html += `<line x1="${left}" x2="${right}" y1="${gy}" y2="${gy}" stroke="#243039"></line>`;
+      }
+      candles.forEach((candle, index) => {
+        const x = left + index * step + step / 2;
+        const up = Number(candle.close) >= Number(candle.open);
+        const color = up ? '#55c883' : '#ed6b6b';
+        const openY = yy(candle.open);
+        const closeY = yy(candle.close);
+        html += `<line x1="${x}" x2="${x}" y1="${yy(candle.high)}" y2="${yy(candle.low)}" stroke="${color}"></line>`;
+        html += `<rect x="${x - candleWidth / 2}" y="${Math.min(openY, closeY)}" width="${candleWidth}" height="${Math.max(2, Math.abs(openY - closeY))}" fill="${color}" opacity=".78"></rect>`;
+      });
+      levels.forEach(level => {
+        const color = level.is_reference_only ? '#87919a' : '#65a8e8';
+        const yLevel = yy(level.price);
+        html += `<line x1="${left}" x2="${right}" y1="${yLevel}" y2="${yLevel}" stroke="${color}" stroke-width="1" stroke-dasharray="${level.is_reference_only ? '4 4' : '0'}"></line>`;
+        html += `<text x="${left + 4}" y="${yLevel - 4}" fill="${color}" font-size="11">${esc((level.source_families || []).join('+') || 'level')} ${esc(fmt(Number(level.price)))}</text>`;
+      });
+      lines.forEach(line => {
+        const price = firstFinite(line.price);
+        if (price == null) return;
+        const outside = focus && (price < focus.low || price > focus.high);
+        const color = line.kind === 'stop' ? '#ed6b6b' : line.kind === 'entry' ? '#e8b84c' : '#55c883';
+        const yLine = outside ? (price > focus.high ? top + 12 : top + chartHeight - 6) : yy(price);
+        const labelY = outside ? yLine + 12 : clamp(yLine + (line.kind === 'stop' ? 15 : line.kind === 'entry' ? 17 : -8), top + 12, top + chartHeight - 6);
+        html += `<line x1="${left}" x2="${right}" y1="${yLine}" y2="${yLine}" stroke="${color}" stroke-width="2" stroke-dasharray="${outside ? '5 4' : '0'}"></line>`;
+        html += `<text x="${right - 178}" y="${labelY}" fill="${color}" font-size="12">${esc(outside ? `${line.label} outside focus` : line.label)} ${esc(fmt(price))}</text>`;
+      });
+      if (current != null) {
+        html += `<line x1="${left}" x2="${right}" y1="${yy(current)}" y2="${yy(current)}" stroke="#c1c7cd" stroke-width="1.5" stroke-dasharray="2 4"></line>`;
+        html += `<text x="${right - 178}" y="${yy(current) + 15}" fill="#c1c7cd" font-size="12">Replay ${esc(fmt(current))}</text>`;
+      }
+      svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      svg.innerHTML = html;
+    }
+
+    function renderEmbeddedCandidateTable(chart) {
+      const candidates = (chart?.candidates || []).slice(0, 4);
+      el('operator-candidate-table').innerHTML = candidates.length ? `
+        <table class="compact-table">
+          <thead><tr><th>Status</th><th>Level</th><th>Entry</th><th>Stop</th><th>TP1/TP2</th><th>Reason</th></tr></thead>
+          <tbody>${candidates.map(candidate => `
+            <tr>
+              <td>${pill(candidate.status || 'UNKNOWN', candidate.status === 'LIVE_BLOCKED' || String(candidate.status || '').startsWith('PASS') ? 'bad' : 'warn')}</td>
+              <td class="mono">${esc(fmt(candidate.level_cluster?.price))}</td>
+              <td class="mono">${esc(candidate.entry_zone ? `${fmt(candidate.entry_zone.low)}-${fmt(candidate.entry_zone.high)}` : 'not armed')}</td>
+              <td class="mono">${esc(fmt(candidate.stop))}</td>
+              <td class="mono">${esc(`${fmt(candidate.tp1)} / ${fmt(candidate.tp2)}`)}</td>
+              <td>${esc(candidate.size_plan?.reason || candidate.add_rule || 'watch only')}</td>
+            </tr>`).join('')}</tbody>
+        </table>
+      ` : '<div class="line muted">No replay candidates returned.</div>';
+    }
+
+    function renderHeatmapProof(proof) {
+      const fixtures = proof?.fixtures || [];
+      el('operator-heatmap-proof').innerHTML = fixtures.length ? `
+        <div class="heatmap-proof-grid">
+          ${fixtures.slice(0, 2).map(fixture => `
+            <div class="heatmap-proof-card" data-heatmap-fixture="${esc(fixture.id)}">
+              <img src="${esc(fixture.image_route)}" alt="${esc(fixture.label)}">
+              <div class="proof-body">
+                <div class="pill-row">${pill('image pasted fixture', 'warn')}${pill('read-only ack', 'info')}</div>
+                <strong>${esc(fixture.label)}</strong>
+                <div class="mono">${esc(fixture.ack)}</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      ` : '<div class="line bad-text">No heatmap proof fixtures available.</div>';
+    }
+
+    function firstFinite(...values) {
+      for (const value of values) {
+        if (value === null || value === undefined || value === '') continue;
+        const n = Number(value);
+        if (Number.isFinite(n)) return n;
+      }
+      return null;
+    }
+
+    function buildDemoTradePlan(chart) {
+      const row = chart?.replay_example?.row || {};
+      const candidate = (chart?.candidates || []).find(item => item.bracket_visual || item.bracket) || (chart?.candidates || [])[0] || {};
+      const bracket = candidate.bracket || {};
+      const entry = firstFinite(row.entry_price, bracket.entry, candidate.entry_zone?.high);
+      const stop = firstFinite(row.stop_price, bracket.stop, candidate.stop);
+      const tp1 = firstFinite(row.tp1_plus_2, bracket.tp1, entry != null ? entry + 2 : null);
+      const tp2 = firstFinite(row.next_cluster_target, row.second_cluster_target, bracket.tp2, row.tp_plus_3);
+      const level = firstFinite(row.first_reclaimed_level, row.late_reclaim_level, candidate.level_cluster?.price);
+      const riskPoints = entry != null && stop != null ? Math.max(0, entry - stop) : null;
+      const riskDollars = riskPoints != null ? riskPoints * 50 : null;
+      return {
+        status: 'PAPER_CANDIDATE_SIM',
+        strategy: 'ladder_reclaim_bobby_mancini_staged_v1',
+        source_combo: row.source_combo || candidate.source_combo || 'bobby+mancini',
+        setup_time: row.timestamp_et || row.entry_timestamp_et || chart?.replay?.replay_timestamp || '-',
+        level,
+        entry,
+        stop,
+        tp1,
+        tp2,
+        size: '1ES starter',
+        add_rule: 'Add 1ES only after retest hold and human confirmation.',
+        invalidation: level != null ? `Lose reclaimed level ${fmt(level)} or stop ${fmt(stop)}` : 'Lose reclaim structure or stop',
+        reason: 'First reclaimed Bobby+Mancini cluster from historical local/replay candles.',
+        risk_points: riskPoints,
+        risk_dollars: riskDollars,
+        can_execute_live: false,
+        bracket_visual: {
+          kind: 'demo_replay_bracket_plan',
+          can_submit: false,
+          submitted: false,
+          live_enabled: false,
+          lines: [
+            { kind: 'entry', label: 'Entry', price: entry },
+            { kind: 'stop', label: 'Stop', price: stop },
+            { kind: 'tp1', label: 'TP1', price: tp1 },
+            { kind: 'tp2', label: 'TP2', price: tp2 },
+          ].filter(line => Number.isFinite(line.price)),
+        },
+      };
+    }
+
+    function renderDemoTradePlan(chart, sourceHealth, heatmapProof) {
+      const panel = el('client-demo-showcase');
+      if (!panel) return;
+      if (!clientDemoMode) {
+        panel.hidden = true;
+        return;
+      }
+      panel.hidden = false;
+      const plan = chart?.demo_trade_plan || buildDemoTradePlan(chart);
+      const liveBlocked = sourceHealth?.data_mode?.can_generate_live_candidate !== true;
+      drawDemoTradeWindowChart(chart, plan);
+      const fixture = (heatmapProof?.fixtures || [])[0] || {};
+      const levels = (fixture.acknowledged_levels || []).slice(0, 8).map(level => `${level.ticker} ${level.price} ${level.role}`).join('; ');
+      const windowSummary = el('demo-trade-window-summary');
+      if (windowSummary) {
+        windowSummary.innerHTML = `
+          <div class="pill-row">
+            ${pill('PAPER_CANDIDATE_SIM', 'warn')}
+            ${pill('local/replay candles', 'info')}
+            ${pill('can_execute_live: false', 'bad')}
+            ${pill('no submit path', 'warn')}
+          </div>
+          ${renderKv([
+            ['Level', fmt(plan.level)],
+            ['Entry', fmt(plan.entry)],
+            ['Stop / exit', fmt(plan.stop)],
+            ['TP1 / TP2', `${fmt(plan.tp1)} / ${fmt(plan.tp2)}`],
+            ['Size', plan.size],
+            ['Risk', plan.risk_dollars != null ? `${fmt(plan.risk_points)} pts / ${fmtMoney(plan.risk_dollars)}` : 'unknown'],
+            ['Add rule', 'Human-confirmed retest hold only'],
+            ['Pine script', 'tradingview/luke-level-reclaim-watch.pine']
+          ])}
+          <div class="demo-katbot-ack">
+            <strong>Katbot / heatmap input acknowledgment</strong>
+            <div class="pill-row">${pill('heatmap_gex family', 'info')}${pill('local fixture paste', 'warn')}${pill('read-only ack', 'info')}</div>
+            <div class="mono">${esc(fixture.ack || 'No heatmap fixture acknowledged')}</div>
+            <div class="muted">${esc(levels || 'No levels extracted')}</div>
+          </div>
+          <div class="line warn-text">This window is visual only: replay/dev state, no live arming, no broker route, no execution control.</div>
+        `;
+      }
+      el('demo-trade-body').innerHTML = `
+        <div class="pill-row">
+          ${pill(plan.status, 'warn')}
+          ${pill('local/replay', 'info')}
+          ${pill('can_execute_live: false', 'bad')}
+          ${pill(liveBlocked ? 'live arming disabled' : 'unexpected live mode', liveBlocked ? 'warn' : 'bad')}
+        </div>
+        <div class="demo-plan-grid">
+          <div class="demo-metric"><div class="demo-metric-label">Level</div><div class="demo-metric-value">${esc(fmt(plan.level))}</div></div>
+          <div class="demo-metric"><div class="demo-metric-label">Entry</div><div class="demo-metric-value">${esc(fmt(plan.entry))}</div></div>
+          <div class="demo-metric"><div class="demo-metric-label">Stop / Exit</div><div class="demo-metric-value">${esc(fmt(plan.stop))}</div></div>
+          <div class="demo-metric"><div class="demo-metric-label">TP1 / TP2</div><div class="demo-metric-value">${esc(`${fmt(plan.tp1)} / ${fmt(plan.tp2)}`)}</div></div>
+        </div>
+        ${renderKv([
+          ['Strategy', plan.strategy],
+          ['Source combo', plan.source_combo],
+          ['Setup time', plan.setup_time],
+          ['Size plan', plan.size],
+          ['Risk', plan.risk_dollars != null ? `${fmt(plan.risk_points)} pts / ${fmtMoney(plan.risk_dollars)}` : 'unknown'],
+          ['Add rule', plan.add_rule],
+          ['Invalidation', plan.invalidation],
+          ['Reason', plan.reason]
+        ])}
+        <div class="line warn-text">Hypothetical replay/paper plan only. It is not live, not submitted, and cannot execute from this dashboard.</div>
+      `;
+    }
+
+    function renderEmbeddedTradingWindow(chart, sourceHealth, heatmapProof) {
+      const demoPlan = clientDemoMode ? buildDemoTradePlan(chart) : null;
+      const chartForRender = demoPlan
+        ? { ...chart, demo_trade_plan: demoPlan, bracket_visual: demoPlan.bracket_visual }
+        : chart;
+      drawEmbeddedChart(chartForRender);
+      renderEmbeddedCandidateTable(chartForRender);
+      renderHeatmapProof(heatmapProof);
+      renderDemoTradePlan(chartForRender, sourceHealth, heatmapProof);
+      if (sourceHealth?.data_mode?.can_generate_live_candidate === true) {
+        el('operator-chart-focus').textContent = 'Unexpected live candidate mode';
+      }
     }
 
     function renderDataHealth(levelState, candleStatus) {
@@ -1002,10 +1620,18 @@
       `;
     }
 
+    function formatMarketBand(market, marketState) {
+      if (!market) return 'UNKNOWN';
+      const session = market.session || 'unknown';
+      if (session.includes('after')) return `AFTER-HOURS - ${session}`;
+      if (market.open) return `OPEN - ${session}`;
+      return `CLOSED - ${marketState?.minutes_until_open ?? '?'}m`;
+    }
+
     function renderTopBand(status) {
       const market = status?.market_state?.market;
       const risk = status?.risk_status;
-      el('band-market').textContent = market?.open ? `OPEN - ${market.session}` : `CLOSED - ${status?.market_state?.minutes_until_open ?? '?'}m`;
+      el('band-market').textContent = formatMarketBand(market, status?.market_state);
       el('band-system').textContent = status?.ok ? 'OK' : 'BLOCKED';
       el('band-freshness').textContent = freshnessText(status?.freshness);
       el('band-risk').textContent = risk?.ok ? 'OK' : 'BLOCKED';
@@ -1018,7 +1644,7 @@
 
     async function refresh() {
       el('updated-at').textContent = 'Refreshing';
-      const [status, readiness, decision, confluence, fakeBreakdownWatchlist, ladderReclaimWatchlist, levelState, tradeCandidates, tradingAlerts, candleStatus, autonomousStatus] = await Promise.all([
+      const [status, readiness, decision, confluence, fakeBreakdownWatchlist, ladderReclaimWatchlist, levelState, tradeCandidates, tradingAlerts, candleStatus, tradingChartData, tradingSourceHealth, heatmapProof, autonomousStatus] = await Promise.all([
         optionalJson(endpoints.status),
         optionalJson(endpoints.readiness),
         optionalJson(endpoints.decision),
@@ -1029,6 +1655,9 @@
         optionalJson(endpoints.tradeCandidates),
         optionalJson(endpoints.tradingAlerts),
         optionalJson(endpoints.candleStatus),
+        optionalJson(endpoints.tradingChartData),
+        optionalJson(endpoints.tradingSourceHealth),
+        optionalJson(endpoints.heatmapProof),
         optionalJson(endpoints.autonomousStatus)
       ]);
       renderTopBand(status);
@@ -1040,6 +1669,7 @@
       renderTradeCandidates(tradeCandidates);
       renderBracketVisual(tradeCandidates, levelState);
       renderTradingAlerts(tradingAlerts);
+      renderEmbeddedTradingWindow(tradingChartData, tradingSourceHealth, heatmapProof);
       renderDataHealth(levelState, candleStatus);
       renderIngestion(status);
       renderAutonomous(readiness, autonomousStatus, status);

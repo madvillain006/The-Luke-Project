@@ -134,6 +134,14 @@
       flex-direction: column;
     }
 
+    .trading-panel.is-open {
+      min-height: min(760px, calc(100vh - 58px));
+    }
+
+    .trading-panel.is-open.is-window-mode {
+      min-height: min(1180px, calc(100vh - 58px));
+    }
+
     .trading-panel-top {
       min-height: 38px;
       padding: 9px 12px;
@@ -634,13 +642,15 @@
 
       <section class="trading-panel" id="trading-panel" aria-hidden="true" aria-label="Luke trading chat">
         <div class="trading-panel-top">
-          <span>Trading (Analysis) / Luke Chat</span>
+          <span id="trading-panel-title">Trading (Analysis) / Luke Chat</span>
           <div class="trading-panel-actions">
-            <a class="panel-action" href="/trading" title="Open the trading chat as a full page">FULL</a>
+            <button class="panel-action" id="trading-chat-view" type="button" title="Show the trading chat in this panel">CHAT</button>
+            <button class="panel-action" id="trading-window-view" type="button" title="Show the replay trading window in this panel">WINDOW</button>
+            <a class="panel-action" id="trading-full-link" href="/trading" title="Open this trading view as a full page">FULL</a>
             <button class="panel-action" id="trading-close" type="button" title="Return to the dashboard trading tile">BACK</button>
           </div>
         </div>
-        <iframe class="trading-frame" id="trading-frame" title="Luke trading chat" data-src="/trading?embed=1"></iframe>
+        <iframe class="trading-frame" id="trading-frame" title="Luke clicked trading chat" data-src="/trading?embed=1"></iframe>
       </section>
     </section>
 
@@ -767,6 +777,31 @@
       } catch {}
     }
 
+    function setTradingPanelMode(mode) {
+      const panel = $('trading-panel');
+      const frame = $('trading-frame');
+      const title = $('trading-panel-title');
+      const full = $('trading-full-link');
+      if (!panel || !frame) return;
+      const windowMode = mode === 'window';
+      const src = windowMode ? '/trading-window?embed=shell&mode=replay&example=positive' : '/trading?embed=1';
+      panel.classList.toggle('is-window-mode', windowMode);
+      panel.setAttribute('aria-label', windowMode ? 'Luke trading window' : 'Luke trading chat');
+      if (title) title.textContent = windowMode ? 'Trading (Analysis) / Live-Shaped Trading Window' : 'Trading (Analysis) / Luke Chat';
+      if (full) {
+        full.href = windowMode ? '/trading-window?mode=replay&example=positive' : '/trading';
+        full.title = windowMode ? 'Open the trading window as a full page' : 'Open the trading chat as a full page';
+      }
+      frame.title = windowMode ? 'Luke clicked trading window' : 'Luke clicked trading chat';
+      frame.dataset.currentMode = mode;
+      if (frame.getAttribute('src') !== src) {
+        frame.setAttribute('src', src);
+        if (!windowMode) frame.addEventListener('load', focusTradingInput, { once: true });
+      } else if (!windowMode) {
+        focusTradingInput();
+      }
+    }
+
     function focusSystemInput() {
       const frame = $('system-frame');
       try {
@@ -782,12 +817,8 @@
       launch.classList.add('is-hidden');
       panel.classList.add('is-open');
       panel.setAttribute('aria-hidden', 'false');
-      if (!frame.getAttribute('src')) {
-        frame.setAttribute('src', frame.dataset.src || '/trading?embed=1');
-        frame.addEventListener('load', focusTradingInput, { once: true });
-      } else {
-        focusTradingInput();
-      }
+      if (!frame.getAttribute('src')) frame.setAttribute('src', frame.dataset.src || '/trading?embed=1');
+      setTradingPanelMode('chat');
     }
 
     function closeTradingPanel() {
@@ -885,6 +916,8 @@
     });
 
     $('trading-close')?.addEventListener('click', closeTradingPanel);
+    $('trading-chat-view')?.addEventListener('click', () => setTradingPanelMode('chat'));
+    $('trading-window-view')?.addEventListener('click', () => setTradingPanelMode('window'));
     $('system-close')?.addEventListener('click', closeSystemPanel);
 
     refresh();

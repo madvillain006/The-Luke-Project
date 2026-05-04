@@ -95,7 +95,7 @@
       align-content: start;
     }
     .chart-shell {
-      height: 560px;
+      height: 430px;
       position: relative;
     }
     svg#price-chart {
@@ -155,6 +155,20 @@
       display: grid;
       gap: 8px;
     }
+    .compact-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .compact-table th,
+    .compact-table td {
+      padding: 7px 6px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+    }
+    .compact-table th { color: var(--muted); font-weight: 650; }
+    .compact-table .reason-cell { max-width: 260px; }
     .item {
       border: 1px solid var(--line);
       background: var(--panel-2);
@@ -205,6 +219,10 @@
       color: var(--muted);
       font-size: 12px;
     }
+    .chart-meta {
+      margin-left: auto;
+      color: var(--warn);
+    }
     .swatch {
       display: inline-block;
       width: 16px;
@@ -225,6 +243,45 @@
       background: #181714;
       color: var(--warn);
       font-size: 12px;
+    }
+    .heatmap-proof-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .heatmap-proof-card {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      display: grid;
+      gap: 7px;
+      background: #10171d;
+      min-width: 0;
+    }
+    .heatmap-proof-card img {
+      width: 100%;
+      height: 96px;
+      object-fit: cover;
+      object-position: left top;
+      border-radius: 4px;
+      background: #0a0f13;
+    }
+    .heatmap-proof-card .ack {
+      color: var(--text);
+      font-size: 11px;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+    .script-line {
+      display: grid;
+      gap: 8px;
+    }
+    @media (max-width: 1320px) {
+      main { grid-template-columns: 1fr; }
+      .chart-shell { height: 440px; }
+    }
+    @media (max-width: 760px) {
+      .heatmap-proof-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 980px) {
       main { grid-template-columns: 1fr; }
@@ -264,6 +321,9 @@
             <button data-example="positive" class="active" type="button">Positive Replay</button>
             <button data-example="negative" type="button">Negative Replay</button>
             <button data-example="staged" type="button">Staged Add Replay</button>
+            <button data-range="tight" class="active" type="button">Tight Chart</button>
+            <button data-range="standard" type="button">Mid Chart</button>
+            <button data-range="full" type="button">All Levels</button>
             <button data-refresh="true" type="button">Refresh</button>
           </div>
         </div>
@@ -273,6 +333,7 @@
             <span><span class="swatch entry"></span>Entry plan</span>
             <span><span class="swatch stop"></span>Stop plan</span>
             <span><span class="swatch tp"></span>TP lines</span>
+            <span class="chart-meta" id="chart-focus-summary">Focus: loading</span>
           </div>
           <div class="chart-shell">
             <svg id="price-chart" role="img" aria-label="Replay candle chart with level and bracket lines"></svg>
@@ -325,6 +386,39 @@
         </div>
       </section>
 
+      <section id="heatmap-proof-panel">
+        <div class="section-head">
+          <h2>Katbot / Heatmap Input</h2>
+          <span class="pill info">heatmap_gex ack</span>
+        </div>
+        <div class="section-body">
+          <div class="warning-band" style="border:1px solid var(--line); border-radius:6px; margin-bottom:10px;">
+            <div>Local heatmap image fixtures pasted through the Bobby/Katbot-style path. Parsed as heatmap_gex, read-only, no live arming.</div>
+          </div>
+          <div class="heatmap-proof-grid" id="heatmap-proof-grid"></div>
+        </div>
+      </section>
+
+      <section id="pine-watch-panel">
+        <div class="section-head">
+          <h2>Luke Level Reclaim Watch Script</h2>
+          <span class="pill warn">watch script only</span>
+        </div>
+        <div class="section-body script-line">
+          <div class="warning-band" style="border:1px solid var(--line); border-radius:6px;">
+            <div>Current Pine indicator/watchlist bridge only. No strategy declaration and no order submission.</div>
+          </div>
+          <div class="status-strip">
+            <span class="pill info">WATCH</span>
+            <span class="pill info">ARMED</span>
+            <span class="pill warn">LONG CANDIDATE</span>
+            <span class="pill bad">BLOCKED</span>
+          </div>
+          <div class="mono">tradingview/luke-level-reclaim-watch.pine</div>
+          <div class="subhead">Visual watch signals only; Luke remains the source of bracket-plan truth.</div>
+        </div>
+      </section>
+
       <section id="alerts-panel">
         <div class="section-head">
           <h2>Alerts Feed</h2>
@@ -361,10 +455,23 @@
   </main>
 
   <script>
-    const state = { example: 'positive', chart: null, sourceHealth: null };
+    const state = { example: 'positive', chartRange: 'tight', chart: null, sourceHealth: null };
+    const chartRanges = {
+      tight: { label: 'Tight', points: 30 },
+      standard: { label: 'Mid', points: 55 },
+      full: { label: 'All', points: null },
+    };
     const qs = (sel) => document.querySelector(sel);
     const esc = (value) => String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
-    const fmt = (n) => Number.isFinite(Number(n)) ? Number(n).toFixed(2) : 'n/a';
+    const finiteNumber = (value) => {
+      if (value === null || value === undefined || value === '') return null;
+      const n = Number(value);
+      return Number.isFinite(n) ? n : null;
+    };
+    const fmt = (n) => {
+      const value = finiteNumber(n);
+      return value === null ? 'n/a' : value.toFixed(2);
+    };
     const statusClass = (value) => /PASS|BLOCK|INVALID|UNKNOWN|STALE/i.test(value || '') ? 'bad' : /PAPER|REPLAY|ARMED|WATCH/i.test(value || '') ? 'warn' : 'info';
 
     function apiUrl(path) {
@@ -376,25 +483,37 @@
       return response.json();
     }
 
+    async function getPlainJson(path) {
+      const response = await fetch(path, { method: 'GET' });
+      return response.json();
+    }
+
     function setActiveButtons() {
       document.querySelectorAll('#replay-selector button[data-example]').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.example === state.example);
       });
+      document.querySelectorAll('#replay-selector button[data-range]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.range === state.chartRange);
+      });
     }
 
-    function yScale(values, height) {
-      const finite = values.map(Number).filter(Number.isFinite);
+    function yScale(values, height, domain = null) {
+      const finite = values.map(finiteNumber).filter(value => value !== null);
       if (!finite.length) return () => height / 2;
-      const min = Math.min(...finite);
-      const max = Math.max(...finite);
-      const pad = Math.max(2, (max - min) * 0.12);
+      const min = domain ? domain.low : Math.min(...finite);
+      const max = domain ? domain.high : Math.max(...finite);
+      const pad = domain ? 0 : Math.max(2, (max - min) * 0.12);
       const lo = min - pad;
       const hi = max + pad;
       return (value) => {
-        const n = Number(value);
-        if (!Number.isFinite(n) || hi === lo) return height / 2;
+        const n = finiteNumber(value);
+        if (n === null || hi === lo) return height / 2;
         return height - ((n - lo) / (hi - lo)) * height;
       };
+    }
+
+    function chartY(y, top, chartHeight) {
+      return Math.max(top, Math.min(top + chartHeight, top + y));
     }
 
     function drawChart(data) {
@@ -403,29 +522,36 @@
       const width = svg.clientWidth || 900;
       const height = svg.clientHeight || 520;
       const bracket = data.bracket_visual || null;
-      const candles = (data.candles || []).slice(-120);
-      const current = Number(data.current_price);
-      const bracketPrices = (bracket?.lines || []).map(line => Number(line.price)).filter(Number.isFinite);
-      const allLevels = (data.levels || []).filter(level => Number.isFinite(Number(level.price)));
+      const candles = (data.candles || []).slice(-100);
+      const current = finiteNumber(data.current_price);
+      const bracketPrices = (bracket?.lines || []).map(line => finiteNumber(line.price)).filter(value => value !== null);
+      const allLevels = (data.levels || []).filter(level => finiteNumber(level.price) !== null);
+      const range = chartRanges[state.chartRange] || chartRanges.tight;
+      const domain = current !== null && Number.isFinite(range.points)
+        ? { low: current - range.points, high: current + range.points }
+        : null;
       const levels = allLevels
         .filter(level => {
-          if (!Number.isFinite(current)) return true;
-          const price = Number(level.price);
-          return Math.abs(price - current) <= 120 || bracketPrices.some(bracketPrice => Math.abs(bracketPrice - price) <= 1.5);
+          if (current === null) return true;
+          const price = finiteNumber(level.price);
+          if (price === null) return false;
+          if (domain) return price >= domain.low && price <= domain.high;
+          return Math.abs(price - current) <= 140 || bracketPrices.some(bracketPrice => Math.abs(bracketPrice - price) <= 1.5);
         })
         .sort((a, b) => {
-          if (!Number.isFinite(current)) return Number(b.price) - Number(a.price);
-          return Math.abs(Number(a.price) - current) - Math.abs(Number(b.price) - current);
+          if (current === null) return finiteNumber(b.price) - finiteNumber(a.price);
+          return Math.abs(finiteNumber(a.price) - current) - Math.abs(finiteNumber(b.price) - current);
         })
-        .slice(0, 22)
-        .sort((a, b) => Number(b.price) - Number(a.price));
+        .slice(0, domain ? 12 : 22)
+        .sort((a, b) => finiteNumber(b.price) - finiteNumber(a.price));
+      const hiddenLevels = Math.max(0, allLevels.length - levels.length);
       const linePrices = [
         ...candles.flatMap(c => [c.high, c.low]),
         ...levels.map(l => l.price),
-        ...bracketPrices,
-        data.current_price,
+        ...(domain ? bracketPrices.filter(price => price >= domain.low && price <= domain.high) : bracketPrices),
+        current,
       ];
-      const y = yScale(linePrices, height - 36);
+      const y = yScale(linePrices, height - 36, domain);
       const left = 46;
       const right = width - 12;
       const top = 12;
@@ -441,7 +567,7 @@
       else empty.style.display = 'none';
       const labelYs = [];
       levels.forEach(level => {
-        const yy = top + y(level.price);
+        const yy = chartY(y(level.price), top, chartHeight);
         const color = level.is_reference_only ? '#7b8790' : '#58a6ff';
         html += `<line x1="${left}" x2="${right}" y1="${yy}" y2="${yy}" stroke="${color}" stroke-width="1" stroke-dasharray="${level.is_reference_only ? '4 4' : '0'}"></line>`;
         if (!labelYs.some(existing => Math.abs(existing - yy) < 14)) {
@@ -451,35 +577,42 @@
       });
       candles.forEach((candle, index) => {
         const x = left + index * step + step / 2;
-        const openY = top + y(candle.open);
-        const closeY = top + y(candle.close);
-        const highY = top + y(candle.high);
-        const lowY = top + y(candle.low);
+        const openY = chartY(y(candle.open), top, chartHeight);
+        const closeY = chartY(y(candle.close), top, chartHeight);
+        const highY = chartY(y(candle.high), top, chartHeight);
+        const lowY = chartY(y(candle.low), top, chartHeight);
         const up = Number(candle.close) >= Number(candle.open);
         const color = up ? '#40c486' : '#ef6a65';
         html += `<line x1="${x}" x2="${x}" y1="${highY}" y2="${lowY}" stroke="${color}" stroke-width="1"></line>`;
         html += `<rect x="${x - candleWidth / 2}" y="${Math.min(openY, closeY)}" width="${candleWidth}" height="${Math.max(2, Math.abs(openY - closeY))}" fill="${color}" opacity=".78"></rect>`;
       });
       (bracket?.lines || []).forEach(line => {
-        const yy = top + y(line.price);
+        const price = finiteNumber(line.price);
+        if (price === null) return;
+        const outside = domain && (price < domain.low || price > domain.high);
+        if (outside && line.kind !== 'tp2') return;
+        const yy = outside ? (price > domain.high ? top + 14 : top + chartHeight - 6) : chartY(y(price), top, chartHeight);
         const color = line.kind === 'stop' ? 'var(--stop)' : line.kind === 'entry' ? 'var(--entry)' : 'var(--tp)';
-        html += `<line x1="${left}" x2="${right}" y1="${yy}" y2="${yy}" stroke="${color}" stroke-width="2"></line>`;
-        html += `<text x="${right - 150}" y="${yy - 5}" fill="${color}" font-size="12">${esc(line.label)} ${fmt(line.price)}</text>`;
+        const offset = line.kind === 'entry' ? 17 : line.kind === 'stop' ? 15 : line.kind === 'tp1' ? -15 : -6;
+        const labelY = outside ? yy + 12 : Math.max(top + 12, Math.min(top + chartHeight - 6, yy + offset));
+        html += `<line x1="${left}" x2="${right}" y1="${yy}" y2="${yy}" stroke="${color}" stroke-width="2" stroke-dasharray="${outside ? '5 4' : '0'}"></line>`;
+        html += `<text x="${right - 170}" y="${labelY}" fill="${color}" font-size="12">${esc(outside ? `${line.label} outside focus` : line.label)} ${fmt(line.price)}</text>`;
       });
-      if (Number.isFinite(Number(data.current_price))) {
-        const yy = top + y(data.current_price);
+      if (current !== null) {
+        const yy = chartY(y(current), top, chartHeight);
         html += `<line x1="${left}" x2="${right}" y1="${yy}" y2="${yy}" stroke="#d8e4ed" stroke-width="1.5" stroke-dasharray="2 4"></line>`;
-        html += `<text x="${right - 160}" y="${yy + 15}" fill="#d8e4ed" font-size="12">Current/replay ${fmt(data.current_price)}</text>`;
+        html += `<text x="${right - 160}" y="${yy + 15}" fill="#d8e4ed" font-size="12">Current/replay ${fmt(current)}</text>`;
       }
       (data.markers || []).forEach(marker => {
         const candleIndex = candles.findIndex(c => c.timestamp === marker.timestamp);
         if (candleIndex < 0) return;
         const x = left + candleIndex * step + step / 2;
-        const yy = top + y(marker.price);
+        const yy = chartY(y(marker.price), top, chartHeight);
         html += `<circle cx="${x}" cy="${yy}" r="4" fill="${marker.kind === 'flush' ? '#ef6a65' : '#f0b94a'}"></circle>`;
       });
       svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
       svg.innerHTML = html;
+      qs('#chart-focus-summary').textContent = `${range.label} focus${range.points ? ` +/-${range.points} pts` : ''}; ${hiddenLevels} distant levels hidden`;
     }
 
     function renderClusters(data) {
@@ -500,21 +633,25 @@
 
     function renderCandidates(data) {
       const candidates = (data.candidates || []).slice(0, 5);
-      qs('#candidate-queue').innerHTML = candidates.length ? candidates.map(candidate => `
-        <div class="item">
-          <div class="item-row">
-            <strong>${esc(candidate.strategy)}</strong>
-            <span class="pill ${statusClass(candidate.status)}">${esc(candidate.status)}</span>
-          </div>
-          <div class="grid-2">
-            <div class="metric"><div class="label">Entry</div><div class="value mono">${fmt(candidate.entry_zone?.low)}-${fmt(candidate.entry_zone?.high)}</div></div>
-            <div class="metric"><div class="label">Stop</div><div class="value mono">${fmt(candidate.stop)}</div></div>
-            <div class="metric"><div class="label">TP1 / TP2</div><div class="value mono">${fmt(candidate.tp1)} / ${fmt(candidate.tp2)}</div></div>
-            <div class="metric"><div class="label">Risk</div><div class="value mono">$${fmt(candidate.risk?.risk_dollars)}</div></div>
-          </div>
-          <p class="subhead">${esc(candidate.status === 'LIVE_BLOCKED' ? (candidate.size_plan?.reason || 'blocked; bracket retained for visualization only') : (candidate.add_rule || 'Waiting for confirmed state.'))}</p>
-        </div>
-      `).join('') : '<div class="item">No candidate. Watch-only until valid candles, levels, and risk gates align.</div>';
+      qs('#candidate-queue').innerHTML = candidates.length ? `
+        <table class="compact-table">
+          <thead><tr><th>Status</th><th>Level</th><th>Entry</th><th>Stop</th><th>TP1</th><th>TP2</th><th>Risk</th><th>Reason</th></tr></thead>
+          <tbody>
+            ${candidates.map(candidate => `
+              <tr>
+                <td><span class="pill ${statusClass(candidate.status)}">${esc(candidate.status)}</span></td>
+                <td class="mono">${esc(fmt(candidate.level_cluster?.price))}</td>
+                <td class="mono">${fmt(candidate.entry_zone?.low)}-${fmt(candidate.entry_zone?.high)}</td>
+                <td class="mono">${fmt(candidate.stop)}</td>
+                <td class="mono">${fmt(candidate.tp1)}</td>
+                <td class="mono">${fmt(candidate.tp2)}</td>
+                <td class="mono">$${fmt(candidate.risk?.risk_dollars)}</td>
+                <td class="reason-cell">${esc(candidate.status === 'LIVE_BLOCKED' ? (candidate.size_plan?.reason || 'blocked; bracket retained for visualization only') : (candidate.add_rule || 'Waiting for confirmed state.'))}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      ` : '<div class="item">No candidate. Watch-only until valid candles, levels, and risk gates align.</div>';
     }
 
     function renderBracket(data) {
@@ -534,6 +671,21 @@
       qs('#bracket-metrics').innerHTML = metrics.map(([label, value]) => `
         <div class="metric"><div class="label">${esc(label)}</div><div class="value">${esc(value)}</div></div>
       `).join('');
+    }
+
+    function renderHeatmapProof(proof) {
+      const target = qs('#heatmap-proof-grid');
+      const fixtures = Array.isArray(proof?.fixtures) ? proof.fixtures.slice(0, 2) : [];
+      target.innerHTML = fixtures.length ? fixtures.map(fixture => `
+        <div class="heatmap-proof-card" data-trading-window-heatmap-fixture>
+          <img src="${esc(fixture.image_route || '')}" alt="${esc(fixture.label || 'heatmap proof')}">
+          <div class="item-row">
+            <strong>${esc(fixture.label || 'Heatmap fixture')}</strong>
+            <span class="pill info">read-only ack</span>
+          </div>
+          <div class="ack">${esc(fixture.ack || 'ACK unavailable')}</div>
+        </div>
+      `).join('') : '<div class="item">Heatmap proof unavailable. No levels fabricated.</div>';
     }
 
     function renderAlerts(data) {
@@ -568,9 +720,10 @@
 
     async function refresh() {
       setActiveButtons();
-      const [chart, health] = await Promise.all([
+      const [chart, health, heatmapProof] = await Promise.all([
         getJson('/api/trading/chart-data'),
         getJson('/api/trading/source-health'),
+        getPlainJson('/api/operator/heatmap-proof'),
       ]);
       state.chart = chart;
       state.sourceHealth = health;
@@ -578,6 +731,7 @@
       renderClusters(chart);
       renderCandidates(chart);
       renderBracket(chart);
+      renderHeatmapProof(heatmapProof);
       renderAlerts(chart);
       renderHealth(chart, health);
     }
@@ -586,6 +740,13 @@
       btn.addEventListener('click', () => {
         state.example = btn.dataset.example;
         refresh();
+      });
+    });
+    document.querySelectorAll('#replay-selector button[data-range]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.chartRange = btn.dataset.range;
+        setActiveButtons();
+        if (state.chart) drawChart(state.chart);
       });
     });
     document.querySelector('#replay-selector button[data-refresh]').addEventListener('click', refresh);

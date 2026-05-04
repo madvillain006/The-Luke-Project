@@ -34,6 +34,20 @@ describe('runtime health utilities', () => {
     expect(result.safe_to_stop_with_force).toBe(true);
   });
 
+  it('still reports current Luke when PID lookup is unavailable but /api/health responds', async () => {
+    const execFile = () => {
+      throw new Error('spawn EPERM');
+    };
+    const fetchFn = async () => response({ ok: true, app: 'Luke', pid: 1234, port: 3000 });
+
+    const result = await checkRuntimeHealth({ port: 3000, execFile, fetchFn });
+
+    expect(result.status).toBe('current Luke');
+    expect(result.pid).toBe(null);
+    expect(result.ok).toBe(true);
+    expect(result.safe_to_stop_with_force).toBe(false);
+  });
+
   it('reports stale Luke when node index.js is serving old routes without /api/health', async () => {
     const execFile = (cmd) => {
       if (cmd === 'netstat') return '  TCP    127.0.0.1:3000         0.0.0.0:0              LISTENING       1234';

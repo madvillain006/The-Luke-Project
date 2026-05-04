@@ -88,11 +88,13 @@ describe('trading state APIs', () => {
     expect(index).toContain('app.get("/api/trading/candle-status"');
     expect(index).toContain('app.get("/api/trading/chart-data"');
     expect(index).toContain('app.get("/api/trading/source-health"');
+    expect(index).toContain('app.get("/api/operator/heatmap-proof"');
     expect(index).not.toContain('app.post("/api/trading/level-state"');
     expect(index).not.toContain('app.post("/api/trading/trade-candidates"');
     expect(index).not.toContain('app.post("/api/trading/alerts"');
     expect(index).not.toContain('app.post("/api/trading/chart-data"');
     expect(index).not.toContain('app.post("/api/trading/source-health"');
+    expect(index).not.toContain('app.post("/api/operator/heatmap-proof"');
     expect(`${adapter}\n${engine}`).not.toMatch(/execution-live|execution-paper|execution-shadow|broker-tradovate|executeLive|executePaper|executeShadow/);
   });
 });

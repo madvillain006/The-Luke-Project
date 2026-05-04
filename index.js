@@ -67,6 +67,10 @@ const {
   getLadderReclaimCaseImagePath,
 } = require("./lib/operator/ladder-reclaim-watchlist-adapter");
 const {
+  buildHeatmapProofResponse,
+  getHeatmapProofFixture,
+} = require("./lib/operator/heatmap-proof-fixtures");
+const {
   getTodayLevelsFile,
   hasLevelsLoadedToday,
   levelsLoadedLabel,
@@ -1093,6 +1097,25 @@ app.get("/api/trading/source-health", async (req, res) => {
     res.json(payload);
   } catch (err) {
     res.status(500).json({ ok: false, read_only: true, no_live_execution: true, blockers: [`source-health failed: ${err.message}`] });
+  }
+});
+
+app.get("/api/operator/heatmap-proof", (req, res) => {
+  try {
+    res.json(buildHeatmapProofResponse());
+  } catch (err) {
+    res.status(500).json({ ok: false, read_only: true, no_live_execution: true, blockers: [`heatmap proof failed: ${err.message}`] });
+  }
+});
+
+app.get("/api/operator/heatmap-proof/image/:fixtureId", (req, res) => {
+  try {
+    const fixture = getHeatmapProofFixture(req.params.fixtureId);
+    if (!fixture) return res.status(404).json({ ok: false, read_only: true, no_live_execution: true, error: "heatmap proof fixture unavailable" });
+    res.setHeader("Cache-Control", "no-store");
+    return res.sendFile(fixture.file);
+  } catch (err) {
+    return res.status(500).json({ ok: false, read_only: true, no_live_execution: true, error: `heatmap proof image failed: ${err.message}` });
   }
 });
 

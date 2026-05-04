@@ -107,23 +107,54 @@ async function waitForTradingChat(page) {
   const frame = frameHandle ? await frameHandle.contentFrame() : null;
   if (!frame) throw new Error('clicked trading chat iframe did not expose a content frame');
   await frame.locator('#input').waitFor({ timeout: 15000 });
-  await frame.locator('#input').fill('/status');
-  await frame.locator('#send').click();
-  await frame.getByText('LUKE ONLINE').waitFor({ timeout: 15000 });
   return frame;
+}
+
+async function sendChatCommand(frame, command, expectedText) {
+  await frame.locator('#input').fill(command);
+  await frame.locator('#send').click();
+  try {
+    await frame.waitForFunction(({ expected }) => {
+      const text = document.querySelector('#messages')?.innerText || document.body.innerText || '';
+      return text.toLowerCase().includes(expected.toLowerCase());
+    }, { expected: expectedText }, { timeout: 15000 });
+  } catch (err) {
+    throw new Error(`chat command "${command}" did not show "${expectedText}": ${err.message}`);
+  }
+}
+
+async function runLukeChatSmoke(frame, options = {}) {
+  const statusExpected = options.statusExpected || 'Luke chat: active for trading ops';
+  await sendChatCommand(frame, '/status', statusExpected);
+  if (typeof options.afterStatus === 'function') await options.afterStatus();
+  const commands = options.commands || [
+    ['/ready', 'READY SESSION READINESS'],
+    ['/alert', 'ALERT Paste'],
+    ['/balance', 'Apex balance'],
+    ['/saty', 'Saty'],
+  ];
+  for (const [command, expected] of commands) {
+    await sendChatCommand(frame, command, expected);
+    if (typeof options.afterCommand === 'function') await options.afterCommand(command);
+  }
+  return frame.locator('body').innerText();
 }
 
 async function captureClickedShellScreenshots() {
   const paths = {
     outer_before_click: path.join(OUT_DIR, 'outer-luke-before-trading-click.png'),
     outer_after_chat_click: path.join(OUT_DIR, 'outer-luke-after-trading-chat-click.png'),
+    clicked_trading_chat_status: path.join(OUT_DIR, 'outer-luke-trading-chat-status.png'),
+    clicked_trading_chat_ready: path.join(OUT_DIR, 'outer-luke-trading-chat-ready.png'),
     clicked_trading_chat_panel: path.join(OUT_DIR, 'outer-luke-clicked-trading-chat-panel.png'),
+    clicked_trading_chat_smoke: path.join(OUT_DIR, 'outer-luke-trading-chat-command-smoke.png'),
     outer_after_window_switch: path.join(OUT_DIR, 'outer-luke-after-window-switch.png'),
     clicked_trading_window_panel: path.join(OUT_DIR, 'outer-luke-clicked-trading-window-panel.png'),
     clicked_trading_frame: path.join(OUT_DIR, 'outer-luke-clicked-trading-window-frame.png'),
     clicked_heatmap_a: path.join(OUT_DIR, 'outer-luke-clicked-heatmap-a.png'),
     clicked_heatmap_b: path.join(OUT_DIR, 'outer-luke-clicked-heatmap-b.png'),
     system_chat_after_click: path.join(OUT_DIR, 'outer-luke-system-chat-status.png'),
+    system_chat_smoke: path.join(OUT_DIR, 'outer-luke-system-chat-command-smoke.png'),
   };
 
   let browser = null;
@@ -136,8 +167,19 @@ async function captureClickedShellScreenshots() {
 
     await page.locator('#trading-launch').click();
     const chatFrame = await waitForTradingChat(page);
+    const chatSmokeText = await runLukeChatSmoke(chatFrame, {
+      afterStatus: async () => {
+        await page.locator('#trading-panel').screenshot({ path: paths.clicked_trading_chat_status });
+      },
+      afterCommand: async (command) => {
+        if (command === '/ready') {
+          await page.locator('#trading-panel').screenshot({ path: paths.clicked_trading_chat_ready });
+        }
+      },
+    });
     await page.screenshot({ path: paths.outer_after_chat_click, fullPage: false });
     await page.locator('#trading-panel').screenshot({ path: paths.clicked_trading_chat_panel });
+    await page.locator('#trading-panel').screenshot({ path: paths.clicked_trading_chat_smoke });
     const outerChatText = await page.locator('body').innerText();
     const chatText = await chatFrame.locator('body').innerText();
 
@@ -151,6 +193,7 @@ async function captureClickedShellScreenshots() {
 
     const outerWindowText = await page.locator('body').innerText();
     const tradingText = await frame.locator('body').innerText();
+    const moduleWidths = await page.$$eval('.module-art', nodes => nodes.map(node => Math.round(node.getBoundingClientRect().width)));
     const unsafeShellButtons = await page.$$eval('button', buttons => buttons
       .map(button => button.textContent.trim())
       .filter(text => /\b(execute|broker|buy|sell|submit)\b/i.test(text)));
@@ -161,16 +204,26 @@ async function captureClickedShellScreenshots() {
     await page.locator('#trading-close').click();
     await page.locator('.system-button').click();
     await page.locator('#system-panel.is-open').waitFor({ timeout: 15000 });
-    await page.frameLocator('#system-frame').locator('#input').fill('/status');
-    await page.frameLocator('#system-frame').locator('#send').click();
-    await page.frameLocator('#system-frame').getByText('LUKE ONLINE').waitFor({ timeout: 15000 });
+    const systemFrameHandle = await page.locator('#system-frame').elementHandle();
+    const systemFrame = systemFrameHandle ? await systemFrameHandle.contentFrame() : null;
+    if (!systemFrame) throw new Error('system chat iframe did not expose a content frame');
+    const systemSmokeText = await runLukeChatSmoke(systemFrame, {
+      commands: [
+        ['/ready', 'belongs in the Trading tab'],
+        ['/luke', 'Luke system chat is active'],
+      ],
+    });
     await page.locator('#system-panel').screenshot({ path: paths.system_chat_after_click });
-    const systemText = await page.frameLocator('#system-frame').locator('body').innerText();
+    await page.locator('#system-panel').screenshot({ path: paths.system_chat_smoke });
+    const systemText = await systemFrame.locator('body').innerText();
+    const commandSmokeRe = /LUKE ONLINE[\s\S]*READY SESSION READINESS[\s\S]*ALERT Paste[\s\S]*Apex balance[\s\S]*Saty/i;
+    const systemSmokeRe = /LUKE ONLINE[\s\S]*Luke chat: active for trading ops[\s\S]*belongs in the Trading tab[\s\S]*Luke system chat is active/i;
 
     return {
       ok: true,
       shell_before_click_visible: /Trading \(Analysis\)/i.test(outerChatText),
       trading_chat_opened_by_click: /Trading \(Analysis\) \/ Luke Chat/i.test(outerChatText) && /LUKE ONLINE/i.test(chatText),
+      trading_chat_command_smoke: commandSmokeRe.test(chatSmokeText) && !/personal logging is retired/i.test(chatSmokeText),
       trading_window_opened_by_switch: /Trading \(Analysis\) \/ Live-Shaped Trading Window/i.test(outerWindowText),
       trading_frame_loaded: /Luke Trading Window/i.test(tradingText) && /Chart Panel/i.test(tradingText),
       bracket_visible: /Bracket Plan/i.test(tradingText) && /Can submit\s+false/i.test(tradingText),
@@ -178,6 +231,9 @@ async function captureClickedShellScreenshots() {
       pine_visible: /Luke Level Reclaim Watch Script/i.test(tradingText) && /tradingview\/luke-level-reclaim-watch\.pine/i.test(tradingText),
       replay_not_live_visible: /Replay\/dev simulated/i.test(tradingText) && /No execution controls/i.test(tradingText) && /Not a live trade recommendation/i.test(tradingText),
       system_chat_visible: /LUKE ONLINE/i.test(systemText) && /Autonomous: recommendation-only/i.test(systemText),
+      system_chat_command_smoke: systemSmokeRe.test(systemSmokeText) && !/personal logging is retired/i.test(systemSmokeText),
+      dashboard_tiles_compact: moduleWidths.length > 0 && Math.max(...moduleWidths) <= 280,
+      module_widths: moduleWidths,
       no_unsafe_buttons: unsafeShellButtons.length === 0 && unsafeTradingButtons.length === 0,
       unsafe_buttons: [...unsafeShellButtons, ...unsafeTradingButtons],
       paths: Object.fromEntries(Object.entries(paths).map(([key, value]) => [key, path.relative(ROOT, value).replace(/\\/g, '/')])) ,
@@ -202,12 +258,15 @@ function safety(api, screenshots) {
     replay_not_live: chart.live === false && chart.usable_for_live_arming === false,
     outer_shell_before_click: screenshots.shell_before_click_visible === true,
     trading_chat_opened_by_click: screenshots.trading_chat_opened_by_click === true,
+    trading_chat_command_smoke: screenshots.trading_chat_command_smoke === true,
     trading_window_opened_by_switch: screenshots.trading_window_opened_by_switch === true,
     clicked_trading_window_loaded: screenshots.trading_frame_loaded === true,
     bracket_inside_clicked_window: screenshots.bracket_visible === true,
     heatmap_inside_clicked_window: screenshots.heatmap_visible === true,
     pine_inside_clicked_window: screenshots.pine_visible === true,
     system_chat_clicked_flow: screenshots.system_chat_visible === true,
+    system_chat_command_smoke: screenshots.system_chat_command_smoke === true,
+    dashboard_tiles_compact: screenshots.dashboard_tiles_compact === true,
     no_unsafe_buttons: screenshots.no_unsafe_buttons === true,
   };
 }

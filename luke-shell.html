@@ -47,7 +47,7 @@
     .app {
       min-height: calc(100vh - 20px);
       display: grid;
-      grid-template-rows: 28px auto auto 1fr;
+      grid-template-rows: 28px auto auto auto;
       gap: 10px;
     }
 
@@ -135,11 +135,13 @@
     }
 
     .trading-panel.is-open {
-      min-height: min(760px, calc(100vh - 58px));
+      height: clamp(620px, 72vh, 780px);
+      min-height: 0;
     }
 
     .trading-panel.is-open.is-window-mode {
-      min-height: min(1180px, calc(100vh - 58px));
+      height: clamp(780px, 82vh, 980px);
+      min-height: 0;
     }
 
     .trading-panel-top {
@@ -233,9 +235,10 @@
 
     .filter-row {
       display: grid;
-      grid-template-columns: minmax(260px, 1.3fr) repeat(3, minmax(145px, 0.65fr));
+      grid-template-columns: minmax(360px, 560px) repeat(3, minmax(150px, 220px));
       gap: 10px;
       align-items: stretch;
+      justify-content: start;
     }
 
     .filter-button {
@@ -290,9 +293,10 @@
 
     .module-grid {
       display: grid;
-      grid-template-columns: repeat(5, minmax(120px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(210px, 260px));
       gap: 10px;
       align-items: start;
+      justify-content: start;
     }
 
     .module-link {
@@ -522,7 +526,8 @@
 
       .trading-panel,
       .system-chat-panel {
-        min-height: 640px;
+        height: 640px;
+        min-height: 0;
       }
 
       .trading-rig {
@@ -534,11 +539,13 @@
       }
 
       .filter-row {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, minmax(180px, 1fr));
+        justify-content: stretch;
       }
 
       .module-grid {
         grid-template-columns: repeat(3, minmax(160px, 1fr));
+        justify-content: stretch;
       }
     }
 
@@ -575,7 +582,8 @@
 
       .trading-panel,
       .system-chat-panel {
-        min-height: 680px;
+        height: 680px;
+        min-height: 0;
       }
 
       .trading-rig {

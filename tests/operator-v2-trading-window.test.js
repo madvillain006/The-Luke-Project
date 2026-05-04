@@ -39,6 +39,8 @@ describe('trading window read-only surface', () => {
     expect(shell).toContain('/trading-window?embed=shell&mode=replay&example=positive');
     expect(shell).toContain('title="Luke clicked trading chat"');
     expect(shell).toContain('Show the replay trading window in this panel');
+    expect(shell).toContain('height: clamp(780px, 82vh, 980px)');
+    expect(shell).toContain('repeat(auto-fill, minmax(210px, 260px))');
     expect(shell).not.toContain('Luke Trading Companion - Dashboard Demo');
     expect(html).toContain('Katbot / Heatmap Input');
     expect(html).toContain('/api/operator/heatmap-proof');

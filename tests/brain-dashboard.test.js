@@ -170,7 +170,8 @@ describe('/brain dashboard shell', () => {
     expect(html).toContain("document.querySelectorAll('[data-route]')");
     expect(html).toContain("if (route === '/luke')");
     expect(html).toContain('window.getSelection().toString().length > 0');
-    expect(html).toContain('grid-template-columns: repeat(5, minmax(120px, 1fr))');
+    expect(html).toContain('grid-template-columns: repeat(auto-fill, minmax(210px, 260px))');
+    expect(html).toContain('height: clamp(780px, 82vh, 980px)');
     expect(html).toContain('height: 104px');
   });
 

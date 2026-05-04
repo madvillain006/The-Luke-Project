@@ -406,7 +406,8 @@ describe('slash-commands output cleanliness - mojibake guard', () => {
     expect(payload.reply).toContain('Market:');
     expect(payload.reply).toContain('Freshness:');
     expect(payload.reply).toContain('Autonomous: recommendation-only');
-    expect(payload.reply).toContain('System chat:');
+    expect(payload.reply).toContain('Luke chat: active for trading ops');
+    expect(payload.reply).not.toContain('personal logging is retired');
     expect(MOJIBAKE_RE.test(payload.reply)).toBe(false);
   });
 
@@ -415,6 +416,16 @@ describe('slash-commands output cleanliness - mojibake guard', () => {
     const res = { json(obj) { payload = obj; return obj; } };
     await handleSlashCommand('/ready', res);
     expect(payload.reply).toMatch(/^READY SESSION READINESS/);
+    expect(MOJIBAKE_RE.test(payload.reply)).toBe(false);
+  });
+
+  it('/luke reports active system chat instead of retired personal logging', async () => {
+    let payload = null;
+    const res = { json(obj) { payload = obj; return obj; } };
+    await handleSlashCommand('/luke', res);
+    expect(payload.reply).toContain('Luke system chat is active');
+    expect(payload.reply).toContain('Use Trading (Analysis)');
+    expect(payload.reply).not.toContain('personal logging is retired');
     expect(MOJIBAKE_RE.test(payload.reply)).toBe(false);
   });
 

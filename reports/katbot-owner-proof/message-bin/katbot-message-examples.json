@@ -1,8 +1,9 @@
 {
-  "generated_at": "2026-05-03T21:05:57.545Z",
+  "generated_at": "2026-05-04T13:07:08.674Z",
   "source_files": {
     "raw_feed": "data\\kat\\raw-feed.jsonl",
-    "processed_signals": "data\\kat\\processed-signals.jsonl"
+    "processed_signals": "data\\kat\\processed-signals.jsonl",
+    "vision_signals": "data\\kat\\vision-signals.jsonl"
   },
   "confluence_examples": [
     {
@@ -580,6 +581,10 @@
       ]
     }
   ],
+  "vision_examples": {
+    "charts": [],
+    "heatmaps": []
+  },
   "output_sink": {
     "binDir": "C:\\Users\\conor\\luke\\reports\\katbot-owner-proof\\message-bin",
     "outputJsonl": "C:\\Users\\conor\\luke\\reports\\katbot-owner-proof\\message-bin\\katbot-output-bin.jsonl",

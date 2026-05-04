@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-03T21:05:57.545Z",
+  "generated_at": "2026-05-04T13:07:08.674Z",
   "readiness": {
-    "generated_at": "2026-05-03T21:05:57.545Z",
+    "generated_at": "2026-05-04T13:07:08.674Z",
     "recommendation": {
-      "status": "owner_review_ready",
-      "label": "Ready for owner review as silent capture and Luke-only shadow evidence, not public Discord answering."
+      "status": "not_ready",
+      "label": "Keep Kat internal. Fix blockers before showing it to the server owner."
     },
     "discord_output_gate": {
       "responses_enabled": false,
@@ -13,9 +13,13 @@
       "approval_required": true
     },
     "evidence": {
-      "raw_messages": 12255,
+      "raw_messages": 12265,
       "processed_signals": 2604,
       "heatmap_candidates": 700,
+      "image_posts": 2332,
+      "vision_signals": 0,
+      "vision_chart_signals": 0,
+      "vision_heatmap_signals": 0,
       "replay_records": 1078,
       "spx_spy_evaluated": 114,
       "watchlist_candidates": [
@@ -52,7 +56,7 @@
       {
         "ok": true,
         "label": "historical capture depth",
-        "detail": "12255 raw messages captured",
+        "detail": "12265 raw messages captured",
         "severity": "info"
       },
       {
@@ -104,6 +108,24 @@
         "severity": "warning"
       },
       {
+        "ok": false,
+        "label": "analyst chart/heatmap reads are saved",
+        "detail": "0 saved chart/heatmap read(s) for 2332 image post(s)",
+        "severity": "blocker"
+      },
+      {
+        "ok": false,
+        "label": "chart images are read for levels",
+        "detail": "0 saved chart read(s)",
+        "severity": "blocker"
+      },
+      {
+        "ok": false,
+        "label": "heatmap images are read for levels",
+        "detail": "0 saved heatmap read(s) for 700 candidate(s)",
+        "severity": "blocker"
+      },
+      {
         "ok": true,
         "label": "Discord output gate present",
         "detail": "safeReply/safeSend suppress Discord output unless explicitly approved",
@@ -128,7 +150,11 @@
         "severity": "info"
       }
     ],
-    "blockers": [],
+    "blockers": [
+      "analyst chart/heatmap reads are saved: 0 saved chart/heatmap read(s) for 2332 image post(s)",
+      "chart images are read for levels: 0 saved chart read(s)",
+      "heatmap images are read for levels: 0 saved heatmap read(s) for 700 candidate(s)"
+    ],
     "warnings": [
       "SPX/SPY sample size: 114 evaluated direct records"
     ],
@@ -140,7 +166,7 @@
     ]
   },
   "insights": {
-    "generated_at": "2026-05-03T21:05:57.545Z",
+    "generated_at": "2026-05-04T13:07:08.674Z",
     "status": "degraded",
     "config": {
       "enabled": true,
@@ -157,20 +183,27 @@
       "bot_tag": null
     },
     "activity": {
-      "latest_capture": "2026-05-03T20:53:41.212Z",
-      "latest_capture_age": "12m ago",
+      "latest_capture": "2026-05-04T13:03:14.952Z",
+      "latest_capture_age": "3m ago",
       "by_user": {
         "kaprik0rn3": "2026-05-03T12:45:40.619Z",
-        "mathemeatloaf7": "2026-05-03T12:48:57.655Z",
+        "mathemeatloaf7": "2026-05-04T13:03:14.952Z",
         "general_dollars": "2026-05-03T20:53:41.212Z",
-        "barrysanders329": "2026-05-03T12:45:40.585Z"
+        "barrysanders329": "2026-05-04T13:03:14.949Z"
       }
     },
     "audit": {
-      "raw_messages": 12255,
+      "raw_messages": 12265,
       "processed_signals": 2604,
-      "image_posts": 2329,
+      "image_posts": 2332,
       "heatmap_candidates": 700,
+      "vision_signals": {
+        "total": 0,
+        "chart": 0,
+        "heatmap": 0,
+        "image": 0,
+        "parsed_levels": 0
+      },
       "index_mention_posts": 1070,
       "duplicate_message_ids": 2
     },
@@ -290,8 +323,18 @@
         "pct": 50
       }
     },
+    "vision": {
+      "counts": {
+        "total": 0,
+        "chart": 0,
+        "heatmap": 0,
+        "image": 0,
+        "parsed_levels": 0
+      },
+      "latest": []
+    },
     "watchlist": {
-      "generated_at": "2026-05-03T21:05:57.545Z",
+      "generated_at": "2026-05-04T13:07:08.674Z",
       "window_days": 14,
       "min_mentions": 2,
       "candidates": [
@@ -515,7 +558,7 @@
       "next_action": "Start shadow evaluation for these tickers only after matching market data is available."
     },
     "equity_options": {
-      "generated_at": "2026-05-03T21:05:57.545Z",
+      "generated_at": "2026-05-04T13:07:08.674Z",
       "window_days": 14,
       "tickers": [
         {
@@ -1101,10 +1144,14 @@
     },
     "readiness": {
       "recommendation": {
-        "status": "owner_review_ready",
-        "label": "Ready for owner review as silent capture and Luke-only shadow evidence, not public Discord answering."
+        "status": "not_ready",
+        "label": "Keep Kat internal. Fix blockers before showing it to the server owner."
       },
-      "blockers": [],
+      "blockers": [
+        "analyst chart/heatmap reads are saved: 0 saved chart/heatmap read(s) for 2332 image post(s)",
+        "chart images are read for levels: 0 saved chart read(s)",
+        "heatmap images are read for levels: 0 saved heatmap read(s) for 700 candidate(s)"
+      ],
       "warnings": [
         "SPX/SPY sample size: 114 evaluated direct records"
       ],
@@ -1328,6 +1375,9 @@
       }
     ],
     "blockers": [
+      "Analyst images are captured but no saved chart/heatmap reads exist yet.",
+      "Chart images have not been read into saved level/bias records yet.",
+      "Heatmap images have not been read into saved level/bias records yet.",
       "2 duplicate Discord message ids are present in raw feed; replay skips them.",
       "SPX/SPY evaluation sample is still thin; do not promote to trade recommendation authority."
     ],
@@ -1336,18 +1386,19 @@
       "Discord users can query !kat status or !kat summary instead of waiting for rare confluence alerts.",
       "Discord users can query !kat watchlist to see repeated non-index tickers under shadow review.",
       "Discord users can query !kat equity TICKER or !kat options TICKER to inspect shadow equity/options evidence.",
-      "The backtesting agent can use data/kat/derived/kat-index-replay.jsonl and kat-spx-spy-evaluations.jsonl when it finishes its current lane."
+      "Luke can consume saved chart/heatmap reads through data/kat/vision-signals.jsonl and the kat_vision websocket payload.",
+      "The backtesting agent can use data/kat/derived/kat-index-replay.jsonl, data/kat/vision-signals.jsonl, and kat-spx-spy-evaluations.jsonl when it finishes its current lane."
     ],
     "next_actions": [
       "Import more SPX/SPY market bars covering the raw Kat date range so more than 114 direct signals can be scored.",
-      "Run historical image parsing for the 700 heatmap candidates and attach parsed levels by message_id.",
+      "Run historical image parsing for captured analyst chart and heatmap attachments; write every result to data/kat/vision-signals.jsonl by message_id and attachment_id.",
       "Collect market data for the top non-index Kat watchlist symbols before scoring or recommending them.",
       "Split analyst scorecards by ticker, time of day, signal type, and heatmap agreement before trusting any single aggregate win rate.",
       "Add a scheduled Discord EOD summary only after the command-based summary is verified in the live server."
     ]
   },
   "watchlist": {
-    "generated_at": "2026-05-03T21:05:57.545Z",
+    "generated_at": "2026-05-04T13:07:08.674Z",
     "window_days": 14,
     "min_mentions": 2,
     "candidates": [
@@ -1571,7 +1622,7 @@
     "next_action": "Start shadow evaluation for these tickers only after matching market data is available."
   },
   "equityUniverse": {
-    "generated_at": "2026-05-03T21:05:57.545Z",
+    "generated_at": "2026-05-04T13:07:08.674Z",
     "window_days": 14,
     "tickers": [
       {
@@ -2156,10 +2207,11 @@
     "policy": "Shadow evidence only. Backtesting/scoring stays in the separate backtesting lane."
   },
   "messageBin": {
-    "generated_at": "2026-05-03T21:05:57.545Z",
+    "generated_at": "2026-05-04T13:07:08.674Z",
     "source_files": {
       "raw_feed": "data\\kat\\raw-feed.jsonl",
-      "processed_signals": "data\\kat\\processed-signals.jsonl"
+      "processed_signals": "data\\kat\\processed-signals.jsonl",
+      "vision_signals": "data\\kat\\vision-signals.jsonl"
     },
     "confluence_examples": [
       {
@@ -2737,6 +2789,10 @@
         ]
       }
     ],
+    "vision_examples": {
+      "charts": [],
+      "heatmaps": []
+    },
     "output_sink": {
       "binDir": "C:\\Users\\conor\\luke\\reports\\katbot-owner-proof\\message-bin",
       "outputJsonl": "C:\\Users\\conor\\luke\\reports\\katbot-owner-proof\\message-bin\\katbot-output-bin.jsonl",
@@ -2830,27 +2886,29 @@
       }
     },
     "image": {
-      "ts": "2026-05-02T16:27:09.269Z",
-      "message_id": "1500171801278550036",
+      "ts": "2026-05-04T12:54:16.054Z",
+      "message_id": "1500843002262847590",
       "guild_id": "755261229748191313",
       "channel_id": "1040400353490911292",
       "channel_name": "🟢︱trade-floor",
-      "user_id": "755259514068009041",
-      "username": "mathemeatloaf7",
-      "content": "$zs\n\nweekly chart just reclaimed this 6 year old TL. this setup has only 3 full weeks to play out before ER week\n\nkey is to reclaim 140.56. doing so shoudl start setting up a squeeze to 160-165\n\nim eyeing 5/22 far otm calls next week",
+      "user_id": "260504760669569025",
+      "username": "barrysanders329",
+      "content": "Bearish names RKT, FIG, TMUS, SW, CHWY, GPK, CELH, ORC, FLNC, PDD, XRAY, VNET",
       "attachments": [
         {
-          "id": "1500171801001721876",
-          "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1500171801001721876/image.png?ex=69f8201d&is=69f6ce9d&hm=74aa2499a427901a017de46d195f88b7fcb3d5f221d5c368d1d0d87d5bfe0956&",
+          "id": "1500843001709330435",
+          "url": "https://cdn.discordapp.com/attachments/1040400353490911292/1500843001709330435/image.png?ex=69f9e877&is=69f896f7&hm=77a3dc84282fcc0109c49b35e408f6f03166f9ccca5fddef26ea27e866cd43dc&",
           "filename": "image.png",
           "content_type": "image/png"
         }
       ],
       "backfill": true
-    }
+    },
+    "visionChart": null,
+    "visionHeatmap": null
   },
   "previews": {
-    "discord": "**Kat owner-review preview**\nStatus: owner_review_ready\nEvidence: 12255 raw messages, 2604 processed signals\nWatchlist: TSLA, CAR, AAOI, MU, SNDK, LITE\nDiscord output: gated off until Conor explicitly approves generated wording.\n_No autonomous execution. Human-gated evidence only._",
+    "discord": "**Kat owner-review preview**\nStatus: not_ready\nEvidence: 12265 raw messages, 2604 processed signals\nWatchlist: TSLA, CAR, AAOI, MU, SNDK, LITE\nDiscord output: gated off until Conor explicitly approves generated wording.\n_No autonomous execution. Human-gated evidence only._",
     "lukePayloads": [
       {
         "type": "kat_signal",

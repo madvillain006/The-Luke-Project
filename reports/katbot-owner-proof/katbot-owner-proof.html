@@ -28,19 +28,21 @@
 <body>
 <main>
   <h1>Katbot Owner Proof Pack</h1>
-  <p><span class="status">owner_review_ready</span> <span class="muted">Ready for owner review as silent capture and Luke-only shadow evidence, not public Discord answering.</span></p>
+  <p><span class="status">not_ready</span> <span class="muted">Keep Kat internal. Fix blockers before showing it to the server owner.</span></p>
   <section class="card wide">
     <h2>Pipeline</h2>
     <div class="flow">
-      <span class="node">Discord message</span><span class="arrow">→</span><span class="node">Kat capture gate</span><span class="arrow">→</span><span class="node">raw-feed.jsonl</span><span class="arrow">→</span><span class="node">parse-kat</span><span class="arrow">→</span><span class="node">processed-signals.jsonl</span><span class="arrow">→</span><span class="node">index lane</span><span class="arrow">→</span><span class="node">equity/options lane</span><span class="arrow">→</span><span class="node">Luke trading window</span><span class="arrow">→</span><span class="node">owner review</span><span class="arrow">→</span><span class="node">Discord output gate</span>
+      <span class="node">Discord message</span><span class="arrow">-></span><span class="node">Kat capture gate</span><span class="arrow">-></span><span class="node">raw-feed.jsonl</span><span class="arrow">-></span><span class="node">parse-kat + vision parser</span><span class="arrow">-></span><span class="node">processed + vision JSONL</span><span class="arrow">-></span><span class="node">index lane</span><span class="arrow">-></span><span class="node">equity/options lane</span><span class="arrow">-></span><span class="node">Luke trading window</span><span class="arrow">-></span><span class="node">owner review</span><span class="arrow">-></span><span class="node">Discord output gate</span>
     </div>
   </section>
   <section class="grid">
     <div class="card">
       <h2>Evidence Counts</h2>
-      <p>Raw messages: <b>12255</b></p>
+      <p>Raw messages: <b>12265</b></p>
       <p>Processed signals: <b>2604</b></p>
+      <p>Image posts: <b>2332</b></p>
       <p>Heatmap candidates: <b>700</b></p>
+      <p>Vision parses: <b>0</b> (0 chart, 0 heatmap)</p>
       <p>SPX/SPY evaluated: <b>114</b></p>
       <p><span class="badge">TSLA</span><span class="badge">CAR</span><span class="badge">AAOI</span><span class="badge">MU</span><span class="badge">SNDK</span><span class="badge">LITE</span><span class="badge">ASML</span><span class="badge">ARM</span><span class="badge">COST</span><span class="badge">MSFT</span></p>
     </div>
@@ -93,21 +95,35 @@
     </div>
     <div class="card wide">
       <h2>Image Proof Candidate</h2>
-      <p class="muted">mathemeatloaf7 / #🟢︱trade-floor / 1500171801278550036</p>
-      <p>$zs weekly chart just reclaimed this 6 year old TL. this setup has only 3 full weeks to play out before ER week key is to reclaim 140.56. doing so shoudl start setting up a squeeze to 160-165 im eyeing 5/22 far otm calls next week</p>
-      <img src="https://cdn.discordapp.com/attachments/1040400353490911292/1500171801001721876/image.png?ex=69f8201d&amp;is=69f6ce9d&amp;hm=74aa2499a427901a017de46d195f88b7fcb3d5f221d5c368d1d0d87d5bfe0956&amp;" alt="Kat evidence image from Discord CDN">
+      <p class="muted">barrysanders329 / #🟢︱trade-floor / 1500843002262847590</p>
+      <p>Bearish names RKT, FIG, TMUS, SW, CHWY, GPK, CELH, ORC, FLNC, PDD, XRAY, VNET</p>
+      <img src="https://cdn.discordapp.com/attachments/1040400353490911292/1500843001709330435/image.png?ex=69f9e877&amp;is=69f896f7&amp;hm=77a3dc84282fcc0109c49b35e408f6f03166f9ccca5fddef26ea27e866cd43dc&amp;" alt="Kat evidence image from Discord CDN">
+    </div>
+    <div class="card">
+      <h2>Parsed Vision: Chart</h2>
+      <p><b>none</b> </p>
+      <p class="muted">No persisted chart vision parse yet</p>
+      <pre>{}</pre>
+    </div>
+    <div class="card">
+      <h2>Parsed Vision: Heatmap</h2>
+      <p><b>none</b> </p>
+      <p class="muted">No persisted heatmap vision parse yet</p>
+      <pre>{}</pre>
     </div>
     <div class="card wide">
       <h2>Timestamped Message Bin</h2>
       <p>Confluence examples: <b>4</b></p>
       <p>Latest parsed examples: <b>10</b></p>
+      <p>Vision chart examples: <b>0</b></p>
+      <p>Vision heatmap examples: <b>0</b></p>
       <p class="muted">Files: message-bin/katbot-message-examples.html, message-bin/katbot-message-examples.md, message-bin/katbot-output-bin.jsonl</p>
     </div>
     <div class="card discord">
       <h2>Discord Preview</h2>
       <pre>**Kat owner-review preview**
-Status: owner_review_ready
-Evidence: 12255 raw messages, 2604 processed signals
+Status: not_ready
+Evidence: 12265 raw messages, 2604 processed signals
 Watchlist: TSLA, CAR, AAOI, MU, SNDK, LITE
 Discord output: gated off until Conor explicitly approves generated wording.
 _No autonomous execution. Human-gated evidence only._</pre>

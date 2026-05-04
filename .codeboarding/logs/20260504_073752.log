@@ -1,0 +1,297 @@
+2026-05-04 07:37:52 INFO     [codeboarding_pro.lsp.bootstrap:56] LSP startup attempt 1/3
+2026-05-04 07:37:52 INFO     [codeboarding_pro.session:172] Session a6e3deae-0b42-46cc-8a8e-f53975746643 initialized: repo=C:\Users\conor\luke, project=luke, output=C:\Users\conor\luke\.codeboarding
+2026-05-04 07:37:54 WARNING  [static_analyzer:47] Unsupported programming language: HTML. Skipping.
+2026-05-04 07:37:56 WARNING  [static_analyzer.typescript_config_scanner:50] No TypeScript configuration files found in C:\Users\conor\luke
+2026-05-04 07:37:56 INFO     [static_analyzer:77] No TypeScript config files found, using repository root for JavaScript
+2026-05-04 07:37:56 WARNING  [static_analyzer:47] Unsupported programming language: JSON. Skipping.
+2026-05-04 07:37:56 INFO     [static_analyzer:182] Starting engine LSP client for JavaScript at C:\Users\conor\luke
+2026-05-04 07:37:57 INFO     [static_analyzer:207] JavaScript LSP start: 1.0s
+2026-05-04 07:37:57 INFO     [codeboarding_pro.file_monitor:106] FileMonitor started for C:\Users\conor\luke
+2026-05-04 07:37:57 INFO     [codeboarding_pro.session:195] Session a6e3deae-0b42-46cc-8a8e-f53975746643: FileMonitor activated
+2026-05-04 07:37:57 INFO     [codeboarding_pro.session:233] Session a6e3deae-0b42-46cc-8a8e-f53975746643: LSP wiring complete
+2026-05-04 07:37:58 INFO     [caching.cache:114] Cache initialized at C:\Users\conor\luke\.codeboarding\cache\final_analysis_llm.sqlite
+2026-05-04 07:37:58 INFO     [caching.cache:114] Cache initialized at C:\Users\conor\luke\.codeboarding\cache\cluster_analysis_llm.sqlite
+2026-05-04 07:37:58 INFO     [diagram_analysis.run_context:55] No existing run_id found in details caches
+2026-05-04 07:37:58 INFO     [agents.prompts.prompt_factory:111] Initialized global prompt factory: GeminiFlashPromptFactory (LLM type: gemini_flash)
+2026-05-04 07:37:58 INFO     [agents.llm_config:278] Initialized prompt factory for openrouter provider with model '@preset/production' -> gemini_flash prompt factory
+2026-05-04 07:37:58 INFO     [agents.llm_config:283] Using Openrouter LLM with model: @preset/production
+2026-05-04 07:37:58 WARNING  [codeboarding_pro.session:370] Failed to send initial status: 'NoneType' object has no attribute 'splitlines'
+2026-05-04 07:37:58 INFO     [codeboarding_pro.lsp.bootstrap:67] LSP clients started successfully (attempt 1)
+2026-05-04 07:37:59 INFO     [agents.llm_config:283] Using Openrouter Extractor LLM with model: @preset/production-parser
+2026-05-04 07:37:59 INFO     [diagram_analysis.diagram_generator:211] Using injected StaticAnalyzer (clients already running)
+2026-05-04 07:37:59 INFO     [static_analyzer:427] analyze() called with cache_dir=C:\Users\conor\luke\.codeboarding\cache, skip_cache=False
+2026-05-04 07:37:59 INFO     [monitoring:147] {"event": "step_start", "step": "analyze_project_metadata", "timestamp": 1777894679.631817}
+2026-05-04 07:37:59 INFO     [agents.meta_agent:53] [MetaAgent] Analyzing metadata for project: luke
+2026-05-04 07:38:00 INFO     [static_analyzer.analysis_result:200] Loaded static analysis from cache: C:\Users\conor\luke\.codeboarding\cache\static_analysis_results.pkl
+2026-05-04 07:38:00 INFO     [static_analyzer:436] Returning static analysis results from disk cache (219 files, languages: JavaScript)
+2026-05-04 07:38:00 INFO     [caching.cache:114] Cache initialized at C:\Users\conor\luke\.codeboarding\cache\meta_agent_llm.sqlite
+2026-05-04 07:38:00 INFO     [monitoring:157] {"event": "step_end", "step": "analyze_project_metadata", "duration_ms": 731.57}
+2026-05-04 07:38:04 INFO     [static_analyzer.graph:215] Level raw: best=louvain score=0.445 coverage=0.476
+2026-05-04 07:38:04 INFO     [static_analyzer.graph:215] Level class: best=louvain_level_class score=0.700 coverage=0.700
+2026-05-04 07:38:04 INFO     [static_analyzer.graph:215] Level file: best=greedy_modularity_level_file score=0.726 coverage=0.796
+2026-05-04 07:38:04 INFO     [static_analyzer.graph:491] Clustered 5184 nodes into 236 clusters using greedy_modularity_level_file
+2026-05-04 07:38:04 INFO     [health.checks.unused_code_diagnostics:178] Processed 0 diagnostics: 0 recognized as unused code issues, 0 skipped
+2026-05-04 07:38:04 INFO     [health.checks.unused_code_diagnostics:181] Issues by category: {}
+2026-05-04 07:38:04 INFO     [diagram_analysis.diagram_generator:138] Health report written to C:\Users\conor\luke\.codeboarding\health\health_report.json (score: 0.995)
+2026-05-04 07:38:05 INFO     [agents.details_agent:216] [DetailsAgent] Processing component: Intelligence & Strategy Engine
+2026-05-04 07:38:05 INFO     [static_analyzer.graph:215] Level raw: best=louvain score=0.402 coverage=0.402
+2026-05-04 07:38:05 INFO     [static_analyzer.graph:215] Level class: best=louvain_level_class score=0.669 coverage=0.669
+2026-05-04 07:38:05 INFO     [static_analyzer.graph:215] Level file: best=louvain_level_file score=0.682 coverage=0.769
+2026-05-04 07:38:05 INFO     [static_analyzer.graph:491] Clustered 1243 nodes into 55 clusters using louvain_level_file
+2026-05-04 07:38:05 WARNING  [static_analyzer.cluster_helpers:215] [SuperCluster] Falling back to connected components: 55 groups
+2026-05-04 07:38:05 INFO     [static_analyzer.cluster_helpers:355] [SuperCluster] Absorbed small communities: 55 -> 50
+2026-05-04 07:38:05 INFO     [static_analyzer.cluster_helpers:444] [SuperCluster] Merged 55 clusters into 50 super-clusters (target was 50)
+2026-05-04 07:38:05 INFO     [agents.cluster_methods_mixin:428] [DetailsAgent] Subgraph for 'Intelligence & Strategy Engine': merged 55 -> 50 super-clusters
+2026-05-04 07:38:05 INFO     [monitoring:147] {"event": "step_start", "step": "step_clusters_grouping", "timestamp": 1777894685.611298}
+2026-05-04 07:38:05 INFO     [agents.details_agent:81] [DetailsAgent] Grouping clusters for component: Intelligence & Strategy Engine
+2026-05-04 07:38:05 WARNING  [agents.model_capabilities:42] No context window for openrouter/@preset/production; using fallback 256000
+2026-05-04 07:38:05 INFO     [caching.cache:114] Cache initialized at C:\Users\conor\luke\.codeboarding\cache\cluster_analysis_llm.sqlite
+2026-05-04 07:38:05 INFO     [agents.agent:116] Starting agent.invoke() [attempt 1/5] with prompt length: 53479, timeout: 300s
+2026-05-04 07:38:08 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:38:17 INFO     [monitoring:62] Token Usage: step=startup model=@preset/production usage={"input_tokens": 16248, "output_tokens": 1704, "total_tokens": 17952}
+2026-05-04 07:38:17 INFO     [agents.agent:122] Completed agent.invoke() - message count: 3, last message type: <class 'langchain_core.messages.ai.AIMessage'>
+2026-05-04 07:38:21 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:38:21 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 1931, "output_tokens": 1377, "total_tokens": 3308}
+2026-05-04 07:38:22 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:38:22 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 5293, "output_tokens": 104, "total_tokens": 5397}
+2026-05-04 07:38:23 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:38:24 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 3273, "output_tokens": 337, "total_tokens": 3610}
+2026-05-04 07:38:24 ERROR    [extraction:468] 3 validation errors for ClusterAnalysis
+cluster_components.1.name
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.1.cluster_ids
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.1.description
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+2026-05-04 07:38:24 WARNING  [agents.retry:106] Parse response failed (attempt 1/5): Extractor returned empty message content; retrying immediately
+2026-05-04 07:38:29 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:38:29 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 1931, "output_tokens": 1377, "total_tokens": 3308}
+2026-05-04 07:38:30 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:38:30 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 5295, "output_tokens": 105, "total_tokens": 5400}
+2026-05-04 07:38:32 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:38:32 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 3275, "output_tokens": 110, "total_tokens": 3385}
+2026-05-04 07:38:32 ERROR    [extraction:468] 3 validation errors for ClusterAnalysis
+cluster_components.0.name
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.0.cluster_ids
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.0.description
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+2026-05-04 07:38:32 WARNING  [agents.retry:106] Parse response failed (attempt 2/5): Extractor returned empty message content; retrying immediately
+2026-05-04 07:38:36 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:38:36 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 1931, "output_tokens": 1377, "total_tokens": 3308}
+2026-05-04 07:38:37 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:38:37 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 5299, "output_tokens": 131, "total_tokens": 5430}
+2026-05-04 07:38:43 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:38:44 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 3279, "output_tokens": 2152, "total_tokens": 5431}
+2026-05-04 07:38:44 ERROR    [extraction:1476] Could not apply patch: JsonPatchConflict("can't replace a non-existent object 'name'")
+2026-05-04 07:38:44 ERROR    [extraction:468] 3 validation errors for ClusterAnalysis
+cluster_components.0.name
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.0.cluster_ids
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.0.description
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+2026-05-04 07:38:44 WARNING  [agents.retry:106] Parse response failed (attempt 3/5): Extractor returned empty message content; retrying immediately
+2026-05-04 07:38:48 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:38:48 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 1931, "output_tokens": 1377, "total_tokens": 3308}
+2026-05-04 07:38:50 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:38:50 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 5299, "output_tokens": 137, "total_tokens": 5436}
+2026-05-04 07:38:50 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:38:50 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 3279, "output_tokens": 130, "total_tokens": 3409}
+2026-05-04 07:38:51 ERROR    [extraction:468] 3 validation errors for ClusterAnalysis
+cluster_components.0.name
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.0.cluster_ids
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.0.description
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+2026-05-04 07:38:51 WARNING  [agents.retry:106] Parse response failed (attempt 4/5): Extractor returned empty message content; retrying immediately
+2026-05-04 07:38:55 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:38:55 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 1931, "output_tokens": 1377, "total_tokens": 3308}
+2026-05-04 07:38:56 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:38:56 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 5295, "output_tokens": 121, "total_tokens": 5416}
+2026-05-04 07:39:02 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:39:02 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 3275, "output_tokens": 2120, "total_tokens": 5395}
+2026-05-04 07:39:02 WARNING  [agents.validation:126] [Validation] Duplicate cluster assignments: cluster 27 in both 'Confluence & Scoring Engine' and 'Level Memory & State Management'
+2026-05-04 07:39:02 WARNING  [agents.validation:138] [Validation] Missing clusters: 24, 29
+2026-05-04 07:39:02 INFO     [agents.agent:276] [Validation] Attempt 1/3 score: 0.0/20.0 (2 issue(s))
+2026-05-04 07:39:02 INFO     [agents.agent:313] [Validation] Preparing attempt 2/3 with 2 feedback items
+2026-05-04 07:39:02 INFO     [agents.agent:116] Starting agent.invoke() [attempt 1/5] with prompt length: 58914, timeout: 300s
+2026-05-04 07:39:04 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:39:08 INFO     [monitoring:62] Token Usage: step=startup model=@preset/production usage={"input_tokens": 17634, "output_tokens": 1241, "total_tokens": 18875}
+2026-05-04 07:39:08 INFO     [agents.agent:122] Completed agent.invoke() - message count: 3, last message type: <class 'langchain_core.messages.ai.AIMessage'>
+2026-05-04 07:39:13 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:39:13 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 1468, "output_tokens": 1313, "total_tokens": 2781}
+2026-05-04 07:39:14 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:39:14 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 4030, "output_tokens": 109, "total_tokens": 4139}
+2026-05-04 07:39:15 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:39:15 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 2810, "output_tokens": 142, "total_tokens": 2952}
+2026-05-04 07:39:15 ERROR    [extraction:468] 3 validation errors for ClusterAnalysis
+cluster_components.0.name
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.0.cluster_ids
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.0.description
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+2026-05-04 07:39:15 WARNING  [agents.retry:106] Parse response failed (attempt 1/5): Extractor returned empty message content; retrying immediately
+2026-05-04 07:39:19 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:39:19 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 1468, "output_tokens": 1313, "total_tokens": 2781}
+2026-05-04 07:39:21 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:39:21 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 4032, "output_tokens": 174, "total_tokens": 4206}
+2026-05-04 07:39:22 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:39:22 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 2812, "output_tokens": 142, "total_tokens": 2954}
+2026-05-04 07:39:22 ERROR    [extraction:468] 6 validation errors for ClusterAnalysis
+cluster_components.0.name
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.0.cluster_ids
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.0.description
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.1.name
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.1.cluster_ids
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.1.description
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+2026-05-04 07:39:22 WARNING  [agents.retry:106] Parse response failed (attempt 2/5): Extractor returned empty message content; retrying immediately
+2026-05-04 07:39:26 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:39:26 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 1468, "output_tokens": 1313, "total_tokens": 2781}
+2026-05-04 07:39:27 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:39:27 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 4032, "output_tokens": 133, "total_tokens": 4165}
+2026-05-04 07:39:29 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:39:29 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 2812, "output_tokens": 147, "total_tokens": 2959}
+2026-05-04 07:39:29 ERROR    [extraction:468] 3 validation errors for ClusterAnalysis
+cluster_components.0.name
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.0.cluster_ids
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.0.description
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+2026-05-04 07:39:29 WARNING  [agents.retry:106] Parse response failed (attempt 3/5): Extractor returned empty message content; retrying immediately
+2026-05-04 07:39:33 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:39:33 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 1468, "output_tokens": 1313, "total_tokens": 2781}
+2026-05-04 07:39:34 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:39:34 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 4030, "output_tokens": 122, "total_tokens": 4152}
+2026-05-04 07:39:40 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:39:40 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 2810, "output_tokens": 2204, "total_tokens": 5014}
+2026-05-04 07:39:40 ERROR    [extraction:468] 3 validation errors for ClusterAnalysis
+cluster_components.10.name
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.10.cluster_ids
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.10.description
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+2026-05-04 07:39:40 WARNING  [agents.retry:106] Parse response failed (attempt 4/5): Extractor returned empty message content; retrying immediately
+2026-05-04 07:39:45 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:39:45 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 1468, "output_tokens": 1313, "total_tokens": 2781}
+2026-05-04 07:39:46 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:39:46 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 4034, "output_tokens": 115, "total_tokens": 4149}
+2026-05-04 07:39:47 INFO     [httpx:1025] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-04 07:39:47 INFO     [monitoring:62] Token Usage: step=step_clusters_grouping model=@preset/production usage={"input_tokens": 2814, "output_tokens": 108, "total_tokens": 2922}
+2026-05-04 07:39:47 ERROR    [extraction:468] 3 validation errors for ClusterAnalysis
+cluster_components.0.name
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.0.cluster_ids
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+cluster_components.0.description
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+2026-05-04 07:39:47 ERROR    [agents.retry:115] Parse response failed after 5 attempts: Extractor returned empty message content
+2026-05-04 07:39:47 ERROR    [agents.agent:371] Max retries (5) reached for parsing response: # Grouped Cluster Components
+
+**Decision Spine & Strategy Orchestration** (cluster_ids: [2, 28, 45])
+The central orchestration layer of the Intelligence Engine. It is responsible for synthesizing various market signals into a final trade decision. It uses `buildTradeDecision` to rank opportunities and `deriveAvoidZones` to identify high-risk areas. This component acts as the 'brain' that pulls data from the Confluence and Level Memory components to produce actionable advice. Key methods: `lib.decision-spine.index.buildTradeDecision`, `lib.decision-spine.index.deriveAvoidZones`, and `lib.decision-spine.index.findDirectionalTarget`.
+
+**Confluence & Scoring Engine** (cluster_ids: [1, 26, 43])
+Evaluates the strength of price levels by looking for 'confluence'—where multiple analysts or data sources agree on a specific price zone. It calculates scores based on freshness, cross-source validation, and historical significance. It interacts heavily with the Level Memory to query historical data and provides the 'Verdict' used by the Decision Spine. Key methods: `lib.confluence-engine.scoreLevel`, `lib.confluence.detectConfluence`, and `lib.confluence-engine.buildVerdictMarkdown`.
+
+**Level Memory & State Management** (cluster_ids: [27, 35, 50])
+Maintains the 'Level Memory' of the system, storing and retrieving price levels identified by various ingestors (Bobby, Dubz, Mancini). It ensures data persistence across sessions and provides the `queryLevels` interface used by the Confluence Engine. This group includes the specific logic for filtering and mapping levels across different instruments (ES/SPX). Key methods: `lib.level-memory.queryLevels`, `lib.level-memory.recordLevel`, and `lib.memory.saveMemory`.
+
+**Multi-Source Signal Parsing** (cluster_ids: [7, 15, 16, 23, 36, 49])
+A collection of specialized parsers that translate raw analyst inputs (text, images, or structured data) into a common format. It handles diverse sources like 'Bobby' (heatmap data), 'Dubz' (price levels), and 'Mancini' (textual analysis). This group feeds the Level Memory. Key methods: `lib.parse-bobby.parseBobby`, `lib.parse-mancini.parseManciniText`, and `lib.parse-dubz.parseDubzText`.
+
+**Execution Strategy & Bracket Calculation** (cluster_ids: [9, 10, 20, 25, 46])
+Translates a trade decision into specific execution parameters, such as entry prices, stop losses, and take-profit targets (brackets). It uses instrument-specific logic (like ES/SPX mapping) to calculate precise tick-based exits. Key methods: `lib.bracket-calc.calculateBracket`, `lib.es-bracket-strategy.simulateEsBracketTrade`, and `lib.es-bracket-strategy.selectNextTargets`.
+
+**Backtesting & Performance Evaluation** (cluster_ids: [8, 18, 21, 32, 37, 38, 40])
+Analyzes historical performance by replaying levels against actual price action. It computes metrics like MFE (Maximum Favorable Excursion) and MAE (Maximum Adverse Excursion) to validate the effectiveness of the strategy engine. Key methods: `lib.level-replay.replayLevelAgainstPriceAction`, `lib.research.outcome-metrics.computeOutcomeMetrics`, and `lib.es-long-bracket-runner.runSessionBacktest`.
+
+**Market Context & Readiness** (cluster_ids: [3, 11, 12, 19, 29, 33, 34, 39, 47])
+Provides environmental awareness, including live market prices, market hours (RTH vs Globex), and 'readiness' checks (ensuring all data sources are loaded before trading). It includes historical data loading (Cluster 29) to provide context for current price action. Key methods: `lib.market-hours.isGoodTradingTime`, `lib.live-price.getLivePrice`, and `lib.kat-readiness.buildKatReadiness`.
+
+**Analyst Insights & Watchlist Management** (cluster_ids: [6, 14, 22, 30, 31, 48])
+Aggregates qualitative insights from analysts, specifically focusing on ticker watchlists and equity options. It builds 'profiles' for specific assets based on recent mentions and sentiment. Key methods: `lib.kat-insights.buildKatInsights`, `lib.kat-ticker-watchlist.buildKatTickerWatchlist`, and `lib.kat-equity-options.buildKatEquityOptionsProfile`.
+
+**LLM & Prompt Engineering** (cluster_ids: [4, 42])
+Manages the interaction with Large Language Models, specifically building the complex system prompts that include market context, memory summaries, and repository maps. Key methods: `lib.system-prompt.buildSystemPrompt` and `lib.system-prompt.buildTradingContextBlock`.
+
+**Command Interface & UI Integration** (cluster_ids: [5, 13, 17, 24, 41, 44])
+Handles the ingestion of manual commands (Slash Commands) and the formatting of engine outputs for display in Discord or the Electron UI. It includes the inventory of research data (Cluster 24) used for UI-driven analysis. Key methods: `lib.slash-commands.handleSlashCommand` and `lib.daily-accumulator.handlePasteAccumulate`.
+2026-05-04 07:39:47 ERROR    [monitoring:152] {"event": "step_error", "step": "step_clusters_grouping", "error": "Max retries reached for parsing response: # Grouped Cluster Components\n\n**Decision Spine & Strategy Orchestration** (cluster_ids: [2, 28, 45])\nThe central orchestration layer of the Intelligence Engine. It is responsible for synthesizing various market signals into a final trade decision. It uses `buildTradeDecision` to rank opportunities and `deriveAvoidZones` to identify high-risk areas. This component acts as the 'brain' that pulls data from the Confluence and Level Memory components to produce actionable advice. Key methods: `lib.decision-spine.index.buildTradeDecision`, `lib.decision-spine.index.deriveAvoidZones`, and `lib.decision-spine.index.findDirectionalTarget`.\n\n**Confluence & Scoring Engine** (cluster_ids: [1, 26, 43])\nEvaluates the strength of price levels by looking for 'confluence'\u2014where multiple analysts or data sources agree on a specific price zone. It calculates scores based on freshness, cross-source validation, and historical significance. It interacts heavily with the Level Memory to query historical data and provides the 'Verdict' used by the Decision Spine. Key methods: `lib.confluence-engine.scoreLevel`, `lib.confluence.detectConfluence`, and `lib.confluence-engine.buildVerdictMarkdown`.\n\n**Level Memory & State Management** (cluster_ids: [27, 35, 50])\nMaintains the 'Level Memory' of the system, storing and retrieving price levels identified by various ingestors (Bobby, Dubz, Mancini). It ensures data persistence across sessions and provides the `queryLevels` interface used by the Confluence Engine. This group includes the specific logic for filtering and mapping levels across different instruments (ES/SPX). Key methods: `lib.level-memory.queryLevels`, `lib.level-memory.recordLevel`, and `lib.memory.saveMemory`.\n\n**Multi-Source Signal Parsing** (cluster_ids: [7, 15, 16, 23, 36, 49])\nA collection of specialized parsers that translate raw analyst inputs (text, images, or structured data) into a common format. It handles diverse sources like 'Bobby' (heatmap data), 'Dubz' (price levels), and 'Mancini' (textual analysis). This group feeds the Level Memory. Key methods: `lib.parse-bobby.parseBobby`, `lib.parse-mancini.parseManciniText`, and `lib.parse-dubz.parseDubzText`.\n\n**Execution Strategy & Bracket Calculation** (cluster_ids: [9, 10, 20, 25, 46])\nTranslates a trade decision into specific execution parameters, such as entry prices, stop losses, and take-profit targets (brackets). It uses instrument-specific logic (like ES/SPX mapping) to calculate precise tick-based exits. Key methods: `lib.bracket-calc.calculateBracket`, `lib.es-bracket-strategy.simulateEsBracketTrade`, and `lib.es-bracket-strategy.selectNextTargets`.\n\n**Backtesting & Performance Evaluation** (cluster_ids: [8, 18, 21, 32, 37, 38, 40])\nAnalyzes historical performance by replaying levels against actual price action. It computes metrics like MFE (Maximum Favorable Excursion) and MAE (Maximum Adverse Excursion) to validate the effectiveness of the strategy engine. Key methods: `lib.level-replay.replayLevelAgainstPriceAction`, `lib.research.outcome-metrics.computeOutcomeMetrics`, and `lib.es-long-bracket-runner.runSessionBacktest`.\n\n**Market Context & Readiness** (cluster_ids: [3, 11, 12, 19, 29, 33, 34, 39, 47])\nProvides environmental awareness, including live market prices, market hours (RTH vs Globex), and 'readiness' checks (ensuring all data sources are loaded before trading). It includes historical data loading (Cluster 29) to provide context for current price action. Key methods: `lib.market-hours.isGoodTradingTime`, `lib.live-price.getLivePrice`, and `lib.kat-readiness.buildKatReadiness`.\n\n**Analyst Insights & Watchlist Management** (cluster_ids: [6, 14, 22, 30, 31, 48])\nAggregates qualitative insights from analysts, specifically focusing on ticker watchlists and equity options. It builds 'profiles' for specific assets based on recent mentions and sentiment. Key methods: `lib.kat-insights.buildKatInsights`, `lib.kat-ticker-watchlist.buildKatTickerWatchlist`, and `lib.kat-equity-options.buildKatEquityOptionsProfile`.\n\n**LLM & Prompt Engineering** (cluster_ids: [4, 42])\nManages the interaction with Large Language Models, specifically building the complex system prompts that include market context, memory summaries, and repository maps. Key methods: `lib.system-prompt.buildSystemPrompt` and `lib.system-prompt.buildTradingContextBlock`.\n\n**Command Interface & UI Integration** (cluster_ids: [5, 13, 17, 24, 41, 44])\nHandles the ingestion of manual commands (Slash Commands) and the formatting of engine outputs for display in Discord or the Electron UI. It includes the inventory of research data (Cluster 24) used for UI-driven analysis. Key methods: `lib.slash-commands.handleSlashCommand` and `lib.daily-accumulator.handlePasteAccumulate`."}
+2026-05-04 07:39:47 INFO     [monitoring:157] {"event": "step_end", "step": "step_clusters_grouping", "duration_ms": 101944.75}
+2026-05-04 07:39:47 ERROR    [root:119] Error processing component Intelligence & Strategy Engine: Max retries reached for parsing response: # Grouped Cluster Components
+
+**Decision Spine & Strategy Orchestration** (cluster_ids: [2, 28, 45])
+The central orchestration layer of the Intelligence Engine. It is responsible for synthesizing various market signals into a final trade decision. It uses `buildTradeDecision` to rank opportunities and `deriveAvoidZones` to identify high-risk areas. This component acts as the 'brain' that pulls data from the Confluence and Level Memory components to produce actionable advice. Key methods: `lib.decision-spine.index.buildTradeDecision`, `lib.decision-spine.index.deriveAvoidZones`, and `lib.decision-spine.index.findDirectionalTarget`.
+
+**Confluence & Scoring Engine** (cluster_ids: [1, 26, 43])
+Evaluates the strength of price levels by looking for 'confluence'—where multiple analysts or data sources agree on a specific price zone. It calculates scores based on freshness, cross-source validation, and historical significance. It interacts heavily with the Level Memory to query historical data and provides the 'Verdict' used by the Decision Spine. Key methods: `lib.confluence-engine.scoreLevel`, `lib.confluence.detectConfluence`, and `lib.confluence-engine.buildVerdictMarkdown`.
+
+**Level Memory & State Management** (cluster_ids: [27, 35, 50])
+Maintains the 'Level Memory' of the system, storing and retrieving price levels identified by various ingestors (Bobby, Dubz, Mancini). It ensures data persistence across sessions and provides the `queryLevels` interface used by the Confluence Engine. This group includes the specific logic for filtering and mapping levels across different instruments (ES/SPX). Key methods: `lib.level-memory.queryLevels`, `lib.level-memory.recordLevel`, and `lib.memory.saveMemory`.
+
+**Multi-Source Signal Parsing** (cluster_ids: [7, 15, 16, 23, 36, 49])
+A collection of specialized parsers that translate raw analyst inputs (text, images, or structured data) into a common format. It handles diverse sources like 'Bobby' (heatmap data), 'Dubz' (price levels), and 'Mancini' (textual analysis). This group feeds the Level Memory. Key methods: `lib.parse-bobby.parseBobby`, `lib.parse-mancini.parseManciniText`, and `lib.parse-dubz.parseDubzText`.
+
+**Execution Strategy & Bracket Calculation** (cluster_ids: [9, 10, 20, 25, 46])
+Translates a trade decision into specific execution parameters, such as entry prices, stop losses, and take-profit targets (brackets). It uses instrument-specific logic (like ES/SPX mapping) to calculate precise tick-based exits. Key methods: `lib.bracket-calc.calculateBracket`, `lib.es-bracket-strategy.simulateEsBracketTrade`, and `lib.es-bracket-strategy.selectNextTargets`.
+
+**Backtesting & Performance Evaluation** (cluster_ids: [8, 18, 21, 32, 37, 38, 40])
+Analyzes historical performance by replaying levels against actual price action. It computes metrics like MFE (Maximum Favorable Excursion) and MAE (Maximum Adverse Excursion) to validate the effectiveness of the strategy engine. Key methods: `lib.level-replay.replayLevelAgainstPriceAction`, `lib.research.outcome-metrics.computeOutcomeMetrics`, and `lib.es-long-bracket-runner.runSessionBacktest`.
+
+**Market Context & Readiness** (cluster_ids: [3, 11, 12, 19, 29, 33, 34, 39, 47])
+Provides environmental awareness, including live market prices, market hours (RTH vs Globex), and 'readiness' checks (ensuring all data sources are loaded before trading). It includes historical data loading (Cluster 29) to provide context for current price action. Key methods: `lib.market-hours.isGoodTradingTime`, `lib.live-price.getLivePrice`, and `lib.kat-readiness.buildKatReadiness`.
+
+**Analyst Insights & Watchlist Management** (cluster_ids: [6, 14, 22, 30, 31, 48])
+Aggregates qualitative insights from analysts, specifically focusing on ticker watchlists and equity options. It builds 'profiles' for specific assets based on recent mentions and sentiment. Key methods: `lib.kat-insights.buildKatInsights`, `lib.kat-ticker-watchlist.buildKatTickerWatchlist`, and `lib.kat-equity-options.buildKatEquityOptionsProfile`.
+
+**LLM & Prompt Engineering** (cluster_ids: [4, 42])
+Manages the interaction with Large Language Models, specifically building the complex system prompts that include market context, memory summaries, and repository maps. Key methods: `lib.system-prompt.buildSystemPrompt` and `lib.system-prompt.buildTradingContextBlock`.
+
+**Command Interface & UI Integration** (cluster_ids: [5, 13, 17, 24, 41, 44])
+Handles the ingestion of manual commands (Slash Commands) and the formatting of engine outputs for display in Discord or the Electron UI. It includes the inventory of research data (Cluster 24) used for UI-driven analysis. Key methods: `lib.slash-commands.handleSlashCommand` and `lib.daily-accumulator.handlePasteAccumulate`.
+2026-05-04 07:39:47 INFO     [caching.cache:114] Cache initialized at C:\Users\conor\luke\.codeboarding\cache\final_analysis_llm.sqlite
+2026-05-04 07:39:47 INFO     [caching.cache:114] Cache initialized at C:\Users\conor\luke\.codeboarding\cache\cluster_analysis_llm.sqlite
+2026-05-04 07:39:47 INFO     [codeboarding_pro.file_monitor:120] FileMonitor stopped
+2026-05-04 07:39:47 INFO     [codeboarding_pro.session:278] Session a6e3deae-0b42-46cc-8a8e-f53975746643 destroyed

@@ -111,7 +111,6 @@ describe('/brain dashboard shell', () => {
       'Trading (Analysis)',
       'AI Automation Business',
       'Developer Stack',
-      'Daily Weather',
       'Daily Brief',
       'History Career',
       'History Career fork',
@@ -124,12 +123,17 @@ describe('/brain dashboard shell', () => {
       'href="/luke"',
       'weather-emoji',
       'weatherEmoji(weather)',
+      'formatWeatherForecast(weather)',
       'daily-brief-state',
       'daily-brief-note',
-      'module-static',
+      'daily-brief-weather-summary',
+      'daily-brief-weather-forecast',
     ]) {
       expect(html).toContain(label);
     }
+
+    expect(html).not.toContain('Daily Weather');
+    expect(html).not.toContain('aria-label="Daily weather status"');
 
     expect(html).toContain('/trading');
     expect(html).toContain('/luke');

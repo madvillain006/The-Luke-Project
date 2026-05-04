@@ -351,12 +351,51 @@
       box-shadow: 30px 0 0 #ffffff;
     }
 
+    .daily-brief-stack,
     .weather-stack,
     .system-stack {
       display: grid;
       gap: 8px;
       color: var(--text);
       text-align: center;
+    }
+
+    .daily-brief-stack {
+      width: 100%;
+      height: 100%;
+      padding: 6px 8px;
+      align-content: center;
+      justify-items: center;
+      gap: 3px;
+    }
+
+    .daily-brief-state-value {
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .daily-brief-weather-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 7px;
+      max-width: 100%;
+    }
+
+    .daily-brief-note-text,
+    .daily-brief-weather-summary,
+    .daily-brief-weather-forecast {
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.15;
+    }
+
+    .daily-brief-note-text {
+      color: var(--text);
     }
 
     .weather-temp {
@@ -366,6 +405,10 @@
     .weather-emoji {
       font-size: 24px;
       line-height: 1;
+    }
+
+    .daily-brief-weather-row .weather-emoji {
+      font-size: 18px;
     }
 
     .small-grid {
@@ -633,13 +676,20 @@
         <div class="module-caption"><span>C 000</span><span class="name">Brain Core</span></div>
       </a>
 
-      <article class="module-link module-static" aria-label="Daily weather status">
-        <div class="module-art"><div class="weather-stack"><span class="weather-emoji" id="weather-emoji" aria-hidden="true">·</span><span class="weather-temp" id="weather-temp">--</span><span id="weather-cond">loading</span></div></div>
-        <div class="module-caption"><span>D 002</span><span class="name">Daily Weather</span></div>
-      </article>
-
       <a class="module-link" data-route="/brain-dashboard#spine-daily" href="/brain-dashboard#spine-daily">
-        <div class="module-art"><div class="system-stack"><span class="weather-temp" id="daily-brief-state">--</span><span id="daily-brief-note">brief loading</span></div></div>
+        <div class="module-art">
+          <div class="daily-brief-stack">
+            <span class="daily-brief-state-value" id="daily-brief-state">--</span>
+            <span class="daily-brief-note-text" id="daily-brief-note">brief loading</span>
+            <span class="daily-brief-weather-row">
+              <span class="weather-emoji" id="weather-emoji" aria-hidden="true">·</span>
+              <span id="weather-temp">--</span>
+              <span id="weather-cond">loading</span>
+            </span>
+            <span class="daily-brief-weather-summary" id="daily-brief-weather-summary">weather loading</span>
+            <span class="daily-brief-weather-forecast" id="daily-brief-weather-forecast">forecast loading</span>
+          </div>
+        </div>
         <div class="module-caption"><span>D 003</span><span class="name">Daily Brief</span><span class="module-meta">Check-ins and next actions</span></div>
       </a>
 
@@ -697,6 +747,17 @@
       if (condition.includes('clear') || code === 0) return '☀️';
       if (weather?.status === 'unavailable') return '⚠️';
       return '🌡️';
+    }
+
+    function formatWeatherForecast(weather) {
+      if (!weather || weather.status === 'unavailable' || weather.status === 'needs_location') {
+        return 'forecast unavailable';
+      }
+      const parts = [];
+      if (weather.low_f != null && weather.high_f != null) parts.push(`${weather.low_f}-${weather.high_f}F`);
+      if (weather.precipitation_probability != null) parts.push(`rain ${weather.precipitation_probability}%`);
+      if (weather.wind_mph != null) parts.push(`wind ${weather.wind_mph}mph`);
+      return parts.length ? parts.join(' / ') : 'forecast unavailable';
     }
 
     function focusTradingInput() {
@@ -777,6 +838,8 @@
         setText('weather-emoji', weatherEmoji(weather));
         setText('weather-temp', weather.temperature_f == null ? '--' : `${weather.temperature_f}F`);
         setText('weather-cond', weather.condition || weather.status || 'unknown');
+        setText('daily-brief-weather-summary', weather.summary || 'weather unavailable');
+        setText('daily-brief-weather-forecast', formatWeatherForecast(weather));
         setText('daily-brief-state', String(daily.status || 'brief').toUpperCase());
         setText('daily-brief-note', daily.next_actions?.[0] || daily.blockers?.[0] || 'no daily blocker');
         setText('brain-line', `${Object.keys(brain.subagents || {}).length} agents / ${brain.report_inbox?.count || 0} reports`);
@@ -785,6 +848,10 @@
       } catch (err) {
         setText('weather-line', 'offline');
         setText('weather-emoji', '⚠️');
+        setText('weather-temp', '--');
+        setText('weather-cond', 'offline');
+        setText('daily-brief-weather-summary', 'weather offline');
+        setText('daily-brief-weather-forecast', 'forecast unavailable');
         setText('daily-brief-state', '--');
         setText('daily-brief-note', 'brief offline');
         setText('brain-line', 'offline');

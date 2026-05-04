@@ -77,6 +77,12 @@ Message 1496170457718587473 @ 2026-04-21T15:27:14.623Z
 - Input: "SPX 5min. Bear flag. SIMPOL"
 - Parsed: SPX BEARISH CHART_ANALYSIS; levels=none
 
+## Parsed Vision Examples: Charts
+- No persisted chart vision parses yet.
+
+## Parsed Vision Examples: Heatmaps
+- No persisted heatmap vision parses yet.
+
 ## Latest Parsed Examples
 
 - 2026-04-28T19:09:35.220Z | SPX/SPY/ES index lane | ES | BULLISH | 1498763127297409035

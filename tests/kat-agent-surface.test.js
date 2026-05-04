@@ -11,6 +11,9 @@ describe('Kat agent live surface', () => {
     expect(source).toContain("type: 'kat_signal'");
     expect(source).toContain("type: 'kat_chart_pending'");
     expect(source).toContain("type: 'kat_watchlist_signal'");
+    expect(source).toContain('appendKatVisionRecord');
+    expect(source).toContain("type: 'kat_vision'");
+    expect(source).toContain('../lib/kat-vision-store');
     expect(source).toContain('option_context:');
     expect(source).toContain('equity_context:');
     expect(source).toContain('broadcastKatCapture(entry, signal)');

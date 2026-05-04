@@ -62,6 +62,9 @@ describe('Kat readiness', () => {
       { ts: '2026-05-03T13:00:00.000Z', message_id: 'p1', analyst: 'analyst1', channel: 'trade-floor', ticker: 'GLW', signal_type: 'DIRECTIONAL', bias: 'BULLISH', raw: '$GLW breakout over 60' },
       { ts: '2026-05-03T13:01:00.000Z', message_id: 'p2', analyst: 'analyst2', channel: 'trade-floor', ticker: 'GLW', signal_type: 'DIRECTIONAL', bias: 'BULLISH', raw: 'GLW 1D bull flag' },
     ]);
+    writeJsonl(path.join(root, 'data', 'kat', 'vision-signals.jsonl'), [
+      { ts: '2026-05-03T13:00:00.000Z', message_id: 'raw-0', attachment_id: 'a1', analyst: 'analyst1', channel: 'trade-floor', ticker: 'GLW', source_class: 'chart', chart_type: 'candlestick', bias: 'BULLISH', levels: [60], parse_status: 'parsed_levels' },
+    ]);
     writeJson(path.join(root, 'data', 'kat', 'derived', 'kat-replay-summary.json'), {
       parsed_records: 100,
       spx_options_direct_records: 50,
@@ -84,6 +87,7 @@ describe('Kat readiness', () => {
     expect(readiness.discord_output_gate.responses_enabled).toBe(false);
     expect(readiness.discord_output_gate.posts_enabled).toBe(false);
     expect(readiness.recommendation.status).toBe('owner_review_ready');
+    expect(readiness.evidence.vision_chart_signals).toBe(1);
     expect(readiness.warnings.join('\n')).toContain('SPX/SPY sample size');
     expect(formatKatReadinessMarkdown(readiness)).toContain('Discord outputs still gated');
   });

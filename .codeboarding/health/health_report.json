@@ -1,0 +1,607 @@
+{
+  "repository_name": "luke",
+  "timestamp": "2026-05-04T11:38:04.780407+00:00",
+  "overall_score": 0.9945879709996936,
+  "check_summaries": [
+    {
+      "check_name": "function_size",
+      "description": "Checks that functions/methods do not exceed line count thresholds",
+      "check_type": "standard",
+      "total_entities_checked": 2190,
+      "findings_count": 16,
+      "warning_count": 16,
+      "score": 0.9926940639269406,
+      "finding_groups": [
+        {
+          "severity": "warning",
+          "threshold": 150,
+          "description": "Functions exceeding 150.0 lines",
+          "entities": [
+            {
+              "entity_name": "lib.slash-commands.handleSlashCommand",
+              "file_path": "lib\\slash-commands.js",
+              "line_start": 439,
+              "line_end": 1342,
+              "metric_value": 903
+            },
+            {
+              "entity_name": "lib.parse-mancini.parseManciniText",
+              "file_path": "lib\\parse-mancini.js",
+              "line_start": 413,
+              "line_end": 695,
+              "metric_value": 282
+            },
+            {
+              "entity_name": "lib.parse-dubz.parseDubzText",
+              "file_path": "lib\\parse-dubz.js",
+              "line_start": 168,
+              "line_end": 405,
+              "metric_value": 237
+            },
+            {
+              "entity_name": "trading.router.router.post(\"/evaluate\") callback",
+              "file_path": "trading\\router.js",
+              "line_start": 645,
+              "line_end": 867,
+              "metric_value": 222
+            },
+            {
+              "entity_name": "lib.parse-ximes.parseXimes",
+              "file_path": "lib\\parse-ximes.js",
+              "line_start": 167,
+              "line_end": 374,
+              "metric_value": 207
+            },
+            {
+              "entity_name": "scripts.validate-bobby-fixtures.main",
+              "file_path": "scripts\\validate-bobby-fixtures.js",
+              "line_start": 50,
+              "line_end": 238,
+              "metric_value": 188
+            },
+            {
+              "entity_name": "lib.research.fake-breakdown-state-machine.live-watchlist.buildFakeBreakdownLiveWatchlist",
+              "file_path": "lib\\research\\fake-breakdown-state-machine\\live-watchlist.js",
+              "line_start": 382,
+              "line_end": 568,
+              "metric_value": 186
+            },
+            {
+              "entity_name": "index.app.post(\"/chat\") callback",
+              "file_path": "index.js",
+              "line_start": 422,
+              "line_end": 601,
+              "metric_value": 179
+            },
+            {
+              "entity_name": "scheduler.runScheduler",
+              "file_path": "scheduler.js",
+              "line_start": 304,
+              "line_end": 482,
+              "metric_value": 178
+            },
+            {
+              "entity_name": "lib.decision-spine.index.buildTradeDecision",
+              "file_path": "lib\\decision-spine\\index.js",
+              "line_start": 168,
+              "line_end": 343,
+              "metric_value": 175
+            },
+            {
+              "entity_name": "lib.parse-dubz.mergeDubzInputs",
+              "file_path": "lib\\parse-dubz.js",
+              "line_start": 561,
+              "line_end": 735,
+              "metric_value": 174
+            },
+            {
+              "entity_name": "lib.confluence.detectConfluence",
+              "file_path": "lib\\confluence.js",
+              "line_start": 124,
+              "line_end": 287,
+              "metric_value": 163
+            },
+            {
+              "entity_name": "lib.parse-bobby.parseBobbyImage",
+              "file_path": "lib\\parse-bobby.js",
+              "line_start": 273,
+              "line_end": 436,
+              "metric_value": 163
+            },
+            {
+              "entity_name": "lib.es-bracket-strategy.simulateEsBracketTrade",
+              "file_path": "lib\\es-bracket-strategy.js",
+              "line_start": 76,
+              "line_end": 233,
+              "metric_value": 157
+            },
+            {
+              "entity_name": "scripts.validate-dubz-fixtures.main",
+              "file_path": "scripts\\validate-dubz-fixtures.js",
+              "line_start": 59,
+              "line_end": 212,
+              "metric_value": 153
+            },
+            {
+              "entity_name": "lib.daily-accumulator.handlePasteAccumulate",
+              "file_path": "lib\\daily-accumulator.js",
+              "line_start": 182,
+              "line_end": 334,
+              "metric_value": 152
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "check_name": "fan_out",
+      "description": "Checks efferent coupling: how many other functions each function calls",
+      "check_type": "standard",
+      "total_entities_checked": 3754,
+      "findings_count": 33,
+      "warning_count": 33,
+      "score": 0.9912093766648907,
+      "finding_groups": [
+        {
+          "severity": "warning",
+          "threshold": 10,
+          "description": "Functions calling more than 10.0 other functions",
+          "entities": [
+            {
+              "entity_name": "lib.slash-commands.handleSlashCommand",
+              "file_path": "lib\\slash-commands.js",
+              "line_start": 439,
+              "line_end": 1342,
+              "metric_value": 48
+            },
+            {
+              "entity_name": "lib.parse-mancini.parseManciniText",
+              "file_path": "lib\\parse-mancini.js",
+              "line_start": 413,
+              "line_end": 695,
+              "metric_value": 20
+            },
+            {
+              "entity_name": "index.app.post(\"/chat\") callback",
+              "file_path": "index.js",
+              "line_start": 422,
+              "line_end": 601,
+              "metric_value": 18
+            },
+            {
+              "entity_name": "lib.research.fake-breakdown-v2.evaluator.runFakeBreakdownV2Research",
+              "file_path": "lib\\research\\fake-breakdown-v2\\evaluator.js",
+              "line_start": 366,
+              "line_end": 442,
+              "metric_value": 17
+            },
+            {
+              "entity_name": "scripts.run-historical-operator-replay.runReplay",
+              "file_path": "scripts\\run-historical-operator-replay.js",
+              "line_start": 497,
+              "line_end": 605,
+              "metric_value": 17
+            },
+            {
+              "entity_name": "lib.research.fake-breakdown-v3.evaluator.runFakeBreakdownV3Research",
+              "file_path": "lib\\research\\fake-breakdown-v3\\evaluator.js",
+              "line_start": 302,
+              "line_end": 356,
+              "metric_value": 16
+            },
+            {
+              "entity_name": "lib.research.replay-engine.runExistingDataReplay",
+              "file_path": "lib\\research\\replay-engine.js",
+              "line_start": 213,
+              "line_end": 335,
+              "metric_value": 16
+            },
+            {
+              "entity_name": "scripts.compare-operator-surfaces.buildComparison",
+              "file_path": "scripts\\compare-operator-surfaces.js",
+              "line_start": 305,
+              "line_end": 343,
+              "metric_value": 15
+            },
+            {
+              "entity_name": "scripts.replay-decision-spine-history.main",
+              "file_path": "scripts\\replay-decision-spine-history.js",
+              "line_start": 341,
+              "line_end": 482,
+              "metric_value": 15
+            },
+            {
+              "entity_name": "agents.agent-13-workflows.runWorkflow",
+              "file_path": "agents\\agent-13-workflows.js",
+              "line_start": 264,
+              "line_end": 353,
+              "metric_value": 14
+            },
+            {
+              "entity_name": "lib.research.fake-breakdown-state-machine.live-watchlist.buildFakeBreakdownLiveWatchlist",
+              "file_path": "lib\\research\\fake-breakdown-state-machine\\live-watchlist.js",
+              "line_start": 382,
+              "line_end": 568,
+              "metric_value": 14
+            },
+            {
+              "entity_name": "lib.research.fake-breakdown-v3.feature-extractor.extractPreEntryFeatures",
+              "file_path": "lib\\research\\fake-breakdown-v3\\feature-extractor.js",
+              "line_start": 178,
+              "line_end": 231,
+              "metric_value": 14
+            },
+            {
+              "entity_name": "scripts.run-virtual-trading-workday-showcase.runShowcase",
+              "file_path": "scripts\\run-virtual-trading-workday-showcase.js",
+              "line_start": 406,
+              "line_end": 470,
+              "metric_value": 14
+            },
+            {
+              "entity_name": "lib.brain.automation-business-spine.buildAutomationArtifact",
+              "file_path": "lib\\brain\\automation-business-spine.js",
+              "line_start": 822,
+              "line_end": 866,
+              "metric_value": 13
+            },
+            {
+              "entity_name": "lib.kat-owner-proof-pack.buildKatOwnerProofPack",
+              "file_path": "lib\\kat-owner-proof-pack.js",
+              "line_start": 392,
+              "line_end": 440,
+              "metric_value": 13
+            },
+            {
+              "entity_name": "lib.research.prop-fake-breakdown.detector.detectSetupsForSession",
+              "file_path": "lib\\research\\prop-fake-breakdown\\detector.js",
+              "line_start": 228,
+              "line_end": 336,
+              "metric_value": 13
+            },
+            {
+              "entity_name": "lib.research.prop-fake-breakdown.evaluator.runPropFakeBreakdownResearch",
+              "file_path": "lib\\research\\prop-fake-breakdown\\evaluator.js",
+              "line_start": 286,
+              "line_end": 361,
+              "metric_value": 13
+            },
+            {
+              "entity_name": "trading.execution-live.executeLive",
+              "file_path": "trading\\execution-live.js",
+              "line_start": 47,
+              "line_end": 186,
+              "metric_value": 13
+            },
+            {
+              "entity_name": "trading.router.router.post(\"/evaluate\") callback",
+              "file_path": "trading\\router.js",
+              "line_start": 645,
+              "line_end": 867,
+              "metric_value": 13
+            },
+            {
+              "entity_name": "trading.broker-tradovate.getContractIdForTicker",
+              "file_path": "trading\\broker-tradovate.js",
+              "line_start": 53,
+              "line_end": 56,
+              "metric_value": 12
+            },
+            {
+              "entity_name": "fault-injection._lib.assertRunning",
+              "file_path": "fault-injection\\_lib.js",
+              "line_start": 65,
+              "line_end": 73,
+              "metric_value": 11
+            },
+            {
+              "entity_name": "lib.research.fake-breakdown-state-machine.evaluator.runFakeBreakdownStateMachineResearch",
+              "file_path": "lib\\research\\fake-breakdown-state-machine\\evaluator.js",
+              "line_start": 198,
+              "line_end": 296,
+              "metric_value": 11
+            },
+            {
+              "entity_name": "lib.system-prompt.buildSystemPrompt",
+              "file_path": "lib\\system-prompt.js",
+              "line_start": 129,
+              "line_end": 253,
+              "metric_value": 11
+            },
+            {
+              "entity_name": "scripts.build-es-long-backtest-dataset.main",
+              "file_path": "scripts\\build-es-long-backtest-dataset.js",
+              "line_start": 279,
+              "line_end": 413,
+              "metric_value": 11
+            },
+            {
+              "entity_name": "agents.agent-09-architect.runScan",
+              "file_path": "agents\\agent-09-architect.js",
+              "line_start": 144,
+              "line_end": 280,
+              "metric_value": 10
+            },
+            {
+              "entity_name": "lib.kat-audit.buildKatAudit",
+              "file_path": "lib\\kat-audit.js",
+              "line_start": 327,
+              "line_end": 378,
+              "metric_value": 10
+            },
+            {
+              "entity_name": "lib.kat-equity-options.addRaw",
+              "file_path": "lib\\kat-equity-options.js",
+              "line_start": 176,
+              "line_end": 190,
+              "metric_value": 10
+            },
+            {
+              "entity_name": "lib.kat-ticker-watchlist.addRawMentions",
+              "file_path": "lib\\kat-ticker-watchlist.js",
+              "line_start": 100,
+              "line_end": 120,
+              "metric_value": 10
+            },
+            {
+              "entity_name": "lib.operator.operator-status-adapter.buildOperatorStatus",
+              "file_path": "lib\\operator\\operator-status-adapter.js",
+              "line_start": 99,
+              "line_end": 157,
+              "metric_value": 10
+            },
+            {
+              "entity_name": "lib.research.fake-breakdown.strategy.runFakeBreakdownResearch",
+              "file_path": "lib\\research\\fake-breakdown\\strategy.js",
+              "line_start": 160,
+              "line_end": 217,
+              "metric_value": 10
+            },
+            {
+              "entity_name": "scripts.build-es-long-backtest-sessions.buildSessionsFromInputs",
+              "file_path": "scripts\\build-es-long-backtest-sessions.js",
+              "line_start": 427,
+              "line_end": 482,
+              "metric_value": 10
+            },
+            {
+              "entity_name": "scripts.prove-staged-flow.main",
+              "file_path": "scripts\\prove-staged-flow.js",
+              "line_start": 194,
+              "line_end": 227,
+              "metric_value": 10
+            },
+            {
+              "entity_name": "trading.execution-shadow.executeShadow",
+              "file_path": "trading\\execution-shadow.js",
+              "line_start": 37,
+              "line_end": 131,
+              "metric_value": 10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "check_name": "fan_in",
+      "description": "Checks afferent coupling: how many other functions call each function",
+      "check_type": "standard",
+      "total_entities_checked": 3754,
+      "findings_count": 3,
+      "warning_count": 3,
+      "score": 0.999200852424081,
+      "finding_groups": [
+        {
+          "severity": "warning",
+          "threshold": 10,
+          "description": "Functions called by more than 10.0 other functions",
+          "entities": [
+            {
+              "entity_name": "agents.agent-14-kat.loadConfig",
+              "file_path": "agents\\agent-14-kat.js",
+              "line_start": 20,
+              "line_end": 29,
+              "metric_value": 11
+            },
+            {
+              "entity_name": "lib.brain.automation-business-spine.buildClientProfile",
+              "file_path": "lib\\brain\\automation-business-spine.js",
+              "line_start": 213,
+              "line_end": 228,
+              "metric_value": 10
+            },
+            {
+              "entity_name": "lib.brain.automation-business-spine.artifactEnvelope",
+              "file_path": "lib\\brain\\automation-business-spine.js",
+              "line_start": 230,
+              "line_end": 237,
+              "metric_value": 10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "check_name": "god_class",
+      "description": "Detects classes with too many methods, too much code, or too many outgoing dependencies",
+      "check_type": "standard",
+      "total_entities_checked": 58,
+      "findings_count": 0,
+      "warning_count": 0,
+      "score": 1.0,
+      "finding_groups": []
+    },
+    {
+      "check_name": "circular_dependencies",
+      "description": "Detects circular dependencies between packages",
+      "check_type": "circular_dependencies",
+      "cycles": [],
+      "packages_checked": 20,
+      "packages_in_cycles": 0
+    },
+    {
+      "check_name": "package_instability",
+      "description": "Computes Martin's instability metric (I = Ce / (Ca + Ce)) per package",
+      "check_type": "standard",
+      "total_entities_checked": 13,
+      "findings_count": 1,
+      "warning_count": 1,
+      "score": 0.9230769230769231,
+      "finding_groups": [
+        {
+          "severity": "warning",
+          "threshold": 0.8,
+          "description": "Packages with instability >= 0.8 that are depended on by others",
+          "entities": [
+            {
+              "entity_name": "lib",
+              "metric_value": 0.833
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "check_name": "component_cohesion",
+      "description": "Measures internal vs external edge ratio per component/cluster",
+      "check_type": "standard",
+      "total_entities_checked": 24,
+      "findings_count": 0,
+      "warning_count": 0,
+      "score": 1.0,
+      "finding_groups": []
+    },
+    {
+      "check_name": "unused_code_diagnostics",
+      "description": "Detects unused imports, variables, functions, and dead code via LSP diagnostics",
+      "check_type": "standard",
+      "total_entities_checked": 0,
+      "findings_count": 0,
+      "warning_count": 0,
+      "score": 1.0,
+      "finding_groups": []
+    }
+  ],
+  "file_summaries": [
+    {
+      "file_path": "lib\\brain\\automation-business-spine.js",
+      "total_findings": 3,
+      "warning_findings": 3,
+      "composite_risk_score": 45.0
+    },
+    {
+      "file_path": "lib\\slash-commands.js",
+      "total_findings": 2,
+      "warning_findings": 2,
+      "composite_risk_score": 30.0
+    },
+    {
+      "file_path": "lib\\parse-mancini.js",
+      "total_findings": 2,
+      "warning_findings": 2,
+      "composite_risk_score": 30.0
+    },
+    {
+      "file_path": "lib\\parse-dubz.js",
+      "total_findings": 2,
+      "warning_findings": 2,
+      "composite_risk_score": 30.0
+    },
+    {
+      "file_path": "trading\\router.js",
+      "total_findings": 2,
+      "warning_findings": 2,
+      "composite_risk_score": 30.0
+    },
+    {
+      "file_path": "lib\\research\\fake-breakdown-state-machine\\live-watchlist.js",
+      "total_findings": 2,
+      "warning_findings": 2,
+      "composite_risk_score": 30.0
+    },
+    {
+      "file_path": "index.js",
+      "total_findings": 2,
+      "warning_findings": 2,
+      "composite_risk_score": 30.0
+    },
+    {
+      "file_path": "lib\\parse-ximes.js",
+      "total_findings": 1,
+      "warning_findings": 1,
+      "composite_risk_score": 15.0
+    },
+    {
+      "file_path": "scripts\\validate-bobby-fixtures.js",
+      "total_findings": 1,
+      "warning_findings": 1,
+      "composite_risk_score": 15.0
+    },
+    {
+      "file_path": "scheduler.js",
+      "total_findings": 1,
+      "warning_findings": 1,
+      "composite_risk_score": 15.0
+    },
+    {
+      "file_path": "lib\\decision-spine\\index.js",
+      "total_findings": 1,
+      "warning_findings": 1,
+      "composite_risk_score": 15.0
+    },
+    {
+      "file_path": "lib\\confluence.js",
+      "total_findings": 1,
+      "warning_findings": 1,
+      "composite_risk_score": 15.0
+    },
+    {
+      "file_path": "lib\\parse-bobby.js",
+      "total_findings": 1,
+      "warning_findings": 1,
+      "composite_risk_score": 15.0
+    },
+    {
+      "file_path": "lib\\es-bracket-strategy.js",
+      "total_findings": 1,
+      "warning_findings": 1,
+      "composite_risk_score": 15.0
+    },
+    {
+      "file_path": "scripts\\validate-dubz-fixtures.js",
+      "total_findings": 1,
+      "warning_findings": 1,
+      "composite_risk_score": 15.0
+    },
+    {
+      "file_path": "lib\\daily-accumulator.js",
+      "total_findings": 1,
+      "warning_findings": 1,
+      "composite_risk_score": 15.0
+    },
+    {
+      "file_path": "lib\\research\\fake-breakdown-v2\\evaluator.js",
+      "total_findings": 1,
+      "warning_findings": 1,
+      "composite_risk_score": 15.0
+    },
+    {
+      "file_path": "scripts\\run-historical-operator-replay.js",
+      "total_findings": 1,
+      "warning_findings": 1,
+      "composite_risk_score": 15.0
+    },
+    {
+      "file_path": "lib\\research\\fake-breakdown-v3\\evaluator.js",
+      "total_findings": 1,
+      "warning_findings": 1,
+      "composite_risk_score": 15.0
+    },
+    {
+      "file_path": "lib\\research\\replay-engine.js",
+      "total_findings": 1,
+      "warning_findings": 1,
+      "composite_risk_score": 15.0
+    }
+  ]
+}

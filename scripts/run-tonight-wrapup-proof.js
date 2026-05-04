@@ -46,7 +46,7 @@ async function postChat(command) {
 
 async function screenshot(page, route, fileName, options = {}) {
   const url = route.startsWith('http') ? route : `${BASE_URL}${route}`;
-  const output = path.join(OUT_DIR, fileName);
+  const output = options.outputPath || path.join(OUT_DIR, fileName);
   try {
     await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
     if (options.waitForText) {
@@ -85,6 +85,33 @@ async function layoutMetrics(page, route) {
   }
 }
 
+async function shellUiChecks(page) {
+  try {
+    await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle', timeout: 30000 });
+    return await page.evaluate(() => {
+      const dailyBrief = document.querySelector('[data-route="/brain-dashboard#spine-daily"]');
+      const weatherTile = Array.from(document.querySelectorAll('.module-caption .name'))
+        .some(item => item.textContent.trim() === 'Daily Weather');
+      const box = dailyBrief?.getBoundingClientRect();
+      return {
+        ok: Boolean(dailyBrief),
+        standalone_daily_weather_tile_visible: weatherTile,
+        daily_brief_text: dailyBrief?.innerText || null,
+        daily_brief_has_weather_summary: Boolean(document.getElementById('daily-brief-weather-summary')?.textContent?.trim()),
+        daily_brief_has_forecast_note: Boolean(document.getElementById('daily-brief-weather-forecast')?.textContent?.trim()),
+        daily_brief_box: box ? {
+          x: Math.round(box.x),
+          y: Math.round(box.y),
+          width: Math.round(box.width),
+          height: Math.round(box.height),
+        } : null,
+      };
+    });
+  } catch (err) {
+    return { ok: false, error: err.message };
+  }
+}
+
 async function main() {
   ensureDir(OUT_DIR);
   const apiRoutes = [
@@ -119,6 +146,10 @@ async function main() {
   const screenshots = [];
   screenshots.push(await screenshot(page, '/', 'old-shell.png'));
   screenshots.push(await screenshot(page, '/', 'old-shell-viewport.png', { fullPage: false }));
+  screenshots.push(await screenshot(page, '/', 'daily-brief-weather-merged.png', {
+    locator: '[data-route="/brain-dashboard#spine-daily"]',
+    outputPath: path.join(ROOT, 'artifacts', 'proof', 'daily-brief-weather-merged.png'),
+  }));
   screenshots.push(await screenshot(page, '/operator-v2', 'operator-v2.png', { waitForText: 'Fake Breakdown Watchlist' }));
   screenshots.push(await screenshot(page, '/operator-v2', 'operator-v2-watchlist-card.png', {
     waitForText: 'Fake Breakdown Watchlist',
@@ -130,6 +161,7 @@ async function main() {
   const layout = {
     shell: await layoutMetrics(page, '/'),
     operator_v2: await layoutMetrics(page, '/operator-v2'),
+    shell_ui_checks: await shellUiChecks(page),
   };
   await browser.close();
   fs.writeFileSync(path.join(OUT_DIR, 'ui-layout-metrics.json'), JSON.stringify(layout, null, 2), 'utf8');

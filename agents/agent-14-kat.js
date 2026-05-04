@@ -483,7 +483,7 @@ if (process.env.KAT_BOT_TOKEN) {
 
       // Real-time vision  fires on new live captures with images
       // Market hours only. Fire-and-forget. Enriches active session.
-      if (hasAttachments && entry.attachments[0]?.url && config.vision_enabled !== false) {
+      if (hasAttachments && entry.attachments.some(att => att && att.url) && config.vision_enabled !== false) {
         const { isMarketOpen } = require('../lib/market-hours');
         if (isMarketOpen().open) {
           setImmediate(() => processLiveVision(entry, signal));
@@ -546,6 +546,12 @@ if (process.env.KAT_BOT_TOKEN) {
           if (hasImg) broadcastKatCapture(entry, null);
           console.log('[kat] Edit captured (no signal): ' + entry.username + '  ' + entry.content.slice(0,60));
         }
+        if (hasImg && entry.attachments.some(att => att && att.url) && config.vision_enabled !== false) {
+          const { isMarketOpen } = require('../lib/market-hours');
+          if (isMarketOpen().open) {
+            setImmediate(() => processLiveVision(entry, signal));
+          }
+        }
       } catch (e) {
         console.error('[kat] messageUpdate error:', e.message);
       }
@@ -573,103 +579,118 @@ async function processLiveVision(entry, parsedSignal) {
     const Anthropic  = require('@anthropic-ai/sdk');
     const https      = require('https');
     const { buildHeatseekerReferencePrompt } = require('../lib/heatseeker-reference');
-    const att        = entry.attachments[0];
-    if (!att || !att.url) return;
+    const {
+      appendKatVisionRecord,
+      buildKatVisionRecord,
+      isImageAttachment,
+    } = require('../lib/kat-vision-store');
+    const attachments = Array.isArray(entry.attachments)
+      ? entry.attachments.filter(att => att && att.url && isImageAttachment(att))
+      : [];
+    if (!attachments.length) return;
 
-    // Fetch image
-    const imageBuffer = await new Promise((resolve, reject) => {
-      const req = https.get(att.url, (res) => {
-        if (res.statusCode !== 200) { reject(new Error('HTTP ' + res.statusCode)); return; }
-        const chunks = [];
-        res.on('data', c => chunks.push(c));
-        res.on('end', () => resolve(Buffer.concat(chunks)));
-      });
-      req.on('error', reject);
-      req.setTimeout(12000, () => { req.destroy(); reject(new Error('timeout')); });
-    });
-    const mediaType = resolveAttachmentMediaType(att, imageBuffer);
-    const base64 = imageBuffer.toString('base64');
-
-    const client   = new Anthropic();
+    const client = new Anthropic();
     const heatseekerReference = buildHeatseekerReferencePrompt();
-    const response = await client.messages.create({
-      model:      'claude-sonnet-4-6',
-      max_tokens: 500,
-      system: 'You are analyzing a financial chart or heatmap image posted by a trader. ' +
-              'Extract key price levels and directional bias. ' +
-              'For heatmap images, apply the Heatseeker node reference below. Treat it as confluence only, not a trade trigger. ' +
-              '\n\nHEATSEEKER NODE REFERENCE:\n' + heatseekerReference + '\n\n' +
-              'Return ONLY valid JSON: ' +
-              '{"chart_type":"candlestick"|"heatmap"|"technical"|"unknown",' +
-              '"ticker":string|null,"key_levels":[numbers],' +
-              '"support_levels":[numbers],"resistance_levels":[numbers],' +
-              '"heatmap_context":{"king_nodes":[numbers],"gatekeeper_nodes":[numbers],"air_pockets":[numbers],"node_read":string|null},' +
-              '"bias":"BULLISH"|"BEARISH"|"NEUTRAL","patterns":[strings],' +
-              '"notes":string}. ' +
-              'Return empty arrays if not identifiable. No markdown.',
-      messages: [{
-        role: 'user',
-        content: [
-          { type: 'image', source: { type: 'base64',
-            media_type: mediaType,
-            data: base64 } },
-          { type: 'text',
-            text: 'Analyst: ' + entry.username +
-                  '\nPosted text: ' + (entry.content || '') }
-        ]
-      }]
-    });
 
-    const rawText = response.content[0]?.text || '';
-    let vision = null;
-    try {
-      vision = JSON.parse(rawText.replace(/```json|```/g, '').trim());
-    } catch (e) {
-      console.error('[kat-vision] parse error:', rawText.slice(0, 80));
-      return;
-    }
+    for (let attachmentIndex = 0; attachmentIndex < attachments.length; attachmentIndex++) {
+      const att = attachments[attachmentIndex];
 
-    if (!vision) return;
-
-    console.log('[kat-vision] Live:', entry.username,
-      '', vision.chart_type, '| bias:', vision.bias,
-      '| levels:', (vision.key_levels || []).length);
-
-    const allLevels = [
-      ...(vision.key_levels        || []),
-      ...(vision.support_levels    || []),
-      ...(vision.resistance_levels || [])
-    ].filter(l => l > 50);
-
-    if (allLevels.length > 0 && typeof global.broadcast === 'function') {
-      global.broadcast({
-        type:       'kat_vision',
-        analyst:    entry.username,
-        ticker:     vision.ticker || parsedSignal?.ticker,
-        bias:       vision.bias,
-        levels:     allLevels,
-        chart_type: vision.chart_type,
-        heatmap_context: vision.heatmap_context || null,
-        notes:      vision.notes,
-        ts:         entry.ts,
-        message_id: entry.message_id,
-        channel:    entry.channel_name,
-        image_evidence: entry.attachments.map(att => ({
-          id: att.id || null,
-          filename: att.filename || null,
-          content_type: att.content_type || null,
-          url: att.url || null
-        })),
-        provenance: {
-          server: 'Elevated Charts',
-          channel: entry.channel_name,
-          analyst: entry.username,
-          message_id: entry.message_id,
-          captured_at: new Date().toISOString()
-        },
-        human_gate_required: true
+      const imageBuffer = await new Promise((resolve, reject) => {
+        const req = https.get(att.url, (res) => {
+          if (res.statusCode !== 200) { reject(new Error('HTTP ' + res.statusCode)); return; }
+          const chunks = [];
+          res.on('data', c => chunks.push(c));
+          res.on('end', () => resolve(Buffer.concat(chunks)));
+        });
+        req.on('error', reject);
+        req.setTimeout(12000, () => { req.destroy(); reject(new Error('timeout')); });
       });
-      console.log('[kat-vision] Broadcast to Luke:', allLevels.length, 'levels from', entry.username);
+      const mediaType = resolveAttachmentMediaType(att, imageBuffer);
+      const base64 = imageBuffer.toString('base64');
+      const model = 'claude-sonnet-4-6';
+
+      const response = await client.messages.create({
+        model,
+        max_tokens: 500,
+        system: 'You are analyzing a financial chart or heatmap image posted by a trader. ' +
+                'Extract key price levels and directional bias. ' +
+                'For heatmap images, apply the Heatseeker node reference below. Treat it as confluence only, not a trade trigger. ' +
+                'For candlestick or technical chart images, extract only visible levels, patterns, and directional context shown in the image. ' +
+                '\n\nHEATSEEKER NODE REFERENCE:\n' + heatseekerReference + '\n\n' +
+                'Return ONLY valid JSON: ' +
+                '{"chart_type":"candlestick"|"heatmap"|"technical"|"unknown",' +
+                '"ticker":string|null,"key_levels":[numbers],' +
+                '"support_levels":[numbers],"resistance_levels":[numbers],' +
+                '"heatmap_context":{"king_nodes":[numbers],"gatekeeper_nodes":[numbers],"air_pockets":[numbers],"node_read":string|null},' +
+                '"bias":"BULLISH"|"BEARISH"|"NEUTRAL","patterns":[strings],' +
+                '"notes":string}. ' +
+                'Return empty arrays if not identifiable. No markdown.',
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64',
+              media_type: mediaType,
+              data: base64 } },
+            { type: 'text',
+              text: 'Analyst: ' + entry.username +
+                    '\nChannel: #' + entry.channel_name +
+                    '\nPosted text: ' + (entry.content || '') }
+          ]
+        }]
+      });
+
+      const rawText = response.content[0]?.text || '';
+      let vision = null;
+      try {
+        vision = JSON.parse(rawText.replace(/```json|```/g, '').trim());
+      } catch (e) {
+        console.error('[kat-vision] parse error:', rawText.slice(0, 80));
+        continue;
+      }
+
+      if (!vision) continue;
+
+      const record = buildKatVisionRecord({
+        entry,
+        attachment: att,
+        attachmentIndex,
+        parsedSignal,
+        vision,
+        rawModelText: rawText,
+        model,
+      });
+      const stored = appendKatVisionRecord(record);
+
+      console.log('[kat-vision] Live:', entry.username,
+        '', record.chart_type, '| bias:', record.bias,
+        '| levels:', record.levels.length, '| stored:', record.vision_id);
+
+      if (typeof global.broadcast === 'function') {
+        global.broadcast({
+          type: 'kat_vision',
+          source: record.source,
+          source_class: record.source_class,
+          parse_status: record.parse_status,
+          vision_id: record.vision_id,
+          analyst: record.analyst,
+          ticker: record.ticker,
+          bias: record.bias,
+          levels: record.levels,
+          entry_context: stored.processed ? stored.processed.entry_context : null,
+          chart_type: record.chart_type,
+          heatmap_context: record.heatmap_context || null,
+          notes: record.notes,
+          ts: record.ts,
+          message_id: record.message_id,
+          attachment_id: record.attachment_id,
+          channel: record.channel,
+          image_evidence: [record.attachment],
+          provenance: record.provenance,
+          processed_signal: stored.processed,
+          human_gate_required: true
+        });
+        console.log('[kat-vision] Broadcast to Luke:', record.levels.length, 'levels from', entry.username);
+      }
     }
 
   } catch (e) {

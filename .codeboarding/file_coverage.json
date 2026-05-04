@@ -1,0 +1,876 @@
+{
+  "version": 1,
+  "generated_at": "2026-05-04T01:15:09.614767+00:00",
+  "analyzed_files": [
+    "agents\\agent-00-brain.js",
+    "agents\\agent-02-trader.js",
+    "agents\\agent-02b-autonomous.js",
+    "agents\\agent-03-income.js",
+    "agents\\agent-04-health.js",
+    "agents\\agent-05-finance.js",
+    "agents\\agent-06-research.js",
+    "agents\\agent-07-opportunity.js",
+    "agents\\agent-08-sienna.js",
+    "agents\\agent-09-architect.js",
+    "agents\\agent-10-sweeper.js",
+    "agents\\agent-11-tokens.js",
+    "agents\\agent-12-fallback.js",
+    "agents\\agent-13-workflows.js",
+    "agents\\agent-14-kat.js",
+    "electron.js",
+    "fault-injection\\01-corrupt-trading-snapshot.js",
+    "fault-injection\\02-delete-trading-snapshot.js",
+    "fault-injection\\03-tradovate-auth-failure.js",
+    "fault-injection\\04-entry-confirmed-protection-fails.js",
+    "fault-injection\\05-scheduler-job-fails-3x.js",
+    "fault-injection\\06-stale-pending-signal.js",
+    "fault-injection\\07-broker-says-position-local-says-flat.js",
+    "fault-injection\\08-kill-during-staged-execution.js",
+    "fault-injection\\09-luke-med-out-of-order.js",
+    "fault-injection\\10-panic-during-active-trade.js",
+    "fault-injection\\_lib.js",
+    "index.js",
+    "lib\\actions.js",
+    "lib\\backtest-data\\atm-simulator.js",
+    "lib\\backtest-data\\bobby-export.js",
+    "lib\\backtest-data\\bobby-image-cache.js",
+    "lib\\backtest-data\\bobby-image-parse.js",
+    "lib\\backtest-data\\long-candidate-generator.js",
+    "lib\\backtest-data\\mancini-text.js",
+    "lib\\backtest-data\\saty-historical.js",
+    "lib\\bobby-heatmap-idempotency.js",
+    "lib\\bobby-heatmap-rules.js",
+    "lib\\bracket-calc.js",
+    "lib\\brain\\automation-business-spine.js",
+    "lib\\brain\\brain-core.js",
+    "lib\\brain\\daily-brief.js",
+    "lib\\brain\\daily-spine.js",
+    "lib\\brain\\developer-stack-spine.js",
+    "lib\\brain\\history-career-spine.js",
+    "lib\\commands\\entries-command.js",
+    "lib\\commands\\ingest-commands.js",
+    "lib\\commands\\status-command.js",
+    "lib\\commands\\verdict-command.js",
+    "lib\\config.js",
+    "lib\\confluence-engine.js",
+    "lib\\confluence.js",
+    "lib\\daily-accumulator.js",
+    "lib\\decision-spine\\index.js",
+    "lib\\detect-paste.js",
+    "lib\\emotional-exits.js",
+    "lib\\es-bracket-strategy.js",
+    "lib\\es-long-bracket-runner.js",
+    "lib\\futures-entry-zones.js",
+    "lib\\heatmap-context.js",
+    "lib\\heatseeker-reference.js",
+    "lib\\historical-data.js",
+    "lib\\kat-audit.js",
+    "lib\\kat-confluence.js",
+    "lib\\kat-equity-options.js",
+    "lib\\kat-index-scope.js",
+    "lib\\kat-insights.js",
+    "lib\\kat-level-context.js",
+    "lib\\kat-market-evaluation.js",
+    "lib\\kat-message-bin.js",
+    "lib\\kat-owner-proof-pack.js",
+    "lib\\kat-readiness.js",
+    "lib\\kat-replay.js",
+    "lib\\kat-ticker-watchlist.js",
+    "lib\\level-memory.js",
+    "lib\\level-replay.js",
+    "lib\\live-price.js",
+    "lib\\llm-client.js",
+    "lib\\logger.js",
+    "lib\\market-data\\cache.js",
+    "lib\\market-data\\index.js",
+    "lib\\market-data\\providers\\finnhub.js",
+    "lib\\market-data\\providers\\polygon.js",
+    "lib\\market-data\\providers\\tradovate.js",
+    "lib\\market-data\\providers\\yahoo.js",
+    "lib\\market-data\\result.js",
+    "lib\\market-data\\symbols.js",
+    "lib\\market-hours.js",
+    "lib\\memory.js",
+    "lib\\operator\\confluence-adapter.js",
+    "lib\\operator\\decision-adapter.js",
+    "lib\\operator\\fake-breakdown-watchlist-adapter.js",
+    "lib\\operator\\ingestion-status-adapter.js",
+    "lib\\operator\\level-memory-adapter.js",
+    "lib\\operator\\log-adapter.js",
+    "lib\\operator\\operator-status-adapter.js",
+    "lib\\parse-bobby.js",
+    "lib\\parse-dubz.js",
+    "lib\\parse-kat.js",
+    "lib\\parse-mancini.js",
+    "lib\\parse-ximes.js",
+    "lib\\paths.js",
+    "lib\\renderers\\entries-renderer.js",
+    "lib\\renderers\\status-renderer.js",
+    "lib\\renderers\\verdict-renderer.js",
+    "lib\\research\\common.js",
+    "lib\\research\\corpus-loader.js",
+    "lib\\research\\existing-data-inventory.js",
+    "lib\\research\\fake-breakdown-state-machine\\account-sim.js",
+    "lib\\research\\fake-breakdown-state-machine\\evaluator.js",
+    "lib\\research\\fake-breakdown-state-machine\\live-watchlist.js",
+    "lib\\research\\fake-breakdown-state-machine\\report.js",
+    "lib\\research\\fake-breakdown-state-machine\\rule-throttle-analysis.js",
+    "lib\\research\\fake-breakdown-state-machine\\rules.js",
+    "lib\\research\\fake-breakdown-state-machine\\states.js",
+    "lib\\research\\fake-breakdown-state-machine\\visual-replay.js",
+    "lib\\research\\fake-breakdown-state-machine\\watchlist-report.js",
+    "lib\\research\\fake-breakdown-v2\\entry-models.js",
+    "lib\\research\\fake-breakdown-v2\\evaluator.js",
+    "lib\\research\\fake-breakdown-v2\\level-ladder.js",
+    "lib\\research\\fake-breakdown-v2\\metrics.js",
+    "lib\\research\\fake-breakdown-v2\\prop-risk.js",
+    "lib\\research\\fake-breakdown-v2\\report.js",
+    "lib\\research\\fake-breakdown-v2\\setup-detector.js",
+    "lib\\research\\fake-breakdown-v2\\staged-sizing.js",
+    "lib\\research\\fake-breakdown-v2\\target-selector.js",
+    "lib\\research\\fake-breakdown-v3\\combo-search.js",
+    "lib\\research\\fake-breakdown-v3\\evaluator.js",
+    "lib\\research\\fake-breakdown-v3\\feature-extractor.js",
+    "lib\\research\\fake-breakdown-v3\\filters.js",
+    "lib\\research\\fake-breakdown-v3\\report.js",
+    "lib\\research\\fake-breakdown\\detector.js",
+    "lib\\research\\fake-breakdown\\filters.js",
+    "lib\\research\\fake-breakdown\\mancini-importer.js",
+    "lib\\research\\fake-breakdown\\metrics.js",
+    "lib\\research\\fake-breakdown\\report.js",
+    "lib\\research\\fake-breakdown\\strategy.js",
+    "lib\\research\\no-lookahead-context.js",
+    "lib\\research\\outcome-metrics.js",
+    "lib\\research\\prop-fake-breakdown\\basis.js",
+    "lib\\research\\prop-fake-breakdown\\detector.js",
+    "lib\\research\\prop-fake-breakdown\\evaluator.js",
+    "lib\\research\\prop-fake-breakdown\\metrics.js",
+    "lib\\research\\prop-fake-breakdown\\prop-risk.js",
+    "lib\\research\\prop-fake-breakdown\\report.js",
+    "lib\\research\\replay-engine.js",
+    "lib\\research\\source-attribution.js",
+    "lib\\research\\source-timeline.js",
+    "lib\\saty-auto-pull.js",
+    "lib\\saty-levels.js",
+    "lib\\session-replay.js",
+    "lib\\sienna-regime.js",
+    "lib\\slash-commands-ingest.js",
+    "lib\\slash-commands.js",
+    "lib\\system-prompt.js",
+    "lib\\today-levels-shim.js",
+    "lib\\validators.js",
+    "preload.js",
+    "scheduler.js",
+    "scripts\\audit-kat.js",
+    "scripts\\backfill-saty-to-memory.js",
+    "scripts\\backtest-es-long-bracket.js",
+    "scripts\\backtest-session.js",
+    "scripts\\build-es-long-backtest-dataset.js",
+    "scripts\\build-es-long-backtest-sessions.js",
+    "scripts\\build-fake-breakdown-watchlist-replay.js",
+    "scripts\\build-kat-owner-proof-pack.js",
+    "scripts\\build-level-frequency.js",
+    "scripts\\compare-operator-surfaces.js",
+    "scripts\\coverage-audit.js",
+    "scripts\\diagnose-backtest-coverage.js",
+    "scripts\\discord-scraper.js",
+    "scripts\\dry-fire.js",
+    "scripts\\generate-es-long-candidates.js",
+    "scripts\\import-mancini-archive.js",
+    "scripts\\ingest-exports.js",
+    "scripts\\inject-session-bobby-levels.js",
+    "scripts\\inventory-existing-research-data.js",
+    "scripts\\kat-handoff.js",
+    "scripts\\mancini-check.js",
+    "scripts\\parse-bobby-images.js",
+    "scripts\\parse-discord-backtest.js",
+    "scripts\\prove-operator-v2.js",
+    "scripts\\prove-staged-flow.js",
+    "scripts\\replay-decision-spine-history.js",
+    "scripts\\replay-kat.js",
+    "scripts\\run-atm-backtest.js",
+    "scripts\\run-combined-atm-backtest.js",
+    "scripts\\run-existing-data-replay.js",
+    "scripts\\run-fake-breakdown-research.js",
+    "scripts\\run-fake-breakdown-state-machine.js",
+    "scripts\\run-fake-breakdown-v2-research.js",
+    "scripts\\run-fake-breakdown-v3-live-filters.js",
+    "scripts\\run-historical-operator-replay.js",
+    "scripts\\run-operator-session.js",
+    "scripts\\run-prop-fake-breakdown-research.js",
+    "scripts\\run-tonight-wrapup-proof.js",
+    "scripts\\run-virtual-trading-workday-showcase.js",
+    "scripts\\test-bobby-vision.js",
+    "scripts\\test-dubz-paste.js",
+    "scripts\\test-ximes-regression.js",
+    "scripts\\validate-bobby-fixtures.js",
+    "scripts\\validate-dubz-fixtures.js",
+    "scripts\\verify-gate4-dubz-memory.js",
+    "scripts\\verify-gate5-bobby-memory.js",
+    "scripts\\verify-market-data.js",
+    "state\\health-store.js",
+    "state\\lib.js",
+    "state\\trading-store.js",
+    "trading\\broker-tradovate.js",
+    "trading\\common.js",
+    "trading\\execution-live.js",
+    "trading\\execution-paper.js",
+    "trading\\execution-shadow.js",
+    "trading\\market-context.js",
+    "trading\\metrics.js",
+    "trading\\risk.js",
+    "trading\\router.js",
+    "trading\\signals.js"
+  ],
+  "not_analyzed_files": [
+    {
+      "path": "brain-dashboard.html",
+      "reason": "other"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "reason": "other"
+    },
+    {
+      "path": "chat.html",
+      "reason": "other"
+    },
+    {
+      "path": "data\\backtest\\es-long-bracket\\derived\\coverage-report.json",
+      "reason": "other"
+    },
+    {
+      "path": "data\\backtest\\es-long-bracket\\derived\\coverage-report.md",
+      "reason": "other"
+    },
+    {
+      "path": "data\\backtest\\es-long-bracket\\derived\\dataset-build-report.json",
+      "reason": "other"
+    },
+    {
+      "path": "data\\backtest\\es-long-bracket\\derived\\dataset-build-report.md",
+      "reason": "other"
+    },
+    {
+      "path": "data\\backtest\\es-long-bracket\\derived\\long-candidate-report.json",
+      "reason": "other"
+    },
+    {
+      "path": "data\\backtest\\es-long-bracket\\derived\\long-candidate-report.md",
+      "reason": "other"
+    },
+    {
+      "path": "data\\backtest\\es-long-bracket\\derived\\saty-levels-by-date.json",
+      "reason": "other"
+    },
+    {
+      "path": "data\\backtest\\es-long-bracket\\derived\\session-build-report.json",
+      "reason": "other"
+    },
+    {
+      "path": "data\\backtest\\es-long-bracket\\derived\\session-build-report.md",
+      "reason": "other"
+    },
+    {
+      "path": "data\\backtest\\es-long-bracket\\README.md",
+      "reason": "other"
+    },
+    {
+      "path": "data\\backtest\\es-long-bracket\\sessions\\example-session.json",
+      "reason": "other"
+    },
+    {
+      "path": "data\\futures-rollover-calendar.json",
+      "reason": "other"
+    },
+    {
+      "path": "data\\research\\README.md",
+      "reason": "other"
+    },
+    {
+      "path": "data\\trading-context\\heatseeker-node-reference.json",
+      "reason": "other"
+    },
+    {
+      "path": "data\\trading-context\\heatseeker-node-reference.md",
+      "reason": "other"
+    },
+    {
+      "path": "data\\trading-context\\README.md",
+      "reason": "other"
+    },
+    {
+      "path": "docs\\ARCHITECTURE_CURRENT.md",
+      "reason": "other"
+    },
+    {
+      "path": "docs\\dubz-parser-findings-2026-04-27.md",
+      "reason": "other"
+    },
+    {
+      "path": "docs\\EXISTING_RESEARCH_DATA_AUDIT.md",
+      "reason": "other"
+    },
+    {
+      "path": "docs\\FAKE_BREAKDOWN_LIVE_WATCHLIST.md",
+      "reason": "other"
+    },
+    {
+      "path": "docs\\FAKE_BREAKDOWN_RESEARCH.md",
+      "reason": "other"
+    },
+    {
+      "path": "docs\\FAKE_BREAKDOWN_STATE_MACHINE.md",
+      "reason": "other"
+    },
+    {
+      "path": "docs\\FAKE_BREAKDOWN_V2_RESEARCH.md",
+      "reason": "other"
+    },
+    {
+      "path": "docs\\FAKE_BREAKDOWN_V3_LIVE_FILTERS.md",
+      "reason": "other"
+    },
+    {
+      "path": "docs\\FAKE_BREAKDOWN_WATCHLIST_REPLAY.md",
+      "reason": "other"
+    },
+    {
+      "path": "docs\\GOAL_MODE_PROGRESS.md",
+      "reason": "other"
+    },
+    {
+      "path": "docs\\LIVE_BLOCKERS.md",
+      "reason": "other"
+    },
+    {
+      "path": "docs\\MONDAY_OPS.md",
+      "reason": "other"
+    },
+    {
+      "path": "docs\\OPTIMAL_STRATEGIES.md",
+      "reason": "other"
+    },
+    {
+      "path": "docs\\PROP_FAKE_BREAKDOWN_RESEARCH.md",
+      "reason": "other"
+    },
+    {
+      "path": "docs\\RESEARCH_REPLAY_RESULTS.md",
+      "reason": "other"
+    },
+    {
+      "path": "docs\\REVIEW_PACKET.md",
+      "reason": "other"
+    },
+    {
+      "path": "docs\\REVIEW_READINESS.md",
+      "reason": "other"
+    },
+    {
+      "path": "docs\\STRATEGY_SOURCE_MAP.md",
+      "reason": "other"
+    },
+    {
+      "path": "docs\\TONIGHT_WRAPUP.md",
+      "reason": "other"
+    },
+    {
+      "path": "ecosystem.config.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "fault-injection\\README.md",
+      "reason": "other"
+    },
+    {
+      "path": "fixtures\\bobby\\2026-04-27_1003_bobby.txt",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "fixtures\\bobby\\2026-04-27_1005_bobby.txt",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "fixtures\\bobby\\2026-04-27_1008_bobby.txt",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "fixtures\\bobby\\2026-04-27_1013_bobby.txt",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "fixtures\\bobby\\2026-04-27_1017_bobby.txt",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "fixtures\\bobby\\2026-04-27_bobby_log.md",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "fixtures\\bobby\\README.md",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "fixtures\\bobby\\synthetic-bearish-bobby.txt",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "fixtures\\dubz\\2026-04-26_0917_dubz.txt",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "fixtures\\dubz\\2026-04-27_0859_dubz.txt",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "fixtures\\dubz\\2026-04-27_0927_dubz.txt",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "fixtures\\mancini\\inbox.md",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "fixtures\\mancini\\parsed-batch-inbox-2026-04-27T21-48-26-21Z.json",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "fixtures\\mancini\\parsed-batch-reddit-archive-2026-04-27T21-48-26-21Z.json",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "fixtures\\mancini\\reddit-archive-2026-04-10-to-2026-04-22.md",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "GEMINI.md",
+      "reason": "other"
+    },
+    {
+      "path": "Launch Luke.cmd",
+      "reason": "other"
+    },
+    {
+      "path": "luke-shell.html",
+      "reason": "other"
+    },
+    {
+      "path": "operator-v2.html",
+      "reason": "other"
+    },
+    {
+      "path": "package-lock.json",
+      "reason": "other"
+    },
+    {
+      "path": "package.json",
+      "reason": "other"
+    },
+    {
+      "path": "README.md",
+      "reason": "other"
+    },
+    {
+      "path": "reports\\katbot-owner-proof\\katbot-owner-evidence.json",
+      "reason": "other"
+    },
+    {
+      "path": "reports\\katbot-owner-proof\\katbot-owner-proof.html",
+      "reason": "other"
+    },
+    {
+      "path": "reports\\katbot-owner-proof\\katbot-owner-report.md",
+      "reason": "other"
+    },
+    {
+      "path": "reports\\katbot-owner-proof\\luke-trading-window-preview.html",
+      "reason": "other"
+    },
+    {
+      "path": "reports\\katbot-owner-proof\\message-bin\\katbot-message-examples.html",
+      "reason": "other"
+    },
+    {
+      "path": "reports\\katbot-owner-proof\\message-bin\\katbot-message-examples.json",
+      "reason": "other"
+    },
+    {
+      "path": "reports\\katbot-owner-proof\\message-bin\\katbot-message-examples.md",
+      "reason": "other"
+    },
+    {
+      "path": "scripts\\baselines\\ximes-baseline.json",
+      "reason": "other"
+    },
+    {
+      "path": "scripts\\desktop.py",
+      "reason": "other"
+    },
+    {
+      "path": "scripts\\trading-layout.py",
+      "reason": "other"
+    },
+    {
+      "path": "scripts\\windows\\LAUNCH-LUKE.cmd",
+      "reason": "other"
+    },
+    {
+      "path": "scripts\\windows\\LAUNCH-LUKE.vbs",
+      "reason": "other"
+    },
+    {
+      "path": "scripts\\windows\\RESTART-LUKE.bat",
+      "reason": "other"
+    },
+    {
+      "path": "scripts\\windows\\START-LUKE.ps1",
+      "reason": "other"
+    },
+    {
+      "path": "tests\\atm-simulator.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\autonomous-recommendation-only.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\backtest-data-bobby-export.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\backtest-data-bobby-image-cache.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\backtest-data-bobby-image-parse.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\backtest-data-mancini-text.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\backtest-data-saty-historical.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\bobby-heatmap-idempotency.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\bracket-calc.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\brain-agent.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\brain-dashboard.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\build-es-long-backtest-sessions.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\confluence-engine.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\confluence.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\daily-accumulator.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\decision-spine-regression.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\decision-spine.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\es-bracket-strategy.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\es-long-bracket-runner.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\fake-breakdown-account-sim.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\fake-breakdown-detector.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\fake-breakdown-live-watchlist.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\fake-breakdown-metrics.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\fake-breakdown-rule-throttles.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\fake-breakdown-state-machine.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\fake-breakdown-v2-entry-models.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\fake-breakdown-v2-level-ladder.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\fake-breakdown-v2-staged-sizing.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\fake-breakdown-v2-target-selector.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\fake-breakdown-v3-filters.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\fake-breakdown-v3-no-lookahead.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\fake-breakdown-watchlist-replay.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\futures-entry-zones.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\heatmap-context.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\heatseeker-reference.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\historical-data.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\historical-operator-replay.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\kat-agent-surface.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\kat-audit.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\kat-equity-options.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\kat-index-scope.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\kat-insights.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\kat-level-context.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\kat-market-evaluation.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\kat-message-bin.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\kat-owner-proof-pack.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\kat-readiness.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\kat-replay.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\kat-ticker-watchlist.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\launcher.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\level-memory-contract.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\level-memory.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\level-replay.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\long-candidate-generator.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\mancini-archive-importer.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\market-data.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\market-hours.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\operator-api-adapters.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\operator-surface-comparison-script.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\operator-v2-ui.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\parse-bobby.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\parse-dubz.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\parse-mancini.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\parse-ximes.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\prop-fake-breakdown-basis.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\prop-fake-breakdown-evaluator.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\prop-fake-breakdown-risk.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\research-inventory.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\research-replay-existing.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\saty-auto-pull.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\saty-levels.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\slash-commands.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\slash-trade-format.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\smoke.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\system-prompt.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\today-levels-shim.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\trading-common.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "tests\\virtual-trading-workday-showcase.test.js",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "trade-popup.html",
+      "reason": "other"
+    },
+    {
+      "path": "vitest.config.mjs",
+      "reason": "codeboardingignore"
+    },
+    {
+      "path": "workflows\\tradovate-check-position.yaml",
+      "reason": "other"
+    },
+    {
+      "path": "workflows\\tradovate-flatten-all.yaml",
+      "reason": "other"
+    },
+    {
+      "path": "workflows\\tradovate-login.yaml",
+      "reason": "other"
+    },
+    {
+      "path": "workflows\\tradovate-place-bracket.yaml",
+      "reason": "other"
+    }
+  ],
+  "summary": {
+    "total_files": 379,
+    "analyzed": 219,
+    "not_analyzed": 160,
+    "not_analyzed_by_reason": {
+      "other": 65,
+      "codeboardingignore": 95
+    }
+  }
+}

@@ -1,8 +1,8 @@
 # Katbot Owner Review Pack
 
-Status: **owner_review_ready**
+Status: **not_ready**
 
-Ready for owner review as silent capture and Luke-only shadow evidence, not public Discord answering.
+Keep Kat internal. Fix blockers before showing it to the server owner.
 
 > Discord replies/posts are gated off in this build. Nothing here has been sent to Discord.
 
@@ -13,6 +13,9 @@ flowchart LR
   B --> C["raw-feed.jsonl"]
   C --> D["parse-kat signal parser"]
   D --> E["processed-signals.jsonl"]
+  C --> V["vision parser for chart + heatmap images"]
+  V --> W["vision-signals.jsonl"]
+  W --> E
   E --> F["Index confluence lane"]
   E --> G["Equity/options shadow lane"]
   F --> H["Luke trading window websocket payload"]
@@ -34,9 +37,11 @@ flowchart TD
 ```
 
 ## Current Evidence
-- Raw messages captured: 12255
+- Raw messages captured: 12265
 - Processed signals: 2604
+- Image posts: 2332
 - Heatmap/image candidates: 700
+- Vision parses: 0 (0 chart, 0 heatmap)
 - SPX/SPY evaluated records: 114
 - Shadow watchlist: TSLA, CAR, AAOI, MU, SNDK, LITE, ASML, ARM, COST, MSFT
 - Ready for downstream validation: MU, LITE, ASML
@@ -96,12 +101,18 @@ flowchart TD
 ```
 
 ## Image Proof Candidate
-- Analyst: mathemeatloaf7
+- Analyst: barrysanders329
 - Channel: 🟢︱trade-floor
-- Message ID: 1500171801278550036
-- Timestamp: 2026-05-02T16:27:09.269Z
-- Message: "$zs weekly chart just reclaimed this 6 year old TL. this setup has only 3 full weeks to play out before ER week key is to reclaim 140.56. doing so shoudl start setting up a squeeze to 160-165 im eyeing 5/22 far otm calls next week"
-- Attachment URL: https://cdn.discordapp.com/attachments/1040400353490911292/1500171801001721876/image.png?ex=69f8201d&is=69f6ce9d&hm=74aa2499a427901a017de46d195f88b7fcb3d5f221d5c368d1d0d87d5bfe0956&
+- Message ID: 1500843002262847590
+- Timestamp: 2026-05-04T12:54:16.054Z
+- Message: "Bearish names RKT, FIG, TMUS, SW, CHWY, GPK, CELH, ORC, FLNC, PDD, XRAY, VNET"
+- Attachment URL: https://cdn.discordapp.com/attachments/1040400353490911292/1500843001709330435/image.png?ex=69f9e877&is=69f896f7&hm=77a3dc84282fcc0109c49b35e408f6f03166f9ccca5fddef26ea27e866cd43dc&
+
+## Parsed Vision Proof: Chart Image
+No persisted chart vision parse found yet.
+
+## Parsed Vision Proof: Heatmap Image
+No persisted heatmap vision parse found yet.
 
 ## Rendered Screenshot Proof
 - Owner proof page: `screenshots/owner-proof.png`
@@ -118,8 +129,8 @@ Preview only. This is how owner-facing Kat output would look if explicitly appro
 
 ```text
 **Kat owner-review preview**
-Status: owner_review_ready
-Evidence: 12255 raw messages, 2604 processed signals
+Status: not_ready
+Evidence: 12265 raw messages, 2604 processed signals
 Watchlist: TSLA, CAR, AAOI, MU, SNDK, LITE
 Discord output: gated off until Conor explicitly approves generated wording.
 _No autonomous execution. Human-gated evidence only._
@@ -172,20 +183,24 @@ Separate operator-facing view. This is what Luke receives internally.
 ## Readiness Details
 # Katbot Readiness
 
-Recommendation: owner_review_ready
-Ready for owner review as silent capture and Luke-only shadow evidence, not public Discord answering.
+Recommendation: not_ready
+Keep Kat internal. Fix blockers before showing it to the server owner.
 
 ## Evidence
-- Raw messages: 12255
+- Raw messages: 12265
 - Processed signals: 2604
+- Image posts: 2332
 - Heatmap candidates: 700
+- Vision signals: 0 (0 chart, 0 heatmap)
 - Replay records: 1078
 - SPX/SPY evaluated: 114
 - Watchlist: TSLA, CAR, AAOI, MU, SNDK, LITE, ASML, ARM, COST, MSFT
 - Ready for downstream validation: MU, LITE, ASML
 
 ## Blockers
-- none
+- analyst chart/heatmap reads are saved: 0 saved chart/heatmap read(s) for 2332 image post(s)
+- chart images are read for levels: 0 saved chart read(s)
+- heatmap images are read for levels: 0 saved heatmap read(s) for 700 candidate(s)
 
 ## Warnings
 - SPX/SPY sample size: 114 evaluated direct records

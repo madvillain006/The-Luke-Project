@@ -16,6 +16,8 @@
     "research:fake-breakdown-v3": "node scripts/run-fake-breakdown-v3-live-filters.js",
     "research:import:mancini": "node scripts/import-mancini-archive.js",
     "research:inventory": "node scripts/inventory-existing-research-data.js",
+    "research:ladder-reclaim": "node scripts/run-multi-source-ladder-reclaim.js",
+    "research:ladder-reclaim-review": "node scripts/build-ladder-reclaim-visual-review.js",
     "research:prop-fake-breakdown": "node scripts/run-prop-fake-breakdown-research.js",
     "research:replay:existing": "node scripts/run-existing-data-replay.js",
     "replay:history": "node scripts/replay-decision-spine-history.js",

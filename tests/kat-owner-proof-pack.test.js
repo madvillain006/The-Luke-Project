@@ -60,6 +60,10 @@ describe('Kat owner proof pack', () => {
       { ts: '2026-05-03T13:01:00.000Z', message_id: 'raw-2', analyst: 'analyst2', channel: 'trade-floor', ticker: 'GLW', signal_type: 'DIRECTIONAL', bias: 'BULLISH', raw: '$GLW breakout over 60' },
       { ts: '2026-05-03T13:02:00.000Z', message_id: 'raw-4', analyst: 'analyst1', channel: 'trade-floor', ticker: 'GLW', signal_type: 'DIRECTIONAL', bias: 'BULLISH', raw: '$GLW breakout over 60' },
     ]);
+    writeJsonl(path.join(root, 'data', 'kat', 'vision-signals.jsonl'), [
+      { ts: '2026-05-03T13:04:00.000Z', message_id: 'raw-10', attachment_id: 'a-chart', analyst: 'analyst1', channel: 'trade-floor', ticker: 'SPY', source_class: 'chart', chart_type: 'candlestick', bias: 'BULLISH', levels: [560, 562], parse_status: 'parsed_levels', raw_text: '$SPY reclaim chart' },
+      { ts: '2026-05-03T13:05:00.000Z', message_id: 'raw-11', attachment_id: 'a-heatmap', analyst: 'analyst2', channel: 'trade-floor', ticker: 'SPX', source_class: 'heatmap', chart_type: 'heatmap', bias: 'BEARISH', levels: [5600, 5620], parse_status: 'parsed_levels', raw_text: '$SPX heatmap', heatmap_context: { king_nodes: [5600] } },
+    ]);
     writeJson(path.join(root, 'data', 'kat', 'derived', 'kat-replay-summary.json'), { parsed_records: 100, spx_options_direct_records: 50 });
     writeJson(path.join(root, 'data', 'kat', 'derived', 'kat-evaluation-summary.json'), { total: 50, evaluated: 114, win_rate_30m: { pct: 53.51 } });
     fs.writeFileSync(path.join(root, 'data', 'historical', 'spx_intraday.csv'), 'Time,Close\n2026-05-01 09:30,5600\n', 'utf8');
@@ -81,7 +85,10 @@ describe('Kat owner proof pack', () => {
     expect(fs.readFileSync(result.files.ownerMarkdown, 'utf8')).toContain('```mermaid');
     expect(fs.readFileSync(result.files.ownerMarkdown, 'utf8')).toContain('Discord Preview');
     expect(fs.readFileSync(result.files.ownerMarkdown, 'utf8')).toContain('Timestamped Message Bin');
+    expect(fs.readFileSync(result.files.ownerMarkdown, 'utf8')).toContain('Parsed Vision Proof: Chart Image');
+    expect(fs.readFileSync(result.files.ownerMarkdown, 'utf8')).toContain('Parsed Vision Proof: Heatmap Image');
     expect(fs.readFileSync(result.files.lukeHtml, 'utf8')).toContain('Luke Trading Window');
     expect(result.pack.previews.lukePayloads.some(payload => payload.type === 'kat_signal')).toBe(true);
+    expect(result.pack.previews.lukePayloads.filter(payload => payload.type === 'kat_vision')).toHaveLength(2);
   });
 });

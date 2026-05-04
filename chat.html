@@ -1232,13 +1232,11 @@
         else if (data.type === "kat_alert") {
           addMessage("assistant", data.reply, "kat-alert");
         }
+        else if (data.type === "kat_signal" || data.type === "kat_chart_pending" || data.type === "kat_confluence") {
+          addKatEventMessage(data);
+        }
         else if (data.type === 'kat_vision') {
-          const levels = (data.levels || []).join(', ');
- const msg = ' ' + data.analyst + ' chart: ' +
-            (data.ticker || '?') + ' ' + data.bias +
-            (levels ? ' | levels: ' + levels : '') +
-            (data.notes ? '\n' + data.notes : '');
-          addMessage('kat', msg, 'kat-vision');
+          addKatEventMessage(data);
         }
       } catch (e) { console.error('[ws:onmessage] parse error:', e.message, event.data?.slice(0, 80)); }
     }
@@ -1287,6 +1285,57 @@
       ts.textContent = nowTs();
       row.appendChild(ts);
 
+      messages.appendChild(row);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function fmtList(values, fallback) {
+      const arr = Array.isArray(values) ? values.filter(v => v !== null && v !== undefined && v !== "") : [];
+      return arr.length ? arr.join(", ") : (fallback || "none");
+    }
+
+    function addKatEventMessage(data) {
+      const row = document.createElement("div");
+      row.className = "msg-row luke";
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble vision";
+
+      const lines = [];
+      const sourceClass = data.source_class || (data.chart_type === "heatmap" ? "heatmap" : "chart");
+      const headline = data.type === "kat_confluence"
+        ? "KAT CONFLUENCE"
+        : data.type === "kat_chart_pending"
+          ? "KAT CHART QUEUED"
+          : data.type === "kat_signal"
+            ? "KAT SIGNAL"
+            : "KAT " + sourceClass.toUpperCase() + " READ";
+
+      lines.push(headline + " | " + (data.ticker || data.instrument || "INDEX") + " | " + (data.bias || "NEUTRAL"));
+      if (data.analyst || data.channel) lines.push("Source: " + [data.analyst, data.channel ? "#" + data.channel : ""].filter(Boolean).join(" / "));
+      if (data.levels && data.levels.length) lines.push("Levels: " + fmtList(data.levels));
+      if (data.chart_type) lines.push("Image type: " + data.chart_type + " | " + (data.parse_status || "read"));
+      if (data.entry_context && data.entry_context.mode) lines.push("Use: confluence input only, human-gated");
+      if (data.heatmap_context && data.heatmap_context.node_read) lines.push("Heatmap: " + data.heatmap_context.node_read);
+      if (data.notes) lines.push("Notes: " + data.notes);
+      if (data.message_id) lines.push("Message: " + data.message_id);
+
+      bubble.textContent = lines.join("\n");
+
+      const image = Array.isArray(data.image_evidence) ? data.image_evidence.find(item => item && item.url) : null;
+      if (image && image.url) {
+        const img = document.createElement("img");
+        img.src = image.url;
+        img.alt = "Kat analyst chart evidence";
+        bubble.appendChild(document.createElement("br"));
+        bubble.appendChild(img);
+      }
+
+      row.appendChild(bubble);
+      const ts = document.createElement("span");
+      ts.className = "msg-ts";
+      ts.textContent = nowTs();
+      row.appendChild(ts);
       messages.appendChild(row);
       messages.scrollTop = messages.scrollHeight;
     }

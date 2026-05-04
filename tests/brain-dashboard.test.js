@@ -199,4 +199,14 @@ describe('/brain dashboard shell', () => {
     expect(html).toContain('grid-template-columns: repeat(auto-fit, minmax(140px, 1fr))');
     expect(html).toContain('overflow-wrap: anywhere');
   });
+
+  it('renders Katbot websocket events as structured DOM text, not raw HTML blocks', () => {
+    const html = fs.readFileSync(CHAT_FILE, 'utf8');
+
+    expect(html).toContain('function addKatEventMessage(data)');
+    expect(html).toContain('bubble.textContent = lines.join("\\n")');
+    expect(html).toContain('data.type === "kat_signal" || data.type === "kat_chart_pending" || data.type === "kat_confluence"');
+    expect(html).toContain("data.type === 'kat_vision'");
+    expect(html).toContain('img.alt = "Kat analyst chart evidence"');
+  });
 });

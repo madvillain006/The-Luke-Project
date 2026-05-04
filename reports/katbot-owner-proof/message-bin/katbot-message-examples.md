@@ -1,6 +1,48 @@
 # Katbot Message Bin
 
-Purpose: timestamped proof examples from actual Kat raw input and parsed signal output.
+Purpose: show what Katbot did with analyst input: grouped confluence, extracted levels, separated chart/heatmap reads, and kept every output human-gated.
+
+## Operator Readouts
+
+### SPX/SPY/ES index lane BEARISH confluence
+- Status: luke_candidate
+- Source window: 2026-03-04T15:14:33.374Z -> 2026-03-04T15:35:34.415Z
+- Kat did: Grouped 2 analyst signal(s) into SPX/SPY/ES index lane.
+- Kat did: Confirmed 2 distinct analyst(s) aligned bearish inside 21 minute(s).
+- Kat did: Extracted level context: 685, 686.
+- Kat did: 2 message(s) carried image evidence.
+- Luke action: Push to Luke as human-gated confluence context for /entries or /verdict review.
+- Discord action: No public Discord response unless owner explicitly enables output.
+
+### SPX/SPY/ES index lane BULLISH confluence
+- Status: luke_candidate
+- Source window: 2026-04-21T19:45:28.282Z -> 2026-04-21T19:53:48.548Z
+- Kat did: Grouped 2 analyst signal(s) into SPX/SPY/ES index lane.
+- Kat did: Confirmed 2 distinct analyst(s) aligned bullish inside 8 minute(s).
+- Kat did: No numeric level was extracted from these messages.
+- Kat did: 1 message(s) carried image evidence.
+- Luke action: Keep in Luke as directional context until a level, chart read, or current level context confirms it.
+- Discord action: No public Discord response unless owner explicitly enables output.
+
+### SPX/SPY/ES index lane BEARISH confluence
+- Status: luke_candidate
+- Source window: 2026-04-21T15:27:14.623Z -> 2026-04-21T15:50:54.201Z
+- Kat did: Grouped 2 analyst signal(s) into SPX/SPY/ES index lane.
+- Kat did: Confirmed 2 distinct analyst(s) aligned bearish inside 24 minute(s).
+- Kat did: No numeric level was extracted from these messages.
+- Kat did: 1 message(s) carried image evidence.
+- Luke action: Keep in Luke as directional context until a level, chart read, or current level context confirms it.
+- Discord action: No public Discord response unless owner explicitly enables output.
+
+### SPX/SPY/ES index lane BEARISH confluence
+- Status: luke_candidate
+- Source window: 2026-04-21T14:59:23.938Z -> 2026-04-21T15:27:14.623Z
+- Kat did: Grouped 3 analyst signal(s) into SPX/SPY/ES index lane.
+- Kat did: Confirmed 2 distinct analyst(s) aligned bearish inside 28 minute(s).
+- Kat did: No numeric level was extracted from these messages.
+- Kat did: 2 message(s) carried image evidence.
+- Luke action: Keep in Luke as directional context until a level, chart read, or current level context confirms it.
+- Discord action: No public Discord response unless owner explicitly enables output.
 
 ## Confluence And Timeliness Examples
 

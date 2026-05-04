@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-04T13:07:08.674Z",
+  "generated_at": "2026-05-04T13:20:37.314Z",
   "readiness": {
-    "generated_at": "2026-05-04T13:07:08.674Z",
+    "generated_at": "2026-05-04T13:20:37.314Z",
     "recommendation": {
       "status": "not_ready",
       "label": "Keep Kat internal. Fix blockers before showing it to the server owner."
@@ -13,7 +13,7 @@
       "approval_required": true
     },
     "evidence": {
-      "raw_messages": 12265,
+      "raw_messages": 12275,
       "processed_signals": 2604,
       "heatmap_candidates": 700,
       "image_posts": 2332,
@@ -56,7 +56,7 @@
       {
         "ok": true,
         "label": "historical capture depth",
-        "detail": "12265 raw messages captured",
+        "detail": "12275 raw messages captured",
         "severity": "info"
       },
       {
@@ -166,7 +166,7 @@
     ]
   },
   "insights": {
-    "generated_at": "2026-05-04T13:07:08.674Z",
+    "generated_at": "2026-05-04T13:20:37.314Z",
     "status": "degraded",
     "config": {
       "enabled": true,
@@ -183,17 +183,17 @@
       "bot_tag": null
     },
     "activity": {
-      "latest_capture": "2026-05-04T13:03:14.952Z",
-      "latest_capture_age": "3m ago",
+      "latest_capture": "2026-05-04T13:19:59.937Z",
+      "latest_capture_age": "0m ago",
       "by_user": {
-        "kaprik0rn3": "2026-05-03T12:45:40.619Z",
-        "mathemeatloaf7": "2026-05-04T13:03:14.952Z",
-        "general_dollars": "2026-05-03T20:53:41.212Z",
-        "barrysanders329": "2026-05-04T13:03:14.949Z"
+        "kaprik0rn3": "2026-05-04T13:19:59.937Z",
+        "mathemeatloaf7": "2026-05-04T13:17:49.608Z",
+        "general_dollars": "2026-05-04T13:19:03.004Z",
+        "barrysanders329": "2026-05-04T13:16:02.405Z"
       }
     },
     "audit": {
-      "raw_messages": 12265,
+      "raw_messages": 12275,
       "processed_signals": 2604,
       "image_posts": 2332,
       "heatmap_candidates": 700,
@@ -334,7 +334,7 @@
       "latest": []
     },
     "watchlist": {
-      "generated_at": "2026-05-04T13:07:08.674Z",
+      "generated_at": "2026-05-04T13:20:37.314Z",
       "window_days": 14,
       "min_mentions": 2,
       "candidates": [
@@ -558,7 +558,7 @@
       "next_action": "Start shadow evaluation for these tickers only after matching market data is available."
     },
     "equity_options": {
-      "generated_at": "2026-05-04T13:07:08.674Z",
+      "generated_at": "2026-05-04T13:20:37.314Z",
       "window_days": 14,
       "tickers": [
         {
@@ -1398,7 +1398,7 @@
     ]
   },
   "watchlist": {
-    "generated_at": "2026-05-04T13:07:08.674Z",
+    "generated_at": "2026-05-04T13:20:37.314Z",
     "window_days": 14,
     "min_mentions": 2,
     "candidates": [
@@ -1622,7 +1622,7 @@
     "next_action": "Start shadow evaluation for these tickers only after matching market data is available."
   },
   "equityUniverse": {
-    "generated_at": "2026-05-04T13:07:08.674Z",
+    "generated_at": "2026-05-04T13:20:37.314Z",
     "window_days": 14,
     "tickers": [
       {
@@ -2207,7 +2207,7 @@
     "policy": "Shadow evidence only. Backtesting/scoring stays in the separate backtesting lane."
   },
   "messageBin": {
-    "generated_at": "2026-05-04T13:07:08.674Z",
+    "generated_at": "2026-05-04T13:20:37.314Z",
     "source_files": {
       "raw_feed": "data\\kat\\raw-feed.jsonl",
       "processed_signals": "data\\kat\\processed-signals.jsonl",
@@ -2793,6 +2793,196 @@
       "charts": [],
       "heatmaps": []
     },
+    "operator_readouts": [
+      {
+        "kind": "confluence_readout",
+        "status": "luke_candidate",
+        "headline": "SPX/SPY/ES index lane BEARISH confluence",
+        "source_window": "2026-03-04T15:14:33.374Z -> 2026-03-04T15:35:34.415Z",
+        "what_kat_did": [
+          "Grouped 2 analyst signal(s) into SPX/SPY/ES index lane.",
+          "Confirmed 2 distinct analyst(s) aligned bearish inside 21 minute(s).",
+          "Extracted level context: 685, 686.",
+          "2 message(s) carried image evidence."
+        ],
+        "luke_action": "Push to Luke as human-gated confluence context for /entries or /verdict review.",
+        "discord_action": "No public Discord response unless owner explicitly enables output.",
+        "evidence": {
+          "analysts": [
+            "mathemeatloaf7",
+            "kaprik0rn3"
+          ],
+          "levels": [
+            685,
+            686
+          ],
+          "messages": [
+            {
+              "ts": "2026-03-04T15:14:33.374Z",
+              "analyst": "mathemeatloaf7",
+              "channel": "☔︱spy-qqq-es-nq-vix",
+              "message_id": "1478772647260196931",
+              "ticker": "SPY",
+              "bias": "BEARISH",
+              "levels": [
+                685,
+                686
+              ],
+              "input": "$spy resistance is at 685-686 right now"
+            },
+            {
+              "ts": "2026-03-04T15:35:34.415Z",
+              "analyst": "kaprik0rn3",
+              "channel": "🟢︱trade-floor",
+              "message_id": "1478777936449638541",
+              "ticker": "SPY",
+              "bias": "BEARISH",
+              "levels": [],
+              "input": "SPY 30min. First attempt to close the bear gap we left open yesterday. Will act as resistance. Good place to take some off"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "confluence_readout",
+        "status": "luke_candidate",
+        "headline": "SPX/SPY/ES index lane BULLISH confluence",
+        "source_window": "2026-04-21T19:45:28.282Z -> 2026-04-21T19:53:48.548Z",
+        "what_kat_did": [
+          "Grouped 2 analyst signal(s) into SPX/SPY/ES index lane.",
+          "Confirmed 2 distinct analyst(s) aligned bullish inside 8 minute(s).",
+          "No numeric level was extracted from these messages.",
+          "1 message(s) carried image evidence."
+        ],
+        "luke_action": "Keep in Luke as directional context until a level, chart read, or current level context confirms it.",
+        "discord_action": "No public Discord response unless owner explicitly enables output.",
+        "evidence": {
+          "analysts": [
+            "barrysanders329",
+            "kaprik0rn3"
+          ],
+          "levels": [],
+          "messages": [
+            {
+              "ts": "2026-04-21T19:45:28.282Z",
+              "analyst": "barrysanders329",
+              "channel": "🟢︱trade-floor",
+              "message_id": "1496235442834509946",
+              "ticker": "SPY",
+              "bias": "BULLISH",
+              "levels": [],
+              "input": "SPY inside day breaking downward"
+            },
+            {
+              "ts": "2026-04-21T19:53:48.548Z",
+              "analyst": "kaprik0rn3",
+              "channel": "🟢︱trade-floor",
+              "message_id": "1496237541102321798",
+              "ticker": "SPX",
+              "bias": "BULLISH",
+              "levels": [],
+              "input": "The cliche line here is no one goes broke taking profits. That's even truer with SPX plays if you do it long enough"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "confluence_readout",
+        "status": "luke_candidate",
+        "headline": "SPX/SPY/ES index lane BEARISH confluence",
+        "source_window": "2026-04-21T15:27:14.623Z -> 2026-04-21T15:50:54.201Z",
+        "what_kat_did": [
+          "Grouped 2 analyst signal(s) into SPX/SPY/ES index lane.",
+          "Confirmed 2 distinct analyst(s) aligned bearish inside 24 minute(s).",
+          "No numeric level was extracted from these messages.",
+          "1 message(s) carried image evidence."
+        ],
+        "luke_action": "Keep in Luke as directional context until a level, chart read, or current level context confirms it.",
+        "discord_action": "No public Discord response unless owner explicitly enables output.",
+        "evidence": {
+          "analysts": [
+            "kaprik0rn3",
+            "mathemeatloaf7"
+          ],
+          "levels": [],
+          "messages": [
+            {
+              "ts": "2026-04-21T15:27:14.623Z",
+              "analyst": "kaprik0rn3",
+              "channel": "🟢︱trade-floor",
+              "message_id": "1496170457718587473",
+              "ticker": "SPX",
+              "bias": "BEARISH",
+              "levels": [],
+              "input": "SPX 5min. Bear flag. SIMPOL"
+            },
+            {
+              "ts": "2026-04-21T15:50:54.201Z",
+              "analyst": "mathemeatloaf7",
+              "channel": "🟢︱trade-floor",
+              "message_id": "1496176411860402266",
+              "ticker": "SPY",
+              "bias": "BEARISH",
+              "levels": [],
+              "input": "whos shorting $spy a couple weeks out up here"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "confluence_readout",
+        "status": "luke_candidate",
+        "headline": "SPX/SPY/ES index lane BEARISH confluence",
+        "source_window": "2026-04-21T14:59:23.938Z -> 2026-04-21T15:27:14.623Z",
+        "what_kat_did": [
+          "Grouped 3 analyst signal(s) into SPX/SPY/ES index lane.",
+          "Confirmed 2 distinct analyst(s) aligned bearish inside 28 minute(s).",
+          "No numeric level was extracted from these messages.",
+          "2 message(s) carried image evidence."
+        ],
+        "luke_action": "Keep in Luke as directional context until a level, chart read, or current level context confirms it.",
+        "discord_action": "No public Discord response unless owner explicitly enables output.",
+        "evidence": {
+          "analysts": [
+            "mathemeatloaf7",
+            "kaprik0rn3"
+          ],
+          "levels": [],
+          "messages": [
+            {
+              "ts": "2026-04-21T14:59:23.938Z",
+              "analyst": "mathemeatloaf7",
+              "channel": "🟢︱trade-floor",
+              "message_id": "1496163450358071468",
+              "ticker": "SPX",
+              "bias": "BEARISH",
+              "levels": [],
+              "input": "$spx second time to tag TL resistance"
+            },
+            {
+              "ts": "2026-04-21T15:14:49.093Z",
+              "analyst": "kaprik0rn3",
+              "channel": "🟢︱trade-floor",
+              "message_id": "1496167330739257364",
+              "ticker": "SPX",
+              "bias": "BEARISH",
+              "levels": [],
+              "input": "If SPX 5min bear flags here, expect lower comes. It's also dead money time so we can stay here for another couple hours"
+            },
+            {
+              "ts": "2026-04-21T15:27:14.623Z",
+              "analyst": "kaprik0rn3",
+              "channel": "🟢︱trade-floor",
+              "message_id": "1496170457718587473",
+              "ticker": "SPX",
+              "bias": "BEARISH",
+              "levels": [],
+              "input": "SPX 5min. Bear flag. SIMPOL"
+            }
+          ]
+        }
+      }
+    ],
     "output_sink": {
       "binDir": "C:\\Users\\conor\\luke\\reports\\katbot-owner-proof\\message-bin",
       "outputJsonl": "C:\\Users\\conor\\luke\\reports\\katbot-owner-proof\\message-bin\\katbot-output-bin.jsonl",
@@ -2908,7 +3098,7 @@
     "visionHeatmap": null
   },
   "previews": {
-    "discord": "**Kat owner-review preview**\nStatus: not_ready\nEvidence: 12265 raw messages, 2604 processed signals\nWatchlist: TSLA, CAR, AAOI, MU, SNDK, LITE\nDiscord output: gated off until Conor explicitly approves generated wording.\n_No autonomous execution. Human-gated evidence only._",
+    "discord": "**Kat owner-review preview**\nStatus: not_ready\nEvidence: 12275 raw messages, 2604 processed signals\nWatchlist: TSLA, CAR, AAOI, MU, SNDK, LITE\nDiscord output: gated off until Conor explicitly approves generated wording.\n_No autonomous execution. Human-gated evidence only._",
     "lukePayloads": [
       {
         "type": "kat_signal",

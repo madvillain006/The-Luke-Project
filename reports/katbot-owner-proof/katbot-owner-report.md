@@ -37,7 +37,7 @@ flowchart TD
 ```
 
 ## Current Evidence
-- Raw messages captured: 12265
+- Raw messages captured: 12275
 - Processed signals: 2604
 - Image posts: 2332
 - Heatmap/image candidates: 700
@@ -130,7 +130,7 @@ Preview only. This is how owner-facing Kat output would look if explicitly appro
 ```text
 **Kat owner-review preview**
 Status: not_ready
-Evidence: 12265 raw messages, 2604 processed signals
+Evidence: 12275 raw messages, 2604 processed signals
 Watchlist: TSLA, CAR, AAOI, MU, SNDK, LITE
 Discord output: gated off until Conor explicitly approves generated wording.
 _No autonomous execution. Human-gated evidence only._
@@ -187,7 +187,7 @@ Recommendation: not_ready
 Keep Kat internal. Fix blockers before showing it to the server owner.
 
 ## Evidence
-- Raw messages: 12265
+- Raw messages: 12275
 - Processed signals: 2604
 - Image posts: 2332
 - Heatmap candidates: 700

@@ -8,6 +8,7 @@ const {
   recordKatOutputBin,
   findConfluenceExamples,
   latestVisionExamples,
+  buildOperatorReadouts,
 } = require('../lib/kat-message-bin');
 
 const tempDirs = [];
@@ -75,7 +76,10 @@ describe('Kat message bin', () => {
     expect(fs.existsSync(built.files.examplesHtml)).toBe(true);
     expect(built.bin.vision_examples.charts).toHaveLength(1);
     expect(built.bin.vision_examples.heatmaps).toHaveLength(1);
+    expect(built.bin.operator_readouts.length).toBeGreaterThan(0);
+    expect(built.bin.operator_readouts[0].luke_action).toContain('Luke');
     expect(fs.readFileSync(built.files.examplesMarkdown, 'utf8')).toContain('Parsed Vision Examples: Charts');
+    expect(fs.readFileSync(built.files.examplesMarkdown, 'utf8')).toContain('Operator Readouts');
     expect(fs.existsSync(output.outputJsonl)).toBe(true);
     expect(fs.readFileSync(output.outputJsonl, 'utf8')).toContain('preview only');
   });
@@ -88,5 +92,26 @@ describe('Kat message bin', () => {
 
     expect(latestVisionExamples(records, 'chart', 2)[0].kind).toBe('vision_chart_parse');
     expect(latestVisionExamples(records, 'heatmap', 2)[0].kind).toBe('vision_heatmap_parse');
+  });
+
+  it('turns confluence into operator readouts instead of raw capture proof only', () => {
+    const readouts = buildOperatorReadouts([{
+      group: 'SPX/SPY/ES index lane',
+      group_id: 'index:spx',
+      bias: 'BULLISH',
+      signal_count: 2,
+      analysts: ['analyst1', 'analyst2'],
+      window_minutes: 12,
+      first_ts: '2026-05-03T13:00:00.000Z',
+      last_ts: '2026-05-03T13:12:00.000Z',
+      messages: [
+        { ts: '2026-05-03T13:00:00.000Z', analyst: 'analyst1', channel: 'trade-floor', message_id: 'm1', raw_input: '$SPY 560', parsed: { ticker: 'SPY', bias: 'BULLISH', levels: [560], has_image: false } },
+        { ts: '2026-05-03T13:12:00.000Z', analyst: 'analyst2', channel: 'trade-floor', message_id: 'm2', raw_input: '$SPX 5600', parsed: { ticker: 'SPX', bias: 'BULLISH', levels: [5600], has_image: true } },
+      ],
+    }], { charts: [], heatmaps: [] });
+
+    expect(readouts[0].status).toBe('luke_candidate');
+    expect(readouts[0].what_kat_did.join('\n')).toContain('Confirmed 2 distinct analyst');
+    expect(readouts[0].luke_action).toContain('/entries');
   });
 });

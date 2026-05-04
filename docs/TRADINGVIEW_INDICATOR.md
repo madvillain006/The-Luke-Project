@@ -73,9 +73,9 @@ The Mancini file is currently misnamed: the filename ends `5-3-2026`, but the he
 
 ## Saty ATR
 
-The Pine indicator computes Saty levels from chart data:
+The current Pine indicator computes Saty levels from chart data:
 
-- Previous close
+- Previous close (`close[1]` on the selected Saty timeframe)
 - ATR
 - Call trigger at `0.236 * ATR`
 - Put trigger at `0.236 * ATR`
@@ -93,6 +93,14 @@ The local Saty reference file is:
 ```text
 tradingview/saty-atr-levels-source.pine
 ```
+
+Historical comparison:
+
+```text
+npm run research:saty-pine-watch
+```
+
+This research-only command uses local/replay ES 1m candles through the candle-feed path, ports the current Pine watch trigger logic into JS, and compares the current `close[1]` anchor against an explicit prior-session `open` anchor. Outputs are written under `artifacts/research/saty-pine-watch-backtest/`. It does not use live data and does not arm live candidates.
 
 ## Mancini Levels
 

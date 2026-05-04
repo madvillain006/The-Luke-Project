@@ -28,6 +28,7 @@
     "research:ladder-reclaim": "node scripts/run-multi-source-ladder-reclaim.js",
     "research:ladder-reclaim-review": "node scripts/build-ladder-reclaim-visual-review.js",
     "research:prop-fake-breakdown": "node scripts/run-prop-fake-breakdown-research.js",
+    "research:saty-pine-watch": "node scripts/backtest-saty-pine-watch.js",
     "research:replay:existing": "node scripts/run-existing-data-replay.js",
     "replay:history": "node scripts/replay-decision-spine-history.js",
     "replay:operator-history": "node scripts/run-historical-operator-replay.js",

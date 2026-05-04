@@ -105,7 +105,37 @@ describe('Saty historical ATR derivation', () => {
     expect(result.put_trigger).toBe(97.64);
     expect(result.ext_plus_4).toBe(107.86);
     expect(result.atr_plus_1).toBe(110);
+    expect(result.reference_field).toBe('close');
     expect(result.formula_provenance).toBe('Saty_Pine_D_session_extended_close1_atr14_1');
+  });
+
+  it('can compare an explicit prior-open variant without changing the default Pine-close anchor', () => {
+    const closeBased = deriveSatyLevelsFromReferenceSession({
+      date: '2026-04-28',
+      session_open: '2026-04-27T18:00:00-04:00',
+      session_close: '2026-04-28T16:59:00-04:00',
+      open: 96,
+      high: 101,
+      low: 91,
+      close: 100,
+      bar_count: 3,
+    }, 10);
+    const openBased = deriveSatyLevelsFromReferenceSession({
+      date: '2026-04-28',
+      session_open: '2026-04-27T18:00:00-04:00',
+      session_close: '2026-04-28T16:59:00-04:00',
+      open: 96,
+      high: 101,
+      low: 91,
+      close: 100,
+      bar_count: 3,
+    }, 10, { referenceField: 'open' });
+
+    expect(closeBased.reference_field).toBe('close');
+    expect(closeBased.prev_close).toBe(100);
+    expect(openBased.reference_field).toBe('open');
+    expect(openBased.prev_close).toBe(96);
+    expect(openBased.call_trigger).toBe(98.36);
   });
 
   it('uses target date D minus one completed futures session with no lookahead', () => {

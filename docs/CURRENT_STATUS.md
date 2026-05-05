@@ -9,7 +9,7 @@ Luke is a read-only/replay trading companion. It is not live-ready. The canonica
 
 ## Current Proof
 
-- `npm test`: 123 files passed; 781 tests passed; 1 skipped.
+- `npm test`: 126 files passed; 795 tests passed; 1 skipped in the current working tree.
 - Runtime health passed on port 3000.
 - `/operator-v2`, `/trading-window`, replay level-state, live-shaped level-state, and staged-flow proofs passed.
 - `prove:luke-ui-ux` passed across the main shell, embedded Daily panel, Daily window, Luke chat, trading chat, trading window, Operator V2, and brain dashboard PNG captures.
@@ -33,7 +33,9 @@ Luke is a read-only/replay trading companion. It is not live-ready. The canonica
 - `/brain-dashboard`: non-trading brain surface with clickable brain brief, daily brief, automation-business, developer-stack, and history-career outputs.
 - Legacy chat staged-trade UI is review-only; its execution button is disabled and does not call `/agent/autonomous/execute-staged`.
 - `/agent/autonomous/execute-staged` is blocked by default behind `LUKE_ENABLE_STAGED_EXECUTION`; live execution also requires `LUKE_ENABLE_LIVE_EXECUTION`.
+- Direct live executor calls also check the live gate before broker credentials or Tradovate order submission.
 - Trading APIs are GET-only for level state, candidates, alerts, candle status, chart data, and source health.
+- Server startup exits cleanly if port 3000 is already held by Luke or another process, and PM2 is configured not to crash-loop clean duplicate-start exits.
 - Pine is a visual/watchlist indicator using `indicator()` and `alertcondition()` only.
 - Luke Watch production-test Pine is tracked as a realistic-accounting visual indicator; the simulation strategy is TradingView Strategy Tester only.
 - Hard-mode Pine research summary lives in `docs/TRADINGVIEW_HARDMODE_RESEARCH.md`; the strategy file is `tradingview/luke-level-reclaim-watch-hardmode.strategy.pine`.

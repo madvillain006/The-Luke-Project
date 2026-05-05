@@ -18,6 +18,7 @@ Continue the Luke cleanup/hardening plan without direct operator input where pos
 - `chat.html` no longer calls `/agent/autonomous/execute-staged`.
 - `/agent/autonomous/execute-staged` is blocked by default behind `LUKE_ENABLE_STAGED_EXECUTION`.
 - Live mode/live execution is blocked by default behind `LUKE_ENABLE_LIVE_EXECUTION` after staged execution is explicitly unlocked.
+- `trading/execution-live.js` now checks the live execution gate directly before credentials or broker calls, so bypassing the router still fails closed.
 
 ### Risk Math
 
@@ -36,6 +37,8 @@ Continue the Luke cleanup/hardening plan without direct operator input where pos
 - Added `.github/workflows/ci.yml` to run `npm ci` and `npm test` on Windows using `.node-version`.
 - Changed `ecosystem.config.js` to use the repo directory dynamically instead of hardcoding `C:\Users\conor\luke`.
 - Added timeouts to runtime process inspection so Windows `netstat`/`wmic` hangs cannot freeze `runtime:check` or proof scripts.
+- Added duplicate-port startup handling in `index.js`: if `127.0.0.1:3000` is already owned, Luke logs a clear message and exits cleanly instead of feeding a relaunch loop.
+- Added PM2 `stop_exit_codes: [0]` for the server and scheduler so clean duplicate-start exits do not restart forever.
 - Updated `docs/SLOP_JANITOR_ADMIN_WORKFLOW.md` with the real 2026-05-05 install state and memory-related Codex build blocker.
 
 ### UI/UX Proofing
@@ -129,6 +132,10 @@ Continue the Luke cleanup/hardening plan without direct operator input where pos
 - `node --check lib/brain/automation-business-spine.js`: passed.
 - `node --check scripts/prove-luke-ui-ux.js`: passed.
 - `cmd /c npx vitest run tests/brain-agent.test.js tests/brain-dashboard.test.js`: passed after Daily window changes, 34 tests.
+- `cmd /c npx vitest run tests/runtime-launch.test.js tests/runtime-health.test.js tests/windows-runtime-spawn.test.js`: passed, 12 tests.
+- `cmd /c npx vitest run tests/autonomous-recommendation-only.test.js tests/trading-common.test.js tests/runtime-launch.test.js`: passed, 9 tests.
+- `cmd /c npm test`: passed, 126 test files, 795 tests, 1 skipped in the current working tree.
+- `cmd /c npm run prove:luke-ui-ux`: passed after the Daily tile polish fix.
 
 ## PNG Review Log
 
@@ -187,13 +194,15 @@ Opened and visually inspected:
   - Daily window remains readable on mobile.
 - `artifacts/proof/luke-ui-ux/shell-daily-panel-desktop.png`
   - Luke shell opens Daily as an embedded panel rather than sending the operator into backend-style brain routes.
+- `artifacts/proof/luke-ui-ux/shell-desktop.png`
+  - Daily tile date/time and compact weather summary fit without clipping after the final polish pass.
 
 ## Remaining Without Operator Input
 
 - Continue tightening UI/read-only language and proof harness behavior if tests or screenshots expose contradictions.
 - Keep generated proof output in ignored artifact locations.
 - Commit this slice after verification.
-- Revisit PM2 CLI health/reload separately if it continues to hang; do not kill the live app during this hardening slice without a specific operator decision.
+- Revisit PM2 CLI health/reload separately if it continues to hang; startup duplicate-port crash loops are now fail-closed, but killing unknown live processes still needs an explicit operator decision.
 - The brain dashboard now exposes the current non-trading brain sections through clickable UI; deeper usefulness depends on configured providers/data and your preferred operating workflows.
 - Daily calendar/mail integration now has an hourly cache refresh automation, but the Luke app still depends on connector availability or a future direct Google OAuth/ICS credential to keep that cache fresh outside Codex.
 

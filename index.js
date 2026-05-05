@@ -1592,7 +1592,15 @@ process.on("SIGINT",  () => gracefulShutdown("SIGINT"));
 process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
 
 const PORT = Number(process.env.PORT || 3000);
-server.listen(PORT, "127.0.0.1", () => {
+const HOST = process.env.HOST || "127.0.0.1";
+server.on("error", err => {
+  if (err && err.code === "EADDRINUSE") {
+    console.error(`Luke server already appears to be running on http://${HOST}:${PORT}; not starting a duplicate server.`);
+    process.exit(0);
+  }
+  throw err;
+});
+server.listen(PORT, HOST, () => {
   console.log("Luke running on http://localhost:" + PORT);
   const _lvlsLoaded = levelsLoadedLabel(getTodayLevelsFile(__dirname));
   const _tradesToday = (() => {

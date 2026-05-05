@@ -380,14 +380,14 @@
     .daily-brief-stack {
       width: 100%;
       height: 100%;
-      padding: 6px 8px;
+      padding: 6px 8px 8px;
       align-content: center;
       justify-items: center;
-      gap: 3px;
+      gap: 2px;
     }
 
     .daily-brief-state-value {
-      font-size: 22px;
+      font-size: 20px;
       line-height: 1;
     }
 
@@ -407,8 +407,8 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       color: var(--muted);
-      font-size: 10px;
-      line-height: 1.15;
+      font-size: 9px;
+      line-height: 1.1;
     }
 
     .daily-brief-note-text {
@@ -416,7 +416,7 @@
     }
 
     .weather-temp {
-      font-size: 34px;
+      font-size: 30px;
     }
 
     .weather-emoji {
@@ -425,7 +425,7 @@
     }
 
     .daily-brief-weather-row .weather-emoji {
-      font-size: 18px;
+      font-size: 16px;
     }
 
     .small-grid {
@@ -914,7 +914,7 @@
         setText('weather-emoji', weatherEmoji(weather));
         setText('weather-temp', weather.temperature_f == null ? '--' : `${weather.temperature_f}F`);
         setText('weather-cond', weather.condition || weather.status || 'unknown');
-        setText('daily-brief-weather-summary', 'Knoxville + Wilmington weather inside');
+        setText('daily-brief-weather-summary', 'TN + NC weather inside');
         setText('daily-brief-weather-forecast', `${daily.pipeline?.schedule_events_this_week ?? 0} calendar events this week`);
         setText('daily-brief-state', daily.date_label || new Date(daily.generated_at || Date.now()).toLocaleDateString());
         setText('daily-brief-note', daily.time_label || new Date(daily.generated_at || Date.now()).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }));

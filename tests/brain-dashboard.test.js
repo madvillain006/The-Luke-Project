@@ -147,7 +147,7 @@ describe('/brain dashboard shell', () => {
       'daily-brief-note',
       'daily-brief-weather-summary',
       'daily-brief-weather-forecast',
-      'Knoxville + Wilmington weather inside',
+      'TN + NC weather inside',
     ]) {
       expect(html).toContain(label);
     }

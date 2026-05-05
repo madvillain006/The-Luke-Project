@@ -1,4 +1,4 @@
-const { getFrontMonthSymbol, log, notifyLuke, saveState } = require("./common");
+const { getFrontMonthSymbol, getLiveExecutionGate, log, notifyLuke, saveState } = require("./common");
 const { getBaseUrl, getTradovateToken, getAccounts, getContractId, tokenCache, emergencyFlatten } = require("./broker-tradovate");
 const { getMarketContext } = require("./market-context");
 const { validateStagedTrade } = require("./risk");
@@ -45,6 +45,12 @@ async function submitProtection(baseUrl, token, accountId, contractId, signal, e
 }
 
 async function executeLive(state, signal) {
+  const liveGate = getLiveExecutionGate();
+  if (!liveGate.enabled) {
+    log("live-execution-direct-blocked", { reason: liveGate.reason, env_var: liveGate.env_var });
+    throw new Error("Live execution is disabled: " + liveGate.reason);
+  }
+
   const creds = state.tradovate;
   if (!creds.username || !creds.cid || !creds.sec) throw new Error("Tradovate credentials not configured");
 

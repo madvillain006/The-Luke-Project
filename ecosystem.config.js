@@ -9,6 +9,7 @@ module.exports = {
       env: { ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY, NODE_ENV: "production" },
       restart_delay: 3000,
       autorestart: true,
+      stop_exit_codes: [0],
       max_restarts: 5,
       min_uptime: '60s',
       watch: false
@@ -20,6 +21,7 @@ module.exports = {
       env: { ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY, NODE_ENV: "production" },
       restart_delay: 3000,
       autorestart: true,
+      stop_exit_codes: [0],
       max_restarts: 5,
       min_uptime: '60s',
       watch: false

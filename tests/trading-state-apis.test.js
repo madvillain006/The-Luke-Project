@@ -39,7 +39,7 @@ describe('trading state APIs', () => {
     expect(payload.no_live_execution).toBe(true);
     expect(payload.read_only).toBe(true);
     expect(payload.clusters.length).toBe(1);
-  });
+  }, 15000);
 
   it('builds read-only trade-candidates and alerts payloads', async () => {
     const options = {

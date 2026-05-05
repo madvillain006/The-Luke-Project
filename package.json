@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=24 <25"
+  },
   "scripts": {
     "start": "electron electron.js",
     "compare:operator": "node scripts/compare-operator-surfaces.js",
@@ -17,6 +20,7 @@
     "prove:virtual-operator-dashboard": "node scripts/prove-virtual-operator-dashboard.js",
     "prove:client-demo": "node scripts/prove-client-demo.js",
     "prove:luke-dashboard-demo": "node scripts/prove-luke-dashboard-demo.js",
+    "prove:luke-ui-ux": "node scripts/prove-luke-ui-ux.js",
     "prove:chat-execution-blocked": "node scripts/prove-chat-execution-blocked.js",
     "prove:staged-flow": "node scripts/prove-staged-flow.js",
     "research:fake-breakdown": "node scripts/run-fake-breakdown-research.js",

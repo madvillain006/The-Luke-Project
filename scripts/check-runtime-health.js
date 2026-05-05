@@ -3,6 +3,8 @@
 
 const { execFileSync } = require('child_process');
 
+const PROCESS_QUERY_TIMEOUT_MS = 2500;
+
 function parseArgs(argv = process.argv.slice(2)) {
   const out = { port: Number(process.env.PORT || 3000) };
   for (let index = 0; index < argv.length; index += 1) {
@@ -22,7 +24,7 @@ function parseNetstat(output, port) {
 
 function getListeningPid(port, execFile = execFileSync) {
   try {
-    const output = execFile('netstat', ['-ano', '-p', 'tcp'], { encoding: 'utf8' });
+    const output = execFile('netstat', ['-ano', '-p', 'tcp'], { encoding: 'utf8', timeout: PROCESS_QUERY_TIMEOUT_MS });
     return parseNetstat(output, port);
   } catch {
     return null;
@@ -42,7 +44,7 @@ function parseWmicList(output) {
 function getProcessInfo(pid, execFile = execFileSync) {
   if (!pid) return null;
   try {
-    const output = execFile('wmic', ['process', 'where', `processid=${pid}`, 'get', 'ProcessId,CommandLine,ExecutablePath', '/value'], { encoding: 'utf8' });
+    const output = execFile('wmic', ['process', 'where', `processid=${pid}`, 'get', 'ProcessId,CommandLine,ExecutablePath', '/value'], { encoding: 'utf8', timeout: PROCESS_QUERY_TIMEOUT_MS });
     const parsed = parseWmicList(output);
     return {
       pid,

@@ -92,6 +92,8 @@ describe('TradingView level export workflow', () => {
     expect(fs.existsSync(summary.artifacts.pine_input)).toBe(true);
     expect(fs.existsSync(summary.artifacts.generated_pine)).toBe(true);
     expect(fs.existsSync(summary.artifacts.generated_realistic_indicator)).toBe(true);
+    expect(fs.existsSync(summary.artifacts.generated_production_test_indicator)).toBe(true);
+    expect(fs.existsSync(summary.artifacts.generated_simulation_strategy)).toBe(true);
     expect(fs.existsSync(summary.artifacts.generated_hardmode_strategy)).toBe(true);
     expect(fs.existsSync(summary.artifacts.pine_files_summary)).toBe(true);
     expect(fs.existsSync(summary.artifacts.slippage_modes_summary)).toBe(true);
@@ -114,6 +116,22 @@ describe('TradingView level export workflow', () => {
     expect(generatedRealistic).not.toContain('strategy(');
     expect(generatedRealistic).not.toMatch(/strategy\.|submitOrder|placeOrder|broker/i);
     expect(generatedRealistic).not.toMatch(/\bBUY\b|\bSELL\b/);
+
+    const generatedProductionTest = fs.readFileSync(summary.artifacts.generated_production_test_indicator, 'utf8');
+    expect(generatedProductionTest).toContain('indicator("Luke Watch Production Test - Realistic Accounting"');
+    expect(generatedProductionTest).toContain('realistic_accounting_mode = input.string("entry_only_0_25"');
+    expect(generatedProductionTest).toContain('LONG #');
+    expect(generatedProductionTest).toContain('Result: TP1');
+    expect(generatedProductionTest).not.toContain('strategy(');
+    expect(generatedProductionTest).not.toMatch(/submitOrder|placeOrder|webhook|LIVE_READY|EXECUTE/i);
+
+    const generatedSimulation = fs.readFileSync(summary.artifacts.generated_simulation_strategy, 'utf8');
+    expect(generatedSimulation).toContain('strategy("Luke Watch Production Test Strategy - Simulation Only"');
+    expect(generatedSimulation).toContain('strategy.entry("LUKE_SIM_LONG"');
+    expect(generatedSimulation).toContain('strategy.exit("LUKE_SIM_TP1"');
+    expect(generatedSimulation).toContain('SIMULATION ONLY');
+    expect(generatedSimulation).toContain('non-executable alert');
+    expect(generatedSimulation).not.toMatch(/submitOrder|placeOrder|LIVE_READY/i);
 
     const generatedHardmode = fs.readFileSync(summary.artifacts.generated_hardmode_strategy, 'utf8');
     expect(generatedHardmode).toContain('strategy("Luke Level Reclaim Watch Hard Mode Strategy"');

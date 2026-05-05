@@ -1,6 +1,6 @@
 'use strict';
 
-const { parseNetstat, parseWmicList, checkRuntimeHealth } = require('../scripts/check-runtime-health');
+const { parseNetstat, parseWmicList, getListeningPid, getProcessInfo, checkRuntimeHealth } = require('../scripts/check-runtime-health');
 const { stopLukeDev } = require('../scripts/stop-luke-dev');
 
 function response(body, ok = true, status = 200) {
@@ -18,6 +18,19 @@ describe('runtime health utilities', () => {
     const output = '  TCP    127.0.0.1:3000         0.0.0.0:0              LISTENING       33092';
 
     expect(parseNetstat(output, 3000)).toBe(33092);
+  });
+
+  it('bounds Windows process inspection commands', () => {
+    const calls = [];
+    const execFile = (cmd, args, options) => {
+      calls.push({ cmd, args, options });
+      if (cmd === 'netstat') return '  TCP    127.0.0.1:3000         0.0.0.0:0              LISTENING       1234';
+      return 'ProcessId=1234\r\nCommandLine=node index.js\r\nExecutablePath=C:\\Program Files\\nodejs\\node.exe\r\n';
+    };
+
+    expect(getListeningPid(3000, execFile)).toBe(1234);
+    expect(getProcessInfo(1234, execFile)).toMatchObject({ pid: 1234, command_line: 'node index.js' });
+    expect(calls.every(call => call.options.timeout === 2500)).toBe(true);
   });
 
   it('reports current Luke when /api/health responds as Luke', async () => {

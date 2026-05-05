@@ -9,9 +9,10 @@ Luke is a read-only/replay trading companion. It is not live-ready. The canonica
 
 ## Current Proof
 
-- `npm test`: 122 files passed; 771 tests passed; 1 skipped.
+- `npm test`: 123 files passed; 780 tests passed; 1 skipped.
 - Runtime health passed on port 3000.
 - `/operator-v2`, `/trading-window`, replay level-state, live-shaped level-state, and staged-flow proofs passed.
+- `prove:luke-ui-ux` passed across the main shell, Luke chat, trading chat, trading window, Operator V2, and brain dashboard PNG captures.
 - Screenshot sanity passed for the hostile-audit PNG set.
 - `tradingview:export-levels` passed with no export issues.
 - `market:data:test` returned ES/MES/NQ/MNQ/SPX/SPY/QQQ prices, but every result was stale/delayed and `usable_for_live_arming:false`.
@@ -31,6 +32,7 @@ Luke is a read-only/replay trading companion. It is not live-ready. The canonica
 - `/agent/autonomous/execute-staged` is blocked by default behind `LUKE_ENABLE_STAGED_EXECUTION`; live execution also requires `LUKE_ENABLE_LIVE_EXECUTION`.
 - Trading APIs are GET-only for level state, candidates, alerts, candle status, chart data, and source health.
 - Pine is a visual/watchlist indicator using `indicator()` and `alertcondition()` only.
+- Luke Watch production-test Pine is tracked as a realistic-accounting visual indicator; the simulation strategy is TradingView Strategy Tester only.
 - Hard-mode Pine research summary lives in `docs/TRADINGVIEW_HARDMODE_RESEARCH.md`; the strategy file is `tradingview/luke-level-reclaim-watch-hardmode.strategy.pine`.
 - Hard mode supports entry-only, exit-only, both-side, round-trip, and custom slippage with stop-first same-bar accounting.
 - Mancini current log filename now matches its header date: `data/research/mancini/The Mancini Logs 3-15-2026 - 5-4-2026.txt`.
@@ -40,6 +42,7 @@ Luke is a read-only/replay trading companion. It is not live-ready. The canonica
 - No credentialed/proven live or delayed ES 1m OHLC candle provider.
 - Massive/Polygon key exists, but tested snapshot/index endpoints were not entitled or rate-limited.
 - TradingView Pine has not been compiled inside TradingView.
+- Luke Watch production-test Pine and its simulation-only strategy have not been compiled inside TradingView.
 - Hard-mode Pine has not been compiled inside TradingView.
 - Saty parity still needs human TradingView visual signoff.
 - Research rules remain watchlist/research only.

@@ -61,6 +61,7 @@ describe('/brain dashboard shell', () => {
       'spine-daily',
       'spine-history',
       'AI Automation Business Spine',
+      'Brain Section Output',
       'Developer AI Stack Spine',
       'History-Career Search Spine',
       'Blockers',
@@ -69,8 +70,13 @@ describe('/brain dashboard shell', () => {
     }
 
     expect(html).toContain('/agent/brain/status');
+    expect(html).toContain('/agent/brain/brief');
     expect(html).toContain('/agent/brain/automation-business');
+    expect(html).toContain('/agent/brain/automation-business/plan');
     expect(html).toContain('/agent/brain/developer-stack');
+    expect(html).toContain('/agent/brain/developer-stack/plan');
+    expect(html).toContain('/agent/brain/daily/brief?kind=morning');
+    expect(html).toContain('/agent/brain/daily/brief?kind=afternoon');
     expect(html).toContain('/agent/brain/daily');
     expect(html).toContain('/agent/brain/history-career');
     expect(html).toContain('provider.lane');
@@ -79,6 +85,8 @@ describe('/brain dashboard shell', () => {
     expect(html).toContain('async function fetchOptional(url, fallback)');
     expect(html).toContain("const snapshot = await fetchJson('/agent/brain/status')");
     expect(html).toContain('requestAnimationFrame(() => {');
+    expect(html).toContain('function sectionText(kind, data)');
+    expect(html).toContain('async function runSection(kind)');
     expect(html).toContain("'42.8864'");
     expect(html).toContain("'-78.8784'");
   });
@@ -93,6 +101,12 @@ describe('/brain dashboard shell', () => {
     expect(buttonLabels).toContain('mcp workflow');
     expect(buttonLabels).toContain('schedule');
     expect(buttonLabels).toContain('outreach');
+    expect(buttonLabels).toContain('brain brief');
+    expect(buttonLabels).toContain('morning brief');
+    expect(buttonLabels).toContain('afternoon brief');
+    expect(buttonLabels).toContain('automation plan');
+    expect(buttonLabels).toContain('developer plan');
+    expect(buttonLabels).toContain('history searches');
     expect(html).not.toContain('/agent/autonomous/execute');
     expect(html).not.toContain('/agent/autonomous/confirm');
     expect(html).not.toContain('/agent/autonomous/start');
@@ -199,6 +213,17 @@ describe('/brain dashboard shell', () => {
     expect(html).toContain('align-items: flex-start');
     expect(html).toContain('grid-template-columns: repeat(auto-fit, minmax(140px, 1fr))');
     expect(html).toContain('overflow-wrap: anywhere');
+  });
+
+  it('adds a PNG proof command for the non-trading brain sections', () => {
+    const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
+    const script = fs.readFileSync(path.join(ROOT, 'scripts', 'prove-brain-sections.js'), 'utf8');
+
+    expect(pkg.scripts['prove:brain-sections']).toBe('node scripts/prove-brain-sections.js');
+    expect(script).toContain('/brain-dashboard?proof=brain-sections');
+    expect(script).toContain('[data-section="daily-morning"]');
+    expect(script).toContain('[data-section="developer-plan"]');
+    expect(script).toContain('[data-artifact="context-file"]');
   });
 
   it('renders Katbot websocket events as structured DOM text, not raw HTML blocks', () => {

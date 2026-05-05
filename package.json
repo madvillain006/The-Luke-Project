@@ -23,6 +23,7 @@
     "prove:luke-ui-ux": "node scripts/prove-luke-ui-ux.js",
     "prove:chat-execution-blocked": "node scripts/prove-chat-execution-blocked.js",
     "prove:staged-flow": "node scripts/prove-staged-flow.js",
+    "prove:brain-sections": "node scripts/prove-brain-sections.js",
     "research:fake-breakdown": "node scripts/run-fake-breakdown-research.js",
     "research:fake-breakdown-state": "node scripts/run-fake-breakdown-state-machine.js",
     "research:fake-breakdown-watchlist": "node scripts/build-fake-breakdown-watchlist-replay.js",

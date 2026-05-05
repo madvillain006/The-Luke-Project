@@ -226,7 +226,7 @@ describe('Luke brain agent core', () => {
     const marketXml = `
       <rss><channel>
         <item>
-          <title>Fed headline moves S&amp;P futures</title>
+          <title>Market&apos;s Fed headline moves S&amp;P futures</title>
           <link>https://example.com/markets</link>
           <description>Yields moved after a fresh policy headline.</description>
           <pubDate>Sat, 02 May 2026 13:00:00 GMT</pubDate>
@@ -266,7 +266,8 @@ describe('Luke brain agent core', () => {
     });
 
     expect(news.status).toBe('ok');
-    expect(news.by_category.markets[0].title).toContain('Fed headline');
+    expect(news.by_category.markets[0].title).toContain("Market's Fed headline");
+    expect(news.by_category.markets[0].title).not.toContain('&apos;');
     expect(news.by_category.bills[0].title).toContain('Bills add receiver');
     expect(brief.label).toBe('Afternoon brief');
     expect(brief.sections.find(section => section.category === 'markets').status).toBe('live');

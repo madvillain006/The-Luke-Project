@@ -47,6 +47,19 @@ Continue the Luke cleanup/hardening plan without direct operator input where pos
   - watchlist/status pills now wrap inside cards.
   - active level and candidate tables become readable card rows on narrow screens.
 
+### Non-Trading Brain Sections
+
+- Added a direct `Brain Section Output` panel to `brain-dashboard.html`.
+- The brain dashboard can now pull and render the non-trading section outputs without leaving the UI:
+  - brain brief
+  - morning brief
+  - afternoon brief
+  - automation plan
+  - developer stack plan
+  - history-career searches
+- Added `npm run prove:brain-sections` to click those controls and capture PNG proof.
+- Tightened daily RSS text cleanup so common HTML entities like `&apos;` and `&nbsp;` render as normal text in the daily brief.
+
 ### Luke Watch Handoff
 
 - Promoted the Luke Watch production-test Pine and simulation-only strategy into tracked repo files.
@@ -61,7 +74,7 @@ Continue the Luke cleanup/hardening plan without direct operator input where pos
 - `node --check scripts/prove-trading-window.js`: passed.
 - `cmd /c npm run runtime:check`: passed; `/api/health` returned current Luke on port 3000.
 - Focused Vitest execution/risk/UI suite: passed, 9 files, 35 tests.
-- `cmd /c npm test`: passed, 123 files, 780 passed, 1 skipped.
+- `cmd /c npm test`: passed, 123 files, 781 passed, 1 skipped.
 - `cmd /c npm run prove:trading-window`: passed; wrote PNG proof under `artifacts/proof/trading-window/`.
 - `cmd /c npm run prove:luke-dashboard-demo`: passed; wrote PNG proof under `artifacts/proof/luke-dashboard-demo/`.
 - `cmd /c npm run prove:chat-execution-blocked`: passed; wrote PNG proof under `artifacts/proof/chat-execution-blocked/`.
@@ -76,6 +89,11 @@ Continue the Luke cleanup/hardening plan without direct operator input where pos
 - `cmd /c npm run prove:luke-dashboard-demo`: passed after responsive UI fixes; clicked shell/trading/system-chat PNG proof remained clean.
 - `cmd /c npx vitest run tests/tradingview-level-export.test.js tests/pine-hardmode-slippage.test.js`: passed after removing banned `webhook` wording from the simulation-only Pine source.
 - `cmd /c npx vitest run tests/luke-watch-safety-checks.test.js tests/tradingview-level-export.test.js`: covered the new dry-run handoff/export path through the full suite.
+- `node --check lib/brain/daily-brief.js`: passed.
+- `node --check scripts/prove-brain-sections.js`: passed.
+- `cmd /c npx vitest run tests/brain-agent.test.js tests/brain-dashboard.test.js`: passed, 32 tests.
+- `npm run prove:brain-sections` against a fresh proof server on port 3991: passed; wrote PNG proof under `artifacts/proof/brain-sections/`.
+- `cmd /c npm run prove:luke-ui-ux`: passed again after the brain-section UI addition; wrote PNG proof under `artifacts/proof/luke-ui-ux/`.
 
 ## PNG Review Log
 
@@ -111,6 +129,23 @@ Opened and visually inspected:
 - `artifacts/proof/luke-ui-ux/brain-dashboard-mobile.png`
   - Brain dashboard renders real spine data on mobile.
   - Cards are readable and no loading placeholders remain in the proof capture.
+- `artifacts/proof/brain-sections/brain-dashboard-loaded.png`
+  - Brain dashboard loads real spine data with no layout issues.
+- `artifacts/proof/brain-sections/brain-brief.png`
+  - Brain brief button renders attention and next-action output.
+- `artifacts/proof/brain-sections/morning-brief.png`
+  - Morning brief renders weather, market, NFL, and Bills sections.
+  - RSS apostrophe entities render as normal apostrophes in the captured output.
+- `artifacts/proof/brain-sections/automation-plan.png`
+  - Automation plan button renders first-30-days and sub-agent statuses.
+- `artifacts/proof/brain-sections/developer-plan.png`
+  - Developer plan button renders provider order and setup plan.
+- `artifacts/proof/brain-sections/history-searches.png`
+  - History-career button renders tracks and next search queries.
+- `artifacts/proof/brain-sections/automation-context-file.png`
+  - Existing automation factory artifact still renders after the section-output addition.
+- `artifacts/proof/brain-sections/mobile-developer-plan.png`
+  - Mobile brain section controls wrap cleanly and the developer plan remains readable.
 
 ## Remaining Without Operator Input
 
@@ -118,8 +153,10 @@ Opened and visually inspected:
 - Keep generated proof output in ignored artifact locations.
 - Commit this slice after verification.
 - Revisit PM2 CLI health/reload separately if it continues to hang; do not kill the live app during this hardening slice without a specific operator decision.
+- The brain dashboard now exposes the current non-trading brain sections through clickable UI; deeper usefulness depends on configured providers/data and your preferred operating workflows.
 
 ## Requires Operator Input Later
 
 - Any actual live-data provider credentials, TradingView compile/signoff, Saty visual parity signoff, broker proof, or permission to unlock staged/live env gates.
 - Luke Watch production-test Pine is now tracked and safety-tested, but still needs TradingView compile/signoff before use.
+- Non-trading brain sections are wired and proofed, but final scope choices still need your judgment: which automation niche to actually pursue, which history-career search targets matter most, and which AI provider keys/models you want Luke to use.

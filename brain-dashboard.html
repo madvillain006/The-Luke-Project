@@ -267,6 +267,10 @@
       min-width: 0;
     }
 
+    .panel.full-span {
+      grid-column: 1 / -1;
+    }
+
     .panel-header {
       padding: 10px 12px;
       background: var(--panel-2);
@@ -417,6 +421,20 @@
               <button data-artifact="outreach">Outreach</button>
             </div>
             <pre id="artifact-output">Ready</pre>
+          </div>
+        </div>
+        <div class="panel full-span">
+          <div class="panel-header">Brain Section Output</div>
+          <div class="panel-body">
+            <div class="action-row">
+              <button data-section="brain-brief">Brain Brief</button>
+              <button data-section="daily-morning">Morning Brief</button>
+              <button data-section="daily-afternoon">Afternoon Brief</button>
+              <button data-section="automation-plan">Automation Plan</button>
+              <button data-section="developer-plan">Developer Plan</button>
+              <button data-section="history-searches">History Searches</button>
+            </div>
+            <pre id="section-output">Ready</pre>
           </div>
         </div>
         <div class="panel">
@@ -618,6 +636,88 @@
       return JSON.stringify(artifact, null, 2);
     }
 
+    function sectionText(kind, data) {
+      if (kind === 'brain-brief') {
+        return [
+          `Brain: ${data.brain || 'Luke'}`,
+          '',
+          'Attention',
+          ...(data.attention || []).map(item => `- ${item.agent}: ${(item.blockers || []).join(', ') || 'none'}`),
+          '',
+          'Next Actions',
+          ...(data.next_actions || []).map(item => `- ${item}`),
+        ].join('\n');
+      }
+      if (kind === 'daily-morning' || kind === 'daily-afternoon') {
+        const lines = [
+          data.label || 'Daily brief',
+          `Weather: ${data.weather?.summary || 'unavailable'}`,
+          `News: ${data.news_status || 'unknown'}`,
+        ];
+        for (const section of data.sections || []) {
+          lines.push('', section.label || section.id || 'Section');
+          for (const item of (section.items || []).slice(0, 3)) lines.push(`- ${item.title} (${item.source || 'source unknown'})`);
+          if (!(section.items || []).length && section.empty_note) lines.push(`- ${section.empty_note}`);
+        }
+        return lines.join('\n');
+      }
+      if (kind === 'automation-plan') {
+        return [
+          data.label || 'Automation plan',
+          `Recommended: ${data.recommended_start?.niche || 'n/a'}`,
+          '',
+          'First 30 Days',
+          ...(data.first_30_days || []).map(item => `- ${item}`),
+          '',
+          'Sub-agents',
+          ...Object.values(data.subagents || {}).map(item => `- ${item.label || item.id}: ${item.status}`),
+        ].join('\n');
+      }
+      if (kind === 'developer-plan') {
+        return [
+          data.label || 'Developer plan',
+          data.local_only_truth || '',
+          '',
+          'Provider Order',
+          ...(data.provider_order || []).map(provider => `- ${provider.priority}. ${provider.label}: ${provider.status} [${provider.lane}]`),
+          '',
+          'Setup Plan',
+          ...(data.setup_plan || []).map(item => `- ${item}`),
+        ].join('\n');
+      }
+      if (kind === 'history-searches') {
+        return [
+          data.label || 'History-career search spine',
+          '',
+          'Tracks',
+          ...(data.tracks || []).map(track => `- ${track.label}`),
+          '',
+          'Next Searches',
+          ...(data.next_searches || []).slice(0, 16).map(item => `- ${item.track}: ${item.query}`),
+        ].join('\n');
+      }
+      return JSON.stringify(data, null, 2);
+    }
+
+    async function runSection(kind) {
+      const output = $('section-output');
+      output.textContent = 'Working...';
+      const routes = {
+        'brain-brief': '/agent/brain/brief',
+        'daily-morning': '/agent/brain/daily/brief?kind=morning',
+        'daily-afternoon': '/agent/brain/daily/brief?kind=afternoon',
+        'automation-plan': '/agent/brain/automation-business/plan',
+        'developer-plan': '/agent/brain/developer-stack/plan',
+        'history-searches': '/agent/brain/history-career',
+      };
+      try {
+        const data = await fetchJson(routes[kind]);
+        output.textContent = sectionText(kind, data);
+      } catch (err) {
+        output.textContent = err.message;
+      }
+    }
+
     async function runArtifact(kind) {
       const output = $('artifact-output');
       output.textContent = 'Working...';
@@ -641,6 +741,9 @@
     $('refresh').addEventListener('click', load);
     document.querySelectorAll('[data-artifact]').forEach(button => {
       button.addEventListener('click', () => runArtifact(button.dataset.artifact));
+    });
+    document.querySelectorAll('[data-section]').forEach(button => {
+      button.addEventListener('click', () => runSection(button.dataset.section));
     });
     load();
   </script>

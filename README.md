@@ -1,6 +1,6 @@
 # Luke
 
-Luke is a local supervised trading copilot for index/futures workflows.
+Luke is Conor's local personal AI assistant and clawbot, built in memory of Luke, his dog and best friend. Trading is one supervised module inside the system.
 
 It turns daily analyst inputs into a cleaner decision surface:
 - what levels matter
@@ -174,7 +174,7 @@ If `/entries ES` refuses because inputs are stale or missing, trust the refusal.
 
 ## Current posture
 
-Luke is a real supervised trading tool.
+Luke includes a real supervised trading tool, but the project is broader than trading.
 
 Current best use:
 - disciplined manual decision support

@@ -139,6 +139,8 @@ describe('/brain dashboard shell', () => {
       'data-src="/trading?embed=1"',
       'data-src="/luke?embed=1"',
       'data-src="/daily?embed=1"',
+      'id="daily-expand"',
+      'Calendar, jobs, and next actions',
       'href="/luke"',
       'weather-emoji',
       'weatherEmoji(weather)',
@@ -232,17 +234,21 @@ describe('/brain dashboard shell', () => {
       'Luke Daily',
       'I love Kat',
       '/agent/brain/daily/window',
-      '/agent/brain/daily/checkin',
       '/agent/brain/history-career',
+      '/agent/brain/history-career/leads?limit=8',
       '/agent/brain/automation-business',
       'Knoxville, TN',
       'Wilmington, NC',
       'This Week',
+      'History Jobs / Leads',
       'Move to Tennessee',
       'Gmail cleanup',
+      "Luke is Conor\\'s personal AI assistant and clawbot",
     ]) {
       expect(html).toContain(label);
     }
+    expect(html).not.toContain('checkin-form');
+    expect(html).not.toContain('/agent/brain/daily/checkin');
   });
 
   it('adds a PNG proof command for the non-trading brain sections', () => {

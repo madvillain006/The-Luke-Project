@@ -47,7 +47,12 @@ const {
   summarizeWeather,
   weatherCodeText,
 } = require('../lib/brain/daily-spine');
-const { buildHistoryCareerSpine, evaluateOpportunity, recordOpportunity } = require('../lib/brain/history-career-spine');
+const {
+  buildHistoryCareerSpine,
+  evaluateOpportunity,
+  fetchPublicHistoryJobLeads,
+  recordOpportunity,
+} = require('../lib/brain/history-career-spine');
 
 function makePaths() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'luke-brain-'));
@@ -174,7 +179,7 @@ describe('Luke brain agent core', () => {
     expect(answer.reply).toContain('daily kill active');
   });
 
-  it('builds a daily spine with check-ins and weather summary', () => {
+  it('builds a daily spine with static brief state and weather summary', () => {
     const paths = makePaths();
     const now = new Date('2026-05-02T13:00:00.000Z');
     recordDailyCheckin({
@@ -201,9 +206,32 @@ describe('Luke brain agent core', () => {
     expect(spine.weather.summary).toContain('71F');
     expect(spine.weather.summary).toContain('unknown');
     expect(spine.checklist.find(item => item.id === 'daily-checkin').status).toBe('done');
+    expect(buildDailySpine({ paths: makePaths(), now }).checklist.find(item => item.id === 'daily-checkin').status).toBe('static');
     expect(spine.briefs.morning.endpoint).toContain('kind=morning');
     expect(spine.live_news.social_watchlist.some(item => item.id === 'deitaone')).toBe(true);
     expect(buildWeatherUrl({ lat: 40, lon: -75 })).toContain('latitude=40');
+  });
+
+  it('extracts public history job leads from source pages', async () => {
+    const leads = await fetchPublicHistoryJobLeads({
+      sources: [{ label: 'Test public history source', url: 'https://example.test/jobs' }],
+      fetchFn: async () => ({
+        ok: true,
+        text: async () => [
+          '<a href="/">Test public history source</a>',
+          '<a href="/submit">Submit a Job</a>',
+          '<a href="/2026/05/05/project-archivist">May 5, 2026 May 5, 2026</a>',
+          '<a href="/2026/05/05/project-archivist#more">Continue reading &#8220;Project Archivist&#8221;</a>',
+          '<a href="/job/digitization-technician">Digitization Technician, Collections</a>',
+          '<a href="/job/librarian">Assistant Librarian: Reference Archivist</a>',
+          '<a href="/job/mlis">MLIS Librarian</a>',
+        ].join(''),
+      }),
+    });
+
+    expect(leads.status).toBe('ok');
+    expect(leads.leads).toHaveLength(1);
+    expect(leads.leads[0]).toMatchObject({ title: 'Digitization Technician, Collections', source: 'Test public history source' });
   });
 
   it('builds weather for the daily window locations', async () => {

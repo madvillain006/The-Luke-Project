@@ -5,25 +5,26 @@
   <title>Luke</title>
   <style>
     :root {
-      --bg:  #080c10;
-      --bg2: #0d1117;
-      --bg3: #0d1520;
-      --b1:  #1a2332;
-      --b2:  #2a3a4a;
-      --dim: #4a5568;
-      --med: #8a9ab0;
-      --fg:  #c9d4e0;
-      --green: #4ade80; --gbg: #0d1a0d; --gbr: #1a3a1a;
-      --red:   #f87171; --rbg: #1a0d0d; --rbr: #4a1a1a;
-      --yel:   #e2b96a; --ybg: #0d0900; --ybr: #4a3a00;
-      --blu:   #60a5fa; --bbr: #1a2a4a;
-      --pur:   #8b7cf8;
+      --bg:  #000000;
+      --bg2: #111111;
+      --bg3: #1e1e1e;
+      --b1:  #2b2b2b;
+      --b2:  #3a3a3a;
+      --dim: #777777;
+      --med: #b8b8b8;
+      --fg:  #f2f2f2;
+      --green: #f2f2f2; --gbg: #1e1e1e; --gbr: #3a3a3a;
+      --red:   #ff7474; --rbg: #1a0d0d; --rbr: #4a1a1a;
+      --yel:   #f2c75c; --ybg: #15120a; --ybr: #4a3a00;
+      --blu:   #f2f2f2; --bbr: #3a3a3a;
+      --pur:   #b8b8b8;
+      --font: "JetBrains Mono", "Fira Code", "Space Mono", "Cascadia Mono", Consolas, monospace;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       background: var(--bg);
       color: var(--fg);
-      font-family: -apple-system, "Segoe UI", sans-serif;
+      font-family: var(--font);
       display: flex;
       flex-direction: column;
       height: 100dvh;
@@ -39,15 +40,15 @@
       position: fixed;
       z-index: 99999;
       background: #1a1f2e;
-      border: 1px solid #444;
+      border: 1px solid var(--b2);
       padding: 4px 9px;
       border-radius: 4px;
       font-size: 11px;
-      color: #c9d4e0;
+      color: var(--fg);
       pointer-events: none;
       white-space: nowrap;
       display: none;
-      font-family: -apple-system, "Segoe UI", sans-serif;
+      font-family: var(--font);
     }
 
  /* TOP BAR */
@@ -182,12 +183,12 @@
       color: var(--fg);
     }
     .bubble.user   { background: var(--gbg); border-color: var(--gbr); color: var(--green); border-left-width: 1px; }
-    .bubble.luke { border-left-color: #2a3a4a; }
+    .bubble.luke { border-left-color: var(--b2); }
     .bubble.setup  { border-left-color: var(--green); }
     .bubble.skip   { border-left-color: var(--red); }
     .bubble.weak   { border-left-color: var(--yel); }
     .bubble.alert  { background: #1a0d00; border-left-color: var(--yel); color: var(--yel); }
-    .bubble.vision { background: #0a0d1a; border-left-color: var(--blu); }
+    .bubble.vision { background: var(--bg2); border-left-color: var(--b2); }
     .bubble img    { max-width: 200px; max-height: 140px; display: block; border-radius: 2px; border: 1px solid var(--b1); }
 
     .msg-ts { font-size: 10px; color: var(--dim); flex-shrink: 0; padding-bottom: 3px; }
@@ -244,9 +245,9 @@
     }
     #input:focus { border-color: var(--b2); }
     #send {
-      background: var(--yel);
-      border: none;
-      color: var(--bg);
+      background: var(--bg3);
+      border: 1px solid var(--b2);
+      color: var(--fg);
       padding: 0 12px;
       height: 32px;
       font-family: inherit;

@@ -2,7 +2,7 @@
 
 ## Objective
 
-Bring Luke from a cleaned read-only/replay trading companion into a durable, organized, reviewable project state. Keep live execution blocked until live data, broker state, and human signoff are proven.
+Bring Luke from a cleaned trading-heavy state into a durable, organized, reviewable personal AI assistant/clawbot. Trading remains one supervised module inside Luke.
 
 ## Current Truth
 
@@ -61,7 +61,7 @@ Bring Luke from a cleaned read-only/replay trading companion into a durable, org
 Use this prompt for the longer multi-agent pass:
 
 ```
-You are taking over C:\Users\conor\luke after the May 5 cleanup commit. Work in goal mode. Use multiple focused agents for independent repo sections, then integrate only reviewed changes. The mission is to finish Luke as a clean, organized, read-only/replay trading companion while preserving live-execution blocks.
+You are taking over C:\Users\conor\luke after the May 5 cleanup commit. Work in goal mode. Use multiple focused agents for independent repo sections, then integrate only reviewed changes. The mission is to finish Luke as a clean, organized personal AI assistant/clawbot while preserving live broker execution blocks inside the trading module.
 
 Rules:
 - Start with `git status --short`, `git diff --stat`, and `git log --oneline -10`.

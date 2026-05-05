@@ -146,6 +146,15 @@
       min-height: 0;
     }
 
+    .daily-panel.is-open {
+      height: clamp(760px, 78vh, 980px);
+      min-height: 0;
+    }
+
+    .daily-panel.is-open.is-expanded {
+      height: min(1280px, calc(100vh - 40px));
+    }
+
     .trading-panel-top {
       min-height: 38px;
       padding: 9px 12px;
@@ -302,6 +311,10 @@
       gap: 10px;
       align-items: start;
       justify-content: start;
+    }
+
+    body.daily-focus .module-grid > .module-link {
+      display: none;
     }
 
     .module-link {
@@ -705,7 +718,7 @@
             <span class="daily-brief-state-value" id="daily-brief-state">Loading date</span>
             <span class="daily-brief-note-text" id="daily-brief-note">loading time</span>
             <span class="daily-brief-weather-row">
-              <span class="weather-emoji" id="weather-emoji" aria-hidden="true">·</span>
+              <span class="weather-emoji" id="weather-emoji" aria-hidden="true">.</span>
               <span id="weather-temp">--</span>
               <span id="weather-cond">loading</span>
             </span>
@@ -713,14 +726,14 @@
             <span class="daily-brief-weather-forecast" id="daily-brief-weather-forecast">calendar loading</span>
           </div>
         </div>
-        <div class="module-caption"><span>D 003</span><span class="name">Daily Brief</span><span class="module-meta">Check-ins and next actions</span></div>
+        <div class="module-caption"><span>D 003</span><span class="name">Daily Brief</span><span class="module-meta">Calendar, jobs, and next actions</span></div>
       </a>
 
       <section class="daily-panel" id="daily-panel" aria-hidden="true" aria-label="Luke daily window">
         <div class="trading-panel-top">
           <span>Daily Brief / Schedule Window</span>
           <div class="trading-panel-actions">
-            <a class="panel-action" href="/daily" title="Open Daily as a full page">FULL</a>
+            <button class="panel-action" id="daily-expand" type="button" title="Make this Daily window taller inside the dashboard">EXPAND</button>
             <button class="panel-action" id="daily-close" type="button" title="Return to the Daily Brief tile">BACK</button>
           </div>
         </div>
@@ -886,8 +899,10 @@
       const panel = $('daily-panel');
       const frame = $('daily-frame');
       if (!launch || !panel || !frame) return;
+      document.body.classList.add('daily-focus');
       launch.classList.add('is-hidden');
       panel.classList.add('is-open');
+      panel.classList.remove('is-expanded');
       panel.setAttribute('aria-hidden', 'false');
       if (!frame.getAttribute('src')) frame.setAttribute('src', frame.dataset.src || '/daily?embed=1');
     }
@@ -896,10 +911,20 @@
       const launch = $('daily-launch');
       const panel = $('daily-panel');
       if (!launch || !panel) return;
+      document.body.classList.remove('daily-focus');
       panel.classList.remove('is-open');
+      panel.classList.remove('is-expanded');
       panel.setAttribute('aria-hidden', 'true');
       launch.classList.remove('is-hidden');
       launch.focus();
+    }
+
+    function toggleDailyExpanded() {
+      const panel = $('daily-panel');
+      const button = $('daily-expand');
+      if (!panel || !button) return;
+      const expanded = panel.classList.toggle('is-expanded');
+      button.textContent = expanded ? 'COMPACT' : 'EXPAND';
     }
 
     async function refresh() {
@@ -923,7 +948,7 @@
         setText('runtime-line', `${formatMemory(telemetry.process?.rss_bytes)} RSS / ${formatUptime(telemetry.process?.uptime_seconds)}`);
       } catch (err) {
         setText('weather-line', 'offline');
-        setText('weather-emoji', '⚠️');
+        setText('weather-emoji', '!');
         setText('weather-temp', '--');
         setText('weather-cond', 'offline');
         setText('daily-brief-weather-summary', 'weather offline');
@@ -970,6 +995,7 @@
     $('trading-window-view')?.addEventListener('click', () => setTradingPanelMode('window'));
     $('system-close')?.addEventListener('click', closeSystemPanel);
     $('daily-close')?.addEventListener('click', closeDailyPanel);
+    $('daily-expand')?.addEventListener('click', toggleDailyExpanded);
 
     refresh();
     setInterval(refresh, 30000);

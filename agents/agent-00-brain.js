@@ -17,7 +17,9 @@ const {
 const { buildDailyBrief, fetchDailyNews } = require('../lib/brain/daily-brief');
 const { buildDailySpine, fetchWeather, fetchWeatherForLocations, recordDailyCheckin } = require('../lib/brain/daily-spine');
 const { buildDeveloperStackSpine, recordDeveloperStackEvent } = require('../lib/brain/developer-stack-spine');
-const { buildHistoryCareerSpine, recordOpportunity } = require('../lib/brain/history-career-spine');
+const { buildHistoryCareerSpine, fetchPublicHistoryJobLeads, recordOpportunity } = require('../lib/brain/history-career-spine');
+const { syncDirectDailyIntegrations } = require('../lib/google-direct');
+const paths = require('../lib/paths');
 
 const router = express.Router();
 
@@ -145,6 +147,7 @@ router.post('/automation-business/niche/evaluate', (req, res) => {
 });
 
 router.get('/daily', async (req, res) => {
+  const google = await syncDirectDailyIntegrations({ paths });
   const weather = await fetchWeather({
     lat: req.query.lat || process.env.LUKE_WEATHER_LAT,
     lon: req.query.lon || process.env.LUKE_WEATHER_LON,
@@ -152,13 +155,18 @@ router.get('/daily', async (req, res) => {
     label: process.env.LUKE_WEATHER_LABEL || 'Buffalo, NY',
   });
   const weatherLocations = await fetchWeatherForLocations();
-  res.json(buildDailySpine({ weather, weatherLocations }));
+  res.json({ ...buildDailySpine({ weather, weatherLocations }), google_direct: google });
 });
 
 router.get('/daily/window', async (req, res) => {
+  const google = await syncDirectDailyIntegrations({ paths });
   const weatherLocations = await fetchWeatherForLocations();
   const weather = weatherLocations[0] || await fetchWeather();
-  res.json(buildDailySpine({ weather, weatherLocations }));
+  res.json({ ...buildDailySpine({ weather, weatherLocations }), google_direct: google });
+});
+
+router.post('/daily/google-sync', async (req, res) => {
+  res.json(await syncDirectDailyIntegrations({ paths, force: true }));
 });
 
 router.get('/daily/news', async (req, res) => {
@@ -192,6 +200,12 @@ router.post('/daily/checkin', (req, res) => {
 
 router.get('/history-career', (req, res) => {
   res.json(buildHistoryCareerSpine());
+});
+
+router.get('/history-career/leads', async (req, res) => {
+  res.json(await fetchPublicHistoryJobLeads({
+    limit: Number(req.query.limit || 12),
+  }));
 });
 
 router.post('/history-career/opportunity', (req, res) => {

@@ -12,6 +12,7 @@ const ROOT = path.join(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'artifacts', 'proof', 'luke-ui-ux');
 let BASE_URL = process.env.LUKE_BASE_URL || 'http://127.0.0.1:3000';
 const PROOF_PORT = Number(process.env.LUKE_PROOF_PORT || 3001);
+const CHROMIUM_ARGS = ['--disable-gpu', '--disable-gpu-compositing'];
 
 function ensureDir(dir) {
   fs.mkdirSync(dir, { recursive: true });
@@ -144,8 +145,9 @@ async function waitForDailyWindow(page) {
       && /I love Kat/.test(body)
       && /Knoxville, TN/.test(body)
       && /Wilmington, NC/.test(body)
+      && /History Jobs/i.test(body)
       && !/Loading date|loading time|Loading mail/i.test(body);
-  }, { timeout: 15000 });
+  }, { timeout: 45000 });
 }
 
 async function openDailyPanelFromShell(page) {
@@ -187,7 +189,12 @@ async function capturePage(browser, spec, proof) {
 
   const bodyText = await page.locator('body').innerText({ timeout: 15000 });
   const layoutIssues = await auditLayout(page);
-  await page.screenshot({ path: filePath, fullPage: spec.fullPage !== false });
+  await page.screenshot({
+    path: filePath,
+    fullPage: spec.fullPage !== false,
+    animations: 'disabled',
+    caret: 'hide',
+  });
   const stats = fs.statSync(filePath);
   const missingText = (spec.mustContain || []).filter(text => !bodyText.toLowerCase().includes(text.toLowerCase()));
   const forbiddenText = (spec.mustNotContain || []).filter(text => bodyText.toLowerCase().includes(text.toLowerCase()));
@@ -214,13 +221,16 @@ async function capturePage(browser, spec, proof) {
   return result;
 }
 
+async function launchProofBrowser() {
+  return chromium.launch({ headless: true, args: CHROMIUM_ARGS });
+}
+
 async function captureScreenshots() {
   const proof = { screenshots: [] };
-  const browser = await chromium.launch({ headless: true });
-  try {
-    const desktop = { width: 1920, height: 1400 };
-    const mobile = { width: 390, height: 900 };
-    const specs = [
+  let browser = await launchProofBrowser();
+  const desktop = { width: 1920, height: 1400 };
+  const mobile = { width: 390, height: 900 };
+  const specs = [
       {
         key: 'shell-desktop',
         route: '/shell?proof=ui-ux',
@@ -295,9 +305,9 @@ async function captureScreenshots() {
         route: '/daily?proof=ui-ux',
         file: 'daily-window-desktop.png',
         viewport: desktop,
-        waitForText: ['Luke Daily', 'Daily Check-In', 'This Week'],
+        waitForText: ['Luke Daily', 'Daily Brief', 'This Week'],
         action: waitForDailyWindow,
-        mustContain: ['I love Kat', 'Knoxville, TN', 'Wilmington, NC', 'Gmail cleanup'],
+        mustContain: ['I love Kat', 'Knoxville, TN', 'Wilmington, NC', 'Gmail cleanup', 'History Jobs / Leads'],
         mustNotContain: ['Loading date', 'Loading mail'],
       },
       {
@@ -305,9 +315,9 @@ async function captureScreenshots() {
         route: '/daily?proof=ui-ux',
         file: 'daily-window-mobile.png',
         viewport: mobile,
-        waitForText: ['Luke Daily', 'Daily Check-In'],
+        waitForText: ['Luke Daily', 'Daily Brief'],
         action: waitForDailyWindow,
-        mustContain: ['I love Kat', 'Move to Tennessee', 'Gmail cleanup'],
+        mustContain: ['I love Kat', 'Move to Tennessee', 'Gmail cleanup', 'History Jobs / Leads'],
         mustNotContain: ['Loading date', 'Loading mail'],
       },
       {
@@ -339,13 +349,36 @@ async function captureScreenshots() {
         mustContain: ['Luke Brain', 'Brain Next Actions', 'Recommendation-only'],
         mustNotContain: ['Loading'],
       },
-    ];
+  ];
 
+  try {
     for (const spec of specs) {
-      await capturePage(browser, spec, proof);
+      try {
+        await capturePage(browser, spec, proof);
+      } catch (err) {
+        try {
+          await browser.close();
+        } catch {}
+        browser = await launchProofBrowser();
+        try {
+          await capturePage(browser, spec, proof);
+        } catch (retryErr) {
+          proof.screenshots.push({
+            key: spec.key,
+            route: spec.route,
+            file: spec.file,
+            ok: false,
+            issues: [`capture failed after retry: ${retryErr?.message || retryErr}`],
+            page_errors: [],
+            console_errors: [],
+          });
+        }
+      }
     }
   } finally {
-    await browser.close();
+    try {
+      await browser.close();
+    } catch {}
   }
   return proof;
 }

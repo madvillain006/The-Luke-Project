@@ -19,6 +19,7 @@ Continue the Luke cleanup/hardening plan without direct operator input where pos
 - `/agent/autonomous/execute-staged` is blocked by default behind `LUKE_ENABLE_STAGED_EXECUTION`.
 - Live mode/live execution is blocked by default behind `LUKE_ENABLE_LIVE_EXECUTION` after staged execution is explicitly unlocked.
 - `trading/execution-live.js` now checks the live execution gate directly before credentials or broker calls, so bypassing the router still fails closed.
+- Operator clarification on 2026-05-05: Luke is a personal AI assistant/clawbot in memory of Luke, not merely a trading companion. The trading module should be described as one subsystem.
 
 ### Risk Math
 
@@ -65,7 +66,7 @@ Continue the Luke cleanup/hardening plan without direct operator input where pos
 
 ### Daily Window, Calendar, And Mail
 
-- Added `/daily` as a first-class Daily Brief window, opened from the Luke shell like Trading and Luke Chat.
+- Added `/daily` as a first-class static Daily Brief window, opened from the Luke shell like Trading and Luke Chat.
 - The Daily window renders:
   - current date and time
   - Buffalo/current weather
@@ -73,11 +74,12 @@ Continue the Luke cleanup/hardening plan without direct operator input where pos
   - Wilmington, NC weather
   - `I love Kat`
   - current-week Google Calendar cache
-  - daily check-in form
+  - history job/lead scan
   - Tennessee move prompt
   - Gmail cleanup status
   - automation/history attention signals
 - Updated the outer Daily tile to show date/time and remove the duplicated weather-summary line.
+- Added an in-shell Daily expand/compact control so the larger Daily window stays inside the Luke dashboard instead of sending the user to a backend-style page.
 - Updated `brain-dashboard.html` so the Daily card hides the confusing `open` status pill and says what Luke actually needs from the operator.
 - Connected Google Calendar through the Codex Google Calendar app for this run. Primary calendar returned no events for May 5-12, 2026, and Luke caches that result under ignored state.
 - Connected Gmail through the Codex Gmail app for this run. The safe non-Substack unread subscription query labeled and archived 37,000 messages into `Luke/Cleanup/Unread Non-Substack Subscriptions`; no permanent deletion was done.
@@ -204,11 +206,11 @@ Opened and visually inspected:
 - Commit this slice after verification.
 - Revisit PM2 CLI health/reload separately if it continues to hang; startup duplicate-port crash loops are now fail-closed, but killing unknown live processes still needs an explicit operator decision.
 - The brain dashboard now exposes the current non-trading brain sections through clickable UI; deeper usefulness depends on configured providers/data and your preferred operating workflows.
-- Daily calendar/mail integration now has an hourly cache refresh automation, but the Luke app still depends on connector availability or a future direct Google OAuth/ICS credential to keep that cache fresh outside Codex.
+- Daily calendar/mail integration now has direct Google hooks plus connector-cache fallback. Calendar can use Google OAuth or public-calendar API-key access; Gmail needs Google OAuth credentials with Gmail scopes.
 
 ## Requires Operator Input Later
 
-- Any actual live-data provider credentials, TradingView compile/signoff, Saty visual parity signoff, broker proof, or permission to unlock staged/live env gates.
+- Brokerage proof remains the missing trading unlock item. Live broker submission remains gated behind `LUKE_ENABLE_LIVE_EXECUTION`.
 - Luke Watch production-test Pine is now tracked and safety-tested, but still needs TradingView compile/signoff before use.
 - Non-trading brain sections are wired and proofed, but final scope choices still need your judgment: which automation niche to actually pursue, which history-career search targets matter most, and which AI provider keys/models you want Luke to use.
-- Daily check-in still needs your actual day-specific input when you want Luke to treat the daily plan as complete.
+- Direct Gmail/Calendar cannot use the Gemini API key; it needs Google OAuth access/refresh credentials or a public-calendar API key path.

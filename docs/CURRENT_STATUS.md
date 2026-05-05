@@ -5,7 +5,7 @@ Artifact timestamp: 2026-05-05 UTC
 
 ## Verdict
 
-Luke is a read-only/replay trading companion. It is not live-ready. The canonical current audit is `docs/HOSTILE_AUDIT_REPORT.md`; this file is only the short operating snapshot.
+Luke is Conor's personal local AI assistant and clawbot, built in memory of Luke, his dog and best friend. Trading is one module inside Luke, not the whole system. The canonical trading audit is `docs/HOSTILE_AUDIT_REPORT.md`; this file is only the short operating snapshot.
 
 ## Current Proof
 
@@ -29,10 +29,10 @@ Luke is a read-only/replay trading companion. It is not live-ready. The canonica
 
 - `/operator-v2`: read-only operator surface.
 - `/trading-window`: read-only live-shaped replay/dev surface.
-- `/daily`: Daily Brief window with date/time, Buffalo/current weather, Knoxville weather, Wilmington weather, Google Calendar week cache, Gmail cleanup status, Tennessee move prompt, and daily check-in form.
+- `/daily`: static Daily Brief window with date/time, Buffalo/current weather, Knoxville weather, Wilmington weather, Google Calendar week cache, Gmail cleanup status, Tennessee move prompt, and history job/lead scan.
 - `/brain-dashboard`: non-trading brain surface with clickable brain brief, daily brief, automation-business, developer-stack, and history-career outputs.
 - Legacy chat staged-trade UI is review-only; its execution button is disabled and does not call `/agent/autonomous/execute-staged`.
-- `/agent/autonomous/execute-staged` is blocked by default behind `LUKE_ENABLE_STAGED_EXECUTION`; live execution also requires `LUKE_ENABLE_LIVE_EXECUTION`.
+- Local staged/paper/shadow execution can be unlocked with `LUKE_ENABLE_STAGED_EXECUTION`; live broker submission still requires separate `LUKE_ENABLE_LIVE_EXECUTION` and the brokerage proof now in progress.
 - Direct live executor calls also check the live gate before broker credentials or Tradovate order submission.
 - Trading APIs are GET-only for level state, candidates, alerts, candle status, chart data, and source health.
 - Server startup exits cleanly if port 3000 is already held by Luke or another process, and PM2 is configured not to crash-loop clean duplicate-start exits.
@@ -52,8 +52,8 @@ Luke is a read-only/replay trading companion. It is not live-ready. The canonica
 - Saty parity still needs human TradingView visual signoff.
 - Research rules remain watchlist/research only.
 - Live and staged execution remain blocked by default.
-- Daily check-in is not an error: it means Luke is waiting for the operator to enter today's priorities, fixed appointments, and constraints.
-- Google Calendar and Gmail are connected through Codex app connectors and cached into ignored Luke state; outside Codex, direct Google OAuth/ICS credentials are still needed for Luke to refresh those sources by itself.
+- Daily check-in is no longer the primary Daily UI; Daily is a static operating brief.
+- Direct Google Calendar/Gmail hooks are installed. Calendar can use Google OAuth or an API key for public calendars; Gmail requires Google OAuth credentials with Gmail scopes. Existing Codex connector caches remain the fallback.
 
 ## Next Milestone
 

@@ -7,28 +7,28 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #0b0f12;
-      --panel: #171d22;
-      --panel-2: #20272d;
-      --line: #33404a;
-      --text: #f2f6f8;
-      --muted: #b7c5cf;
-      --accent: #7fc7ff;
+      --bg: #000000;
+      --panel: #111111;
+      --panel-2: #1e1e1e;
+      --line: #2b2b2b;
+      --line-strong: #3a3a3a;
+      --text: #f2f2f2;
+      --muted: #b8b8b8;
+      --dim: #777777;
+      --good: #63d894;
       --warn: #f2c75c;
       --bad: #ff7474;
-      --good: #63d894;
+      --font: "JetBrains Mono", "Fira Code", "Space Mono", "Cascadia Mono", Consolas, monospace;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       min-height: 100vh;
       background: var(--bg);
       color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: var(--font);
       letter-spacing: 0;
     }
 
@@ -41,34 +41,13 @@
       justify-content: space-between;
       gap: 18px;
       padding: 18px 22px;
-      background: rgba(11, 15, 18, 0.96);
+      background: rgba(0, 0, 0, 0.96);
       border-bottom: 1px solid var(--line);
     }
 
-    h1,
-    h2,
-    h3,
-    p {
-      margin: 0;
-    }
-
-    h1 {
-      font-size: 24px;
-      line-height: 1.1;
-    }
-
-    .subhead {
-      margin-top: 5px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .top-actions {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: 8px;
-    }
+    h1, h2, h3, p { margin: 0; }
+    h1 { font-size: 24px; line-height: 1.1; }
+    .subhead { margin-top: 5px; color: var(--muted); font-size: 13px; }
 
     button,
     a.button {
@@ -83,9 +62,7 @@
     }
 
     button:hover,
-    a.button:hover {
-      border-color: var(--accent);
-    }
+    a.button:hover { border-color: var(--line-strong); background: #252525; }
 
     main {
       padding: 18px;
@@ -100,18 +77,9 @@
       gap: 14px;
     }
 
-    .hero-grid {
-      grid-template-columns: minmax(260px, 1fr) minmax(260px, 1.4fr);
-    }
-
-    .content-grid {
-      grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.4fr);
-      align-items: start;
-    }
-
-    .weather-grid {
-      grid-template-columns: repeat(3, minmax(190px, 1fr));
-    }
+    .hero-grid { grid-template-columns: minmax(260px, 1fr) minmax(260px, 1.4fr); }
+    .content-grid { grid-template-columns: repeat(2, minmax(320px, 1fr)); align-items: start; }
+    .weather-grid { grid-template-columns: repeat(3, minmax(190px, 1fr)); }
 
     .panel {
       border: 1px solid var(--line);
@@ -119,9 +87,7 @@
       min-width: 0;
     }
 
-    .panel.full {
-      grid-column: 1 / -1;
-    }
+    .panel.full { grid-column: 1 / -1; }
 
     .panel-header {
       padding: 10px 12px;
@@ -138,62 +104,34 @@
       gap: 11px;
     }
 
-    .date-time {
-      display: grid;
-      gap: 8px;
-    }
+    .date-time { display: grid; gap: 8px; }
+    .date-line { font-size: clamp(22px, 4vw, 44px); line-height: 1.05; font-weight: 800; }
+    .time-line { color: var(--text); font-size: clamp(22px, 3vw, 34px); font-weight: 800; }
 
-    .date-line {
-      font-size: clamp(22px, 4vw, 44px);
-      line-height: 1.05;
-      font-weight: 800;
-    }
-
-    .time-line {
-      color: var(--accent);
-      font-size: clamp(22px, 3vw, 34px);
-      font-weight: 800;
-    }
-
-    .kat-line {
-      padding: 9px 10px;
-      border: 1px solid var(--line);
-      background: #0f1418;
-      font-weight: 700;
-    }
-
+    .kat-line,
     .weather-card,
     .event-row,
     .attention-row,
-    .check-row {
+    .brief-row,
+    .job-row {
       border: 1px solid var(--line);
-      background: #0f1418;
+      background: #0b0b0b;
       padding: 10px;
       min-width: 0;
     }
 
-    .weather-card {
-      display: grid;
-      gap: 6px;
-      min-height: 122px;
-    }
-
+    .kat-line { font-weight: 700; }
+    .weather-card { display: grid; gap: 6px; min-height: 122px; }
     .weather-place,
-    .row-title {
-      font-weight: 800;
-      overflow-wrap: anywhere;
-    }
-
-    .weather-temp {
-      font-size: 28px;
-      font-weight: 800;
-    }
+    .row-title { font-weight: 800; overflow-wrap: anywhere; }
+    .weather-temp { font-size: 28px; font-weight: 800; }
 
     .muted,
     .row-meta {
       color: var(--muted);
       font-size: 13px;
       line-height: 1.35;
+      overflow-wrap: anywhere;
     }
 
     .status {
@@ -206,74 +144,27 @@
       text-transform: uppercase;
     }
 
-    .status.good {
-      color: var(--good);
-      border-color: var(--good);
-    }
+    .status.good { color: var(--good); border-color: var(--good); }
+    .status.warn { color: var(--warn); border-color: var(--warn); }
+    .status.bad { color: var(--bad); border-color: var(--bad); }
 
-    .status.warn {
-      color: var(--warn);
-      border-color: var(--warn);
-    }
-
-    .status.bad {
-      color: var(--bad);
-      border-color: var(--bad);
-    }
-
-    form {
-      display: grid;
-      gap: 9px;
-    }
-
-    label {
-      display: grid;
-      gap: 5px;
-      color: var(--muted);
-      font-size: 12px;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      border: 1px solid var(--line);
-      background: #0b0f12;
+    .source-link {
       color: var(--text);
-      padding: 9px;
-      font: inherit;
-      text-transform: none;
-      min-width: 0;
+      text-decoration: none;
+      border-bottom: 1px solid var(--line-strong);
+      overflow-wrap: anywhere;
     }
 
-    textarea {
-      min-height: 70px;
-      resize: vertical;
-    }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 9px;
-    }
+    .source-link:hover { border-color: var(--text); }
 
     @media (max-width: 900px) {
       header,
       .hero-grid,
       .content-grid,
-      .weather-grid,
-      .two-col {
+      .weather-grid {
         grid-template-columns: 1fr;
       }
-
-      header {
-        display: grid;
-      }
-
-      .top-actions {
-        justify-content: flex-start;
-      }
+      header { display: grid; }
     }
   </style>
 </head>
@@ -281,13 +172,9 @@
   <header>
     <div>
       <h1>Luke Daily</h1>
-      <p class="subhead">Date, weather, calendar, mail cleanup, and attention signals.</p>
+      <p class="subhead">Static daily brief for Luke: personal assistant, calendar, weather, mail, jobs, and attention signals.</p>
     </div>
-    <div class="top-actions">
-      <a class="button" href="/shell">Dashboard</a>
-      <a class="button" href="/brain-dashboard">Brain</a>
-      <button id="refresh" type="button">Refresh</button>
-    </div>
+    <button id="refresh" type="button">Refresh</button>
   </header>
 
   <main>
@@ -314,36 +201,18 @@
 
     <section class="content-grid">
       <article class="panel">
-        <div class="panel-header">Daily Check-In</div>
-        <div class="panel-body">
-          <div class="check-row">
-            <div class="row-title">What Luke needs from you</div>
-            <div class="row-meta">Today’s priorities, fixed appointments, and anything that limits your time or attention.</div>
-          </div>
-          <form id="checkin-form">
-            <label>Summary
-              <input id="summary" name="summary" autocomplete="off" placeholder="Today looks like...">
-            </label>
-            <div class="two-col">
-              <label>Priorities
-                <textarea id="priorities" name="priorities" placeholder="One per line"></textarea>
-              </label>
-              <label>Hard Commitments
-                <textarea id="commitments" name="commitments" placeholder="One per line"></textarea>
-              </label>
-            </div>
-            <label>Constraints
-              <textarea id="constraints" name="constraints" placeholder="Sleep, travel, errands, calls, energy, deadlines"></textarea>
-            </label>
-            <button type="submit">Save Check-In</button>
-          </form>
-          <div class="muted" id="checkin-result">No check-in submitted in this window yet.</div>
-        </div>
+        <div class="panel-header">Daily Brief</div>
+        <div class="panel-body" id="static-brief"></div>
       </article>
 
       <article class="panel">
         <div class="panel-header">This Week</div>
         <div class="panel-body" id="schedule-list"></div>
+      </article>
+
+      <article class="panel full">
+        <div class="panel-header">History Jobs / Leads</div>
+        <div class="panel-body" id="job-list"></div>
       </article>
 
       <article class="panel">
@@ -376,10 +245,6 @@
       }[ch]));
     }
 
-    function lines(value) {
-      return String(value || '').split(/\r?\n/).map(line => line.trim()).filter(Boolean);
-    }
-
     function formatWhen(value) {
       if (!value) return 'time not set';
       const date = new Date(value);
@@ -390,7 +255,7 @@
     function statusClass(status) {
       const lower = String(status || '').toLowerCase();
       if (/ok|done|synced|nominal/.test(lower)) return 'status good';
-      if (/attention|open|retry|not_/.test(lower)) return 'status warn';
+      if (/attention|open|retry|not_|degraded/.test(lower)) return 'status warn';
       return 'status';
     }
 
@@ -419,13 +284,28 @@
       `).join('') || '<div class="weather-card"><div class="weather-place">Weather unavailable</div></div>';
     }
 
+    function renderStaticBrief(daily) {
+      const rows = [
+        { title: 'Luke role', text: 'Luke is Conor\'s personal AI assistant and clawbot, built in memory of Luke, his dog and best friend. Trading is one module, not the whole system.' },
+        { title: 'Calendar watch', text: daily?.schedule?.events?.length ? `${daily.schedule.events.length} synced event(s) this week.` : 'No synced calendar events in the current week cache.' },
+        { title: 'Weather watch', text: 'Here, Knoxville, TN, and Wilmington, NC stay visible because those are the places you asked Luke to track.' },
+        { title: 'Move watch', text: daily?.move_prompt?.question || 'Luke should keep tracking Tennessee move next actions.' },
+      ];
+      $('static-brief').innerHTML = rows.map(row => `
+        <div class="brief-row">
+          <div class="row-title">${escapeHtml(row.title)}</div>
+          <div class="row-meta">${escapeHtml(row.text)}</div>
+        </div>
+      `).join('');
+    }
+
     function renderSchedule(schedule) {
       const events = schedule?.events || [];
       if (!events.length) {
         $('schedule-list').innerHTML = `
           <div class="event-row">
             <div class="row-title">No events synced for this week</div>
-            <div class="row-meta">${escapeHtml(schedule?.note || 'Google Calendar is connected in Codex, but Luke has no local week cache yet.')}</div>
+            <div class="row-meta">${escapeHtml(schedule?.note || 'Direct Google Calendar has no current events in Luke yet.')}</div>
           </div>
         `;
         return;
@@ -434,6 +314,35 @@
         <div class="event-row">
           <div class="row-title">${escapeHtml(event.title)}</div>
           <div class="row-meta">${escapeHtml(formatWhen(event.starts_at))}${event.location ? ` - ${escapeHtml(event.location)}` : ''}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderJobLeads(history, liveLeads) {
+      const live = Array.isArray(liveLeads?.leads) ? liveLeads.leads : [];
+      const local = Array.isArray(history?.job_leads?.leads) ? history.job_leads.leads : [];
+      const leads = live.length ? live : local;
+      if (!leads.length) {
+        const sources = history?.source_links || liveLeads?.source_links || [];
+        $('job-list').innerHTML = `
+          <div class="job-row">
+            <div class="row-title">No saved job listings yet</div>
+            <div class="row-meta">Luke will show public-history, museum, archive, oral-history, and contract leads here when the source scan returns matches.</div>
+          </div>
+          ${sources.slice(0, 4).map(source => `
+            <div class="job-row">
+              <div class="row-title">${escapeHtml(source.label)}</div>
+              <div class="row-meta"><a class="source-link" href="${escapeHtml(source.url)}">${escapeHtml(source.url)}</a></div>
+            </div>
+          `).join('')}
+        `;
+        return;
+      }
+      $('job-list').innerHTML = leads.slice(0, 8).map(lead => `
+        <div class="job-row">
+          <div class="row-title">${escapeHtml(lead.title || 'Untitled lead')}</div>
+          <div class="row-meta">${escapeHtml(lead.source || lead.organization || 'history lead')}${lead.track ? ` - ${escapeHtml(lead.track)}` : ''}</div>
+          ${lead.url ? `<div class="row-meta"><a class="source-link" href="${escapeHtml(lead.url)}">${escapeHtml(lead.url)}</a></div>` : ''}
         </div>
       `).join('');
     }
@@ -454,6 +363,7 @@
       for (const item of history?.blockers || []) rows.push({ title: 'History projects', text: item, status: 'attention' });
       if (history?.pipeline?.accepted) rows.push({ title: 'History projects', text: `${history.pipeline.accepted} accepted opportunity lead(s) are in Luke.`, status: 'active' });
       for (const item of automation?.blockers || []) rows.push({ title: 'Automation', text: item, status: 'attention' });
+      if (daily?.google_direct && daily.google_direct.ok === false) rows.push({ title: 'Google direct', text: daily.google_direct.errors.map(err => `${err.integration}: ${err.error}`).join('; '), status: 'attention' });
       if (!rows.length) rows.push({ title: 'No urgent project alert', text: 'Luke has no automation/history blocker in the current local state.', status: 'nominal' });
       $('attention-list').innerHTML = rows.map(row => `
         <div class="attention-row">
@@ -471,35 +381,17 @@
       ]);
       renderClock(daily);
       renderWeather(daily.weather_locations);
+      renderStaticBrief(daily);
       renderSchedule(daily.schedule);
+      renderJobLeads(history, null);
       renderMail(daily.mail_attention);
       $('move-title').textContent = daily.move_prompt?.label || 'Move to Tennessee';
       $('move-question').textContent = daily.move_prompt?.question || 'What should Luke track next?';
       renderAttention(daily, history, automation);
+      getJson('/agent/brain/history-career/leads?limit=8')
+        .then(liveLeads => renderJobLeads(history, liveLeads))
+        .catch(() => renderJobLeads(history, null));
     }
-
-    $('checkin-form').addEventListener('submit', async event => {
-      event.preventDefault();
-      const body = {
-        summary: $('summary').value.trim(),
-        priorities: lines($('priorities').value),
-        commitments: lines($('commitments').value),
-        constraints: lines($('constraints').value),
-      };
-      $('checkin-result').textContent = 'Saving...';
-      try {
-        const res = await fetch('/agent/brain/daily/checkin', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
-        });
-        if (!res.ok) throw new Error(`check-in ${res.status}`);
-        $('checkin-result').textContent = 'Saved daily check-in.';
-        await refresh();
-      } catch (err) {
-        $('checkin-result').textContent = err.message;
-      }
-    });
 
     $('refresh').addEventListener('click', refresh);
     setInterval(() => renderClock(null), 30000);

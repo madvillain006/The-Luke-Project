@@ -89,7 +89,23 @@ describe('Kat readiness', () => {
     expect(readiness.recommendation.status).toBe('owner_review_ready');
     expect(readiness.evidence.vision_chart_signals).toBe(1);
     expect(readiness.warnings.join('\n')).toContain('SPX/SPY sample size');
-    expect(formatKatReadinessMarkdown(readiness)).toContain('Discord outputs still gated');
+    expect(formatKatReadinessMarkdown(readiness)).toContain('Discord output state');
+  });
+
+  it('treats command replies as the Phase 1 live state while posts stay gated', () => {
+    const checks = [
+      { ok: true, label: 'Discord channel posts gated off', detail: 'posts disabled', severity: 'info' },
+    ];
+
+    expect(_internal.recommendationFrom(checks, {
+      discord_responses_enabled: true,
+      discord_posts_enabled: false,
+    }).status).toBe('phase_1_command_replies_live');
+
+    expect(_internal.recommendationFrom(checks, {
+      discord_responses_enabled: true,
+      discord_posts_enabled: true,
+    }).status).toBe('do_not_use_publicly');
   });
 
   it('detects source safety gates from the Kat agent code', () => {

@@ -13,6 +13,8 @@
     "runtime:check": "node scripts/check-runtime-health.js",
     "runtime:stop-dev": "node scripts/stop-luke-dev.js",
     "prove:current-status": "node scripts/run-current-status-proof.js",
+    "check:katbot-release": "node scripts/check-katbot-release-readiness.js",
+    "prove:katbot-phase1-owner": "node scripts/build-katbot-phase1-owner-packet.js",
     "prove:live-level-state": "node scripts/prove-live-level-state.js",
     "prove:operator-v2": "node scripts/prove-operator-v2.js",
     "prove:katbot-plain": "node scripts/prove-katbot-plain.js",

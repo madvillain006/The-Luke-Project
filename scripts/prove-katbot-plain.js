@@ -62,13 +62,16 @@ async function main() {
 
   const result = {
     ok: proof.config.heatmap_requests_configured === true &&
+      proof.config.secondary_research_configured === true &&
       proof.counts.raw > 0 &&
       proof.counts.processed > 0 &&
+      /chart-backed analyst posts/.test(proof.outputs.equity_chart || '') &&
       pngLooksValid(png),
     generated_at: proof.generated_at,
     as_of: proof.as_of,
     counts: proof.counts,
     heatmap_requests_configured: proof.config.heatmap_requests_configured,
+    secondary_research_configured: proof.config.secondary_research_configured,
     discord_output_gated: {
       responses_enabled: proof.config.discord_responses_enabled,
       posts_enabled: proof.config.discord_posts_enabled,

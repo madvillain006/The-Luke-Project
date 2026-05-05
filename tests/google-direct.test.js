@@ -66,17 +66,23 @@ describe('direct Google integrations', () => {
     const gmail = await fetchGmailAttention({
       env: { GOOGLE_ACCESS_TOKEN: 'token' },
       fetchFn: async url => {
-        if (String(url).includes('/labels/INBOX')) return response({ messagesUnread: 10 });
-        if (String(url).includes('/labels/UNREAD')) return response({ messagesTotal: 50 });
-        return response({ resultSizeEstimate: 7 });
+        const text = String(url);
+        if (text.includes('/messages?')) return response({ messages: [{ id: 'm1' }, { id: 'm2' }] });
+        if (text.includes('/labels')) return response({ labels: [{ id: 'Label_6', name: 'Luke/Cleanup/Unread Non-Substack Subscriptions' }] });
+        if (text.includes('/messages/batchModify')) return response({});
+        if (text.includes('/labels/INBOX')) return response({ name: 'INBOX', messagesUnread: 10, messagesTotal: 20, threadsTotal: 4, threadsUnread: 2 });
+        if (text.includes('/labels/UNREAD')) return response({ name: 'UNREAD', messagesUnread: 50, messagesTotal: 50, threadsTotal: 10, threadsUnread: 10 });
+        if (text.includes('/labels/Luke%2FCleanup%2FUnread%20Non-Substack%20Subscriptions')) return response({ id: 'Label_6', name: 'Luke/Cleanup/Unread Non-Substack Subscriptions', messagesUnread: 7, messagesTotal: 7, threadsTotal: 3, threadsUnread: 3 });
+        return response({});
       },
     });
 
-    expect(gmail.status).toBe('synced');
-    expect(gmail.unread_inbox).toBe(10);
-    expect(gmail.cleanup.status).toBe('estimate_only');
-    expect(gmail.cleanup.action).toContain('not permanent deletion');
-    expect(gmail.attention[0]).toContain('7 unread');
+    expect(gmail.status).toBe('ok');
+    expect(gmail.counts.inbox.messages_unread).toBe(10);
+    expect(gmail.cleanup.applied).toBe(true);
+    expect(gmail.cleanup.archived).toBe(true);
+    expect(gmail.cleanup.messages_matched).toBe(2);
+    expect(gmail.attention_notes[0]).toContain('2 after subscription-style cleanup');
   });
 
   it('writes direct daily snapshots only for synced integrations', async () => {
@@ -88,16 +94,19 @@ describe('direct Google integrations', () => {
       now: new Date('2026-05-05T12:00:00.000Z'),
       fetchFn: async url => {
         calls += 1;
-        if (String(url).includes('calendar')) return response({ items: [] });
-        if (String(url).includes('/labels/INBOX')) return response({ messagesUnread: 2 });
-        if (String(url).includes('/labels/UNREAD')) return response({ messagesTotal: 4 });
-        return response({ resultSizeEstimate: 0 });
+        const text = String(url);
+        if (text.includes('calendar')) return response({ items: [] });
+        if (text.includes('/messages?')) return response({ messages: [] });
+        if (text.includes('/labels/INBOX')) return response({ name: 'INBOX', messagesUnread: 2, messagesTotal: 2, threadsTotal: 1, threadsUnread: 1 });
+        if (text.includes('/labels/UNREAD')) return response({ name: 'UNREAD', messagesUnread: 4, messagesTotal: 4, threadsTotal: 2, threadsUnread: 2 });
+        if (text.includes('/labels/Luke%2FCleanup%2FUnread%20Non-Substack%20Subscriptions')) return response({ id: 'Label_6', name: 'Luke/Cleanup/Unread Non-Substack Subscriptions', messagesUnread: 0, messagesTotal: 0, threadsTotal: 0, threadsUnread: 0 });
+        return response({});
       },
     });
 
     expect(result.ok).toBe(true);
-    expect(JSON.parse(fs.readFileSync(paths.snapshots.dailyCalendarWeek, 'utf8')).source).toBe('google-calendar-direct');
-    expect(JSON.parse(fs.readFileSync(paths.snapshots.dailyGmailAttention, 'utf8')).source).toBe('gmail-direct');
+    expect(JSON.parse(fs.readFileSync(paths.snapshots.dailyCalendarWeek, 'utf8')).source.app).toBe('Google Calendar');
+    expect(JSON.parse(fs.readFileSync(paths.snapshots.dailyGmailAttention, 'utf8')).source.app).toBe('Gmail');
     const cached = await syncDirectDailyIntegrations({
       paths,
       env: { GOOGLE_ACCESS_TOKEN: 'token' },
@@ -108,7 +117,7 @@ describe('direct Google integrations', () => {
     });
     expect(cached.calendar.cached).toBe(true);
     expect(cached.gmail.cached).toBe(true);
-    expect(calls).toBe(4);
+    expect(calls).toBe(5);
     fs.rmSync(paths.root, { recursive: true, force: true });
   });
 });

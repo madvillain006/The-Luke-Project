@@ -1,0 +1,16 @@
+{
+  "recorded_at": "2026-05-05T18:33:41.433Z",
+  "kind": "discord_channel_post_suppressed",
+  "reason": "discord_output_gate",
+  "target": {
+    "channel_id": "1496353652615413760",
+    "channel_name": "kat"
+  },
+  "payload": {
+    "content": " **Level Magnet  NBIS 175**\n2 analysts independently marked this level\nBias: support  | Mentions: 2\nLast marked: 2:27:32 PM ET\nSources:\n1. mathemeatloaf7 - May 04, 9:34 AM ET\n   \"$nbis little lotto played out\"\n2. kaprik0rn3 - May 05, 2:27 PM ET\n   \"NBIS 1D. You'll need Fibs to find levels above\"\n_Source: Elevated Charts analyst posts via Kat_",
+    "allowedMentions": {
+      "parse": [],
+      "repliedUser": false
+    }
+  }
+}

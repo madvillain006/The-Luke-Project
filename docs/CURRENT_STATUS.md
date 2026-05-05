@@ -53,7 +53,7 @@ Luke is Conor's personal local AI assistant and clawbot, built in memory of Luke
 - Research rules remain watchlist/research only.
 - Live and staged execution remain blocked by default.
 - Daily check-in is no longer the primary Daily UI; Daily is a static operating brief.
-- Direct Google Calendar/Gmail hooks are installed. Calendar can use Google OAuth or an API key for public calendars; Gmail requires Google OAuth credentials with Gmail scopes. Existing Codex connector caches remain the fallback.
+- Direct Google Calendar/Gmail hooks are installed. Calendar can use Google OAuth or an API key for public calendars; Gmail requires Google OAuth credentials with Gmail scopes. Luke now owns the daily Google sync internally through the scheduler; Codex connector caches are fallback only.
 
 ## Next Milestone
 

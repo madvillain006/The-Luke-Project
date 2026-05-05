@@ -306,6 +306,7 @@ async function runScheduler() {
   let currentDate = new Date().toISOString().slice(0, 10);
   let lastRssHour = -1;
   let eodFiredToday = null;
+  let lastDailyGoogleSyncHour = null;
 
 
 
@@ -341,6 +342,32 @@ async function runScheduler() {
       return result.pending ? `pending: ${result.reason || 'pending'}` : `saved ${result.level_count} levels`;
     });
   }, 60 * 1000);
+
+  setInterval(async () => {
+    const now = new Date();
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/New_York',
+      hour12: false,
+      weekday: 'short',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    }).formatToParts(now);
+    const map = Object.fromEntries(parts.map(p => [p.type, p.value]));
+    const mins = (Number(map.hour) * 60) + Number(map.minute);
+    if (mins >= 5) return;
+    const key = `${map.year}-${map.month}-${map.day}-${map.hour}`;
+    if (lastDailyGoogleSyncHour === key) return;
+    lastDailyGoogleSyncHour = key;
+    await runJob("daily-google-sync", async () => {
+      const r = await fetch(`${LUKE_URL}/daily/google-sync`, { method: "POST" });
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      const body = await r.json();
+      return body?.ok === false ? "failed" : "synced";
+    });
+  }, 5 * 60 * 1000);
 
   // DISABLED - manual trigger only
   // setInterval(async () => {

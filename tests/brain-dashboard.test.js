@@ -9,6 +9,7 @@ const ELECTRON_FILE = path.join(ROOT, 'electron.js');
 const DASHBOARD_FILE = path.join(ROOT, 'brain-dashboard.html');
 const SHELL_FILE = path.join(ROOT, 'luke-shell.html');
 const CHAT_FILE = path.join(ROOT, 'chat.html');
+const DAILY_FILE = path.join(ROOT, 'daily-window.html');
 
 describe('/brain dashboard shell', () => {
   it('adds brain dashboard routes under the Luke shell', () => {
@@ -23,6 +24,8 @@ describe('/brain dashboard shell', () => {
     expect(index).toContain('app.get("/trading", (req, res) => {');
     expect(index).toContain('res.sendFile(__dirname + "/chat.html")');
     expect(index).toContain('app.get("/luke", (req, res) => {');
+    expect(index).toContain('app.get("/daily", (req, res) => {');
+    expect(index).toContain('res.sendFile(__dirname + "/daily-window.html")');
     expect(index).toContain('app.get("/brain", (req, res) => {');
     expect(index).toContain('app.get("/brain-dashboard", (req, res) => {');
     expect(index).toContain('res.sendFile(__dirname + "/brain-dashboard.html")');
@@ -132,8 +135,10 @@ describe('/brain dashboard shell', () => {
       'Human-gated. Read-only. No autonomous execution controls.',
       'Trading (Analysis) / Luke Chat',
       'Luke System / General Chat',
+      'Daily Brief / Schedule Window',
       'data-src="/trading?embed=1"',
       'data-src="/luke?embed=1"',
+      'data-src="/daily?embed=1"',
       'href="/luke"',
       'weather-emoji',
       'weatherEmoji(weather)',
@@ -142,6 +147,7 @@ describe('/brain dashboard shell', () => {
       'daily-brief-note',
       'daily-brief-weather-summary',
       'daily-brief-weather-forecast',
+      'Knoxville + Wilmington weather inside',
     ]) {
       expect(html).toContain(label);
     }
@@ -154,7 +160,7 @@ describe('/brain dashboard shell', () => {
     expect(html).toContain('/brain-dashboard');
     expect(html).toContain('/agent/brain/status');
     expect(html).toContain('/agent/brain/telemetry');
-    expect(html).toContain('/brain-dashboard#spine-daily');
+    expect(html).toContain('/daily');
     expect(html).toContain('/brain-dashboard#spine-automation');
     expect(html).toContain('/brain-dashboard#spine-developer');
     expect(html).toContain('/brain-dashboard#spine-history');
@@ -170,19 +176,23 @@ describe('/brain dashboard shell', () => {
     const html = fs.readFileSync(SHELL_FILE, 'utf8');
     const routes = Array.from(html.matchAll(/data-route="([^"]+)"/g)).map(match => match[1]);
 
-    for (const route of ['/trading', '/luke']) {
+    for (const route of ['/trading', '/luke', '/daily']) {
       expect(routes).toContain(route);
     }
     expect(html).toContain('class="hero-card" id="trading-launch" data-route="/trading" href="/trading"');
     expect(html).toContain('id="trading-panel"');
     expect(html).toContain('id="system-panel"');
+    expect(html).toContain('id="daily-panel"');
     expect(html).toContain('openTradingPanel()');
     expect(html).toContain('openSystemPanel()');
+    expect(html).toContain('openDailyPanel()');
     expect(html).not.toContain('<span>C 013</span><span class="name">History Career</span>');
     expect(html).toContain("frame.setAttribute('src', frame.dataset.src || '/trading?embed=1')");
     expect(html).toContain("frame.setAttribute('src', frame.dataset.src || '/luke?embed=1')");
+    expect(html).toContain("frame.setAttribute('src', frame.dataset.src || '/daily?embed=1')");
     expect(html).toContain("document.querySelectorAll('[data-route]')");
     expect(html).toContain("if (route === '/luke')");
+    expect(html).toContain("if (route === '/daily')");
     expect(html).toContain('window.getSelection().toString().length > 0');
     expect(html).toContain('grid-template-columns: repeat(auto-fill, minmax(210px, 260px))');
     expect(html).toContain('height: clamp(780px, 82vh, 980px)');
@@ -213,6 +223,26 @@ describe('/brain dashboard shell', () => {
     expect(html).toContain('align-items: flex-start');
     expect(html).toContain('grid-template-columns: repeat(auto-fit, minmax(140px, 1fr))');
     expect(html).toContain('overflow-wrap: anywhere');
+  });
+
+  it('renders Daily as its own clicked-in window', () => {
+    const html = fs.readFileSync(DAILY_FILE, 'utf8');
+
+    for (const label of [
+      'Luke Daily',
+      'I love Kat',
+      '/agent/brain/daily/window',
+      '/agent/brain/daily/checkin',
+      '/agent/brain/history-career',
+      '/agent/brain/automation-business',
+      'Knoxville, TN',
+      'Wilmington, NC',
+      'This Week',
+      'Move to Tennessee',
+      'Gmail cleanup',
+    ]) {
+      expect(html).toContain(label);
+    }
   });
 
   it('adds a PNG proof command for the non-trading brain sections', () => {

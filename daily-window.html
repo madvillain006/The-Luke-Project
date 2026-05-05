@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Luke Daily</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0f12;
+      --panel: #171d22;
+      --panel-2: #20272d;
+      --line: #33404a;
+      --text: #f2f6f8;
+      --muted: #b7c5cf;
+      --accent: #7fc7ff;
+      --warn: #f2c75c;
+      --bad: #ff7474;
+      --good: #63d894;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      letter-spacing: 0;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px 22px;
+      background: rgba(11, 15, 18, 0.96);
+      border-bottom: 1px solid var(--line);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 24px;
+      line-height: 1.1;
+    }
+
+    .subhead {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    button,
+    a.button {
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      color: var(--text);
+      min-height: 34px;
+      padding: 7px 11px;
+      text-decoration: none;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    button:hover,
+    a.button:hover {
+      border-color: var(--accent);
+    }
+
+    main {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero-grid,
+    .content-grid,
+    .weather-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero-grid {
+      grid-template-columns: minmax(260px, 1fr) minmax(260px, 1.4fr);
+    }
+
+    .content-grid {
+      grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.4fr);
+      align-items: start;
+    }
+
+    .weather-grid {
+      grid-template-columns: repeat(3, minmax(190px, 1fr));
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      min-width: 0;
+    }
+
+    .panel.full {
+      grid-column: 1 / -1;
+    }
+
+    .panel-header {
+      padding: 10px 12px;
+      background: var(--panel-2);
+      border-bottom: 1px solid var(--line);
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .panel-body {
+      padding: 12px;
+      display: grid;
+      gap: 11px;
+    }
+
+    .date-time {
+      display: grid;
+      gap: 8px;
+    }
+
+    .date-line {
+      font-size: clamp(22px, 4vw, 44px);
+      line-height: 1.05;
+      font-weight: 800;
+    }
+
+    .time-line {
+      color: var(--accent);
+      font-size: clamp(22px, 3vw, 34px);
+      font-weight: 800;
+    }
+
+    .kat-line {
+      padding: 9px 10px;
+      border: 1px solid var(--line);
+      background: #0f1418;
+      font-weight: 700;
+    }
+
+    .weather-card,
+    .event-row,
+    .attention-row,
+    .check-row {
+      border: 1px solid var(--line);
+      background: #0f1418;
+      padding: 10px;
+      min-width: 0;
+    }
+
+    .weather-card {
+      display: grid;
+      gap: 6px;
+      min-height: 122px;
+    }
+
+    .weather-place,
+    .row-title {
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .weather-temp {
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .muted,
+    .row-meta {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .status {
+      display: inline-flex;
+      width: fit-content;
+      border: 1px solid var(--line);
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .status.good {
+      color: var(--good);
+      border-color: var(--good);
+    }
+
+    .status.warn {
+      color: var(--warn);
+      border-color: var(--warn);
+    }
+
+    .status.bad {
+      color: var(--bad);
+      border-color: var(--bad);
+    }
+
+    form {
+      display: grid;
+      gap: 9px;
+    }
+
+    label {
+      display: grid;
+      gap: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #0b0f12;
+      color: var(--text);
+      padding: 9px;
+      font: inherit;
+      text-transform: none;
+      min-width: 0;
+    }
+
+    textarea {
+      min-height: 70px;
+      resize: vertical;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+    }
+
+    @media (max-width: 900px) {
+      header,
+      .hero-grid,
+      .content-grid,
+      .weather-grid,
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        display: grid;
+      }
+
+      .top-actions {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Luke Daily</h1>
+      <p class="subhead">Date, weather, calendar, mail cleanup, and attention signals.</p>
+    </div>
+    <div class="top-actions">
+      <a class="button" href="/shell">Dashboard</a>
+      <a class="button" href="/brain-dashboard">Brain</a>
+      <button id="refresh" type="button">Refresh</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-grid">
+      <article class="panel">
+        <div class="panel-header">Now</div>
+        <div class="panel-body">
+          <div class="date-time">
+            <div class="date-line" id="date-line">Loading date</div>
+            <div class="time-line" id="time-line">Loading time</div>
+            <div class="kat-line" id="kat-line">I love Kat</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-header">Weather</div>
+        <div class="panel-body">
+          <p class="muted">Here, Knoxville, TN, and Wilmington, NC.</p>
+          <div class="weather-grid" id="weather-grid"></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel">
+        <div class="panel-header">Daily Check-In</div>
+        <div class="panel-body">
+          <div class="check-row">
+            <div class="row-title">What Luke needs from you</div>
+            <div class="row-meta">Today’s priorities, fixed appointments, and anything that limits your time or attention.</div>
+          </div>
+          <form id="checkin-form">
+            <label>Summary
+              <input id="summary" name="summary" autocomplete="off" placeholder="Today looks like...">
+            </label>
+            <div class="two-col">
+              <label>Priorities
+                <textarea id="priorities" name="priorities" placeholder="One per line"></textarea>
+              </label>
+              <label>Hard Commitments
+                <textarea id="commitments" name="commitments" placeholder="One per line"></textarea>
+              </label>
+            </div>
+            <label>Constraints
+              <textarea id="constraints" name="constraints" placeholder="Sleep, travel, errands, calls, energy, deadlines"></textarea>
+            </label>
+            <button type="submit">Save Check-In</button>
+          </form>
+          <div class="muted" id="checkin-result">No check-in submitted in this window yet.</div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-header">This Week</div>
+        <div class="panel-body" id="schedule-list"></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-header">Move / Mail</div>
+        <div class="panel-body">
+          <div class="attention-row">
+            <div class="row-title" id="move-title">Move to Tennessee</div>
+            <div class="row-meta" id="move-question">Loading move prompt</div>
+          </div>
+          <div class="attention-row">
+            <div class="row-title">Gmail cleanup</div>
+            <div class="row-meta" id="mail-status">Loading mail status</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-header">Attention</div>
+        <div class="panel-body" id="attention-list"></div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const $ = id => document.getElementById(id);
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, ch => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+      }[ch]));
+    }
+
+    function lines(value) {
+      return String(value || '').split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+    }
+
+    function formatWhen(value) {
+      if (!value) return 'time not set';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return value;
+      return date.toLocaleString([], { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+    }
+
+    function statusClass(status) {
+      const lower = String(status || '').toLowerCase();
+      if (/ok|done|synced|nominal/.test(lower)) return 'status good';
+      if (/attention|open|retry|not_/.test(lower)) return 'status warn';
+      return 'status';
+    }
+
+    async function getJson(route) {
+      const res = await fetch(route, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`${route} ${res.status}`);
+      return res.json();
+    }
+
+    function renderClock(daily) {
+      const now = new Date();
+      $('date-line').textContent = daily?.date_label || now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+      $('time-line').textContent = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+      $('kat-line').textContent = daily?.personal_note || 'I love Kat';
+    }
+
+    function renderWeather(items) {
+      const weather = items && items.length ? items : [];
+      $('weather-grid').innerHTML = weather.map(item => `
+        <div class="weather-card">
+          <div class="weather-place">${escapeHtml(item.location || 'Weather')}</div>
+          <div class="weather-temp">${item.temperature_f == null ? '--' : `${escapeHtml(item.temperature_f)}F`}</div>
+          <div>${escapeHtml(item.condition || item.status || 'unknown')}</div>
+          <div class="muted">${escapeHtml(item.summary || 'weather unavailable')}</div>
+        </div>
+      `).join('') || '<div class="weather-card"><div class="weather-place">Weather unavailable</div></div>';
+    }
+
+    function renderSchedule(schedule) {
+      const events = schedule?.events || [];
+      if (!events.length) {
+        $('schedule-list').innerHTML = `
+          <div class="event-row">
+            <div class="row-title">No events synced for this week</div>
+            <div class="row-meta">${escapeHtml(schedule?.note || 'Google Calendar is connected in Codex, but Luke has no local week cache yet.')}</div>
+          </div>
+        `;
+        return;
+      }
+      $('schedule-list').innerHTML = events.map(event => `
+        <div class="event-row">
+          <div class="row-title">${escapeHtml(event.title)}</div>
+          <div class="row-meta">${escapeHtml(formatWhen(event.starts_at))}${event.location ? ` - ${escapeHtml(event.location)}` : ''}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderMail(mail) {
+      const cleanup = mail?.cleanup || {};
+      const unread = mail?.unread_inbox == null ? 'unknown unread inbox count' : `${mail.unread_inbox} unread in inbox`;
+      $('mail-status').innerHTML = `
+        <span class="${statusClass(mail?.status)}">${escapeHtml(mail?.status || 'not synced')}</span>
+        <div>${escapeHtml(unread)}</div>
+        <div>${escapeHtml(cleanup.action || 'Label/archive cleanup has not run from Luke yet.')}</div>
+      `;
+    }
+
+    function renderAttention(daily, history, automation) {
+      const rows = [];
+      for (const item of daily?.mail_attention?.attention || []) rows.push({ title: 'Mail', text: item, status: 'attention' });
+      for (const item of history?.blockers || []) rows.push({ title: 'History projects', text: item, status: 'attention' });
+      if (history?.pipeline?.accepted) rows.push({ title: 'History projects', text: `${history.pipeline.accepted} accepted opportunity lead(s) are in Luke.`, status: 'active' });
+      for (const item of automation?.blockers || []) rows.push({ title: 'Automation', text: item, status: 'attention' });
+      if (!rows.length) rows.push({ title: 'No urgent project alert', text: 'Luke has no automation/history blocker in the current local state.', status: 'nominal' });
+      $('attention-list').innerHTML = rows.map(row => `
+        <div class="attention-row">
+          <div class="row-title">${escapeHtml(row.title)} <span class="${statusClass(row.status)}">${escapeHtml(row.status)}</span></div>
+          <div class="row-meta">${escapeHtml(row.text)}</div>
+        </div>
+      `).join('');
+    }
+
+    async function refresh() {
+      const [daily, history, automation] = await Promise.all([
+        getJson('/agent/brain/daily/window'),
+        getJson('/agent/brain/history-career'),
+        getJson('/agent/brain/automation-business'),
+      ]);
+      renderClock(daily);
+      renderWeather(daily.weather_locations);
+      renderSchedule(daily.schedule);
+      renderMail(daily.mail_attention);
+      $('move-title').textContent = daily.move_prompt?.label || 'Move to Tennessee';
+      $('move-question').textContent = daily.move_prompt?.question || 'What should Luke track next?';
+      renderAttention(daily, history, automation);
+    }
+
+    $('checkin-form').addEventListener('submit', async event => {
+      event.preventDefault();
+      const body = {
+        summary: $('summary').value.trim(),
+        priorities: lines($('priorities').value),
+        commitments: lines($('commitments').value),
+        constraints: lines($('constraints').value),
+      };
+      $('checkin-result').textContent = 'Saving...';
+      try {
+        const res = await fetch('/agent/brain/daily/checkin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        if (!res.ok) throw new Error(`check-in ${res.status}`);
+        $('checkin-result').textContent = 'Saved daily check-in.';
+        await refresh();
+      } catch (err) {
+        $('checkin-result').textContent = err.message;
+      }
+    });
+
+    $('refresh').addEventListener('click', refresh);
+    setInterval(() => renderClock(null), 30000);
+    refresh().catch(err => {
+      $('date-line').textContent = 'Daily offline';
+      $('time-line').textContent = err.message;
+    });
+  </script>
+</body>
+</html>

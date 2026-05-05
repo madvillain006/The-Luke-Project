@@ -38,8 +38,10 @@ const {
 } = require('../lib/brain/developer-stack-spine');
 const {
   DEFAULT_LOCATION,
+  DEFAULT_WEATHER_LOCATIONS,
   buildDailySpine,
   buildWeatherUrl,
+  fetchWeatherForLocations,
   fetchWeather,
   recordDailyCheckin,
   summarizeWeather,
@@ -191,12 +193,37 @@ describe('Luke brain agent core', () => {
     expect(Array.isArray(spine.blockers)).toBe(true);
     expect(spine.next_actions.length).toBeGreaterThan(0);
     expect(spine.pipeline.checkins_today).toBe(1);
+    expect(spine.date_label).toContain('May');
+    expect(spine.personal_note).toBe('I love Kat');
+    expect(spine.move_prompt.label).toBe('Move to Tennessee');
+    expect(spine.schedule.status).toBe('not_connected');
+    expect(spine.mail_attention.cleanup.action).toContain('Label and archive');
     expect(spine.weather.summary).toContain('71F');
     expect(spine.weather.summary).toContain('unknown');
     expect(spine.checklist.find(item => item.id === 'daily-checkin').status).toBe('done');
     expect(spine.briefs.morning.endpoint).toContain('kind=morning');
     expect(spine.live_news.social_watchlist.some(item => item.id === 'deitaone')).toBe(true);
     expect(buildWeatherUrl({ lat: 40, lon: -75 })).toContain('latitude=40');
+  });
+
+  it('builds weather for the daily window locations', async () => {
+    const calls = [];
+    const weather = await fetchWeatherForLocations({
+      locations: DEFAULT_WEATHER_LOCATIONS,
+      fetchFn: async url => {
+        calls.push(url);
+        return {
+          ok: true,
+          json: async () => ({
+            current: { temperature_2m: 60, apparent_temperature: 58, weather_code: 3, wind_speed_10m: 6 },
+            daily: { temperature_2m_max: [66], temperature_2m_min: [48], precipitation_probability_max: [30] },
+          }),
+        };
+      },
+    });
+
+    expect(weather.map(item => item.location)).toEqual(['Buffalo, NY', 'Knoxville, TN', 'Wilmington, NC']);
+    expect(calls.length).toBe(3);
   });
 
   it('defaults weather to Buffalo through Open-Meteo when no location is supplied', async () => {

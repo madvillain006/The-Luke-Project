@@ -12,7 +12,7 @@ Luke is a read-only/replay trading companion. It is not live-ready. The canonica
 - `npm test`: 123 files passed; 781 tests passed; 1 skipped.
 - Runtime health passed on port 3000.
 - `/operator-v2`, `/trading-window`, replay level-state, live-shaped level-state, and staged-flow proofs passed.
-- `prove:luke-ui-ux` passed across the main shell, Luke chat, trading chat, trading window, Operator V2, and brain dashboard PNG captures.
+- `prove:luke-ui-ux` passed across the main shell, embedded Daily panel, Daily window, Luke chat, trading chat, trading window, Operator V2, and brain dashboard PNG captures.
 - `prove:brain-sections` passed against a fresh proof server; it clicked and captured brain brief, morning brief, afternoon brief, automation plan, developer plan, history searches, and automation artifact output.
 - Screenshot sanity passed for the hostile-audit PNG set.
 - `tradingview:export-levels` passed with no export issues.
@@ -29,6 +29,7 @@ Luke is a read-only/replay trading companion. It is not live-ready. The canonica
 
 - `/operator-v2`: read-only operator surface.
 - `/trading-window`: read-only live-shaped replay/dev surface.
+- `/daily`: Daily Brief window with date/time, Buffalo/current weather, Knoxville weather, Wilmington weather, Google Calendar week cache, Gmail cleanup status, Tennessee move prompt, and daily check-in form.
 - `/brain-dashboard`: non-trading brain surface with clickable brain brief, daily brief, automation-business, developer-stack, and history-career outputs.
 - Legacy chat staged-trade UI is review-only; its execution button is disabled and does not call `/agent/autonomous/execute-staged`.
 - `/agent/autonomous/execute-staged` is blocked by default behind `LUKE_ENABLE_STAGED_EXECUTION`; live execution also requires `LUKE_ENABLE_LIVE_EXECUTION`.
@@ -49,6 +50,8 @@ Luke is a read-only/replay trading companion. It is not live-ready. The canonica
 - Saty parity still needs human TradingView visual signoff.
 - Research rules remain watchlist/research only.
 - Live and staged execution remain blocked by default.
+- Daily check-in is not an error: it means Luke is waiting for the operator to enter today's priorities, fixed appointments, and constraints.
+- Google Calendar and Gmail are connected through Codex app connectors and cached into ignored Luke state; outside Codex, direct Google OAuth/ICS credentials are still needed for Luke to refresh those sources by itself.
 
 ## Next Milestone
 

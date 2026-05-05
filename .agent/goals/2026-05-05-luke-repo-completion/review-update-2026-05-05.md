@@ -60,6 +60,35 @@ Continue the Luke cleanup/hardening plan without direct operator input where pos
 - Added `npm run prove:brain-sections` to click those controls and capture PNG proof.
 - Tightened daily RSS text cleanup so common HTML entities like `&apos;` and `&nbsp;` render as normal text in the daily brief.
 
+### Daily Window, Calendar, And Mail
+
+- Added `/daily` as a first-class Daily Brief window, opened from the Luke shell like Trading and Luke Chat.
+- The Daily window renders:
+  - current date and time
+  - Buffalo/current weather
+  - Knoxville, TN weather
+  - Wilmington, NC weather
+  - `I love Kat`
+  - current-week Google Calendar cache
+  - daily check-in form
+  - Tennessee move prompt
+  - Gmail cleanup status
+  - automation/history attention signals
+- Updated the outer Daily tile to show date/time and remove the duplicated weather-summary line.
+- Updated `brain-dashboard.html` so the Daily card hides the confusing `open` status pill and says what Luke actually needs from the operator.
+- Connected Google Calendar through the Codex Google Calendar app for this run. Primary calendar returned no events for May 5-12, 2026, and Luke caches that result under ignored state.
+- Connected Gmail through the Codex Gmail app for this run. The safe non-Substack unread subscription query labeled and archived 37,000 messages into `Luke/Cleanup/Unread Non-Substack Subscriptions`; no permanent deletion was done.
+- Created Codex automation `sync-luke-daily-integrations` to refresh Luke's ignored Daily calendar/mail cache hourly.
+- Added the Gemini API key to ignored local `.env`; it is not staged or committed.
+
+### History And Automation Opportunity Direction
+
+- Expanded the history-career spine with public-history source links and outreach-build angles tied to:
+  - anniversary archive/timeline work
+  - civil-rights school-history research packets
+  - small-museum AI research assistants
+- Expanded the automation-business default profile with relevant Conor examples and cold-offer angles for public history, museums, cultural organizations, and research teams.
+
 ### Luke Watch Handoff
 
 - Promoted the Luke Watch production-test Pine and simulation-only strategy into tracked repo files.
@@ -94,6 +123,12 @@ Continue the Luke cleanup/hardening plan without direct operator input where pos
 - `cmd /c npx vitest run tests/brain-agent.test.js tests/brain-dashboard.test.js`: passed, 32 tests.
 - `npm run prove:brain-sections` against a fresh proof server on port 3991: passed; wrote PNG proof under `artifacts/proof/brain-sections/`.
 - `cmd /c npm run prove:luke-ui-ux`: passed again after the brain-section UI addition; wrote PNG proof under `artifacts/proof/luke-ui-ux/`.
+- `node --check agents/agent-00-brain.js`: passed.
+- `node --check lib/brain/daily-spine.js`: passed.
+- `node --check lib/brain/history-career-spine.js`: passed.
+- `node --check lib/brain/automation-business-spine.js`: passed.
+- `node --check scripts/prove-luke-ui-ux.js`: passed.
+- `cmd /c npx vitest run tests/brain-agent.test.js tests/brain-dashboard.test.js`: passed after Daily window changes, 34 tests.
 
 ## PNG Review Log
 
@@ -146,6 +181,12 @@ Opened and visually inspected:
   - Existing automation factory artifact still renders after the section-output addition.
 - `artifacts/proof/brain-sections/mobile-developer-plan.png`
   - Mobile brain section controls wrap cleanly and the developer plan remains readable.
+- `artifacts/proof/luke-ui-ux/daily-window-desktop.png`
+  - Daily window renders date/time, three weather locations, calendar state, move prompt, Gmail cleanup status, and attention signals.
+- `artifacts/proof/luke-ui-ux/daily-window-mobile.png`
+  - Daily window remains readable on mobile.
+- `artifacts/proof/luke-ui-ux/shell-daily-panel-desktop.png`
+  - Luke shell opens Daily as an embedded panel rather than sending the operator into backend-style brain routes.
 
 ## Remaining Without Operator Input
 
@@ -154,9 +195,11 @@ Opened and visually inspected:
 - Commit this slice after verification.
 - Revisit PM2 CLI health/reload separately if it continues to hang; do not kill the live app during this hardening slice without a specific operator decision.
 - The brain dashboard now exposes the current non-trading brain sections through clickable UI; deeper usefulness depends on configured providers/data and your preferred operating workflows.
+- Daily calendar/mail integration now has an hourly cache refresh automation, but the Luke app still depends on connector availability or a future direct Google OAuth/ICS credential to keep that cache fresh outside Codex.
 
 ## Requires Operator Input Later
 
 - Any actual live-data provider credentials, TradingView compile/signoff, Saty visual parity signoff, broker proof, or permission to unlock staged/live env gates.
 - Luke Watch production-test Pine is now tracked and safety-tested, but still needs TradingView compile/signoff before use.
 - Non-trading brain sections are wired and proofed, but final scope choices still need your judgment: which automation niche to actually pursue, which history-career search targets matter most, and which AI provider keys/models you want Luke to use.
+- Daily check-in still needs your actual day-specific input when you want Luke to treat the daily plan as complete.

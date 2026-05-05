@@ -137,6 +137,36 @@ async function waitForBrainDashboard(page) {
   }, { timeout: 15000 });
 }
 
+async function waitForDailyWindow(page) {
+  await page.waitForFunction(() => {
+    const body = document.body.innerText || '';
+    return /Luke Daily/.test(body)
+      && /I love Kat/.test(body)
+      && /Knoxville, TN/.test(body)
+      && /Wilmington, NC/.test(body)
+      && !/Loading date|loading time|Loading mail/i.test(body);
+  }, { timeout: 15000 });
+}
+
+async function openDailyPanelFromShell(page) {
+  await waitForShellStatus(page);
+  await page.locator('#daily-launch').click();
+  await page.waitForFunction(() => {
+    const panel = document.querySelector('#daily-panel');
+    const frame = document.querySelector('#daily-frame');
+    return panel?.classList.contains('is-open') && frame?.getAttribute('src');
+  }, { timeout: 15000 });
+  await page.waitForFunction(() => {
+    const frame = document.querySelector('#daily-frame');
+    const text = frame?.contentWindow?.document?.body?.innerText || '';
+    return /Luke Daily/.test(text)
+      && /I love Kat/.test(text)
+      && /Gmail cleanup/.test(text)
+      && /Buffalo, NY/.test(text)
+      && !/Loading date|Loading time|loading/i.test(text);
+  }, { timeout: 30000 });
+}
+
 async function capturePage(browser, spec, proof) {
   const page = await browser.newPage({ viewport: spec.viewport });
   const consoleErrors = [];
@@ -213,6 +243,16 @@ async function captureScreenshots() {
         mustNotContain: ['loading'],
       },
       {
+        key: 'shell-daily-panel-desktop',
+        route: '/shell?proof=ui-ux-daily-panel',
+        file: 'shell-daily-panel-desktop.png',
+        viewport: desktop,
+        waitForText: ['Trading (Analysis)', 'Daily Brief'],
+        action: openDailyPanelFromShell,
+        mustContain: ['Daily Brief / Schedule Window'],
+        mustNotContain: ['loading'],
+      },
+      {
         key: 'luke-chat-desktop',
         route: '/luke?proof=ui-ux',
         file: 'luke-chat-desktop.png',
@@ -249,6 +289,26 @@ async function captureScreenshots() {
         action: waitForTradingWindowChart,
         mustContain: ['No execution controls', 'Replay/dev simulated'],
         mustNotContain: ['Focus: loading'],
+      },
+      {
+        key: 'daily-window-desktop',
+        route: '/daily?proof=ui-ux',
+        file: 'daily-window-desktop.png',
+        viewport: desktop,
+        waitForText: ['Luke Daily', 'Daily Check-In', 'This Week'],
+        action: waitForDailyWindow,
+        mustContain: ['I love Kat', 'Knoxville, TN', 'Wilmington, NC', 'Gmail cleanup'],
+        mustNotContain: ['Loading date', 'Loading mail'],
+      },
+      {
+        key: 'daily-window-mobile',
+        route: '/daily?proof=ui-ux',
+        file: 'daily-window-mobile.png',
+        viewport: mobile,
+        waitForText: ['Luke Daily', 'Daily Check-In'],
+        action: waitForDailyWindow,
+        mustContain: ['I love Kat', 'Move to Tennessee', 'Gmail cleanup'],
+        mustNotContain: ['Loading date', 'Loading mail'],
       },
       {
         key: 'operator-v2-desktop',

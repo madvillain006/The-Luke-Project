@@ -486,7 +486,7 @@
       }
     }
 
-    function renderSpine(el, spine, bodyRows) {
+    function renderSpine(el, spine, bodyRows, options = {}) {
       el.innerHTML = `
         <div>
           <div class="node-top">
@@ -494,7 +494,7 @@
               <div class="node-title">${escapeHtml(spine.label)}</div>
               <div class="node-meta">${escapeHtml(spine.agent)}</div>
             </div>
-            <span class="${statusClass(spine.status)}">${escapeHtml(spine.status)}</span>
+            ${options.hideStatus ? '' : `<span class="${statusClass(spine.status)}">${escapeHtml(spine.status)}</span>`}
           </div>
         </div>
         <div>${bodyRows}</div>
@@ -553,10 +553,14 @@
       `);
 
       renderSpine($('spine-daily'), daily, `
+        <div class="grid">
+          <div class="metric"><div class="metric-label">Date</div><div class="metric-value">${escapeHtml(daily.date_label || daily.date)}</div></div>
+          <div class="metric"><div class="metric-label">Time</div><div class="metric-value">${escapeHtml(daily.time_label || '')}</div></div>
+        </div>
         <div class="metric"><div class="metric-label">Weather</div><div class="metric-value">${escapeHtml(daily.weather?.summary)}</div></div>
-        ${blockerSection(daily.blockers || [])}
+        ${(daily.blockers || []).length ? `<div class="search-row blockers"><strong>Needs you</strong>${list(daily.blockers || [])}</div>` : ''}
         ${list((daily.checklist || []).map(item => `${item.label}: ${item.status} - ${item.detail}`))}
-      `);
+      `, { hideStatus: true });
 
       renderSpine($('spine-history'), history, `
         <div class="grid">
@@ -564,6 +568,7 @@
           <div class="metric"><div class="metric-label">MLIS Filtered</div><div class="metric-value">${history.pipeline?.rejected_mlis ?? 0}</div></div>
         </div>
         ${blockerSection(history.blockers || [])}
+        ${list((history.outreach_builds || []).map(item => `${item.label}: ${item.fit}`))}
         ${list((history.tracks || []).map(track => track.label))}
       `);
 
@@ -584,6 +589,11 @@
         <div class="search-row">
           <strong>${escapeHtml(item.track)}</strong>
           <span>${escapeHtml(item.query)}</span>
+        </div>
+      `).join('') + (history.source_links || []).map(item => `
+        <div class="search-row">
+          <strong>${escapeHtml(item.label)}</strong>
+          <span>${escapeHtml(item.url)}</span>
         </div>
       `).join('');
     }
@@ -689,8 +699,14 @@
         return [
           data.label || 'History-career search spine',
           '',
+          'Outreach Builds',
+          ...(data.outreach_builds || []).map(item => `- ${item.label}: ${item.fit}`),
+          '',
           'Tracks',
           ...(data.tracks || []).map(track => `- ${track.label}`),
+          '',
+          'Sources',
+          ...(data.source_links || []).map(item => `- ${item.label}: ${item.url}`),
           '',
           'Next Searches',
           ...(data.next_searches || []).slice(0, 16).map(item => `- ${item.track}: ${item.query}`),

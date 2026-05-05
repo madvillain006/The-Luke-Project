@@ -119,7 +119,8 @@
     }
 
     .trading-panel,
-    .system-chat-panel {
+    .system-chat-panel,
+    .daily-panel {
       display: none;
       min-height: 540px;
       border: 1px solid var(--line);
@@ -129,7 +130,8 @@
     }
 
     .trading-panel.is-open,
-    .system-chat-panel.is-open {
+    .system-chat-panel.is-open,
+    .daily-panel.is-open {
       display: flex;
       flex-direction: column;
     }
@@ -186,7 +188,8 @@
     }
 
     .trading-frame,
-    .system-frame {
+    .system-frame,
+    .daily-frame {
       width: 100%;
       min-height: 0;
       flex: 1;
@@ -263,11 +266,13 @@
       row-gap: 6px;
     }
 
-    .system-button.is-hidden {
+    .system-button.is-hidden,
+    .module-link.is-hidden {
       display: none;
     }
 
-    .system-chat-panel {
+    .system-chat-panel,
+    .daily-panel {
       grid-column: 1 / -1;
       min-height: 520px;
     }
@@ -694,22 +699,33 @@
         <div class="module-caption"><span>C 000</span><span class="name">Brain Core</span></div>
       </a>
 
-      <a class="module-link" data-route="/brain-dashboard#spine-daily" href="/brain-dashboard#spine-daily">
+      <a class="module-link" id="daily-launch" data-route="/daily" href="/daily">
         <div class="module-art">
           <div class="daily-brief-stack">
-            <span class="daily-brief-state-value" id="daily-brief-state">--</span>
-            <span class="daily-brief-note-text" id="daily-brief-note">brief loading</span>
+            <span class="daily-brief-state-value" id="daily-brief-state">Loading date</span>
+            <span class="daily-brief-note-text" id="daily-brief-note">loading time</span>
             <span class="daily-brief-weather-row">
               <span class="weather-emoji" id="weather-emoji" aria-hidden="true">·</span>
               <span id="weather-temp">--</span>
               <span id="weather-cond">loading</span>
             </span>
-            <span class="daily-brief-weather-summary" id="daily-brief-weather-summary">weather loading</span>
-            <span class="daily-brief-weather-forecast" id="daily-brief-weather-forecast">forecast loading</span>
+            <span class="daily-brief-weather-summary" id="daily-brief-weather-summary">Knoxville / Wilmington loading</span>
+            <span class="daily-brief-weather-forecast" id="daily-brief-weather-forecast">calendar loading</span>
           </div>
         </div>
         <div class="module-caption"><span>D 003</span><span class="name">Daily Brief</span><span class="module-meta">Check-ins and next actions</span></div>
       </a>
+
+      <section class="daily-panel" id="daily-panel" aria-hidden="true" aria-label="Luke daily window">
+        <div class="trading-panel-top">
+          <span>Daily Brief / Schedule Window</span>
+          <div class="trading-panel-actions">
+            <a class="panel-action" href="/daily" title="Open Daily as a full page">FULL</a>
+            <button class="panel-action" id="daily-close" type="button" title="Return to the Daily Brief tile">BACK</button>
+          </div>
+        </div>
+        <iframe class="daily-frame" id="daily-frame" title="Luke daily window" data-src="/daily?embed=1"></iframe>
+      </section>
 
       <a class="module-link" data-route="/brain-dashboard#spine-automation" href="/brain-dashboard#spine-automation">
         <div class="module-art"><div class="text-globe"><span>AI OPS AI OPS AI OPS AI OPS AI OPS AI OPS AI OPS AI OPS</span></div></div>
@@ -865,6 +881,27 @@
       launch.focus();
     }
 
+    function openDailyPanel() {
+      const launch = $('daily-launch');
+      const panel = $('daily-panel');
+      const frame = $('daily-frame');
+      if (!launch || !panel || !frame) return;
+      launch.classList.add('is-hidden');
+      panel.classList.add('is-open');
+      panel.setAttribute('aria-hidden', 'false');
+      if (!frame.getAttribute('src')) frame.setAttribute('src', frame.dataset.src || '/daily?embed=1');
+    }
+
+    function closeDailyPanel() {
+      const launch = $('daily-launch');
+      const panel = $('daily-panel');
+      if (!launch || !panel) return;
+      panel.classList.remove('is-open');
+      panel.setAttribute('aria-hidden', 'true');
+      launch.classList.remove('is-hidden');
+      launch.focus();
+    }
+
     async function refresh() {
       try {
         const [brain, daily, telemetry] = await Promise.all([
@@ -877,10 +914,10 @@
         setText('weather-emoji', weatherEmoji(weather));
         setText('weather-temp', weather.temperature_f == null ? '--' : `${weather.temperature_f}F`);
         setText('weather-cond', weather.condition || weather.status || 'unknown');
-        setText('daily-brief-weather-summary', weather.summary || 'weather unavailable');
-        setText('daily-brief-weather-forecast', formatWeatherForecast(weather));
-        setText('daily-brief-state', String(daily.status || 'brief').toUpperCase());
-        setText('daily-brief-note', daily.next_actions?.[0] || daily.blockers?.[0] || 'no daily blocker');
+        setText('daily-brief-weather-summary', 'Knoxville + Wilmington weather inside');
+        setText('daily-brief-weather-forecast', `${daily.pipeline?.schedule_events_this_week ?? 0} calendar events this week`);
+        setText('daily-brief-state', daily.date_label || new Date(daily.generated_at || Date.now()).toLocaleDateString());
+        setText('daily-brief-note', daily.time_label || new Date(daily.generated_at || Date.now()).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }));
         setText('brain-line', `${Object.keys(brain.subagents || {}).length} agents / ${brain.report_inbox?.count || 0} reports`);
         setText('blocker-line', brain.attention?.length ? brain.attention.map(item => item.agent).join(', ') : 'none');
         setText('runtime-line', `${formatMemory(telemetry.process?.rss_bytes)} RSS / ${formatUptime(telemetry.process?.uptime_seconds)}`);
@@ -891,8 +928,8 @@
         setText('weather-cond', 'offline');
         setText('daily-brief-weather-summary', 'weather offline');
         setText('daily-brief-weather-forecast', 'forecast unavailable');
-        setText('daily-brief-state', '--');
-        setText('daily-brief-note', 'brief offline');
+        setText('daily-brief-state', new Date().toLocaleDateString());
+        setText('daily-brief-note', 'daily offline');
         setText('brain-line', 'offline');
         setText('blocker-line', 'offline');
         setText('runtime-line', err.message);
@@ -916,6 +953,11 @@
           openSystemPanel();
           return;
         }
+        if (route === '/daily') {
+          event.preventDefault();
+          openDailyPanel();
+          return;
+        }
         if (route) {
           event.preventDefault();
           window.location.href = route;
@@ -927,6 +969,7 @@
     $('trading-chat-view')?.addEventListener('click', () => setTradingPanelMode('chat'));
     $('trading-window-view')?.addEventListener('click', () => setTradingPanelMode('window'));
     $('system-close')?.addEventListener('click', closeSystemPanel);
+    $('daily-close')?.addEventListener('click', closeDailyPanel);
 
     refresh();
     setInterval(refresh, 30000);

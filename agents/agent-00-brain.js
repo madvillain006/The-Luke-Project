@@ -15,7 +15,7 @@ const {
   recordAutomationEvent,
 } = require('../lib/brain/automation-business-spine');
 const { buildDailyBrief, fetchDailyNews } = require('../lib/brain/daily-brief');
-const { buildDailySpine, fetchWeather, recordDailyCheckin } = require('../lib/brain/daily-spine');
+const { buildDailySpine, fetchWeather, fetchWeatherForLocations, recordDailyCheckin } = require('../lib/brain/daily-spine');
 const { buildDeveloperStackSpine, recordDeveloperStackEvent } = require('../lib/brain/developer-stack-spine');
 const { buildHistoryCareerSpine, recordOpportunity } = require('../lib/brain/history-career-spine');
 
@@ -149,8 +149,16 @@ router.get('/daily', async (req, res) => {
     lat: req.query.lat || process.env.LUKE_WEATHER_LAT,
     lon: req.query.lon || process.env.LUKE_WEATHER_LON,
     timezone: req.query.tz || process.env.LUKE_WEATHER_TZ || 'America/New_York',
+    label: process.env.LUKE_WEATHER_LABEL || 'Buffalo, NY',
   });
-  res.json(buildDailySpine({ weather }));
+  const weatherLocations = await fetchWeatherForLocations();
+  res.json(buildDailySpine({ weather, weatherLocations }));
+});
+
+router.get('/daily/window', async (req, res) => {
+  const weatherLocations = await fetchWeatherForLocations();
+  const weather = weatherLocations[0] || await fetchWeather();
+  res.json(buildDailySpine({ weather, weatherLocations }));
 });
 
 router.get('/daily/news', async (req, res) => {

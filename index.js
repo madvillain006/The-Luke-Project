@@ -392,6 +392,11 @@ app.get("/luke", (req, res) => {
   res.sendFile(__dirname + "/chat.html");
 });
 
+app.get("/daily", (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.sendFile(__dirname + "/daily-window.html");
+});
+
 app.get("/operator-v2", (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.sendFile(__dirname + "/operator-v2.html");

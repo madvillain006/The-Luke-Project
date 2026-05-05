@@ -1,5 +1,5 @@
 //@version=5
-indicator("Luke Watch Production Test - Realistic Accounting", shorttitle="Luke Prod Test", overlay=true, max_lines_count=300, max_labels_count=200)
+indicator("Luke Watch Production Test - Readable Ledger", shorttitle="Luke Readable", overlay=true, max_lines_count=300, max_labels_count=200)
 
 // TradingView visual bridge only. This script does not submit orders, uses an
 // indicator declaration only, and cannot read manual TradingView drawing objects.
@@ -340,7 +340,7 @@ var int last_candidate_closed_bar = na
 var int last_failed_candidate_bar = na
 var float last_failed_candidate_level = na
 var table session_scorecard = table.new(position.top_right, 2, 7, bgcolor=color.new(color.black, 35), frame_color=color.new(color.gray, 40), frame_width=1)
-var table event_ledger_table = table.new(position.bottom_right, 1, 13, bgcolor=color.new(color.black, 30), frame_color=color.new(color.gray, 40), frame_width=1)
+var table event_ledger_table = table.new(position.bottom_right, 1, 14, bgcolor=color.new(color.black, 30), frame_color=color.new(color.gray, 40), frame_width=1)
 var bool tracked_candidate_open = false
 var bool tracked_candidate_tp1_hit = false
 var bool tracked_candidate_success_counted = false
@@ -943,19 +943,21 @@ if barstate.islast
         table.cell(session_scorecard, 0, 6, "", bgcolor=color.new(color.black, 100))
         table.cell(session_scorecard, 1, 6, "", bgcolor=color.new(color.black, 100))
     if show_event_ledger
-        string ledger_header = "Luke realistic event ledger"
-        string ledger_counts = "W " + str.tostring(session_watches) + "  L " + str.tostring(session_attempts) + "  T1 " + str.tostring(session_tp1_hits) + "  T2 " + str.tostring(session_tp2_hits) + "  BE " + str.tostring(session_breakevens) + "  stop " + str.tostring(session_stopped) + "  mixed " + str.tostring(session_mixed)
+        string ledger_header = "Luke realistic event ledger - readable"
+        string ledger_counts = "watch " + str.tostring(session_watches) + " | longs " + str.tostring(session_attempts) + " | success " + str.tostring(session_successes) + "/" + str.tostring(session_attempts) + " | preTP stop " + str.tostring(session_stopped)
+        string ledger_milestones = "milestones: TP1 " + str.tostring(session_tp1_hits) + " | TP2 " + str.tostring(session_tp2_hits) + " | TP1+BE " + str.tostring(session_breakevens) + " | mixed " + str.tostring(session_mixed)
         float ledger_commission = f_session_commission_dollars()
         string ledger_pnl = realistic_accounting_mode + " | total " + f_money(session_realized_dollars) + " | -comm " + f_money(session_realized_dollars - ledger_commission) + " | net " + f_money(session_net_dollars)
         table.cell(event_ledger_table, 0, 0, ledger_header, text_color=color.white, bgcolor=color.new(color.black, 5), text_size=size.small)
         table.cell(event_ledger_table, 0, 1, ledger_counts, text_color=color.silver, bgcolor=color.new(color.black, 35), text_size=size.tiny)
-        table.cell(event_ledger_table, 0, 2, ledger_pnl, text_color=session_realized_points >= 0 ? color.lime : color.red, bgcolor=color.new(color.black, 35), text_size=size.tiny)
+        table.cell(event_ledger_table, 0, 2, ledger_milestones, text_color=color.silver, bgcolor=color.new(color.black, 35), text_size=size.tiny)
+        table.cell(event_ledger_table, 0, 3, ledger_pnl, text_color=session_realized_points >= 0 ? color.lime : color.red, bgcolor=color.new(color.black, 35), text_size=size.tiny)
         for ledger_row = 0 to 9
             bool row_visible = ledger_row < event_ledger_rows
             string ledger_text = row_visible and ledger_row < array.size(event_ledger) ? array.get(event_ledger, ledger_row) : ""
-            table.cell(event_ledger_table, 0, ledger_row + 3, ledger_text, text_color=color.white, bgcolor=color.new(color.black, row_visible ? 45 : 100), text_size=size.tiny)
+            table.cell(event_ledger_table, 0, ledger_row + 4, ledger_text, text_color=color.white, bgcolor=color.new(color.black, row_visible ? 45 : 100), text_size=size.tiny)
     else
-        for ledger_row = 0 to 12
+        for ledger_row = 0 to 13
             table.cell(event_ledger_table, 0, ledger_row, "", bgcolor=color.new(color.black, 100))
 
 alertcondition(enable_alertconditions and alert_watch_events and watch_event, "LUKE WATCH", "LUKE WATCHLIST ONLY - not an order - WATCH level condition")

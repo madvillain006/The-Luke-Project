@@ -26,12 +26,12 @@ describe('Kat agent live surface', () => {
   it('exposes a welcome/help surface that matches current capabilities', () => {
     const source = fs.readFileSync(path.join(ROOT, 'agents', 'agent-14-kat.js'), 'utf8');
     expect(source).toContain('function getKatWelcomeMessage()');
-    expect(source).toContain('Kat pushes monitored SPX/SPY/ES/QQQ/NDX/NQ analyst signals and chart posts into Luke as they arrive.');
-    expect(source).toContain('Confluence messages require analyst agreement plus current levels loaded.');
-    expect(source).toContain('Kat also tracks repeated equity/options tickers as a shadow watchlist');
-    expect(source).toContain('`!kat watchlist`');
-    expect(source).toContain('`!kat equity TSLA`');
-    expect(source).toContain('Kat replies suppress Discord mentions by default');
+    expect(source).toContain("Hey everyone. I'm Kat.");
+    expect(source).toContain('`!kat levels SPX` - top analyst-marked levels this week.');
+    expect(source).toContain('`!kat bias` - current directional bias across monitored analysts, last 18 hours.');
+    expect(source).toContain('`!kat heatmap SPX` - most recent heatmap image for that ticker with timestamp.');
+    expect(source).toContain('Level Magnet alerts run during market hours');
+    expect(source).toContain('Owner/debug commands: `!kat status`, `!kat summary`, `!kat watchlist`, `!kat equity TSLA`, `!kat options TSLA`.');
     expect(source).toContain("router.get('/welcome'");
     expect(source).toContain('No autonomous execution');
   });
@@ -64,5 +64,17 @@ describe('Kat agent live surface', () => {
     expect(source).toContain("router.get('/readiness.md'");
     expect(source).toContain('discord_responses_enabled: false');
     expect(source).toContain('discord_posts_enabled: false');
+  });
+
+  it('monitors heatmap-requests by channel id and keeps name fallback alive', () => {
+    const source = fs.readFileSync(path.join(ROOT, 'agents', 'agent-14-kat.js'), 'utf8');
+    const config = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'kat', 'monitored-users.json'), 'utf8'));
+
+    expect(source).toContain('return ids.includes(channelId) || names.includes(channelName);');
+    expect(source).toContain('if (req.body.monitored_channel_ids) config.monitored_channel_ids = req.body.monitored_channel_ids;');
+    expect(source).toContain('targetSet.has(c.name) || targetSet.has(c.id)');
+    expect(config.monitored_channels).toContain('heatmap-requests');
+    expect(config.monitored_channel_ids).toContain('1482431257441996850');
+    expect(config.monitored_users.map(user => user.username)).toContain('El Jefe');
   });
 });

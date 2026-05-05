@@ -20,7 +20,7 @@ function ensureDir() {
 function loadConfig() {
   ensureDir();
   if (!fs.existsSync(CONFIG_FILE)) return {
-    enabled: false, monitored_users: [], monitored_channels: [],
+    enabled: false, monitored_users: [], monitored_channels: [], monitored_channel_ids: [],
     synthesis_schedule: 'EOD', vision_enabled: true, heatmap_detection: true,
     discord_responses_enabled: false, discord_posts_enabled: false
   };
@@ -59,9 +59,7 @@ function isMonitoredUser(userId, config) {
 function isMonitoredChannel(channelId, channelName, config) {
   const ids   = config.monitored_channel_ids || [];
   const names = config.monitored_channels    || [];
-  if (ids.length > 0)   return ids.includes(channelId);
-  if (names.length > 0) return names.includes(channelName);
-  return false;
+  return ids.includes(channelId) || names.includes(channelName);
 }
 
 function rawFeedCount() {
@@ -384,22 +382,22 @@ function mentionsKatbot(message) {
 
 function getKatWelcomeMessage() {
   return [
-    '**Kat commands:**',
-    '`!kat status`  capture/replay/evaluation health',
-    '`!kat summary`  same as status, tuned for quick Discord readout',
-    '`!kat levels SPX`  top analyst-marked levels (2+ analysts or 3+ mentions)',
-    '`!kat bias`  directional bias across analysts, last 18 hours',
-    '`!kat heatmap SPX`  most recent heatmap with staleness indicator',
-    '`!kat watchlist`  repeated non-index tickers Kat is shadow-reviewing',
-    '`!kat equity TSLA` / `!kat options TSLA`  equity/options shadow profile',
-    '`!kat levels SPY` / `!kat heatmap QQQ`  index-specific lookup',
+    "Hey everyone. I'm Kat.",
     '',
-    'Kat pushes monitored SPX/SPY/ES/QQQ/NDX/NQ analyst signals and chart posts into Luke as they arrive.',
-    'Kat also tracks repeated equity/options tickers as a shadow watchlist; these do not feed SPX confluence.',
-    'Confluence messages require analyst agreement plus current levels loaded.',
-    'Source, analyst, channel, message id, ticker lane, bias, levels, and image evidence stay attached.',
-    'Discord replies/posts stay gated off until explicitly approved.',
-    'Kat replies suppress Discord mentions by default; queue-style requests require mentioning Kat by username.',
+    'I read analyst posts from monitored channels and surface patterns nobody has time to track manually - specifically when multiple analysts independently mark the same price level without coordinating. When that happens I can post a Level Magnet alert.',
+    '',
+    'How to use me:',
+    '`!kat levels SPX` - top analyst-marked levels this week. Requires 2+ analysts or 3+ independent mentions to qualify. No guesses.',
+    '`!kat bias` - current directional bias across monitored analysts, last 18 hours.',
+    '`!kat heatmap SPX` - most recent heatmap image for that ticker with timestamp. Staleness warning if over 4 hours old.',
+    '`!kat` - shows this list.',
+    '',
+    "What I don't do: predict, generate opinions, or make anything up. Everything I post is sourced from captured analyst posts with timestamps attached.",
+    '',
+    'Level Magnet alerts run during market hours when 2+ analysts independently mark the same level within 48 hours. No action needed - I post when confluence forms.',
+    '',
+    'Owner/debug commands: `!kat status`, `!kat summary`, `!kat watchlist`, `!kat equity TSLA`, `!kat options TSLA`.',
+    'Luke bridge: source, analyst, channel, message id, ticker lane, bias, levels, and image evidence stay attached.',
     '_Human-gated confluence only. No autonomous execution._'
   ].join('\n');
 }
@@ -968,7 +966,7 @@ async function runBackfill(client) {
 }
 
 //  Targeted Backfill 
-async function runTargetedBackfill(client, targetChannelNames) {
+async function runTargetedBackfill(client, targetChannelsOrIds) {
   const config = loadConfig();
   if (!config.enabled) {
     console.log('[kat] Targeted backfill skipped  bot not enabled');
@@ -977,8 +975,8 @@ async function runTargetedBackfill(client, targetChannelNames) {
 
   const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
   const cutoff = new Date(Date.now() - NINETY_DAYS_MS);
-  const targetSet = new Set(targetChannelNames);
-  console.log('[kat] TARGETED BACKFILL starting for: ' + targetChannelNames.join(', '));
+  const targetSet = new Set(targetChannelsOrIds);
+  console.log('[kat] TARGETED BACKFILL starting for: ' + targetChannelsOrIds.join(', '));
 
   const seen = new Set();
   if (fs.existsSync(RAW_FEED)) {
@@ -1008,9 +1006,9 @@ async function runTargetedBackfill(client, targetChannelNames) {
       try {
         const isText = typeof c.isTextBased === 'function' ? c.isTextBased() : false;
         if (!isText) continue;
-        if (targetSet.has(c.name)) {
+        if (targetSet.has(c.name) || targetSet.has(c.id)) {
           targetChannels.push(c);
-          console.log('[kat] TARGETED BACKFILL target: #' + c.name);
+          console.log('[kat] TARGETED BACKFILL target: #' + c.name + ' (' + c.id + ')');
         }
       } catch (e) {
         console.error('[kat] Channel check error:', e.message);
@@ -1517,11 +1515,12 @@ router.post('/enable', (req, res) => {
   res.json({ ok: true, enabled: config.enabled });
 });
 
-// POST /agent/kat/configure  { monitored_users, monitored_channels, magnet_channel, command_channels }
+// POST /agent/kat/configure  { monitored_users, monitored_channels, monitored_channel_ids, magnet_channel, command_channels }
 router.post('/configure', (req, res) => {
   const config = loadConfig();
   if (req.body.monitored_users)    config.monitored_users    = req.body.monitored_users;
   if (req.body.monitored_channels) config.monitored_channels = req.body.monitored_channels;
+  if (req.body.monitored_channel_ids) config.monitored_channel_ids = req.body.monitored_channel_ids;
   if (req.body.magnet_channel)     config.magnet_channel     = req.body.magnet_channel;
   if (req.body.command_channels)   config.command_channels   = req.body.command_channels;
   if (typeof req.body.discord_responses_enabled === 'boolean') {
@@ -1534,6 +1533,7 @@ router.post('/configure', (req, res) => {
   console.log('[kat] Config updated:', JSON.stringify({
     users: config.monitored_users.map(u => u.username),
     channels: config.monitored_channels,
+    channel_ids: config.monitored_channel_ids || [],
     magnet_channel: config.magnet_channel,
     command_channels: config.command_channels,
     discord_responses_enabled: config.discord_responses_enabled === true,

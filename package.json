@@ -15,6 +15,7 @@
     "prove:current-status": "node scripts/run-current-status-proof.js",
     "prove:live-level-state": "node scripts/prove-live-level-state.js",
     "prove:operator-v2": "node scripts/prove-operator-v2.js",
+    "prove:katbot-plain": "node scripts/prove-katbot-plain.js",
     "prove:replay-level-state": "node scripts/prove-replay-level-state.js",
     "prove:trading-window": "node scripts/prove-trading-window.js",
     "prove:virtual-operator-dashboard": "node scripts/prove-virtual-operator-dashboard.js",

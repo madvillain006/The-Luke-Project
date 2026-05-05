@@ -9,7 +9,7 @@ Luke is a read-only/replay trading companion. It is not live-ready. The canonica
 
 ## Current Proof
 
-- `npm test`: 126 files passed; 795 tests passed; 1 skipped in the current working tree.
+- `npm test`: 127 files passed; 799 tests passed; 1 skipped.
 - Runtime health passed on port 3000.
 - `/operator-v2`, `/trading-window`, replay level-state, live-shaped level-state, and staged-flow proofs passed.
 - `prove:luke-ui-ux` passed across the main shell, embedded Daily panel, Daily window, Luke chat, trading chat, trading window, Operator V2, and brain dashboard PNG captures.

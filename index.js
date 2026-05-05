@@ -629,7 +629,7 @@ app.post("/chat", async (req, res) => {
 app.post("/see", async (req, res) => {
   const { question } = req.body;
   try {
-    const img = runPython("screenshot");
+    const img = runPython(["screenshot"]);
     const response = await client.messages.create({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 384,
@@ -700,11 +700,11 @@ app.post("/do", async (req, res) => {
   const { action, value } = req.body;
   try {
     let result;
-    if (action === "open") result = runPython("open \"" + value + "\"");
-    else if (action === "type") result = runPython("type \"" + value + "\"");
-    else if (action === "click") { const [x, y] = value.split(",").map(Number); result = runPython("click " + x + " " + y); }
-    else if (action === "scroll") result = runPython("scroll " + value);
-    else if (action === "press") result = runPython("press " + value);
+    if (action === "open") result = runPython(["open", value]);
+    else if (action === "type") result = runPython(["type", value]);
+    else if (action === "click") { const [x, y] = value.split(",").map(Number); result = runPython(["click", String(x), String(y)]); }
+    else if (action === "scroll") result = runPython(["scroll", value]);
+    else if (action === "press") result = runPython(["press", value]);
     else result = "Unknown action";
     res.json({ reply: result });
   } catch (err) {
@@ -1221,8 +1221,8 @@ app.get("/ws-token", (req, res) => res.json({ token: WS_TOKEN }));
 
 app.post("/intraday/start", (req, res) => {
   try {
-    try { execSync("pm2 restart luke-intraday --update-env", { cwd: __dirname }); }
-    catch { execSync("pm2 start luke-intraday --update-env", { cwd: __dirname }); }
+    try { execSync("pm2 restart luke-intraday --update-env", { cwd: __dirname, windowsHide: true }); }
+    catch { execSync("pm2 start luke-intraday --update-env", { cwd: __dirname, windowsHide: true }); }
     log("intraday-start", {});
     res.json({ started: true });
   } catch (err) { res.status(500).json({ error: err.message }); }
@@ -1230,7 +1230,7 @@ app.post("/intraday/start", (req, res) => {
 
 app.post("/intraday/stop", (req, res) => {
   try {
-    execSync("pm2 stop luke-intraday", { cwd: __dirname });
+    execSync("pm2 stop luke-intraday", { cwd: __dirname, windowsHide: true });
     log("intraday-stop", {});
     res.json({ stopped: true });
   } catch (err) { res.status(500).json({ error: err.message }); }
@@ -1238,7 +1238,7 @@ app.post("/intraday/stop", (req, res) => {
 
 function gitShaIfAvailable() {
   try {
-    return execSync("git rev-parse --short HEAD", { cwd: __dirname, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+    return execSync("git rev-parse --short HEAD", { cwd: __dirname, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"], windowsHide: true }).trim();
   } catch {
     return null;
   }
@@ -1386,7 +1386,7 @@ app.post("/panic", (req, res) => {
   log("PANIC", { triggered: new Date().toISOString() });
   try { fs.writeFileSync(path.join(__dirname, "panic-dump-" + Date.now() + ".json"), JSON.stringify({ timestamp: new Date().toISOString(), memory: loadMemory() }, null, 2)); } catch {}
   try { fetch("http://localhost:3000/agent/autonomous/kill", { method: "POST" }).catch(() => {}); } catch {}
-  try { execSync("pm2 stop luke-intraday", { cwd: __dirname }); } catch {}
+  try { execSync("pm2 stop luke-intraday", { cwd: __dirname, windowsHide: true }); } catch {}
   broadcast({ type: "notification", message: "PANIC executed  02B kill sent, intraday stopped, state dumped" });
   res.json({ ok: true });
 });
@@ -1466,7 +1466,7 @@ pruneDiscordHistory();
 // setInterval(buildRepoMap, 60 * 60 * 1000);
 
 try {
-  const _st = spawnSync("rg express index.js", { shell: true, cwd: __dirname, encoding: "utf8" });
+  const _st = spawnSync("rg", ["express", "index.js"], { cwd: __dirname, encoding: "utf8", windowsHide: true });
   fs.appendFileSync(TOOL_HEALTH_FILE, JSON.stringify({ ts: new Date().toISOString(), check: "boot-search-test", ok: _st.status === 0 }) + "\n");
 } catch {}
 

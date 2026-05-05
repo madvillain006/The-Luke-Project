@@ -1,0 +1,402 @@
+//@version=5
+strategy("Luke Level Reclaim Watch Hard Mode Strategy", shorttitle="Luke Hard Mode", overlay=true, max_lines_count=300, max_labels_count=200, initial_capital=50000, currency=currency.USD, pyramiding=0, process_orders_on_close=false, calc_on_every_tick=false, calc_on_order_fills=false, commission_type=strategy.commission.cash_per_contract, commission_value=0, slippage=0)
+
+// Research/backtest-only strategy harness for Luke-style reclaim signals.
+// It is not a broker integration, not a live-readiness claim, and not a way to
+// read manual TradingView drawing objects.
+// Built-in strategy fills are emitted for TradingView comparison only. The hard
+// mode table below is the pessimistic accounting source of record.
+
+hard_mode_enabled = input.bool(true, "Hard mode enabled", group="Hard Mode")
+emit_strategy_orders = input.bool(true, "Emit TradingView research strategy orders", group="Hard Mode")
+show_hardmode_table = input.bool(true, "Show hard-mode table", group="Hard Mode")
+show_bracket_visual = input.bool(true, "Show raw and hard-mode bracket", group="Hard Mode")
+entry_timing_mode = input.string("next_bar_open", "Entry timing", options=["next_bar_open", "signal_close_research_only"], group="Hard Mode", tooltip="Default waits until the bar after confirmation. signal_close_research_only is diagnostic and easier to overstate.")
+slippage_mode = input.string("both_sides_0_25_each", "Slippage mode", options=["none", "entry_only_0_25", "exit_only_0_25", "both_sides_0_25_each", "round_trip_0_50", "round_trip_1_00", "custom_points"], group="Hard Mode")
+custom_slippage_points = input.float(0.25, "Custom slippage points per adverse side", minval=0.0, step=0.25, group="Hard Mode")
+same_bar_policy = input.string("stop_first_hard_mode", "Same-bar policy", options=["target_first", "stop_first_hard_mode", "ambiguous_exclude", "ambiguous_report_only"], group="Hard Mode")
+pessimistic_same_bar = input.bool(true, "Pessimistic same-bar default", group="Hard Mode")
+contract_mode = input.string("1ES_starter", "Contract mode", options=["1ES_starter", "2ES_full"], group="Hard Mode")
+commission_per_contract_round_trip = input.float(5.0, "Commission per contract round trip", minval=0.0, step=0.25, group="Hard Mode")
+
+enable_saty = input.bool(true, "Enable strategy-safe Saty", group="Levels")
+enable_mancini = input.bool(true, "Enable Mancini input levels", group="Levels")
+enable_dubz = input.bool(true, "Enable Dubz input levels", group="Levels")
+enable_heatmap_gex = input.bool(true, "Enable heatmap_gex input levels", group="Levels")
+mancini_levels_input = input.string("", "Mancini levels", group="Levels", tooltip="Comma-separated prices exported from Luke.")
+dubz_levels_input = input.string("", "Dubz levels", group="Levels", tooltip="Comma-separated prices exported from Luke.")
+heatmap_gex_levels_input = input.string("", "Heatmap/GEX levels", group="Levels", tooltip="Comma-separated prices exported from fresh Luke heatmap/GEX snapshots.")
+heatmap_gex_snapshot_time = input.string("", "Heatmap/GEX snapshot time", group="Levels")
+heatmap_gex_snapshot_age_minutes = input.int(0, "Heatmap/GEX snapshot age minutes", minval=0, group="Levels")
+heatmap_gex_fresh_minutes = input.int(60, "Heatmap/GEX fresh minutes", minval=1, group="Levels")
+heatmap_gex_stale_minutes = input.int(120, "Heatmap/GEX stale minutes", minval=1, group="Levels")
+cluster_tolerance_raw = input.float(1.25, "Cluster tolerance points", minval=0.25, step=0.25, group="Levels", tooltip="Recommended ES range: 0.75 to 2.0. Values above 3.0 are capped.")
+
+saty_mode = input.string("Daily", "Saty mode", options=["Daily", "Multi-day", "Swing"], group="Saty")
+saty_atr_length = input.int(14, "Saty ATR length", minval=1, group="Saty")
+saty_trigger_pct = input.float(0.236, "Saty trigger percentage", minval=0.001, step=0.001, group="Saty")
+
+reclaim_hold_bars = input.int(2, "Confirmed hold bars", minval=1, maxval=5, group="Signal Timing")
+flush_lookback_bars = input.int(12, "Flush lookback bars", minval=2, maxval=100, group="Signal Timing")
+min_close_above_level_points = input.float(0.25, "Minimum close above level", minval=0.0, step=0.25, group="Signal Timing")
+level_tap_tolerance_points = input.float(0.5, "Level tap tolerance", minval=0.0, step=0.25, group="Signal Timing")
+min_target_space_points = input.float(3.0, "Minimum target space points", minval=0.25, step=0.25, group="Risk")
+tp1_points = input.float(2.0, "TP points", minval=0.25, step=0.25, group="Risk")
+max_stop_points = input.float(3.0, "Max stop points", minval=0.25, step=0.25, group="Risk")
+hard_stop_points = input.float(5.0, "Hard stop ceiling", minval=0.25, step=0.25, group="Risk")
+enable_alertconditions = input.bool(true, "Enable alertconditions", group="Alerts")
+
+cluster_tolerance_points = math.min(cluster_tolerance_raw, 3.0)
+heatmap_fresh = heatmap_gex_snapshot_age_minutes <= heatmap_gex_fresh_minutes
+heatmap_stale = heatmap_gex_snapshot_age_minutes >= heatmap_gex_stale_minutes
+contracts = contract_mode == "2ES_full" ? 2.0 : 1.0
+point_value_per_contract = 50.0
+
+f_entry_slippage_points(string mode, float custom_points) =>
+    mode == "none" ? 0.0 : mode == "exit_only_0_25" ? 0.0 : mode == "round_trip_1_00" ? 0.5 : mode == "custom_points" ? custom_points : 0.25
+
+f_target_exit_slippage_points(string mode, float custom_points) =>
+    mode == "none" ? 0.0 : mode == "entry_only_0_25" ? 0.0 : mode == "round_trip_1_00" ? 0.5 : mode == "custom_points" ? custom_points : 0.25
+
+f_stop_exit_slippage_points(string mode, float custom_points) =>
+    mode == "none" ? 0.0 : mode == "entry_only_0_25" ? 0.0 : mode == "round_trip_1_00" ? 0.5 : mode == "custom_points" ? custom_points : 0.25
+
+entry_slippage_points = f_entry_slippage_points(slippage_mode, custom_slippage_points)
+target_exit_slippage_points = f_target_exit_slippage_points(slippage_mode, custom_slippage_points)
+stop_exit_slippage_points = f_stop_exit_slippage_points(slippage_mode, custom_slippage_points)
+
+f_money(float value) =>
+    na(value) ? "n/a" : (value > 0 ? "+$" : value < 0 ? "-$" : "$") + str.tostring(math.abs(value), "#.##")
+
+f_points(float value) =>
+    na(value) ? "n/a" : (value > 0 ? "+" : "") + str.tostring(value, "#.##") + "pt"
+
+f_add_sorted(float[] prices, string[] sources, bool[] fresh_flags, float price, string source, bool fresh) =>
+    if not na(price)
+        int insert_at = array.size(prices)
+        if array.size(prices) > 0
+            for i = 0 to array.size(prices) - 1
+                if price < array.get(prices, i)
+                    insert_at := i
+                    break
+        array.insert(prices, insert_at, price)
+        array.insert(sources, insert_at, source)
+        array.insert(fresh_flags, insert_at, fresh)
+
+f_add_input_levels(float[] prices, string[] sources, bool[] fresh_flags, string raw, string source, bool fresh) =>
+    string[] parts = str.split(raw, ",")
+    if array.size(parts) > 0
+        for i = 0 to array.size(parts) - 1
+            string part = str.trim(array.get(parts, i))
+            float value = str.tonumber(part)
+            if not na(value)
+                f_add_sorted(prices, sources, fresh_flags, value, source, fresh)
+
+saty_tf = saty_mode == "Daily" ? "D" : saty_mode == "Multi-day" ? "W" : "M"
+// Strategy-safe Saty: same coefficients as the display reference, but with
+// lookahead_off so hard-mode signals do not inherit display lookahead behavior.
+saty_previous_close = request.security(syminfo.tickerid, saty_tf, close[1], barmerge.gaps_off, barmerge.lookahead_off)
+saty_atr_value = request.security(syminfo.tickerid, saty_tf, ta.atr(saty_atr_length)[1], barmerge.gaps_off, barmerge.lookahead_off)
+saty_call_trigger = saty_previous_close + saty_atr_value * saty_trigger_pct
+saty_put_trigger = saty_previous_close - saty_atr_value * saty_trigger_pct
+saty_ext_plus_1 = saty_previous_close + saty_atr_value * 0.382
+saty_ext_plus_2 = saty_previous_close + saty_atr_value * 0.500
+saty_ext_plus_3 = saty_previous_close + saty_atr_value * 0.618
+saty_ext_plus_4 = saty_previous_close + saty_atr_value * 0.786
+saty_atr_plus_1 = saty_previous_close + saty_atr_value
+saty_ext_minus_1 = saty_previous_close - saty_atr_value * 0.382
+saty_ext_minus_2 = saty_previous_close - saty_atr_value * 0.500
+saty_ext_minus_3 = saty_previous_close - saty_atr_value * 0.618
+saty_ext_minus_4 = saty_previous_close - saty_atr_value * 0.786
+saty_atr_minus_1 = saty_previous_close - saty_atr_value
+
+plot(enable_saty ? saty_previous_close : na, "Strategy-safe Saty previous close", color=color.new(color.gray, 45), linewidth=1)
+plot(enable_saty ? saty_call_trigger : na, "Strategy-safe Saty call trigger", color=color.new(color.green, 25), linewidth=1)
+plot(enable_saty ? saty_put_trigger : na, "Strategy-safe Saty put trigger", color=color.new(color.red, 25), linewidth=1)
+
+float[] raw_prices = array.new_float()
+string[] raw_sources = array.new_string()
+bool[] raw_fresh = array.new_bool()
+
+if enable_saty
+    f_add_sorted(raw_prices, raw_sources, raw_fresh, saty_previous_close, "saty", true)
+    f_add_sorted(raw_prices, raw_sources, raw_fresh, saty_call_trigger, "saty", true)
+    f_add_sorted(raw_prices, raw_sources, raw_fresh, saty_put_trigger, "saty", true)
+    f_add_sorted(raw_prices, raw_sources, raw_fresh, saty_ext_plus_1, "saty", true)
+    f_add_sorted(raw_prices, raw_sources, raw_fresh, saty_ext_plus_2, "saty", true)
+    f_add_sorted(raw_prices, raw_sources, raw_fresh, saty_ext_plus_3, "saty", true)
+    f_add_sorted(raw_prices, raw_sources, raw_fresh, saty_ext_plus_4, "saty", true)
+    f_add_sorted(raw_prices, raw_sources, raw_fresh, saty_atr_plus_1, "saty", true)
+    f_add_sorted(raw_prices, raw_sources, raw_fresh, saty_ext_minus_1, "saty", true)
+    f_add_sorted(raw_prices, raw_sources, raw_fresh, saty_ext_minus_2, "saty", true)
+    f_add_sorted(raw_prices, raw_sources, raw_fresh, saty_ext_minus_3, "saty", true)
+    f_add_sorted(raw_prices, raw_sources, raw_fresh, saty_ext_minus_4, "saty", true)
+    f_add_sorted(raw_prices, raw_sources, raw_fresh, saty_atr_minus_1, "saty", true)
+if enable_mancini
+    f_add_input_levels(raw_prices, raw_sources, raw_fresh, mancini_levels_input, "mancini", true)
+if enable_dubz
+    f_add_input_levels(raw_prices, raw_sources, raw_fresh, dubz_levels_input, "dubz", true)
+if enable_heatmap_gex
+    f_add_input_levels(raw_prices, raw_sources, raw_fresh, heatmap_gex_levels_input, "heatmap_gex", heatmap_fresh)
+
+float[] cluster_prices = array.new_float()
+float[] cluster_mins = array.new_float()
+float[] cluster_maxs = array.new_float()
+string[] cluster_labels = array.new_string()
+int[] cluster_strengths = array.new_int()
+bool[] cluster_heatmap_fresh = array.new_bool()
+
+if array.size(raw_prices) > 0
+    for i = 0 to array.size(raw_prices) - 1
+        float price = array.get(raw_prices, i)
+        string source = array.get(raw_sources, i)
+        bool fresh = array.get(raw_fresh, i)
+        int last = array.size(cluster_prices) - 1
+        bool merged = false
+        if last >= 0
+            float anchor = array.get(cluster_prices, last)
+            float low_edge = math.min(array.get(cluster_mins, last), price)
+            float high_edge = math.max(array.get(cluster_maxs, last), price)
+            bool within_anchor = math.abs(price - anchor) <= cluster_tolerance_points
+            bool within_width = high_edge - low_edge <= cluster_tolerance_points
+            if within_anchor and within_width
+                int old_strength = array.get(cluster_strengths, last)
+                string old_label = array.get(cluster_labels, last)
+                bool source_can_strengthen = source != "heatmap_gex" or fresh
+                bool new_source = source_can_strengthen and not str.contains(old_label, source)
+                float new_anchor = math.round(((anchor * old_strength) + price) / (old_strength + 1) / syminfo.mintick) * syminfo.mintick
+                array.set(cluster_prices, last, new_anchor)
+                array.set(cluster_mins, last, low_edge)
+                array.set(cluster_maxs, last, high_edge)
+                array.set(cluster_labels, last, str.contains(old_label, source) ? old_label : old_label + "+" + source)
+                array.set(cluster_strengths, last, new_source ? old_strength + 1 : old_strength)
+                array.set(cluster_heatmap_fresh, last, array.get(cluster_heatmap_fresh, last) or (source == "heatmap_gex" and fresh))
+                merged := true
+        if not merged
+            array.push(cluster_prices, price)
+            array.push(cluster_mins, price)
+            array.push(cluster_maxs, price)
+            array.push(cluster_labels, source)
+            array.push(cluster_strengths, 1)
+            array.push(cluster_heatmap_fresh, source == "heatmap_gex" and fresh)
+
+f_next_above(float[] clusters, float level) =>
+    float next = na
+    if array.size(clusters) > 0
+        for i = 0 to array.size(clusters) - 1
+            float candidate = array.get(clusters, i)
+            if candidate > level and (na(next) or candidate < next)
+                next := candidate
+    next
+
+var bool pending_signal = false
+var int pending_setup_bar = na
+var int pending_confirmation_bar = na
+var int pending_signal_bar = na
+var float pending_level = na
+var float pending_entry_plan = na
+var float pending_stop = na
+var float pending_tp1 = na
+var string pending_sources = ""
+
+var bool manual_trade_open = false
+var int manual_trade_id = 0
+var int manual_setup_bar = na
+var int manual_confirmation_bar = na
+var int manual_signal_bar = na
+var int manual_entry_bar = na
+var float manual_level = na
+var float manual_raw_entry = na
+var float manual_raw_stop = na
+var float manual_raw_tp1 = na
+var float manual_entry_effective = na
+var float manual_stop_effective = na
+var float manual_tp_effective = na
+var string manual_sources = ""
+
+var int manual_total_trades = 0
+var int manual_wins = 0
+var int manual_losses = 0
+var int same_bar_ambiguous_count = 0
+var int wins_converted_to_losses = 0
+var int ambiguous_excluded_count = 0
+var float manual_net_dollars = 0.0
+var float manual_net_contract_points = 0.0
+var table hardmode_table = table.new(position.top_right, 2, 10, bgcolor=color.new(color.black, 30), frame_color=color.new(color.gray, 45), frame_width=1)
+var line raw_entry_line = na
+var line raw_stop_line = na
+var line raw_tp_line = na
+var line hard_entry_line = na
+var line hard_stop_line = na
+var line hard_tp_line = na
+
+bool watch_event = false
+bool armed_event = false
+bool paper_candidate_event = false
+bool invalidated_event = false
+float selected_level = na
+float selected_entry = na
+float selected_stop = na
+float selected_tp1 = na
+string selected_sources = ""
+int selected_setup_bar = na
+int selected_confirmation_bar = na
+
+if hard_mode_enabled and barstate.isconfirmed and not manual_trade_open and not pending_signal and array.size(cluster_prices) > 0
+    for i = 0 to array.size(cluster_prices) - 1
+        float level = array.get(cluster_prices, i)
+        float next_cluster = f_next_above(cluster_prices, level)
+        bool flush_seen = false
+        int detected_setup_bar = na
+        for lookback = 0 to flush_lookback_bars
+            bool past_flush = low[lookback] <= level - syminfo.mintick and close[lookback + 1] >= level
+            if not flush_seen and past_flush
+                flush_seen := true
+                detected_setup_bar := bar_index - lookback
+        bool hold_above = true
+        for hold_bar = 0 to reclaim_hold_bars - 1
+            hold_above := hold_above and close[hold_bar] >= level + min_close_above_level_points
+        bool recent_level_tap = low <= level + level_tap_tolerance_points and high >= level - syminfo.mintick
+        bool heatmap_only_stale = array.get(cluster_labels, i) == "heatmap_gex" and not array.get(cluster_heatmap_fresh, i)
+        float entry_plan = level + math.max(min_close_above_level_points, syminfo.mintick)
+        float raw_stop = level - math.min(max_stop_points, hard_stop_points)
+        float raw_tp1 = entry_plan + tp1_points
+        float next_space = na(next_cluster) ? tp1_points * 2.0 : next_cluster - entry_plan
+        bool target_ok = next_space >= min_target_space_points or tp1_points >= 2.0
+        bool risk_ok = entry_plan - raw_stop <= hard_stop_points
+        bool confirmed_reclaim = flush_seen and hold_above and recent_level_tap and close >= level + min_close_above_level_points
+        bool candidate_ok = confirmed_reclaim and target_ok and risk_ok and not heatmap_only_stale
+        watch_event := watch_event or (flush_seen and target_ok)
+        armed_event := armed_event or confirmed_reclaim
+        if candidate_ok and (na(selected_level) or level > selected_level)
+            selected_level := level
+            selected_entry := entry_plan
+            selected_stop := raw_stop
+            selected_tp1 := raw_tp1
+            selected_sources := array.get(cluster_labels, i)
+            selected_setup_bar := detected_setup_bar
+            selected_confirmation_bar := bar_index
+
+if hard_mode_enabled and barstate.isconfirmed and not na(selected_level)
+    pending_signal := true
+    pending_setup_bar := selected_setup_bar
+    pending_confirmation_bar := selected_confirmation_bar
+    pending_signal_bar := bar_index
+    pending_level := selected_level
+    pending_entry_plan := selected_entry
+    pending_stop := selected_stop
+    pending_tp1 := selected_tp1
+    pending_sources := selected_sources
+    paper_candidate_event := true
+    if emit_strategy_orders
+        strategy.entry("LUKE_RESEARCH_ENTRY", strategy.long, qty=contracts, comment="RESEARCH_ONLY_PAPER_CANDIDATE")
+        strategy.exit("LUKE_RESEARCH_EXIT", from_entry="LUKE_RESEARCH_ENTRY", stop=pending_stop, limit=pending_tp1, comment="RESEARCH_ONLY_EXIT")
+
+bool enter_manual_trade = hard_mode_enabled and pending_signal and barstate.isconfirmed and bar_index > pending_signal_bar and not manual_trade_open
+if enter_manual_trade
+    manual_trade_id += 1
+    manual_total_trades += 1
+    manual_trade_open := true
+    manual_setup_bar := pending_setup_bar
+    manual_confirmation_bar := pending_confirmation_bar
+    manual_signal_bar := pending_signal_bar
+    manual_entry_bar := bar_index
+    manual_level := pending_level
+    manual_raw_entry := entry_timing_mode == "signal_close_research_only" ? pending_entry_plan : open
+    manual_raw_stop := pending_stop
+    manual_raw_tp1 := pending_tp1
+    manual_entry_effective := manual_raw_entry + entry_slippage_points
+    manual_stop_effective := manual_raw_stop - stop_exit_slippage_points
+    manual_tp_effective := manual_raw_tp1 - target_exit_slippage_points
+    manual_sources := pending_sources
+    pending_signal := false
+    if show_bracket_visual
+        if not na(raw_entry_line)
+            line.delete(raw_entry_line)
+            line.delete(raw_stop_line)
+            line.delete(raw_tp_line)
+            line.delete(hard_entry_line)
+            line.delete(hard_stop_line)
+            line.delete(hard_tp_line)
+        raw_entry_line := line.new(bar_index, manual_raw_entry, bar_index + 20, manual_raw_entry, color=color.new(color.white, 0), width=1)
+        raw_stop_line := line.new(bar_index, manual_raw_stop, bar_index + 20, manual_raw_stop, color=color.new(color.red, 0), width=1)
+        raw_tp_line := line.new(bar_index, manual_raw_tp1, bar_index + 20, manual_raw_tp1, color=color.new(color.green, 0), width=1)
+        hard_entry_line := line.new(bar_index, manual_entry_effective, bar_index + 20, manual_entry_effective, color=color.new(color.white, 0), width=2, style=line.style_dashed)
+        hard_stop_line := line.new(bar_index, manual_stop_effective, bar_index + 20, manual_stop_effective, color=color.new(color.red, 0), width=2, style=line.style_dashed)
+        hard_tp_line := line.new(bar_index, manual_tp_effective, bar_index + 20, manual_tp_effective, color=color.new(color.green, 0), width=2, style=line.style_dashed)
+    label.new(bar_index, low, "PAPER_CANDIDATE research #" + str.tostring(manual_trade_id) + "\nmode " + slippage_mode + "\nsetup " + str.tostring(manual_setup_bar) + " confirm " + str.tostring(manual_confirmation_bar) + " signal " + str.tostring(manual_signal_bar) + " entry " + str.tostring(manual_entry_bar), style=label.style_label_up, textcolor=color.white, color=color.new(color.green, 10), size=size.small)
+
+if manual_trade_open and barstate.isconfirmed and bar_index >= manual_entry_bar
+    bool hit_target = high >= manual_tp_effective
+    bool hit_stop = low <= manual_stop_effective
+    bool same_bar_ambiguous = hit_target and hit_stop
+    float result_contract_points = na
+    bool close_trade = false
+    bool excluded = false
+    if same_bar_ambiguous
+        same_bar_ambiguous_count += 1
+        if same_bar_policy == "ambiguous_exclude"
+            ambiguous_excluded_count += 1
+            excluded := true
+            close_trade := true
+            result_contract_points := 0.0
+        else if same_bar_policy == "target_first" and not pessimistic_same_bar
+            manual_wins += 1
+            close_trade := true
+            result_contract_points := (manual_tp_effective - manual_entry_effective) * contracts
+        else if same_bar_policy == "ambiguous_report_only"
+            manual_wins += 1
+            close_trade := true
+            result_contract_points := (manual_tp_effective - manual_entry_effective) * contracts
+        else
+            manual_losses += 1
+            wins_converted_to_losses += 1
+            close_trade := true
+            result_contract_points := (manual_stop_effective - manual_entry_effective) * contracts
+    else if hit_stop
+        manual_losses += 1
+        close_trade := true
+        result_contract_points := (manual_stop_effective - manual_entry_effective) * contracts
+    else if hit_target
+        manual_wins += 1
+        close_trade := true
+        result_contract_points := (manual_tp_effective - manual_entry_effective) * contracts
+    if close_trade
+        float trade_dollars = result_contract_points * point_value_per_contract - contracts * commission_per_contract_round_trip
+        manual_net_contract_points += result_contract_points
+        manual_net_dollars += trade_dollars
+        string outcome = excluded ? "AMBIGUOUS EXCLUDED" : result_contract_points > 0 ? "TARGET" : result_contract_points < 0 ? "STOP" : "FLAT"
+        label.new(bar_index, close, "HARD MODE #" + str.tostring(manual_trade_id) + " " + outcome + "\n" + f_points(result_contract_points) + " " + f_money(trade_dollars), style=label.style_label_left, textcolor=color.white, color=result_contract_points > 0 ? color.new(color.green, 0) : result_contract_points < 0 ? color.new(color.red, 0) : color.new(color.orange, 0), size=size.tiny)
+        manual_trade_open := false
+
+plotshape(watch_event, title="LUKE WATCH", text="", style=shape.circle, location=location.belowbar, color=color.new(color.gray, 0), size=size.tiny)
+plotshape(armed_event, title="LUKE ARMED", text="", style=shape.triangleup, location=location.belowbar, color=color.new(color.aqua, 0), size=size.tiny)
+plotshape(paper_candidate_event, title="LUKE PAPER_CANDIDATE", text="PAPER", style=shape.labelup, location=location.belowbar, color=color.new(color.green, 0), textcolor=color.white, size=size.small)
+plotshape(invalidated_event, title="LUKE INVALIDATED", text="", style=shape.triangledown, location=location.abovebar, color=color.new(color.red, 0), size=size.tiny)
+
+if barstate.islast and show_hardmode_table
+    table.cell(hardmode_table, 0, 0, "Luke hard mode", text_color=color.white, bgcolor=color.new(color.black, 5), text_size=size.small)
+    table.cell(hardmode_table, 1, 0, "RESEARCH ONLY", text_color=color.orange, bgcolor=color.new(color.black, 5), text_size=size.small)
+    table.cell(hardmode_table, 0, 1, "slippage mode", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.tiny)
+    table.cell(hardmode_table, 1, 1, slippage_mode + " E " + str.tostring(entry_slippage_points) + " T " + str.tostring(target_exit_slippage_points) + " S " + str.tostring(stop_exit_slippage_points), text_color=color.white, bgcolor=color.new(color.black, 45), text_size=size.tiny)
+    table.cell(hardmode_table, 0, 2, "same-bar policy", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.tiny)
+    table.cell(hardmode_table, 1, 2, same_bar_policy, text_color=color.white, bgcolor=color.new(color.black, 45), text_size=size.tiny)
+    table.cell(hardmode_table, 0, 3, "ambiguous", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.tiny)
+    table.cell(hardmode_table, 1, 3, str.tostring(same_bar_ambiguous_count) + " converted " + str.tostring(wins_converted_to_losses) + " excluded " + str.tostring(ambiguous_excluded_count), text_color=same_bar_ambiguous_count > 0 ? color.orange : color.silver, bgcolor=color.new(color.black, 45), text_size=size.tiny)
+    table.cell(hardmode_table, 0, 4, "manual W/L", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.tiny)
+    table.cell(hardmode_table, 1, 4, str.tostring(manual_wins) + "/" + str.tostring(manual_losses), text_color=color.white, bgcolor=color.new(color.black, 45), text_size=size.tiny)
+    table.cell(hardmode_table, 0, 5, "manual net", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.tiny)
+    table.cell(hardmode_table, 1, 5, f_points(manual_net_contract_points) + " " + f_money(manual_net_dollars), text_color=manual_net_dollars >= 0 ? color.lime : color.red, bgcolor=color.new(color.black, 45), text_size=size.tiny)
+    table.cell(hardmode_table, 0, 6, "timing", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.tiny)
+    table.cell(hardmode_table, 1, 6, "setup " + str.tostring(manual_setup_bar) + " confirm " + str.tostring(manual_confirmation_bar) + " signal " + str.tostring(manual_signal_bar) + " entry " + str.tostring(manual_entry_bar), text_color=color.white, bgcolor=color.new(color.black, 45), text_size=size.tiny)
+    table.cell(hardmode_table, 0, 7, "repaint risk", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.tiny)
+    table.cell(hardmode_table, 1, 7, "confirmed bars + lookahead_off", text_color=color.lime, bgcolor=color.new(color.black, 45), text_size=size.tiny)
+    table.cell(hardmode_table, 0, 8, "freshness", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.tiny)
+    table.cell(hardmode_table, 1, 8, heatmap_stale ? "heatmap_gex stale warning" : heatmap_fresh ? "heatmap_gex fresh" : "heatmap_gex aging/none", text_color=heatmap_stale ? color.orange : color.silver, bgcolor=color.new(color.black, 45), text_size=size.tiny)
+    table.cell(hardmode_table, 0, 9, "cluster cap", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.tiny)
+    table.cell(hardmode_table, 1, 9, cluster_tolerance_raw > 3.0 ? "capped at 3.0" : "tol " + str.tostring(cluster_tolerance_points), text_color=cluster_tolerance_raw > 3.0 ? color.orange : color.silver, bgcolor=color.new(color.black, 45), text_size=size.tiny)
+
+alertcondition(enable_alertconditions and watch_event, "LUKE WATCH", "LUKE WATCHLIST ONLY - not an order - WATCH level condition")
+alertcondition(enable_alertconditions and armed_event, "LUKE ARMED", "LUKE WATCHLIST ONLY - not an order - ARMED reclaim condition")
+alertcondition(enable_alertconditions and paper_candidate_event, "LUKE PAPER_CANDIDATE", "LUKE WATCHLIST ONLY - not an order - PAPER_CANDIDATE research condition")
+alertcondition(enable_alertconditions and invalidated_event, "LUKE INVALIDATED", "LUKE WATCHLIST ONLY - not an order - INVALIDATED reclaim condition")

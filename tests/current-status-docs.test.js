@@ -18,6 +18,9 @@ describe('current status docs', () => {
 
     expect(fs.existsSync(path.join(ROOT, 'docs', 'CURRENT_STATUS.md'))).toBe(true);
     expect(fs.existsSync(path.join(ROOT, 'docs', oldName))).toBe(false);
+    expect(fs.existsSync(path.join(ROOT, 'docs', 'PINE_SLIPPAGE_HISTORICAL_AUDIT.md'))).toBe(false);
+    expect(fs.existsSync(path.join(ROOT, 'docs', 'TRADINGVIEW_HARDMODE_AUDIT.md'))).toBe(false);
+    expect(fs.existsSync(path.join(ROOT, 'docs', 'TRADINGVIEW_HARDMODE_RESEARCH.md'))).toBe(true);
     expect(current).toContain('Local Replay Candles');
     expect(current).toContain('Wire a real delayed/live');
     for (const file of ['CURRENT_STATUS.md', 'REVIEW_READINESS.md', 'LIVE_BLOCKERS.md', 'CANDLE_FEED_AND_RUNTIME.md']) {

@@ -1202,7 +1202,7 @@ router.post("/launch", async (req, res) => {
 
   res.json({ launching: windows.map(w => w.name) });
   for (const w of windows) {
-    exec(`start "" "${w.url}"`);
+    exec(`start "" "${w.url}"`, { windowsHide: true });
     await new Promise(r => setTimeout(r, 1500));
   }
   log("autonomous-launch-windows", { windows: windows.map(w => w.name) });

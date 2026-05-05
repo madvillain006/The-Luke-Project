@@ -6,11 +6,12 @@ const path = require('path');
 const { spawn } = require('child_process');
 const { chromium } = require('playwright');
 const { checkRuntimeHealth } = require('./check-runtime-health');
+const { resolveProofPort } = require('./proof-runtime');
 
 const ROOT = path.join(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'artifacts', 'proof', 'trading-window');
 let BASE_URL = process.env.LUKE_BASE_URL || 'http://127.0.0.1:3000';
-const PROOF_PORT = Number(process.env.LUKE_PROOF_PORT || 3000);
+const PROOF_PORT = Number(process.env.LUKE_PROOF_PORT || 3001);
 
 function ensureDir(dir) {
   fs.mkdirSync(dir, { recursive: true });
@@ -58,9 +59,7 @@ async function ensureApp() {
     return { started: false, process: null, status: 'connected_existing' };
   }
 
-  const requestedPort = Number(new URL(BASE_URL).port || 3000);
-  const runtime = await checkRuntimeHealth({ port: requestedPort });
-  const startPort = runtime.status === 'free' ? requestedPort : PROOF_PORT;
+  const startPort = await resolveProofPort({ baseUrl: BASE_URL, proofPort: PROOF_PORT, checkRuntimeHealth });
   BASE_URL = `http://127.0.0.1:${startPort}`;
 
   const child = spawn(process.execPath, ['index.js'], {

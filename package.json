@@ -27,6 +27,7 @@
     "research:inventory": "node scripts/inventory-existing-research-data.js",
     "research:ladder-reclaim": "node scripts/run-multi-source-ladder-reclaim.js",
     "research:ladder-reclaim-review": "node scripts/build-ladder-reclaim-visual-review.js",
+    "research:pine-slippage-audit": "node scripts/run-pine-slippage-audit.js",
     "research:prop-fake-breakdown": "node scripts/run-prop-fake-breakdown-research.js",
     "research:saty-pine-watch": "node scripts/backtest-saty-pine-watch.js",
     "research:saty-pine-watch:slip025": "node scripts/backtest-saty-pine-watch.js --entry-slippage-points 0.25 --round-trip-fee 5 --out-dir artifacts/research/saty-pine-watch-slip-0_25",

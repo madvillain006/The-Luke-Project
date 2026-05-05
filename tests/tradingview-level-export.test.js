@@ -91,6 +91,11 @@ describe('TradingView level export workflow', () => {
     expect(fs.existsSync(summary.artifacts.csv)).toBe(true);
     expect(fs.existsSync(summary.artifacts.pine_input)).toBe(true);
     expect(fs.existsSync(summary.artifacts.generated_pine)).toBe(true);
+    expect(fs.existsSync(summary.artifacts.generated_realistic_indicator)).toBe(true);
+    expect(fs.existsSync(summary.artifacts.generated_hardmode_strategy)).toBe(true);
+    expect(fs.existsSync(summary.artifacts.pine_files_summary)).toBe(true);
+    expect(fs.existsSync(summary.artifacts.slippage_modes_summary)).toBe(true);
+    expect(fs.existsSync(summary.artifacts.pine_hardmode_audit)).toBe(true);
 
     const generated = fs.readFileSync(summary.artifacts.generated_pine, 'utf8');
     expect(generated).toContain('indicator("Luke Level Reclaim Watch"');
@@ -99,6 +104,32 @@ describe('TradingView level export workflow', () => {
     expect(generated).not.toContain('strategy(');
     expect(generated).not.toMatch(/strategy\.|submitOrder|placeOrder|broker/i);
     expect(generated).not.toMatch(/\bBUY\b|\bSELL\b/);
+
+    const generatedRealistic = fs.readFileSync(summary.artifacts.generated_realistic_indicator, 'utf8');
+    expect(generatedRealistic).toContain('indicator("Luke Level Reclaim Watch - Realistic Accounting"');
+    expect(generatedRealistic).toContain('realistic_accounting_mode = input.string("entry_only_0_25"');
+    expect(generatedRealistic).toContain('commission_only');
+    expect(generatedRealistic).toContain('both_sides_0_25_each');
+    expect(generatedRealistic).toContain('7248');
+    expect(generatedRealistic).not.toContain('strategy(');
+    expect(generatedRealistic).not.toMatch(/strategy\.|submitOrder|placeOrder|broker/i);
+    expect(generatedRealistic).not.toMatch(/\bBUY\b|\bSELL\b/);
+
+    const generatedHardmode = fs.readFileSync(summary.artifacts.generated_hardmode_strategy, 'utf8');
+    expect(generatedHardmode).toContain('strategy("Luke Level Reclaim Watch Hard Mode Strategy"');
+    expect(generatedHardmode).toContain('mancini_levels_input = input.string("');
+    expect(generatedHardmode).toContain('7248');
+    expect(generatedHardmode).toContain('slippage_mode = input.string');
+    expect(generatedHardmode).toContain('same_bar_policy = input.string("stop_first_hard_mode"');
+    expect(generatedHardmode).not.toMatch(/webhook|submitOrder|placeOrder|LIVE_READY|EXECUTE/);
+    expect(generatedHardmode).not.toMatch(/\bBUY\b|\bSELL\b/);
+
+    const slippageSummary = JSON.parse(fs.readFileSync(summary.artifacts.slippage_modes_summary, 'utf8'));
+    expect(slippageSummary.modes).toContain('both_sides_0_25_each');
+    expect(slippageSummary.same_bar_default).toBe('stop_first_hard_mode');
+    const hardmodeAudit = JSON.parse(fs.readFileSync(summary.artifacts.pine_hardmode_audit, 'utf8'));
+    expect(hardmodeAudit.safety.strategy_safe_saty_uses_lookahead_off).toBe(true);
+    expect(hardmodeAudit.hard_mode_features.ambiguous_count_surfaced).toBe(true);
   });
 
   it('handles empty Pine inputs without fabricating levels or alerts', () => {
@@ -126,6 +157,17 @@ describe('TradingView level export workflow', () => {
     expect(generated).toContain('alertcondition(');
     expect(generated).not.toContain('alert(');
     expect(generated).not.toContain('strategy(');
+
+    const hardmode = renderGeneratedPine(fs.readFileSync(path.join(__dirname, '..', 'tradingview', 'luke-level-reclaim-watch-hardmode.strategy.pine'), 'utf8'), {
+      mancini: '',
+      dubz: '',
+      heatmap: '',
+      heatmapSnapshotTime: '',
+    });
+    expect(hardmode).toContain('input.string("", "Mancini levels"');
+    expect(hardmode).toContain('input.string("", "Dubz levels"');
+    expect(hardmode).toContain('input.string("", "Heatmap/GEX levels"');
+    expect(hardmode).toContain('strategy(');
   });
 
   it('keeps the local Saty ATR reference available for parity review', () => {

@@ -24,6 +24,7 @@ Luke is safer than it was, but it is not live-ready. The read-only/operator/repl
 - Renamed `data/research/mancini/The Mancini Logs 3-15-2026 - 5-3-2026.txt` to `data/research/mancini/The Mancini Logs 3-15-2026 - 5-4-2026.txt`.
 - Pine now uses `alertcondition()` only for `WATCH`, `ARMED`, `PAPER_CANDIDATE`, `INVALIDATED`, and `BLOCKED`.
 - Pine tests reject `alert(`, `strategy(`, strategy order code, and `BUY`/`SELL` language.
+- Hard-mode Pine research now lives as focused research detail in `docs/TRADINGVIEW_HARDMODE_RESEARCH.md`, with generated historical slippage output kept under `artifacts/research/pine-slippage-audit/` instead of a second top-level audit doc.
 - Live candidate generation now requires `live:true` and `usable_for_live_arming:true`.
 - Replay/dev candidate generation now requires `replay:true` and `usable_for_replay:true`.
 - Candle feed authorization flags are carried into the candidate builder.
@@ -52,6 +53,7 @@ Luke is safer than it was, but it is not live-ready. The read-only/operator/repl
 - `VERIFIED_BY_CODE_AND_TEST`: alert wording excludes `BUY` and `SELL`.
 - `VERIFIED_BY_CODE_AND_TEST`: dynamic `alert()` calls were removed.
 - `PARTIALLY_VERIFIED`: Saty reference uses `request.security(... lookahead_on)` like the display-oriented source pattern, but Luke replay proof must not be confused with TradingView display semantics.
+- `PARTIALLY_VERIFIED`: Hard-mode Pine research uses explicit slippage modes and stop-first same-bar accounting, but remains research/watchlist only.
 - `NEEDS_HUMAN_TRADER_SIGNOFF`: Pine has not been compiled/visually compared inside TradingView.
 
 ## 6. Market data/candle cracks
@@ -87,6 +89,7 @@ Luke is safer than it was, but it is not live-ready. The read-only/operator/repl
 ## 10. Research claim cracks
 
 - Ladder reclaim: 25k 2ES failed; 25k 1ES survived. Broad 2ES promotion is blocked.
+- Pine hard-mode historical reconstruction remains `WATCHLIST_ONLY`; latest artifact summary showed 0.50 round-trip 1ES expectancy -20 and total -9018.5, while staged add after retest hold remained the best net-profitable related family.
 - Ladder reclaim review found 230 false-positive rows.
 - Fake breakdown state best recommendation remains `WATCHLIST_ONLY`.
 - Fake breakdown v3 still has only 43 best-rule setups and remains research/watchlist.
@@ -119,6 +122,7 @@ Luke is safer than it was, but it is not live-ready. The read-only/operator/repl
 - `cmd /c npm run prove:replay-level-state`
 - `cmd /c npm run prove:trading-window`
 - `cmd /c npm run tradingview:export-levels`
+- `cmd /c npm run research:pine-slippage-audit`
 - `cmd /c npm run research:ladder-reclaim`
 - `cmd /c npm run research:ladder-reclaim-review`
 - `cmd /c npm run research:fake-breakdown-watchlist`

@@ -50,4 +50,17 @@ describe('Pine level clustering export', () => {
   it('caps unsafe tolerance values at 3 points', () => {
     expect(_internal.capTolerance(10, 3)).toBe(3);
   });
+
+  it('uses the documented default tolerance and cap values in Pine files', () => {
+    const fs = require('fs');
+    const path = require('path');
+    const visual = fs.readFileSync(path.join(__dirname, '..', 'tradingview', 'luke-level-reclaim-watch.pine'), 'utf8');
+    const hardmode = fs.readFileSync(path.join(__dirname, '..', 'tradingview', 'luke-level-reclaim-watch-hardmode.strategy.pine'), 'utf8');
+
+    for (const pine of [visual, hardmode]) {
+      expect(pine).toContain('cluster_tolerance_raw = input.float(1.25');
+      expect(pine).toContain('math.min(cluster_tolerance_raw, 3.0)');
+      expect(pine).toContain('high_edge - low_edge <= cluster_tolerance_points');
+    }
+  });
 });

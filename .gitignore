@@ -87,3 +87,9 @@ luke-stdout.log
 luke-stderr.log
 luke-log-drafts.json
 .ws-token
+
+!.agent/
+!.agent/goals/
+!.agent/goals/**/
+!.agent/goals/**/ledger.jsonl
+.agent/goals/active/

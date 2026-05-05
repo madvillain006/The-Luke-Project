@@ -3,6 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 const { spawn, execSync } = require('child_process');
+const { checkRuntimeHealth } = require('./check-runtime-health');
+const { resolveProofPort } = require('./proof-runtime');
 
 const {
   parseStatusReply,
@@ -18,7 +20,8 @@ const {
 const ROOT = path.join(__dirname, '..');
 const OUT_FILE = path.join(ROOT, 'artifacts', 'AUTOMATED_NATURAL_SESSION.md');
 const DEBUG_FILE = path.join(ROOT, 'artifacts', 'operator-session-debug.json');
-const BASE_URL = process.env.LUKE_OPERATOR_BASE_URL || 'http://127.0.0.1:3000';
+let BASE_URL = process.env.LUKE_OPERATOR_BASE_URL || 'http://127.0.0.1:3000';
+const PROOF_PORT = Number(process.env.LUKE_PROOF_PORT || 3001);
 const TIMEOUT_MS = Number(process.env.LUKE_OPERATOR_SESSION_TIMEOUT_MS || 15000);
 
 const SATY_TEXT = `/saty
@@ -191,8 +194,11 @@ async function ensureApp() {
     return { started: false, process: null, result: 'connected to existing app' };
   }
 
+  const startPort = await resolveProofPort({ baseUrl: BASE_URL, proofPort: PROOF_PORT, checkRuntimeHealth });
+  BASE_URL = `http://127.0.0.1:${startPort}`;
   const child = spawn(process.execPath, ['index.js'], {
     cwd: ROOT,
+    env: { ...process.env, PORT: String(startPort) },
     windowsHide: true,
     stdio: ['ignore', 'pipe', 'pipe'],
   });
@@ -216,7 +222,7 @@ function stopApp(child) {
 
 function shell(command) {
   try {
-    return execSync(command, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    return execSync(command, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], windowsHide: true }).trim();
   } catch {
     return 'unknown';
   }

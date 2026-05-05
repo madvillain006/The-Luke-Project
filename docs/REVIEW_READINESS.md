@@ -1,6 +1,6 @@
 # Review Readiness
 
-Date: 2026-05-04 ET
+Date: 2026-05-05 ET
 Artifact timestamp: 2026-05-05 UTC
 
 Canonical findings: `docs/HOSTILE_AUDIT_REPORT.md`.
@@ -9,7 +9,7 @@ Canonical findings: `docs/HOSTILE_AUDIT_REPORT.md`.
 
 | Area | Score | Evidence | Blocker |
 | --- | ---: | --- | --- |
-| Code review readiness | 95% | 114 test files pass; hostile tests cover Pine, CSV, heatmap, candidate, replay gating, market-data provider behavior. | Human review of trading semantics. |
+| Code review readiness | 95% | 122 test files pass; hostile tests cover Pine, CSV, heatmap, candidate, replay gating, market-data provider behavior. | Human review of trading semantics. |
 | Manual trading companion readiness | 92% | Read-only level state, alerts, candidates, bracket visual, source health, replay proof, screenshot sanity, delayed/stale quote proof. | No live-arming ES 1m OHLC provider. |
 | Read-only app/operator readiness | 95% | Operator, trading-window, virtual dashboard, client-demo, GET API, and PNG sanity proof passed. | Human UI misread review. |
 | TradingView indicator readiness | 85% | Export passed; tests reject strategy/order/BUY/SELL/dynamic alert behavior and verify empty input handling. | Not compiled in TradingView; Saty visual parity unsigned. |

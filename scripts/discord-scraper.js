@@ -1,4 +1,4 @@
-const { execSync } = require("child_process");
+const { execFileSync } = require("child_process");
 const fs = require("fs");
 const path = require("path");
 const Anthropic = require("@anthropic-ai/sdk");
@@ -28,11 +28,14 @@ const CHANNELS = [
 const HISTORY_PATH = events.discordHistory;
 
 function runPython(args) {
+  const argv = Array.isArray(args) ? args : [String(args || "")];
   try {
-    const result = execSync(`python scripts\\desktop.py ${args}`, {
+    const result = execFileSync("python", ["scripts\\desktop.py", ...argv], {
       cwd: ROOT,
       timeout: 15000,
-    }).toString().trim();
+      windowsHide: true,
+      encoding: "utf8",
+    }).trim();
     return result;
   } catch (err) {
     console.error(`scripts/desktop.py error: ${err.message}`);
@@ -41,7 +44,7 @@ function runPython(args) {
 }
 
 function takeScreenshot() {
-  const b64 = runPython("screenshot");
+  const b64 = runPython(["screenshot"]);
   if (!b64) return null;
   const buffer = Buffer.from(b64, "base64");
   fs.writeFileSync(runtime.screenshot, buffer);
@@ -49,11 +52,11 @@ function takeScreenshot() {
 }
 
 function openUrl(url) {
-  runPython(`open ${url}`);
+  runPython(["open", url]);
 }
 
 function scrollDown(amount = 5) {
-  runPython(`scroll down ${amount}`);
+  runPython(["scroll", "down", String(amount)]);
 }
 
 async function readScreenWithHaiku(b64Image, channelName, server) {

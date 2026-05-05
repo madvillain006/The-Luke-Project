@@ -4,6 +4,8 @@
 const fs = require('fs');
 const path = require('path');
 const { spawn, execSync } = require('child_process');
+const { checkRuntimeHealth } = require('./check-runtime-health');
+const { resolveProofPort } = require('./proof-runtime');
 const { buildDecisionResponse } = require('../lib/operator/decision-adapter');
 const { readTradingStateReadOnly } = require('../lib/operator/operator-status-adapter');
 
@@ -13,7 +15,8 @@ const DERIVED_DIR = path.join(ROOT, 'data', 'backtest', 'es-long-bracket', 'deri
 const ARTIFACT_DIR = path.join(ROOT, 'artifacts');
 const REPORT_MD = path.join(ARTIFACT_DIR, 'HISTORICAL_OPERATOR_LIVE_DRY_RUN.md');
 const REPORT_JSON = path.join(ARTIFACT_DIR, 'historical-operator-live-dry-run.json');
-const BASE_URL = process.env.LUKE_OPERATOR_BASE_URL || 'http://127.0.0.1:3000';
+let BASE_URL = process.env.LUKE_OPERATOR_BASE_URL || 'http://127.0.0.1:3000';
+const PROOF_PORT = Number(process.env.LUKE_PROOF_PORT || 3001);
 const TIMEOUT_MS = Number(process.env.LUKE_HISTORICAL_OPERATOR_TIMEOUT_MS || 20000);
 
 const STATE_FILES = [
@@ -90,7 +93,7 @@ function resetReplayState() {
 
 function shell(command) {
   try {
-    return execSync(command, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    return execSync(command, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], windowsHide: true }).trim();
   } catch {
     return 'unknown';
   }
@@ -165,8 +168,11 @@ async function ensureApp() {
     return { started: false, process: null, result: 'connected to existing Luke app' };
   }
 
+  const startPort = await resolveProofPort({ baseUrl: BASE_URL, proofPort: PROOF_PORT, checkRuntimeHealth });
+  BASE_URL = `http://127.0.0.1:${startPort}`;
   const child = spawn(process.execPath, ['index.js'], {
     cwd: ROOT,
+    env: { ...process.env, PORT: String(startPort) },
     windowsHide: true,
     stdio: ['ignore', 'pipe', 'pipe'],
   });

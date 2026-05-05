@@ -1,6 +1,6 @@
 const { detectFlushesForSession } = require('../lib/research/multi-source-ladder-reclaim/flush-detector');
 const { planRowsForFlush } = require('../lib/research/multi-source-ladder-reclaim/evaluator');
-const { ACCOUNT_25K, classifyRow, riskDollars, simulateAccount } = require('../lib/research/multi-source-ladder-reclaim/metrics');
+const { ACCOUNT_25K, ACCOUNT_50K, classifyRow, riskDollars, simulateAccount } = require('../lib/research/multi-source-ladder-reclaim/metrics');
 
 function bar(minute, open, high, low, close) {
   return { timestamp: `2026-04-24T09:${minute}:00-04:00`, open, high, low, close };
@@ -130,5 +130,36 @@ describe('multi-source ladder first-reclaim evaluator', () => {
       risk_dollars_2es: 200,
     });
     expect(result.classification).toBe('PASS_CHOP');
+  });
+
+  it('models 25K as no DLL and 50K as 1200 DLL', () => {
+    const rows = [
+      {
+        setup_id: 'a',
+        date: '2026-04-24',
+        entry_timestamp_et: '2026-04-24T10:00:00-04:00',
+        classification: 'TRADEABLE_RESEARCH',
+        target_model: 'fixed_plus_2',
+        pnl_2es_slip_0_5_round_trip: -700,
+        pnl_1es_slip_0_5_round_trip: -350,
+      },
+      {
+        setup_id: 'b',
+        date: '2026-04-24',
+        entry_timestamp_et: '2026-04-24T10:05:00-04:00',
+        classification: 'TRADEABLE_RESEARCH',
+        target_model: 'fixed_plus_2',
+        pnl_2es_slip_0_5_round_trip: -550,
+        pnl_1es_slip_0_5_round_trip: -275,
+      },
+    ];
+
+    const sim25 = simulateAccount(rows, { ...ACCOUNT_25K, max_eod_drawdown: 2000, max_intraday_trailing_drawdown: 2000 }, '2ES_FULL');
+    const sim50 = simulateAccount(rows, { ...ACCOUNT_50K, max_eod_drawdown: 2000, max_intraday_trailing_drawdown: 2000 }, '2ES_FULL');
+
+    expect(ACCOUNT_25K.daily_kill_loss_dollars).toBeNull();
+    expect(ACCOUNT_50K.daily_kill_loss_dollars).toBe(1200);
+    expect(sim25.day_results[0].daily_kill_triggered).toBe(false);
+    expect(sim50.day_results[0].daily_kill_triggered).toBe(true);
   });
 });

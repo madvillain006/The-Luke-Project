@@ -47,6 +47,7 @@ async function startServer() {
             cwd: __dirname,
             stdio: 'ignore',
             detached: false,
+            windowsHide: true,
             env: { ...process.env, NODE_ENV: 'production' }
         })
         await new Promise(r => setTimeout(r, 5000))

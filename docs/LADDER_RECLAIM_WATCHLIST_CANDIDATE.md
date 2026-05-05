@@ -1,6 +1,6 @@
 # Ladder Reclaim Watchlist Candidate
 
-Date: 2026-05-04
+Date: 2026-05-05
 
 ## 1. Candidate
 
@@ -48,9 +48,9 @@ Date: 2026-05-04
 ## 6. Visual Review
 
 - HTML review: `artifacts/research/ladder-reclaim-visual-review.html`
-- Positive PNG folder: `artifacts/review/ladder-reclaim-visual-cases-2026-05-04/positive`
-- Negative PNG folder: `artifacts/review/ladder-reclaim-visual-cases-2026-05-04/negative`
-- Manifest: `artifacts/review/ladder-reclaim-visual-cases-2026-05-04/manifest.json`
+- Positive PNG folder: `artifacts/review/ladder-reclaim-visual-cases-2026-05-05/positive`
+- Negative PNG folder: `artifacts/review/ladder-reclaim-visual-cases-2026-05-05/negative`
+- Manifest: `artifacts/review/ladder-reclaim-visual-cases-2026-05-05/manifest.json`
 
 ## 7. False-Positive Categories
 

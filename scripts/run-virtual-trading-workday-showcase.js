@@ -5,10 +5,13 @@ const fs = require('fs');
 const path = require('path');
 const { spawn, execSync } = require('child_process');
 const { chromium } = require('playwright');
+const { checkRuntimeHealth } = require('./check-runtime-health');
+const { resolveProofPort } = require('./proof-runtime');
 const { events, snapshots } = require('../lib/paths');
 
 const ROOT = path.join(__dirname, '..');
-const BASE_URL = process.env.LUKE_OPERATOR_BASE_URL || 'http://127.0.0.1:3000';
+let BASE_URL = process.env.LUKE_OPERATOR_BASE_URL || 'http://127.0.0.1:3000';
+const PROOF_PORT = Number(process.env.LUKE_PROOF_PORT || 3001);
 const TIMEOUT_MS = Number(process.env.LUKE_VIRTUAL_SHOWCASE_TIMEOUT_MS || 20000);
 const VISION_TIMEOUT_MS = Number(process.env.LUKE_VIRTUAL_SHOWCASE_VISION_TIMEOUT_MS || 90000);
 const RUN_ID = new Date().toISOString().replace(/[:.]/g, '-');
@@ -177,7 +180,7 @@ function resolveHeatmapImage() {
 
 function shell(command) {
   try {
-    return execSync(command, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    return execSync(command, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], windowsHide: true }).trim();
   } catch {
     return 'unknown';
   }
@@ -217,8 +220,11 @@ async function ensureApp() {
     return { started: false, process: null, result: 'connected to existing Luke app' };
   }
 
+  const startPort = await resolveProofPort({ baseUrl: BASE_URL, proofPort: PROOF_PORT, checkRuntimeHealth });
+  BASE_URL = `http://127.0.0.1:${startPort}`;
   const child = spawn(process.execPath, ['index.js'], {
     cwd: ROOT,
+    env: { ...process.env, PORT: String(startPort) },
     windowsHide: true,
     stdio: ['ignore', 'pipe', 'pipe'],
   });

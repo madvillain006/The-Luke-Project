@@ -3,7 +3,7 @@ const router = express.Router();
 const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
 const path = require("path");
-const { spawnSync, execSync } = require("child_process");
+const { execFileSync } = require("child_process");
 
 const client = new Anthropic();
 const ROOT = path.join(__dirname, "..");
@@ -138,9 +138,9 @@ async function runPreflight(checks) {
         const r = await fetch("http://localhost:3000/agent/autonomous/status");
         const d = await r.json(); ok = !d.open_position; detail = ok ? "ok" : "position open";
       } else if (check === "mouse_still_2s") {
-        const pos1 = runDesktop("mousepos").split(",").map(Number);
+        const pos1 = runDesktop(["mousepos"]).split(",").map(Number);
         await new Promise(r => setTimeout(r, 2000));
-        const pos2 = runDesktop("mousepos").split(",").map(Number);
+        const pos2 = runDesktop(["mousepos"]).split(",").map(Number);
         const delta = Math.abs(pos1[0] - pos2[0]) + Math.abs(pos1[1] - pos2[1]);
         ok = delta <= 10; detail = ok ? "ok" : "mouse moved " + delta + "px";
       }
@@ -153,14 +153,20 @@ async function runPreflight(checks) {
 // ── DESKTOP HELPERS ──────────────────────────────────────────────────────────
 
 function runDesktop(args) {
+  const argv = Array.isArray(args) ? args : [String(args || "")];
   try {
-    return execSync("python desktop.py " + args, { cwd: ROOT, timeout: 15000 }).toString().trim();
+    return execFileSync("python", ["scripts\\desktop.py", ...argv], {
+      cwd: ROOT,
+      timeout: 15000,
+      windowsHide: true,
+      encoding: "utf8",
+    }).trim();
   } catch (e) { return "ERROR: " + e.message; }
 }
 
 async function takeVerifyScreenshot(recDir, stepId) {
   try {
-    const b64 = runDesktop("screenshot");
+    const b64 = runDesktop(["screenshot"]);
     const pngBuf = Buffer.from(b64, "base64");
     fs.writeFileSync(path.join(recDir, stepId + ".png"), pngBuf);
     return b64;
@@ -195,7 +201,7 @@ function startMouseMonitor(broadcast) {
   _lastMousePos = null;
   _mouseMonitor = setInterval(() => {
     try {
-      const pos = runDesktop("mousepos").split(",").map(Number);
+      const pos = runDesktop(["mousepos"]).split(",").map(Number);
       if (_lastMousePos) {
         const delta = Math.abs(pos[0] - _lastMousePos[0]) + Math.abs(pos[1] - _lastMousePos[1]);
         if (delta > 10) {
@@ -206,7 +212,7 @@ function startMouseMonitor(broadcast) {
       }
       _lastMousePos = pos;
     } catch {}
-  }, 100);
+  }, 1000);
 }
 
 function stopMouseMonitor() {
@@ -229,13 +235,13 @@ async function executeStep(step, vars, dryRun, recDir) {
     execResult = "[DRY RUN] would execute: " + action + " " + value;
   } else {
     if      (action === "screenshot") { /* no-op, screenshot taken below */ execResult = "screenshot taken"; }
-    else if (action === "click")  { const [x,y] = value.split(",").map(Number); execResult = runDesktop("click " + x + " " + y); }
-    else if (action === "type")   { execResult = runDesktop("type \"" + value + "\""); }
-    else if (action === "press")  { execResult = runDesktop("press " + value); }
-    else if (action === "scroll") { execResult = runDesktop("scroll " + value); }
-    else if (action === "open")   { execResult = runDesktop("open " + value); }
-    else if (action === "wait")   { execResult = runDesktop("wait " + value); }
-    else if (action === "find")   { execResult = runDesktop("find " + JSON.stringify(value)); }
+    else if (action === "click")  { const [x,y] = value.split(",").map(Number); execResult = runDesktop(["click", String(x), String(y)]); }
+    else if (action === "type")   { execResult = runDesktop(["type", value]); }
+    else if (action === "press")  { execResult = runDesktop(["press", value]); }
+    else if (action === "scroll") { execResult = runDesktop(["scroll", value]); }
+    else if (action === "open")   { execResult = runDesktop(["open", value]); }
+    else if (action === "wait")   { execResult = runDesktop(["wait", value]); }
+    else if (action === "find")   { execResult = runDesktop(["find", value]); }
     else { execResult = "unknown action: " + action; }
   }
 

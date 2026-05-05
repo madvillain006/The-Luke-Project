@@ -33,9 +33,9 @@
 - No rule upgrades to PAPER_ONLY from this review layer.
 
 ## 8. Image Reports
-- Positive PNG cases: 12, folder C:\Users\conor\luke\artifacts\review\ladder-reclaim-visual-cases-2026-05-04\positive.
-- Negative PNG cases: 12, folder C:\Users\conor\luke\artifacts\review\ladder-reclaim-visual-cases-2026-05-04\negative.
-- Manifest: C:\Users\conor\luke\artifacts\review\ladder-reclaim-visual-cases-2026-05-04\manifest.json.
+- Positive PNG cases: 12, folder C:\Users\conor\luke\artifacts\review\ladder-reclaim-visual-cases-2026-05-05\positive.
+- Negative PNG cases: 12, folder C:\Users\conor\luke\artifacts\review\ladder-reclaim-visual-cases-2026-05-05\negative.
+- Manifest: C:\Users\conor\luke\artifacts\review\ladder-reclaim-visual-cases-2026-05-05\manifest.json.
 
 ## 9. Needs More Data
 - Fresh live-market watchlist observations.

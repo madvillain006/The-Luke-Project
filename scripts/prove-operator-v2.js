@@ -3,6 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
+const { checkRuntimeHealth } = require('./check-runtime-health');
+const { resolveProofPort } = require('./proof-runtime');
 
 const {
   collectSurfaces,
@@ -14,6 +16,7 @@ const OUT_FILE = path.join(ROOT, 'artifacts', 'OPERATOR_V2_PROOF.md');
 const INDEX_FILE = path.join(ROOT, 'index.js');
 const OPERATOR_FILE = path.join(ROOT, 'operator-v2.html');
 const DEFAULT_BASE_URL = process.env.LUKE_OPERATOR_BASE_URL || 'http://127.0.0.1:3000';
+const PROOF_PORT = Number(process.env.LUKE_PROOF_PORT || 3001);
 const TIMEOUT_MS = Number(process.env.LUKE_OPERATOR_PROOF_TIMEOUT_MS || 15000);
 
 function withTimeout(ms = TIMEOUT_MS) {
@@ -103,24 +106,27 @@ async function waitForApp(baseUrl) {
 async function ensureApp(baseUrl) {
   const existing = await fetchText(baseUrl, '/operator-v2');
   if (existing.ok && existing.body.includes('Luke Operator V2')) {
-    return { started: false, process: null, result: 'connected to existing app' };
+    return { started: false, process: null, result: 'connected to existing app', baseUrl };
   }
 
+  const startPort = await resolveProofPort({ baseUrl, proofPort: PROOF_PORT, checkRuntimeHealth });
+  const proofBaseUrl = `http://127.0.0.1:${startPort}`;
   const child = spawn(process.execPath, ['index.js'], {
     cwd: ROOT,
+    env: { ...process.env, PORT: String(startPort) },
     windowsHide: true,
     stdio: ['ignore', 'pipe', 'pipe'],
   });
   let output = '';
   child.stdout.on('data', data => { output += data.toString(); });
   child.stderr.on('data', data => { output += data.toString(); });
-  const ready = await waitForApp(baseUrl);
+  const ready = await waitForApp(proofBaseUrl);
   if (!ready) {
     const terminate = 'ki' + 'll';
     if (!child.killed) child[terminate]();
-    return { started: true, process: null, result: `startup failed: ${output.slice(-500)}` };
+    return { started: true, process: null, result: `startup failed: ${output.slice(-500)}`, baseUrl: proofBaseUrl };
   }
-  return { started: true, process: child, result: 'started app with node index.js' };
+  return { started: true, process: child, result: 'started app with node index.js', baseUrl: proofBaseUrl };
 }
 
 function stopApp(child) {
@@ -313,8 +319,9 @@ function renderProof({ baseUrl, collected, comparison, autonomousStatus, safety,
 }
 
 async function main() {
-  const baseUrl = process.argv[2] || DEFAULT_BASE_URL;
+  let baseUrl = process.argv[2] || DEFAULT_BASE_URL;
   const app = await ensureApp(baseUrl);
+  baseUrl = app.baseUrl || baseUrl;
   if (!app.process && !/^connected|started/.test(app.result)) {
     throw new Error(app.result);
   }

@@ -338,7 +338,7 @@
     .ring-text { font-size: 8px; font-family: inherit; fill: var(--fg); text-anchor: middle; dominant-baseline: middle; }
     #execute-btn { background: #1a3a1a; border: 1px solid var(--green); color: var(--green); padding: 6px 16px; font-family: inherit; font-size: 10px; font-weight: 700; letter-spacing: 2px; cursor: pointer; border-radius: 4px; }
     #execute-btn:hover    { background: var(--green); color: var(--bg); }
-    #execute-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    #execute-btn:disabled { opacity: 1; cursor: not-allowed; background: #2a0f0f; border-color: var(--red); color: var(--red); }
     #skip-btn { background: transparent; border: 1px solid #4a2a2a; color: var(--red); padding: 6px 10px; font-family: inherit; font-size: 10px; letter-spacing: 1.5px; cursor: pointer; border-radius: 4px; }
     #skip-btn:hover { border-color: var(--red); }
 
@@ -603,7 +603,7 @@
     <div id="pt-body">
       <div>
         <div id="pt-header-row">
-          <div class="pt-label">02B STAGED - CONFIRM</div>
+          <div class="pt-label">02B REVIEW ONLY - EXECUTION BLOCKED</div>
           <svg class="countdown-svg" viewBox="0 0 36 36">
             <circle class="ring-bg"       cx="18" cy="18" r="15.9155"/>
             <circle class="ring-progress" cx="18" cy="18" r="15.9155" id="pt-ring"/>
@@ -615,7 +615,7 @@
         <div id="pt-reason"></div>
       </div>
       <div id="pt-actions">
-        <button id="execute-btn" class="has-tt">EXECUTE<span class="tooltip">Execute this trade signal (E key)</span></button>
+        <button id="execute-btn" class="has-tt" disabled aria-disabled="true">BLOCKED<span class="tooltip">Execution is disabled. Review manually; Luke will not send staged or live orders.</span></button>
         <button id="skip-btn" class="has-tt">SKIP<span class="tooltip">Skip this trade signal (S key)</span></button>
       </div>
     </div>
@@ -721,7 +721,6 @@
     let history = [];
     let intradayActive = false;
     let toastTimer = null;
-    let executeFirstTap = 0;
 
     function applyChatSurface() {
       if (chatSurface !== "system") return;
@@ -1046,7 +1045,7 @@
         ? "  src:" + s.confluence_sources.join("+")
         : "";
       document.getElementById("pt-meta").textContent =
- "STAGED ONLY - confirm to execute | Risk: $" + data.risk_dollars + " R:R " + data.rr + ":1" + confluencePart + sourcesPart;
+ "REVIEW ONLY - execution blocked | Risk: $" + data.risk_dollars + " R:R " + data.rr + ":1" + confluencePart + sourcesPart;
       document.getElementById("pt-reason").textContent = s.reason || "";
       document.getElementById("lbl-target").textContent = "T " + s.target;
       document.getElementById("lbl-entry").textContent  = "E " + s.entry;
@@ -1114,37 +1113,9 @@
     setInterval(checkPendingSignal, 15000);
 
     executeBtn.addEventListener("click", async () => {
-      const modeChip = document.getElementById("chip-mode");
-      if (!modeChip || modeChip.className === "off" || modeChip.textContent === "OFF") {
-        hidePending();
-        toast("02B is OFF - enter this trade manually in Tradovate.", 5000);
-        addMessage("assistant", "Enter this trade manually in Tradovate - 02B is OFF and will not send orders.", "alert");
-        return;
-      }
-      const stateClass = document.getElementById("ribbon-state").className || "regulated";
-      if (stateClass === "rule_break") {
-        logIntervention("rule_break", "execute blocked");
-        toast("Rule break detected - execute disabled.", 4000);
-        return;
-      }
-      if (stateClass === "spiraling") {
-        const now = Date.now();
-        if (now - executeFirstTap < 1000) {
-          logIntervention("spiraling", "double-confirmed execute");
-        } else {
-          executeFirstTap = now;
-        toast("Spiraling - tap EXECUTE again within 1s to confirm.", 3000);
-          return;
-        }
-      }
-      executeBtn.disabled = true; executeBtn.textContent = "...";
-      try {
-        const r = await fetch(BASE + "/agent/autonomous/execute-staged", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
-        const d = await r.json();
-        hidePending();
-        if (d.executed === false) addMessage("assistant", "Execute failed: " + d.reason, "alert");
-      } catch { addMessage("assistant", "Execute error.", "alert"); }
-      executeBtn.disabled = false; executeBtn.textContent = "EXECUTE";
+      logIntervention("execution_blocked", "review-only button tapped");
+      toast("Execution is blocked. Review manually; Luke will not send orders.", 5000);
+      addMessage("assistant", "Execution is blocked. Review manually; Luke will not send staged or live orders.", "alert");
     });
 
     async function logIntervention(state, action) {
@@ -1158,7 +1129,7 @@
 
     document.addEventListener("keydown", e => {
       if (!pendingTrade.classList.contains("visible")) return;
-      if ((e.key === "e" || e.key === "E") && !executeBtn.disabled) executeBtn.click();
+      if (e.key === "e" || e.key === "E") executeBtn.click();
       if (e.key === "s" || e.key === "S") skipBtn.click();
     });
 

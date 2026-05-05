@@ -17,6 +17,7 @@
     "prove:virtual-operator-dashboard": "node scripts/prove-virtual-operator-dashboard.js",
     "prove:client-demo": "node scripts/prove-client-demo.js",
     "prove:luke-dashboard-demo": "node scripts/prove-luke-dashboard-demo.js",
+    "prove:chat-execution-blocked": "node scripts/prove-chat-execution-blocked.js",
     "prove:staged-flow": "node scripts/prove-staged-flow.js",
     "research:fake-breakdown": "node scripts/run-fake-breakdown-research.js",
     "research:fake-breakdown-state": "node scripts/run-fake-breakdown-state-machine.js",

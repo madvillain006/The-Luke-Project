@@ -38,4 +38,17 @@ describe('autonomous recommendation-only posture', () => {
     expect(source).toContain('No signal staged.');
     expect(source).not.toContain('await stageTrade(freshState, signal)');
   });
+
+  it('keeps legacy staged execution behind an explicit disabled-by-default gate', () => {
+    const router = fs.readFileSync(path.join(ROOT, 'trading', 'router.js'), 'utf8');
+    const chat = fs.readFileSync(path.join(ROOT, 'chat.html'), 'utf8');
+
+    expect(router).toContain('getStagedExecutionGate');
+    expect(router).toContain('execute-staged-blocked');
+    expect(router).toContain('getLiveExecutionGate');
+    expect(router).toContain('live-execution-blocked');
+    expect(chat).toContain('02B REVIEW ONLY - EXECUTION BLOCKED');
+    expect(chat).toContain('Execution is blocked');
+    expect(chat).not.toContain('/agent/autonomous/execute-staged');
+  });
 });

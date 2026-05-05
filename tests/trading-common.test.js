@@ -1,6 +1,11 @@
 'use strict';
 
-const { getTradingWindowStatus } = require('../trading/common');
+const {
+  getLiveExecutionGate,
+  getPointValue,
+  getStagedExecutionGate,
+  getTradingWindowStatus,
+} = require('../trading/common');
 
 describe('trading common window status', () => {
   it('does not call Sunday evening futures open a Weekend blocker while keeping trading blocked', () => {
@@ -22,5 +27,31 @@ describe('trading common window status', () => {
       reason: 'Weekend',
       futures_open: false,
     }));
+  });
+
+  it('uses actual futures dollar point values', () => {
+    expect(getPointValue('ES')).toBe(50);
+    expect(getPointValue('MES')).toBe(5);
+    expect(getPointValue('NQ')).toBe(20);
+    expect(getPointValue('MNQ')).toBe(2);
+  });
+
+  it('blocks staged and live execution unless explicit operator env gates are set', () => {
+    const blocked = getStagedExecutionGate({});
+    expect(blocked.enabled).toBe(false);
+    expect(blocked.reason).toContain('disabled by default');
+
+    const staged = getStagedExecutionGate({ LUKE_ENABLE_STAGED_EXECUTION: 'YES_I_ACCEPT_STAGED_EXECUTION_RISK' });
+    expect(staged.enabled).toBe(true);
+
+    const liveBlocked = getLiveExecutionGate({ LUKE_ENABLE_STAGED_EXECUTION: 'YES_I_ACCEPT_STAGED_EXECUTION_RISK' });
+    expect(liveBlocked.enabled).toBe(false);
+    expect(liveBlocked.reason).toContain('Live execution is disabled');
+
+    const live = getLiveExecutionGate({
+      LUKE_ENABLE_STAGED_EXECUTION: 'YES_I_ACCEPT_STAGED_EXECUTION_RISK',
+      LUKE_ENABLE_LIVE_EXECUTION: 'YES_I_ACCEPT_LIVE_BROKER_RISK',
+    });
+    expect(live.enabled).toBe(true);
   });
 });

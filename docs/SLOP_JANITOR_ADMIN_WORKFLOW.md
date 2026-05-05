@@ -39,10 +39,14 @@ The upstream project requires:
   `...\codex\codex-rs`.
 - `slop-janitor auth login` completed for the account used by Codex.
 
-At initial setup on 2026-05-04, Python was present, but `cargo` was not on PATH.
-The runner will not execute until Rust is installed and `CODEX_WORKSPACE` points
-at a real Codex Rust workspace. Rerun `cargo --version` before assuming this is
-still true.
+At setup refresh on 2026-05-05, `slop-janitor` was installed from
+`grp06/slop-janitor`, Rust/cargo was installed with rustup, and
+`CODEX_WORKSPACE` was set to `C:\Users\conor\tools\codex\codex-rs`.
+
+The first Codex app-server build did not complete on this machine. The default
+parallel cargo build failed with Windows paging-file/memory exhaustion, and a
+low-memory retry with one cargo job timed out after 20 minutes. Rerun the auth
+status command below before assuming goal mode is fully runnable.
 
 ## Recommended Setup Commands
 
@@ -55,6 +59,16 @@ git clone https://github.com/openai/codex.git C:\Users\conor\tools\codex
 setx CODEX_WORKSPACE C:\Users\conor\tools\codex\codex-rs
 python -m pip install -e C:\Users\conor\tools\slop-janitor
 slop-janitor auth --codex-workspace C:\Users\conor\tools\codex\codex-rs login
+```
+
+If the first Codex Rust build exhausts memory, retry with a narrower build:
+
+```powershell
+$env:CARGO_BUILD_JOBS='1'
+$env:CARGO_INCREMENTAL='0'
+$env:CARGO_PROFILE_DEV_DEBUG='0'
+$env:RUSTFLAGS='-C debuginfo=0'
+slop-janitor auth --codex-workspace C:\Users\conor\tools\codex\codex-rs status
 ```
 
 After opening a new terminal, confirm:

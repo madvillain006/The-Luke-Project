@@ -9,7 +9,7 @@ Luke is a read-only/replay trading companion. It is not live-ready. The canonica
 
 ## Current Proof
 
-- `npm test`: 122 files passed; 768 tests passed; 1 skipped.
+- `npm test`: 122 files passed; 771 tests passed; 1 skipped.
 - Runtime health passed on port 3000.
 - `/operator-v2`, `/trading-window`, replay level-state, live-shaped level-state, and staged-flow proofs passed.
 - Screenshot sanity passed for the hostile-audit PNG set.
@@ -27,6 +27,8 @@ Luke is a read-only/replay trading companion. It is not live-ready. The canonica
 
 - `/operator-v2`: read-only operator surface.
 - `/trading-window`: read-only live-shaped replay/dev surface.
+- Legacy chat staged-trade UI is review-only; its execution button is disabled and does not call `/agent/autonomous/execute-staged`.
+- `/agent/autonomous/execute-staged` is blocked by default behind `LUKE_ENABLE_STAGED_EXECUTION`; live execution also requires `LUKE_ENABLE_LIVE_EXECUTION`.
 - Trading APIs are GET-only for level state, candidates, alerts, candle status, chart data, and source health.
 - Pine is a visual/watchlist indicator using `indicator()` and `alertcondition()` only.
 - Hard-mode Pine research summary lives in `docs/TRADINGVIEW_HARDMODE_RESEARCH.md`; the strategy file is `tradingview/luke-level-reclaim-watch-hardmode.strategy.pine`.
@@ -41,7 +43,7 @@ Luke is a read-only/replay trading companion. It is not live-ready. The canonica
 - Hard-mode Pine has not been compiled inside TradingView.
 - Saty parity still needs human TradingView visual signoff.
 - Research rules remain watchlist/research only.
-- Live execution remains blocked.
+- Live and staged execution remain blocked by default.
 
 ## Next Milestone
 

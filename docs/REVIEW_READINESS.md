@@ -16,7 +16,7 @@ Canonical findings: `docs/HOSTILE_AUDIT_REPORT.md`.
 | Live level-state readiness | 72% | Replay/local candle proof passed; live-mode gates reject unauthorized data. | No proven live/delayed ES 1m OHLC provider. |
 | Research/watchlist readiness | 88% | Ladder reclaim and fake-breakdown scripts passed with known false-positive reporting. | Small/clustered samples, same-bar ambiguity, slippage/regime risk. |
 | Staged/paper bot readiness | 72% | Staged-flow proof and bracket/risk tests pass. | Paper automation not approved; execution state needs separate audit. |
-| Live execution readiness | 20% | No new shortcut found; existing live path remains staged/guarded. | No broker proof, live data proof, current live-submit audit, or user approval. |
+| Live execution readiness | 22% | Legacy staged/live route is now blocked by default behind explicit env gates; broker code still exists for a future proof phase. | No broker proof, live data proof, current live-submit audit, or user approval. |
 
 ## Claim Classifications
 
@@ -24,7 +24,7 @@ Canonical findings: `docs/HOSTILE_AUDIT_REPORT.md`.
 - No fake static prices: `VERIFIED_BY_PROOF_ARTIFACT`; provider quotes are delayed/stale and local/replay candles are proof-only.
 - Replay candles cannot arm live candidates: `VERIFIED_BY_CODE_AND_TEST`.
 - `/operator-v2` read-only: `VERIFIED_BY_CODE_AND_TEST`.
-- Live trading behavior unchanged: `PARTIALLY_VERIFIED`; execution modules were not promoted or weakened.
+- Live trading behavior blocked by default: `VERIFIED_BY_CODE_AND_TEST`; execution modules still exist, but staged/live submission requires explicit env gates and future audit.
 - `heatmap_gex` normalized/deduped/superseded: `VERIFIED_BY_CODE_AND_TEST`.
 - TradingView indicator ready: `PARTIALLY_VERIFIED`; text/export tests pass, TradingView compile not proven.
 - Saty parity: `PARTIALLY_VERIFIED`; source/reference exists, human visual signoff needed.

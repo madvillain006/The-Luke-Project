@@ -11,6 +11,8 @@ const {
   notifyLuke,
   getTradingWindowStatus,
   getFrontMonthSymbol,
+  getStagedExecutionGate,
+  getLiveExecutionGate,
   VALID_MODES,
 } = require("./common");
 const { loadRecentSignals, scoreSignals } = require("./signals");
@@ -549,6 +551,16 @@ router.post("/set-mode", (req, res) => {
   const { mode, tradovate, daily_loss_limit, weekly_loss_limit, apex } = req.body;
   if (mode && !VALID_MODES.includes(mode)) return res.status(400).json({ error: "mode must be paper, live, or shadow" });
   if (mode === "live") {
+    const gate = getLiveExecutionGate();
+    if (!gate.enabled) {
+      log("live-mode-blocked", { reason: gate.reason, env_var: gate.env_var });
+      return res.status(403).json({
+        mode: "blocked",
+        live_execution_locked: true,
+        error: gate.reason,
+        unlock_env_var: gate.env_var,
+      });
+    }
     const state = loadState();
     const creds = tradovate || state.tradovate;
     if (!creds || !creds.username || !creds.cid || !creds.sec) {
@@ -592,6 +604,30 @@ router.post("/execute-staged", async (req, res) => {
   if (!state.running) { state.pending_signal = null; saveState(state); return res.json({ executed: false, reason: "02B not running" }); }
 
   const signal = state.pending_signal;
+  const stagedGate = getStagedExecutionGate();
+  if (!stagedGate.enabled) {
+    log("execute-staged-blocked", { mode: state.mode, reason: stagedGate.reason, env_var: stagedGate.env_var });
+    notifyLuke("02B EXECUTION BLOCKED - " + stagedGate.reason);
+    return res.status(403).json({
+      executed: false,
+      execution_locked: true,
+      reason: stagedGate.reason,
+      unlock_env_var: stagedGate.env_var,
+    });
+  }
+  if (state.mode === "live") {
+    const liveGate = getLiveExecutionGate();
+    if (!liveGate.enabled) {
+      log("live-execution-blocked", { reason: liveGate.reason, env_var: liveGate.env_var });
+      notifyLuke("02B LIVE BLOCKED - " + liveGate.reason);
+      return res.status(403).json({
+        executed: false,
+        live_execution_locked: true,
+        reason: liveGate.reason,
+        unlock_env_var: liveGate.env_var,
+      });
+    }
+  }
 
   if (signal.strategy === 'atm_3pt_scalp' || signal.strategy === 'atm_3pt') {
     const dailyPnl = state.daily_pnl || 0;

@@ -74,9 +74,52 @@ function getFrontMonthSymbol(ticker) {
   return ticker + code + year;
 }
 
+const STAGED_EXECUTION_UNLOCK_ENV = "LUKE_ENABLE_STAGED_EXECUTION";
+const STAGED_EXECUTION_UNLOCK_VALUE = "YES_I_ACCEPT_STAGED_EXECUTION_RISK";
+const LIVE_EXECUTION_UNLOCK_ENV = "LUKE_ENABLE_LIVE_EXECUTION";
+const LIVE_EXECUTION_UNLOCK_VALUE = "YES_I_ACCEPT_LIVE_BROKER_RISK";
+
 function getPointValue(ticker) {
-  if (ticker === "MES" || ticker === "ES") return 1;
-  return 2;
+  switch (String(ticker || "").toUpperCase()) {
+    case "ES": return 50;
+    case "MES": return 5;
+    case "NQ": return 20;
+    case "MNQ": return 2;
+    default: return 2;
+  }
+}
+
+function getStagedExecutionGate(env = process.env) {
+  const enabled = env[STAGED_EXECUTION_UNLOCK_ENV] === STAGED_EXECUTION_UNLOCK_VALUE;
+  return {
+    enabled,
+    env_var: STAGED_EXECUTION_UNLOCK_ENV,
+    required_value: STAGED_EXECUTION_UNLOCK_VALUE,
+    reason: enabled
+      ? null
+      : "Staged execution is disabled by default. Luke is read-only/replay until an explicit operator proof phase unlocks staged execution.",
+  };
+}
+
+function getLiveExecutionGate(env = process.env) {
+  const staged = getStagedExecutionGate(env);
+  if (!staged.enabled) {
+    return {
+      enabled: false,
+      env_var: staged.env_var,
+      required_value: staged.required_value,
+      reason: staged.reason,
+    };
+  }
+  const enabled = env[LIVE_EXECUTION_UNLOCK_ENV] === LIVE_EXECUTION_UNLOCK_VALUE;
+  return {
+    enabled,
+    env_var: LIVE_EXECUTION_UNLOCK_ENV,
+    required_value: LIVE_EXECUTION_UNLOCK_VALUE,
+    reason: enabled
+      ? null
+      : "Live execution is disabled by default. Broker submission requires a separate explicit operator proof phase.",
+  };
 }
 
 const VALID_MODES = ["paper", "live", "shadow"];
@@ -96,5 +139,7 @@ module.exports = {
   getTradingWindowStatus,
   getFrontMonthSymbol,
   getPointValue,
+  getStagedExecutionGate,
+  getLiveExecutionGate,
   VALID_MODES,
 };

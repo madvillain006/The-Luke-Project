@@ -25,12 +25,13 @@ Luke is `LIVE_BLOCKED`. Current audit detail lives in `docs/HOSTILE_AUDIT_REPORT
 6. Research is not live approval.
    Ladder reclaim 25k 2ES failed, fake breakdown remains `WATCHLIST_ONLY`, and false positives/same-bar ambiguity remain.
 
-7. Existing execution needs a separate audit.
-   `trading/router.js` and `trading/execution-live.js` still exist by design; this pass did not promote or weaken them.
+7. Existing execution remains env-locked and needs a separate audit.
+   `trading/router.js` and `trading/execution-live.js` still exist by design. `/agent/autonomous/execute-staged` is blocked by default behind `LUKE_ENABLE_STAGED_EXECUTION`, and live mode/live execution also require `LUKE_ENABLE_LIVE_EXECUTION`.
 
 ## Allowed Read-Only Use
 
 - `/operator-v2`, `/trading-window`, and trading-state APIs are read-only.
+- Legacy chat can show pending signal context, but its execution control is disabled and review-only.
 - Replay/local candles can support historical proof and visual review.
 - TradingView export can support manual chart watching.
 - Current allowed statuses are `WATCH_ONLY`, `PAPER_CANDIDATE_SIM`, `PAPER_CANDIDATE_LIVE_DATA`, `PASS_RISK`, `PASS_NO_TARGET`, `PASS_DATA_UNKNOWN`, and `INVALIDATED`.

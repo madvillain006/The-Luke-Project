@@ -118,32 +118,33 @@ function readTradingState() {
 
 function summarizePaper(result, state) {
   return {
-    routeAccepted: result.ok && result.body.executing === true,
+    routeBlocked: result.status === 403 && result.body.execution_locked === true,
     liveTouched: false,
     openPositionMode: state.open_position && state.open_position.mode,
-    pendingCleared: state.pending_signal === null,
+    pendingPreserved: Boolean(state.pending_signal),
     paperTrades: state.paper_trades || 0,
   };
 }
 
 function summarizeShadow(result, state) {
   return {
-    routeAccepted: result.ok && result.body.executing === true,
+    routeBlocked: result.status === 403 && result.body.execution_locked === true,
     liveTouched: false,
     openPositionMode: state.open_position && state.open_position.mode,
-    pendingCleared: state.pending_signal === null,
-    shadowRejectedSafely: !state.open_position && state.pending_signal === null,
+    pendingPreserved: Boolean(state.pending_signal),
+    shadowRejectedSafely: !state.open_position && Boolean(state.pending_signal),
   };
 }
 
 function renderReport({ paper, shadow, pendingAfter, statusAfter }) {
-  const verdict = paper.summary.routeAccepted &&
-    paper.summary.openPositionMode === 'paper' &&
-    paper.summary.pendingCleared &&
-    shadow.summary.routeAccepted &&
+  const verdict = paper.summary.routeBlocked &&
+    !paper.summary.openPositionMode &&
+    paper.summary.pendingPreserved &&
+    paper.summary.paperTrades === 0 &&
+    shadow.summary.routeBlocked &&
     shadow.summary.shadowRejectedSafely &&
-    pendingAfter.body.pending === false
-    ? 'STAGED_FLOW_PROOF_PASS'
+    pendingAfter.body.pending === true
+    ? 'STAGED_FLOW_LOCKED_PROOF_PASS'
     : 'STAGED_FLOW_PROOF_FAIL';
 
   const lines = [
@@ -153,20 +154,20 @@ function renderReport({ paper, shadow, pendingAfter, statusAfter }) {
     '',
     '## Scope',
     '- Local route drill only.',
-    '- Paper execution path allowed.',
-    '- Shadow execution path allowed to reject safely when Tradovate credentials are missing.',
+    '- Staged execution is locked by default.',
+    '- Paper and shadow staged routes must refuse execution without explicit operator env unlock.',
     '- Live mode not seeded, not called, and not executed.',
     '',
     '## Paper Execute-Staged',
-    `- Route accepted: ${paper.summary.routeAccepted}`,
+    `- Route blocked: ${paper.summary.routeBlocked}`,
     `- Open position mode: ${paper.summary.openPositionMode || 'none'}`,
-    `- Pending cleared: ${paper.summary.pendingCleared}`,
+    `- Pending preserved for review/skip: ${paper.summary.pendingPreserved}`,
     `- Paper trades count: ${paper.summary.paperTrades}`,
     '',
     '## Shadow Execute-Staged',
-    `- Route accepted: ${shadow.summary.routeAccepted}`,
+    `- Route blocked: ${shadow.summary.routeBlocked}`,
     `- Open position mode: ${shadow.summary.openPositionMode || 'none'}`,
-    `- Pending cleared: ${shadow.summary.pendingCleared}`,
+    `- Pending preserved for review/skip: ${shadow.summary.pendingPreserved}`,
     `- Rejected safely without live execution: ${shadow.summary.shadowRejectedSafely}`,
     '',
     '## Final Read-Only Checks',
@@ -219,7 +220,7 @@ async function main() {
     fs.writeFileSync(REPORT_FILE, report.text, 'utf8');
     console.log(`Wrote ${REPORT_FILE}`);
     console.log(report.verdict);
-    if (report.verdict !== 'STAGED_FLOW_PROOF_PASS') process.exitCode = 1;
+    if (report.verdict !== 'STAGED_FLOW_LOCKED_PROOF_PASS') process.exitCode = 1;
   } finally {
     await new Promise(resolve => server.close(resolve));
     restoreState(backup);

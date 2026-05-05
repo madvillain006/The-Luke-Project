@@ -1,6 +1,8 @@
-# Goal Mode Progress
+# Fake Breakdown Goal Mode Progress
 
 Date: 2026-05-03
+
+Status: historical progress snapshot for the fake-breakdown watchlist work. Use `docs/HOSTILE_AUDIT_REPORT.md` and `docs/CURRENT_STATUS.md` for current readiness.
 
 ## Current Completed Work
 

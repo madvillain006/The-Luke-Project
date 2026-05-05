@@ -11,7 +11,7 @@ const {
   getCurrentPriceAt,
   rthBarsOnly,
   detectInstrumentFiles,
-  _internal: { _setHistoricalRoot, _resetHistoricalRoot, toIsoEt },
+  _internal: { _setHistoricalRoot, _resetHistoricalRoot, toIsoEt, parseBarchartCsv },
 } = require('../lib/historical-data');
 
 function writeLegacyCsv(root, date, instrument, lines) {
@@ -140,6 +140,35 @@ describe('historical-data', () => {
     expect(bars[0].open).toBe(6843.5);
     expect(bars[0].close).toBe(6844);
     expect(bars[0].volume).toBe(81);
+  });
+
+  it('parses Barchart column variants without quoted timestamps', () => {
+    writeBarchartCsv(root, 'esm26_intraday-1min_historical-data-download-04-27-2026.csv', [
+      'Time,Open,High,Low,Close,Change,%Change,Vol',
+      '2026-04-29 08:28,7163,7164.25,7162.5,7164,1.0,+0.01%,1544',
+      '2026-04-29 08:29,7164,7165,7162.75,7163.25,-0.75,-0.01%,1912',
+    ]);
+    const bars = loadIntraday('ES', '2026-04-29');
+
+    expect(bars).toHaveLength(2);
+    expect(bars[0].timestamp).toBe('2026-04-29T08:28:00-04:00');
+    expect(bars[1].close).toBe(7163.25);
+    expect(bars[1].volume).toBe(1912);
+  });
+
+  it('skips malformed, missing-timestamp, and missing-volume Barchart rows', () => {
+    const file = path.join(root, 'esm26_intraday-1min_historical-data-download-04-27-2026.csv');
+    writeBarchartCsv(root, path.basename(file), [
+      BARCHART_HEADER,
+      '"2026-02-30 09:30",7163,7164.25,7162.5,7164,1.0,+0.01%,1544',
+      '"",7164,7165,7162.75,7163.25,-0.75,-0.01%,1912',
+      '"2026-04-29 08:29",7164,7165,7162.75,7163.25,-0.75,-0.01%,',
+      '"2026-04-29 08:30",7164,7165,7162.75,7163.25,-0.75,-0.01%,1912',
+    ]);
+    const bars = parseBarchartCsv(file);
+
+    expect(bars).toHaveLength(1);
+    expect(bars[0].timestamp).toBe('2026-04-29T08:30:00-04:00');
   });
 
   it('filters Barchart bars by date when date supplied', () => {

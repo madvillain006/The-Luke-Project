@@ -64,7 +64,8 @@ describe('level-state candle gating', () => {
     expect(state.mode).toBe('live');
     expect(state.candle_feed.usable_for_live_arming).toBe(false);
     expect(state.clusters[0].state).toBe('APPROACHING_LEVEL');
-    expect(state.candidates[0].status).toBe('WATCH_ONLY');
+    expect(state.candidates[0].status).toBe('PASS_DATA_UNKNOWN');
+    expect(state.candidates[0].warnings).toContain('stale/delayed/UNKNOWN or unauthorized data cannot arm candidate');
   });
 
   it('allows explicit replay/dev state proof while keeping live arming disabled', async () => {
@@ -91,6 +92,6 @@ describe('level-state candle gating', () => {
 
     expect(state.clusters[0].state).toBe('APPROACHING_LEVEL');
     expect(state.warnings).toContain('insufficient candle data; engine will not arm fresh trade candidates from latest price alone');
-    expect(state.candidates[0].status).toBe('WATCH_ONLY');
+    expect(state.candidates[0].status).toBe('PASS_DATA_UNKNOWN');
   });
 });

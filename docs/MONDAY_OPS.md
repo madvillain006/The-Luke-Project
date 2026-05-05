@@ -1,6 +1,6 @@
-# Monday morning operational checklist
+# Monday Operations Checklist
 
-Run before any trading.
+Legacy pre-trading checklist. Verify current provider entitlement and current blockers before relying on any market-data section here.
 
 ## 1. Live-price grounding integration test (5 min)
 

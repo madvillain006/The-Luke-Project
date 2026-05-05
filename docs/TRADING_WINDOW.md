@@ -1,4 +1,4 @@
-# Trading Window
+# Read-Only Trading Window
 
 Date: 2026-05-04
 

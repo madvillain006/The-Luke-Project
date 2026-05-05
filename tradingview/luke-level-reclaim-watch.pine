@@ -16,7 +16,7 @@ show_source_labels = input.bool(true, "Show source labels")
 show_raw_event_markers = input.bool(false, "Show raw event markers")
 show_blocked_markers = input.bool(false, "Show blocked markers")
 show_historical_signal_markers = input.bool(true, "Show historical signal markers")
-show_long_signal_marker = input.bool(true, "Show LONG signal marker")
+show_long_signal_marker = input.bool(true, "Show PAPER_CANDIDATE marker")
 show_latest_candidate_label = input.bool(true, "Show latest candidate label")
 show_program_context = input.bool(false, "Show program context")
 show_watch_label = input.bool(true, "Show latest watch label")
@@ -29,11 +29,16 @@ show_session_pnl = input.bool(true, "Show session points/PnL")
 pnl_point_value_mode = input.string("auto", "PnL point value", options=["auto", "ES", "MES", "custom"], tooltip="auto uses size mode: ES=$50/point, MES=$5/point, watch only=$0.")
 custom_pnl_dollars_per_point = input.float(50.0, "Custom dollars per point", minval=0.0, step=1.0)
 pnl_contract_plan = input.string("auto", "PnL contract plan", options=["auto", "single_tp1", "split_tp1_tp2", "runner_to_tp2"], tooltip="auto treats 2ES/2MES as split: one exits TP1, one runs to TP2/BE.")
+slippage_points_per_side = input.float(0.5, "Slippage points per side", minval=0.0, step=0.25)
+commission_per_contract_round_trip = input.float(5.0, "Commission per contract round trip", minval=0.0, step=0.25)
+eval_loss_limit_dollars = input.float(0.0, "Eval max session loss $ (0 off)", minval=0.0, step=50.0)
 mixed_bar_pnl_policy = input.string("conservative_stop", "Mixed-bar PnL policy", options=["conservative_stop", "zero", "target_first"], tooltip="When one candle touches target and stop, OHLC cannot prove order. Conservative stop is the safest default.")
-enable_json_alerts = input.bool(true, "Enable JSON alert log")
+enable_alertconditions = input.bool(true, "Enable alertconditions")
 alert_watch_events = input.bool(true, "Alert WATCH events")
-alert_long_events = input.bool(true, "Alert LONG events")
-alert_result_events = input.bool(true, "Alert result events")
+alert_armed_events = input.bool(true, "Alert ARMED events")
+alert_paper_candidate_events = input.bool(true, "Alert PAPER_CANDIDATE events")
+alert_invalidated_events = input.bool(true, "Alert INVALIDATED events")
+alert_blocked_events = input.bool(true, "Alert BLOCKED events")
 
 mancini_levels_input = input.string("", "Mancini levels", tooltip="Comma-separated prices exported from Luke.")
 dubz_levels_input = input.string("", "Dubz levels", tooltip="Comma-separated prices exported from Luke.")
@@ -60,7 +65,7 @@ anti_stuff_filter = input.bool(true, "Block stuffed reclaim candles")
 min_close_above_level_points = input.float(0.25, "Minimum close above level", minval=0.0, step=0.25)
 min_reclaim_close_location = input.float(0.55, "Minimum reclaim close location", minval=0.0, maxval=1.0, step=0.05, tooltip="0.55 means the reclaim candle must close in the upper 55% of its range.")
 max_reclaim_upper_wick_points = input.float(3.0, "Maximum reclaim upper wick", minval=0.0, step=0.25)
-enable_impulse_reclaim_long = input.bool(true, "Enable impulse reclaim LONG")
+enable_impulse_reclaim_long = input.bool(true, "Enable impulse reclaim PAPER_CANDIDATE")
 require_impulse_cloud_break = input.bool(true, "Require impulse cloud break")
 min_impulse_body_pct = input.float(0.45, "Minimum impulse body percent", minval=0.0, maxval=1.0, step=0.05)
 candidate_label_context_bars = input.int(31, "Candidate label local-low bars", minval=10, maxval=80)
@@ -325,10 +330,12 @@ var int session_mixed = 0
 var int session_refreshed = 0
 var float session_realized_points = 0.0
 var float session_realized_dollars = 0.0
+var float session_cost_dollars = 0.0
+var float session_net_dollars = 0.0
 var int last_candidate_closed_bar = na
 var int last_failed_candidate_bar = na
 var float last_failed_candidate_level = na
-var table session_scorecard = table.new(position.top_right, 2, 5, bgcolor=color.new(color.black, 35), frame_color=color.new(color.gray, 40), frame_width=1)
+var table session_scorecard = table.new(position.top_right, 2, 7, bgcolor=color.new(color.black, 35), frame_color=color.new(color.gray, 40), frame_width=1)
 var table event_ledger_table = table.new(position.bottom_right, 1, 13, bgcolor=color.new(color.black, 30), frame_color=color.new(color.gray, 40), frame_width=1)
 var bool tracked_candidate_open = false
 var bool tracked_candidate_tp1_hit = false
@@ -365,16 +372,39 @@ f_money(float value) =>
 f_mixed_realized_points(float stop_price, float entry_price, float target_price) =>
     mixed_bar_pnl_policy == "target_first" ? target_price - entry_price : mixed_bar_pnl_policy == "zero" ? 0.0 : stop_price - entry_price
 
-f_json_event(string event_name, int signal_id, float level, float entry, float stop, float tp1, float tp2, string outcome, float event_points) =>
-    "{" + "\"schema\":\"luke_watch_v1\"," + "\"event\":\"" + event_name + "\"," + "\"symbol\":\"" + syminfo.tickerid + "\"," + "\"timeframe\":\"" + timeframe.period + "\"," + "\"bar_time\":" + str.tostring(time) + "," + "\"bar_index\":" + str.tostring(bar_index) + "," + "\"id\":" + f_json_int(signal_id) + "," + "\"level\":" + f_json_num(level) + "," + "\"entry\":" + f_json_num(entry) + "," + "\"stop\":" + f_json_num(stop) + "," + "\"tp1\":" + f_json_num(tp1) + "," + "\"tp2\":" + f_json_num(tp2) + "," + "\"outcome\":\"" + outcome + "\"," + "\"contract_plan\":\"" + (split_contract_pnl ? "split_tp1_tp2" : single_contract_pnl ? "single_tp1" : "runner_to_tp2") + "\"," + "\"event_points\":" + f_json_num(event_points) + "," + "\"event_pnl\":" + f_json_num(event_points * pnl_dollars_per_point) + "," + "\"session_points\":" + f_json_num(session_realized_points) + "," + "\"session_pnl\":" + f_json_num(session_realized_dollars) + "," + "\"dollars_per_point\":" + f_json_num(pnl_dollars_per_point) + "," + "\"session_attempts\":" + str.tostring(session_attempts) + "," + "\"session_successes\":" + str.tostring(session_successes) + "," + "\"session_stopped\":" + str.tostring(session_stopped) + "}"
+f_accounting_entry(float entry_price) =>
+    entry_price + slippage_points_per_side
+
+f_event_cost_dollars(float contracts) =>
+    size_mode == "watch only" ? 0.0 : ((slippage_points_per_side * 2.0 * pnl_dollars_per_point) + commission_per_contract_round_trip) * contracts
+
+f_session_commission_dollars() =>
+    float cost_per_contract = (slippage_points_per_side * 2.0 * pnl_dollars_per_point) + commission_per_contract_round_trip
+    cost_per_contract > 0 ? session_cost_dollars * commission_per_contract_round_trip / cost_per_contract : 0.0
+
+f_session_slippage_dollars() =>
+    session_cost_dollars - f_session_commission_dollars()
+
+f_event_net_dollars(float event_points, float contracts) =>
+    event_points * pnl_dollars_per_point - f_event_cost_dollars(contracts)
+
+f_open_contract_count(bool tp1_already_hit) =>
+    size_mode == "watch only" ? 0.0 : split_contract_pnl and not tp1_already_hit ? 2.0 : 1.0
+
+f_tp1_partial_contract_count() =>
+    size_mode == "watch only" ? 0.0 : split_contract_pnl ? 1.0 : 0.0
+
+f_mixed_tp1_contract_count() =>
+    size_mode == "watch only" ? 0.0 : split_contract_pnl ? mixed_bar_pnl_policy == "target_first" ? 1.0 : mixed_bar_pnl_policy == "zero" ? 0.0 : 2.0 : 1.0
 
 f_event_time_et() =>
     string minute_text = minute(time, "America/New_York") < 10 ? "0" + str.tostring(minute(time, "America/New_York")) : str.tostring(minute(time, "America/New_York"))
     str.tostring(hour(time, "America/New_York")) + ":" + minute_text
 
-f_add_event_ledger(string[] rows, string event_name, int signal_id, float level, string outcome, float event_points) =>
-    string event_pnl = f_money(event_points * pnl_dollars_per_point)
-    string line_text = f_event_time_et() + " #" + f_json_int(signal_id) + " " + event_name + " " + f_json_num(level) + " " + outcome + " " + f_signed_points(event_points) + " " + event_pnl
+f_add_event_ledger(string[] rows, string event_name, int signal_id, float level, string outcome, float event_points, float event_contracts) =>
+    string event_pnl = f_money(f_event_net_dollars(event_points, event_contracts))
+    string breach_text = eval_loss_limit_dollars > 0 and session_net_dollars <= -eval_loss_limit_dollars ? " BREACH" : ""
+    string line_text = f_event_time_et() + " #" + f_json_int(signal_id) + " " + event_name + " " + f_json_num(level) + " " + outcome + " -> " + event_pnl + breach_text
     array.unshift(rows, line_text)
     if array.size(rows) > 10
         array.pop(rows)
@@ -391,6 +421,8 @@ if new_futures_session
     session_refreshed := 0
     session_realized_points := 0.0
     session_realized_dollars := 0.0
+    session_cost_dollars := 0.0
+    session_net_dollars := 0.0
     candidate_id := 0
     watch_id := 0
     last_candidate_closed_bar := na
@@ -616,8 +648,8 @@ plotshape(show_raw_event_markers and raw_reclaim_signal, title="LUKE RAW RECLAIM
 plotshape(show_blocked_markers and blocked_event, title="LUKE BLOCKED", text="", style=shape.xcross, location=location.abovebar, color=color.new(color.orange, 0), textcolor=color.white, size=size.tiny)
 plotshape(show_historical_signal_markers and watch_event, title="LUKE WATCH", text="", style=shape.circle, location=location.belowbar, color=color.new(color.gray, 0), textcolor=color.white, size=size.tiny)
 plotshape(show_historical_signal_markers and armed_event, title="LUKE ARMED", text="", style=shape.triangleup, location=location.belowbar, color=color.new(color.aqua, 0), textcolor=color.black, size=size.tiny)
-plotshape(show_historical_signal_markers and long_candidate_event and not show_long_signal_marker, title="LUKE LONG CANDIDATE", text="", style=shape.triangleup, location=location.belowbar, color=color.new(color.green, 0), textcolor=color.white, size=size.small)
-plotshape(show_long_signal_marker and long_candidate_event, title="LUKE LONG SIGNAL", text="LONG", style=shape.labelup, location=location.belowbar, color=color.new(color.green, 0), textcolor=color.white, size=size.normal)
+plotshape(show_historical_signal_markers and long_candidate_event and not show_long_signal_marker, title="LUKE PAPER_CANDIDATE", text="", style=shape.triangleup, location=location.belowbar, color=color.new(color.green, 0), textcolor=color.white, size=size.small)
+plotshape(show_long_signal_marker and long_candidate_event, title="LUKE PAPER_CANDIDATE", text="PAPER", style=shape.labelup, location=location.belowbar, color=color.new(color.green, 0), textcolor=color.white, size=size.normal)
 plotshape(show_historical_signal_markers and invalidated_event, title="LUKE INVALIDATED", text="", style=shape.triangledown, location=location.abovebar, color=color.new(color.red, 0), textcolor=color.white, size=size.tiny)
 
 if blocked_event and show_blocked_reason_labels and str.length(active_block_reason) > 0
@@ -628,23 +660,24 @@ if watch_event and not na(active_level)
     session_watches += 1
     latest_watch_bar := bar_index
     latest_watch_level := active_level
-    f_add_event_ledger(event_ledger, "WATCH", watch_id, active_level, "watch", 0.0)
+    f_add_event_ledger(event_ledger, "WATCH", watch_id, active_level, "watch", 0.0, 0.0)
     if not na(latest_watch_label)
         label.delete(latest_watch_label)
     if show_watch_label
         latest_watch_label := label.new(bar_index, low, "WATCH #" + str.tostring(watch_id) + "\n" + str.tostring(active_level, format.mintick), style=label.style_label_up, textcolor=color.white, color=color.new(color.gray, 20), size=size.tiny)
-    if barstate.isconfirmed and enable_json_alerts and alert_watch_events
-        alert(f_json_event("WATCH", watch_id, active_level, active_entry, active_stop, active_tp1, active_tp2, "watch", 0.0), alert.freq_all)
-
 bool tracked_candidate_ended = false
 if track_candidate_results and tracked_candidate_open and bar_index > tracked_candidate_start_bar
     bool tracked_hit_stop = low <= tracked_candidate_active_stop
     bool tracked_hit_tp1 = high >= tracked_candidate_tp1
     bool tracked_hit_tp2 = high >= tracked_candidate_tp2
+    float accounting_entry = tracked_candidate_entry
     if single_contract_pnl and tracked_hit_stop and tracked_hit_tp1 and not tracked_candidate_tp1_hit
-        float result_points = f_mixed_realized_points(tracked_candidate_active_stop, tracked_candidate_entry, tracked_candidate_tp1)
+        float result_points = f_mixed_realized_points(tracked_candidate_active_stop, accounting_entry, tracked_candidate_tp1)
+        float result_contracts = 1.0
         session_realized_points += result_points
         session_realized_dollars += result_points * pnl_dollars_per_point
+        session_cost_dollars += f_event_cost_dollars(result_contracts)
+        session_net_dollars += f_event_net_dollars(result_points, result_contracts)
         session_mixed += 1
         if result_points > 0
             session_successes += 1
@@ -654,33 +687,35 @@ if track_candidate_results and tracked_candidate_open and bar_index > tracked_ca
             session_stopped += 1
             last_failed_candidate_bar := bar_index
             last_failed_candidate_level := tracked_candidate_level
-        f_add_event_ledger(event_ledger, "MIXED_TP1_STOP", tracked_candidate_id, tracked_candidate_level, "mixed", result_points)
-        f_add_status_label(status_labels, bar_index, close, "LONG #" + str.tostring(tracked_candidate_id) + " MIXED TP1+STOP " + f_signed_points(result_points), color.new(color.orange, 0))
+        f_add_event_ledger(event_ledger, "MIXED_TP1_STOP", tracked_candidate_id, tracked_candidate_level, "mixed", result_points, result_contracts)
+        f_add_status_label(status_labels, bar_index, close, "PAPER_CANDIDATE #" + str.tostring(tracked_candidate_id) + " MIXED TP1+STOP " + f_signed_points(result_points), color.new(color.orange, 0))
         tracked_candidate_open := false
         last_candidate_closed_bar := bar_index
         tracked_candidate_ended := true
-        if barstate.isconfirmed and enable_json_alerts and alert_result_events
-            alert(f_json_event("MIXED_TP1_STOP", tracked_candidate_id, tracked_candidate_level, tracked_candidate_entry, tracked_candidate_active_stop, tracked_candidate_tp1, tracked_candidate_tp2, "mixed_tp1_stop", result_points), alert.freq_all)
     else if single_contract_pnl and tracked_hit_tp1 and not tracked_candidate_tp1_hit
-        float result_points = tracked_candidate_tp1 - tracked_candidate_entry
+        float result_points = tracked_candidate_tp1 - accounting_entry
+        float result_contracts = 1.0
         session_realized_points += result_points
         session_realized_dollars += result_points * pnl_dollars_per_point
+        session_cost_dollars += f_event_cost_dollars(result_contracts)
+        session_net_dollars += f_event_net_dollars(result_points, result_contracts)
         session_successes += 1
         session_tp1_hits += 1
         tracked_candidate_success_counted := true
-        f_add_event_ledger(event_ledger, "TP1_EXIT", tracked_candidate_id, tracked_candidate_level, "single_exit", result_points)
-        f_add_status_label(status_labels, bar_index, tracked_candidate_tp1, "LONG #" + str.tostring(tracked_candidate_id) + " TP1 EXIT " + f_signed_points(result_points), color.new(color.green, 0))
+        f_add_event_ledger(event_ledger, "TP1_EXIT", tracked_candidate_id, tracked_candidate_level, "single_exit", result_points, result_contracts)
+        f_add_status_label(status_labels, bar_index, tracked_candidate_tp1, "PAPER_CANDIDATE #" + str.tostring(tracked_candidate_id) + " TP1 EXIT " + f_signed_points(result_points), color.new(color.green, 0))
         tracked_candidate_open := false
         last_candidate_closed_bar := bar_index
         tracked_candidate_ended := true
-        if barstate.isconfirmed and enable_json_alerts and alert_result_events
-            alert(f_json_event("TP1_EXIT", tracked_candidate_id, tracked_candidate_level, tracked_candidate_entry, tracked_candidate_active_stop, tracked_candidate_tp1, tracked_candidate_tp2, "single_tp1_exit", result_points), alert.freq_all)
     else if tracked_hit_stop and tracked_hit_tp2 and not tracked_candidate_tp1_hit
-        float stop_first_points = (tracked_candidate_active_stop - tracked_candidate_entry) * (split_contract_pnl ? 2.0 : 1.0)
-        float target_first_points = split_contract_pnl ? (tracked_candidate_tp1 - tracked_candidate_entry) + (tracked_candidate_tp2 - tracked_candidate_entry) : tracked_candidate_tp2 - tracked_candidate_entry
+        float result_contracts = mixed_bar_pnl_policy == "zero" ? 0.0 : f_open_contract_count(false)
+        float stop_first_points = (tracked_candidate_active_stop - accounting_entry) * (split_contract_pnl ? 2.0 : 1.0)
+        float target_first_points = split_contract_pnl ? (tracked_candidate_tp1 - accounting_entry) + (tracked_candidate_tp2 - accounting_entry) : tracked_candidate_tp2 - accounting_entry
         float result_points = mixed_bar_pnl_policy == "target_first" ? target_first_points : mixed_bar_pnl_policy == "zero" ? 0.0 : stop_first_points
         session_realized_points += result_points
         session_realized_dollars += result_points * pnl_dollars_per_point
+        session_cost_dollars += f_event_cost_dollars(result_contracts)
+        session_net_dollars += f_event_net_dollars(result_points, result_contracts)
         session_mixed += 1
         if result_points > 0
             session_successes += 1
@@ -690,46 +725,49 @@ if track_candidate_results and tracked_candidate_open and bar_index > tracked_ca
             session_stopped += 1
             last_failed_candidate_bar := bar_index
             last_failed_candidate_level := tracked_candidate_level
-        f_add_event_ledger(event_ledger, "MIXED_TP2_STOP", tracked_candidate_id, tracked_candidate_level, "mixed", result_points)
-        f_add_status_label(status_labels, bar_index, close, "LONG #" + str.tostring(tracked_candidate_id) + " MIXED TP2+STOP " + f_signed_points(result_points), color.new(color.orange, 0))
+        f_add_event_ledger(event_ledger, "MIXED_TP2_STOP", tracked_candidate_id, tracked_candidate_level, "mixed", result_points, result_contracts)
+        f_add_status_label(status_labels, bar_index, close, "PAPER_CANDIDATE #" + str.tostring(tracked_candidate_id) + " MIXED TP2+STOP " + f_signed_points(result_points), color.new(color.orange, 0))
         tracked_candidate_open := false
         last_candidate_closed_bar := bar_index
         tracked_candidate_ended := true
-        if barstate.isconfirmed and enable_json_alerts and alert_result_events
-            alert(f_json_event("MIXED_TP2_STOP", tracked_candidate_id, tracked_candidate_level, tracked_candidate_entry, tracked_candidate_active_stop, tracked_candidate_tp1, tracked_candidate_tp2, "mixed_tp2_stop", result_points), alert.freq_all)
     else if tracked_hit_tp2
-        float result_points = split_contract_pnl and not tracked_candidate_tp1_hit ? (tracked_candidate_tp1 - tracked_candidate_entry) + (tracked_candidate_tp2 - tracked_candidate_entry) : tracked_candidate_tp2 - tracked_candidate_entry
+        float result_contracts = f_open_contract_count(tracked_candidate_tp1_hit)
+        float result_points = split_contract_pnl and not tracked_candidate_tp1_hit ? (tracked_candidate_tp1 - accounting_entry) + (tracked_candidate_tp2 - accounting_entry) : tracked_candidate_tp2 - accounting_entry
         session_realized_points += result_points
         session_realized_dollars += result_points * pnl_dollars_per_point
+        session_cost_dollars += f_event_cost_dollars(result_contracts)
+        session_net_dollars += f_event_net_dollars(result_points, result_contracts)
         if not tracked_candidate_success_counted
             session_successes += 1
             tracked_candidate_success_counted := true
         session_tp2_hits += 1
-        f_add_event_ledger(event_ledger, "TP2", tracked_candidate_id, tracked_candidate_level, "succeeded", result_points)
-        f_add_status_label(status_labels, bar_index, tracked_candidate_tp2, "LONG #" + str.tostring(tracked_candidate_id) + " SUCCEEDED TP2 " + f_signed_points(result_points), color.new(color.green, 0))
+        f_add_event_ledger(event_ledger, "TP2", tracked_candidate_id, tracked_candidate_level, "succeeded", result_points, result_contracts)
+        f_add_status_label(status_labels, bar_index, tracked_candidate_tp2, "PAPER_CANDIDATE #" + str.tostring(tracked_candidate_id) + " SUCCEEDED TP2 " + f_signed_points(result_points), color.new(color.green, 0))
         tracked_candidate_open := false
         last_candidate_closed_bar := bar_index
         tracked_candidate_ended := true
-        if barstate.isconfirmed and enable_json_alerts and alert_result_events
-            alert(f_json_event("TP2", tracked_candidate_id, tracked_candidate_level, tracked_candidate_entry, tracked_candidate_active_stop, tracked_candidate_tp1, tracked_candidate_tp2, "succeeded_tp2", result_points), alert.freq_all)
     else if tracked_hit_stop and tracked_candidate_tp1_hit
-        float result_points = tracked_candidate_active_stop - tracked_candidate_entry
+        float result_contracts = f_open_contract_count(true)
+        float result_points = tracked_candidate_active_stop - accounting_entry
         session_realized_points += result_points
         session_realized_dollars += result_points * pnl_dollars_per_point
+        session_cost_dollars += f_event_cost_dollars(result_contracts)
+        session_net_dollars += f_event_net_dollars(result_points, result_contracts)
         session_breakevens += 1
-        f_add_event_ledger(event_ledger, "TP1_STOPPED_BE", tracked_candidate_id, tracked_candidate_level, "breakeven", result_points)
-        f_add_status_label(status_labels, bar_index, tracked_candidate_active_stop, "LONG #" + str.tostring(tracked_candidate_id) + " SUCCEEDED TP1 / STOPPED BE " + f_signed_points(result_points), color.new(color.teal, 0))
+        f_add_event_ledger(event_ledger, "TP1_STOPPED_BE", tracked_candidate_id, tracked_candidate_level, "breakeven", result_points, result_contracts)
+        f_add_status_label(status_labels, bar_index, tracked_candidate_active_stop, "PAPER_CANDIDATE #" + str.tostring(tracked_candidate_id) + " SUCCEEDED TP1 / STOPPED BE " + f_signed_points(result_points), color.new(color.teal, 0))
         tracked_candidate_open := false
         last_candidate_closed_bar := bar_index
         tracked_candidate_ended := true
-        if barstate.isconfirmed and enable_json_alerts and alert_result_events
-            alert(f_json_event("TP1_STOPPED_BE", tracked_candidate_id, tracked_candidate_level, tracked_candidate_entry, tracked_candidate_active_stop, tracked_candidate_tp1, tracked_candidate_tp2, "succeeded_tp1_stopped_be", result_points), alert.freq_all)
     else if tracked_hit_stop and tracked_hit_tp1
-        float stop_first_points = (tracked_candidate_active_stop - tracked_candidate_entry) * (split_contract_pnl ? 2.0 : 1.0)
-        float target_first_points = split_contract_pnl ? tracked_candidate_tp1 - tracked_candidate_entry : 0.0
+        float result_contracts = f_mixed_tp1_contract_count()
+        float stop_first_points = (tracked_candidate_active_stop - accounting_entry) * (split_contract_pnl ? 2.0 : 1.0)
+        float target_first_points = split_contract_pnl ? tracked_candidate_tp1 - accounting_entry : 0.0
         float result_points = mixed_bar_pnl_policy == "target_first" ? target_first_points : mixed_bar_pnl_policy == "zero" ? 0.0 : stop_first_points
         session_realized_points += result_points
         session_realized_dollars += result_points * pnl_dollars_per_point
+        session_cost_dollars += f_event_cost_dollars(result_contracts)
+        session_net_dollars += f_event_net_dollars(result_points, result_contracts)
         if result_points > 0 and not tracked_candidate_success_counted
             session_successes += 1
             tracked_candidate_success_counted := true
@@ -739,58 +777,58 @@ if track_candidate_results and tracked_candidate_open and bar_index > tracked_ca
             last_failed_candidate_bar := bar_index
             last_failed_candidate_level := tracked_candidate_level
         session_mixed += 1
-        f_add_event_ledger(event_ledger, "MIXED_TP1_STOP", tracked_candidate_id, tracked_candidate_level, "mixed", result_points)
-        f_add_status_label(status_labels, bar_index, close, "LONG #" + str.tostring(tracked_candidate_id) + " MIXED TP1+STOP " + f_signed_points(result_points), color.new(color.orange, 0))
+        f_add_event_ledger(event_ledger, "MIXED_TP1_STOP", tracked_candidate_id, tracked_candidate_level, "mixed", result_points, result_contracts)
+        f_add_status_label(status_labels, bar_index, close, "PAPER_CANDIDATE #" + str.tostring(tracked_candidate_id) + " MIXED TP1+STOP " + f_signed_points(result_points), color.new(color.orange, 0))
         tracked_candidate_open := false
         last_candidate_closed_bar := bar_index
         tracked_candidate_ended := true
-        if barstate.isconfirmed and enable_json_alerts and alert_result_events
-            alert(f_json_event("MIXED_TP1_STOP", tracked_candidate_id, tracked_candidate_level, tracked_candidate_entry, tracked_candidate_active_stop, tracked_candidate_tp1, tracked_candidate_tp2, "mixed_tp1_stop", result_points), alert.freq_all)
     else if tracked_hit_stop
-        float result_points = (tracked_candidate_active_stop - tracked_candidate_entry) * (split_contract_pnl and not tracked_candidate_tp1_hit ? 2.0 : 1.0)
+        float result_contracts = f_open_contract_count(tracked_candidate_tp1_hit)
+        float result_points = (tracked_candidate_active_stop - accounting_entry) * result_contracts
         session_realized_points += result_points
         session_realized_dollars += result_points * pnl_dollars_per_point
+        session_cost_dollars += f_event_cost_dollars(result_contracts)
+        session_net_dollars += f_event_net_dollars(result_points, result_contracts)
         session_stopped += 1
         last_failed_candidate_bar := bar_index
         last_failed_candidate_level := tracked_candidate_level
-        f_add_event_ledger(event_ledger, "STOPPED", tracked_candidate_id, tracked_candidate_level, "failed", result_points)
-        f_add_status_label(status_labels, bar_index, tracked_candidate_active_stop, "LONG #" + str.tostring(tracked_candidate_id) + " FAILED STOPPED " + f_signed_points(result_points), color.new(color.red, 0))
+        f_add_event_ledger(event_ledger, "STOPPED", tracked_candidate_id, tracked_candidate_level, "failed", result_points, result_contracts)
+        f_add_status_label(status_labels, bar_index, tracked_candidate_active_stop, "PAPER_CANDIDATE #" + str.tostring(tracked_candidate_id) + " FAILED STOPPED " + f_signed_points(result_points), color.new(color.red, 0))
         tracked_candidate_open := false
         last_candidate_closed_bar := bar_index
         tracked_candidate_ended := true
-        if barstate.isconfirmed and enable_json_alerts and alert_result_events
-            alert(f_json_event("STOPPED", tracked_candidate_id, tracked_candidate_level, tracked_candidate_entry, tracked_candidate_active_stop, tracked_candidate_tp1, tracked_candidate_tp2, "failed_stopped", result_points), alert.freq_all)
     else if tracked_hit_tp1 and not tracked_candidate_tp1_hit
         tracked_candidate_tp1_hit := true
         if not tracked_candidate_success_counted
             session_successes += 1
             tracked_candidate_success_counted := true
         session_tp1_hits += 1
-        float result_points = split_contract_pnl ? tracked_candidate_tp1 - tracked_candidate_entry : 0.0
+        float result_contracts = f_tp1_partial_contract_count()
+        float result_points = split_contract_pnl ? tracked_candidate_tp1 - accounting_entry : 0.0
         session_realized_points += result_points
         session_realized_dollars += result_points * pnl_dollars_per_point
+        session_cost_dollars += f_event_cost_dollars(result_contracts)
+        session_net_dollars += f_event_net_dollars(result_points, result_contracts)
         tracked_candidate_active_stop := tracked_candidate_entry
         if not na(stop_line)
             line.set_y1(stop_line, tracked_candidate_active_stop)
             line.set_y2(stop_line, tracked_candidate_active_stop)
             line.set_color(stop_line, color.new(color.yellow, 0))
-        f_add_event_ledger(event_ledger, "TP1_STOP_TO_BE", tracked_candidate_id, tracked_candidate_level, split_contract_pnl ? "one_exit_one_be" : "stop_to_be", result_points)
-        f_add_status_label(status_labels, bar_index, tracked_candidate_tp1, "LONG #" + str.tostring(tracked_candidate_id) + " TP1 HIT - STOP TO BE " + f_signed_points(result_points), color.new(color.green, 20))
-        if barstate.isconfirmed and enable_json_alerts and alert_result_events
-            alert(f_json_event("TP1_STOP_TO_BE", tracked_candidate_id, tracked_candidate_level, tracked_candidate_entry, tracked_candidate_active_stop, tracked_candidate_tp1, tracked_candidate_tp2, split_contract_pnl ? "split_tp1_exit_runner_be" : "tp1_stop_to_breakeven", result_points), alert.freq_all)
-
+        f_add_event_ledger(event_ledger, "TP1_STOP_TO_BE", tracked_candidate_id, tracked_candidate_level, split_contract_pnl ? "one_exit_one_be" : "stop_to_be", result_points, result_contracts)
+        f_add_status_label(status_labels, bar_index, tracked_candidate_tp1, "PAPER_CANDIDATE #" + str.tostring(tracked_candidate_id) + " TP1 HIT - STOP TO BE " + f_signed_points(result_points), color.new(color.green, 20))
 if long_candidate_event and not na(active_level)
     if track_candidate_results and tracked_candidate_open and not tracked_candidate_ended
         session_refreshed += 1
-        float result_points = close - tracked_candidate_entry
+        float result_contracts = f_open_contract_count(tracked_candidate_tp1_hit)
+        float result_points = (close - tracked_candidate_entry) * result_contracts
         session_realized_points += result_points
         session_realized_dollars += result_points * pnl_dollars_per_point
-        f_add_event_ledger(event_ledger, "REFRESHED", tracked_candidate_id, tracked_candidate_level, "new_long", result_points)
-        f_add_status_label(status_labels, bar_index, close, "LONG #" + str.tostring(tracked_candidate_id) + " REFRESHED " + f_signed_points(result_points), color.new(color.gray, 0))
+        session_cost_dollars += f_event_cost_dollars(result_contracts)
+        session_net_dollars += f_event_net_dollars(result_points, result_contracts)
+        f_add_event_ledger(event_ledger, "REFRESHED", tracked_candidate_id, tracked_candidate_level, "new_candidate", result_points, result_contracts)
+        f_add_status_label(status_labels, bar_index, close, "PAPER_CANDIDATE #" + str.tostring(tracked_candidate_id) + " REFRESHED " + f_signed_points(result_points), color.new(color.gray, 0))
         tracked_candidate_open := false
         last_candidate_closed_bar := bar_index
-        if barstate.isconfirmed and enable_json_alerts and alert_result_events
-            alert(f_json_event("REFRESHED", tracked_candidate_id, tracked_candidate_level, tracked_candidate_entry, tracked_candidate_active_stop, tracked_candidate_tp1, tracked_candidate_tp2, "refreshed_by_new_long", result_points), alert.freq_all)
     if not na(entry_line)
         line.delete(entry_line)
     if not na(stop_line)
@@ -814,9 +852,7 @@ if long_candidate_event and not na(active_level)
     tracked_candidate_active_stop := active_stop
     tracked_candidate_tp1 := active_tp1
     tracked_candidate_tp2 := active_tp2
-    f_add_event_ledger(event_ledger, "LONG", candidate_id, active_level, split_contract_pnl ? "2ct_candidate" : "candidate", 0.0)
-    if barstate.isconfirmed and enable_json_alerts and alert_long_events
-        alert(f_json_event("LONG", candidate_id, active_level, active_entry, active_stop, active_tp1, active_tp2, split_contract_pnl ? "two_contract_long_candidate" : "long_candidate", 0.0), alert.freq_all)
+    f_add_event_ledger(event_ledger, "PAPER_CANDIDATE", candidate_id, active_level, split_contract_pnl ? "2ct_candidate" : "candidate", 0.0, 0.0)
     if show_bracket_visual
         entry_line := line.new(bar_index, active_entry, bar_index + bracket_bars, active_entry, color=color.new(color.white, 0), width=2)
         stop_line := line.new(bar_index, active_stop, bar_index + bracket_bars, active_stop, color=color.new(color.red, 0), width=2)
@@ -825,7 +861,7 @@ if long_candidate_event and not na(active_level)
     if show_latest_candidate_label
         string program_context = show_program_context ? "\nmode " + account_mode + " / " + size_mode : ""
         string watch_context = not na(latest_watch_bar) ? "\nwatch #" + str.tostring(watch_id) + " @ " + str.tostring(latest_watch_level, format.mintick) : ""
-        string details = "LONG #" + str.tostring(candidate_id) + " cluster " + str.tostring(active_level, format.mintick) + watch_context + program_context + "\nE " + str.tostring(active_entry, format.mintick) + " / S " + str.tostring(active_stop, format.mintick) + "\nT1 " + str.tostring(active_tp1, format.mintick) + " / T2 " + str.tostring(active_tp2, format.mintick)
+        string details = "PAPER_CANDIDATE #" + str.tostring(candidate_id) + " cluster " + str.tostring(active_level, format.mintick) + watch_context + program_context + "\nE " + str.tostring(active_entry, format.mintick) + " / fill " + str.tostring(f_accounting_entry(active_entry), format.mintick) + "\nS " + str.tostring(active_stop, format.mintick) + " / T1 " + str.tostring(active_tp1, format.mintick) + " / T2 " + str.tostring(active_tp2, format.mintick)
         signal_label := label.new(bar_index, candidate_label_y, details, style=label.style_label_up, textcolor=color.white, color=color.new(color.green, 8), size=size.small)
 
 if barstate.islast
@@ -835,19 +871,28 @@ if barstate.islast
         float score_pct = session_attempts > 0 ? (session_successes * 100.0) / session_attempts : na
         string score_pct_text = na(score_pct) ? "n/a" : str.tostring(score_pct, "#.0") + "%"
         table.cell(session_scorecard, 0, 0, "Futures session", text_color=color.white, bgcolor=color.new(color.black, 10), text_size=size.small)
-        table.cell(session_scorecard, 1, 0, "LONGS", text_color=color.white, bgcolor=color.new(color.black, 10), text_size=size.small)
+        table.cell(session_scorecard, 1, 0, "CANDIDATES", text_color=color.white, bgcolor=color.new(color.black, 10), text_size=size.small)
         table.cell(session_scorecard, 0, 1, "success/attempt", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 1, 1, score_text + "  " + score_pct_text, text_color=session_successes > 0 ? color.lime : color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 0, 2, "stopped before TP1", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 1, 2, stop_text, text_color=session_stopped > 0 ? color.red : color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
-        float open_points = tracked_candidate_open ? close - tracked_candidate_entry : 0.0
         string realized_text = show_session_pnl ? f_signed_points(session_realized_points) : ""
         string realized_money_text = show_session_pnl ? f_money(session_realized_dollars) : ""
-        string open_text = show_session_pnl and tracked_candidate_open ? f_signed_points(open_points) + " " + f_money(open_points * pnl_dollars_per_point) : "flat"
-        table.cell(session_scorecard, 0, 3, "realized pts/$", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
+        float session_commission_dollars = f_session_commission_dollars()
+        float session_slippage_dollars = f_session_slippage_dollars()
+        float session_after_commissions = session_realized_dollars - session_commission_dollars
+        float session_after_all_costs = session_net_dollars
+        string after_commission_text = show_session_pnl ? f_money(session_after_commissions) : ""
+        string after_all_text = show_session_pnl ? f_money(session_after_all_costs) : ""
+        string eval_text = eval_loss_limit_dollars > 0 and session_net_dollars <= -eval_loss_limit_dollars ? " BREACH" : ""
+        table.cell(session_scorecard, 0, 3, "total", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 1, 3, realized_text + "  " + realized_money_text, text_color=session_realized_points >= 0 ? color.lime : color.red, bgcolor=color.new(color.black, 45), text_size=size.small)
-        table.cell(session_scorecard, 0, 4, "open mark", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
-        table.cell(session_scorecard, 1, 4, open_text, text_color=open_points >= 0 ? color.lime : color.red, bgcolor=color.new(color.black, 45), text_size=size.small)
+        table.cell(session_scorecard, 0, 4, "minus comm", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
+        table.cell(session_scorecard, 1, 4, after_commission_text, text_color=session_after_commissions >= 0 ? color.lime : color.red, bgcolor=color.new(color.black, 45), text_size=size.small)
+        table.cell(session_scorecard, 0, 5, "minus comm+slip", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
+        table.cell(session_scorecard, 1, 5, after_all_text + eval_text, text_color=session_after_all_costs >= 0 ? color.lime : color.red, bgcolor=color.new(color.black, 45), text_size=size.small)
+        table.cell(session_scorecard, 0, 6, "costs", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
+        table.cell(session_scorecard, 1, 6, "comm " + f_money(session_commission_dollars) + " / slip " + f_money(session_slippage_dollars), text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
     else
         table.cell(session_scorecard, 0, 0, "", bgcolor=color.new(color.black, 100))
         table.cell(session_scorecard, 1, 0, "", bgcolor=color.new(color.black, 100))
@@ -859,10 +904,15 @@ if barstate.islast
         table.cell(session_scorecard, 1, 3, "", bgcolor=color.new(color.black, 100))
         table.cell(session_scorecard, 0, 4, "", bgcolor=color.new(color.black, 100))
         table.cell(session_scorecard, 1, 4, "", bgcolor=color.new(color.black, 100))
+        table.cell(session_scorecard, 0, 5, "", bgcolor=color.new(color.black, 100))
+        table.cell(session_scorecard, 1, 5, "", bgcolor=color.new(color.black, 100))
+        table.cell(session_scorecard, 0, 6, "", bgcolor=color.new(color.black, 100))
+        table.cell(session_scorecard, 1, 6, "", bgcolor=color.new(color.black, 100))
     if show_event_ledger
         string ledger_header = "Luke event ledger"
         string ledger_counts = "W " + str.tostring(session_watches) + "  L " + str.tostring(session_attempts) + "  T1 " + str.tostring(session_tp1_hits) + "  T2 " + str.tostring(session_tp2_hits) + "  BE " + str.tostring(session_breakevens) + "  stop " + str.tostring(session_stopped) + "  mixed " + str.tostring(session_mixed)
-        string ledger_pnl = "realized " + f_signed_points(session_realized_points) + " " + f_money(session_realized_dollars) + "  " + (split_contract_pnl ? "2ct split" : single_contract_pnl ? "1ct TP1" : "runner")
+        float ledger_commission = f_session_commission_dollars()
+        string ledger_pnl = "Total " + f_money(session_realized_dollars) + " | -comm " + f_money(session_realized_dollars - ledger_commission) + " | -comm+slip " + f_money(session_net_dollars)
         table.cell(event_ledger_table, 0, 0, ledger_header, text_color=color.white, bgcolor=color.new(color.black, 5), text_size=size.small)
         table.cell(event_ledger_table, 0, 1, ledger_counts, text_color=color.silver, bgcolor=color.new(color.black, 35), text_size=size.tiny)
         table.cell(event_ledger_table, 0, 2, ledger_pnl, text_color=session_realized_points >= 0 ? color.lime : color.red, bgcolor=color.new(color.black, 35), text_size=size.tiny)
@@ -874,8 +924,8 @@ if barstate.islast
         for ledger_row = 0 to 12
             table.cell(event_ledger_table, 0, ledger_row, "", bgcolor=color.new(color.black, 100))
 
-alertcondition(watch_event, "LUKE WATCH", "LUKE WATCHLIST ONLY - not an order - WATCH level condition")
-alertcondition(armed_event, "LUKE ARMED", "LUKE WATCHLIST ONLY - not an order - ARMED reclaim condition")
-alertcondition(long_candidate_event, "LUKE LONG CANDIDATE", "LUKE WATCHLIST ONLY - not an order - LONG CANDIDATE visual condition")
-alertcondition(invalidated_event, "LUKE INVALIDATED", "LUKE WATCHLIST ONLY - not an order - INVALIDATED reclaim condition")
-alertcondition(blocked_event, "LUKE BLOCKED", "LUKE WATCHLIST ONLY - not an order - reclaim sequence blocked by target/risk/freshness gate")
+alertcondition(enable_alertconditions and alert_watch_events and watch_event, "LUKE WATCH", "LUKE WATCHLIST ONLY - not an order - WATCH level condition")
+alertcondition(enable_alertconditions and alert_armed_events and armed_event, "LUKE ARMED", "LUKE WATCHLIST ONLY - not an order - ARMED reclaim condition")
+alertcondition(enable_alertconditions and alert_paper_candidate_events and long_candidate_event, "LUKE PAPER_CANDIDATE", "LUKE WATCHLIST ONLY - not an order - PAPER_CANDIDATE visual condition")
+alertcondition(enable_alertconditions and alert_invalidated_events and invalidated_event, "LUKE INVALIDATED", "LUKE WATCHLIST ONLY - not an order - INVALIDATED reclaim condition")
+alertcondition(enable_alertconditions and alert_blocked_events and blocked_event, "LUKE BLOCKED", "LUKE WATCHLIST ONLY - not an order - reclaim sequence blocked by target/risk/freshness gate")

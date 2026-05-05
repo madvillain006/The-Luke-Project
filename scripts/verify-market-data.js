@@ -20,6 +20,10 @@ const REQUIRED_FIELDS = [
   'sourcePriority',
   'stale',
   'delayed',
+  'live',
+  'replay',
+  'usable_for_replay',
+  'usable_for_live_arming',
   'confidence',
   'error',
   'raw',
@@ -36,7 +40,8 @@ function validateRow(symbol, row) {
 }
 
 async function main() {
-  const snapshot = await getMarketSnapshot(REQUIRED_SYMBOLS, { cache: false, timeoutMs: 1500 });
+  const timeoutMs = Number(process.env.MARKET_DATA_TEST_TIMEOUT_MS || 7000);
+  const snapshot = await getMarketSnapshot(REQUIRED_SYMBOLS, { cache: false, timeoutMs });
   const errors = [];
   for (const symbol of REQUIRED_SYMBOLS) {
     const row = snapshot[symbol];

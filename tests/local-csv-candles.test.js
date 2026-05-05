@@ -82,4 +82,47 @@ describe('local CSV candle provider', () => {
     expect(es.candles).toHaveLength(0);
     expect(es.error).toBe('local_csv_candles_not_found');
   });
+
+  it('rejects invalid replay date/time requests explicitly', async () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'luke-candles-'));
+    writeBarchartCsv(dir);
+
+    const badDate = await getLocalCsvCandles('ES', {
+      searchDirs: [dir],
+      mode: 'replay',
+      date: '2026-02-30',
+      time: '09:30',
+      cache: false,
+    });
+    const badTime = await getLocalCsvCandles('ES', {
+      searchDirs: [dir],
+      mode: 'replay',
+      date: '2026-04-29',
+      time: '99:99',
+      cache: false,
+    });
+
+    expect(badDate.candles).toEqual([]);
+    expect(badDate.error).toBe('invalid_replay_date_2026-02-30');
+    expect(badDate.usable_for_live_arming).toBe(false);
+    expect(badTime.error).toBe('invalid_replay_time_99:99');
+  });
+
+  it('returns no candles when replay timestamp is outside the local range', async () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'luke-candles-'));
+    writeBarchartCsv(dir);
+
+    const result = await getLocalCsvCandles('ES', {
+      searchDirs: [dir],
+      mode: 'replay',
+      date: '2026-04-30',
+      time: '09:30',
+      cache: false,
+    });
+
+    expect(result.candles).toEqual([]);
+    expect(result.error).toBe('local_csv_candles_empty_after_filter');
+    expect(result.usable_for_replay).toBe(false);
+    expect(result.usable_for_live_arming).toBe(false);
+  });
 });

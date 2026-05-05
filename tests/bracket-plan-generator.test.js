@@ -69,7 +69,7 @@ describe('bracket plan generator', () => {
   it('never emits LIVE_READY status', () => {
     const candidates = buildTradeCandidates({
       clusters: [armedCluster()],
-      marketData: { price: 7224.5, stale: false, delayed: false, status: 'FRESH', live: true },
+      marketData: { price: 7224.5, stale: false, delayed: false, status: 'FRESH', live: true, usable_for_live_arming: true },
       mode: 'live',
     });
 

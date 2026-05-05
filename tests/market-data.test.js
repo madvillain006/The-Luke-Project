@@ -8,6 +8,7 @@ const {
   _internal,
 } = require('../lib/market-data');
 const { makeMarketResult, makeUnknownResult } = require('../lib/market-data/result');
+const { getPolygonMarketPrice } = require('../lib/market-data/providers/polygon');
 const { buildDecisionResponse } = require('../lib/operator/decision-adapter');
 
 function ok(info, provider, price, fields = {}) {
@@ -83,6 +84,26 @@ describe('market data provider abstraction', () => {
     expect(quote.session).toBe('closed');
     expect(quote.stale).toBe(true);
     expect(quote.delayed).toBe(true);
+  });
+
+  it('surfaces Polygon entitlement failures instead of hiding them as missing closes', async () => {
+    const originalFetch = global.fetch;
+    global.fetch = async () => ({
+      ok: false,
+      status: 403,
+    });
+
+    try {
+      const quote = await getPolygonMarketPrice(normalizeMarketSymbol('SPX'), {
+        polygonApiKey: 'test-key',
+        timeoutMs: 100,
+      });
+      expect(quote.source).toBe('polygon');
+      expect(quote.price).toBeNull();
+      expect(quote.error).toBe('polygon_not_authorized_I:SPX');
+    } finally {
+      global.fetch = originalFetch;
+    }
   });
 
   it('returns structured UNKNOWN when every provider fails', async () => {

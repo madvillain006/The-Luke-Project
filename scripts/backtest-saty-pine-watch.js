@@ -9,7 +9,8 @@ const {
 } = require('../lib/backtest-data/saty-pine-watch');
 
 const ROOT = path.join(__dirname, '..');
-const OUT_DIR = path.join(ROOT, 'artifacts', 'research', 'saty-pine-watch-backtest');
+const DEFAULT_OUT_DIR = path.join(ROOT, 'artifacts', 'research', 'saty-pine-watch-backtest');
+let OUT_DIR = DEFAULT_OUT_DIR;
 
 function ensureDir(dir) {
   fs.mkdirSync(dir, { recursive: true });
@@ -40,12 +41,18 @@ function parseArgs(argv) {
     dates: null,
     start: null,
     end: null,
+    outDir: null,
+    entrySlippagePoints: 0.25,
+    roundTripFeePerContract: 5,
   };
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === '--dates') out.dates = String(argv[++i] || '').split(',').map(v => v.trim()).filter(Boolean);
     else if (arg === '--start') out.start = argv[++i] || null;
     else if (arg === '--end') out.end = argv[++i] || null;
+    else if (arg === '--out-dir') out.outDir = argv[++i] || null;
+    else if (arg === '--entry-slippage-points') out.entrySlippagePoints = Number(argv[++i]);
+    else if (arg === '--round-trip-fee') out.roundTripFeePerContract = Number(argv[++i]);
   }
   return out;
 }
@@ -72,6 +79,9 @@ function flattenSessionRows(result) {
     events: row.summary?.events || 0,
     trades: row.summary?.trades || 0,
     total_points: row.summary?.total_points || 0,
+    total_gross_dollars: row.summary?.total_gross_dollars || 0,
+    total_fees: row.summary?.total_fees || 0,
+    total_dollars: row.summary?.total_dollars || 0,
     stop_first: row.summary?.by_outcome?.stop_first || 0,
     tp1_first: row.summary?.by_outcome?.tp1_first || 0,
     tp2_first: row.summary?.by_outcome?.tp2_first || 0,
@@ -93,13 +103,15 @@ function writeMarkdown(report) {
     '- Current Pine ATR: `atr_value = request.security(..., ta.atr(14)[1], ...)`.',
     '- Comparison variant: previous futures-session `open` as the Saty anchor.',
     '- Both variants use the same local ES 1m historical candle source and the same ported Pine watch trigger logic.',
+    `- Entry accounting uses adverse long-fill slippage of ${report.close.formula.entry_slippage_points} point(s).`,
+    `- Net dollars subtract $${report.close.formula.round_trip_fee_per_contract} per round trip contract.`,
     '',
     '## Summary',
     '',
-    '| Reference field | Sessions valid | Trades | Stop-first rate | Total points |',
-    '| --- | ---: | ---: | ---: | ---: |',
-    `| close/current Pine | ${report.close_summary.sessions_valid} | ${report.close_summary.trades} | ${pct(report.close_summary.stop_first_rate)} | ${report.close_summary.total_points} |`,
-    `| open/comparison | ${report.open_summary.sessions_valid} | ${report.open_summary.trades} | ${pct(report.open_summary.stop_first_rate)} | ${report.open_summary.total_points} |`,
+    '| Reference field | Sessions valid | Trades | Stop-first rate | Total points | Gross $ | Fees $ | Net $ |',
+    '| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |',
+    `| close/current Pine | ${report.close_summary.sessions_valid} | ${report.close_summary.trades} | ${pct(report.close_summary.stop_first_rate)} | ${report.close_summary.total_points} | ${report.close_summary.total_gross_dollars} | ${report.close_summary.total_fees} | ${report.close_summary.total_dollars} |`,
+    `| open/comparison | ${report.open_summary.sessions_valid} | ${report.open_summary.trades} | ${pct(report.open_summary.stop_first_rate)} | ${report.open_summary.total_points} | ${report.open_summary.total_gross_dollars} | ${report.open_summary.total_fees} | ${report.open_summary.total_dollars} |`,
     '',
     '## Artifacts',
     '',
@@ -125,12 +137,19 @@ function pct(value) {
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
+  if (args.outDir) {
+    OUT_DIR = path.isAbsolute(args.outDir) ? args.outDir : path.join(ROOT, args.outDir);
+  }
+  const config = {
+    entrySlippagePoints: args.entrySlippagePoints,
+    roundTripFeePerContract: args.roundTripFeePerContract,
+  };
   const feed = await getCandles('ES', { mode: 'replay', limit: 200000 });
   const bars = feed.candles || [];
   if (!bars.length) throw new Error('No local ES historical 1m candles found');
   const allDates = buildFuturesSessionBars(bars).map(session => session.date);
   const dates = args.dates || filterDates(allDates, args);
-  const report = compareReferenceFields(bars, { dates });
+  const report = compareReferenceFields(bars, { dates, config });
 
   writeJson('summary.json', {
     generated_at: report.generated_at,
@@ -153,6 +172,11 @@ async function main() {
       last_timestamp: bars[bars.length - 1]?.timestamp || null,
       dates_requested: dates.length,
     },
+    accounting: {
+      entry_slippage_points: config.entrySlippagePoints,
+      round_trip_fee_per_contract: config.roundTripFeePerContract,
+      dollars_are_net_after_fees: true,
+    },
   });
   writeJson('close-events.json', report.close.events);
   writeJson('open-events.json', report.open.events);
@@ -164,6 +188,7 @@ async function main() {
     'timestamp',
     'level',
     'entry',
+    'filled_entry',
     'stop',
     'tp1',
     'tp2',
@@ -171,7 +196,13 @@ async function main() {
     'outcome',
     'outcome_timestamp',
     'points',
+    'contracts',
+    'gross_dollars',
+    'fees',
     'dollars',
+    'net_dollars',
+    'entry_slippage_points',
+    'round_trip_fee_per_contract',
   ]);
   writeCsv('open-trades.csv', report.open.trades, [
     'date',
@@ -179,6 +210,7 @@ async function main() {
     'timestamp',
     'level',
     'entry',
+    'filled_entry',
     'stop',
     'tp1',
     'tp2',
@@ -186,7 +218,13 @@ async function main() {
     'outcome',
     'outcome_timestamp',
     'points',
+    'contracts',
+    'gross_dollars',
+    'fees',
     'dollars',
+    'net_dollars',
+    'entry_slippage_points',
+    'round_trip_fee_per_contract',
   ]);
   writeCsv('sessions.csv', [
     ...flattenSessionRows(report.close),
@@ -204,6 +242,9 @@ async function main() {
     'events',
     'trades',
     'total_points',
+    'total_gross_dollars',
+    'total_fees',
+    'total_dollars',
     'stop_first',
     'tp1_first',
     'tp2_first',
@@ -221,6 +262,11 @@ async function main() {
     close_summary: report.close_summary,
     open_summary: report.open_summary,
     delta: report.delta,
+    accounting: {
+      entry_slippage_points: config.entrySlippagePoints,
+      round_trip_fee_per_contract: config.roundTripFeePerContract,
+      dollars_are_net_after_fees: true,
+    },
   }, null, 2));
 }
 

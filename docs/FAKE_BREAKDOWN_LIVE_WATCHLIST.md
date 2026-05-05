@@ -1,4 +1,6 @@
-# Fake Breakdown Live Watchlist
+# Fake Breakdown Read-Only Watchlist
+
+Status: research/watchlist only. This document describes the operator watchlist surface, not a live trading system.
 
 ## 1. What The Watchlist Does
 

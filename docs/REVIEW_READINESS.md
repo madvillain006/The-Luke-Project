@@ -1,55 +1,37 @@
 # Review Readiness
 
-Date: 2026-05-04
+Date: 2026-05-04 ET
+Artifact timestamp: 2026-05-05 UTC
 
-## Current Scores
+Canonical findings: `docs/HOSTILE_AUDIT_REPORT.md`.
 
-| Area | Score | Current Evidence | Why Not 99 |
+## Scores
+
+| Area | Score | Evidence | Blocker |
 | --- | ---: | --- | --- |
-| Code review readiness | 95% | New code is scoped to `lib/trading-state`, read-only API adapter/routes, `/trading-window`, operator-v2 link, tests, and requested docs. | Needs reviewer pass over state-machine assumptions and UI wording. |
-| Manual trading companion readiness | 94% | Level-state, alerts, candidate queue, data health, chart/bracket visual, timestamp snapshots, and replay-mode 1m candle proof are available read-only. | Live ES candle feed proof remains blocked. |
-| Read-only app/operator readiness | 96% | `/operator-v2` remains read-only and `/trading-window` uses GET APIs with replay/dev warnings. | Needs final screenshot proof review. |
-| Live level-state readiness | 92% | Engine handles loaded levels, timestamp snapshots, approaching, flush, reclaim watch, armed, invalidated, stale/unknown pass states, local/replay 1m candles, and replay-mode API proof. | Live 1m candle provider is not proven. |
-| Research/watchlist readiness | 95% | Bobby+Mancini staged candidate is represented as paper/research only with 1ES starter and add-confirmation logic. | Forward observation still needed. |
-| Staged/paper bot readiness | 82% | Simulated bracket plan objects exist and risk gates are deterministic. | No paper/shadow state mutation route was added. |
-| Live execution readiness | 35% | Live path intentionally untouched. | No broker proof, no live submit design, and live remains blocked. |
+| Code review readiness | 95% | 114 test files pass; hostile tests cover Pine, CSV, heatmap, candidate, replay gating, market-data provider behavior. | Human review of trading semantics. |
+| Manual trading companion readiness | 92% | Read-only level state, alerts, candidates, bracket visual, source health, replay proof, screenshot sanity, delayed/stale quote proof. | No live-arming ES 1m OHLC provider. |
+| Read-only app/operator readiness | 95% | Operator, trading-window, virtual dashboard, client-demo, GET API, and PNG sanity proof passed. | Human UI misread review. |
+| TradingView indicator readiness | 85% | Export passed; tests reject strategy/order/BUY/SELL/dynamic alert behavior and verify empty input handling. | Not compiled in TradingView; Saty visual parity unsigned. |
+| Live level-state readiness | 72% | Replay/local candle proof passed; live-mode gates reject unauthorized data. | No proven live/delayed ES 1m OHLC provider. |
+| Research/watchlist readiness | 88% | Ladder reclaim and fake-breakdown scripts passed with known false-positive reporting. | Small/clustered samples, same-bar ambiguity, slippage/regime risk. |
+| Staged/paper bot readiness | 72% | Staged-flow proof and bracket/risk tests pass. | Paper automation not approved; execution state needs separate audit. |
+| Live execution readiness | 20% | No new shortcut found; existing live path remains staged/guarded. | No broker proof, live data proof, current live-submit audit, or user approval. |
 
-## Product Surfaces
+## Claim Classifications
 
-- `/operator-v2`: read-only operator surface with live level state, trade candidates, bracket visual, alerts, and data health.
-- `/api/trading/level-state?instrument=ES`: GET-only level-state endpoint.
-- `/api/trading/trade-candidates?instrument=ES`: GET-only candidate endpoint.
-- `/api/trading/alerts?instrument=ES`: GET-only alert endpoint.
-- `/api/trading/candle-status?instrument=ES`: GET-only candle status endpoint.
-- `/api/trading/chart-data?instrument=ES`: GET-only chart/candle/level/bracket endpoint.
-- `/api/trading/source-health?instrument=ES`: GET-only source-family/freshness endpoint.
-- `/api/trading/level-state?instrument=ES&mode=replay&date=YYYY-MM-DD&time=HH:mm`: GET-only replay endpoint using the same candle/state path.
-- `/trading-window`: read-only live-shaped replay trading window.
-- `/api/health`: runtime health endpoint with app/version/pid/port/start metadata.
-
-## Safety Status
-
-- `buildTradeDecision` unchanged.
-- `/operator-v2` remains read-only.
-- New trading APIs are GET-only.
-- `/trading-window` has no execution controls.
-- No live execution shortcut added.
-- No broker/live execution module imported by the new adapter.
-- Stale/UNKNOWN data cannot arm a candidate.
-- Local/replay candles cannot arm live candidates.
-- Replay mode returns `live: false` and `usable_for_live_arming: false`.
-- Latest-price-only data cannot create candle-confirmed states.
-- SPX fixed +30 is not used as strategy truth.
-
-## Review Blockers
-
-- Confirm operator wording still cannot be read as a live recommendation.
-- Confirm candle-data absence keeps candidates watch-only.
-- Confirm local/replay labels are visible and cannot be mistaken for live arming.
-- Confirm historical replay responses are not presented as timestamp-valid live signals.
-- Confirm future paper/shadow integration still requires explicit confirmation.
-- Confirm proof screenshots match the implemented route.
+- Decision spine authority: `PARTIALLY_VERIFIED`; tests pass, but `buildTradeDecision` was not exhaustively re-audited.
+- No fake static prices: `VERIFIED_BY_PROOF_ARTIFACT`; provider quotes are delayed/stale and local/replay candles are proof-only.
+- Replay candles cannot arm live candidates: `VERIFIED_BY_CODE_AND_TEST`.
+- `/operator-v2` read-only: `VERIFIED_BY_CODE_AND_TEST`.
+- Live trading behavior unchanged: `PARTIALLY_VERIFIED`; execution modules were not promoted or weakened.
+- `heatmap_gex` normalized/deduped/superseded: `VERIFIED_BY_CODE_AND_TEST`.
+- TradingView indicator ready: `PARTIALLY_VERIFIED`; text/export tests pass, TradingView compile not proven.
+- Saty parity: `PARTIALLY_VERIFIED`; source/reference exists, human visual signoff needed.
+- Mancini current levels exported: `VERIFIED_BY_PROOF_ARTIFACT`.
+- Bracket visual works: `VERIFIED_BY_PROOF_ARTIFACT`.
+- Research edge: `UNPROVEN`; watchlist usefulness is `PARTIALLY_VERIFIED`.
 
 ## Verdict
 
-`READY_FOR_REVIEW`
+`READY_FOR_CODE_REVIEW_NOT_READY_FOR_LIVE`

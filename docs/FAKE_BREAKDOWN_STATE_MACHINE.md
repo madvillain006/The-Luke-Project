@@ -33,7 +33,7 @@ Rule A: power_hour + three_candle_hold + next target >=4 had 2ES expectancy $59.
 
 25k 1ES_STARTER, daily stop none: PnL $300.00, target hit false, days to target n/a, failed false, fail-before-target 0.0%, positive days 75.0%
 
-1ES reduces loss size but does not automatically solve false armed signals. It remains a paper/research sizing variant.
+1ES reduces loss size but does not automatically solve false armed signals. It remains a research sizing variant.
 
 ## 6. False Armed Rate
 

@@ -1,10 +1,10 @@
-# Live Level-State Engine
+# Read-Only Level-State Engine
 
 Date: 2026-05-04
 
 ## What It Does
 
-Luke now has a read-only ES level-state engine for live/paper-safe operator visibility.
+Luke now has a read-only ES level-state engine for live-shaped and replay-safe operator visibility. It does not prove a live ES 1m candle provider.
 
 It:
 
@@ -13,7 +13,7 @@ It:
 - Keeps SPX Saty/reference levels reference-only unless an explicit basis adapter is supplied later.
 - Labels market data as `FRESH`, `STALE`, `DELAYED`, or `UNKNOWN`.
 - Evaluates level states from latest price and optional 1m candle bars.
-- Builds simulated bracket plans for paper/research candidates only.
+- Builds simulated bracket plans for replay/research candidates only.
 - Emits read-only operator alerts.
 - Exposes GET-only APIs under `/api/trading/*`.
 

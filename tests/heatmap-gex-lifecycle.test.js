@@ -24,7 +24,24 @@ describe('heatmap_gex lifecycle', () => {
     expect(dedupeHeatmapSnapshots(events)).toHaveLength(3);
     const lifecycle = applyHeatmapLifecycle(events, '2026-04-20T11:00:00-04:00');
     expect(lifecycle.active.map(event => event.id).sort()).toEqual(['kat', 'new']);
-    expect(lifecycle.superseded.map(event => event.id)).toContain('old');
+    const supersededDuplicate = lifecycle.superseded.find(event => event.id === 'dup');
+    expect(supersededDuplicate.duplicate_ids).toEqual(['dup', 'old']);
+  });
+
+  it('dedupes the same heatmap snapshot across transport aliases', () => {
+    const events = [
+      { id: 'bobby-copy', transport: 'bobby', instrument: 'SPX', available_at_et: '2026-04-20T10:00:00-04:00', levels: [{ price: 7100, role: 'king_node' }] },
+      { id: 'katbot-copy', transport: 'katbot', instrument: 'SPX', available_at_et: '2026-04-20T10:01:00-04:00', levels: [{ price: 7100, role: 'king_node' }] },
+    ];
+
+    const deduped = dedupeHeatmapSnapshots(events);
+    const lifecycle = applyHeatmapLifecycle(events, '2026-04-20T10:30:00-04:00');
+
+    expect(deduped).toHaveLength(1);
+    expect(deduped[0].transports).toEqual(['bobby', 'katbot']);
+    expect(deduped[0].duplicate_ids).toEqual(['bobby-copy', 'katbot-copy']);
+    expect(lifecycle.active).toHaveLength(1);
+    expect(lifecycle.active[0].transports).toEqual(['bobby', 'katbot']);
   });
 
   it('excludes stale latest snapshots from active heatmap state', () => {

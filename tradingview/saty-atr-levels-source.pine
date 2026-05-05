@@ -4,7 +4,7 @@ indicator("Saty ATR Levels - Luke Reference", shorttitle="Saty ATR Ref", overlay
 // Local reference for the Saty ATR ladder used by Luke's TradingView bridge.
 // The original standalone source was not present in the repo; this preserves the
 // known Pine v5 ATR trigger/fib/extension structure without wiring any strategy
-// or broker behavior.
+// or execution behavior.
 
 mode = input.string("Daily", "Mode", options=["Daily", "Multi-day", "Swing"])
 atr_length = input.int(14, "ATR length", minval=1)

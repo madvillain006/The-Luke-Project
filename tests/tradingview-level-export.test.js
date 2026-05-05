@@ -6,6 +6,8 @@ const path = require('path');
 
 const {
   buildTradingViewLevelExport,
+  buildPineInputText,
+  renderGeneratedPine,
   writeTradingViewArtifacts,
 } = require('../lib/tradingview/level-export');
 
@@ -93,8 +95,50 @@ describe('TradingView level export workflow', () => {
     const generated = fs.readFileSync(summary.artifacts.generated_pine, 'utf8');
     expect(generated).toContain('indicator("Luke Level Reclaim Watch"');
     expect(generated).toContain('alertcondition(');
+    expect(generated).not.toContain('alert(');
     expect(generated).not.toContain('strategy(');
     expect(generated).not.toMatch(/strategy\.|submitOrder|placeOrder|broker/i);
+    expect(generated).not.toMatch(/\bBUY\b|\bSELL\b/);
+  });
+
+  it('handles empty Pine inputs without fabricating levels or alerts', () => {
+    const inputText = buildPineInputText({
+      mancini: [],
+      dubz: [],
+      heatmap: [],
+      heatmapSnapshotTime: '',
+    });
+    const base = fs.readFileSync(path.join(__dirname, '..', 'tradingview', 'luke-level-reclaim-watch.pine'), 'utf8');
+    const generated = renderGeneratedPine(base, {
+      mancini: '',
+      dubz: '',
+      heatmap: '',
+      heatmapSnapshotTime: '',
+    });
+
+    expect(inputText).toContain('Mancini levels:\n\n');
+    expect(inputText).toContain('Dubz levels:\n\n');
+    expect(inputText).toContain('Heatmap/GEX levels:\n\n');
+    expect(inputText).toContain('Heatmap/GEX snapshot time:\nnone');
+    expect(generated).toContain('input.string("", "Mancini levels"');
+    expect(generated).toContain('input.string("", "Dubz levels"');
+    expect(generated).toContain('input.string("", "Heatmap/GEX levels"');
+    expect(generated).toContain('alertcondition(');
+    expect(generated).not.toContain('alert(');
+    expect(generated).not.toContain('strategy(');
+  });
+
+  it('keeps the local Saty ATR reference available for parity review', () => {
+    const sourcePath = path.join(__dirname, '..', 'tradingview', 'saty-atr-levels-source.pine');
+    const satySource = fs.readFileSync(sourcePath, 'utf8');
+
+    expect(fs.existsSync(sourcePath)).toBe(true);
+    expect(satySource).toContain('indicator(');
+    expect(satySource).toContain('request.security');
+    expect(satySource).toContain('barmerge.lookahead_on');
+    expect(satySource).toContain('ta.atr');
+    expect(satySource).not.toContain('strategy(');
+    expect(satySource).not.toMatch(/strategy\.|submitOrder|placeOrder|broker/i);
   });
 
   it('keeps the base Pine indicator safe and Saty-backed', () => {
@@ -117,8 +161,8 @@ describe('TradingView level export workflow', () => {
     expect(pine).toContain('paper_level');
     expect(pine).toContain('active_block_reason');
     expect(pine).toContain('show_long_signal_marker');
-    expect(pine).toContain('LUKE LONG SIGNAL');
-    expect(pine).toContain('text="LONG"');
+    expect(pine).toContain('LUKE PAPER_CANDIDATE');
+    expect(pine).toContain('text="PAPER"');
     expect(pine).toContain('label.new(bar_index, candidate_label_y');
     expect(pine).toContain('entry_price_mode');
     expect(pine).toContain('cluster_plus_tick');
@@ -138,8 +182,18 @@ describe('TradingView level export workflow', () => {
     expect(pine).toContain('session_realized_points');
     expect(pine).toContain('session_realized_dollars');
     expect(pine).toContain('event_points');
-    expect(pine).toContain('session_pnl');
-    expect(pine).toContain('realized pts/$');
+    expect(pine).toContain('slippage_points_per_side');
+    expect(pine).toContain('commission_per_contract_round_trip');
+    expect(pine).toContain('eval_loss_limit_dollars');
+    expect(pine).toContain('session_cost_dollars');
+    expect(pine).toContain('session_net_dollars');
+    expect(pine).toContain('f_event_net_dollars');
+    expect(pine).toContain('session_after_all_costs');
+    expect(pine).toContain('minus comm');
+    expect(pine).toContain('minus comm+slip');
+    expect(pine).toContain('Total ');
+    expect(pine).not.toContain('entry_slippage_points');
+    expect(pine).not.toContain('round_trip_fee_per_contract');
     expect(pine).toContain('session_watches');
     expect(pine).toContain('session_tp1_hits');
     expect(pine).toContain('session_tp2_hits');
@@ -149,26 +203,29 @@ describe('TradingView level export workflow', () => {
     expect(pine).toContain('session_attempts');
     expect(pine).toContain('new_futures_session');
     expect(pine).toContain('candidate_label_y');
-    expect(pine).toContain('enable_json_alerts');
+    expect(pine).toContain('enable_alertconditions');
     expect(pine).toContain('alert_watch_events');
-    expect(pine).toContain('alert_long_events');
-    expect(pine).toContain('alert_result_events');
-    expect(pine).toContain('f_json_event');
-    expect(pine).toContain('luke_watch_v1');
-    expect(pine).toContain('alert(f_json_event("LONG"');
-    expect(pine).toContain('alert(f_json_event("STOPPED"');
-    expect(pine).toContain('barstate.isconfirmed and enable_json_alerts');
+    expect(pine).toContain('alert_armed_events');
+    expect(pine).toContain('alert_paper_candidate_events');
+    expect(pine).toContain('alert_invalidated_events');
+    expect(pine).toContain('alert_blocked_events');
+    expect(pine).toContain('alertcondition(');
+    expect(pine).not.toContain('alert(');
+    expect(pine).not.toContain('f_json_event');
+    expect(pine).not.toContain('luke_watch_v1');
     expect(pine).toContain('fresh_level_retest');
     expect(pine).toContain('failed_chase_block');
     expect(pine).toContain('failed_reentry_cooldown_bars');
     expect(pine).toContain('failed cooldown');
     expect(pine).toContain('paper_retest_reentry');
-    expect(pine).toContain('LONG CANDIDATE');
+    expect(pine).toContain('PAPER_CANDIDATE');
     expect(pine).toContain('TP1 HIT - STOP TO BE');
     expect(pine).toContain('SUCCEEDED TP1 / STOPPED');
     expect(pine).toContain('FAILED STOPPED');
     expect(pine).toContain('WATCH #');
-    expect(pine).not.toContain('PAPER_CANDIDATE');
+    expect(pine).not.toContain('LUKE LONG SIGNAL');
+    expect(pine).not.toContain('text="LONG"');
+    expect(pine).not.toContain('LONG CANDIDATE');
     expect(pine).not.toContain('string text =');
     expect(pine).toContain('indicator("Luke Level Reclaim Watch"');
     expect(pine).toContain('WATCHLIST ONLY - not an order');

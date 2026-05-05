@@ -1,4 +1,4 @@
-# Dubz Parser Findings — 2026-04-27
+# Dubz Parser Findings - 2026-04-27
 
 **Produced by:** Sub-task 5a fixture validation harness  
 **Harness:** `scripts/validate-dubz-fixtures.js`  

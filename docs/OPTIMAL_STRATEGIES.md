@@ -1,10 +1,12 @@
-# Optimal ES Long Trading Strategies — As of 2026-04-30
+# ES Long Strategy Backtest Snapshot - 2026-04-30
 
 **Last updated:** 2026-04-30
 **Based on:** combined portfolio backtest, 92 candidates, 7 session dates (2026-04-07 through 2026-04-28)
-**Apex account:** 50k EOD Trail — $50,000 starting balance, $2,000 EOD trailing drawdown limit
+**Apex account:** 50k EOD Trail - $50,000 starting balance, $2,000 EOD trailing drawdown limit
 **Instrument:** ES (E-mini S&P 500 futures) long-only
 **Bar resolution:** Results shown for both stop_first (pessimistic) and target_first (optimistic) modes. Truth lies between the two bounds.
+
+Status: backtest snapshot only. This is not a live or paper approval document.
 
 ---
 

@@ -4,6 +4,7 @@ import {
   clusterLevels,
   evaluatePineWatchSession,
   compareReferenceFields,
+  _internal,
 } from '../lib/backtest-data/saty-pine-watch.js';
 
 function bar(timestamp, open, high, low, close) {
@@ -111,5 +112,71 @@ describe('Saty Pine watch backtest port', () => {
     expect(report.user_hypothesis_reference_field).toBe('open');
     expect(report.close_summary.reference_field).toBe('close');
     expect(report.open_summary.reference_field).toBe('open');
+  });
+
+  it('accounts for nonzero round-trip fees and 0.25 point adverse entry slippage', () => {
+    const bars = [
+      bar('2026-04-02T09:30:00-04:00', 100, 101, 99.5, 100.5),
+      bar('2026-04-02T09:31:00-04:00', 100.5, 100.75, 98.75, 99.5),
+      bar('2026-04-02T09:32:00-04:00', 99.5, 101.5, 99.25, 100.75),
+      bar('2026-04-02T09:33:00-04:00', 100.75, 101.25, 100.25, 100.75),
+      bar('2026-04-02T09:34:00-04:00', 100.75, 103, 100.5, 102.75),
+    ];
+    const result = evaluatePineWatchSession({
+      bars,
+      satyLevels: {
+        valid: true,
+        prev_close: 100,
+        call_trigger: 108,
+        put_trigger: 92,
+      },
+      config: {
+        pivotRibbonFilterMode: 'off',
+        requireImpulseCloudBreak: false,
+        minTargetSpacePoints: 3,
+        entrySlippagePoints: 0.25,
+        roundTripFeePerContract: 5,
+      },
+    });
+
+    expect(result.trades[0]).toMatchObject({
+      entry: 100.25,
+      filled_entry: 100.5,
+      outcome: 'tp1_first',
+      points: 1.75,
+      gross_dollars: 87.5,
+      fees: 5,
+      dollars: 82.5,
+      net_dollars: 82.5,
+    });
+    expect(result.summary.total_dollars).toBe(82.5);
+    expect(result.summary.total_gross_dollars).toBe(87.5);
+    expect(result.summary.total_fees).toBe(5);
+  });
+
+  it('shows 0.5 point adverse entry slippage worsening stop-first losses', () => {
+    const outcome = _internal.evaluateOutcome([
+      bar('2026-04-02T09:30:00-04:00', 100, 101, 99.5, 100.5),
+      bar('2026-04-02T09:31:00-04:00', 100.5, 100.75, 96.75, 97.5),
+    ], 0, {
+      entry: 100.25,
+      filled_entry: 100.75,
+      stop: 97.25,
+      tp1: 102.25,
+      tp2: 104.25,
+      contracts: 1,
+    }, {
+      entrySlippagePoints: 0.5,
+      roundTripFeePerContract: 5,
+    });
+
+    expect(outcome).toMatchObject({
+      outcome: 'stop_first',
+      points: -3.5,
+      gross_dollars: -175,
+      fees: 5,
+      dollars: -180,
+      net_dollars: -180,
+    });
   });
 });

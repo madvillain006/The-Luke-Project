@@ -5,7 +5,7 @@ Date: 2026-05-04
 ## 1. Candidate
 
 - Name: `ladder_reclaim_bobby_mancini_staged_v1`
-- Status: `PAPER_CANDIDATE`
+- Status: `WATCHLIST_ONLY`
 - Surface: read-only Luke watchlist candidate, not an execution feature.
 
 ## 2. Evidence Summary
@@ -83,6 +83,6 @@ The API and UI are read-only.
 
 ## 10. Current Verdict
 
-`PAPER_CANDIDATE`
+`WATCHLIST_ONLY`
 
-This is promising enough for manual paper review and watchlist observation. It is not paper automation and not live.
+This is promising enough for manual watchlist observation and future paper-design review. It is not paper automation, not paper-only approval, and not live.

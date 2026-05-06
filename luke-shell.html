@@ -7,15 +7,35 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #000000;
-      --panel: #1e1e1e;
-      --panel-2: #111111;
-      --hero: #3f3f3f;
-      --line: #2b2b2b;
-      --line-strong: #3a3a3a;
-      --text: #f2f2f2;
-      --muted: #b8b8b8;
-      --dim: #777777;
+      --bg: #050403;
+      --bg-shell: #090807;
+      --panel: #151311;
+      --panel-2: #1e1a16;
+      --panel-hover: #252018;
+      --hero: #39332b;
+      --border: #2f2923;
+      --border-strong: #514638;
+      --border-accent: #b48234;
+      --line: var(--border);
+      --line-strong: var(--border-strong);
+      --text: #f3efe7;
+      --text-soft: #d8d0c4;
+      --text-muted: #aaa195;
+      --text-faint: #766d62;
+      --muted: var(--text-muted);
+      --dim: var(--text-faint);
+      --accent: #d29a3f;
+      --accent-soft: rgba(210, 154, 63, 0.14);
+      --accent-violet: #9d8bd7;
+      --accent-violet-soft: rgba(157, 139, 215, 0.14);
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 8px;
+      --ease: cubic-bezier(.2, .8, .2, 1);
+      --t-fast: 120ms;
+      --t-normal: 180ms;
+      --shadow-soft: 0 8px 18px rgba(0, 0, 0, 0.22);
+      --shadow-hover: 0 12px 24px rgba(0, 0, 0, 0.28);
       --ok: #ffffff;
       --font: "JetBrains Mono", "Fira Code", "Space Mono", "Cascadia Mono", Consolas, monospace;
     }
@@ -47,23 +67,32 @@
     .app {
       min-height: calc(100vh - 20px);
       display: grid;
-      grid-template-rows: 28px auto auto auto;
+      grid-template-rows: auto;
+      align-content: start;
       gap: 10px;
     }
 
     .topbar {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
-      align-items: start;
-      color: var(--text);
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-soft);
+      background: var(--bg-shell);
+      font-size: 13px;
     }
 
     .topbar-center {
       justify-self: center;
+      color: var(--text);
     }
 
     .topbar-right {
       justify-self: end;
+      color: var(--text-soft);
     }
 
     .hero-grid {
@@ -76,7 +105,7 @@
     .hero-card,
     .filter-button,
     .module-art {
-      border-radius: 8px;
+      border-radius: var(--radius-md);
       background: var(--panel);
     }
 
@@ -112,6 +141,13 @@
       background: var(--hero);
       overflow: hidden;
       cursor: pointer;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      transition:
+        transform var(--t-fast) var(--ease),
+        background-color var(--t-normal) var(--ease),
+        border-color var(--t-normal) var(--ease),
+        box-shadow var(--t-normal) var(--ease);
     }
 
     .hero-card.is-hidden {
@@ -124,8 +160,8 @@
       display: none;
       min-height: 540px;
       border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #080c10;
+      border-radius: var(--radius-md);
+      background: var(--bg-shell);
       overflow: hidden;
     }
 
@@ -158,14 +194,14 @@
     .trading-panel-top {
       min-height: 38px;
       padding: 9px 12px;
-      border-bottom: 1px solid #1a2332;
+      border-bottom: 1px solid var(--border);
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      color: #c9d4e0;
-      background: #080c10;
+      color: var(--text-soft);
+      background: var(--bg-shell);
       font-size: 12px;
     }
 
@@ -178,22 +214,32 @@
 
     .panel-action {
       min-height: 24px;
-      border: 1px solid #1a2332;
-      border-radius: 4px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
       background: transparent;
-      color: #8a9ab0;
+      color: var(--text-muted);
       padding: 3px 8px;
       text-decoration: none;
       cursor: pointer;
       font-size: 11px;
+      transition:
+        transform var(--t-fast) var(--ease),
+        background-color var(--t-normal) var(--ease),
+        border-color var(--t-normal) var(--ease),
+        color var(--t-normal) var(--ease);
     }
 
     .panel-action:hover,
     .panel-action:focus-visible {
       outline: none;
-      color: #c9d4e0;
-      border-color: #2a3a4a;
-      background: #0d1520;
+      color: var(--text);
+      border-color: var(--border-accent);
+      background: var(--accent-soft);
+      transform: translateY(-1px);
+    }
+
+    .panel-action:active {
+      transform: translateY(0);
     }
 
     .trading-frame,
@@ -203,7 +249,7 @@
       min-height: 0;
       flex: 1;
       border: 0;
-      background: #080c10;
+      background: var(--bg-shell);
     }
 
     .hero-card:hover,
@@ -213,12 +259,20 @@
     .module-link:hover .module-art,
     .module-link:focus-visible .module-art {
       outline: none;
-      border-color: #666666;
-      background: #252525;
+      border-color: var(--border-accent);
+      background: var(--panel-hover);
     }
 
     .hero-card:hover {
-      background: #474747;
+      background: #443a30;
+      box-shadow: var(--shadow-hover), 0 0 0 1px rgba(210, 154, 63, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .hero-card:active,
+    .filter-button:active,
+    .module-link:active .module-art {
+      transform: translateY(0);
     }
 
     .trading-rig {
@@ -262,6 +316,17 @@
       place-items: center;
       text-decoration: none;
       background: var(--panel-2);
+      transition:
+        transform var(--t-fast) var(--ease),
+        background-color var(--t-normal) var(--ease),
+        border-color var(--t-normal) var(--ease),
+        box-shadow var(--t-normal) var(--ease);
+    }
+
+    .filter-button:hover,
+    .filter-button:focus-visible {
+      box-shadow: 0 0 0 1px rgba(210, 154, 63, 0.06);
+      transform: translateY(-1px);
     }
 
     .system-button {
@@ -302,11 +367,59 @@
 
     .filter-button.active {
       background: var(--panel);
-      border-color: transparent;
+      border-color: var(--border-strong);
+      color: var(--text);
+    }
+
+    .view-switcher {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .view-button {
+      min-height: 30px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 5px 10px;
+      color: var(--text-muted);
+      background: var(--bg-shell);
+      cursor: pointer;
+      transition:
+        transform var(--t-fast) var(--ease),
+        background-color var(--t-normal) var(--ease),
+        border-color var(--t-normal) var(--ease),
+        color var(--t-normal) var(--ease),
+        box-shadow var(--t-normal) var(--ease);
+    }
+
+    .view-button:hover,
+    .view-button:focus-visible {
+      outline: none;
+      color: var(--text);
+      border-color: var(--border-accent);
+      background: var(--accent-soft);
+      transform: translateY(-1px);
+    }
+
+    .view-button.is-active {
+      color: var(--text);
+      border-color: var(--accent-violet);
+      background: var(--accent-violet-soft);
+      box-shadow: 0 0 0 1px rgba(157, 139, 215, 0.08);
+    }
+
+    .shell-view {
+      display: none;
+    }
+
+    .shell-view.is-active {
+      display: grid;
     }
 
     .module-grid {
-      display: grid;
       grid-template-columns: repeat(auto-fill, minmax(210px, 260px));
       gap: 10px;
       align-items: start;
@@ -335,12 +448,22 @@
 
     .module-art {
       height: 104px;
-      border: 1px solid transparent;
+      border: 1px solid var(--border);
       display: grid;
       place-items: center;
       overflow: hidden;
       background: var(--panel);
-      transition: background 140ms ease, border-color 140ms ease;
+      transition:
+        transform var(--t-fast) var(--ease),
+        background-color var(--t-normal) var(--ease),
+        border-color var(--t-normal) var(--ease),
+        box-shadow var(--t-normal) var(--ease);
+    }
+
+    .module-link:hover .module-art,
+    .module-link:focus-visible .module-art {
+      box-shadow: var(--shadow-soft);
+      transform: translateY(-1px);
     }
 
     .module-caption {
@@ -359,6 +482,85 @@
 
     .module-meta {
       color: var(--muted);
+    }
+
+    .focus-view,
+    .missions-view {
+      gap: 10px;
+      align-items: start;
+    }
+
+    .view-header {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      background: var(--panel);
+    }
+
+    .view-title {
+      color: var(--text);
+      font-size: 16px;
+    }
+
+    .view-subtitle {
+      margin-top: 5px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .view-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+
+    .ops-card,
+    .view-module {
+      min-height: 86px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      color: var(--text);
+      background: var(--panel);
+      text-decoration: none;
+      display: grid;
+      align-content: space-between;
+      gap: 8px;
+      transition:
+        transform var(--t-fast) var(--ease),
+        background-color var(--t-normal) var(--ease),
+        border-color var(--t-normal) var(--ease),
+        box-shadow var(--t-normal) var(--ease);
+    }
+
+    .view-module:hover,
+    .view-module:focus-visible {
+      outline: none;
+      border-color: var(--border-accent);
+      background: var(--panel-hover);
+      box-shadow: var(--shadow-soft);
+      transform: translateY(-1px);
+    }
+
+    .view-module:active {
+      transform: translateY(0);
+    }
+
+    .view-code {
+      color: var(--accent);
+      font-size: 11px;
+    }
+
+    .view-name {
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .view-note {
+      color: var(--text-muted);
+      font-size: 11px;
+      line-height: 1.35;
     }
 
     .toggle-icon {
@@ -565,6 +767,10 @@
         grid-template-columns: repeat(3, minmax(160px, 1fr));
         justify-content: stretch;
       }
+
+      .view-grid {
+        grid-template-columns: repeat(2, minmax(180px, 1fr));
+      }
     }
 
     @media (max-width: 767px) {
@@ -589,7 +795,8 @@
 
       .hero-grid,
       .filter-row,
-      .module-grid {
+      .module-grid,
+      .view-grid {
         grid-template-columns: 1fr;
         gap: 16px;
       }
@@ -628,6 +835,29 @@
 
       .module-art {
         height: 150px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        transition: none !important;
+        animation: none !important;
+      }
+
+      .hero-card:hover,
+      .filter-button:hover,
+      .filter-button:focus-visible,
+      .module-link:hover .module-art,
+      .module-link:focus-visible .module-art,
+      .view-button:hover,
+      .view-button:focus-visible,
+      .view-module:hover,
+      .view-module:focus-visible,
+      .panel-action:hover,
+      .panel-action:focus-visible {
+        transform: none;
       }
     }
   </style>
@@ -706,7 +936,13 @@
       <a class="filter-button" href="/brain-dashboard#spine-trading">Agents (A)</a>
     </nav>
 
-    <section class="module-grid" aria-label="Luke agent modules">
+    <div class="view-switcher" aria-label="Luke shell views">
+      <button class="view-button is-active" type="button" data-shell-view="operations" aria-pressed="true">Operations</button>
+      <button class="view-button" type="button" data-shell-view="focus" aria-pressed="false">Focus</button>
+      <button class="view-button" type="button" data-shell-view="missions" aria-pressed="false">Missions</button>
+    </div>
+
+    <section class="module-grid shell-view is-active" data-view-panel="operations" aria-label="Luke agent modules">
       <a class="module-link" data-route="/luke" href="/luke" aria-label="Open Luke system chat">
         <div class="module-art"><div class="toggle-icon" aria-hidden="true"></div></div>
         <div class="module-caption"><span>C 000</span><span class="name">Brain Core</span></div>
@@ -755,6 +991,86 @@
         <div class="module-caption"><span>M 028</span><span class="name">Research Leads</span><span class="module-meta">History Career fork</span></div>
       </a>
     </section>
+
+    <section class="focus-view shell-view" data-view-panel="focus" aria-label="Luke focus view">
+      <div class="view-header">
+        <div class="view-title">Focus</div>
+        <div class="view-subtitle">Less noise. More signal.</div>
+      </div>
+      <div class="view-grid">
+        <a class="view-module" data-route="/trading" href="/trading">
+          <span class="view-code">T 001</span>
+          <span class="view-name">Trading Analysis</span>
+          <span class="view-note">Open gated trading work.</span>
+        </a>
+        <a class="view-module" data-route="/luke" href="/luke">
+          <span class="view-code">C 000</span>
+          <span class="view-name">Luke System</span>
+          <span class="view-note">Open local chat.</span>
+        </a>
+        <a class="view-module" data-route="/daily" href="/daily">
+          <span class="view-code">D 003</span>
+          <span class="view-name">Daily Brief</span>
+          <span class="view-note">Open weather, calendar, and jobs.</span>
+        </a>
+        <a class="view-module" data-route="/brain-dashboard#spine-developer" href="/brain-dashboard#spine-developer">
+          <span class="view-code">C 014</span>
+          <span class="view-name">Developer Stack</span>
+          <span class="view-note">Open build lane.</span>
+        </a>
+      </div>
+      <div class="view-grid">
+        <div class="ops-card">
+          <span class="view-code">LOCAL</span>
+          <span class="view-name">Current Focus</span>
+          <span class="view-note">Use the smallest lane that answers the next operator need.</span>
+        </div>
+        <div class="ops-card">
+          <span class="view-code">NEXT</span>
+          <span class="view-name">Next Action</span>
+          <span class="view-note">Open the module that has the live blocker or the next review item.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="missions-view shell-view" data-view-panel="missions" aria-label="Luke missions view">
+      <div class="view-header">
+        <div class="view-title">Missions</div>
+        <div class="view-subtitle">Operational lanes.</div>
+      </div>
+      <div class="view-grid">
+        <a class="view-module" data-route="/trading" href="/trading">
+          <span class="view-code">T 001</span>
+          <span class="view-name">Trading Analysis</span>
+          <span class="view-note">Human-gated market work.</span>
+        </a>
+        <a class="view-module" data-route="/luke" href="/luke">
+          <span class="view-code">C 000</span>
+          <span class="view-name">Brain Core</span>
+          <span class="view-note">Local system chat.</span>
+        </a>
+        <a class="view-module" data-route="/daily" href="/daily">
+          <span class="view-code">D 003</span>
+          <span class="view-name">Daily Brief</span>
+          <span class="view-note">Weather, calendar, jobs.</span>
+        </a>
+        <a class="view-module" data-route="/brain-dashboard#spine-automation" href="/brain-dashboard#spine-automation">
+          <span class="view-code">C 015</span>
+          <span class="view-name">AI Automation Business</span>
+          <span class="view-note">Opportunity and build lane.</span>
+        </a>
+        <a class="view-module" data-route="/brain-dashboard#spine-developer" href="/brain-dashboard#spine-developer">
+          <span class="view-code">C 014</span>
+          <span class="view-name">Developer Stack</span>
+          <span class="view-note">Repo and runtime lane.</span>
+        </a>
+        <a class="view-module" data-route="/brain-dashboard#spine-history" href="/brain-dashboard#spine-history">
+          <span class="view-code">M 028</span>
+          <span class="view-name">Research Leads</span>
+          <span class="view-note">History career fork.</span>
+        </a>
+      </div>
+    </section>
   </div>
 
   <script>
@@ -786,14 +1102,14 @@
     function weatherEmoji(weather) {
       const condition = String(weather?.condition || weather?.status || '').toLowerCase();
       const code = Number(weather?.weather_code);
-      if (condition.includes('storm') || [95, 96, 99].includes(code)) return '⛈️';
-      if (condition.includes('snow') || [71, 73, 75, 77, 85, 86].includes(code)) return '❄️';
-      if (condition.includes('rain') || condition.includes('drizzle') || [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return '🌧️';
-      if (condition.includes('fog') || [45, 48].includes(code)) return '🌫️';
-      if (condition.includes('cloud') || [1, 2, 3].includes(code)) return '☁️';
-      if (condition.includes('clear') || code === 0) return '☀️';
-      if (weather?.status === 'unavailable') return '⚠️';
-      return '🌡️';
+      if (condition.includes('storm') || [95, 96, 99].includes(code)) return 'STORM';
+      if (condition.includes('snow') || [71, 73, 75, 77, 85, 86].includes(code)) return 'SNOW';
+      if (condition.includes('rain') || condition.includes('drizzle') || [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return 'RAIN';
+      if (condition.includes('fog') || [45, 48].includes(code)) return 'FOG';
+      if (condition.includes('cloud') || [1, 2, 3].includes(code)) return 'CLD';
+      if (condition.includes('clear') || code === 0) return 'CLR';
+      if (weather?.status === 'unavailable') return '!';
+      return 'WX';
     }
 
     function formatWeatherForecast(weather) {
@@ -927,6 +1243,19 @@
       button.textContent = expanded ? 'COMPACT' : 'EXPAND';
     }
 
+    function setShellView(view) {
+      const nextView = view || 'operations';
+      if (nextView !== 'operations') closeDailyPanel();
+      document.querySelectorAll('[data-view-panel]').forEach(panel => {
+        panel.classList.toggle('is-active', panel.getAttribute('data-view-panel') === nextView);
+      });
+      document.querySelectorAll('[data-shell-view]').forEach(button => {
+        const active = button.getAttribute('data-shell-view') === nextView;
+        button.classList.toggle('is-active', active);
+        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+    }
+
     async function refresh() {
       try {
         const [brain, daily, telemetry] = await Promise.all([
@@ -996,6 +1325,9 @@
     $('system-close')?.addEventListener('click', closeSystemPanel);
     $('daily-close')?.addEventListener('click', closeDailyPanel);
     $('daily-expand')?.addEventListener('click', toggleDailyExpanded);
+    document.querySelectorAll('[data-shell-view]').forEach(button => {
+      button.addEventListener('click', () => setShellView(button.getAttribute('data-shell-view')));
+    });
 
     refresh();
     setInterval(refresh, 30000);

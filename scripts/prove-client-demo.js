@@ -110,7 +110,7 @@ async function captureDemoScreenshots() {
   const unsafeOperatorButtons = await page.$$eval('button', buttons => buttons.map(button => button.textContent.trim()).filter(text => /execute|submit|broker/i.test(text)));
 
   await page.goto(new URL('/trading-window?example=positive', BASE_URL).toString(), { waitUntil: 'load', timeout: 30000 });
-  await page.getByText('Luke Trading Window').waitFor({ timeout: 15000 });
+  await page.getByText('Trading Bot Window').waitFor({ timeout: 15000 });
   await page.waitForFunction(() => {
     const focus = document.querySelector('#chart-focus-summary')?.textContent || '';
     const chart = document.querySelector('#price-chart');

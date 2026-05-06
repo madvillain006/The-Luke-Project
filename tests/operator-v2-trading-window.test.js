@@ -13,7 +13,7 @@ describe('trading window read-only surface', () => {
     const shell = fs.readFileSync(path.join(ROOT, 'luke-shell.html'), 'utf8');
 
     expect(index).toContain('app.get("/trading-window"');
-    expect(html).toContain('Luke Trading Window');
+    expect(html).toContain('Trading Bot Window');
     expect(html).toContain('Read-only');
     expect(html).toContain('Replay/dev simulated');
     expect(html).toContain('No execution controls');
@@ -33,11 +33,11 @@ describe('trading window read-only surface', () => {
     expect(operator).toContain('Luke Level Reclaim Watch Script');
     expect(operator).toContain('Hypothetical replay/paper plan only');
     expect(operator).toContain('tradingview/luke-level-reclaim-watch.pine');
-    expect(shell).toContain('Trading (Analysis) / Luke Chat');
+    expect(shell).toContain('Trading (Analysis) / Trading Bot');
     expect(shell).toContain('data-src="/trading?embed=1"');
     expect(shell).toContain("setTradingPanelMode('window')");
     expect(shell).toContain('/trading-window?embed=shell&mode=replay&example=positive');
-    expect(shell).toContain('title="Luke clicked trading chat"');
+    expect(shell).toContain('title="Trading bot chat"');
     expect(shell).toContain('Show the replay trading window in this panel');
     expect(shell).toContain('height: clamp(780px, 82vh, 980px)');
     expect(shell).toContain('repeat(auto-fill, minmax(210px, 260px))');

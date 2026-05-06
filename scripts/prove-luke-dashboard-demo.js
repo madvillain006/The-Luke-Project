@@ -83,7 +83,7 @@ async function waitForTradingFrame(page) {
   const frameHandle = await page.locator('#trading-frame').elementHandle();
   const frame = frameHandle ? await frameHandle.contentFrame() : null;
   if (!frame) throw new Error('clicked trading iframe did not expose a content frame');
-  await frame.getByText('Luke Trading Window').waitFor({ timeout: 15000 });
+  await frame.getByText('Trading Bot Window').waitFor({ timeout: 15000 });
   await frame.getByText('Katbot / Heatmap Input').waitFor({ timeout: 15000 });
   await frame.getByText('Luke Level Reclaim Watch Script').waitFor({ timeout: 15000 });
   await frame.getByText('tradingview/luke-level-reclaim-watch.pine').waitFor({ timeout: 15000 });
@@ -101,7 +101,7 @@ async function waitForTradingFrame(page) {
 
 async function waitForTradingChat(page) {
   await page.locator('#trading-panel.is-open').waitFor({ timeout: 15000 });
-  await page.getByText('Trading (Analysis) / Luke Chat').waitFor({ timeout: 15000 });
+  await page.getByText('Trading (Analysis) / Trading Bot').waitFor({ timeout: 15000 });
   const frameHandle = await page.locator('#trading-frame').elementHandle();
   const frame = frameHandle ? await frameHandle.contentFrame() : null;
   if (!frame) throw new Error('clicked trading chat iframe did not expose a content frame');
@@ -221,10 +221,10 @@ async function captureClickedShellScreenshots() {
     return {
       ok: true,
       shell_before_click_visible: /Trading \(Analysis\)/i.test(outerChatText),
-      trading_chat_opened_by_click: /Trading \(Analysis\) \/ Luke Chat/i.test(outerChatText) && /LUKE ONLINE/i.test(chatText),
+      trading_chat_opened_by_click: /Trading \(Analysis\) \/ Trading Bot/i.test(outerChatText) && /LUKE ONLINE/i.test(chatText),
       trading_chat_command_smoke: commandSmokeRe.test(chatSmokeText) && !/personal logging is retired/i.test(chatSmokeText),
-      trading_window_opened_by_switch: /Trading \(Analysis\) \/ Live-Shaped Trading Window/i.test(outerWindowText),
-      trading_frame_loaded: /Luke Trading Window/i.test(tradingText) && /Chart Panel/i.test(tradingText),
+      trading_window_opened_by_switch: /Trading \(Analysis\) \/ Trading Bot Window/i.test(outerWindowText),
+      trading_frame_loaded: /Trading Bot Window/i.test(tradingText) && /Chart Panel/i.test(tradingText),
       bracket_visible: /Bracket Plan/i.test(tradingText) && /Can submit\s+false/i.test(tradingText),
       heatmap_visible: /Katbot \/ Heatmap Input/i.test(tradingText) && /ACK Bobby heatmap 10:03/i.test(tradingText) && /ACK Bobby heatmap 10:05/i.test(tradingText),
       pine_visible: /Luke Level Reclaim Watch Script/i.test(tradingText) && /tradingview\/luke-level-reclaim-watch\.pine/i.test(tradingText),

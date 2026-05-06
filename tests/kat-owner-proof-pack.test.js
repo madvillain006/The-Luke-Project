@@ -87,7 +87,7 @@ describe('Kat owner proof pack', () => {
     expect(fs.readFileSync(result.files.ownerMarkdown, 'utf8')).toContain('Timestamped Message Bin');
     expect(fs.readFileSync(result.files.ownerMarkdown, 'utf8')).toContain('Parsed Vision Proof: Chart Image');
     expect(fs.readFileSync(result.files.ownerMarkdown, 'utf8')).toContain('Parsed Vision Proof: Heatmap Image');
-    expect(fs.readFileSync(result.files.lukeHtml, 'utf8')).toContain('Luke Trading Window');
+    expect(fs.readFileSync(result.files.lukeHtml, 'utf8')).toContain('Trading Bot Window');
     expect(result.pack.previews.lukePayloads.some(payload => payload.type === 'kat_signal')).toBe(true);
     expect(result.pack.previews.lukePayloads.filter(payload => payload.type === 'kat_vision')).toHaveLength(2);
   });

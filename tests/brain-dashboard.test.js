@@ -133,7 +133,7 @@ describe('/brain dashboard shell', () => {
       'History Career fork',
       'Market microstructure analysis, order flow tracking, and strategy recommendations.',
       'Human-gated. Read-only. No autonomous execution controls.',
-      'Trading (Analysis) / Luke Chat',
+      'Trading (Analysis) / Trading Bot',
       'Luke System / General Chat',
       'Daily Brief / Schedule Window',
       'data-src="/trading?embed=1"',

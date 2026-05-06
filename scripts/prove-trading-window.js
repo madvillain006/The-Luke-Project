@@ -47,7 +47,7 @@ async function waitForApp() {
   while (Date.now() < deadline) {
     const health = await fetchText('/api/health');
     const page = await fetchText('/trading-window');
-    if (health.ok && health.text.includes('"app":"Luke"') && page.ok && page.text.includes('Luke Trading Window')) return true;
+    if (health.ok && health.text.includes('"app":"Luke"') && page.ok && page.text.includes('Trading Bot Window')) return true;
     await new Promise(resolve => setTimeout(resolve, 500));
   }
   return false;
@@ -55,7 +55,7 @@ async function waitForApp() {
 
 async function ensureApp() {
   const existing = await fetchText('/trading-window');
-  if (existing.ok && existing.text.includes('Luke Trading Window')) {
+  if (existing.ok && existing.text.includes('Trading Bot Window')) {
     return { started: false, process: null, status: 'connected_existing' };
   }
 
@@ -97,7 +97,7 @@ async function captureScreenshots() {
     browser = await chromium.launch({ headless: true });
     const page = await browser.newPage({ viewport: { width: 1500, height: 1100 } });
     await page.goto(new URL('/trading-window', BASE_URL).toString(), { waitUntil: 'networkidle', timeout: 30000 });
-    await page.getByText('Luke Trading Window').waitFor({ timeout: 15000 });
+    await page.getByText('Trading Bot Window').waitFor({ timeout: 15000 });
     await page.screenshot({ path: outputs.trading_window, fullPage: true });
     await page.locator('#chart-panel').screenshot({ path: outputs.chart_bracket });
     await page.locator('#candidate-panel').screenshot({ path: outputs.replay_example });

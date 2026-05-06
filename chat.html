@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Luke</title>
+  <title>Trading Bot</title>
   <style>
     :root {
       --bg:  #000000;
@@ -200,7 +200,7 @@
       max-width: min(58%, 620px);
     }
     .trade-chart-card {
-      width: 245px;
+      width: 285px;
       max-width: 100%;
       min-height: 122px;
       border: 1px solid #3a2d12;
@@ -230,7 +230,7 @@
     }
     .trade-chart-svg {
       width: 100%;
-      height: 72px;
+      height: 82px;
       display: block;
       border: 1px solid #221b0d;
       border-radius: 3px;
@@ -240,13 +240,13 @@
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 4px;
-      font-size: 9px;
+      font-size: 8px;
       color: var(--dim);
     }
     .trade-chart-levels span {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      overflow: visible;
+      overflow-wrap: anywhere;
+      line-height: 1.15;
     }
 
     .msg-ts { font-size: 10px; color: var(--dim); flex-shrink: 0; padding-bottom: 3px; }
@@ -513,8 +513,8 @@
   <div id="top-bar">
     <div class="tb-seg has-tt">
       <span id="tb-dot">*</span>
-      <span id="tb-luke-text">LUKE</span>
-      <span class="tooltip">Connection to Luke backend</span>
+      <span id="tb-luke-text">TRADING BOT</span>
+      <span class="tooltip">Trading sub-agent inside the larger Luke brain</span>
     </div>
     <span class="tb-div system-hide">|</span>
     <div class="tb-seg has-tt">
@@ -572,7 +572,7 @@
     <button id="btn-sienna">SIENNA</button>
     <button id="btn-eod">EOD</button>
     <button id="btn-shift">SHIFT</button>
-    <button id="btn-luke">LUKE</button>
+    <button id="btn-luke">NOTES</button>
     <button id="btn-metrics">METRICS</button>
   </div>
 
@@ -612,7 +612,7 @@
     <div id="paste-hint" style="display:none;font-size:10px;color:var(--yel);padding:2px 6px;letter-spacing:0.5px;"></div>
     <div id="input-row">
       <input id="input" type="text" placeholder="..." autocomplete="off" />
-      <button id="send" class="has-tt">SEND<span class="tooltip">Send message to Luke</span></button>
+      <button id="send" class="has-tt">SEND<span class="tooltip">Send message to the trading bot sub-agent</span></button>
     </div>
     <div id="quick-btns">
       <button class="qbtn has-tt" data-cmd="/status">
@@ -676,7 +676,7 @@
         <div id="pt-reason"></div>
       </div>
       <div id="pt-actions">
-        <button id="execute-btn" class="has-tt" disabled aria-disabled="true">BLOCKED<span class="tooltip">Execution is disabled. Review manually; Luke will not send staged or live orders.</span></button>
+        <button id="execute-btn" class="has-tt" disabled aria-disabled="true">BLOCKED<span class="tooltip">Execution is disabled. Review manually; the trading bot will not send staged or live orders.</span></button>
         <button id="skip-btn" class="has-tt">SKIP<span class="tooltip">Skip this trade signal (S key)</span></button>
       </div>
     </div>
@@ -712,7 +712,7 @@
   <!-- Luke Panel -->
   <div id="luke-panel">
     <div id="lp-header">
-      <span id="lp-title">LUKE NOTES</span>
+      <span id="lp-title">OPS NOTES</span>
       <button id="lp-close" title="Close Luke notes panel">X</button>
     </div>
     <div id="lp-body">
@@ -1201,8 +1201,8 @@
 
     executeBtn.addEventListener("click", async () => {
       logIntervention("execution_blocked", "review-only button tapped");
-      toast("Execution is blocked. Review manually; Luke will not send orders.", 5000);
-      addMessage("assistant", "Execution is blocked. Review manually; Luke will not send staged or live orders.", "alert");
+      toast("Execution is blocked. Review manually; the trading bot will not send orders.", 5000);
+      addMessage("assistant", "Execution is blocked. Review manually; the trading bot will not send staged or live orders.", "alert");
     });
 
     async function logIntervention(state, action) {
@@ -1409,7 +1409,7 @@
 
     function drawMiniTradeChart(svg, data) {
       const width = 230;
-      const height = 72;
+      const height = 78;
       const left = 9;
       const right = width - 9;
       const prices = [data.entry, data.stop, data.target, data.exit].map(asNum).filter(v => v !== null);
@@ -1418,11 +1418,12 @@
       const pad = Math.max(1, (max - min) * 0.18);
       const lo = min - pad;
       const hi = max + pad;
-      const y = price => 60 - ((price - lo) / Math.max(1, hi - lo)) * 48;
+      const y = price => 66 - ((price - lo) / Math.max(1, hi - lo)) * 48;
       svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
       svg.innerHTML = "";
       svg.appendChild(createSvgEl("rect", { x: 0, y: 0, width, height, fill: "#070706" }));
-      [18, 36, 54].forEach(gy => svg.appendChild(createSvgEl("line", { x1: left, x2: right, y1: gy, y2: gy, stroke: "#191712", "stroke-width": 1 })));
+      appendSvgText(svg, "PINE ALGO / BRACKET", left, 10, "#f2c75c");
+      [24, 42, 60].forEach(gy => svg.appendChild(createSvgEl("line", { x1: left, x2: right, y1: gy, y2: gy, stroke: "#191712", "stroke-width": 1 })));
       const stopY = data.stop !== undefined && asNum(data.stop) !== null ? y(data.stop) : null;
       const entryY = y(data.entry);
       const targetY = y(data.target);
@@ -1432,12 +1433,12 @@
       svg.appendChild(createSvgEl("polyline", { points, fill: "none", stroke: "#f2c75c", "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }));
       if (stopY !== null) {
         svg.appendChild(createSvgEl("line", { x1: left, x2: right, y1: stopY, y2: stopY, stroke: "#ff7474", "stroke-width": 1, "stroke-dasharray": "3 3" }));
-        appendSvgText(svg, `S ${fmtTradePrice(data.stop)}`, right - 47, stopY - 3, "#ff7474");
+        appendSvgText(svg, `SL ${fmtTradePrice(data.stop)}`, right - 57, stopY - 3, "#ff7474");
       }
       svg.appendChild(createSvgEl("line", { x1: left, x2: right, y1: entryY, y2: entryY, stroke: "#f2c75c", "stroke-width": 1 }));
       svg.appendChild(createSvgEl("line", { x1: left, x2: right, y1: targetY, y2: targetY, stroke: "#86efac", "stroke-width": 1 }));
-      appendSvgText(svg, `E ${fmtTradePrice(data.entry)}`, left + 4, entryY - 3, "#f2c75c");
-      appendSvgText(svg, `${data.exit !== undefined ? "X" : "T"} ${fmtTradePrice(data.target)}`, right - 47, targetY - 3, "#86efac");
+      appendSvgText(svg, `ENTRY ${fmtTradePrice(data.entry)}`, left + 4, entryY - 3, "#f2c75c");
+      appendSvgText(svg, `${data.exit !== undefined ? "EXIT" : "TP"} ${fmtTradePrice(data.target)}`, right - 57, targetY - 3, "#86efac");
       svg.appendChild(createSvgEl("circle", { cx: left, cy: entryY, r: 3, fill: "#f2c75c" }));
       svg.appendChild(createSvgEl("circle", { cx: right - 20, cy: targetY, r: 3, fill: "#86efac" }));
     }
@@ -1452,7 +1453,7 @@
       title.textContent = `${data.ticker || "ES"} LONG`;
       const meta = document.createElement("span");
       meta.className = "trade-chart-meta";
-      meta.textContent = data.result ? `${data.source} / ${data.result}` : data.source;
+      meta.textContent = data.result ? `pine algo / bracket / ${data.result}` : "pine algo / bracket";
       head.appendChild(title);
       head.appendChild(meta);
       card.appendChild(head);
@@ -1464,9 +1465,9 @@
       const levels = document.createElement("div");
       levels.className = "trade-chart-levels";
       const labels = [
-        ["E", data.entry],
-        [data.stop !== undefined && data.stop !== null ? "S" : "X", data.stop !== undefined && data.stop !== null ? data.stop : data.exit],
-        [data.exit !== undefined ? "X" : "T", data.target],
+        ["ENTRY", data.entry],
+        [data.stop !== undefined && data.stop !== null ? "STOP LOSS" : "EXIT", data.stop !== undefined && data.stop !== null ? data.stop : data.exit],
+        [data.exit !== undefined ? "EXIT" : "TAKE PROFIT", data.target],
       ];
       labels.forEach(([label, value]) => {
         const span = document.createElement("span");

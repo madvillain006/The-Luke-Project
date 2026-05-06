@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Luke Trading Window</title>
+  <title>Trading Bot Window</title>
   <style>
     :root {
       --bg: #000000;
@@ -393,8 +393,8 @@
 <body>
   <header>
     <div>
-      <h1>Luke Trading Window</h1>
-      <p class="subhead">Live-shaped bracket workflow using replay/dev candles until a verified provider is connected.</p>
+      <h1>Trading Bot Window</h1>
+      <p class="subhead">Luke brain sub-agent for replay/dev bracket workflow until a verified provider is connected.</p>
     </div>
     <div class="status-strip" id="top-status">
       <span class="pill warn">Read-only</span>
@@ -432,14 +432,15 @@
             <div class="fired-trade-copy">
               <div class="fired-trade-title">
                 <span id="fired-trade-title">Fired LONG</span>
+                <span class="pill info">Pine algo bracket</span>
                 <span class="pill bad">Review only</span>
                 <span class="pill warn">No execution</span>
               </div>
               <div class="fired-trade-detail" id="fired-trade-detail">Waiting for a staged long signal.</div>
               <div class="fired-trade-metrics">
                 <div class="fired-trade-metric"><div class="label">Entry</div><div class="value" id="fired-entry">n/a</div></div>
-                <div class="fired-trade-metric"><div class="label">Stop</div><div class="value" id="fired-stop">n/a</div></div>
-                <div class="fired-trade-metric"><div class="label">Target</div><div class="value" id="fired-target">n/a</div></div>
+                <div class="fired-trade-metric"><div class="label">Stop Loss</div><div class="value" id="fired-stop">n/a</div></div>
+                <div class="fired-trade-metric"><div class="label">Take Profit</div><div class="value" id="fired-target">n/a</div></div>
               </div>
             </div>
             <svg id="fired-trade-mini-chart" role="img" aria-label="Fired long bracket sketch"></svg>
@@ -604,7 +605,7 @@
     function drawFiredTradeMiniChart(data) {
       const svg = qs('#fired-trade-mini-chart');
       const width = 230;
-      const height = 118;
+      const height = 124;
       const left = 12;
       const right = width - 12;
       const prices = [data.entry, data.stop, data.target].map(finiteNumber).filter(value => value !== null);
@@ -614,14 +615,15 @@
       const pad = Math.max(1, (max - min) * 0.18);
       const lo = min - pad;
       const hi = max + pad;
-      const y = price => 96 - ((price - lo) / Math.max(1, hi - lo)) * 74;
+      const y = price => 102 - ((price - lo) / Math.max(1, hi - lo)) * 74;
       const entryY = y(data.entry);
       const stopY = y(data.stop);
       const targetY = y(data.target);
       svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
       svg.innerHTML = '';
       svg.appendChild(svgEl('rect', { x: 0, y: 0, width, height, fill: '#070706' }));
-      [26, 50, 74, 98].forEach(gy => svg.appendChild(svgEl('line', { x1: left, x2: right, y1: gy, y2: gy, stroke: '#191712', 'stroke-width': 1 })));
+      svgText(svg, 'PINE ALGO / BRACKET', left, 14, '#f0b94a');
+      [32, 56, 80, 104].forEach(gy => svg.appendChild(svgEl('line', { x1: left, x2: right, y1: gy, y2: gy, stroke: '#191712', 'stroke-width': 1 })));
       svg.appendChild(svgEl('polyline', {
         points: `${left},${stopY + 8} ${Math.round(width * .38)},${entryY} ${right - 20},${targetY}`,
         fill: 'none',
@@ -631,9 +633,9 @@
         'stroke-linejoin': 'round',
       }));
       [
-        ['Stop', data.stop, stopY, '#ef6a65', '4 4'],
+        ['SL', data.stop, stopY, '#ef6a65', '4 4'],
         ['Entry', data.entry, entryY, '#f0b94a', '0'],
-        ['Target', data.target, targetY, '#40c486', '0'],
+        ['TP', data.target, targetY, '#40c486', '0'],
       ].forEach(([label, price, yy, color, dash]) => {
         svg.appendChild(svgEl('line', { x1: left, x2: right, y1: yy, y2: yy, stroke: color, 'stroke-width': 1, 'stroke-dasharray': dash }));
         svgText(svg, `${label} ${fmt(price)}`, label === 'Entry' ? left + 4 : right - 84, Math.max(12, yy - 4), color);
@@ -663,7 +665,7 @@
       if (!trade) return;
       qs('#fired-trade-panel').hidden = false;
       qs('#fired-trade-title').textContent = `Fired LONG ${trade.ticker}`;
-      qs('#fired-trade-detail').textContent = `${trade.reason} Review manually; this window has no execution controls.`;
+      qs('#fired-trade-detail').textContent = `${trade.reason} Pine algo bracket only. Review manually; this window has no execution controls.`;
       qs('#fired-entry').textContent = fmt(trade.entry);
       qs('#fired-stop').textContent = fmt(trade.stop);
       qs('#fired-target').textContent = fmt(trade.target);

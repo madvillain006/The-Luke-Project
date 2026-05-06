@@ -191,6 +191,64 @@
     .bubble.vision { background: var(--bg2); border-left-color: var(--b2); }
     .bubble img    { max-width: 200px; max-height: 140px; display: block; border-radius: 2px; border: 1px solid var(--b1); }
 
+    .msg-row.trade-chart-row {
+      align-items: stretch;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+    .msg-row.trade-chart-row .bubble {
+      max-width: min(58%, 620px);
+    }
+    .trade-chart-card {
+      width: 245px;
+      max-width: 100%;
+      min-height: 122px;
+      border: 1px solid #3a2d12;
+      border-radius: 5px;
+      background: #0d0c09;
+      color: var(--med);
+      padding: 6px;
+      display: grid;
+      gap: 5px;
+      flex: 0 0 auto;
+    }
+    .trade-chart-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 10px;
+      color: var(--yel);
+      letter-spacing: .3px;
+    }
+    .trade-chart-meta {
+      color: var(--dim);
+      font-size: 9px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .trade-chart-svg {
+      width: 100%;
+      height: 72px;
+      display: block;
+      border: 1px solid #221b0d;
+      border-radius: 3px;
+      background: #070706;
+    }
+    .trade-chart-levels {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 4px;
+      font-size: 9px;
+      color: var(--dim);
+    }
+    .trade-chart-levels span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
     .msg-ts { font-size: 10px; color: var(--dim); flex-shrink: 0; padding-bottom: 3px; }
 
     .thinking { color: var(--dim); font-size: 10px; letter-spacing: 2px; padding: 3px 0; align-self: flex-start; }
@@ -286,6 +344,8 @@
 
     @media (max-width: 1000px) {
       .bubble { max-width: 95%; }
+      .msg-row.trade-chart-row .bubble { max-width: 100%; }
+      .trade-chart-card { width: min(100%, 360px); }
       #tb-prices { display: none; }
     }
 
@@ -1033,6 +1093,7 @@
     const executeBtn   = document.getElementById("execute-btn");
     const skipBtn      = document.getElementById("skip-btn");
     let countdownInterval = null;
+    let lastInlineStagedTradeKey = "";
 
     function showPending(data) {
       const s = data.signal;
@@ -1074,9 +1135,15 @@
       script.type = "text/javascript";
       script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
       script.async = true;
+      const symbols = {
+        ES: "CME_MINI:ES1!",
+        MES: "CME_MINI:MES1!",
+        NQ: "CME_MINI:NQ1!",
+        MNQ: "CME_MINI:MNQ1!",
+      };
       script.text = JSON.stringify({
         autosize: false, width: "100%", height: 162,
-        symbol: ticker === "MES" ? "CME_MINI:MES1!" : "CME_MINI:MNQ1!",
+        symbol: symbols[String(ticker || "").toUpperCase()] || "CME_MINI:ES1!",
         interval: "5", timezone: "America/New_York", theme: "dark", style: "1", locale: "en",
         hide_top_toolbar: true, hide_legend: true, allow_symbol_change: false,
         calendar: false, hide_volume: true, support_host: "https://www.tradingview.com"
@@ -1092,7 +1159,7 @@
       const textEl = document.getElementById("pt-countdown-text");
       const ringEl = document.getElementById("pt-ring");
       function tick() {
-        if (s <= 0) { hidePending(); return; }
+      if (s <= 0) { hidePending(); return; }
         textEl.textContent = Math.floor(s / 60) + ":" + (s % 60).toString().padStart(2, "0");
         ringEl.style.strokeDasharray = ((s / total) * 100) + " 100";
         ringEl.style.stroke = s < 60 ? "#f87171" : "#e2b96a";
@@ -1100,6 +1167,25 @@
       }
       tick();
       countdownInterval = setInterval(tick, 1000);
+    }
+
+    function addInlineStagedTrade(data) {
+      const chartData = buildLongTradeCardData(data);
+      if (!chartData) return;
+      const key = [
+        chartData.ticker,
+        chartData.entry,
+        chartData.stop,
+        chartData.target,
+        data?.signal?.timestamp || data?.timestamp || ""
+      ].join("|");
+      if (key === lastInlineStagedTradeKey) return;
+      lastInlineStagedTradeKey = key;
+      addMessage(
+        "assistant",
+        `LONG ${chartData.ticker} E:${fmtTradePrice(chartData.entry)} S:${fmtTradePrice(chartData.stop)} T:${fmtTradePrice(chartData.target)}\nReview only - execution blocked. Confirm manually before any order.`,
+        "setup"
+      );
     }
 
     async function checkPendingSignal() {
@@ -1181,6 +1267,7 @@
         const data = JSON.parse(event.data);
         if (data.type === "staged_trade") {
           showPending(data);
+          addInlineStagedTrade(data);
           if (data.canary) {
             const chip = document.getElementById("chip-canary");
             chip.textContent = "CANARY";
@@ -1242,6 +1329,154 @@
       return "luke";
     }
 
+    function asNum(value) {
+      const n = Number(value);
+      return Number.isFinite(n) ? n : null;
+    }
+
+    function fmtTradePrice(value) {
+      const n = asNum(value);
+      if (n === null) return "n/a";
+      return n.toFixed(Number.isInteger(n) ? 0 : 2);
+    }
+
+    function extractLongTradeCardData(text) {
+      if (chatSurface === "system" || !text || !/\bLONG\b/i.test(text)) return null;
+      const tickerMatch = text.match(/\bLONG\s+(ES|MES|SPX|SPY|NQ|MNQ|QQQ)\b/i);
+      if (!tickerMatch) return null;
+      const ticker = tickerMatch[1].toUpperCase();
+      let m = text.match(/\bLONG\s+(ES|MES|SPX|SPY|NQ|MNQ|QQQ)\s+E:([\d.]+)\s+S:([\d.]+)\s+T:([\d.]+)/i);
+      if (m) {
+        return {
+          source: "fired long",
+          ticker: m[1].toUpperCase(),
+          entry: asNum(m[2]),
+          stop: asNum(m[3]),
+          target: asNum(m[4]),
+        };
+      }
+      m = text.match(/Plan:\s*entry\s*([\d.]+)[\s\S]*?\bstop\s*([\d.]+)[\s\S]*?\btarget\s*([\d.]+)/i);
+      if (m) {
+        return {
+          source: "entry plan",
+          ticker,
+          entry: asNum(m[1]),
+          stop: asNum(m[2]),
+          target: asNum(m[3]),
+        };
+      }
+      m = text.match(/Trade logged\.\s+LONG\s+(ES|MES|SPX|SPY|NQ|MNQ|QQQ)\s+([\d.]+)\s*->\s*([\d.]+)\s+(WIN|LOSS|SCRATCH)/i);
+      if (m) {
+        return {
+          source: "trade log",
+          ticker: m[1].toUpperCase(),
+          entry: asNum(m[2]),
+          exit: asNum(m[3]),
+          target: asNum(m[3]),
+          result: m[4].toUpperCase(),
+        };
+      }
+      return null;
+    }
+
+    function buildLongTradeCardData(data) {
+      const s = data?.signal || data?.trade || data || {};
+      if (String(s.direction || "").toUpperCase() !== "LONG") return null;
+      const entry = asNum(s.entry);
+      const stop = asNum(s.stop);
+      const target = asNum(s.target);
+      if (entry === null || stop === null || target === null) return null;
+      return {
+        source: "fired long",
+        ticker: String(s.ticker || data?.ticker || "ES").toUpperCase(),
+        entry,
+        stop,
+        target,
+      };
+    }
+
+    function createSvgEl(name, attrs) {
+      const el = document.createElementNS("http://www.w3.org/2000/svg", name);
+      Object.entries(attrs || {}).forEach(([key, value]) => el.setAttribute(key, String(value)));
+      return el;
+    }
+
+    function appendSvgText(svg, text, x, y, fill) {
+      const el = createSvgEl("text", { x, y, fill, "font-size": 9, "font-family": "monospace" });
+      el.textContent = text;
+      svg.appendChild(el);
+    }
+
+    function drawMiniTradeChart(svg, data) {
+      const width = 230;
+      const height = 72;
+      const left = 9;
+      const right = width - 9;
+      const prices = [data.entry, data.stop, data.target, data.exit].map(asNum).filter(v => v !== null);
+      const min = Math.min(...prices);
+      const max = Math.max(...prices);
+      const pad = Math.max(1, (max - min) * 0.18);
+      const lo = min - pad;
+      const hi = max + pad;
+      const y = price => 60 - ((price - lo) / Math.max(1, hi - lo)) * 48;
+      svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+      svg.innerHTML = "";
+      svg.appendChild(createSvgEl("rect", { x: 0, y: 0, width, height, fill: "#070706" }));
+      [18, 36, 54].forEach(gy => svg.appendChild(createSvgEl("line", { x1: left, x2: right, y1: gy, y2: gy, stroke: "#191712", "stroke-width": 1 })));
+      const stopY = data.stop !== undefined && asNum(data.stop) !== null ? y(data.stop) : null;
+      const entryY = y(data.entry);
+      const targetY = y(data.target);
+      const points = stopY === null
+        ? `${left},${entryY} ${Math.round(width * 0.45)},${entryY - 11} ${right - 20},${targetY}`
+        : `${left},${stopY + 7} ${Math.round(width * 0.36)},${entryY} ${right - 20},${targetY}`;
+      svg.appendChild(createSvgEl("polyline", { points, fill: "none", stroke: "#f2c75c", "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }));
+      if (stopY !== null) {
+        svg.appendChild(createSvgEl("line", { x1: left, x2: right, y1: stopY, y2: stopY, stroke: "#ff7474", "stroke-width": 1, "stroke-dasharray": "3 3" }));
+        appendSvgText(svg, `S ${fmtTradePrice(data.stop)}`, right - 47, stopY - 3, "#ff7474");
+      }
+      svg.appendChild(createSvgEl("line", { x1: left, x2: right, y1: entryY, y2: entryY, stroke: "#f2c75c", "stroke-width": 1 }));
+      svg.appendChild(createSvgEl("line", { x1: left, x2: right, y1: targetY, y2: targetY, stroke: "#86efac", "stroke-width": 1 }));
+      appendSvgText(svg, `E ${fmtTradePrice(data.entry)}`, left + 4, entryY - 3, "#f2c75c");
+      appendSvgText(svg, `${data.exit !== undefined ? "X" : "T"} ${fmtTradePrice(data.target)}`, right - 47, targetY - 3, "#86efac");
+      svg.appendChild(createSvgEl("circle", { cx: left, cy: entryY, r: 3, fill: "#f2c75c" }));
+      svg.appendChild(createSvgEl("circle", { cx: right - 20, cy: targetY, r: 3, fill: "#86efac" }));
+    }
+
+    function createLongTradeChart(data) {
+      const card = document.createElement("div");
+      card.className = "trade-chart-card";
+
+      const head = document.createElement("div");
+      head.className = "trade-chart-head";
+      const title = document.createElement("strong");
+      title.textContent = `${data.ticker || "ES"} LONG`;
+      const meta = document.createElement("span");
+      meta.className = "trade-chart-meta";
+      meta.textContent = data.result ? `${data.source} / ${data.result}` : data.source;
+      head.appendChild(title);
+      head.appendChild(meta);
+      card.appendChild(head);
+
+      const svg = createSvgEl("svg", { class: "trade-chart-svg", role: "img", "aria-label": `${data.ticker || "ES"} long bracket sketch` });
+      drawMiniTradeChart(svg, data);
+      card.appendChild(svg);
+
+      const levels = document.createElement("div");
+      levels.className = "trade-chart-levels";
+      const labels = [
+        ["E", data.entry],
+        [data.stop !== undefined && data.stop !== null ? "S" : "X", data.stop !== undefined && data.stop !== null ? data.stop : data.exit],
+        [data.exit !== undefined ? "X" : "T", data.target],
+      ];
+      labels.forEach(([label, value]) => {
+        const span = document.createElement("span");
+        span.textContent = `${label} ${fmtTradePrice(value)}`;
+        levels.appendChild(span);
+      });
+      card.appendChild(levels);
+      return card;
+    }
+
     function addMessage(role, text, type) {
       const row = document.createElement("div");
       row.className = "msg-row " + (role === "user" ? "user" : "luke");
@@ -1251,6 +1486,12 @@
       bubble.className = "bubble " + bType;
       bubble.textContent = text;
       row.appendChild(bubble);
+
+      const tradeCard = role !== "user" ? extractLongTradeCardData(text) : null;
+      if (tradeCard) {
+        row.classList.add("trade-chart-row");
+        row.appendChild(createLongTradeChart(tradeCard));
+      }
 
       const ts = document.createElement("span");
       ts.className = "msg-ts";

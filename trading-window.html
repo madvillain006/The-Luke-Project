@@ -223,6 +223,64 @@
       margin-left: auto;
       color: var(--warn);
     }
+    .fired-trade-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 230px;
+      gap: 10px;
+      align-items: stretch;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid rgba(240,185,74,.42);
+      border-radius: 6px;
+      background: #141109;
+    }
+    .fired-trade-panel[hidden] { display: none; }
+    .fired-trade-copy {
+      display: grid;
+      gap: 7px;
+      min-width: 0;
+    }
+    .fired-trade-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: var(--warn);
+      font-weight: 700;
+    }
+    .fired-trade-detail {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    .fired-trade-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .fired-trade-metric {
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 6px;
+      background: #0b0b0b;
+    }
+    .fired-trade-metric .label {
+      color: var(--muted);
+      font-size: 10px;
+    }
+    .fired-trade-metric .value {
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--text);
+    }
+    #fired-trade-mini-chart {
+      width: 100%;
+      min-height: 118px;
+      border: 1px solid #2b2110;
+      border-radius: 5px;
+      background: #070706;
+    }
     .swatch {
       display: inline-block;
       width: 16px;
@@ -327,6 +385,7 @@
     @media (max-width: 980px) {
       main { grid-template-columns: 1fr; }
       .chart-shell { height: 420px; }
+      .fired-trade-panel { grid-template-columns: 1fr; }
       header { align-items: flex-start; flex-direction: column; }
     }
   </style>
@@ -369,6 +428,22 @@
           </div>
         </div>
         <div class="section-body">
+          <div class="fired-trade-panel" id="fired-trade-panel" hidden>
+            <div class="fired-trade-copy">
+              <div class="fired-trade-title">
+                <span id="fired-trade-title">Fired LONG</span>
+                <span class="pill bad">Review only</span>
+                <span class="pill warn">No execution</span>
+              </div>
+              <div class="fired-trade-detail" id="fired-trade-detail">Waiting for a staged long signal.</div>
+              <div class="fired-trade-metrics">
+                <div class="fired-trade-metric"><div class="label">Entry</div><div class="value" id="fired-entry">n/a</div></div>
+                <div class="fired-trade-metric"><div class="label">Stop</div><div class="value" id="fired-stop">n/a</div></div>
+                <div class="fired-trade-metric"><div class="label">Target</div><div class="value" id="fired-target">n/a</div></div>
+              </div>
+            </div>
+            <svg id="fired-trade-mini-chart" role="img" aria-label="Fired long bracket sketch"></svg>
+          </div>
           <div class="legend">
             <span><span class="swatch price"></span>Current/replay price</span>
             <span><span class="swatch entry"></span>Entry plan</span>
@@ -514,6 +589,102 @@
       return value === null ? 'n/a' : value.toFixed(2);
     };
     const statusClass = (value) => /PASS|BLOCK|INVALID|UNKNOWN|STALE/i.test(value || '') ? 'bad' : /PAPER|REPLAY|ARMED|WATCH/i.test(value || '') ? 'warn' : 'info';
+    const svgEl = (name, attrs = {}) => {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', name);
+      Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, String(value)));
+      return el;
+    };
+
+    function svgText(svg, text, x, y, fill) {
+      const el = svgEl('text', { x, y, fill, 'font-size': 10, 'font-family': 'monospace' });
+      el.textContent = text;
+      svg.appendChild(el);
+    }
+
+    function drawFiredTradeMiniChart(data) {
+      const svg = qs('#fired-trade-mini-chart');
+      const width = 230;
+      const height = 118;
+      const left = 12;
+      const right = width - 12;
+      const prices = [data.entry, data.stop, data.target].map(finiteNumber).filter(value => value !== null);
+      if (prices.length < 2) return;
+      const min = Math.min(...prices);
+      const max = Math.max(...prices);
+      const pad = Math.max(1, (max - min) * 0.18);
+      const lo = min - pad;
+      const hi = max + pad;
+      const y = price => 96 - ((price - lo) / Math.max(1, hi - lo)) * 74;
+      const entryY = y(data.entry);
+      const stopY = y(data.stop);
+      const targetY = y(data.target);
+      svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      svg.innerHTML = '';
+      svg.appendChild(svgEl('rect', { x: 0, y: 0, width, height, fill: '#070706' }));
+      [26, 50, 74, 98].forEach(gy => svg.appendChild(svgEl('line', { x1: left, x2: right, y1: gy, y2: gy, stroke: '#191712', 'stroke-width': 1 })));
+      svg.appendChild(svgEl('polyline', {
+        points: `${left},${stopY + 8} ${Math.round(width * .38)},${entryY} ${right - 20},${targetY}`,
+        fill: 'none',
+        stroke: '#f0b94a',
+        'stroke-width': 2.2,
+        'stroke-linecap': 'round',
+        'stroke-linejoin': 'round',
+      }));
+      [
+        ['Stop', data.stop, stopY, '#ef6a65', '4 4'],
+        ['Entry', data.entry, entryY, '#f0b94a', '0'],
+        ['Target', data.target, targetY, '#40c486', '0'],
+      ].forEach(([label, price, yy, color, dash]) => {
+        svg.appendChild(svgEl('line', { x1: left, x2: right, y1: yy, y2: yy, stroke: color, 'stroke-width': 1, 'stroke-dasharray': dash }));
+        svgText(svg, `${label} ${fmt(price)}`, label === 'Entry' ? left + 4 : right - 84, Math.max(12, yy - 4), color);
+      });
+      svg.appendChild(svgEl('circle', { cx: Math.round(width * .38), cy: entryY, r: 3.5, fill: '#f0b94a' }));
+      svg.appendChild(svgEl('circle', { cx: right - 20, cy: targetY, r: 3.5, fill: '#40c486' }));
+    }
+
+    function normalizeFiredTrade(data) {
+      const signal = data?.signal || data?.trade || data || {};
+      if (String(signal.direction || '').toUpperCase() !== 'LONG') return null;
+      const entry = finiteNumber(signal.entry);
+      const stop = finiteNumber(signal.stop);
+      const target = finiteNumber(signal.target);
+      if (entry === null || stop === null || target === null) return null;
+      return {
+        ticker: String(signal.ticker || data?.ticker || 'ES').toUpperCase(),
+        entry,
+        stop,
+        target,
+        reason: signal.reason || data?.reason || 'Staged long signal received.',
+      };
+    }
+
+    function showFiredTrade(data) {
+      const trade = normalizeFiredTrade(data);
+      if (!trade) return;
+      qs('#fired-trade-panel').hidden = false;
+      qs('#fired-trade-title').textContent = `Fired LONG ${trade.ticker}`;
+      qs('#fired-trade-detail').textContent = `${trade.reason} Review manually; this window has no execution controls.`;
+      qs('#fired-entry').textContent = fmt(trade.entry);
+      qs('#fired-stop').textContent = fmt(trade.stop);
+      qs('#fired-target').textContent = fmt(trade.target);
+      drawFiredTradeMiniChart(trade);
+    }
+
+    function connectFiredTradeSocket() {
+      const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+      fetch('/ws-token')
+        .then(response => response.json())
+        .then(({ token }) => {
+          const socket = new WebSocket(`${protocol}//${location.host}/?token=${encodeURIComponent(token)}`);
+          socket.onmessage = event => {
+            try {
+              const data = JSON.parse(event.data);
+              if (data.type === 'staged_trade') showFiredTrade(data);
+            } catch {}
+          };
+        })
+        .catch(() => {});
+    }
 
     function apiUrl(path) {
       return `${path}?instrument=ES&mode=replay&example=${encodeURIComponent(state.example)}`;
@@ -796,6 +967,7 @@
       qs('#chart-subtitle').textContent = `Trading window failed: ${err.message}`;
       qs('#chart-empty').style.display = 'flex';
     });
+    connectFiredTradeSocket();
   </script>
 </body>
 </html>

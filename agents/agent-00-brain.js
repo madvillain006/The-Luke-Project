@@ -18,6 +18,7 @@ const { buildDailyBrief, fetchDailyNews } = require('../lib/brain/daily-brief');
 const { buildDailySpine, fetchWeather, fetchWeatherForLocations, recordDailyCheckin } = require('../lib/brain/daily-spine');
 const { buildDeveloperStackSpine, recordDeveloperStackEvent } = require('../lib/brain/developer-stack-spine');
 const { buildHistoryCareerSpine, fetchPublicHistoryJobLeads, recordOpportunity } = require('../lib/brain/history-career-spine');
+const { buildRadarBrief, buildRadarItems, buildRadarSnapshot, recordRadarIngest } = require('../lib/brain/radar-layer');
 const { syncDirectDailyIntegrations } = require('../lib/google-direct');
 const paths = require('../lib/paths');
 
@@ -174,6 +175,26 @@ router.get('/daily/news', async (req, res) => {
   res.json(await fetchDailyNews({
     limitPerCategory: Number.isFinite(limitPerCategory) ? limitPerCategory : 8,
   }));
+});
+
+router.get('/radar', (req, res) => {
+  res.json(buildRadarSnapshot(paths));
+});
+
+router.get('/radar/items', (req, res) => {
+  res.json(buildRadarItems({ paths, limit: Number(req.query.limit || 50) }));
+});
+
+router.get('/radar/brief', (req, res) => {
+  res.json(buildRadarBrief({ paths }));
+});
+
+router.post('/radar/ingest', (req, res) => {
+  try {
+    res.json(recordRadarIngest(req.body || {}, { paths }));
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ ok: false, error: err.message });
+  }
 });
 
 router.get('/daily/brief', async (req, res) => {

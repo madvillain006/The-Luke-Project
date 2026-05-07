@@ -458,6 +458,11 @@ app.get("/daily", (req, res) => {
   res.sendFile(__dirname + "/daily-window.html");
 });
 
+app.get("/radar", (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.sendFile(__dirname + "/radar-dashboard.html");
+});
+
 app.get("/operator-v2", (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.sendFile(__dirname + "/operator-v2.html");

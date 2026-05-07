@@ -156,7 +156,8 @@
 
     .trading-panel,
     .system-chat-panel,
-    .daily-panel {
+    .daily-panel,
+    .radar-panel {
       display: none;
       min-height: 540px;
       border: 1px solid var(--line);
@@ -167,7 +168,8 @@
 
     .trading-panel.is-open,
     .system-chat-panel.is-open,
-    .daily-panel.is-open {
+    .daily-panel.is-open,
+    .radar-panel.is-open {
       display: flex;
       flex-direction: column;
     }
@@ -184,6 +186,11 @@
 
     .daily-panel.is-open {
       height: clamp(760px, 78vh, 980px);
+      min-height: 0;
+    }
+
+    .radar-panel.is-open {
+      height: clamp(640px, 72vh, 860px);
       min-height: 0;
     }
 
@@ -327,7 +334,8 @@
 
     .trading-frame,
     .system-frame,
-    .daily-frame {
+    .daily-frame,
+    .radar-frame {
       width: 100%;
       min-height: 0;
       flex: 1;
@@ -429,7 +437,8 @@
     }
 
     .system-chat-panel,
-    .daily-panel {
+    .daily-panel,
+    .radar-panel {
       grid-column: 1 / -1;
       min-height: 520px;
     }
@@ -509,7 +518,8 @@
       justify-content: start;
     }
 
-    body.daily-focus .module-grid > .module-link {
+    body.daily-focus .module-grid > .module-link,
+    body.radar-focus .module-grid > .module-link {
       display: none;
     }
 
@@ -724,6 +734,43 @@
 
     .daily-brief-weather-row .weather-emoji {
       font-size: 16px;
+    }
+
+    .radar-art {
+      width: 118px;
+      height: 118px;
+      border: 1px solid #343434;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      color: var(--text);
+      background:
+        radial-gradient(circle at center, transparent 0 29%, rgba(79, 181, 255, 0.18) 30% 31%, transparent 32% 100%),
+        radial-gradient(circle at center, transparent 0 58%, rgba(255, 255, 255, 0.15) 59% 60%, transparent 61% 100%),
+        #111111;
+    }
+
+    .radar-art::before {
+      content: "";
+      position: absolute;
+      width: 55px;
+      height: 1px;
+      left: 50%;
+      top: 50%;
+      background: var(--accent);
+      transform-origin: left center;
+      transform: rotate(-24deg);
+      box-shadow: 0 0 12px rgba(79, 181, 255, 0.42);
+    }
+
+    .radar-art::after {
+      content: "RAD";
+      z-index: 1;
+      color: #d8d8d8;
+      font-size: 16px;
+      letter-spacing: 0;
     }
 
     .small-grid {
@@ -1013,7 +1060,6 @@
           <div class="trading-panel-actions">
             <button class="panel-action" id="trading-chat-view" type="button" title="Show the trading chat in this panel">CHAT</button>
             <button class="panel-action" id="trading-window-view" type="button" title="Show the replay trading window in this panel">WINDOW</button>
-            <a class="panel-action" id="trading-full-link" href="/trading" title="Open this trading view as a full page">FULL</a>
             <button class="panel-action" id="trading-close" type="button" title="Return to the dashboard trading tile">BACK</button>
           </div>
         </div>
@@ -1028,6 +1074,7 @@
         <span class="status-copy">
           <span>&gt; Buffalo weather: <strong id="weather-line">loading</strong></span>
           <span>&gt; Brain: <strong id="brain-line">loading</strong></span>
+          <span>&gt; Radar: <strong id="radar-line">loading</strong></span>
           <span>&gt; Blockers: <strong id="blocker-line">loading</strong></span>
           <span>&gt; Runtime: <strong id="runtime-line">loading</strong></span>
         </span>
@@ -1036,15 +1083,13 @@
         <div class="trading-panel-top">
           <span>Luke System / General Chat</span>
           <div class="trading-panel-actions">
-            <a class="panel-action" href="/luke" title="Open Luke system chat as a full page">FULL</a>
             <button class="panel-action" id="system-close" type="button" title="Return to the Luke System tile">BACK</button>
           </div>
         </div>
         <iframe class="system-frame" id="system-frame" title="Luke system chat" data-src="/luke?embed=1"></iframe>
       </section>
-      <a class="filter-button active" href="/shell">Show All</a>
+      <span class="filter-button active" aria-current="page">Show All</span>
       <a class="filter-button" href="/brain-dashboard">Brain Status</a>
-      <a class="filter-button" href="/brain-dashboard#spine-trading">Agents (A)</a>
     </nav>
 
     <div class="view-switcher" aria-label="Luke shell views">
@@ -1054,11 +1099,6 @@
     </div>
 
     <section class="module-grid shell-view is-active" data-view-panel="operations" aria-label="Luke agent modules">
-      <a class="module-link" data-route="/luke" href="/luke" aria-label="Open Luke system chat">
-        <div class="module-art"><div class="toggle-icon" aria-hidden="true"></div></div>
-        <div class="module-caption"><span>C 000</span><span class="name">Brain Core</span></div>
-      </a>
-
       <a class="module-link" id="daily-launch" data-route="/daily" href="/daily">
         <div class="module-art">
           <div class="daily-brief-stack">
@@ -1087,6 +1127,21 @@
         <iframe class="daily-frame" id="daily-frame" title="Luke daily window" data-src="/daily?embed=1"></iframe>
       </section>
 
+      <a class="module-link" id="radar-launch" data-route="/radar" href="/radar">
+        <div class="module-art"><div class="radar-art" aria-hidden="true"></div></div>
+        <div class="module-caption"><span>I 004</span><span class="name">Radar</span><span class="module-meta">Inbox, synthesis, review</span></div>
+      </a>
+
+      <section class="radar-panel" id="radar-panel" aria-hidden="true" aria-label="Luke radar window">
+        <div class="trading-panel-top">
+          <span>Radar / Inbox + Synthesis</span>
+          <div class="trading-panel-actions">
+            <button class="panel-action" id="radar-close" type="button" title="Return to the Radar tile">BACK</button>
+          </div>
+        </div>
+        <iframe class="radar-frame" id="radar-frame" title="Luke radar window" data-src="/radar?embed=1"></iframe>
+      </section>
+
       <a class="module-link" data-route="/brain-dashboard#spine-automation" href="/brain-dashboard#spine-automation">
         <div class="module-art"><div class="text-globe"><span>AI OPS AI OPS AI OPS AI OPS AI OPS AI OPS AI OPS AI OPS</span></div></div>
         <div class="module-caption"><span>C 015</span><span class="name">AI Automation Business</span></div>
@@ -1109,28 +1164,6 @@
         <div class="view-subtitle">Less noise. More signal.</div>
       </div>
       <div class="view-grid">
-        <a class="view-module" data-route="/trading" href="/trading">
-          <span class="view-code">T 001</span>
-          <span class="view-name">Trading Analysis</span>
-          <span class="view-note">Open gated trading work.</span>
-        </a>
-        <a class="view-module" data-route="/luke" href="/luke">
-          <span class="view-code">C 000</span>
-          <span class="view-name">Luke System</span>
-          <span class="view-note">Open local chat.</span>
-        </a>
-        <a class="view-module" data-route="/daily" href="/daily">
-          <span class="view-code">D 003</span>
-          <span class="view-name">Daily Brief</span>
-          <span class="view-note">Open weather, calendar, and jobs.</span>
-        </a>
-        <a class="view-module" data-route="/brain-dashboard#spine-developer" href="/brain-dashboard#spine-developer">
-          <span class="view-code">C 014</span>
-          <span class="view-name">Developer Stack</span>
-          <span class="view-note">Open build lane.</span>
-        </a>
-      </div>
-      <div class="view-grid">
         <div class="ops-card">
           <span class="view-code">LOCAL</span>
           <span class="view-name">Current Focus</span>
@@ -1141,6 +1174,16 @@
           <span class="view-name">Next Action</span>
           <span class="view-note">Open the module that has the live blocker or the next review item.</span>
         </div>
+        <div class="ops-card">
+          <span class="view-code">REVIEW</span>
+          <span class="view-name">Review Load</span>
+          <span class="view-note">Fresh captures, contradictions, and reminders.</span>
+        </div>
+        <div class="ops-card">
+          <span class="view-code">RUNTIME</span>
+          <span class="view-name">Runtime Readiness</span>
+          <span class="view-note">Weather, brain, bridge, and blockers.</span>
+        </div>
       </div>
     </section>
 
@@ -1150,36 +1193,26 @@
         <div class="view-subtitle">Operational lanes.</div>
       </div>
       <div class="view-grid">
-        <a class="view-module" data-route="/trading" href="/trading">
-          <span class="view-code">T 001</span>
-          <span class="view-name">Trading Analysis</span>
-          <span class="view-note">Human-gated market work.</span>
-        </a>
-        <a class="view-module" data-route="/luke" href="/luke">
-          <span class="view-code">C 000</span>
-          <span class="view-name">Brain Core</span>
-          <span class="view-note">Local system chat.</span>
-        </a>
-        <a class="view-module" data-route="/daily" href="/daily">
-          <span class="view-code">D 003</span>
-          <span class="view-name">Daily Brief</span>
-          <span class="view-note">Weather, calendar, jobs.</span>
-        </a>
-        <a class="view-module" data-route="/brain-dashboard#spine-automation" href="/brain-dashboard#spine-automation">
-          <span class="view-code">C 015</span>
-          <span class="view-name">AI Automation Business</span>
-          <span class="view-note">Opportunity and build lane.</span>
-        </a>
-        <a class="view-module" data-route="/brain-dashboard#spine-developer" href="/brain-dashboard#spine-developer">
-          <span class="view-code">C 014</span>
-          <span class="view-name">Developer Stack</span>
-          <span class="view-note">Repo and runtime lane.</span>
-        </a>
-        <a class="view-module" data-route="/brain-dashboard#spine-history" href="/brain-dashboard#spine-history">
-          <span class="view-code">M 028</span>
-          <span class="view-name">Research Leads</span>
-          <span class="view-note">History career fork.</span>
-        </a>
+        <div class="ops-card">
+          <span class="view-code">MARKET</span>
+          <span class="view-name">Market Work</span>
+          <span class="view-note">Human-gated analysis and review.</span>
+        </div>
+        <div class="ops-card">
+          <span class="view-code">PERSONAL</span>
+          <span class="view-name">Personal Ops</span>
+          <span class="view-note">Calendar, jobs, reminders, and moves.</span>
+        </div>
+        <div class="ops-card">
+          <span class="view-code">BUILD</span>
+          <span class="view-name">Build Work</span>
+          <span class="view-note">Automation business and developer stack.</span>
+        </div>
+        <div class="ops-card">
+          <span class="view-code">RESEARCH</span>
+          <span class="view-name">Research Queue</span>
+          <span class="view-note">Leads, source bins, and synthesis.</span>
+        </div>
       </div>
     </section>
   </div>
@@ -1349,17 +1382,12 @@
       const panel = $('trading-panel');
       const frame = $('trading-frame');
       const title = $('trading-panel-title');
-      const full = $('trading-full-link');
       if (!panel || !frame) return;
       const windowMode = mode === 'window';
       const src = windowMode ? '/trading-window?embed=shell&mode=replay&example=positive' : '/trading?embed=1';
       panel.classList.toggle('is-window-mode', windowMode);
       panel.setAttribute('aria-label', windowMode ? 'Trading bot window' : 'Trading bot sub-agent');
       if (title) title.textContent = windowMode ? 'Trading (Analysis) / Trading Bot Window' : 'Trading (Analysis) / Trading Bot';
-      if (full) {
-        full.href = windowMode ? '/trading-window?mode=replay&example=positive' : '/trading';
-        full.title = windowMode ? 'Open the trading window as a full page' : 'Open the trading chat as a full page';
-      }
       frame.title = windowMode ? 'Trading bot window' : 'Trading bot chat';
       frame.dataset.currentMode = mode;
       if (frame.getAttribute('src') !== src) {
@@ -1374,6 +1402,13 @@
       const frame = $('system-frame');
       try {
         frame?.contentWindow?.document?.getElementById('input')?.focus();
+      } catch {}
+    }
+
+    function focusRadarInput() {
+      const frame = $('radar-frame');
+      try {
+        frame?.contentWindow?.document?.getElementById('capture-text')?.focus();
       } catch {}
     }
 
@@ -1430,6 +1465,7 @@
       const panel = $('daily-panel');
       const frame = $('daily-frame');
       if (!launch || !panel || !frame) return;
+      closeRadarPanel({ restoreFocus: false });
       document.body.classList.add('daily-focus');
       launch.classList.add('is-hidden');
       panel.classList.add('is-open');
@@ -1438,7 +1474,7 @@
       if (!frame.getAttribute('src')) frame.setAttribute('src', frame.dataset.src || '/daily?embed=1');
     }
 
-    function closeDailyPanel() {
+    function closeDailyPanel(options = {}) {
       const launch = $('daily-launch');
       const panel = $('daily-panel');
       if (!launch || !panel) return;
@@ -1447,7 +1483,36 @@
       panel.classList.remove('is-expanded');
       panel.setAttribute('aria-hidden', 'true');
       launch.classList.remove('is-hidden');
-      launch.focus();
+      if (options.restoreFocus !== false) launch.focus();
+    }
+
+    function openRadarPanel() {
+      const launch = $('radar-launch');
+      const panel = $('radar-panel');
+      const frame = $('radar-frame');
+      if (!launch || !panel || !frame) return;
+      closeDailyPanel({ restoreFocus: false });
+      document.body.classList.add('radar-focus');
+      launch.classList.add('is-hidden');
+      panel.classList.add('is-open');
+      panel.setAttribute('aria-hidden', 'false');
+      if (!frame.getAttribute('src')) {
+        frame.setAttribute('src', frame.dataset.src || '/radar?embed=1');
+        frame.addEventListener('load', focusRadarInput, { once: true });
+      } else {
+        focusRadarInput();
+      }
+    }
+
+    function closeRadarPanel(options = {}) {
+      const launch = $('radar-launch');
+      const panel = $('radar-panel');
+      if (!launch || !panel) return;
+      document.body.classList.remove('radar-focus');
+      panel.classList.remove('is-open');
+      panel.setAttribute('aria-hidden', 'true');
+      launch.classList.remove('is-hidden');
+      if (options.restoreFocus !== false) launch.focus();
     }
 
     function toggleDailyExpanded() {
@@ -1460,7 +1525,10 @@
 
     function setShellView(view) {
       const nextView = view || 'operations';
-      if (nextView !== 'operations') closeDailyPanel();
+      if (nextView !== 'operations') {
+        closeDailyPanel();
+        closeRadarPanel();
+      }
       document.querySelectorAll('[data-view-panel]').forEach(panel => {
         panel.classList.toggle('is-active', panel.getAttribute('data-view-panel') === nextView);
       });
@@ -1474,10 +1542,11 @@
     async function refresh() {
       refreshBridgeReadOnly();
       try {
-        const [brain, daily, telemetry] = await Promise.all([
+        const [brain, daily, telemetry, radar] = await Promise.all([
           getJson('/agent/brain/status'),
           getJson('/agent/brain/daily'),
           getJson('/agent/brain/telemetry'),
+          getJson('/agent/brain/radar').catch(() => null),
         ]);
         const weather = daily.weather || {};
         setText('weather-line', weather.summary || 'Buffalo weather unavailable');
@@ -1489,6 +1558,7 @@
         setText('daily-brief-state', daily.date_label || new Date(daily.generated_at || Date.now()).toLocaleDateString());
         setText('daily-brief-note', daily.time_label || new Date(daily.generated_at || Date.now()).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }));
         setText('brain-line', `${Object.keys(brain.subagents || {}).length} agents / ${brain.report_inbox?.count || 0} reports`);
+        setText('radar-line', radar?.summary_line || 'ready / no items');
         setText('blocker-line', brain.attention?.length ? brain.attention.map(item => item.agent).join(', ') : 'none');
         setText('runtime-line', `${formatMemory(telemetry.process?.rss_bytes)} RSS / ${formatUptime(telemetry.process?.uptime_seconds)}`);
       } catch (err) {
@@ -1501,6 +1571,7 @@
         setText('daily-brief-state', new Date().toLocaleDateString());
         setText('daily-brief-note', 'daily offline');
         setText('brain-line', 'offline');
+        setText('radar-line', 'offline');
         setText('blocker-line', 'offline');
         setText('runtime-line', err.message);
       }
@@ -1525,7 +1596,14 @@
         }
         if (route === '/daily') {
           event.preventDefault();
+          setShellView('operations');
           openDailyPanel();
+          return;
+        }
+        if (route === '/radar') {
+          event.preventDefault();
+          setShellView('operations');
+          openRadarPanel();
           return;
         }
         if (route) {
@@ -1541,6 +1619,7 @@
     $('system-close')?.addEventListener('click', closeSystemPanel);
     $('daily-close')?.addEventListener('click', closeDailyPanel);
     $('daily-expand')?.addEventListener('click', toggleDailyExpanded);
+    $('radar-close')?.addEventListener('click', closeRadarPanel);
     $('shell-bridge-copy')?.addEventListener('click', copyBridgeUrl);
     $('shell-bridge-refresh')?.addEventListener('click', refreshBridgeStatus);
     $('shell-bridge-card')?.addEventListener('click', event => {

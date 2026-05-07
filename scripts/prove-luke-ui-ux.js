@@ -110,7 +110,7 @@ async function sendChatCommand(page, command, expectedText) {
 
 async function waitForShellStatus(page) {
   await page.waitForFunction(() => {
-    const ids = ['weather-line', 'brain-line', 'blocker-line', 'runtime-line', 'daily-brief-note'];
+    const ids = ['weather-line', 'brain-line', 'radar-line', 'blocker-line', 'runtime-line', 'daily-brief-note'];
     return ids.every(id => {
       const text = document.getElementById(id)?.textContent || '';
       return text.trim() && !/loading/i.test(text);
@@ -150,6 +150,16 @@ async function waitForDailyWindow(page) {
   }, { timeout: 45000 });
 }
 
+async function waitForRadarWindow(page) {
+  await page.waitForFunction(() => {
+    const body = document.body.innerText || '';
+    return /Luke Radar/i.test(body)
+      && /Capture/i.test(body)
+      && /Morning Intel/i.test(body)
+      && !/loading/i.test(body);
+  }, { timeout: 30000 });
+}
+
 async function openDailyPanelFromShell(page) {
   await waitForShellStatus(page);
   await page.locator('#daily-launch').click();
@@ -166,6 +176,24 @@ async function openDailyPanelFromShell(page) {
       && /Gmail cleanup/.test(text)
       && /Buffalo, NY/.test(text)
       && !/Loading date|Loading time|loading/i.test(text);
+  }, { timeout: 30000 });
+}
+
+async function openRadarPanelFromShell(page) {
+  await waitForShellStatus(page);
+  await page.locator('#radar-launch').click();
+  await page.waitForFunction(() => {
+    const panel = document.querySelector('#radar-panel');
+    const frame = document.querySelector('#radar-frame');
+    return panel?.classList.contains('is-open') && frame?.getAttribute('src');
+  }, { timeout: 15000 });
+  await page.waitForFunction(() => {
+    const frame = document.querySelector('#radar-frame');
+    const text = frame?.contentWindow?.document?.body?.innerText || '';
+    return /Status/i.test(text)
+      && /Capture/i.test(text)
+      && /Morning Intel/i.test(text)
+      && !/loading/i.test(text);
   }, { timeout: 30000 });
 }
 
@@ -236,9 +264,9 @@ async function captureScreenshots() {
         route: '/shell?proof=ui-ux',
         file: 'shell-desktop.png',
         viewport: desktop,
-        waitForText: ['Trading (Analysis)', 'Brain Status'],
+        waitForText: ['Trading (Analysis)', 'Brain Status', 'Radar'],
         action: waitForShellStatus,
-        mustContain: ['Trading (Analysis)', 'Luke System', 'Brain Status'],
+        mustContain: ['Trading (Analysis)', 'Luke System', 'Radar', 'Brain Status'],
         mustNotContain: ['loading'],
         fullPage: false,
       },
@@ -247,9 +275,9 @@ async function captureScreenshots() {
         route: '/shell?proof=ui-ux',
         file: 'shell-mobile.png',
         viewport: mobile,
-        waitForText: ['Trading (Analysis)', 'Brain Status'],
+        waitForText: ['Trading (Analysis)', 'Brain Status', 'Radar'],
         action: waitForShellStatus,
-        mustContain: ['Trading (Analysis)', 'Brain Status'],
+        mustContain: ['Trading (Analysis)', 'Radar', 'Brain Status'],
         mustNotContain: ['loading'],
       },
       {
@@ -260,6 +288,26 @@ async function captureScreenshots() {
         waitForText: ['Trading (Analysis)', 'Daily Brief'],
         action: openDailyPanelFromShell,
         mustContain: ['Daily Brief / Schedule Window'],
+        mustNotContain: ['loading'],
+      },
+      {
+        key: 'shell-radar-panel-desktop',
+        route: '/shell?proof=ui-ux-radar-panel',
+        file: 'shell-radar-panel-desktop.png',
+        viewport: desktop,
+        waitForText: ['Trading (Analysis)', 'Radar'],
+        action: openRadarPanelFromShell,
+        mustContain: ['Radar / Inbox + Synthesis'],
+        mustNotContain: ['loading'],
+      },
+      {
+        key: 'radar-window-desktop',
+        route: '/radar?proof=ui-ux',
+        file: 'radar-window-desktop.png',
+        viewport: desktop,
+        waitForText: ['Luke Radar', 'Capture', 'Morning Intel'],
+        action: waitForRadarWindow,
+        mustContain: ['Luke Radar', 'Capture', 'Morning Intel', 'Recent Inbox'],
         mustNotContain: ['loading'],
       },
       {

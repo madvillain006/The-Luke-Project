@@ -10,6 +10,7 @@ const DASHBOARD_FILE = path.join(ROOT, 'brain-dashboard.html');
 const SHELL_FILE = path.join(ROOT, 'luke-shell.html');
 const CHAT_FILE = path.join(ROOT, 'chat.html');
 const DAILY_FILE = path.join(ROOT, 'daily-window.html');
+const RADAR_FILE = path.join(ROOT, 'radar-dashboard.html');
 
 describe('/brain dashboard shell', () => {
   it('adds brain dashboard routes under the Luke shell', () => {
@@ -26,6 +27,8 @@ describe('/brain dashboard shell', () => {
     expect(index).toContain('app.get("/luke", (req, res) => {');
     expect(index).toContain('app.get("/daily", (req, res) => {');
     expect(index).toContain('res.sendFile(__dirname + "/daily-window.html")');
+    expect(index).toContain('app.get("/radar", (req, res) => {');
+    expect(index).toContain('res.sendFile(__dirname + "/radar-dashboard.html")');
     expect(index).toContain('app.get("/brain", (req, res) => {');
     expect(index).toContain('app.get("/brain-dashboard", (req, res) => {');
     expect(index).toContain('res.sendFile(__dirname + "/brain-dashboard.html")');
@@ -40,6 +43,10 @@ describe('/brain dashboard shell', () => {
     expect(agent).toContain("router.get('/telemetry'");
     expect(agent).toContain('process.memoryUsage()');
     expect(agent).toContain('os.totalmem()');
+    expect(agent).toContain("router.get('/radar'");
+    expect(agent).toContain('res.json(buildRadarSnapshot(paths));');
+    expect(agent).toContain("router.get('/radar/brief'");
+    expect(agent).toContain("router.post('/radar/ingest'");
   });
 
   it('opens the executable to the Luke dashboard shell first', () => {
@@ -129,6 +136,7 @@ describe('/brain dashboard shell', () => {
       'AI Automation Business',
       'Developer Stack',
       'Daily Brief',
+      'Radar',
       'History Career',
       'History Career fork',
       'Market microstructure analysis, order flow tracking, and strategy recommendations.',
@@ -136,11 +144,15 @@ describe('/brain dashboard shell', () => {
       'Trading (Analysis) / Trading Bot',
       'Luke System / General Chat',
       'Daily Brief / Schedule Window',
+      'Radar / Inbox + Synthesis',
       'data-src="/trading?embed=1"',
       'data-src="/luke?embed=1"',
       'data-src="/daily?embed=1"',
+      'data-src="/radar?embed=1"',
       'id="daily-expand"',
+      'id="radar-line"',
       'Calendar, jobs, and next actions',
+      'Inbox, synthesis, review',
       'href="/luke"',
       'weather-emoji',
       'weatherEmoji(weather)',
@@ -162,13 +174,15 @@ describe('/brain dashboard shell', () => {
     expect(html).toContain('/brain-dashboard');
     expect(html).toContain('/agent/brain/status');
     expect(html).toContain('/agent/brain/telemetry');
+    expect(html).toContain('/agent/brain/radar');
     expect(html).toContain('/daily');
+    expect(html).toContain('/radar');
     expect(html).toContain('/brain-dashboard#spine-automation');
     expect(html).toContain('/brain-dashboard#spine-developer');
     expect(html).toContain('/brain-dashboard#spine-history');
     expect(html).toContain('Show All');
     expect(html).toContain('Brain Status');
-    expect(html).toContain('Agents (A)');
+    expect(html).not.toContain('Agents (A)');
     expect(html).not.toContain('Menu =');
     expect(html).not.toContain('/agent/autonomous/execute');
     expect(html).not.toContain('/agent/autonomous/confirm');
@@ -177,28 +191,70 @@ describe('/brain dashboard shell', () => {
   it('keeps every shell box backed by a direct route', () => {
     const html = fs.readFileSync(SHELL_FILE, 'utf8');
     const routes = Array.from(html.matchAll(/data-route="([^"]+)"/g)).map(match => match[1]);
+    const hrefs = Array.from(html.matchAll(/href="(\/[^"]+)"/g)).map(match => match[1]);
+    const routeCounts = routes.reduce((counts, route) => {
+      counts[route] = (counts[route] || 0) + 1;
+      return counts;
+    }, {});
+    const hrefCounts = hrefs.reduce((counts, href) => {
+      counts[href] = (counts[href] || 0) + 1;
+      return counts;
+    }, {});
 
-    for (const route of ['/trading', '/luke', '/daily']) {
+    for (const route of ['/trading', '/luke', '/daily', '/radar', '/brain-dashboard#spine-automation', '/brain-dashboard#spine-developer', '/brain-dashboard#spine-history']) {
       expect(routes).toContain(route);
+      expect(routeCounts[route]).toBe(1);
+    }
+    for (const [href, count] of Object.entries(hrefCounts)) {
+      expect(`${href}:${count}`).toBe(`${href}:1`);
     }
     expect(html).toContain('class="hero-card" id="trading-launch" data-route="/trading" href="/trading"');
+    expect(html).not.toContain('<span>C 000</span><span class="name">Brain Core</span>');
+    expect(html).not.toContain('class="view-module" data-route=');
+    expect(html).not.toContain('id="trading-full-link"');
     expect(html).toContain('id="trading-panel"');
     expect(html).toContain('id="system-panel"');
     expect(html).toContain('id="daily-panel"');
+    expect(html).toContain('id="radar-panel"');
     expect(html).toContain('openTradingPanel()');
     expect(html).toContain('openSystemPanel()');
     expect(html).toContain('openDailyPanel()');
+    expect(html).toContain('openRadarPanel()');
     expect(html).not.toContain('<span>C 013</span><span class="name">History Career</span>');
     expect(html).toContain("frame.setAttribute('src', frame.dataset.src || '/trading?embed=1')");
     expect(html).toContain("frame.setAttribute('src', frame.dataset.src || '/luke?embed=1')");
     expect(html).toContain("frame.setAttribute('src', frame.dataset.src || '/daily?embed=1')");
+    expect(html).toContain("frame.setAttribute('src', frame.dataset.src || '/radar?embed=1')");
     expect(html).toContain("document.querySelectorAll('[data-route]')");
     expect(html).toContain("if (route === '/luke')");
     expect(html).toContain("if (route === '/daily')");
+    expect(html).toContain("if (route === '/radar')");
     expect(html).toContain('window.getSelection().toString().length > 0');
     expect(html).toContain('grid-template-columns: repeat(auto-fill, minmax(210px, 260px))');
     expect(html).toContain('height: clamp(780px, 82vh, 980px)');
     expect(html).toContain('height: 104px');
+  });
+
+  it('renders Radar as a front-facing clicked-in shell window', () => {
+    const html = fs.readFileSync(RADAR_FILE, 'utf8');
+
+    for (const label of [
+      'Luke Radar',
+      'DASHBOARD',
+      'Status',
+      'Capture',
+      'Needs You',
+      'Morning Intel',
+      'Recent Inbox',
+      '/agent/brain/radar',
+      '/agent/brain/radar/brief',
+      '/agent/brain/radar/ingest',
+      'capture-text',
+    ]) {
+      expect(html).toContain(label);
+    }
+    expect(html).not.toContain('/agent/autonomous/execute');
+    expect(html).not.toContain('/agent/autonomous/confirm');
   });
 
   it('keeps the trading surface as the prior chat interface ready for input', () => {

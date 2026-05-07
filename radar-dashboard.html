@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Luke Radar</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #050403;
+      --bg-shell: #090807;
+      --panel: #151311;
+      --panel-2: #1e1a16;
+      --panel-hover: #252018;
+      --border: #2f2923;
+      --border-strong: #514638;
+      --border-accent: #b48234;
+      --text: #f3efe7;
+      --text-soft: #d8d0c4;
+      --text-muted: #aaa195;
+      --accent: #d29a3f;
+      --blue: #58a6ff;
+      --green: #40c486;
+      --red: #ef6a65;
+      --font: "JetBrains Mono", "Fira Code", "Space Mono", "Cascadia Mono", Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    body {
+      padding: 12px;
+    }
+
+    body.embed {
+      padding: 0;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    a {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .shell {
+      display: grid;
+      gap: 12px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg-shell);
+      padding: 12px 14px;
+    }
+
+    body.embed header {
+      display: none;
+    }
+
+    h1,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .subhead {
+      margin-top: 6px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .button,
+    button {
+      min-height: 28px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: transparent;
+      color: var(--text-muted);
+      padding: 4px 9px;
+      cursor: pointer;
+      transition:
+        transform 120ms cubic-bezier(.2, .8, .2, 1),
+        background-color 180ms cubic-bezier(.2, .8, .2, 1),
+        border-color 180ms cubic-bezier(.2, .8, .2, 1),
+        color 180ms cubic-bezier(.2, .8, .2, 1);
+    }
+
+    .button:hover,
+    .button:focus-visible,
+    button:hover,
+    button:focus-visible {
+      outline: none;
+      color: var(--text);
+      border-color: var(--border-accent);
+      background: rgba(210, 154, 63, 0.14);
+      transform: translateY(-1px);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.72fr) minmax(360px, 1fr) minmax(260px, 0.72fr);
+      gap: 12px;
+      align-items: start;
+    }
+
+    .panel {
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--panel);
+      overflow: hidden;
+    }
+
+    .panel.full {
+      grid-column: 1 / -1;
+    }
+
+    .panel-header {
+      min-height: 38px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: var(--bg-shell);
+      color: var(--text-soft);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .panel-body {
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .metric,
+    .item {
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: var(--bg-shell);
+      padding: 10px;
+    }
+
+    .metric-value {
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .metric-label {
+      margin-top: 4px;
+      color: var(--text-muted);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .item {
+      display: grid;
+      gap: 7px;
+    }
+
+    .item-title {
+      color: var(--text);
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .muted,
+    .item-meta {
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 3px 7px;
+      color: var(--text-muted);
+      background: var(--panel);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .chip.blue { color: var(--blue); border-color: rgba(88, 166, 255, 0.45); }
+    .chip.good { color: var(--green); border-color: rgba(64, 196, 134, 0.45); }
+    .chip.bad { color: var(--red); border-color: rgba(239, 106, 101, 0.45); }
+    .chip.warn { color: var(--accent); border-color: rgba(210, 154, 63, 0.45); }
+
+    textarea,
+    input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: var(--bg-shell);
+      color: var(--text);
+      padding: 8px;
+    }
+
+    textarea {
+      min-height: 160px;
+      resize: vertical;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    @media (max-width: 980px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div>
+        <h1>Luke Radar</h1>
+        <p class="subhead">Inbox, synthesis, and review queue. Trading context stays read-only and human-gated.</p>
+      </div>
+      <a class="button" href="/shell">DASHBOARD</a>
+    </header>
+
+    <main>
+      <section class="panel">
+        <div class="panel-header">
+          <span>Status</span>
+          <span class="chip blue" id="summary-chip">loading</span>
+        </div>
+        <div class="panel-body">
+          <div class="metrics">
+            <div class="metric">
+              <div class="metric-value" id="metric-fresh">-</div>
+              <div class="metric-label">Fresh 24h</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value" id="metric-review">-</div>
+              <div class="metric-label">Review</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value" id="metric-total">-</div>
+              <div class="metric-label">Total</div>
+            </div>
+          </div>
+          <div class="muted">Confidence means review priority, not trade certainty. Radar does not arm or execute trades.</div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <span>Capture</span>
+          <span class="chip good">append-only</span>
+        </div>
+        <div class="panel-body">
+          <form class="form-grid" id="capture-form">
+            <input id="source-label" name="source_label" placeholder="source label, e.g. sybil, x, voice" value="manual">
+            <input id="source-url" name="source_url" placeholder="optional source URL">
+            <textarea id="capture-text" name="text" placeholder="Paste a link note, Sybil dump, article excerpt, voice transcript, screenshot note, reminder, or idea."></textarea>
+            <div class="form-actions">
+              <button type="submit">SAVE TO RADAR</button>
+              <button type="button" id="clear-capture">CLEAR</button>
+            </div>
+            <div class="muted" id="capture-result">Ready.</div>
+          </form>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <span>Needs You</span>
+          <span class="chip warn" id="review-chip">loading</span>
+        </div>
+        <div class="panel-body" id="review-list"></div>
+      </section>
+
+      <section class="panel full">
+        <div class="panel-header">
+          <span>Morning Intel</span>
+          <span class="chip blue">verify before action</span>
+        </div>
+        <div class="panel-body" id="brief-list"></div>
+      </section>
+
+      <section class="panel full">
+        <div class="panel-header">
+          <span>Recent Inbox</span>
+          <span class="chip" id="recent-chip">loading</span>
+        </div>
+        <div class="panel-body" id="recent-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    if (new URLSearchParams(location.search).get('embed')) document.body.classList.add('embed');
+
+    const $ = id => document.getElementById(id);
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, ch => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+      }[ch]));
+    }
+
+    async function fetchJson(url, options) {
+      const res = await fetch(url, { cache: 'no-store', ...options });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data.ok === false) throw new Error(data.error || `${url} ${res.status}`);
+      return data;
+    }
+
+    function chips(values, klass = '') {
+      return (values || []).slice(0, 6).map(value => `<span class="chip ${klass}">${escapeHtml(value)}</span>`).join('');
+    }
+
+    function itemHtml(item) {
+      const title = item.title || item.raw_text_preview || item.source_url || item.source_label || 'Radar item';
+      const meta = [
+        item.source_label,
+        item.source_type,
+        item.review_priority,
+      ].filter(Boolean).join(' / ');
+      return `
+        <div class="item">
+          <div class="item-title">${escapeHtml(title)}</div>
+          <div class="item-meta">${escapeHtml(meta)}</div>
+          <div class="chip-row">
+            ${chips(item.symbols, 'blue')}
+            ${chips(item.themes, 'warn')}
+            ${item.sybil_context?.context_records ? `<span class="chip good">${item.sybil_context.context_records} Sybil contexts</span>` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    function briefHtml(idea) {
+      return `
+        <div class="item">
+          <div class="item-title">${idea.rank}. ${escapeHtml(idea.title)}</div>
+          <div class="item-meta">${escapeHtml((idea.evidence || []).join(' / ') || 'No evidence yet')}</div>
+          <div class="chip-row">
+            <span class="chip blue">${escapeHtml(idea.action || 'verify_before_action')}</span>
+            ${chips(idea.symbols, 'blue')}
+            ${chips(idea.themes, 'warn')}
+          </div>
+        </div>
+      `;
+    }
+
+    function empty(text) {
+      return `<div class="item"><div class="muted">${escapeHtml(text)}</div></div>`;
+    }
+
+    async function loadRadar() {
+      const [status, brief] = await Promise.all([
+        fetchJson('/agent/brain/radar'),
+        fetchJson('/agent/brain/radar/brief'),
+      ]);
+      $('summary-chip').textContent = status.summary_line || 'ready';
+      $('metric-fresh').textContent = status.counts?.fresh_24h ?? 0;
+      $('metric-review').textContent = status.counts?.review ?? 0;
+      $('metric-total').textContent = status.counts?.total ?? 0;
+      $('review-chip').textContent = `${status.review_queue?.length || 0} items`;
+      $('recent-chip').textContent = `${status.recent?.length || 0} shown`;
+      $('review-list').innerHTML = (status.review_queue || []).length
+        ? status.review_queue.map(itemHtml).join('')
+        : empty('No review items yet. Capture sources to build the Radar queue.');
+      $('brief-list').innerHTML = (brief.ideas_to_verify || []).length
+        ? brief.ideas_to_verify.map(briefHtml).join('')
+        : empty(brief.empty_note || 'No Radar brief yet.');
+      $('recent-list').innerHTML = (status.recent || []).length
+        ? status.recent.map(itemHtml).join('')
+        : empty('No Radar captures yet.');
+    }
+
+    $('capture-form').addEventListener('submit', async event => {
+      event.preventDefault();
+      const payload = {
+        source_label: $('source-label').value,
+        source_url: $('source-url').value,
+        text: $('capture-text').value,
+      };
+      $('capture-result').textContent = 'Saving...';
+      try {
+        const result = await fetchJson('/agent/brain/radar/ingest', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        $('capture-result').textContent = result.duplicate ? 'Already in Radar.' : 'Saved to Radar.';
+        $('capture-text').value = '';
+        $('source-url').value = '';
+        await loadRadar();
+      } catch (err) {
+        $('capture-result').textContent = err.message;
+      }
+    });
+
+    $('clear-capture').addEventListener('click', () => {
+      $('capture-text').value = '';
+      $('source-url').value = '';
+      $('capture-result').textContent = 'Ready.';
+    });
+
+    loadRadar().catch(err => {
+      $('summary-chip').textContent = 'offline';
+      $('review-list').innerHTML = empty(err.message);
+      $('brief-list').innerHTML = empty(err.message);
+      $('recent-list').innerHTML = empty(err.message);
+    });
+  </script>
+</body>
+</html>

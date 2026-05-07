@@ -23,9 +23,16 @@ describe('Richy/Dubz paste routing regressions', () => {
     expect(result.detectedAnalyst).toBe('richy');
   });
 
-  it('does not classify Richy analyst text as a Ximes alert', () => {
+  it('does not classify Richy analyst text as a legacy alert', () => {
     const result = classifyPaste('RichyDubz ES flipped 7185.75 and SPY 712.38 premarket.');
     expect(result.type).toBeNull();
+  });
+
+  it('does not route legacy Ximes text or option-contract text to /alert', () => {
+    const ximes = detectPasteIntent('[2:34 PM] ximestrades ES LONG 5880', false);
+    const option = detectPasteIntent('SPY 588C avg 1.25', false);
+    expect(ximes.command).toBeNull();
+    expect(option.command).toBeNull();
   });
 
   it('does not classify conversational questions mentioning Saty as partial Saty input', () => {
@@ -56,10 +63,9 @@ describe('/reset clears daily accumulator context', () => {
     }
   });
 
-  it('removes stale ximes/heatmap carry-over file', async () => {
+  it('removes stale daily heatmap carry-over file', async () => {
     fs.writeFileSync(DAILY_CTX_FILE, JSON.stringify({
       date: '2026-04-27',
-      ximes: { raw: 'stale signal', strike: 712.38, direction: 'LONG', ticker: 'SPY' },
       heatmap: { source: 'image', stored_at: '2026-04-27T18:00:00.000Z' },
     }), 'utf8');
 
@@ -96,7 +102,6 @@ describe('daily accumulator heatmap readiness bridge', () => {
     if (fs.existsSync(TODAY_LEVELS_FILE)) fs.unlinkSync(TODAY_LEVELS_FILE);
 
     const result = checklistComplete({
-      ximes: { strike: 712.38 },
       heatmap: { source: 'bobby-text', stored_at: new Date().toISOString() },
     });
 
@@ -111,7 +116,6 @@ describe('daily accumulator heatmap readiness bridge', () => {
     }), 'utf8');
 
     const result = checklistComplete({
-      ximes: { strike: 712.38 },
     });
 
     expect(result.complete).toBe(true);
@@ -125,10 +129,9 @@ describe('daily accumulator heatmap readiness bridge', () => {
     }), 'utf8');
 
     const result = checklistComplete({
-      ximes: { strike: 712.38 },
     });
 
     expect(result.complete).toBe(false);
-    expect(result.missing).toEqual(['heatmap (Bobby or Jefe)']);
+    expect(result.missing).toEqual(['Katbot/SPX heatmap']);
   });
 });

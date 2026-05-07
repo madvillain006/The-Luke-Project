@@ -285,7 +285,7 @@ async function captureScreenshots() {
         route: '/trading-window?mode=replay&example=positive&proof=ui-ux',
         file: 'trading-window-desktop.png',
         viewport: desktop,
-        waitForText: ['Trading Bot Window', 'Chart Panel', 'Bracket Plan', 'Katbot / Heatmap Input'],
+        waitForText: ['Trading Bot Window', 'Chart Panel', 'Bracket Plan', 'Katbot / SPX Heatmap Feed'],
         action: waitForTradingWindowChart,
         mustContain: ['No execution controls', 'Can submit', 'false'],
         mustNotContain: ['Focus: loading'],

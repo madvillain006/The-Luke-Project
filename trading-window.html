@@ -505,12 +505,12 @@
 
       <section id="heatmap-proof-panel">
         <div class="section-head">
-          <h2>Katbot / Heatmap Input</h2>
+          <h2>Katbot / SPX Heatmap Feed</h2>
           <span class="pill info">heatmap_gex ack</span>
         </div>
         <div class="section-body">
           <div class="warning-band" style="border:1px solid var(--line); border-radius:6px; margin-bottom:10px;">
-            <div>Local heatmap image fixtures pasted through the Bobby/Katbot-style path. Parsed as heatmap_gex, read-only, no live arming.</div>
+            <div>Katbot chart and SPX heatmap context is normalized through the existing heatmap parser for Pine confluence. Read-only, no live arming.</div>
           </div>
           <div class="heatmap-proof-grid" id="heatmap-proof-grid"></div>
         </div>
@@ -518,21 +518,21 @@
 
       <section id="pine-watch-panel">
         <div class="section-head">
-          <h2>Luke Level Reclaim Watch Script</h2>
+          <h2>Luke Watch Pine Script</h2>
           <span class="pill warn">watch script only</span>
         </div>
         <div class="section-body script-line">
           <div class="warning-band" style="border:1px solid var(--line); border-radius:6px;">
-            <div>Current Pine indicator/watchlist bridge only. No strategy declaration and no order submission.</div>
+            <div>Current Pine indicator/watchlist bridge only. Alertconditions are visual/context events, not order submission.</div>
           </div>
           <div class="status-strip">
             <span class="pill info">WATCH</span>
             <span class="pill info">ARMED</span>
-            <span class="pill warn">LONG CANDIDATE</span>
+            <span class="pill warn">PAPER/LONG</span>
             <span class="pill bad">BLOCKED</span>
           </div>
           <div class="mono">tradingview/luke-level-reclaim-watch.pine</div>
-          <div class="subhead">Visual watch signals only; Luke remains the source of bracket-plan truth.</div>
+          <div class="subhead">Visual watch signals only; Luke displays bracket, stop loss, and take-profit context for manual review.</div>
         </div>
       </section>
 
@@ -563,8 +563,8 @@
         </div>
         <div class="section-body">
           <div class="item">
-            <div class="item-row"><strong>ladder_reclaim_bobby_mancini_staged_v1</strong><span class="pill warn">WATCHLIST_ONLY</span></div>
-            <div class="subhead">1ES starter preferred; add second ES only after retest hold / confirmation. Replay/dev proof does not create a live candidate.</div>
+            <div class="item-row"><strong>luke_watch_pine_confluence_v4</strong><span class="pill warn">WATCHLIST_ONLY</span></div>
+            <div class="subhead">Pine watch first; Katbot/SPX heatmap and SPX equivalency are confluence only until live data is patched in.</div>
           </div>
         </div>
       </section>
@@ -665,7 +665,7 @@
       if (!trade) return;
       qs('#fired-trade-panel').hidden = false;
       qs('#fired-trade-title').textContent = `Fired LONG ${trade.ticker}`;
-      qs('#fired-trade-detail').textContent = `${trade.reason} Pine algo bracket only. Review manually; this window has no execution controls.`;
+      qs('#fired-trade-detail').textContent = `${trade.reason} Pine code bracket only: entry, stop loss, and take profit for manual review. This window has no execution controls.`;
       qs('#fired-entry').textContent = fmt(trade.entry);
       qs('#fired-stop').textContent = fmt(trade.stop);
       qs('#fired-target').textContent = fmt(trade.target);

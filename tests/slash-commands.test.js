@@ -435,8 +435,8 @@ describe('slash-commands output cleanliness - mojibake guard', () => {
       'Warning: /balance not run today; floor check may be stale',
       'Warning: Apex balance is stale. Update /balance before trading.',
       'Warning: No levels loaded today. Paste /dubz first.',
-      'Warning: Bobby heatmap not loaded yet. Run /heatmap before trading.',
-      'Warning: Bobby heatmap is stale (>8h old). Reload /heatmap before trading.',
+      'Warning: Katbot/SPX heatmap not loaded yet. Run /heatmap before trading.',
+      'Warning: Katbot/SPX heatmap is stale (>8h old). Reload /heatmap before trading.',
       'Warning: Apex floor headroom < $500; size down or skip',
     ];
     for (const w of knownWarnings) {
@@ -555,7 +555,7 @@ describe('slash-commands command boundary coverage', () => {
     expect(payload.reply).toMatch(/^READY SESSION READINESS/);
     expect(payload.reply).toContain('OK Balance set today');
     expect(payload.reply).toContain('OK Saty ATR levels loaded');
-    expect(payload.reply).toContain('OK Bobby heatmap loaded');
+    expect(payload.reply).toContain('OK Katbot/SPX heatmap loaded');
     expect(payload.reply).toContain('OK READY TO TRADE');
     expect(payload.reply).not.toMatch(MOJIBAKE_RE);
   });

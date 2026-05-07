@@ -84,8 +84,8 @@ async function waitForTradingFrame(page) {
   const frame = frameHandle ? await frameHandle.contentFrame() : null;
   if (!frame) throw new Error('clicked trading iframe did not expose a content frame');
   await frame.getByText('Trading Bot Window').waitFor({ timeout: 15000 });
-  await frame.getByText('Katbot / Heatmap Input').waitFor({ timeout: 15000 });
-  await frame.getByText('Luke Level Reclaim Watch Script').waitFor({ timeout: 15000 });
+  await frame.getByText('Katbot / SPX Heatmap Feed').waitFor({ timeout: 15000 });
+  await frame.getByText('Luke Watch Pine Script').waitFor({ timeout: 15000 });
   await frame.getByText('tradingview/luke-level-reclaim-watch.pine').waitFor({ timeout: 15000 });
   await frame.getByText('ACK Bobby heatmap 10:03').waitFor({ timeout: 15000 });
   await frame.waitForFunction(() => {
@@ -128,7 +128,7 @@ async function runLukeChatSmoke(frame, options = {}) {
   if (typeof options.afterStatus === 'function') await options.afterStatus();
   const commands = options.commands || [
     ['/ready', 'READY SESSION READINESS'],
-    ['/alert', 'ALERT Paste'],
+    ['/entries ES', 'Freshness:'],
     ['/balance', 'Apex balance'],
     ['/saty', 'Saty'],
   ];
@@ -215,7 +215,7 @@ async function captureClickedShellScreenshots() {
     await page.locator('#system-panel').screenshot({ path: paths.system_chat_after_click });
     await page.locator('#system-panel').screenshot({ path: paths.system_chat_smoke });
     const systemText = await systemFrame.locator('body').innerText();
-    const commandSmokeRe = /LUKE ONLINE[\s\S]*READY SESSION READINESS[\s\S]*ALERT Paste[\s\S]*Apex balance[\s\S]*Saty/i;
+    const commandSmokeRe = /LUKE ONLINE[\s\S]*READY SESSION READINESS[\s\S]*Freshness:[\s\S]*Apex balance[\s\S]*Saty/i;
     const systemSmokeRe = /LUKE ONLINE[\s\S]*Luke chat: active for trading ops[\s\S]*belongs in the Trading tab[\s\S]*Luke system chat is active/i;
 
     return {
@@ -226,8 +226,8 @@ async function captureClickedShellScreenshots() {
       trading_window_opened_by_switch: /Trading \(Analysis\) \/ Trading Bot Window/i.test(outerWindowText),
       trading_frame_loaded: /Trading Bot Window/i.test(tradingText) && /Chart Panel/i.test(tradingText),
       bracket_visible: /Bracket Plan/i.test(tradingText) && /Can submit\s+false/i.test(tradingText),
-      heatmap_visible: /Katbot \/ Heatmap Input/i.test(tradingText) && /ACK Bobby heatmap 10:03/i.test(tradingText) && /ACK Bobby heatmap 10:05/i.test(tradingText),
-      pine_visible: /Luke Level Reclaim Watch Script/i.test(tradingText) && /tradingview\/luke-level-reclaim-watch\.pine/i.test(tradingText),
+      heatmap_visible: /Katbot \/ SPX Heatmap Feed/i.test(tradingText) && /ACK Bobby heatmap 10:03/i.test(tradingText) && /ACK Bobby heatmap 10:05/i.test(tradingText),
+      pine_visible: /Luke Watch Pine Script/i.test(tradingText) && /tradingview\/luke-level-reclaim-watch\.pine/i.test(tradingText),
       replay_not_live_visible: /Replay\/dev simulated/i.test(tradingText) && /No execution controls/i.test(tradingText) && /Not a live trade recommendation/i.test(tradingText),
       system_chat_visible: /LUKE ONLINE/i.test(systemText) && /Autonomous: recommendation-only/i.test(systemText),
       system_chat_command_smoke: systemSmokeRe.test(systemSmokeText) && !/personal logging is retired/i.test(systemSmokeText),

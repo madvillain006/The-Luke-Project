@@ -597,7 +597,7 @@
       <div class="mc-item has-tt" id="mc-heatmap">
         <span class="mc-check">[ ]</span>
         <span class="mc-cmd">/heatmap</span>
-        <span class="tooltip">Paste Bobby's heatmap text after this command</span>
+        <span class="tooltip">Load Katbot/SPX heatmap context for Pine confluence</span>
       </div>
       <div class="mc-item has-tt" id="mc-verdict">
         <span class="mc-check">[ ]</span>
@@ -618,14 +618,11 @@
       <button class="qbtn has-tt" data-cmd="/status">
         /status<span class="tooltip">Show current trading state, regime, trade count, market status</span>
       </button>
-      <button class="qbtn has-tt" data-cmd="/alert ">
-        /alert<span class="tooltip">Fire a Ximes/analyst alert for verdict + bracket calculation</span>
-      </button>
       <button class="qbtn has-tt" data-cmd="/dubz ">
         /dubz<span class="tooltip">Load today's RichyDubz levels for verdict scoring</span>
       </button>
       <button class="qbtn has-tt" data-cmd="/heatmap ">
-        /heatmap<span class="tooltip">Load Bobby's heatmap context (king nodes, air pockets, trinity)</span>
+        /heatmap<span class="tooltip">Load Katbot/SPX heatmap context (king nodes, air pockets, trinity)</span>
       </button>
       <button class="qbtn has-tt" data-cmd="/verdict">
         /verdict<span class="tooltip">Show today's ranked confluence levels; use /entries ES for pass/trade plan</span>
@@ -637,7 +634,7 @@
         /review<span class="tooltip">Today's trades summary - W/L, P&amp;L, emotional state</span>
       </button>
       <button class="qbtn has-tt" data-cmd="/trading-mode">
-        /trading-mode<span class="tooltip">Set up 4-window layout (ximes, bobby, tradovate, luke)</span>
+        /trading-mode<span class="tooltip">Set up Pine watch, Katbot/heatmap, Tradovate, and Luke layout</span>
       </button>
       <button class="qbtn has-tt" data-cmd="/balance ">
         /balance<span class="tooltip">Set current account balance for Apex floor tracking</span>
@@ -1042,7 +1039,7 @@
       if (/SESSION READINESS/i.test(out)) {
         mcState.balance = /OK Balance set today/i.test(out);
         mcState.saty = /OK Saty ATR levels loaded/i.test(out);
-        mcState.heatmap = /OK Bobby heatmap loaded/i.test(out);
+        mcState.heatmap = /OK (?:Bobby|Katbot\/SPX) heatmap loaded/i.test(out);
       } else {
         if (/^\/balance\s+\d/i.test(text) && /^Balance set:/i.test(out)) {
           mcState.balance = true;
@@ -1422,7 +1419,7 @@
       svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
       svg.innerHTML = "";
       svg.appendChild(createSvgEl("rect", { x: 0, y: 0, width, height, fill: "#070706" }));
-      appendSvgText(svg, "PINE ALGO / BRACKET", left, 10, "#f2c75c");
+      appendSvgText(svg, "PINE CODE ALGO / BRACKET", left, 10, "#f2c75c");
       [24, 42, 60].forEach(gy => svg.appendChild(createSvgEl("line", { x1: left, x2: right, y1: gy, y2: gy, stroke: "#191712", "stroke-width": 1 })));
       const stopY = data.stop !== undefined && asNum(data.stop) !== null ? y(data.stop) : null;
       const entryY = y(data.entry);
@@ -1433,12 +1430,12 @@
       svg.appendChild(createSvgEl("polyline", { points, fill: "none", stroke: "#f2c75c", "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }));
       if (stopY !== null) {
         svg.appendChild(createSvgEl("line", { x1: left, x2: right, y1: stopY, y2: stopY, stroke: "#ff7474", "stroke-width": 1, "stroke-dasharray": "3 3" }));
-        appendSvgText(svg, `SL ${fmtTradePrice(data.stop)}`, right - 57, stopY - 3, "#ff7474");
+        appendSvgText(svg, `STOP LOSS ${fmtTradePrice(data.stop)}`, right - 89, stopY - 3, "#ff7474");
       }
       svg.appendChild(createSvgEl("line", { x1: left, x2: right, y1: entryY, y2: entryY, stroke: "#f2c75c", "stroke-width": 1 }));
       svg.appendChild(createSvgEl("line", { x1: left, x2: right, y1: targetY, y2: targetY, stroke: "#86efac", "stroke-width": 1 }));
       appendSvgText(svg, `ENTRY ${fmtTradePrice(data.entry)}`, left + 4, entryY - 3, "#f2c75c");
-      appendSvgText(svg, `${data.exit !== undefined ? "EXIT" : "TP"} ${fmtTradePrice(data.target)}`, right - 57, targetY - 3, "#86efac");
+      appendSvgText(svg, `${data.exit !== undefined ? "EXIT" : "TAKE PROFIT"} ${fmtTradePrice(data.target)}`, right - 98, targetY - 3, "#86efac");
       svg.appendChild(createSvgEl("circle", { cx: left, cy: entryY, r: 3, fill: "#f2c75c" }));
       svg.appendChild(createSvgEl("circle", { cx: right - 20, cy: targetY, r: 3, fill: "#86efac" }));
     }
@@ -1453,7 +1450,7 @@
       title.textContent = `${data.ticker || "ES"} LONG`;
       const meta = document.createElement("span");
       meta.className = "trade-chart-meta";
-      meta.textContent = data.result ? `pine algo / bracket / ${data.result}` : "pine algo / bracket";
+      meta.textContent = data.result ? `pine code algo / bracket / ${data.result}` : "pine code algo / bracket / TP-SL";
       head.appendChild(title);
       head.appendChild(meta);
       card.appendChild(head);
@@ -1518,18 +1515,18 @@
       const lines = [];
       const sourceClass = data.source_class || (data.chart_type === "heatmap" ? "heatmap" : "chart");
       const headline = data.type === "kat_confluence"
-        ? "KAT CONFLUENCE"
+        ? "KATBOT CONFLUENCE"
         : data.type === "kat_chart_pending"
-          ? "KAT CHART QUEUED"
+          ? "KATBOT CHART QUEUED"
           : data.type === "kat_signal"
-            ? "KAT SIGNAL"
-            : "KAT " + sourceClass.toUpperCase() + " READ";
+            ? "KATBOT SIGNAL"
+            : "KATBOT " + sourceClass.toUpperCase() + " READ";
 
       lines.push(headline + " | " + (data.ticker || data.instrument || "INDEX") + " | " + (data.bias || "NEUTRAL"));
       if (data.analyst || data.channel) lines.push("Source: " + [data.analyst, data.channel ? "#" + data.channel : ""].filter(Boolean).join(" / "));
       if (data.levels && data.levels.length) lines.push("Levels: " + fmtList(data.levels));
       if (data.chart_type) lines.push("Image type: " + data.chart_type + " | " + (data.parse_status || "read"));
-      if (data.entry_context && data.entry_context.mode) lines.push("Use: confluence input only, human-gated");
+      if (data.entry_context && data.entry_context.mode) lines.push("Use: Pine confluence only, human-gated");
       if (data.heatmap_context && data.heatmap_context.node_read) lines.push("Heatmap: " + data.heatmap_context.node_read);
       if (data.notes) lines.push("Notes: " + data.notes);
       if (data.message_id) lines.push("Message: " + data.message_id);
@@ -1630,21 +1627,28 @@
 
  // PASTE DETECTION 
     const PASTE_ANALYST_RULES = [
-      { re: /\b(ximes|ximestrades|xi[mn]es|followthewhiterabblt)\b/i, command: '/alert',   analyst: 'ximes' },
-      { re: /\b(bobby|followtherabbit|spx[_ -]?coms)\b/i,             command: '/heatmap', analyst: 'bobby' },
+      { re: /\b(bobby|katbot|jefe|followtherabbit|spx[_ -]?coms|heatmaps?|heatmap-requests)\b/i, command: '/heatmap', analyst: 'katbot' },
       { re: /\b(richy|richydubz|richyd)\b/i,                          command: '/dubz',    analyst: 'richy' },
     ];
     const PASTE_DISCORD_PREFIX = /^[\s\S]*?(?:\[\d{1,2}:\d{2}\s*(?:AM|PM)\][^\n,]*,\s*:|[^\n]+(?:\s+[-\u2013\u2014]\s+|\s+)Today at \d{1,2}:\d{2}\s*(?:AM|PM)\s*\n?)/i;
-    const PASTE_OPTION_RE     = /\b[A-Z]{1,5}\s+\d{3,5}[CP]\b/i;
     const PASTE_HEATMAP_RE    = /\b(king node|air pocket|trinity)\b/i;
+    const PASTE_HEATMAP_LEVEL_RE = /\b(node|support|resistance|wall|floor|spot|heatmap|spxw|spy|qqq)\b/i;
+    const PASTE_PRICE_RE      = /\b\d{3,6}(?:\.\d+)?\b/;
 
     function detectPasteIntent(text, hasImage) {
-      if (hasImage) return { command: '/heatmap', cleanedText: text, detectedAnalyst: 'bobby' };
+      if (hasImage) return { command: '/heatmap', cleanedText: text, detectedAnalyst: 'katbot' };
       const sample = text.slice(0, 200);
       for (const r of PASTE_ANALYST_RULES) {
-        if (r.re.test(sample)) return { command: r.command, cleanedText: text.replace(PASTE_DISCORD_PREFIX, '').trimStart(), detectedAnalyst: r.analyst };
+        if (!r.re.test(sample)) continue;
+        if (r.command === '/heatmap') {
+          const hasDiscordPrefix = PASTE_DISCORD_PREFIX.test(text);
+          const looksLikeHeatmapPaste = hasDiscordPrefix ||
+            PASTE_HEATMAP_RE.test(sample) ||
+            (PASTE_HEATMAP_LEVEL_RE.test(sample) && PASTE_PRICE_RE.test(sample));
+          if (!looksLikeHeatmapPaste) continue;
+        }
+        return { command: r.command, cleanedText: text.replace(PASTE_DISCORD_PREFIX, '').trimStart(), detectedAnalyst: r.analyst };
       }
-      if (PASTE_OPTION_RE.test(sample))   return { command: '/alert',   cleanedText: text.replace(PASTE_DISCORD_PREFIX, '').trimStart(), detectedAnalyst: null };
       if (PASTE_HEATMAP_RE.test(sample))  return { command: '/heatmap', cleanedText: text.replace(PASTE_DISCORD_PREFIX, '').trimStart(), detectedAnalyst: null };
       return { command: null, cleanedText: text, detectedAnalyst: null };
     }

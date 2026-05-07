@@ -1022,7 +1022,7 @@ function checkKatConfluence() {
         formatLevelContextLine(levelContext),
         withImages.length > 0 ? '- ' + withImages.length + ' chart(s) posted' : '',
         ...recentImages.map(img => '- Chart: ' + img.username + ' ' + (img.ticker || 'chart') + ' ' + img.url),
-        '- No Ximes signal yet - watch for entry call',
+        '- Pine/Luke Watch context only - not an order',
         '- Run /entries ES or /verdict for Luke view'
       ].filter(Boolean).join('\n');
 

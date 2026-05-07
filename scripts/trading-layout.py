@@ -25,8 +25,8 @@ HH = WH // 2
 
 # Quadrant layout
 LAYOUT = {
-    "ximes":     (OX,      OY,      HW, HH),
-    "bobby":     (OX + HW, OY,      HW, HH),
+    "pine":      (OX,      OY,      HW, HH),
+    "katbot":    (OX + HW, OY,      HW, HH),
     "tradovate": (OX,      OY + HH, HW, HH),
     "luke":      (OX + HW, OY + HH, HW, HH),
 }
@@ -42,8 +42,8 @@ if not EDGE:
     sys.exit(1)
 
 GUILD         = "718624848812834903"
-XIMES_URL     = f"https://discord.com/channels/{GUILD}/1476605105263612097"
-BOBBY_URL     = f"https://discord.com/channels/{GUILD}/1473072016637821168"
+PINE_URL      = "https://www.tradingview.com/chart/"
+KATBOT_URL    = f"https://discord.com/channels/{GUILD}/1473072016637821168"
 TRADOVATE_URL = "https://trader.tradovate.com"
 
 # ── HELPERS ───────────────────────────────────────────────────────────────────
@@ -95,8 +95,8 @@ def launch_luke():
 # ── OPEN WINDOWS ──────────────────────────────────────────────────────────────
 before = set(h for h in find_windows("Edge") + find_windows("Microsoft Edge"))
 
-urls  = [XIMES_URL, BOBBY_URL, TRADOVATE_URL]
-names = ["ximes", "bobby", "tradovate"]
+urls  = [PINE_URL, KATBOT_URL, TRADOVATE_URL]
+names = ["pine", "katbot", "tradovate"]
 
 print("Opening Edge windows...")
 for i, url in enumerate(urls):
@@ -112,7 +112,7 @@ new_wins = list(after - before)
 print(f"  Found {len(new_wins)} new Edge windows")
 
 # Position new Edge windows
-order = [LAYOUT["ximes"], LAYOUT["bobby"], LAYOUT["tradovate"]]
+order = [LAYOUT["pine"], LAYOUT["katbot"], LAYOUT["tradovate"]]
 for i, hwnd in enumerate(new_wins[:3]):
     x, y, w, h = order[i]
     move_win(hwnd, x, y, w, h)

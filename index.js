@@ -36,7 +36,6 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const { readJsonFile, writeJsonAtomic } = require("./state/lib");
-const { parseXimes } = require("./lib/parse-ximes");
 const { parseBobby, parseBobbyImage } = require("./lib/parse-bobby");
 const { detectConfluence, inferInstrument } = require("./lib/confluence");
 const { checkEmotionalState, loadTodayContext } = require("./lib/emotional-exits");
@@ -271,7 +270,7 @@ async function routeToAgent(message) {
     }
   }
 
-  if (/(calls|puts|strike|expiry|contract|flow|signal|conviction|wyckoff|spx|spy|qqq|fngu|apg|setup|thesis|premium|ema|ximes|bobby|heatmap|futures|mnq|mes)/i.test(message)) {
+  if (/(calls|puts|strike|expiry|contract|flow|signal|conviction|wyckoff|spx|spy|qqq|fngu|apg|setup|thesis|premium|ema|pine|watch|bobby|katbot|heatmap|futures|mnq|mes)/i.test(message)) {
     try {
       const data = await agentFetch("/agent/trader/analyze-signal", "POST", { signal: message, ticker: extractTicker(message) });
       return { reply: data.reply, agent: "trader" };
@@ -482,31 +481,6 @@ app.post("/chat", async (req, res) => {
   }
 
   //  end slash commands 
-
-  //  parseXimes intercept  catch signals before Claude fallthrough 
-  if (!isSystemSurface && message.length >= 8 && !message.startsWith("/")) {
-    const parsed = parseXimes(null, message);
-    if (parsed && parsed.signal_type === "LIVE_ENTRY" && parsed.strike) {
-      const alertMsg = "/alert " + message;
-      const handled = await handleSlashCommand(alertMsg, res);
-      if (handled !== null) return;
-    }
-    if (parsed && parsed.signal_type === "MANAGEMENT") {
-      const actions = {
-        TRIM: "TRIM XIMES TRIM - Take partial profits now.\n" +
-          (parsed.gainPct ? "He called " + parsed.gainPct + "% gain.\n" : "") +
-          "-> Close 50-75% of position. Hold runner.",
-        RUNNER: "RUNNER XIMES RUNNER - Hold partial position.\n" +
-          (parsed.sizing ? "He has " + parsed.sizing + " cons left (" + parsed.pctRemaining + "%).\n" : "") +
-          "-> Keep 20-25% on. Move stop to breakeven.",
-        CLOSE: "EXIT XIMES EXIT - Close position now.",
-        ADD: "ADDING XIMES ADDING - He is sizing in further.\n-> Consider adding within your risk parameters.",
-      };
-      const reply = actions[parsed.action] || "XIMES: " + parsed.action;
-      return res.json({ reply });
-    }
-  }
-  //  end parseXimes intercept 
 
   if (!isSystemSurface && !message.startsWith("/")) {
     const heatmapAnswer = buildStoredHeatmapAnswer(message);

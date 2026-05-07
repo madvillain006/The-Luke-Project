@@ -9,6 +9,7 @@ describe('trading window read-only surface', () => {
   it('adds a dedicated trading window route and read-only UI labels', () => {
     const index = fs.readFileSync(path.join(ROOT, 'index.js'), 'utf8');
     const html = fs.readFileSync(path.join(ROOT, 'trading-window.html'), 'utf8');
+    const chat = fs.readFileSync(path.join(ROOT, 'chat.html'), 'utf8');
     const operator = fs.readFileSync(path.join(ROOT, 'operator-v2.html'), 'utf8');
     const shell = fs.readFileSync(path.join(ROOT, 'luke-shell.html'), 'utf8');
 
@@ -42,10 +43,14 @@ describe('trading window read-only surface', () => {
     expect(shell).toContain('height: clamp(780px, 82vh, 980px)');
     expect(shell).toContain('repeat(auto-fill, minmax(210px, 260px))');
     expect(shell).not.toContain('Luke Trading Companion - Dashboard Demo');
-    expect(html).toContain('Katbot / Heatmap Input');
+    expect(html).toContain('Katbot / SPX Heatmap Feed');
     expect(html).toContain('/api/operator/heatmap-proof');
-    expect(html).toContain('Luke Level Reclaim Watch Script');
+    expect(html).toContain('Luke Watch Pine Script');
     expect(html).toContain('tradingview/luke-level-reclaim-watch.pine');
+    expect(chat).not.toContain('data-cmd="/alert "');
+    expect(chat).not.toMatch(/\bXimes\b/i);
+    expect(chat).toContain('Katbot/SPX heatmap');
+    expect(chat).toContain('PINE CODE ALGO / BRACKET');
   });
 
   it('keeps trading window controls non-execution and GET-only', () => {

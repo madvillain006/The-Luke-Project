@@ -68,6 +68,8 @@ sweeper-costs.json
 runs/
 screenshot.png
 artifacts/
+tmp/
+tools/cloudflared/
 icon.ico
 luke-log.jsonl
 action-log.jsonl

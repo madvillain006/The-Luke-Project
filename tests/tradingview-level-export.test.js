@@ -93,6 +93,7 @@ describe('TradingView level export workflow', () => {
     expect(fs.existsSync(summary.artifacts.generated_pine)).toBe(true);
     expect(fs.existsSync(summary.artifacts.generated_realistic_indicator)).toBe(true);
     expect(fs.existsSync(summary.artifacts.generated_production_test_indicator)).toBe(true);
+    expect(fs.existsSync(summary.artifacts.generated_readable_ledger_v5_indicator)).toBe(true);
     expect(fs.existsSync(summary.artifacts.generated_simulation_strategy)).toBe(true);
     expect(fs.existsSync(summary.artifacts.generated_hardmode_strategy)).toBe(true);
     expect(fs.existsSync(summary.artifacts.pine_files_summary)).toBe(true);
@@ -124,6 +125,14 @@ describe('TradingView level export workflow', () => {
     expect(generatedProductionTest).toContain('Result: TP1');
     expect(generatedProductionTest).not.toContain('strategy(');
     expect(generatedProductionTest).not.toMatch(/submitOrder|placeOrder|webhook|LIVE_READY|EXECUTE/i);
+
+    const generatedReadableV5 = fs.readFileSync(summary.artifacts.generated_readable_ledger_v5_indicator, 'utf8');
+    expect(generatedReadableV5).toContain('indicator("Luke Watch Production Test - Readable Ledger v4 Trade Math"');
+    expect(generatedReadableV5).toContain('7248');
+    expect(generatedReadableV5).toContain('Pivot Ribbon fast conviction EMA');
+    expect(generatedReadableV5).toContain('f_event_net_dollars');
+    expect(generatedReadableV5).not.toContain('strategy(');
+    expect(generatedReadableV5).not.toMatch(/submitOrder|placeOrder|webhook|LIVE_READY|EXECUTE/i);
 
     const generatedSimulation = fs.readFileSync(summary.artifacts.generated_simulation_strategy, 'utf8');
     expect(generatedSimulation).toContain('strategy("Luke Watch Production Test Strategy - Simulation Only"');
@@ -186,6 +195,26 @@ describe('TradingView level export workflow', () => {
     expect(hardmode).toContain('input.string("", "Dubz levels"');
     expect(hardmode).toContain('input.string("", "Heatmap/GEX levels"');
     expect(hardmode).toContain('strategy(');
+  });
+
+  it('replaces non-empty Pine level defaults when regenerating current files', () => {
+    const generated = renderGeneratedPine([
+      'mancini_levels_input = input.string("1111,2222", "Mancini levels")',
+      'dubz_levels_input = input.string("3333", "Dubz levels")',
+      'heatmap_gex_levels_input = input.string("4444", "Heatmap/GEX levels")',
+      'heatmap_gex_snapshot_time = input.string("old", "Heatmap/GEX snapshot time")',
+    ].join('\n'), {
+      mancini: '7248,7268',
+      dubz: '7198',
+      heatmap: '7100',
+      heatmapSnapshotTime: '2026-05-06T10:09:22.450Z',
+    });
+
+    expect(generated).toContain('input.string("7248,7268", "Mancini levels"');
+    expect(generated).toContain('input.string("7198", "Dubz levels"');
+    expect(generated).toContain('input.string("7100", "Heatmap/GEX levels"');
+    expect(generated).toContain('input.string("2026-05-06T10:09:22.450Z", "Heatmap/GEX snapshot time"');
+    expect(generated).not.toContain('1111,2222');
   });
 
   it('keeps the local Saty ATR reference available for parity review', () => {

@@ -196,6 +196,42 @@
     }
     .metric .label { color: var(--muted); font-size: 11px; }
     .metric .value { font-size: 14px; margin-top: 5px; overflow-wrap: anywhere; }
+    .bridge-card {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #0b1116;
+      padding: 10px;
+      cursor: pointer;
+      display: grid;
+      gap: 8px;
+    }
+    .bridge-card:focus {
+      outline: 2px solid rgba(88,166,255,.6);
+      outline-offset: 2px;
+    }
+    .bridge-card.good { border-color: rgba(64,196,134,.55); }
+    .bridge-card.warn { border-color: rgba(240,185,74,.6); }
+    .bridge-card.bad { border-color: rgba(239,106,101,.65); }
+    .bridge-url {
+      color: var(--info);
+      overflow-wrap: anywhere;
+      line-height: 1.35;
+    }
+    .bridge-detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .bridge-detail {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 7px;
+      background: #10171d;
+    }
+    .bridge-detail .label { color: var(--muted); font-size: 10px; }
+    .bridge-detail .value { font-size: 12px; margin-top: 3px; overflow-wrap: anywhere; }
+    .bridge-actions { margin-top: 10px; }
+    .bridge-copy-state { min-height: 18px; color: var(--muted); font-size: 11px; margin-top: 7px; }
     .alerts {
       display: grid;
       gap: 8px;
@@ -503,6 +539,44 @@
         </div>
       </section>
 
+      <section id="ninja-bridge-panel">
+        <div class="section-head">
+          <div>
+            <h2>Ninja Bridge Watchdog</h2>
+            <p class="subhead" id="ninja-bridge-subtitle">Checking tunnel</p>
+          </div>
+          <span class="pill warn" id="ninja-bridge-health">Checking</span>
+        </div>
+        <div class="section-body">
+          <div class="bridge-card warn" id="ninja-bridge-card" role="button" tabindex="0" title="Copy current TradingView webhook URL">
+            <div class="mono bridge-url" id="ninja-webhook-url">No webhook URL loaded.</div>
+            <div class="bridge-detail-grid">
+              <div class="bridge-detail">
+                <div class="label">Last Check</div>
+                <div class="value" id="ninja-last-check">n/a</div>
+              </div>
+              <div class="bridge-detail">
+                <div class="label">Bridge File</div>
+                <div class="value" id="ninja-bridge-file">n/a</div>
+              </div>
+              <div class="bridge-detail">
+                <div class="label">Public</div>
+                <div class="value" id="ninja-public-status">n/a</div>
+              </div>
+              <div class="bridge-detail">
+                <div class="label">Local</div>
+                <div class="value" id="ninja-local-status">n/a</div>
+              </div>
+            </div>
+          </div>
+          <div class="controls bridge-actions">
+            <button id="ninja-copy-url" type="button">Copy webhook URL</button>
+            <button id="ninja-refresh-tunnel" type="button">Refresh tunnel URL</button>
+          </div>
+          <div class="bridge-copy-state" id="ninja-copy-state">TradingView alert webhook must exactly match this URL. Quick-tunnel auto-rotation is disabled.</div>
+        </div>
+      </section>
+
       <section id="heatmap-proof-panel">
         <div class="section-head">
           <h2>Katbot / SPX Heatmap Feed</h2>
@@ -572,7 +646,7 @@
   </main>
 
   <script>
-    const state = { example: 'positive', chartRange: 'tight', chart: null, sourceHealth: null };
+    const state = { example: 'positive', chartRange: 'tight', chart: null, sourceHealth: null, ninjaBridge: null };
     const chartRanges = {
       tight: { label: 'Tight', points: 30 },
       standard: { label: 'Mid', points: 55 },
@@ -700,6 +774,114 @@
     async function getPlainJson(path) {
       const response = await fetch(path, { method: 'GET' });
       return response.json();
+    }
+
+    function shortAge(ms) {
+      const value = finiteNumber(ms);
+      if (value === null || value < 0) return 'n/a';
+      if (value < 1000) return 'now';
+      const seconds = Math.floor(value / 1000);
+      if (seconds < 60) return `${seconds}s ago`;
+      const minutes = Math.floor(seconds / 60);
+      if (minutes < 60) return `${minutes}m ago`;
+      const hours = Math.floor(minutes / 60);
+      return `${hours}h ${minutes % 60}m ago`;
+    }
+
+    function bridgeUiClass(status) {
+      if (!status || status.state === 'unhealthy') return 'bad';
+      if (status.state === 'stale') return 'warn';
+      return 'good';
+    }
+
+    function setNinjaCopyState(text, klass = '') {
+      const target = qs('#ninja-copy-state');
+      target.textContent = text;
+      target.style.color = klass === 'bad' ? 'var(--bad)' : klass === 'good' ? 'var(--good)' : 'var(--muted)';
+    }
+
+    async function copyText(text) {
+      if (!text) return false;
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+      const area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.left = '-1000px';
+      document.body.appendChild(area);
+      area.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(area);
+      return ok;
+    }
+
+    function renderNinjaBridge(status) {
+      state.ninjaBridge = status || null;
+      const uiClass = bridgeUiClass(status);
+      const health = qs('#ninja-bridge-health');
+      const card = qs('#ninja-bridge-card');
+      const webhookUrl = status?.webhook_url || '';
+      const stateText = status?.state ? status.state.toUpperCase() : 'UNKNOWN';
+      health.textContent = stateText;
+      health.className = `pill ${uiClass}`;
+      card.className = `bridge-card ${uiClass}`;
+      qs('#ninja-bridge-subtitle').textContent = status?.reason ? `${status.reason} - ${status.route || 'unknown route'}` : 'No watchdog status loaded';
+      qs('#ninja-webhook-url').textContent = webhookUrl || 'No webhook URL loaded.';
+      qs('#ninja-last-check').textContent = status?.checked_at ? `${shortAge(status.status_age_ms)} (${new Date(status.checked_at).toLocaleTimeString()})` : 'n/a';
+      qs('#ninja-bridge-file').textContent = status?.bridge_file_idle ? 'idle/cleared' : 'signal pending';
+      qs('#ninja-public-status').textContent = status?.public_status ? `HTTP ${status.public_status}` : 'n/a';
+      qs('#ninja-local-status').textContent = status?.local_status ? `HTTP ${status.local_status}` : 'n/a';
+      qs('#ninja-refresh-tunnel').textContent = status?.state === 'stale' || status?.state === 'unhealthy' ? 'Refresh tunnel URL' : 'Re-check tunnel';
+    }
+
+    async function copyNinjaWebhook() {
+      const url = state.ninjaBridge?.webhook_url || '';
+      if (!url) {
+        setNinjaCopyState('No webhook URL available yet.', 'bad');
+        return;
+      }
+      try {
+        const ok = await copyText(url);
+        setNinjaCopyState(ok ? 'Webhook URL copied.' : 'Copy failed; select the URL above.', ok ? 'good' : 'bad');
+      } catch (err) {
+        setNinjaCopyState(`Copy failed: ${err.message}`, 'bad');
+      }
+    }
+
+    async function refreshNinjaTunnel() {
+      const button = qs('#ninja-refresh-tunnel');
+      button.disabled = true;
+      setNinjaCopyState('Refreshing tunnel and checking public route...');
+      try {
+        const response = await fetch('/api/ninjatrader/tunnel-watchdog/refresh', { method: 'POST' });
+        const status = await response.json();
+        renderNinjaBridge(status);
+        if (!response.ok || !status?.webhook_url) {
+          setNinjaCopyState(status?.error || status?.reason || 'Refresh failed.', 'bad');
+          return;
+        }
+        try {
+          const copied = await copyText(status.webhook_url);
+          setNinjaCopyState(copied ? 'New webhook URL copied.' : 'New URL ready above; copy manually if needed.', copied ? 'good' : '');
+        } catch {
+          setNinjaCopyState('New URL ready above; copy manually if needed.');
+        }
+      } catch (err) {
+        setNinjaCopyState(`Refresh failed: ${err.message}`, 'bad');
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    async function handleNinjaCardClick() {
+      if (state.ninjaBridge?.state === 'stale' || state.ninjaBridge?.state === 'unhealthy') {
+        await refreshNinjaTunnel();
+      } else {
+        await copyNinjaWebhook();
+      }
     }
 
     function setActiveButtons() {
@@ -934,10 +1116,11 @@
 
     async function refresh() {
       setActiveButtons();
-      const [chart, health, heatmapProof] = await Promise.all([
+      const [chart, health, heatmapProof, ninjaBridge] = await Promise.all([
         getJson('/api/trading/chart-data'),
         getJson('/api/trading/source-health'),
         getPlainJson('/api/operator/heatmap-proof'),
+        getPlainJson('/api/ninjatrader/tunnel-watchdog'),
       ]);
       state.chart = chart;
       state.sourceHealth = health;
@@ -946,6 +1129,7 @@
       renderCandidates(chart);
       renderBracket(chart);
       renderHeatmapProof(heatmapProof);
+      renderNinjaBridge(ninjaBridge);
       renderAlerts(chart);
       renderHealth(chart, health);
     }
@@ -964,6 +1148,15 @@
       });
     });
     document.querySelector('#replay-selector button[data-refresh]').addEventListener('click', refresh);
+    qs('#ninja-copy-url').addEventListener('click', copyNinjaWebhook);
+    qs('#ninja-refresh-tunnel').addEventListener('click', refreshNinjaTunnel);
+    qs('#ninja-bridge-card').addEventListener('click', handleNinjaCardClick);
+    qs('#ninja-bridge-card').addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        handleNinjaCardClick();
+      }
+    });
     window.addEventListener('resize', () => state.chart && drawChart(state.chart));
     refresh().catch(err => {
       qs('#chart-subtitle').textContent = `Trading window failed: ${err.message}`;

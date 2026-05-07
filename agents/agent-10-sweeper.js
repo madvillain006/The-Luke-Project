@@ -1,11 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
 const path = require("path");
 
 const { log: lukeLog } = require("../lib/logger");
-const client = new Anthropic();
+const { createRoutedText, flattenMessages } = require("../lib/llm-client");
 const ROOT = path.join(__dirname, "..");
 
 // ── FILE PATHS ────────────────────────────────────────────
@@ -21,6 +20,22 @@ const SWEEPER_LOG   = path.join(ROOT, "SWEEPER_LOG.jsonl");
 // ── BUDGET ────────────────────────────────────────────────
 const COMBINED_DAILY_BUDGET = 5.00;
 const MAX_OPEN_PROPOSALS    = 10;
+
+async function createSmartTextMessage(request) {
+  const routed = await createRoutedText({
+    model: request.model,
+    maxTokens: request.max_tokens || 1000,
+    system: request.system,
+    messages: request.messages,
+    userMessage: flattenMessages(request.messages),
+    feature: "research_synth",
+    fallbackFeature: "summarize",
+    allowAnthropic: true,
+  });
+  return { content: [{ text: routed.text }], usage: routed.response?.usage || {}, routed };
+}
+
+const client = { messages: { create: createSmartTextMessage } };
 
 const HAIKU_IN_RATE     = 0.00000025;
 const HAIKU_OUT_RATE    = 0.00000125;

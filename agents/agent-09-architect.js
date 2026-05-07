@@ -1,12 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
 const path = require("path");
 const { spawnSync } = require("child_process");
 
 const { log: lukeLog } = require("../lib/logger");
-const client = new Anthropic();
+const { createRoutedText, flattenMessages } = require("../lib/llm-client");
 const ROOT = path.join(__dirname, "..");
 
 const ARCH_LOG    = path.join(ROOT, "ARCHITECT_LOG.jsonl");
@@ -23,6 +22,22 @@ const HAIKU_CACHE_WRITE = 0.0000003125;  // $0.3125/1M (1.25x input)
 const HAIKU_CACHE_READ  = 0.000000025;   // $0.025/1M (0.1x input)
 
 const PHASE = "A";
+
+async function createSmartTextMessage(request) {
+  const routed = await createRoutedText({
+    model: request.model,
+    maxTokens: request.max_tokens || 1200,
+    system: request.system,
+    messages: request.messages,
+    userMessage: flattenMessages(request.messages),
+    feature: "research_synth",
+    fallbackFeature: "summarize",
+    allowAnthropic: true,
+  });
+  return { content: [{ text: routed.text }], usage: routed.response?.usage || {}, routed };
+}
+
+const client = { messages: { create: createSmartTextMessage } };
 
 const PROTECTED = [
   "agent-02-trader.js", "agent-02b-autonomous.js", "agent-04-health.js",

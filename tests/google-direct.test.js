@@ -57,7 +57,8 @@ describe('direct Google integrations', () => {
     });
 
     expect(calendar.status).toBe('synced');
-    expect(calendar.source).toBe('google-calendar-direct');
+    expect(calendar.source).toMatchObject({ app: 'Google Calendar', calendar_id: 'primary' });
+    expect(calendar.events[0].source).toBe('google-calendar-direct');
     expect(calendar.events[0]).toMatchObject({ title: 'Museum call', location: 'Knoxville' });
     expect(seen[0].options.headers.Authorization).toBe('Bearer token');
   });
@@ -68,11 +69,11 @@ describe('direct Google integrations', () => {
       fetchFn: async url => {
         const text = String(url);
         if (text.includes('/messages?')) return response({ messages: [{ id: 'm1' }, { id: 'm2' }] });
-        if (text.includes('/labels')) return response({ labels: [{ id: 'Label_6', name: 'Luke/Cleanup/Unread Non-Substack Subscriptions' }] });
-        if (text.includes('/messages/batchModify')) return response({});
         if (text.includes('/labels/INBOX')) return response({ name: 'INBOX', messagesUnread: 10, messagesTotal: 20, threadsTotal: 4, threadsUnread: 2 });
         if (text.includes('/labels/UNREAD')) return response({ name: 'UNREAD', messagesUnread: 50, messagesTotal: 50, threadsTotal: 10, threadsUnread: 10 });
         if (text.includes('/labels/Luke%2FCleanup%2FUnread%20Non-Substack%20Subscriptions')) return response({ id: 'Label_6', name: 'Luke/Cleanup/Unread Non-Substack Subscriptions', messagesUnread: 7, messagesTotal: 7, threadsTotal: 3, threadsUnread: 3 });
+        if (text.includes('/labels')) return response({ labels: [{ id: 'Label_6', name: 'Luke/Cleanup/Unread Non-Substack Subscriptions' }] });
+        if (text.includes('/messages/batchModify')) return response({});
         return response({});
       },
     });

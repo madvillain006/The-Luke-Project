@@ -1,0 +1,196 @@
+//@version=5
+indicator("LUKE WATCH v6 Visual Companion - Levels", shorttitle="LUKE v6 LEVELS", overlay=true, max_lines_count=260, max_labels_count=180)
+
+// Optional companion for the exec-only Luke Watch script.
+// This draws the level context that was removed from the execution script.
+// It does not submit orders, track PnL, or fire trading alerts.
+
+enable_luke_levels = input.bool(true, "Enable Luke levels")
+enable_saty = input.bool(true, "Enable Saty levels")
+enable_mancini = input.bool(true, "Enable Mancini levels")
+enable_dubz = input.bool(true, "Enable Dubz levels")
+enable_heatmap_gex = input.bool(true, "Enable Heatmap/GEX levels")
+show_saty_plots = input.bool(true, "Show Saty plots")
+show_cluster_labels = input.bool(false, "Show cluster labels")
+show_source_labels = input.bool(true, "Show source labels")
+max_displayed_cluster_lines = input.int(80, "Max displayed cluster lines", minval=0, maxval=120)
+level_display_window_points = input.float(120.0, "Displayed level window points", minval=0.0, step=25.0, tooltip="Only draw level lines this many points from current price. 0 draws from the whole parsed set until the line limit.")
+cluster_tolerance_raw = input.float(1.25, "Cluster tolerance points", minval=0.25, step=0.25)
+
+mancini_levels_input = input.string("", "Mancini trade levels")
+mancini_major_levels_input = input.string("", "Mancini major levels")
+mancini_focus_long_levels_input = input.string("", "Mancini focus long levels")
+mancini_target_levels_input = input.string("", "Mancini target-only levels")
+dubz_levels_input = input.string("", "Dubz levels")
+heatmap_gex_levels_input = input.string("", "Heatmap/GEX levels")
+heatmap_gex_snapshot_age_minutes = input.int(0, "Heatmap/GEX snapshot age minutes", minval=0)
+heatmap_gex_fresh_minutes = input.int(60, "Heatmap/GEX fresh minutes", minval=1)
+heatmap_gex_stale_minutes = input.int(120, "Heatmap/GEX stale minutes", minval=1)
+
+saty_mode = input.string("Daily", "Saty mode", options=["Daily", "Multi-day", "Swing"])
+saty_atr_length = input.int(14, "Saty ATR length", minval=1)
+saty_trigger_pct = input.float(0.236, "Saty trigger percentage", minval=0.001, step=0.001)
+
+cluster_tolerance_points = math.min(cluster_tolerance_raw, 3.0)
+heatmap_fresh = heatmap_gex_snapshot_age_minutes <= heatmap_gex_fresh_minutes
+heatmap_stale = heatmap_gex_snapshot_age_minutes >= heatmap_gex_stale_minutes
+
+saty_tf = saty_mode == "Daily" ? "D" : saty_mode == "Multi-day" ? "W" : "M"
+previous_close = request.security(syminfo.tickerid, saty_tf, close[1], barmerge.gaps_off, barmerge.lookahead_on)
+atr_value = request.security(syminfo.tickerid, saty_tf, ta.atr(saty_atr_length)[1], barmerge.gaps_off, barmerge.lookahead_on)
+
+saty_call_trigger = previous_close + atr_value * saty_trigger_pct
+saty_put_trigger = previous_close - atr_value * saty_trigger_pct
+saty_ext_plus_1 = previous_close + atr_value * 0.382
+saty_ext_plus_2 = previous_close + atr_value * 0.500
+saty_ext_plus_3 = previous_close + atr_value * 0.618
+saty_ext_plus_4 = previous_close + atr_value * 0.786
+saty_atr_plus_1 = previous_close + atr_value
+saty_ext_minus_1 = previous_close - atr_value * 0.382
+saty_ext_minus_2 = previous_close - atr_value * 0.500
+saty_ext_minus_3 = previous_close - atr_value * 0.618
+saty_ext_minus_4 = previous_close - atr_value * 0.786
+saty_atr_minus_1 = previous_close - atr_value
+
+plot(show_saty_plots and enable_saty ? previous_close : na, "Saty previous close", color=color.new(color.gray, 25), linewidth=1)
+plot(show_saty_plots and enable_saty ? saty_call_trigger : na, "Saty call trigger", color=color.new(color.green, 0), linewidth=2)
+plot(show_saty_plots and enable_saty ? saty_put_trigger : na, "Saty put trigger", color=color.new(color.red, 0), linewidth=2)
+plot(show_saty_plots and enable_saty ? saty_ext_plus_1 : na, "Saty ext +1", color=color.new(color.green, 40), linewidth=1)
+plot(show_saty_plots and enable_saty ? saty_ext_plus_2 : na, "Saty ext +2", color=color.new(color.green, 50), linewidth=1)
+plot(show_saty_plots and enable_saty ? saty_ext_plus_3 : na, "Saty ext +3", color=color.new(color.green, 60), linewidth=1)
+plot(show_saty_plots and enable_saty ? saty_ext_plus_4 : na, "Saty ext +4", color=color.new(color.green, 70), linewidth=1)
+plot(show_saty_plots and enable_saty ? saty_atr_plus_1 : na, "Saty ATR +1", color=color.new(color.green, 20), linewidth=2)
+plot(show_saty_plots and enable_saty ? saty_ext_minus_1 : na, "Saty ext -1", color=color.new(color.red, 40), linewidth=1)
+plot(show_saty_plots and enable_saty ? saty_ext_minus_2 : na, "Saty ext -2", color=color.new(color.red, 50), linewidth=1)
+plot(show_saty_plots and enable_saty ? saty_ext_minus_3 : na, "Saty ext -3", color=color.new(color.red, 60), linewidth=1)
+plot(show_saty_plots and enable_saty ? saty_ext_minus_4 : na, "Saty ext -4", color=color.new(color.red, 70), linewidth=1)
+plot(show_saty_plots and enable_saty ? saty_atr_minus_1 : na, "Saty ATR -1", color=color.new(color.red, 20), linewidth=2)
+
+f_add_sorted(float[] prices, string[] sources, bool[] fresh_flags, float price, string source, bool fresh) =>
+    if not na(price)
+        int insert_at = array.size(prices)
+        if array.size(prices) > 0
+            for i = 0 to array.size(prices) - 1
+                if price < array.get(prices, i)
+                    insert_at := i
+                    break
+        array.insert(prices, insert_at, price)
+        array.insert(sources, insert_at, source)
+        array.insert(fresh_flags, insert_at, fresh)
+
+f_add_input_levels(float[] prices, string[] sources, bool[] fresh_flags, string raw, string source, bool fresh) =>
+    string[] parts = str.split(raw, ",")
+    if array.size(parts) > 0
+        for i = 0 to array.size(parts) - 1
+            string part = str.trim(array.get(parts, i))
+            float value = str.tonumber(part)
+            if not na(value)
+                f_add_sorted(prices, sources, fresh_flags, value, source, fresh)
+
+f_add_saty_levels(float[] prices, string[] sources, bool[] fresh_flags) =>
+    f_add_sorted(prices, sources, fresh_flags, previous_close, "saty", true)
+    f_add_sorted(prices, sources, fresh_flags, saty_call_trigger, "saty", true)
+    f_add_sorted(prices, sources, fresh_flags, saty_put_trigger, "saty", true)
+    f_add_sorted(prices, sources, fresh_flags, saty_ext_plus_1, "saty", true)
+    f_add_sorted(prices, sources, fresh_flags, saty_ext_plus_2, "saty", true)
+    f_add_sorted(prices, sources, fresh_flags, saty_ext_plus_3, "saty", true)
+    f_add_sorted(prices, sources, fresh_flags, saty_ext_plus_4, "saty", true)
+    f_add_sorted(prices, sources, fresh_flags, saty_atr_plus_1, "saty", true)
+    f_add_sorted(prices, sources, fresh_flags, saty_ext_minus_1, "saty", true)
+    f_add_sorted(prices, sources, fresh_flags, saty_ext_minus_2, "saty", true)
+    f_add_sorted(prices, sources, fresh_flags, saty_ext_minus_3, "saty", true)
+    f_add_sorted(prices, sources, fresh_flags, saty_ext_minus_4, "saty", true)
+    f_add_sorted(prices, sources, fresh_flags, saty_atr_minus_1, "saty", true)
+
+float[] raw_prices = array.new_float()
+string[] raw_sources = array.new_string()
+bool[] raw_fresh = array.new_bool()
+
+if enable_luke_levels
+    if enable_saty
+        f_add_saty_levels(raw_prices, raw_sources, raw_fresh)
+    if enable_mancini
+        f_add_input_levels(raw_prices, raw_sources, raw_fresh, mancini_levels_input, "mancini", true)
+        f_add_input_levels(raw_prices, raw_sources, raw_fresh, mancini_major_levels_input, "mancini_major", true)
+        f_add_input_levels(raw_prices, raw_sources, raw_fresh, mancini_focus_long_levels_input, "mancini_focus", true)
+        f_add_input_levels(raw_prices, raw_sources, raw_fresh, mancini_target_levels_input, "mancini_target", true)
+    if enable_dubz
+        f_add_input_levels(raw_prices, raw_sources, raw_fresh, dubz_levels_input, "dubz", true)
+    if enable_heatmap_gex
+        f_add_input_levels(raw_prices, raw_sources, raw_fresh, heatmap_gex_levels_input, "heatmap_gex", heatmap_fresh)
+
+float[] cluster_prices = array.new_float()
+float[] cluster_mins = array.new_float()
+float[] cluster_maxs = array.new_float()
+string[] cluster_labels = array.new_string()
+int[] cluster_strengths = array.new_int()
+bool[] cluster_heatmap_fresh = array.new_bool()
+
+if array.size(raw_prices) > 0
+    for i = 0 to array.size(raw_prices) - 1
+        float price = array.get(raw_prices, i)
+        string source = array.get(raw_sources, i)
+        bool fresh = array.get(raw_fresh, i)
+        int last = array.size(cluster_prices) - 1
+        bool merged = false
+        if last >= 0
+            float anchor = array.get(cluster_prices, last)
+            float low_edge = math.min(array.get(cluster_mins, last), price)
+            float high_edge = math.max(array.get(cluster_maxs, last), price)
+            bool within_anchor = math.abs(price - anchor) <= cluster_tolerance_points
+            bool within_width = high_edge - low_edge <= cluster_tolerance_points
+            if within_anchor and within_width
+                int old_strength = array.get(cluster_strengths, last)
+                string old_label = array.get(cluster_labels, last)
+                bool source_can_strengthen = source != "heatmap_gex" or fresh
+                bool new_source = source_can_strengthen and not str.contains(old_label, source)
+                float new_anchor = math.round(((anchor * old_strength) + price) / (old_strength + 1) / syminfo.mintick) * syminfo.mintick
+                array.set(cluster_prices, last, new_anchor)
+                array.set(cluster_mins, last, low_edge)
+                array.set(cluster_maxs, last, high_edge)
+                array.set(cluster_labels, last, str.contains(old_label, source) ? old_label : old_label + "+" + source)
+                array.set(cluster_strengths, last, new_source ? old_strength + 1 : old_strength)
+                array.set(cluster_heatmap_fresh, last, array.get(cluster_heatmap_fresh, last) or (source == "heatmap_gex" and fresh))
+                merged := true
+        if not merged
+            array.push(cluster_prices, price)
+            array.push(cluster_mins, price)
+            array.push(cluster_maxs, price)
+            array.push(cluster_labels, source)
+            array.push(cluster_strengths, 1)
+            array.push(cluster_heatmap_fresh, source == "heatmap_gex" and fresh)
+
+var line[] level_lines = array.new_line()
+var label[] level_labels = array.new_label()
+
+if barstate.islast
+    if array.size(level_lines) > 0
+        for i = 0 to array.size(level_lines) - 1
+            line.delete(array.get(level_lines, i))
+    if array.size(level_labels) > 0
+        for i = 0 to array.size(level_labels) - 1
+            label.delete(array.get(level_labels, i))
+    array.clear(level_lines)
+    array.clear(level_labels)
+
+    if array.size(cluster_prices) > 0 and max_displayed_cluster_lines > 0
+        int drawn_levels = 0
+        for i = 0 to array.size(cluster_prices) - 1
+            float level = array.get(cluster_prices, i)
+            int strength = array.get(cluster_strengths, i)
+            bool has_heatmap = array.get(cluster_heatmap_fresh, i)
+            string sources = array.get(cluster_labels, i)
+            bool in_display_window = level_display_window_points <= 0.0 or math.abs(level - close) <= level_display_window_points
+            if drawn_levels < max_displayed_cluster_lines and in_display_window
+                bool has_saty = str.contains(sources, "saty")
+                bool has_mancini = str.contains(sources, "mancini")
+                bool has_mancini_major = str.contains(sources, "mancini_major")
+                bool has_mancini_focus = str.contains(sources, "mancini_focus")
+                bool has_mancini_target = str.contains(sources, "mancini_target")
+                color line_color = has_heatmap ? color.new(color.teal, heatmap_stale ? 70 : 10) : has_mancini_focus ? color.new(color.fuchsia, 0) : has_mancini_major ? color.new(color.blue, 0) : has_mancini_target ? color.new(color.purple, 5) : has_saty and has_mancini ? color.new(color.yellow, 0) : has_saty ? color.new(color.lime, 10) : has_mancini ? color.new(color.blue, 8) : strength >= 3 ? color.new(color.yellow, 0) : strength == 2 ? color.new(color.aqua, 15) : color.new(color.gray, 35)
+                int width = has_saty or has_mancini or strength >= 3 ? 2 : strength == 2 ? 2 : 1
+                array.push(level_lines, line.new(bar_index - 100, level, bar_index + 1, level, extend=extend.right, color=line_color, width=width))
+                drawn_levels += 1
+                if show_cluster_labels
+                    string cluster_label_text = show_source_labels ? str.tostring(level, format.mintick) + " " + sources : str.tostring(level, format.mintick)
+                    array.push(level_labels, label.new(bar_index + 1, level, cluster_label_text, style=label.style_label_left, textcolor=color.white, color=color.new(color.black, 55), size=size.tiny))

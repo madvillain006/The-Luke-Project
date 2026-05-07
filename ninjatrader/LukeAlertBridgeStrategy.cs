@@ -1,0 +1,644 @@
+#region Using declarations
+using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Windows.Media;
+using NinjaTrader.Cbi;
+using NinjaTrader.NinjaScript;
+#endregion
+
+namespace NinjaTrader.NinjaScript.Strategies
+{
+    public enum LukeBridgeExecutionMode
+    {
+        MarketOnAlert,
+        LimitAtLukeEntry
+    }
+
+    public class LukeAlertBridgeStrategy : Strategy
+    {
+        private const string EntryT1Name = "LukeLongT1";
+        private const string EntryT2Name = "LukeLongT2";
+
+        private string lastProcessedId = string.Empty;
+        private string lastRejectedId = string.Empty;
+        private string lastCancelledId = string.Empty;
+        private string lastFileContent = string.Empty;
+        private DateTime lastFileWriteUtc = DateTime.MinValue;
+        private DateTime submittedUtc = DateTime.MinValue;
+        private Order entryOrderT1;
+        private Order entryOrderT2;
+        private int signalsSubmittedThisSession;
+        private LukeSignal activeSignal;
+        private int activeRunnerQuantity;
+        private bool runnerStopMovedToBreakEven;
+
+        [NinjaScriptProperty]
+        [Display(Name = "Bridge file path", GroupName = "Luke Bridge", Order = 1)]
+        public string BridgeFilePath { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Execution mode", GroupName = "Luke Bridge", Order = 2)]
+        public LukeBridgeExecutionMode ExecutionMode { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Max signal age seconds", GroupName = "Luke Bridge", Order = 3)]
+        public int MaxSignalAgeSeconds { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Limit expiry seconds", GroupName = "Luke Bridge", Order = 4)]
+        public int LimitOrderExpirySeconds { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Use payload quantity", GroupName = "Luke Bridge", Order = 5)]
+        public bool UsePayloadQuantity { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Default quantity", GroupName = "Luke Bridge", Order = 6)]
+        public int BridgeDefaultQuantity { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Split TP1/TP2 runner", GroupName = "Luke Bridge", Order = 7)]
+        public bool SplitTp1Tp2Runner { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Require flat position", GroupName = "Luke Safety", Order = 1)]
+        public bool RequireFlatPosition { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Allow live accounts", GroupName = "Luke Safety", Order = 2)]
+        public bool AllowLiveAccounts { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Allowed exact account", GroupName = "Luke Safety", Order = 3)]
+        public string AllowedAccountName { get; set; }
+
+        [NinjaScriptProperty]
+        [Range(1, 10)]
+        [Display(Name = "Max quantity", GroupName = "Luke Safety", Order = 4)]
+        public int MaxQuantity { get; set; }
+
+        [NinjaScriptProperty]
+        [Range(0, 50)]
+        [Display(Name = "Max signals per session", GroupName = "Luke Safety", Order = 5)]
+        public int MaxSignalsPerSession { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Require symbol prefix match", GroupName = "Luke Safety", Order = 6)]
+        public bool RequireSymbolPrefixMatch { get; set; }
+
+        [NinjaScriptProperty]
+        [Range(0.0, 10.0)]
+        [Display(Name = "Max marketable entry points", GroupName = "Luke Safety", Order = 7)]
+        public double MaxMarketableEntryPoints { get; set; }
+
+        protected override void OnStateChange()
+        {
+            if (State == State.SetDefaults)
+            {
+                Name = "LukeAlertBridgeStrategy";
+                Description = "SIM-first bridge: polls Luke's latest LONG alert JSON and submits NinjaTrader simulated orders. Defaults block live accounts.";
+                Calculate = Calculate.OnEachTick;
+                EntriesPerDirection = 2;
+                EntryHandling = EntryHandling.UniqueEntries;
+                IsExitOnSessionCloseStrategy = true;
+                ExitOnSessionCloseSeconds = 30;
+                IsInstantiatedOnEachOptimizationIteration = false;
+
+                BridgeFilePath = @"C:\Users\conor\luke\data\ninjatrader\latest-luke-signal.json";
+                ExecutionMode = LukeBridgeExecutionMode.LimitAtLukeEntry;
+                MaxSignalAgeSeconds = 20;
+                LimitOrderExpirySeconds = 60;
+                UsePayloadQuantity = true;
+                BridgeDefaultQuantity = 1;
+                SplitTp1Tp2Runner = true;
+                RequireFlatPosition = true;
+                AllowLiveAccounts = false;
+                AllowedAccountName = "LFE05076094670001";
+                MaxQuantity = 2;
+                MaxSignalsPerSession = 10;
+                RequireSymbolPrefixMatch = true;
+                MaxMarketableEntryPoints = 0.25;
+            }
+            else if (State == State.Realtime)
+            {
+                BridgeInfo("LukeAlertBridgeStrategy realtime. Account guard: " + AccountGuardDescription() + ". Account: " + GetCurrentAccountName() + ". Polling: " + BridgeFilePath);
+            }
+        }
+
+        protected override void OnBarUpdate()
+        {
+            if (BarsInProgress != 0 || CurrentBar < 1)
+                return;
+
+            if (State != State.Realtime)
+                return;
+
+            if (Bars.IsFirstBarOfSession && IsFirstTickOfBar)
+                signalsSubmittedThisSession = 0;
+
+            CancelExpiredLimitOrders();
+            MoveRunnerStopToBreakEvenIfNeeded();
+            ResetActiveSignalIfFlat();
+
+            LukeSignal signal;
+            if (!TryReadLatestSignal(out signal))
+                return;
+
+            if (signal.IsPing)
+            {
+                ProcessPing(signal);
+                return;
+            }
+
+            if (signal.IsCancel)
+            {
+                ProcessCancel(signal);
+                return;
+            }
+
+            if (signal.Id == lastProcessedId || signal.Id == lastRejectedId)
+                return;
+
+            if (!IsInstrumentAllowed(signal))
+            {
+                Reject(signal, "signal symbol " + signal.Symbol + " does not match chart instrument " + Instrument.FullName);
+                return;
+            }
+
+            if (MaxSignalsPerSession > 0 && signalsSubmittedThisSession >= MaxSignalsPerSession)
+            {
+                Reject(signal, "max signals per session reached");
+                return;
+            }
+
+            if (UsePayloadQuantity && MaxQuantity > 0 && signal.Quantity > MaxQuantity)
+            {
+                Reject(signal, "signal quantity " + signal.Quantity + " exceeds max quantity " + MaxQuantity);
+                return;
+            }
+
+            if (IsSignalStale(signal))
+            {
+                Reject(signal, "stale signal");
+                return;
+            }
+
+            if (!IsAccountAllowed())
+            {
+                Reject(signal, "account guard rejected " + GetCurrentAccountName() + "; allowed " + AccountGuardDescription());
+                return;
+            }
+
+            if (RequireFlatPosition && Position.MarketPosition != MarketPosition.Flat)
+            {
+                Reject(signal, "position not flat");
+                return;
+            }
+
+            if (HasActiveEntryOrders())
+            {
+                Reject(signal, "entry order already active");
+                return;
+            }
+
+            string priceRejectReason;
+            if (!IsLongPriceContextAllowed(signal, out priceRejectReason))
+            {
+                Reject(signal, priceRejectReason);
+                return;
+            }
+
+            SubmitLukeLong(signal);
+        }
+
+        private void ProcessCancel(LukeSignal signal)
+        {
+            if (signal.Id == lastCancelledId)
+                return;
+
+            if (!IsInstrumentAllowed(signal))
+            {
+                Reject(signal, "cancel symbol " + signal.Symbol + " does not match chart instrument " + Instrument.FullName);
+                return;
+            }
+
+            if (!IsAccountAllowed())
+            {
+                Reject(signal, "cancel ignored because account guard rejected " + GetCurrentAccountName() + "; allowed " + AccountGuardDescription());
+                return;
+            }
+
+            bool hadActiveEntries = HasActiveEntryOrders();
+            bool hadOpenLong = Position.MarketPosition == MarketPosition.Long;
+
+            if (IsActive(entryOrderT1))
+                CancelOrder(entryOrderT1);
+            if (IsActive(entryOrderT2))
+                CancelOrder(entryOrderT2);
+            if (hadOpenLong)
+                ExitLong();
+
+            submittedUtc = DateTime.MinValue;
+            activeSignal = null;
+            activeRunnerQuantity = 0;
+            runnerStopMovedToBreakEven = false;
+            lastCancelledId = signal.Id;
+
+            string message = "LUKE SIM CANCEL " + signal.Id
+                + (hadActiveEntries ? " cancelled active entries" : "")
+                + (hadOpenLong ? " exit long submitted" : "")
+                + (!hadActiveEntries && !hadOpenLong ? " no active order or long position" : "");
+            BridgeInfo(message);
+            Alert("LukeBridgeCancelled-" + signal.Id, Priority.High, message, NinjaTrader.Core.Globals.InstallDir + @"\sounds\Alert2.wav", 1, Brushes.DarkOrange, Brushes.White);
+        }
+
+        private void ProcessPing(LukeSignal signal)
+        {
+            if (signal.Id == lastProcessedId)
+                return;
+
+            if (!IsInstrumentAllowed(signal))
+            {
+                Reject(signal, "ping symbol " + signal.Symbol + " does not match chart instrument " + Instrument.FullName);
+                return;
+            }
+
+            if (!IsAccountAllowed())
+            {
+                Reject(signal, "ping account guard rejected " + GetCurrentAccountName() + "; allowed " + AccountGuardDescription());
+                return;
+            }
+
+            lastProcessedId = signal.Id;
+            BridgeInfo("LUKE BRIDGE PING " + signal.Id + " account=" + GetCurrentAccountName() + " instrument=" + Instrument.FullName);
+        }
+
+        private void SubmitLukeLong(LukeSignal signal)
+        {
+            int qty = UsePayloadQuantity ? Math.Max(1, signal.Quantity) : Math.Max(1, BridgeDefaultQuantity);
+            qty = Math.Min(qty, Math.Max(1, MaxQuantity));
+            int qtyT1 = qty;
+            int qtyT2 = 0;
+            if (SplitTp1Tp2Runner && qty >= 2)
+            {
+                qtyT1 = Math.Max(1, qty / 2);
+                qtyT2 = qty - qtyT1;
+            }
+
+            SetStopLoss(EntryT1Name, CalculationMode.Price, signal.Stop, false);
+            SetProfitTarget(EntryT1Name, CalculationMode.Price, signal.Tp1);
+            if (qtyT2 > 0)
+            {
+                SetStopLoss(EntryT2Name, CalculationMode.Price, signal.Stop, false);
+                SetProfitTarget(EntryT2Name, CalculationMode.Price, signal.Tp2);
+            }
+
+            submittedUtc = DateTime.UtcNow;
+            activeSignal = signal;
+            activeRunnerQuantity = qtyT2;
+            runnerStopMovedToBreakEven = false;
+
+            if (ExecutionMode == LukeBridgeExecutionMode.MarketOnAlert)
+            {
+                entryOrderT1 = EnterLong(qtyT1, EntryT1Name);
+                if (qtyT2 > 0)
+                    entryOrderT2 = EnterLong(qtyT2, EntryT2Name);
+            }
+            else
+            {
+                entryOrderT1 = EnterLongLimit(qtyT1, signal.Entry, EntryT1Name);
+                if (qtyT2 > 0)
+                    entryOrderT2 = EnterLongLimit(qtyT2, signal.Entry, EntryT2Name);
+            }
+
+            lastProcessedId = signal.Id;
+            signalsSubmittedThisSession++;
+            string message = string.Format(CultureInfo.InvariantCulture,
+                "LUKE SIM LONG {0} qty={1} entry={2:F2} stop={3:F2} tp1={4:F2} tp2={5:F2} mode={6}",
+                signal.Id, qty, signal.Entry, signal.Stop, signal.Tp1, signal.Tp2, ExecutionMode);
+            BridgeInfo(message);
+            Alert("LukeBridgeSubmitted-" + signal.Id, Priority.High, message, NinjaTrader.Core.Globals.InstallDir + @"\sounds\Alert1.wav", 1, Brushes.DarkGreen, Brushes.White);
+        }
+
+        private bool IsLongPriceContextAllowed(LukeSignal signal, out string rejectReason)
+        {
+            rejectReason = string.Empty;
+            double lastPrice = Close[0];
+            double tick = TickSize > 0 ? TickSize : 0.25;
+
+            if (signal.Stop >= signal.Entry)
+            {
+                rejectReason = FormatPriceReject("stop is not below entry", signal, lastPrice);
+                return false;
+            }
+
+            if (signal.Tp1 <= signal.Entry || signal.Tp2 <= signal.Entry)
+            {
+                rejectReason = FormatPriceReject("target is not above entry", signal, lastPrice);
+                return false;
+            }
+
+            if (signal.Stop >= lastPrice - tick)
+            {
+                rejectReason = FormatPriceReject("stop is not below current market", signal, lastPrice);
+                return false;
+            }
+
+            if (ExecutionMode == LukeBridgeExecutionMode.LimitAtLukeEntry && signal.Entry > lastPrice + MaxMarketableEntryPoints)
+            {
+                rejectReason = FormatPriceReject("buy limit would be marketable too far above current market", signal, lastPrice);
+                return false;
+            }
+
+            return true;
+        }
+
+        private string FormatPriceReject(string reason, LukeSignal signal, double lastPrice)
+        {
+            return string.Format(CultureInfo.InvariantCulture,
+                "{0}: last={1:F2} entry={2:F2} stop={3:F2} tp1={4:F2} tp2={5:F2} maxMarketable={6:F2}",
+                reason, lastPrice, signal.Entry, signal.Stop, signal.Tp1, signal.Tp2, MaxMarketableEntryPoints);
+        }
+
+        private void MoveRunnerStopToBreakEvenIfNeeded()
+        {
+            if (activeSignal == null || activeRunnerQuantity <= 0 || runnerStopMovedToBreakEven)
+                return;
+            if (Position.MarketPosition != MarketPosition.Long)
+                return;
+            if (Close[0] < activeSignal.Tp1)
+                return;
+
+            SetStopLoss(EntryT2Name, CalculationMode.Price, activeSignal.Entry, false);
+            runnerStopMovedToBreakEven = true;
+            Print(string.Format(CultureInfo.InvariantCulture,
+                "Luke runner stop moved to breakeven at {0:F2} after TP1 {1:F2}",
+                activeSignal.Entry, activeSignal.Tp1));
+        }
+
+        private void ResetActiveSignalIfFlat()
+        {
+            if (Position.MarketPosition != MarketPosition.Flat || HasActiveEntryOrders())
+                return;
+
+            activeSignal = null;
+            activeRunnerQuantity = 0;
+            runnerStopMovedToBreakEven = false;
+        }
+
+        private bool TryReadLatestSignal(out LukeSignal signal)
+        {
+            signal = null;
+            try
+            {
+                if (string.IsNullOrWhiteSpace(BridgeFilePath) || !File.Exists(BridgeFilePath))
+                    return false;
+
+                DateTime writeUtc = File.GetLastWriteTimeUtc(BridgeFilePath);
+                string json = File.ReadAllText(BridgeFilePath);
+                if (writeUtc == lastFileWriteUtc && string.Equals(json, lastFileContent, StringComparison.Ordinal))
+                    return false;
+                lastFileWriteUtc = writeUtc;
+                lastFileContent = json;
+
+                LukeSignal parsed = LukeSignal.Parse(json, writeUtc);
+                if (parsed == null || (parsed.Side != "LONG" && !parsed.IsCancel && !parsed.IsPing))
+                    return false;
+
+                signal = parsed;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Print("Luke bridge read failed: " + ex.Message);
+                return false;
+            }
+        }
+
+        private bool IsSignalStale(LukeSignal signal)
+        {
+            if (MaxSignalAgeSeconds <= 0)
+                return false;
+            return (DateTimeOffset.UtcNow - signal.CreatedAt.ToUniversalTime()).TotalSeconds > MaxSignalAgeSeconds;
+        }
+
+        private bool IsAccountAllowed()
+        {
+            if (AllowLiveAccounts)
+                return true;
+            string accountName = GetCurrentAccountName();
+            string allowedAccount = string.IsNullOrWhiteSpace(AllowedAccountName) ? string.Empty : AllowedAccountName.Trim();
+            return accountName.StartsWith("Sim", StringComparison.OrdinalIgnoreCase)
+                || accountName.StartsWith("Playback", StringComparison.OrdinalIgnoreCase)
+                || (!string.IsNullOrEmpty(allowedAccount) && string.Equals(accountName, allowedAccount, StringComparison.OrdinalIgnoreCase));
+        }
+
+        private string GetCurrentAccountName()
+        {
+            return Account == null ? string.Empty : (Account.Name ?? string.Empty).Trim();
+        }
+
+        private string AccountGuardDescription()
+        {
+            if (AllowLiveAccounts)
+                return "all accounts allowed";
+            string allowedAccount = string.IsNullOrWhiteSpace(AllowedAccountName) ? "" : AllowedAccountName.Trim();
+            return string.IsNullOrEmpty(allowedAccount) ? "Sim*/Playback* only" : "Sim*/Playback* or exact " + allowedAccount;
+        }
+
+        private bool IsInstrumentAllowed(LukeSignal signal)
+        {
+            if (!RequireSymbolPrefixMatch)
+                return true;
+
+            string signalFamily = NormalizeInstrumentFamily(signal.Symbol);
+            string chartFamily = NormalizeInstrumentFamily(Instrument == null ? string.Empty : Instrument.FullName);
+            if (string.IsNullOrWhiteSpace(chartFamily) && Instrument != null && Instrument.MasterInstrument != null)
+                chartFamily = NormalizeInstrumentFamily(Instrument.MasterInstrument.Name);
+
+            return !string.IsNullOrWhiteSpace(signalFamily)
+                && !string.IsNullOrWhiteSpace(chartFamily)
+                && string.Equals(signalFamily, chartFamily, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static string NormalizeInstrumentFamily(string value)
+        {
+            string text = (value ?? string.Empty).Trim().ToUpperInvariant();
+            if (text.StartsWith("MES", StringComparison.OrdinalIgnoreCase)) return "MES";
+            if (text.StartsWith("ES", StringComparison.OrdinalIgnoreCase)) return "ES";
+            if (text.StartsWith("MNQ", StringComparison.OrdinalIgnoreCase)) return "MNQ";
+            if (text.StartsWith("NQ", StringComparison.OrdinalIgnoreCase)) return "NQ";
+            if (text.StartsWith("M2K", StringComparison.OrdinalIgnoreCase)) return "M2K";
+            if (text.StartsWith("RTY", StringComparison.OrdinalIgnoreCase)) return "RTY";
+
+            int length = 0;
+            while (length < text.Length && char.IsLetter(text[length]))
+                length++;
+            return length > 0 ? text.Substring(0, length) : string.Empty;
+        }
+
+        private bool HasActiveEntryOrders()
+        {
+            return IsActive(entryOrderT1) || IsActive(entryOrderT2);
+        }
+
+        private static bool IsActive(Order order)
+        {
+            if (order == null)
+                return false;
+            return order.OrderState == OrderState.Accepted
+                || order.OrderState == OrderState.Submitted
+                || order.OrderState == OrderState.Working
+                || order.OrderState == OrderState.PartFilled;
+        }
+
+        private void CancelExpiredLimitOrders()
+        {
+            if (ExecutionMode != LukeBridgeExecutionMode.LimitAtLukeEntry || submittedUtc == DateTime.MinValue)
+                return;
+            if ((DateTime.UtcNow - submittedUtc).TotalSeconds < LimitOrderExpirySeconds)
+                return;
+
+            if (IsActive(entryOrderT1))
+                CancelOrder(entryOrderT1);
+            if (IsActive(entryOrderT2))
+                CancelOrder(entryOrderT2);
+            submittedUtc = DateTime.MinValue;
+            Print("Luke bridge limit entry expired and was cancelled.");
+        }
+
+        private void Reject(LukeSignal signal, string reason)
+        {
+            lastRejectedId = signal.Id;
+            string message = "LUKE BRIDGE REJECT " + signal.Id + ": " + reason;
+            BridgeInfo(message);
+            Alert("LukeBridgeRejected-" + signal.Id, Priority.Medium, message, NinjaTrader.Core.Globals.InstallDir + @"\sounds\Alert2.wav", 1, Brushes.DarkRed, Brushes.White);
+        }
+
+        private void BridgeInfo(string message)
+        {
+            Print(message);
+            Log(message, LogLevel.Information);
+        }
+
+        protected override void OnOrderUpdate(Order order, double limitPrice, double stopPrice, int quantity, int filled,
+            double averageFillPrice, OrderState orderState, DateTime time, ErrorCode error, string nativeError)
+        {
+            if (order == null)
+                return;
+
+            if (order.Name == EntryT1Name)
+                entryOrderT1 = order;
+            else if (order.Name == EntryT2Name)
+                entryOrderT2 = order;
+
+            if (error != ErrorCode.NoError)
+                Print("Luke bridge order error " + order.Name + ": " + error + " " + nativeError);
+        }
+
+        private class LukeSignal
+        {
+            public string Id;
+            public string Type;
+            public string Side;
+            public string Symbol;
+            public double Entry;
+            public double Stop;
+            public double Tp1;
+            public double Tp2;
+            public int Quantity;
+            public DateTimeOffset CreatedAt;
+
+            public static LukeSignal Parse(string json, DateTime fileWriteUtc)
+            {
+                string id = ExtractString(json, "id");
+                string type = ExtractString(json, "type");
+                string side = ExtractString(json, "side");
+                string symbol = ExtractString(json, "symbol");
+                double entry = ExtractDouble(json, "entry");
+                double stop = ExtractDouble(json, "stop");
+                double tp1 = ExtractDouble(json, "tp1");
+                double tp2 = ExtractDouble(json, "tp2");
+                int qty = ExtractInt(json, "qty", 1);
+                string createdText = ExtractString(json, "created_at");
+
+                DateTimeOffset created;
+                if (!DateTimeOffset.TryParse(createdText, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out created))
+                    created = new DateTimeOffset(DateTime.SpecifyKind(fileWriteUtc, DateTimeKind.Utc));
+
+                if (string.IsNullOrWhiteSpace(id) || string.IsNullOrWhiteSpace(side))
+                    return null;
+                bool isCancel = type.IndexOf("CANCEL", StringComparison.OrdinalIgnoreCase) >= 0
+                    || side.Equals("CANCEL", StringComparison.OrdinalIgnoreCase);
+                bool isPing = type.IndexOf("PING", StringComparison.OrdinalIgnoreCase) >= 0
+                    || side.Equals("PING", StringComparison.OrdinalIgnoreCase);
+                if (!isCancel && !isPing && (!IsFinite(entry) || !IsFinite(stop) || !IsFinite(tp1) || !IsFinite(tp2)))
+                    return null;
+
+                return new LukeSignal
+                {
+                    Id = id,
+                    Type = string.IsNullOrWhiteSpace(type) ? "LUKE_LONG" : type.ToUpperInvariant(),
+                    Side = side.ToUpperInvariant(),
+                    Symbol = string.IsNullOrWhiteSpace(symbol) ? "ES" : symbol,
+                    Entry = entry,
+                    Stop = stop,
+                    Tp1 = tp1,
+                    Tp2 = tp2,
+                    Quantity = Math.Max(1, qty),
+                    CreatedAt = created
+                };
+            }
+
+            public bool IsCancel
+            {
+                get
+                {
+                    return (Type ?? string.Empty).IndexOf("CANCEL", StringComparison.OrdinalIgnoreCase) >= 0
+                        || string.Equals(Side, "CANCEL", StringComparison.OrdinalIgnoreCase);
+                }
+            }
+
+            public bool IsPing
+            {
+                get
+                {
+                    return (Type ?? string.Empty).IndexOf("PING", StringComparison.OrdinalIgnoreCase) >= 0
+                        || string.Equals(Side, "PING", StringComparison.OrdinalIgnoreCase);
+                }
+            }
+
+            private static bool IsFinite(double value)
+            {
+                return !double.IsNaN(value) && !double.IsInfinity(value);
+            }
+
+            private static string ExtractString(string json, string name)
+            {
+                Match match = Regex.Match(json, "\\\"" + Regex.Escape(name) + "\\\"\\s*:\\s*\\\"((?:\\\\.|[^\\\"\\\\])*)\\\"", RegexOptions.IgnoreCase);
+                return match.Success ? Regex.Unescape(match.Groups[1].Value) : string.Empty;
+            }
+
+            private static double ExtractDouble(string json, string name)
+            {
+                Match quoted = Regex.Match(json, "\\\"" + Regex.Escape(name) + "\\\"\\s*:\\s*\\\"([-+]?[0-9]*\\.?[0-9]+)\\\"", RegexOptions.IgnoreCase);
+                Match bare = Regex.Match(json, "\\\"" + Regex.Escape(name) + "\\\"\\s*:\\s*([-+]?[0-9]*\\.?[0-9]+)", RegexOptions.IgnoreCase);
+                Match match = quoted.Success ? quoted : bare;
+                double value;
+                return match.Success && double.TryParse(match.Groups[1].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out value)
+                    ? value
+                    : double.NaN;
+            }
+
+            private static int ExtractInt(string json, string name, int fallback)
+            {
+                double value = ExtractDouble(json, name);
+                return IsFinite(value) ? Math.Max(1, Convert.ToInt32(value)) : fallback;
+            }
+        }
+    }
+}

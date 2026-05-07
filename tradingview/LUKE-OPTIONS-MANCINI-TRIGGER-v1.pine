@@ -1,0 +1,141 @@
+//@version=6
+indicator("Luke Options Mancini Trigger v1", shorttitle="Luke Opt Mancini v1", overlay=true, max_lines_count=120, max_labels_count=100)
+
+// Separate options-purpose indicator. This does not alter Luke Watch flagship.
+// Intended for 1m charts: detects a Mancini failed-breakdown acceptance trigger.
+
+mancini_levels_input = input.string("", "Mancini levels", tooltip="Comma-separated ES levels. Keep this filtered to nearby actionable levels.")
+show_mancini_levels = input.bool(true, "Show Mancini levels")
+show_basic_watch = input.bool(false, "Show basic acceptance watch")
+show_high_confluence = input.bool(true, "Show high-confluence call trigger")
+acceptance_bars = input.int(3, "Acceptance bars", minval=2, maxval=5)
+min_flush_depth_points = input.float(1.0, "Minimum flush depth", minval=0.25, step=0.25)
+high_conf_flush_depth_points = input.float(2.0, "High-conf flush depth", minval=0.25, step=0.25)
+min_prior_tap_groups = input.int(3, "Minimum prior tap groups", minval=0, maxval=50)
+high_conf_tap_groups = input.int(5, "High-conf prior tap groups", minval=0, maxval=100)
+tap_tolerance_points = input.float(0.5, "Tap tolerance", minval=0.0, step=0.25)
+max_flush_window_bars = input.int(45, "Max flush window bars", minval=3, maxval=90)
+super_window_bars = input.int(60, "Same-level repeat window bars", minval=5, maxval=120)
+min_close_above_level_points = input.float(0.25, "Minimum close above level", minval=0.0, step=0.25)
+start_minute_et = input.int(585, "Start minute ET", minval=0, maxval=1439, tooltip="585 = 09:45 ET")
+
+enable_saty_context = input.bool(false, "Enable Saty context text")
+saty_call_trigger = input.float(0.0, "Saty call trigger", minval=0.0, step=0.25)
+saty_put_trigger = input.float(0.0, "Saty put trigger", minval=0.0, step=0.25)
+saty_atr_plus_1 = input.float(0.0, "Saty ATR +1", minval=0.0, step=0.25)
+
+var float[] levels = array.new_float()
+var bool[] was_touching = array.new_bool()
+var int[] tap_groups = array.new_int()
+var int[] last_flush_bar = array.new_int()
+var float[] last_flush_depth = array.new_float()
+var int[] last_signal_bar = array.new_int()
+var int[] repeat_counts = array.new_int()
+var line[] level_lines = array.new_line()
+var label[] signal_labels = array.new_label()
+
+f_add_level(float value) =>
+    if not na(value)
+        bool exists = false
+        if array.size(levels) > 0
+            for i = 0 to array.size(levels) - 1
+                exists := exists or math.abs(array.get(levels, i) - value) <= syminfo.mintick / 2.0
+        if not exists
+            array.push(levels, value)
+            array.push(was_touching, false)
+            array.push(tap_groups, 0)
+            array.push(last_flush_bar, int(na))
+            array.push(last_flush_depth, float(na))
+            array.push(last_signal_bar, int(na))
+            array.push(repeat_counts, 0)
+
+f_parse_levels() =>
+    string[] parts = str.split(mancini_levels_input, ",")
+    if array.size(parts) > 0
+        for i = 0 to array.size(parts) - 1
+            float value = str.tonumber(str.trim(array.get(parts, i)))
+            f_add_level(value)
+
+f_hold_above(float level, int offset_start) =>
+    bool ok = true
+    for hold = 0 to acceptance_bars - 1
+        ok := ok and not na(close[hold + offset_start]) and close[hold + offset_start] >= level + min_close_above_level_points
+    ok
+
+f_saty_text(float entry_price) =>
+    string text = ""
+    if enable_saty_context and saty_call_trigger > 0 and saty_put_trigger > 0
+        text := entry_price >= saty_call_trigger ? "\nSaty: above call" : entry_price <= saty_put_trigger ? "\nSaty: below put" : "\nSaty: chop"
+        if saty_atr_plus_1 > 0 and entry_price >= saty_atr_plus_1 - 2.0
+            text += " / near ATR+1"
+    text
+
+if barstate.isfirst
+    f_parse_levels()
+
+if barstate.islast
+    if array.size(level_lines) > 0
+        for i = 0 to array.size(level_lines) - 1
+            line.delete(array.get(level_lines, i))
+    array.clear(level_lines)
+    if show_mancini_levels and array.size(levels) > 0
+        for i = 0 to array.size(levels) - 1
+            float level = array.get(levels, i)
+            array.push(level_lines, line.new(bar_index - 120, level, bar_index + 1, level, extend=extend.right, color=color.new(color.blue, 15), width=1))
+
+bool any_basic_signal = false
+bool any_high_conf_signal = false
+
+int et_minute = hour(time, "America/New_York") * 60 + minute(time, "America/New_York")
+bool after_start = et_minute >= start_minute_et
+
+if array.size(levels) > 0
+    for i = 0 to array.size(levels) - 1
+        float level = array.get(levels, i)
+        bool touching = low <= level + tap_tolerance_points and high >= level - syminfo.mintick
+        bool prev_touching = array.get(was_touching, i)
+        int taps = array.get(tap_groups, i)
+        if touching and not prev_touching
+            taps += 1
+            array.set(tap_groups, i, taps)
+        array.set(was_touching, i, touching)
+
+        bool flush_now = low <= level - min_flush_depth_points and (high >= level + syminfo.mintick or close[1] >= level or high[1] >= level + syminfo.mintick)
+        if flush_now
+            array.set(last_flush_bar, i, bar_index)
+            array.set(last_flush_depth, i, level - low)
+
+        int flush_bar = array.get(last_flush_bar, i)
+        float flush_depth = array.get(last_flush_depth, i)
+        int bars_since_flush = na(flush_bar) ? na : bar_index - flush_bar
+        bool fresh_flush = not na(bars_since_flush) and bars_since_flush <= max_flush_window_bars
+        bool hold_now = f_hold_above(level, 0)
+        bool hold_prev = f_hold_above(level, 1)
+        bool acceptance_just_completed = barstate.isconfirmed and hold_now and not hold_prev
+        bool basic_signal = acceptance_just_completed and fresh_flush and taps >= min_prior_tap_groups
+        bool high_conf_signal = basic_signal and after_start and flush_depth >= high_conf_flush_depth_points and taps >= high_conf_tap_groups
+
+        int previous_signal_bar = array.get(last_signal_bar, i)
+        int repeats = array.get(repeat_counts, i)
+        if basic_signal
+            repeats := not na(previous_signal_bar) and bar_index - previous_signal_bar <= super_window_bars ? repeats + 1 : 1
+            array.set(repeat_counts, i, repeats)
+            array.set(last_signal_bar, i, bar_index)
+
+        any_basic_signal := any_basic_signal or basic_signal
+        any_high_conf_signal := any_high_conf_signal or high_conf_signal
+
+        bool should_label = high_conf_signal and show_high_confluence or basic_signal and show_basic_watch
+        if should_label
+            float entry_ref = level + math.max(min_close_above_level_points, syminfo.mintick)
+            string tag = high_conf_signal ? "HIGH CONF CALL" : "MANCINI WATCH"
+            string repeat_text = repeats >= 2 ? "\nSUPER x" + str.tostring(repeats) : ""
+            string text = tag + "\nLevel " + str.tostring(level, format.mintick) + " / entry ref " + str.tostring(entry_ref, format.mintick) + "\nFlush " + str.tostring(flush_depth, "#.##") + "pt / taps " + str.tostring(taps) + repeat_text + f_saty_text(entry_ref)
+            color label_color = high_conf_signal ? color.new(color.green, 0) : color.new(color.gray, 15)
+            array.push(signal_labels, label.new(bar_index, low, text, style=label.style_label_up, color=label_color, textcolor=color.white, size=size.small))
+            if array.size(signal_labels) > 60
+                label old = array.shift(signal_labels)
+                label.delete(old)
+
+alertcondition(any_basic_signal, "Mancini acceptance watch", "Mancini acceptance watch fired")
+alertcondition(any_high_conf_signal, "Mancini high-confluence call", "Mancini high-confluence call trigger fired")

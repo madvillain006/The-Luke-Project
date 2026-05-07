@@ -30,7 +30,7 @@
   - full execution plan
   - trade management model
 
-### Sybil via Sienna
+### Sybil via KatBot
 - Role: regime / confluence intelligence lane.
 - Current repo reality: there is no single discrete `sybil` feed in the repo.
 - Current practical source bundle feeding this lane:
@@ -65,13 +65,13 @@
 - Bobby levels are too broad or stale for intraday use.
 - Bobby image interpretation is low confidence.
 
-### Sybil / Sienna affects only:
+### Sybil / KatBot affects only:
 - selectivity
 - pressure environment
 - confidence to press or stand down
 - context scoring
 
-Sybil / Sienna does not currently decide:
+Sybil / KatBot does not currently decide:
 - raw entry trigger
 - stop placement by itself
 - direct adds
@@ -79,7 +79,7 @@ Sybil / Sienna does not currently decide:
 
 ## Decision Influence Matrix
 
-| Decision | Ximes | Bobby | Sybil/Sienna |
+| Decision | Ximes | Bobby | Sybil/KatBot |
 |---|---|---|---|
 | Entry trigger | primary | support only | no |
 | Level quality | primary | primary support | support only |
@@ -91,7 +91,7 @@ Sybil / Sienna does not currently decide:
 
 ## Current Repo Gaps
 
-- `agent-08-sienna.js` treats all export files generically; it is not yet a clean Sybil-only lane.
-- `trading/signals.js` currently consumes recent `ximes` and `bobby` insights only; Sybil/Sienna context is not wired into 02B execution.
+- Old standalone agent routing has been removed; Sybil-style context now belongs under KatBot Stage 2.
+- `trading/signals.js` currently consumes recent `ximes` and `bobby` insights only; Sybil/KatBot context is not fully wired into 02B execution.
 - Bobby is still mostly text-extracted from screenshots, not yet a dedicated heatmap interpreter.
 - Ximes/Bobby/Sybil records are not yet normalized into one structured research store.

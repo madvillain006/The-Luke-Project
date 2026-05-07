@@ -59,9 +59,11 @@ describe('trading window read-only surface', () => {
       .map(match => match[1].replace(/<[^>]+>/g, '').trim().toLowerCase())
       .filter(Boolean);
 
-    expect(buttonLabels).toEqual(['positive replay', 'negative replay', 'staged add replay', 'tight chart', 'mid chart', 'all levels', 'refresh']);
+    expect(buttonLabels).toEqual(['positive replay', 'negative replay', 'staged add replay', 'tight chart', 'mid chart', 'all levels', 'refresh', 'copy webhook url', 'refresh tunnel url']);
     expect(html).toContain("method: 'GET'");
-    expect(html).not.toMatch(/method:\s*['"]POST['"]/i);
+    const postRoutes = Array.from(html.matchAll(/fetch\(\s*['"]([^'"]+)['"][\s\S]{0,90}?method:\s*['"]POST['"]/gi))
+      .map(match => match[1]);
+    expect(postRoutes).toEqual(['/api/ninjatrader/tunnel-watchdog/refresh']);
     expect(buttonLabels.some(label => /execute|broker/.test(label))).toBe(false);
   });
 

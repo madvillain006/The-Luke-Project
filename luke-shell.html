@@ -212,6 +212,89 @@
       justify-content: flex-end;
     }
 
+    .bridge-strip {
+      display: grid;
+      grid-template-columns: minmax(260px, 1.4fr) minmax(280px, 2fr) auto;
+      gap: 10px;
+      align-items: center;
+      min-height: 74px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--bg-shell);
+      box-shadow: var(--shadow-soft);
+      cursor: pointer;
+    }
+
+    .bridge-strip.good { border-color: rgba(64, 196, 134, 0.54); }
+    .bridge-strip.warn { border-color: rgba(240, 185, 74, 0.62); }
+    .bridge-strip.bad { border-color: rgba(239, 106, 101, 0.66); }
+
+    .bridge-title-row,
+    .bridge-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .bridge-title {
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .bridge-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 3px 7px;
+      color: var(--text-muted);
+      background: var(--panel);
+      font-size: 11px;
+    }
+
+    .bridge-chip.good { color: #40c486; border-color: rgba(64, 196, 134, 0.45); }
+    .bridge-chip.warn { color: #f0b94a; border-color: rgba(240, 185, 74, 0.45); }
+    .bridge-chip.bad { color: #ef6a65; border-color: rgba(239, 106, 101, 0.45); }
+
+    .bridge-url-shell {
+      color: #58a6ff;
+      font-size: 12px;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+      cursor: pointer;
+    }
+
+    .bridge-url-shell:focus-visible {
+      outline: 2px solid rgba(88, 166, 255, 0.62);
+      outline-offset: 2px;
+      border-radius: var(--radius-sm);
+    }
+
+    .bridge-meta-row {
+      margin-top: 5px;
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    .bridge-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 6px;
+      cursor: default;
+    }
+
+    .bridge-message {
+      grid-column: 1 / -1;
+      min-height: 16px;
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
     .panel-action {
       min-height: 24px;
       border: 1px solid var(--border);
@@ -763,6 +846,14 @@
         justify-content: stretch;
       }
 
+      .bridge-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .bridge-actions {
+        justify-content: flex-start;
+      }
+
       .module-grid {
         grid-template-columns: repeat(3, minmax(160px, 1fr));
         justify-content: stretch;
@@ -869,6 +960,26 @@
       <div class="topbar-center">LUKE</div>
       <div class="topbar-right">Status 0</div>
     </header>
+
+    <section class="bridge-strip warn" id="shell-bridge-card" aria-label="Ninja bridge watchdog">
+      <div>
+        <div class="bridge-title-row">
+          <span class="bridge-title">Ninja Bridge Watchdog</span>
+          <span class="bridge-chip warn" id="shell-bridge-health">Checking</span>
+        </div>
+        <div class="bridge-meta-row">
+          <span id="shell-bridge-reason">Loading public tunnel status</span>
+          <span id="shell-bridge-last-check">last check n/a</span>
+          <span id="shell-bridge-file">bridge file n/a</span>
+        </div>
+      </div>
+      <div class="bridge-url-shell" id="shell-bridge-url" role="button" tabindex="0" title="Copy TradingView webhook URL">No webhook URL loaded.</div>
+      <div class="bridge-actions">
+        <button class="panel-action" id="shell-bridge-copy" type="button">COPY URL</button>
+        <button class="panel-action" id="shell-bridge-refresh" type="button">RE-CHECK</button>
+      </div>
+      <div class="bridge-message" id="shell-bridge-message">TradingView alert webhook must exactly match this URL. Quick-tunnel auto-rotation is disabled.</div>
+    </section>
 
     <section class="hero-grid" aria-label="Luke command surface">
       <a class="hero-card" id="trading-launch" data-route="/trading" href="/trading" aria-label="Open Trading analysis">
@@ -1081,8 +1192,8 @@
       if (el) el.textContent = value == null || value === '' ? '--' : String(value);
     }
 
-    async function getJson(url) {
-      const res = await fetch(url, { cache: 'no-store' });
+    async function getJson(url, options = {}) {
+      const res = await fetch(url, { cache: 'no-store', ...options });
       if (!res.ok) throw new Error(`${url} ${res.status}`);
       return res.json();
     }
@@ -1097,6 +1208,110 @@
       const hours = Math.floor(total / 3600);
       const minutes = Math.floor((total % 3600) / 60);
       return `${hours}h ${minutes}m`;
+    }
+
+    function formatAge(ms) {
+      const n = Number(ms);
+      if (!Number.isFinite(n) || n < 0) return 'n/a';
+      if (n < 1000) return 'now';
+      const seconds = Math.floor(n / 1000);
+      if (seconds < 60) return `${seconds}s ago`;
+      const minutes = Math.floor(seconds / 60);
+      if (minutes < 60) return `${minutes}m ago`;
+      const hours = Math.floor(minutes / 60);
+      return `${hours}h ${minutes % 60}m ago`;
+    }
+
+    function bridgeClass(status) {
+      if (!status || status.state === 'unhealthy') return 'bad';
+      if (status.state === 'stale') return 'warn';
+      return 'good';
+    }
+
+    function setBridgeMessage(text, klass = '') {
+      const el = $('shell-bridge-message');
+      if (!el) return;
+      el.textContent = text || '';
+      el.style.color = klass === 'bad' ? '#ef6a65' : klass === 'good' ? '#40c486' : 'var(--text-muted)';
+    }
+
+    async function copyText(text) {
+      if (!text) return false;
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+      const area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.left = '-1000px';
+      document.body.appendChild(area);
+      area.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(area);
+      return ok;
+    }
+
+    function renderBridgeStatus(status) {
+      window.__lukeBridgeStatus = status || null;
+      const klass = bridgeClass(status);
+      const card = $('shell-bridge-card');
+      const health = $('shell-bridge-health');
+      if (card) card.className = `bridge-strip ${klass}`;
+      if (health) {
+        health.className = `bridge-chip ${klass}`;
+        health.textContent = status?.state ? status.state.toUpperCase() : 'UNKNOWN';
+      }
+      setText('shell-bridge-url', status?.webhook_url || 'No webhook URL loaded.');
+      setText('shell-bridge-reason', status?.reason ? `${status.reason} / ${status.route || 'unknown route'}` : 'No watchdog status');
+      setText('shell-bridge-last-check', status?.checked_at ? `checked ${formatAge(status.status_age_ms)}` : 'last check n/a');
+      setText('shell-bridge-file', status?.bridge_file_idle ? 'bridge file idle' : 'bridge file pending');
+      const refreshButton = $('shell-bridge-refresh');
+      if (refreshButton) refreshButton.textContent = status?.state === 'stale' || status?.state === 'unhealthy' ? 'REFRESH URL' : 'RE-CHECK';
+    }
+
+    async function copyBridgeUrl() {
+      const url = window.__lukeBridgeStatus?.webhook_url || '';
+      if (!url) {
+        setBridgeMessage('No webhook URL available yet.', 'bad');
+        return;
+      }
+      try {
+        const copied = await copyText(url);
+        setBridgeMessage(copied ? 'Webhook URL copied.' : 'Copy failed; select the URL manually.', copied ? 'good' : 'bad');
+      } catch (err) {
+        setBridgeMessage(`Copy failed: ${err.message}`, 'bad');
+      }
+    }
+
+    async function refreshBridgeStatus() {
+      const button = $('shell-bridge-refresh');
+      if (button) button.disabled = true;
+      setBridgeMessage('Checking local Luke, public tunnel, and watchdog status...');
+      try {
+        const status = await getJson('/api/ninjatrader/tunnel-watchdog/refresh', { method: 'POST' });
+        renderBridgeStatus(status);
+        if (!status?.webhook_url) {
+          setBridgeMessage(status?.reason || 'No webhook URL returned.', 'bad');
+          return;
+        }
+        const copied = await copyText(status.webhook_url).catch(() => false);
+        setBridgeMessage(copied ? 'Current webhook URL copied.' : 'Current webhook URL is shown above.', copied ? 'good' : '');
+      } catch (err) {
+        setBridgeMessage(`Bridge check failed: ${err.message}`, 'bad');
+      } finally {
+        if (button) button.disabled = false;
+      }
+    }
+
+    async function refreshBridgeReadOnly() {
+      try {
+        renderBridgeStatus(await getJson('/api/ninjatrader/tunnel-watchdog'));
+      } catch (err) {
+        renderBridgeStatus({ state: 'unhealthy', reason: err.message, bridge_file_idle: false });
+        setBridgeMessage('Watchdog status endpoint is unavailable.', 'bad');
+      }
     }
 
     function weatherEmoji(weather) {
@@ -1257,6 +1472,7 @@
     }
 
     async function refresh() {
+      refreshBridgeReadOnly();
       try {
         const [brain, daily, telemetry] = await Promise.all([
           getJson('/agent/brain/status'),
@@ -1325,6 +1541,27 @@
     $('system-close')?.addEventListener('click', closeSystemPanel);
     $('daily-close')?.addEventListener('click', closeDailyPanel);
     $('daily-expand')?.addEventListener('click', toggleDailyExpanded);
+    $('shell-bridge-copy')?.addEventListener('click', copyBridgeUrl);
+    $('shell-bridge-refresh')?.addEventListener('click', refreshBridgeStatus);
+    $('shell-bridge-card')?.addEventListener('click', event => {
+      if (event.target.closest('button')) return;
+      const status = window.__lukeBridgeStatus;
+      if (status?.state === 'stale' || status?.state === 'unhealthy') {
+        refreshBridgeStatus();
+      } else {
+        copyBridgeUrl();
+      }
+    });
+    $('shell-bridge-url')?.addEventListener('click', event => {
+      event.stopPropagation();
+      copyBridgeUrl();
+    });
+    $('shell-bridge-url')?.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        copyBridgeUrl();
+      }
+    });
     document.querySelectorAll('[data-shell-view]').forEach(button => {
       button.addEventListener('click', () => setShellView(button.getAttribute('data-shell-view')));
     });

@@ -18,6 +18,8 @@
     "prove:live-level-state": "node scripts/prove-live-level-state.js",
     "prove:operator-v2": "node scripts/prove-operator-v2.js",
     "prove:katbot-plain": "node scripts/prove-katbot-plain.js",
+    "prove:katbot-live": "node scripts/prove-katbot-live-discord.js",
+    "kat:stage2": "node scripts/kat-stage2.js",
     "prove:replay-level-state": "node scripts/prove-replay-level-state.js",
     "prove:trading-window": "node scripts/prove-trading-window.js",
     "prove:virtual-operator-dashboard": "node scripts/prove-virtual-operator-dashboard.js",
@@ -47,6 +49,8 @@
     "session:operator-v2": "node scripts/run-operator-session.js",
     "showcase:trading-workday": "node scripts/run-virtual-trading-workday-showcase.js",
     "tradingview:export-levels": "node scripts/export-tradingview-levels.js",
+    "ninja:bridge:doctor": "node scripts/check-ninjatrader-bridge.js",
+    "ninja:tunnel:watchdog": "node agents/agent-15-ninja-tunnel-watchdog.js --once",
     "test": "vitest run",
     "test:watch": "vitest"
   },

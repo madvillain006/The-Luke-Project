@@ -28,21 +28,26 @@ describe('Richy/Dubz paste routing regressions', () => {
     expect(result.type).toBeNull();
   });
 
-  it('does not route legacy Ximes text or option-contract text to /alert', () => {
-    const ximes = detectPasteIntent('[2:34 PM] ximestrades ES LONG 5880', false);
+  it('does not route legacy analyst text or option-contract text to /alert', () => {
+    const legacy = detectPasteIntent('[2:34 PM] oldanalyst ES LONG 5880', false);
     const option = detectPasteIntent('SPY 588C avg 1.25', false);
-    expect(ximes.command).toBeNull();
+    expect(legacy.command).toBeNull();
     expect(option.command).toBeNull();
   });
 
   it('does not classify conversational questions mentioning Saty as partial Saty input', () => {
-    const result = classifyPaste('based on the loaded Saty, Mancini, Dubz, and Bobby context, what is possible today and what should I avoid?');
+    const result = classifyPaste('based on the loaded Saty, Mancini, Dubz, and Katbot heatmap context, what is possible today and what should I avoid?');
     expect(result.type).toBeNull();
   });
 
-  it('does not route conversational Bobby context questions to /heatmap', () => {
-    const result = detectPasteIntent('based on loaded Saty, Mancini, Dubz, and Bobby context, what is possible today?', false);
+  it('does not route conversational Katbot heatmap context questions to /heatmap', () => {
+    const result = detectPasteIntent('based on loaded Saty, Mancini, Dubz, and Katbot heatmap context, what is possible today?', false);
     expect(result.command).toBeNull();
+  });
+
+  it('lets KatBot analyst option-contract pastes fall through to Stage 2 instead of heatmap ingestion', () => {
+    const result = classifyPaste('[6:14 AM] KapriK0rn3, : buying spx 0DTE 7300c @ 1.25 stop .80 target 2.50');
+    expect(result.type).toBeNull();
   });
 });
 

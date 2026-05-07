@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Luke Existing Shell Radar Mock</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #000000;
+      --panel: #151210;
+      --panel-2: #211d19;
+      --hero: #39332b;
+      --line: #3a2f27;
+      --line-strong: #6d5b4c;
+      --text: #f7f3eb;
+      --muted: #c8b8a6;
+      --dim: #9b8e80;
+      --warn: #f1c75b;
+      --bad: #ff746d;
+      --good: #65d58c;
+      --blue: #55a6ff;
+      --font: "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      letter-spacing: 0;
+      font-size: 16px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .app {
+      padding: 12px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: #070605;
+      padding: 7px 10px;
+      font-weight: 800;
+    }
+
+    .topbar-center {
+      justify-self: center;
+    }
+
+    .topbar-right {
+      justify-self: end;
+    }
+
+    .bridge-strip {
+      display: grid;
+      grid-template-columns: minmax(420px, 0.8fr) minmax(360px, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      border: 1px solid rgba(255, 116, 109, 0.75);
+      border-radius: 8px;
+      background: #080605;
+      padding: 14px;
+    }
+
+    .bridge-title {
+      font-weight: 900;
+      margin-right: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      padding: 4px 8px;
+      min-height: 26px;
+      font-size: 13px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .chip.bad { color: var(--bad); border-color: rgba(255, 116, 109, 0.72); }
+    .chip.warn { color: var(--warn); border-color: rgba(241, 199, 91, 0.72); }
+    .chip.good { color: var(--good); border-color: rgba(101, 213, 140, 0.72); }
+    .chip.blue { color: var(--blue); border-color: rgba(85, 166, 255, 0.72); }
+
+    .bridge-meta {
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .bridge-url {
+      color: var(--blue);
+      overflow-wrap: anywhere;
+      text-align: center;
+    }
+
+    .bridge-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .panel-action,
+    .filter-button,
+    .view-button {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--panel);
+      color: var(--text);
+      min-height: 34px;
+      padding: 7px 12px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .hero-card {
+      min-height: 288px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--hero);
+      display: grid;
+      grid-template-columns: minmax(360px, 0.62fr) minmax(420px, 1fr);
+      overflow: hidden;
+    }
+
+    .hero-copy {
+      padding: 20px;
+      display: grid;
+      align-content: space-between;
+      gap: 18px;
+    }
+
+    .hero-title {
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .hero-body {
+      color: var(--muted);
+      line-height: 1.45;
+      max-width: 42ch;
+      font-weight: 700;
+    }
+
+    .rig {
+      display: grid;
+      place-items: center;
+    }
+
+    .rig-box {
+      position: relative;
+      width: 210px;
+      height: 180px;
+      border: 8px solid #1a1918;
+      background: #242321;
+      box-shadow: inset 0 0 0 1px #55504a;
+    }
+
+    .rig-box::before {
+      content: "ES";
+      position: absolute;
+      left: 50%;
+      top: 54%;
+      transform: translate(-50%, -50%);
+      font-size: 36px;
+      color: #bcb8b2;
+    }
+
+    .rig-box::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 52px;
+      width: 74px;
+      height: 84px;
+      transform: translateX(-50%);
+      border-radius: 50% 50% 4px 4px;
+      background: #171614;
+      z-index: -1;
+    }
+
+    .filter-row {
+      display: grid;
+      grid-template-columns: minmax(520px, 0.9fr) repeat(4, minmax(180px, 0.36fr));
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .system-button {
+      display: grid;
+      grid-template-columns: minmax(220px, 0.85fr) minmax(240px, 1.15fr);
+      gap: 20px;
+      align-items: start;
+      min-height: 160px;
+      padding: 18px;
+      text-align: left;
+    }
+
+    .intro-title {
+      display: block;
+      font-size: 20px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .intro-copy {
+      display: block;
+      line-height: 1.25;
+      font-weight: 900;
+    }
+
+    .status-copy {
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .filter-button:not(.system-button) {
+      display: grid;
+      place-items: center;
+      min-height: 160px;
+      font-size: 20px;
+      font-weight: 900;
+      background: #161310;
+    }
+
+    .radar-filter {
+      border-color: rgba(85, 166, 255, 0.6);
+      color: #d9ecff;
+    }
+
+    .view-switcher {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 2px;
+    }
+
+    .view-button {
+      font-size: 20px;
+      color: var(--muted);
+    }
+
+    .view-button.is-active {
+      color: var(--text);
+      border-color: #b4a4ff;
+    }
+
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(180px, 1fr));
+      gap: 12px;
+      align-items: start;
+    }
+
+    .module-link {
+      display: grid;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .module-art {
+      height: 130px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #151210;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .toggle-icon {
+      width: 52px;
+      height: 20px;
+      border-radius: 999px;
+      background: #f5f5f5;
+      position: relative;
+    }
+
+    .toggle-icon::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #000;
+    }
+
+    .daily-stack {
+      text-align: center;
+      font-weight: 900;
+      line-height: 1.05;
+      display: grid;
+      gap: 3px;
+    }
+
+    .daily-stack .big {
+      font-size: 22px;
+    }
+
+    .text-globe {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: #f7f3eb;
+      font-size: 11px;
+      transform: rotate(-12deg);
+    }
+
+    .small-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 24px);
+      gap: 9px;
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .device {
+      width: 86px;
+      height: 112px;
+      border: 5px solid #242424;
+      border-radius: 20px;
+      transform: rotate(-20deg);
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .radar-art {
+      position: relative;
+      width: 114px;
+      height: 114px;
+      border: 1px solid rgba(85, 166, 255, 0.55);
+      border-radius: 50%;
+    }
+
+    .radar-art::before,
+    .radar-art::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(85, 166, 255, 0.42);
+      border-radius: 50%;
+    }
+
+    .radar-art::before {
+      inset: 18px;
+    }
+
+    .radar-art::after {
+      left: 50%;
+      top: 50%;
+      width: 1px;
+      height: 52px;
+      background: var(--blue);
+      transform-origin: top;
+      transform: rotate(44deg);
+      border: 0;
+      border-radius: 0;
+    }
+
+    .module-caption {
+      display: grid;
+      gap: 4px;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .module-caption span:first-child {
+      font-size: 16px;
+    }
+
+    .module-meta {
+      color: var(--muted);
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .radar-panel {
+      border: 1px solid rgba(85, 166, 255, 0.5);
+      border-radius: 8px;
+      background: #080706;
+      overflow: hidden;
+      display: grid;
+      grid-column: 1 / -1;
+    }
+
+    .radar-panel-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: #14120f;
+      border-bottom: 1px solid var(--line);
+      font-weight: 900;
+    }
+
+    .radar-panel-body {
+      display: grid;
+      grid-template-columns: minmax(300px, 0.75fr) minmax(420px, 1fr) minmax(280px, 0.7fr);
+      gap: 12px;
+      padding: 12px;
+    }
+
+    .radar-card {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #11100e;
+      padding: 12px;
+      min-width: 0;
+    }
+
+    .radar-card-title {
+      font-weight: 900;
+      text-transform: uppercase;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .radar-lines {
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .radar-line strong {
+      color: var(--text);
+    }
+
+    .radar-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 1200px) {
+      .filter-row,
+      .module-grid,
+      .radar-panel-body,
+      .hero-card,
+      .bridge-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div>In memory of my best friend</div>
+      <div class="topbar-center">LUKE</div>
+      <div class="topbar-right">Status 0</div>
+    </header>
+
+    <section class="bridge-strip" aria-label="Ninja bridge watchdog">
+      <div>
+        <div><span class="bridge-title">Ninja Bridge Watchdog</span><span class="chip bad">UNHEALTHY</span></div>
+        <div class="bridge-meta">no_public_tunnel_status / public_tunnel checked 34s ago bridge file idle</div>
+        <div class="bridge-meta">TradingView alert webhook must exactly match this URL. Quick-tunnel auto-rotation is disabled.</div>
+      </div>
+      <div class="bridge-url">https://chem-dry-donna-moscow.trycloudflare.com/webhook/luke-long</div>
+      <div class="bridge-actions">
+        <button class="panel-action">COPY URL</button>
+        <button class="panel-action">REFRESH URL</button>
+      </div>
+    </section>
+
+    <section class="hero-grid" aria-label="Luke command surface">
+      <a class="hero-card" href="#">
+        <div class="hero-copy">
+          <div class="hero-title">Trading (Analysis)</div>
+          <div class="hero-body">
+            <div>Market microstructure analysis, order flow tracking, and strategy recommendations.</div>
+            <br>
+            <div>Human-gated. Read-only. No autonomous execution controls.</div>
+          </div>
+        </div>
+        <div class="rig"><div class="rig-box"></div></div>
+      </a>
+    </section>
+
+    <nav class="filter-row" aria-label="Luke categories">
+      <a class="filter-button system-button" href="#">
+        <span>
+          <span class="intro-title">Luke System</span>
+          <span class="intro-copy">A local operations dashboard for trading analysis, daily planning, research, automation business work, and developer stack routing.</span>
+        </span>
+        <span class="status-copy">
+          <span>&gt; Buffalo weather: <strong>50F and cloudy, feels 47F, 40-53F, rain 50%</strong></span>
+          <span>&gt; Brain: <strong>5 agents / 0 reports</strong></span>
+          <span>&gt; Radar: <strong>23 fresh / 2 review</strong></span>
+          <span>&gt; Blockers: <strong>developer-stack, daily, brain</strong></span>
+          <span>&gt; Runtime: <strong>0.11GB RSS / 0h 2m</strong></span>
+        </span>
+      </a>
+      <a class="filter-button" href="#">Show All</a>
+      <a class="filter-button" href="#">Brain Status</a>
+      <a class="filter-button" href="#">Agents (A)</a>
+      <a class="filter-button radar-filter" href="#">Radar</a>
+    </nav>
+
+    <div class="view-switcher">
+      <button class="view-button is-active">Operations</button>
+      <button class="view-button">Focus</button>
+      <button class="view-button">Missions</button>
+    </div>
+
+    <section class="module-grid" aria-label="Luke agent modules">
+      <a class="module-link" href="#">
+        <div class="module-art"><div class="toggle-icon"></div></div>
+        <div class="module-caption"><span>C 000</span><span>Brain Core</span></div>
+      </a>
+
+      <a class="module-link" href="#">
+        <div class="module-art">
+          <div class="daily-stack">
+            <span class="big">Thursday, May 7,</span>
+            <span class="big">2026</span>
+            <span>5:24 PM</span>
+            <span>CLD 50F cloudy</span>
+            <span class="module-meta">TN + NC weather inside</span>
+            <span class="module-meta">0 calendar events this week</span>
+          </div>
+        </div>
+        <div class="module-caption"><span>D 003</span><span>Daily Brief</span><span class="module-meta">Calendar, jobs, and next actions</span></div>
+      </a>
+
+      <a class="module-link" href="#">
+        <div class="module-art"><div class="radar-art"></div></div>
+        <div class="module-caption"><span>I 004</span><span>Radar</span><span class="module-meta">Inbox, synthesis, review</span></div>
+      </a>
+
+      <a class="module-link" href="#">
+        <div class="module-art"><div class="text-globe">AI OPS<br>AI OPS<br>AI OPS<br>AI OPS</div></div>
+        <div class="module-caption"><span>C 015</span><span>AI Automation Business</span></div>
+      </a>
+
+      <a class="module-link" href="#">
+        <div class="module-art"><div class="small-grid"><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span></div></div>
+        <div class="module-caption"><span>C 014</span><span>Developer Stack</span></div>
+      </a>
+
+      <a class="module-link" href="#">
+        <div class="module-art"><div class="device">RCH</div></div>
+        <div class="module-caption"><span>M 028</span><span>Research Leads</span><span class="module-meta">History Career fork</span></div>
+      </a>
+
+      <section class="radar-panel" aria-label="Radar embedded panel mock">
+        <div class="radar-panel-top">
+          <span>Radar / Inbox + Synthesis</span>
+          <div class="radar-actions">
+            <button class="panel-action">CAPTURE</button>
+            <button class="panel-action">FULL</button>
+            <button class="panel-action">BACK</button>
+          </div>
+        </div>
+        <div class="radar-panel-body">
+          <div class="radar-card">
+            <div class="radar-card-title">Catch Anything</div>
+            <div class="radar-lines">
+              <div>Paste a link, Sybil dump, article excerpt, screenshot note, voice transcript, or reminder.</div>
+              <div><span class="chip blue">append-only</span> <span class="chip good">provenance kept</span></div>
+            </div>
+          </div>
+          <div class="radar-card">
+            <div class="radar-card-title">Morning Intel</div>
+            <div class="radar-lines">
+              <div class="radar-line"><strong>1.</strong> NVDA capex thesis needs review. Fresh support plus one contradiction.</div>
+              <div class="radar-line"><strong>2.</strong> Energy rotation showing up in multiple sources.</div>
+              <div class="radar-line"><strong>3.</strong> URI remains thin-source. Keep low priority.</div>
+            </div>
+          </div>
+          <div class="radar-card">
+            <div class="radar-card-title">Needs You</div>
+            <div class="radar-lines">
+              <div><span class="chip warn">2 review</span> <span class="chip blue">23 fresh</span></div>
+              <div>Details, hashes, source health, and parser logs stay behind click-through.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+</body>
+</html>

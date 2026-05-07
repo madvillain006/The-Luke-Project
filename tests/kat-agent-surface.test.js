@@ -25,17 +25,19 @@ describe('Kat agent live surface', () => {
 
   it('exposes a welcome/help surface that matches current capabilities', () => {
     const source = fs.readFileSync(path.join(ROOT, 'agents', 'agent-14-kat.js'), 'utf8');
-    expect(source).toContain('function getKatWelcomeMessage()');
-    expect(source).toContain("Hey everyone. I'm Kat.");
-    expect(source).toContain('`!kat levels SPX` - top analyst-marked levels this week.');
-    expect(source).toContain('`!kat bias` - SPX directional bias across monitored analysts, last 18 hours.');
-    expect(source).toContain('`!kat heatmap SPX` - most recent heatmap image for that ticker with timestamp.');
-    expect(source).toContain('`!kat recent SPX` - latest chart-backed analyst posts for SPX/ES/SPY.');
-    expect(source).toContain('`!kat equity UPS` - latest chart-backed analyst posts for that equity ticker.');
-    expect(source).toContain('Level Magnet alerts run during market hours');
-    expect(source).toContain('Owner/debug commands are blocked from public Phase 1 replies unless an owner user id is configured.');
+    const { getKatWelcomeMessage } = require('../lib/kat-welcome-message');
+    const help = getKatWelcomeMessage();
+
+    expect(source).toContain('../lib/kat-welcome-message');
+    expect(help).toContain('Katbot is live in trade-floor.');
+    expect(help).toContain('`!bias spx` - 18h SPX bias if enough fresh signals exist.');
+    expect(help).toContain('`!levels spx` - confirmed SPX levels from repeated analyst mentions.');
+    expect(help).toContain('`!heatmap spx` / `!queue spx heatmap` - latest saved SPX heatmap.');
+    expect(help).toContain('`!recent spx` - recent SPX chart posts and images.');
+    expect(help).toContain('`!equity ups` - recent chart posts and images for a ticker. Lowercase is fine.');
+    expect(help).toContain('To get her to yap: use long forms like `!kat recent spx`, `!kat heatmap spx`, `!kat equity ups`.');
     expect(source).toContain("router.get('/welcome'");
-    expect(source).toContain('No autonomous execution');
+    expect(source).not.toContain('Luke bridge: source, analyst, channel');
   });
 
   it('suppresses Discord pings and pushes confluence into Luke with level context', () => {
@@ -93,12 +95,56 @@ describe('Kat agent live surface', () => {
     expect(source).toContain("sub === 'equity'");
     expect(source).toContain("if (canonical !== 'SPX' && !chartBacked) continue;");
     expect(source).toContain('KAT_COMMAND_COOLDOWN_MS');
-    expect(source).toContain('katCommandCooldownRemaining(message, cooldownMs, nowMs)');
+    expect(source).toContain('katCommandCooldownRemaining(message, cooldownMs, nowMs, katCommandContent)');
     expect(source).toContain('KAT_OWNER_ONLY_SUBCOMMANDS');
     expect(source).toContain('isKatOwnerCommandAllowed(message, config)');
+    expect(source).toContain('normalizeKatCommandContent(message.content)');
+    expect(source).toContain("'!bias': 'bias'");
+    expect(source).toContain("'!queue': 'queue'");
+    expect(source).toContain('Kat bias: no call.');
+    expect(source).toContain('Use `!recent \' + canonical + \'` for source posts');
+    expect(source).toContain('queueHeatmapTicker(args)');
   });
 
-  it('formats trader-facing evidence with direct message links and attached files, not CDN URLs in content', () => {
+  it('accepts trader-friendly public Kat command shortcuts', () => {
+    const katRouter = require('../agents/agent-14-kat');
+
+    expect(katRouter._test.normalizeKatCommandContent('!bias')).toBe('!kat bias');
+    expect(katRouter._test.normalizeKatCommandContent('!bias SPX')).toBe('!kat bias SPX');
+    expect(katRouter._test.normalizeKatCommandContent('!levels SPX')).toBe('!kat levels SPX');
+    expect(katRouter._test.normalizeKatCommandContent('!equity ups')).toBe('!kat equity ups');
+    expect(katRouter._test.normalizeKatCommandContent('!Kat heatmap SPX')).toBe('!Kat heatmap SPX');
+    expect(katRouter._test.normalizeKatCommandContent('!queue spx heatmap')).toBe('!kat queue spx heatmap');
+    expect(katRouter._test.queueHeatmapTicker(['!kat', 'queue', 'spx', 'heatmap'])).toBe('SPX');
+    expect(katRouter._test.queueHeatmapTicker(['!kat', 'queue', 'heatmap', 'qqq'])).toBe('SPX');
+    expect(katRouter._test.normalizeKatCommandContent('!katapult bias')).toBeNull();
+    expect(katRouter._test.katEntryTextMatchesTicker({ content: '$ups lower-case setup' }, 'UPS')).toBe(true);
+    expect(katRouter._test.katEntryTextMatchesTicker({ content: 'ups 1D lower-case setup' }, 'ups')).toBe(true);
+  });
+
+  it('reports latest capture by timestamp instead of last appended backfill row', () => {
+    const katRouter = require('../agents/agent-14-kat');
+
+    const latest = katRouter._test.latestCaptureTimestampFromLines([
+      JSON.stringify({ ts: '2026-05-07T14:30:00.000Z', message_id: 'live' }),
+      JSON.stringify({ ts: '2026-03-31T16:07:14.386Z', message_id: 'historical-backfill' }),
+    ]);
+
+    expect(latest).toBe('2026-05-07T14:30:00.000Z');
+  });
+
+  it('does not let stale false ES parses count as SPX evidence', () => {
+    const katRouter = require('../agents/agent-14-kat');
+
+    expect(katRouter._test.katSignalMatchesTicker({ ticker: 'ES', raw: '<:KC_yes:1129057964158898256> $LAC' }, 'SPX')).toBe(false);
+    expect(katRouter._test.katSignalMatchesTicker({ ticker: 'ES', raw: 'support continues to hold' }, 'SPX')).toBe(false);
+    expect(katRouter._test.katSignalMatchesTicker({ ticker: 'ES', raw: '$es_f 1d 200ma retest' }, 'SPX')).toBe(true);
+    expect(katRouter._test.katSignalMatchesTicker({ ticker: 'SPX', raw: 'spx 15min bull flag' }, 'spx')).toBe(true);
+    expect(katRouter._test.katSignalMatchesTicker({ ticker: 'ups', raw: '$ups lower-case setup' }, 'UPS')).toBe(true);
+    expect(katRouter._test.katSignalSourceMessageId({ message_id: 'raw-message:vision:attachment' })).toBe('raw-message');
+  });
+
+  it('formats trader-facing evidence with image embeds and no channel or image-link text', async () => {
     const katRouter = require('../agents/agent-14-kat');
     const evidence = [{
       entry: {
@@ -114,43 +160,115 @@ describe('Kat agent live surface', () => {
     }];
 
     const lines = katRouter._test.katEvidenceLines(evidence).join('\n');
-    const payload = katRouter._test.buildKatEvidencePayload('UPS evidence\n' + lines, evidence, 1);
+    const payload = await katRouter._test.buildKatEvidencePayload('UPS evidence\n' + lines, evidence, 1);
 
-    expect(payload.content).toContain('https://discord.com/channels/guild1/channel1/message1');
-    expect(payload.content).toContain('image: attached below');
+    expect(payload.content).not.toContain('https://discord.com/channels/guild1/channel1/message1');
+    expect(payload.content).not.toContain('trade-floor');
     expect(payload.content).not.toContain('cdn.discordapp.com');
-    expect(payload.files).toEqual([{ attachment: 'https://cdn.discordapp.com/attachments/ups.png', name: 'ups.png' }]);
+    expect(payload.content).not.toContain('image:');
+    expect(payload.files).toBeUndefined();
+    expect(payload.embeds).toHaveLength(1);
+    expect(payload.embeds[0].image.url).toBe('https://cdn.discordapp.com/attachments/ups.png');
   });
 
-  it('keeps Discord payloads under the message limit and preserves image files through safe mentions', () => {
+  it('formats Level Magnet posts without Discord link walls or static source boilerplate', () => {
+    const katRouter = require('../agents/agent-14-kat');
+
+    const output = katRouter._test.formatKatLevelMagnetMessage({
+      ticker: 'SPX',
+      level: 5600,
+      analysts: new Set(['analyst1', 'analyst2']),
+      biases: new Set(['BULLISH']),
+      count: 2,
+      lastTs: '2026-05-05T13:00:00.000Z',
+      examples: [{
+        analyst: 'analyst1',
+        ts: '2026-05-05T13:00:00.000Z',
+        link: 'https://discord.com/channels/guild/channel/message',
+        text: '$SPX 5600 support',
+      }],
+    });
+
+    expect(output).toContain('Level Magnet');
+    expect(output).toContain('Source:');
+    expect(output).not.toContain('https://discord.com/channels');
+    expect(output).not.toContain('Elevated Charts analyst posts via Kat');
+  });
+
+  it('keeps Discord payloads under the message limit and preserves embeds through safe mentions', () => {
     const katRouter = require('../agents/agent-14-kat');
     const longText = 'x'.repeat(2500);
 
     const trimmed = katRouter._test.trimKatDiscordContent(longText);
     const safePayload = katRouter._test.withSafeAllowedMentions({
       content: trimmed,
-      files: [{ attachment: 'https://cdn.discordapp.com/attachments/chart.png', name: 'chart.png' }],
+      embeds: [{ image: { url: 'https://cdn.discordapp.com/attachments/chart.png' } }],
     });
 
     expect(trimmed.length).toBeLessThanOrEqual(1900);
     expect(trimmed).toContain('trimmed');
     expect(safePayload.allowedMentions).toEqual({ parse: [], repliedUser: false });
-    expect(safePayload.files).toHaveLength(1);
+    expect(safePayload.embeds).toHaveLength(1);
   });
 
-  it('rate-limits public Kat commands by guild, channel, and user', () => {
+  it('rate-limits only exact duplicate public Kat commands by guild, channel, and user', () => {
     const katRouter = require('../agents/agent-14-kat');
     katRouter._test.resetKatCommandCooldownsForTest();
     const suffix = String(Date.now());
     const message = { guildId: 'guild-' + suffix, channelId: 'chan1', author: { id: 'user1' } };
     const otherUser = { guildId: 'guild-' + suffix, channelId: 'chan1', author: { id: 'user2' } };
 
-    expect(katRouter._test.katCommandCooldownRemaining(message, 10000, 1000)).toBe(0);
-    katRouter._test.recordKatCommandCooldown(message, 1000);
+    expect(katRouter._test.katCommandCooldownRemaining(message, 10000, 1000, '!kat levels spx')).toBe(0);
+    katRouter._test.recordKatCommandCooldown(message, 1000, '!kat levels spx');
 
-    expect(katRouter._test.katCommandCooldownRemaining(message, 10000, 5000)).toBe(6000);
-    expect(katRouter._test.katCommandCooldownRemaining(otherUser, 10000, 5000)).toBe(0);
-    expect(katRouter._test.katCommandCooldownKey(message)).toBe('guild-' + suffix + ':chan1:user1');
+    expect(katRouter._test.katCommandCooldownRemaining(message, 10000, 5000, '!kat levels spx')).toBe(6000);
+    expect(katRouter._test.katCommandCooldownRemaining(message, 10000, 5000, '!kat recent spx')).toBe(0);
+    expect(katRouter._test.katCommandCooldownRemaining(otherUser, 10000, 5000, '!kat levels spx')).toBe(0);
+    expect(katRouter._test.katCommandCooldownKey(message, '!kat levels SPX')).toBe('guild-' + suffix + ':chan1:user1:!kat levels spx');
+  });
+
+  it('makes Kat command channel gating testable and diagnosable', () => {
+    const katRouter = require('../agents/agent-14-kat');
+    const config = { command_channels: ['chan1', 'trade-floor'] };
+    const byId = { channelId: 'chan1', channel: { name: 'other' } };
+    const byName = { channelId: 'chan2', channel: { name: 'trade-floor' } };
+    const blocked = { channelId: 'chan3', channel: { name: 'general' } };
+
+    expect(katRouter._test.katCommandChannelAllowed(byId, config)).toBe(true);
+    expect(katRouter._test.katCommandChannelAllowed(byName, config)).toBe(true);
+    expect(katRouter._test.katCommandChannelAllowed(blocked, config)).toBe(false);
+    expect(katRouter._test.katCommandChannelDebug(blocked, config)).toEqual({
+      channel_id: 'chan3',
+      channel_name: 'general',
+      configured_command_channels: ['chan1', 'trade-floor'],
+    });
+  });
+
+  it('keeps live image vision disabled until explicitly enabled after free-AI proof', () => {
+    const katRouter = require('../agents/agent-14-kat');
+    const original = process.env.KATBOT_ENABLE_LIVE_VISION;
+    const originalLukeVision = process.env.LUKE_ALLOW_ANTHROPIC_VISION;
+
+    try {
+      delete process.env.KATBOT_ENABLE_LIVE_VISION;
+      delete process.env.LUKE_ALLOW_ANTHROPIC_VISION;
+      expect(katRouter._test.katLiveVisionAllowed({ vision_enabled: true })).toBe(false);
+      expect(katRouter._test.katLiveVisionPolicy({ vision_enabled: true })).toEqual(expect.objectContaining({
+        enabled: false,
+        env_required: 'KATBOT_ENABLE_LIVE_VISION=1 and LUKE_ALLOW_ANTHROPIC_VISION=1',
+      }));
+
+      process.env.KATBOT_ENABLE_LIVE_VISION = '1';
+      expect(katRouter._test.katLiveVisionAllowed({ vision_enabled: true })).toBe(false);
+      process.env.LUKE_ALLOW_ANTHROPIC_VISION = '1';
+      expect(katRouter._test.katLiveVisionAllowed({ vision_enabled: true })).toBe(true);
+      expect(katRouter._test.katLiveVisionAllowed({ vision_enabled: false })).toBe(false);
+    } finally {
+      if (original === undefined) delete process.env.KATBOT_ENABLE_LIVE_VISION;
+      else process.env.KATBOT_ENABLE_LIVE_VISION = original;
+      if (originalLukeVision === undefined) delete process.env.LUKE_ALLOW_ANTHROPIC_VISION;
+      else process.env.LUKE_ALLOW_ANTHROPIC_VISION = originalLukeVision;
+    }
   });
 
   it('keeps owner/debug command paths out of public phase 1 replies', () => {
@@ -161,7 +279,7 @@ describe('Kat agent live surface', () => {
 
     expect(katRouter._test.isKatOwnerCommandAllowed(message, config)).toBe(false);
     expect(katRouter._test.isKatOwnerCommandAllowed(ownerMessage, config)).toBe(true);
-    expect(katRouter._test.getKatOwnerOnlyMessage()).toContain('owner-only during Phase 1');
-    expect(katRouter._test.getKatOwnerOnlyMessage()).toContain('No internal status, watchlist, options profile, or Luke-side data is exposed.');
+    expect(katRouter._test.getKatOwnerOnlyMessage()).toContain('owner-only right now');
+    expect(katRouter._test.getKatOwnerOnlyMessage()).toContain('Public commands: `!bias`, `!levels SPX`');
   });
 });

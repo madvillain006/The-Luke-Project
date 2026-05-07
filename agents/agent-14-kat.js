@@ -3,6 +3,13 @@ const express  = require('express');
 const fs       = require('fs');
 const path     = require('path');
 const router   = express.Router();
+const { getKatWelcomeMessage } = require('../lib/kat-welcome-message');
+const {
+  HEATMAP_REQUESTS_CHANNEL_ID,
+  heatmapChannelMatchesRequestedTicker,
+  isHeatmapChannelEntry,
+  isHeatmapishEntry,
+} = require('../lib/kat-heatmap-selection');
 
 //  Paths 
 const KAT_DIR       = path.join(__dirname, '../data/kat');
@@ -69,12 +76,29 @@ function rawFeedCount() {
   } catch (e) { return 0; }
 }
 
+function latestCaptureTimestampFromLines(lines) {
+  let latestMs = -Infinity;
+  let latestTs = null;
+  for (const line of lines || []) {
+    try {
+      const row = JSON.parse(line);
+      const ts = row && row.ts;
+      const ms = new Date(ts || 0).getTime();
+      if (Number.isFinite(ms) && ms > latestMs) {
+        latestMs = ms;
+        latestTs = ts;
+      }
+    } catch (e) {}
+  }
+  return latestTs;
+}
+
 function lastCapture() {
   if (!fs.existsSync(RAW_FEED)) return null;
   try {
     const lines = fs.readFileSync(RAW_FEED, 'utf8').split('\n').filter(l => l.trim());
     if (!lines.length) return null;
-    return JSON.parse(lines[lines.length - 1]).ts;
+    return latestCaptureTimestampFromLines(lines);
   } catch (e) { return null; }
 }
 
@@ -113,6 +137,28 @@ function tickerMatches(targetTicker, candidateTicker) {
     new Set(['QQQ', 'NQ', 'MNQ', 'NDX']),
   ];
   return aliasSets.some(set => set.has(target) && set.has(candidate));
+}
+
+const KAT_SPX_TEXT_RE = /(^|[^A-Z0-9])[$#]?(SPX|SPY|SPXW|ES|MES)(?:_F)?([^A-Z0-9]|$)/i;
+
+function katSignalSourceMessageId(signal) {
+  const id = String((signal && (signal.source_message_id || signal.message_id)) || '');
+  return id.replace(/:vision:.+$/, '');
+}
+
+function katSignalMatchesTicker(signal, targetTicker) {
+  if (!signal || !tickerMatches(targetTicker, signal.ticker)) return false;
+  const canonical = publicKatTicker(targetTicker);
+  if (canonical !== 'SPX') return true;
+
+  const raw = String(signal.raw || '');
+  if (!raw.trim()) return true;
+  return KAT_SPX_TEXT_RE.test(raw);
+}
+
+function rawEntryForKatSignal(rawMap, signal) {
+  if (!rawMap || !signal) return null;
+  return rawMap.get(signal.message_id) || rawMap.get(katSignalSourceMessageId(signal)) || null;
 }
 
 function loadRawFeedMap() {
@@ -163,6 +209,8 @@ const KAT_NON_EQUITY_TICKERS = new Set([
 ]);
 const KAT_DISCORD_CONTENT_LIMIT = 1900;
 const KAT_COMMAND_COOLDOWN_MS = 10 * 1000;
+const KAT_HEATMAP_MAX_AGE_MS = 18 * 60 * 60 * 1000;
+const KAT_RECENT_FRESH_MS = 18 * 60 * 60 * 1000;
 const KAT_OWNER_ONLY_SUBCOMMANDS = new Set(['status', 'summary', 'watchlist', 'tickers', 'options', 'option']);
 const _lastKatCommand = {};
 
@@ -179,7 +227,7 @@ function katEntryTextMatchesTicker(entry, ticker) {
   if (!normalized) return false;
   const content = String(entry && entry.content || '').toUpperCase();
   if (normalized === 'SPX') {
-    return /\b(SPX|SPY|ES_F|#ES_F|ESM|ES1|SPXW)\b|\$SPX|\$SPY/i.test(content);
+    return /\b(SPX|SPY|SPXW|ES|MES|ES_F|#ES_F|MES_F|#MES_F|ESM|ES1)\b|\$SPX|\$SPY|\$ES|\$MES/i.test(content);
   }
   return new RegExp('(^|[^A-Z0-9])\\$?' + normalized + '([^A-Z0-9]|$)', 'i').test(content);
 }
@@ -209,6 +257,35 @@ function katDiscordMessageLink(entry) {
   return 'https://discord.com/channels/' + entry.guild_id + '/' + entry.channel_id + '/' + entry.message_id;
 }
 
+function cleanKatChannelName(channelName) {
+  const text = String(channelName || 'unknown').trim();
+  return text.replace(/^.*[|︱]\s*/, '').replace(/^#+/, '') || 'unknown';
+}
+
+const KAT_SOURCE_FOOTERS = Object.freeze([
+  'Source: attached images and timestamps.',
+  'Source: attached charts and timestamps.',
+  'Source: analyst images with timestamps.',
+  'Source: timestamps plus attached images.',
+  'Source: George Washington.',
+  'Source: that cat in the alley.',
+  'Source: the guy sweeping up after close.',
+  'Source: a suspiciously confident sandwich board.',
+]);
+
+function hashKatSourceSeed(seed) {
+  const text = String(seed || Date.now());
+  let hash = 0;
+  for (let i = 0; i < text.length; i++) {
+    hash = ((hash << 5) - hash + text.charCodeAt(i)) | 0;
+  }
+  return Math.abs(hash);
+}
+
+function katSourceFooter(seed) {
+  return KAT_SOURCE_FOOTERS[hashKatSourceSeed(seed) % KAT_SOURCE_FOOTERS.length];
+}
+
 function findKatChartEvidence(ticker, limit) {
   const canonical = publicKatTicker(ticker);
   if (!canonical || !fs.existsSync(RAW_FEED)) return [];
@@ -220,6 +297,8 @@ function findKatChartEvidence(ticker, limit) {
       const entry = JSON.parse(line);
       const images = katImageAttachments(entry);
       if (!images.length) continue;
+      const tsMs = new Date(entry.ts || 0).getTime();
+      if (!Number.isFinite(tsMs) || Date.now() - tsMs > KAT_RECENT_FRESH_MS) continue;
       if (!katEntryTextMatchesTicker(entry, canonical)) continue;
       if (seen.has(entry.message_id)) continue;
       seen.add(entry.message_id);
@@ -235,67 +314,70 @@ function katEvidenceLines(evidence) {
   if (!evidence || !evidence.length) return [];
   return evidence.map((item, index) => {
     const entry = item.entry;
-    const link = katDiscordMessageLink(entry);
-    const imageNames = (item.images || [])
-      .map(image => image.filename || 'chart image')
-      .slice(0, 3)
-      .join(', ');
     return (index + 1) + '. ' +
       (entry.username || 'unknown') + ' - ' +
-      formatKatEt(entry.ts) + ' - ' +
-      (entry.channel_name || 'unknown channel') +
-      (link ? ' - ' + link : '') + '\n' +
-      '   "' + compactKatText(entry.content, 150) + '"\n' +
-      '   image: attached below' + (imageNames ? ' (' + imageNames + ')' : '');
+      formatKatEt(entry.ts) + '\n' +
+      '   "' + compactKatText(entry.content, 150) + '"';
   });
 }
 
-function katEvidenceFiles(evidence, limit) {
-  const files = [];
+function katImageEmbed(image) {
+  if (!image || !image.url) return null;
+  return {
+    image: { url: image.url }
+  };
+}
+
+function katEvidenceEmbeds(evidence, limit) {
+  const embeds = [];
   for (const item of evidence || []) {
     for (const image of item.images || []) {
-      if (!image.url) continue;
-      files.push({
-        attachment: image.url,
-        name: image.filename || 'kat-chart.png'
-      });
-      if (files.length >= (limit || 4)) return files;
+      const embed = katImageEmbed(image);
+      if (embed) embeds.push(embed);
+      if (embeds.length >= (limit || 4)) return embeds;
     }
   }
-  return files;
+  return embeds;
 }
 
 function trimKatDiscordContent(content) {
   const text = String(content || '');
   if (text.length <= KAT_DISCORD_CONTENT_LIMIT) return text;
-  return text.slice(0, KAT_DISCORD_CONTENT_LIMIT - 47).trimEnd() +
-    '\n...trimmed. Open source message links above.';
+  const suffix = '\n...trimmed. Run a narrower Kat command for more.';
+  return text.slice(0, KAT_DISCORD_CONTENT_LIMIT - suffix.length).trimEnd() + suffix;
 }
 
-function buildKatEvidencePayload(content, evidence, fileLimit) {
-  return {
-    content: trimKatDiscordContent(content),
-    files: katEvidenceFiles(evidence, fileLimit || 4)
+async function buildKatEvidencePayload(content, evidence, fileLimit, sourceSeed) {
+  const embeds = katEvidenceEmbeds(evidence, fileLimit || 4);
+  const payload = {
+    content: trimKatDiscordContent(content + '\n' + katSourceFooter(sourceSeed || content))
   };
+  if (embeds.length) payload.embeds = embeds;
+  return payload;
 }
 
-function katCommandCooldownKey(message) {
+function katCommandCooldownKey(message, commandContent) {
+  const commandKey = String(commandContent || '')
+    .trim()
+    .replace(/\s+/g, ' ')
+    .toLowerCase() || 'unknown-command';
   return [
     message && message.guildId ? message.guildId : 'dm',
     message && message.channelId ? message.channelId : 'unknown-channel',
-    message && message.author && message.author.id ? message.author.id : 'unknown-user'
+    message && message.author && message.author.id ? message.author.id : 'unknown-user',
+    commandKey
   ].join(':');
 }
 
-function katCommandCooldownRemaining(message, cooldownMs, nowMs) {
-  const key = katCommandCooldownKey(message);
+function katCommandCooldownRemaining(message, cooldownMs, nowMs, commandContent) {
+  const key = katCommandCooldownKey(message, commandContent);
   const last = _lastKatCommand[key] || 0;
   if (!last) return 0;
   return Math.max(0, last + cooldownMs - nowMs);
 }
 
-function recordKatCommandCooldown(message, nowMs) {
-  _lastKatCommand[katCommandCooldownKey(message)] = nowMs;
+function recordKatCommandCooldown(message, nowMs, commandContent) {
+  _lastKatCommand[katCommandCooldownKey(message, commandContent)] = nowMs;
 }
 
 function resetKatCommandCooldownsForTest() {
@@ -313,13 +395,12 @@ function isKatOwnerCommandAllowed(message, config) {
 
 function getKatOwnerOnlyMessage() {
   return [
-    'That Kat command is owner-only during Phase 1.',
-    'Public commands are: `!kat`, `!kat levels SPX`, `!kat bias`, `!kat heatmap SPX`, `!kat recent SPX`, and `!kat equity TICKER`.',
-    '_Phase 1 only replies with sourced analyst evidence. No internal status, watchlist, options profile, or Luke-side data is exposed._'
+    'That command is owner-only right now.',
+    'Public commands: `!bias`, `!levels SPX`, `!heatmap SPX`, `!recent SPX`, `!equity TICKER`, `!kat`.'
   ].join('\n');
 }
 
-function getChartEvidencePayload(ticker) {
+async function getChartEvidencePayload(ticker) {
   const canonical = publicKatTicker(ticker);
   if (!canonical) {
     return {
@@ -330,17 +411,23 @@ function getChartEvidencePayload(ticker) {
   const evidence = findKatChartEvidence(canonical, 4);
   if (!evidence.length) {
     return {
-      content: 'No chart-backed analyst posts found for ' + canonical + '.\n' +
-        '_Kat will not infer equity context without an attached analyst chart._'
+      content: 'No fresh chart-backed analyst posts found for ' + canonical + ' in the last 18 hours.\n' +
+        'Kat will not embed stale or expired chart images.'
     };
   }
 
+  const latestMs = Math.max(...evidence.map(item => new Date(item.entry && item.entry.ts || 0).getTime())
+    .filter(Number.isFinite));
+  const heading = Number.isFinite(latestMs) && Date.now() - latestMs > KAT_RECENT_FRESH_MS
+    ? 'No fresh chart-backed ' + canonical + ' posts in the last 18 hours.\nLatest captured chart-backed posts:\n'
+    : 'Kat recent: ' + canonical + ' chart-backed posts\n';
+
   return buildKatEvidencePayload(
-    ' **' + canonical + ' chart-backed analyst posts**\n' +
-      katEvidenceLines(evidence).join('\n') + '\n' +
-      '_Images are attached below from captured analyst posts. No prediction - source evidence only._',
+    heading +
+      katEvidenceLines(evidence).join('\n'),
     evidence,
-    4
+    4,
+    canonical + ':' + evidence.map(item => item.entry && item.entry.message_id).join(',')
   );
 }
 
@@ -510,6 +597,55 @@ function broadcastKatCapture(entry, signal) {
 
 const SAFE_ALLOWED_MENTIONS = Object.freeze({ parse: [], repliedUser: false });
 const KAT_QUEUE_SUBCOMMANDS = new Set(['queue', 'watch', 'track', 'monitor', 'add']);
+const KAT_COMMAND_ALIASES = Object.freeze({
+  '!level': 'levels',
+  '!levels': 'levels',
+  '!bias': 'bias',
+  '!heatmap': 'heatmap',
+  '!recent': 'recent',
+  '!chart': 'recent',
+  '!charts': 'recent',
+  '!source': 'source',
+  '!sources': 'sources',
+  '!equity': 'equity',
+  '!queue': 'queue',
+  '!watch': 'watch',
+  '!track': 'track',
+  '!monitor': 'monitor',
+  '!add': 'add',
+  '!option': 'options',
+  '!options': 'options',
+});
+
+function normalizeKatCommandContent(content) {
+  const trimmed = String(content || '').trim();
+  if (!trimmed) return null;
+
+  const args = trimmed.split(/\s+/);
+  const command = String(args[0] || '').toLowerCase();
+  if (command === '!kat') return trimmed;
+
+  const aliasSubcommand = KAT_COMMAND_ALIASES[command];
+  if (!aliasSubcommand) return null;
+
+  return ['!kat', aliasSubcommand, ...args.slice(1)].join(' ');
+}
+
+function publicKatTickerFromTokens(tokens, fallback) {
+  for (const token of tokens || []) {
+    const candidate = publicKatTicker(token);
+    if (candidate) return candidate;
+  }
+  return fallback || 'SPX';
+}
+
+function queueHeatmapTicker(args) {
+  const tokens = (args || []).slice(2).map(token => String(token || '').trim()).filter(Boolean);
+  if (!tokens.length) return null;
+  const hasHeatmap = tokens.some(token => /^(heatmap|heat-map|heat_map|map)$/i.test(token));
+  if (!hasHeatmap) return null;
+  return publicKatTickerFromTokens(tokens, 'SPX');
+}
 
 function envFlagEnabled(name) {
   return /^(1|true|yes|on)$/i.test(String(process.env[name] || ''));
@@ -521,6 +657,63 @@ function discordOutputAllowed(kind, config) {
   if (kind === 'reply') return cfg.discord_responses_enabled === true;
   if (kind === 'post') return cfg.discord_posts_enabled === true;
   return false;
+}
+
+function katLiveVisionAllowed(config) {
+  return Boolean(config && config.vision_enabled !== false && envFlagEnabled('KATBOT_ENABLE_LIVE_VISION') && envFlagEnabled('LUKE_ALLOW_ANTHROPIC_VISION'));
+}
+
+function katLiveVisionPolicy(config) {
+  return {
+    enabled: katLiveVisionAllowed(config),
+    config_vision_enabled: config ? config.vision_enabled !== false : false,
+    env_required: 'KATBOT_ENABLE_LIVE_VISION=1 and LUKE_ALLOW_ANTHROPIC_VISION=1',
+    policy: 'Live image/OCR is default-off and must remain last until free AI is proven reliable for Luke and KatBot.',
+  };
+}
+
+function katFreeAiFallbackStatus() {
+  try {
+    const fallback = require('./agent-12-fallback');
+    const cfg = fallback.loadConfig ? fallback.loadConfig() : {};
+    return {
+      gemini_configured: Boolean(cfg.gemini_key),
+      gemini_models: cfg.gemini_models || [],
+      groq_configured: Boolean(cfg.groq_key),
+      groq_model: cfg.groq_model || null,
+      deepseek_configured: Boolean(cfg.deepseek_key),
+      deepseek_model: cfg.deepseek_model || null,
+      ollama_configured: Boolean(cfg.ollama_configured),
+      provider_order: cfg.provider_order || [],
+      active: typeof fallback.isActive === 'function' ? fallback.isActive() : false,
+      allowed_text_features: fallback.ALLOWED_FEATURES || [],
+      blocked_features: fallback.BLOCKED_FEATURES || [],
+      kat_live_vision_feature: 'blocked/default-off until explicitly authorized last',
+    };
+  } catch (error) {
+    return {
+      gemini_configured: Boolean(process.env.GEMINI_API_KEY),
+      groq_configured: Boolean(process.env.GROQ_API_KEY),
+      ollama_configured: Boolean(process.env.OLLAMA_HOST),
+      active: false,
+      error: error.message,
+      kat_live_vision_feature: 'blocked/default-off until explicitly authorized last',
+    };
+  }
+}
+
+function katCommandChannelAllowed(message, config) {
+  const cmdChannels = (config && config.command_channels) || [];
+  const channelName = message && message.channel && message.channel.name ? message.channel.name : null;
+  return cmdChannels.includes(message.channelId) || (channelName && cmdChannels.includes(channelName));
+}
+
+function katCommandChannelDebug(message, config) {
+  return {
+    channel_id: message && message.channelId ? message.channelId : null,
+    channel_name: message && message.channel && message.channel.name ? message.channel.name : null,
+    configured_command_channels: (config && config.command_channels) || [],
+  };
 }
 
 function withSafeAllowedMentions(payload) {
@@ -561,7 +754,7 @@ async function safeReply(message, payload) {
         files: [],
         content: trimKatDiscordContent(
           (safePayload.content || '') +
-          '\n\n_Image attachment failed; use the source message links above._'
+          '\n\n_Image upload failed. Data is still captured; retry the command in a minute._'
         )
       });
       return message.reply(fallbackPayload);
@@ -596,7 +789,7 @@ async function safeSend(channel, payload) {
         files: [],
         content: trimKatDiscordContent(
           (safePayload.content || '') +
-          '\n\n_Image attachment failed; use the source message links above._'
+          '\n\n_Image upload failed. Data is still captured; retry the command in a minute._'
         )
       });
       return channel.send(fallbackPayload);
@@ -611,30 +804,6 @@ function mentionsKatbot(message) {
   if (message.mentions && message.mentions.users && message.mentions.users.has(botUser.id)) return true;
   const content = message.content || '';
   return content.includes('@' + botUser.username) || content.includes('@' + botUser.tag);
-}
-
-function getKatWelcomeMessage() {
-  return [
-    "Hey everyone. I'm Kat.",
-    '',
-    'I read analyst posts from monitored channels and surface patterns nobody has time to track manually - specifically SPX level confluence and chart-backed equity posts from analysts.',
-    '',
-    'How to use me:',
-    '`!kat levels SPX` - top analyst-marked levels this week. Requires 2+ analysts or 3+ independent mentions to qualify. No guesses.',
-    '`!kat bias` - SPX directional bias across monitored analysts, last 18 hours.',
-    '`!kat heatmap SPX` - most recent heatmap image for that ticker with timestamp. Staleness warning if over 4 hours old.',
-    '`!kat recent SPX` - latest chart-backed analyst posts for SPX/ES/SPY.',
-    '`!kat equity UPS` - latest chart-backed analyst posts for that equity ticker. Images are attached when available.',
-    '`!kat` - shows this list.',
-    '',
-    "What I don't do: predict, generate opinions, or make anything up. Everything I post is sourced from captured analyst posts with timestamps and image evidence attached where available.",
-    '',
-    'Level Magnet alerts run during market hours when 2+ analysts independently mark the same SPX level within 48 hours. Equity alerts stay chart-backed.',
-    '',
-    'Owner/debug commands are blocked from public Phase 1 replies unless an owner user id is configured.',
-    'Luke bridge: source, analyst, channel, message id, ticker lane, bias, levels, and image evidence stay attached.',
-    '_Human-gated confluence only. No autonomous execution._'
-  ].join('\n');
 }
 
 //  Discord bot 
@@ -662,23 +831,24 @@ if (process.env.KAT_BOT_TOKEN) {
       const config = loadConfig();
       if (!config.enabled) return;
 
-      // !kat command  any user, in command_channels
-      if (message.content.trim().startsWith('!kat')) {
-        const cmdChannels = config.command_channels || [];
-        if (cmdChannels.includes(message.channelId) || cmdChannels.includes(message.channel.name)) {
+      // Public Kat commands: !kat plus trader-friendly shortcuts like !bias.
+      const katCommandContent = normalizeKatCommandContent(message.content);
+      if (katCommandContent) {
+        if (katCommandChannelAllowed(message, config)) {
           const cooldownMs = Number.isFinite(Number(config.command_cooldown_ms))
             ? Math.max(0, Number(config.command_cooldown_ms))
             : KAT_COMMAND_COOLDOWN_MS;
           const nowMs = Date.now();
-          const remainingMs = katCommandCooldownRemaining(message, cooldownMs, nowMs);
+          const remainingMs = katCommandCooldownRemaining(message, cooldownMs, nowMs, katCommandContent);
           if (remainingMs > 0) {
             console.log('[kat] Command cooldown suppressing duplicate request for ' + Math.ceil(remainingMs / 1000) + 's');
             return;
           }
-          recordKatCommandCooldown(message, nowMs);
-          await handleKatCommand(message);
+          recordKatCommandCooldown(message, nowMs, katCommandContent);
+          await handleKatCommand(message, katCommandContent);
           return;
         }
+        console.log('[kat] Command ignored outside command channel: ' + JSON.stringify(katCommandChannelDebug(message, config)));
       }
 
       if (!isMonitoredUser(message.author.id, config)) return;
@@ -726,7 +896,7 @@ if (process.env.KAT_BOT_TOKEN) {
 
       // Real-time vision  fires on new live captures with images
       // Market hours only. Fire-and-forget. Enriches active session.
-      if (hasAttachments && entry.attachments.some(att => att && att.url) && config.vision_enabled !== false) {
+      if (hasAttachments && entry.attachments.some(att => att && att.url) && katLiveVisionAllowed(config)) {
         const { isMarketOpen } = require('../lib/market-hours');
         if (isMarketOpen().open) {
           setImmediate(() => processLiveVision(entry, signal));
@@ -789,7 +959,7 @@ if (process.env.KAT_BOT_TOKEN) {
           if (hasImg) broadcastKatCapture(entry, null);
           console.log('[kat] Edit captured (no signal): ' + entry.username + '  ' + entry.content.slice(0,60));
         }
-        if (hasImg && entry.attachments.some(att => att && att.url) && config.vision_enabled !== false) {
+        if (hasImg && entry.attachments.some(att => att && att.url) && katLiveVisionAllowed(config)) {
           const { isMarketOpen } = require('../lib/market-hours');
           if (isMarketOpen().open) {
             setImmediate(() => processLiveVision(entry, signal));
@@ -802,6 +972,12 @@ if (process.env.KAT_BOT_TOKEN) {
 
     discordClient.on('error', (err) => {
       console.error('[kat] Discord client error:', err.message);
+    });
+    discordClient.on('shardError', (err) => {
+      console.error('[kat] Discord shard error:', err.message);
+    });
+    discordClient.on('shardDisconnect', (event) => {
+      console.error('[kat] Discord shard disconnected:', event && event.code ? event.code : 'unknown');
     });
 
     discordClient.login(process.env.KAT_BOT_TOKEN).catch(err => {
@@ -1383,12 +1559,9 @@ function getTopLevels(ticker) {
       };
     }
 
-    const evidence = findKatChartEvidence(canonical, 3);
     if (!fs.existsSync(PROCESSED)) {
       return {
-        content: 'No signal data yet. Check back soon.' +
-          (evidence.length ? '\n\nRecent chart evidence:\n' + katEvidenceLines(evidence).join('\n') : ''),
-        files: katEvidenceFiles(evidence, 3)
+        content: 'No signal data yet. Check back soon.'
       };
     }
 
@@ -1404,22 +1577,24 @@ function getTopLevels(ticker) {
         const sig = JSON.parse(line);
         if (!sig.ts || !sig.ticker) continue;
         if (new Date(sig.ts).getTime() < cutoff) continue;
-        if (!tickerMatches(canonical, sig.ticker)) continue;
+        if (!katSignalMatchesTicker(sig, canonical)) continue;
         if (!sig.levels || sig.levels.length === 0) continue;
         for (const level of sig.levels) {
           const bucket = Math.round(level / 5) * 5;
           if (!levelMap[bucket]) {
-            levelMap[bucket] = { count: 0, analysts: new Set(), biases: new Set(), examples: [] };
+            levelMap[bucket] = { count: 0, analysts: new Set(), biases: new Set(), examples: [], sources: new Set() };
           }
+          const sourceId = katSignalSourceMessageId(sig) || sig.ts + ':' + sig.analyst;
+          if (levelMap[bucket].sources.has(sourceId)) continue;
+          levelMap[bucket].sources.add(sourceId);
           levelMap[bucket].count++;
           if (sig.analyst) levelMap[bucket].analysts.add(sig.analyst);
           if (sig.bias)    levelMap[bucket].biases.add(sig.bias);
           if (levelMap[bucket].examples.length < 2) {
-            const rawEntry = rawMap.get(sig.message_id);
+            const rawEntry = rawEntryForKatSignal(rawMap, sig);
             levelMap[bucket].examples.push({
               analyst: sig.analyst || (rawEntry && rawEntry.username) || 'unknown',
-              ts: sig.ts,
-              link: katDiscordMessageLink(rawEntry)
+              ts: sig.ts
             });
           }
         }
@@ -1436,9 +1611,8 @@ function getTopLevels(ticker) {
       return {
         content: trimKatDiscordContent('No confirmed confluence levels for ' + canonical +
           ' in the last 7 days.\n' +
-          '_Levels need 2+ analysts or 3+ mentions to qualify. No guesses._' +
-          (evidence.length ? '\n\nRecent chart-backed source posts:\n' + katEvidenceLines(evidence).join('\n') : '')),
-        files: katEvidenceFiles(evidence, 3)
+          'Levels need 2+ analysts or 3+ mentions to qualify. No guesses.\n' +
+          'Use `!recent ' + canonical + '` for chart-backed source posts.')
       };
     }
 
@@ -1452,20 +1626,19 @@ function getTopLevels(ticker) {
         ' (' + tag + ')' +
         (data.examples && data.examples.length
           ? '\n   sources: ' + data.examples.map(example =>
-            example.analyst + ' ' + formatKatEt(example.ts) +
-            (example.link ? ' ' + example.link : '')
+            example.analyst + ' ' + formatKatEt(example.ts)
           ).join('; ')
           : '');
     });
 
-    return buildKatEvidencePayload(
-      ' **' + canonical + ' levels  last 7 days**\n' +
+    return {
+      content: trimKatDiscordContent(
+      canonical + ' levels - last 7 days\n' +
         rows.join('\n') + '\n' +
-        '_Source: Elevated Charts analyst posts. 2+ analysts or 3+ mentions required._' +
-        (evidence.length ? '\n\nRecent chart-backed source posts:\n' + katEvidenceLines(evidence).join('\n') : ''),
-      evidence,
-      3
-    );
+        'Rule: 2+ analysts or 3+ independent mentions.\n' +
+        'Use `!recent ' + canonical + '` for chart-backed source posts.'
+      )
+    };
   } catch (e) {
     console.error('[kat] getTopLevels error:', e.message);
     return { content: 'Error reading level data. Try again shortly.' };
@@ -1475,7 +1648,6 @@ function getTopLevels(ticker) {
 function getBiasReport(ticker) {
   try {
     const canonical = publicKatTicker(ticker || 'SPX') || 'SPX';
-    const evidence = findKatChartEvidence(canonical, 3);
     if (!fs.existsSync(PROCESSED)) return { content: 'No signal data yet.' };
 
     const EIGHTEEN_HRS = 18 * 60 * 60 * 1000;
@@ -1493,7 +1665,7 @@ function getBiasReport(ticker) {
         const sig = JSON.parse(line);
         if (!sig.ts) continue;
         if (new Date(sig.ts).getTime() < cutoff) continue;
-        if (!tickerMatches(canonical, sig.ticker)) continue;
+        if (!katSignalMatchesTicker(sig, canonical)) continue;
         if (!['CHART_ANALYSIS','DIRECTIONAL','LEVEL_WATCH'].includes(sig.signal_type)) continue;
         if (sig.bias === 'BULLISH') {
           bullish++;
@@ -1513,10 +1685,9 @@ function getBiasReport(ticker) {
     // Anti-hallucination: minimum 3 signals
     if (total < 3) {
       return {
-        content: trimKatDiscordContent('Not enough ' + canonical + ' signal data in the last 18 hours.\n' +
-          '_Need at least 3 signals. Current: ' + total + '._' +
-          (evidence.length ? '\n\nRecent chart-backed source posts:\n' + katEvidenceLines(evidence).join('\n') : '')),
-        files: katEvidenceFiles(evidence, 3)
+        content: 'Kat bias: no call.\n' +
+          canonical + ' signals last 18h: `' + total + '/3` required.\n' +
+          'Use `!recent ' + canonical + '` for source posts or `!levels ' + canonical + '` for confirmed levels.'
       };
     }
 
@@ -1526,17 +1697,17 @@ function getBiasReport(ticker) {
       ? Math.round((Math.max(bullish, bearish) / (bullish + bearish)) * 100)
       : 50;
 
-    return buildKatEvidencePayload(
+    return {
+      content: trimKatDiscordContent(
       ' **Elevated Charts  ' + canonical + ' Last 18h Regime**\n' +
       'Collective bias: **' + dominant + '** (' + ratio + '%)\n' +
       'Bullish: ' + bullish + ' signals from ' + bullAnalysts.size + ' analyst(s)\n' +
       'Bearish: ' + bearish + ' signals from ' + bearAnalysts.size + ' analyst(s)\n' +
       'Neutral/context: ' + neutral + '\n' +
-      '_Based on ' + total + ' ' + canonical + ' signals. Not a prediction  synthesis only._' +
-      (evidence.length ? '\n\nRecent chart-backed source posts:\n' + katEvidenceLines(evidence).join('\n') : ''),
-      evidence,
-      3
-    );
+      '_Based on ' + total + ' ' + canonical + ' signals. Not a prediction - synthesis only._\n' +
+      'Use `!recent ' + canonical + '` for the source posts.'
+      )
+    };
   } catch (e) {
     console.error('[kat] getBiasReport error:', e.message);
     return { content: 'Error reading bias data.' };
@@ -1545,6 +1716,7 @@ function getBiasReport(ticker) {
 
 async function getHeatmap(ticker) {
   try {
+    const canonical = publicKatTicker(ticker || 'SPX') || 'SPX';
     const config = loadConfig();
     if (config.heatmap_detection === false) return { content: 'Kat heatmap lookup is disabled in config.' };
     if (!fs.existsSync(RAW_FEED)) return { content: 'No heatmap data yet.' };
@@ -1556,7 +1728,9 @@ async function getHeatmap(ticker) {
       for (const line of fs.readFileSync(PROCESSED, 'utf8').split('\n').filter(l => l.trim())) {
         try {
           const sig = JSON.parse(line);
-          if (sig && sig.has_image && sig.message_id && tickerMatches(ticker, sig.ticker)) processedMatches.add(sig.message_id);
+          if (sig && sig.has_image && sig.message_id && katSignalMatchesTicker(sig, canonical)) {
+            processedMatches.add(katSignalSourceMessageId(sig) || sig.message_id);
+          }
         } catch (e) {}
       }
     }
@@ -1572,18 +1746,18 @@ async function getHeatmap(ticker) {
 
         const contentUpper = (entry.content || '').toUpperCase();
         const textMatches =
-          contentUpper.includes(ticker) ||
-          contentUpper.includes('$' + ticker) ||
-          contentUpper.includes('#' + ticker) ||
-          (ticker === 'SPX' && (contentUpper.includes('SPX') || contentUpper.includes('ES_F') || contentUpper.includes('#ES_F'))) ||
-          (ticker === 'QQQ' && (contentUpper.includes('QQQ') || contentUpper.includes('NDX') || contentUpper.includes('NQ_F') || contentUpper.includes('#NQ_F')));
+          contentUpper.includes(canonical) ||
+          contentUpper.includes('$' + canonical) ||
+          contentUpper.includes('#' + canonical) ||
+          (canonical === 'SPX' && (contentUpper.includes('SPX') || contentUpper.includes('ES_F') || contentUpper.includes('#ES_F'))) ||
+          (canonical === 'QQQ' && (contentUpper.includes('QQQ') || contentUpper.includes('NDX') || contentUpper.includes('NQ_F') || contentUpper.includes('#NQ_F')));
         const processedMatch = processedMatches.has(entry.message_id);
-        const heatmapish = /\b(heatmap|heat map|node|king|gatekeeper|gex|gamma)\b/i.test(entry.content || '') ||
-          entry.channel_id === '1482431257441996850' ||
-          entry.channel_name === 'heatmap-requests';
-        const heatmapChannel = entry.channel_id === '1482431257441996850' ||
-          entry.channel_name === 'heatmap-requests';
-        if (!textMatches && !processedMatch && !heatmapChannel) continue;
+        const heatmapish = isHeatmapishEntry(entry);
+        const heatmapChannelMatch =
+          isHeatmapChannelEntry(entry) && heatmapChannelMatchesRequestedTicker(entry, canonical);
+        if (!textMatches && !processedMatch && !heatmapChannelMatch) continue;
+        const tsMs = new Date(entry.ts || 0).getTime();
+        if (!Number.isFinite(tsMs) || Date.now() - tsMs > KAT_HEATMAP_MAX_AGE_MS) continue;
         candidates.push({ entry, image: att, heatmapish });
       } catch (e) {}
     }
@@ -1595,8 +1769,8 @@ async function getHeatmap(ticker) {
 
     if (!best) {
       return {
-        content: 'No recent heatmap found for ' + ticker + '.\n' +
-          '_Kat looks for image posts from monitored analysts mentioning ' + ticker + '._'
+        content: 'No fresh heatmap found for ' + canonical + ' in the last 18 hours.\n' +
+          'Kat will not post a stale heatmap. Use `!recent ' + canonical + '` for chart-backed source posts.'
       };
     }
 
@@ -1608,29 +1782,44 @@ async function getHeatmap(ticker) {
       ? ageMins + 'm ago'
       : Math.floor(ageMins / 60) + 'h ' + (ageMins % 60) + 'm ago';
     const stale   = ageMs > 4 * 60 * 60 * 1000
-      ? '\n _Over 4 hours old  levels may have shifted._' : '';
+      ? '\nWarning: over 4 hours old; levels may have shifted.' : '';
 
     const caption =
-      ' **Most recent ' + ticker + ' heatmap**\n' +
-      'Posted by: ' + bestEntry.username + '\n' +
-      'Time: ' + ts.toLocaleTimeString('en-US', { timeZone: 'America/New_York' }) +
-      ' ET (' + ageStr + ')' +
-      (katDiscordMessageLink(bestEntry) ? '\nSource message: ' + katDiscordMessageLink(bestEntry) : '') +
-      (bestEntry.content ? '\n"' + compactKatText(bestEntry.content, 140) + '"' : '') +
-      '\nImage: attached below (' + (best.image.filename || 'heatmap.png') + ')' +
-      stale + '\n_Source: Elevated Charts analyst post via Kat_';
+      'Kat heatmap: ' + canonical + '\n' +
+      'Found saved image from ' + (bestEntry.username || 'unknown') + '.\n' +
+      'Time: ' + formatKatEt(bestEntry.ts) + ' (' + ageStr + ')' +
+      (bestEntry.content ? '\nPost: "' + compactKatText(bestEntry.content, 120) + '"' : '') +
+      stale + '\n' +
+      katSourceFooter('heatmap:' + (bestEntry.message_id || bestEntry.ts || Date.now()));
 
-    return {
-      content: trimKatDiscordContent(caption),
-      files: [{
-        attachment: best.image.url,
-        name: best.image.filename || 'heatmap.png'
-      }]
-    };
+    const payload = { content: trimKatDiscordContent(caption) };
+    const embed = katImageEmbed(best.image);
+    if (embed) payload.embeds = [embed];
+    return payload;
   } catch (e) {
     console.error('[kat] getHeatmap error:', e.message);
     return { content: 'Error fetching heatmap. CDN link may have expired.' };
   }
+}
+
+function formatKatLevelMagnetMessage(data) {
+  const biasStr = data.biases.has('BEARISH') && data.biases.has('BULLISH')
+    ? 'CONTESTED '
+    : data.biases.has('BEARISH') ? 'resistance ' : 'support ';
+
+  return trimKatDiscordContent(
+    ' **Level Magnet  ' + data.ticker + ' ' + data.level + '**\n' +
+    data.analysts.size + ' analysts independently marked this level\n' +
+    'Bias: ' + biasStr + ' | Mentions: ' + data.count + '\n' +
+    'Last marked: ' + new Date(data.lastTs).toLocaleTimeString('en-US',
+      { timeZone: 'America/New_York' }) + ' ET\n' +
+    (data.examples.length ? 'Sources:\n' + data.examples.map((example, index) =>
+      (index + 1) + '. ' + example.analyst + ' - ' +
+      formatKatEt(example.ts) +
+      (example.text ? '\n   "' + example.text + '"' : '')
+    ).join('\n') + '\n' : '') +
+    katSourceFooter('magnet:' + data.ticker + ':' + data.level + ':' + data.lastTs)
+  );
 }
 
 async function checkLevelMagnets() {
@@ -1660,7 +1849,8 @@ async function checkLevelMagnets() {
         if (new Date(sig.ts).getTime() < cutoff) continue;
         const canonical = publicKatTicker(sig.ticker);
         if (!canonical) continue;
-        const rawEntry = rawMap.get(sig.message_id);
+        if (!katSignalMatchesTicker(sig, sig.ticker)) continue;
+        const rawEntry = rawEntryForKatSignal(rawMap, sig);
         const chartBacked = sig.has_image === true || katImageAttachments(rawEntry).length > 0;
         if (canonical !== 'SPX' && !chartBacked) continue;
         for (const level of sig.levels) {
@@ -1672,9 +1862,13 @@ async function checkLevelMagnets() {
               analysts: new Set(), count: 0,
               biases: new Set(), lastTs: sig.ts,
               chartBacked: false,
+              sources: new Set(),
               examples: []
             };
           }
+          const sourceId = katSignalSourceMessageId(sig) || sig.ts + ':' + sig.analyst;
+          if (levelMap[key].sources.has(sourceId)) continue;
+          levelMap[key].sources.add(sourceId);
           levelMap[key].count++;
           levelMap[key].analysts.add(sig.analyst);
           levelMap[key].biases.add(sig.bias);
@@ -1683,7 +1877,6 @@ async function checkLevelMagnets() {
             levelMap[key].examples.push({
               analyst: sig.analyst || (rawEntry && rawEntry.username) || 'unknown',
               ts: sig.ts,
-              link: katDiscordMessageLink(rawEntry),
               text: compactKatText((rawEntry && rawEntry.content) || sig.raw || '', 90)
             });
           }
@@ -1700,23 +1893,7 @@ async function checkLevelMagnets() {
       const lastAlert   = _lastKatAlert[cooldownKey] || 0;
       if (Date.now() - lastAlert < 4 * 60 * 60 * 1000) continue;
 
-      const biasStr = data.biases.has('BEARISH') && data.biases.has('BULLISH')
-        ? 'CONTESTED '
-        : data.biases.has('BEARISH') ? 'resistance ' : 'support ';
-
-      const msg =
-        ' **Level Magnet  ' + data.ticker + ' ' + data.level + '**\n' +
-        data.analysts.size + ' analysts independently marked this level\n' +
-        'Bias: ' + biasStr + ' | Mentions: ' + data.count + '\n' +
-        'Last marked: ' + new Date(data.lastTs).toLocaleTimeString('en-US',
-          { timeZone: 'America/New_York' }) + ' ET\n' +
-        (data.examples.length ? 'Sources:\n' + data.examples.map((example, index) =>
-          (index + 1) + '. ' + example.analyst + ' - ' +
-          formatKatEt(example.ts) +
-          (example.link ? ' - ' + example.link : '') +
-          (example.text ? '\n   "' + example.text + '"' : '')
-        ).join('\n') + '\n' : '') +
-        '_Source: Elevated Charts analyst posts via Kat_';
+      const msg = formatKatLevelMagnetMessage(data);
 
       try {
         const guild   = discordClient.guilds.cache.first();
@@ -1738,14 +1915,23 @@ async function checkLevelMagnets() {
   }
 }
 
-async function handleKatCommand(message) {
-  const args = message.content.trim().split(/\s+/);
+async function handleKatCommand(message, commandContent) {
+  const args = String(commandContent || message.content || '').trim().split(/\s+/);
   const sub = args[1] ? args[1].toLowerCase() : '';
   const ticker = (args[2] || 'SPX').toUpperCase();
 
   try {
     const config = loadConfig();
-    if (KAT_QUEUE_SUBCOMMANDS.has(sub) && !mentionsKatbot(message)) {
+    if (KAT_QUEUE_SUBCOMMANDS.has(sub)) {
+      const heatmapTicker = queueHeatmapTicker(args);
+      if (heatmapTicker) {
+        await safeReply(message, await getHeatmap(heatmapTicker));
+        return;
+      }
+      await safeReply(message,
+        'Kat queue: use `!heatmap SPX` for a saved heatmap, `!recent SPX` for chart posts, or `!levels SPX` for confirmed levels.\n' +
+        'I do not create trade queues or execution queues.'
+      );
       return;
     }
     if (KAT_OWNER_ONLY_SUBCOMMANDS.has(sub) && !isKatOwnerCommandAllowed(message, config)) {
@@ -1761,12 +1947,12 @@ async function handleKatCommand(message) {
       const heatmapPayload = await getHeatmap(ticker);
       await safeReply(message, heatmapPayload);
     } else if (sub === 'chart' || sub === 'charts' || sub === 'recent' || sub === 'source' || sub === 'sources') {
-      await safeReply(message, getChartEvidencePayload(ticker));
+      await safeReply(message, await getChartEvidencePayload(ticker));
     } else if (sub === 'watchlist' || sub === 'tickers') {
       const { buildKatTickerWatchlist, formatKatTickerWatchlistForDiscord } = require('../lib/kat-ticker-watchlist');
       await safeReply(message, formatKatTickerWatchlistForDiscord(buildKatTickerWatchlist()));
     } else if (sub === 'equity') {
-      await safeReply(message, getChartEvidencePayload(ticker));
+      await safeReply(message, await getChartEvidencePayload(ticker));
     } else if (sub === 'options' || sub === 'option') {
       const { buildKatEquityOptionsProfile, formatKatEquityOptionsForDiscord } = require('../lib/kat-equity-options');
       await safeReply(message, formatKatEquityOptionsForDiscord(buildKatEquityOptionsProfile(ticker)));
@@ -1820,6 +2006,8 @@ router.get('/status', (req, res) => {
       posts_enabled: discordOutputAllowed('post', config),
       env_override: envFlagEnabled('KATBOT_ALLOW_DISCORD_OUTPUT')
     },
+    free_ai_fallback: katFreeAiFallbackStatus(),
+    live_vision: katLiveVisionPolicy(config),
     raw_feed_count:        rawFeedCount(),
     processed_signal_count: fs.existsSync(PROCESSED)
       ? fs.readFileSync(PROCESSED, 'utf8').split('\n').filter(l => l.trim()).length
@@ -2004,13 +2192,33 @@ router.get('/welcome', (req, res) => {
 
 router._test = {
   buildKatEvidencePayload,
+  getBiasReport,
+  getChartEvidencePayload,
+  getHeatmap,
+  getTopLevels,
+  formatKatLevelMagnetMessage,
   katDiscordMessageLink,
-  katEvidenceFiles,
+  katEntryTextMatchesTicker,
+  katEvidenceEmbeds,
   katEvidenceLines,
+  katCommandChannelAllowed,
+  katCommandChannelDebug,
+  katImageEmbed,
+  katFreeAiFallbackStatus,
+  katLiveVisionAllowed,
+  katLiveVisionPolicy,
+  katSignalMatchesTicker,
+  katSignalSourceMessageId,
+  katSourceFooter,
   katCommandCooldownKey,
   katCommandCooldownRemaining,
   getKatOwnerOnlyMessage,
+  getKatWelcomeMessage,
+  handleKatCommand,
   isKatOwnerCommandAllowed,
+  latestCaptureTimestampFromLines,
+  queueHeatmapTicker,
+  normalizeKatCommandContent,
   recordKatCommandCooldown,
   resetKatCommandCooldownsForTest,
   trimKatDiscordContent,

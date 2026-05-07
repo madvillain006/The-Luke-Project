@@ -569,7 +569,6 @@
     <button id="btn-mkt">MKT</button>
     <button id="btn-audit">AUDIT</button>
     <button id="btn-replay">REPLAY</button>
-    <button id="btn-sienna">SIENNA</button>
     <button id="btn-eod">EOD</button>
     <button id="btn-shift">SHIFT</button>
     <button id="btn-luke">NOTES</button>
@@ -980,13 +979,6 @@
       toast((d.assessment || JSON.stringify(d)).slice(0, 250), 6000);
     }));
 
-    document.getElementById("btn-sienna").addEventListener("click", () => withBtn("btn-sienna", async () => {
-      const r = await fetch(BASE + "/agent/sienna/model");
-      const d = await r.json();
-      toast(JSON.stringify(d).slice(0, 250), 5000);
-    }));
-
-
     document.getElementById("btn-eod").addEventListener("click", () => withBtn("btn-eod", async () => {
       const r = await fetch(BASE + "/agent/autonomous/eod-update", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
       const d = await r.json();
@@ -1039,7 +1031,7 @@
       if (/SESSION READINESS/i.test(out)) {
         mcState.balance = /OK Balance set today/i.test(out);
         mcState.saty = /OK Saty ATR levels loaded/i.test(out);
-        mcState.heatmap = /OK (?:Bobby|Katbot\/SPX) heatmap loaded/i.test(out);
+        mcState.heatmap = /OK Katbot\/SPX heatmap loaded/i.test(out);
       } else {
         if (/^\/balance\s+\d/i.test(text) && /^Balance set:/i.test(out)) {
           mcState.balance = true;
@@ -1627,7 +1619,7 @@
 
  // PASTE DETECTION 
     const PASTE_ANALYST_RULES = [
-      { re: /\b(bobby|katbot|jefe|followtherabbit|spx[_ -]?coms|heatmaps?|heatmap-requests)\b/i, command: '/heatmap', analyst: 'katbot' },
+      { re: /\b(katbot|jefe|el\s+jefe|followtherabbit|spx[_ -]?coms|heatmaps?|heatmap-requests|trade-floor|spy-qqq-es-nq-vix)\b/i, command: '/heatmap', analyst: 'katbot' },
       { re: /\b(richy|richydubz|richyd)\b/i,                          command: '/dubz',    analyst: 'richy' },
     ];
     const PASTE_DISCORD_PREFIX = /^[\s\S]*?(?:\[\d{1,2}:\d{2}\s*(?:AM|PM)\][^\n,]*,\s*:|[^\n]+(?:\s+[-\u2013\u2014]\s+|\s+)Today at \d{1,2}:\d{2}\s*(?:AM|PM)\s*\n?)/i;
@@ -1645,6 +1637,8 @@
           const looksLikeHeatmapPaste = hasDiscordPrefix ||
             PASTE_HEATMAP_RE.test(sample) ||
             (PASTE_HEATMAP_LEVEL_RE.test(sample) && PASTE_PRICE_RE.test(sample));
+          const explicitHeatmapSource = /\b(heatmaps?|heatmap-requests|spx[_ -]?coms)\b/i.test(sample);
+          if (hasDiscordPrefix && !explicitHeatmapSource && !PASTE_HEATMAP_RE.test(sample) && !(PASTE_HEATMAP_LEVEL_RE.test(sample) && PASTE_PRICE_RE.test(sample))) continue;
           if (!looksLikeHeatmapPaste) continue;
         }
         return { command: r.command, cleanedText: text.replace(PASTE_DISCORD_PREFIX, '').trimStart(), detectedAnalyst: r.analyst };

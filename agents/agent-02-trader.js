@@ -1,14 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
 const path = require("path");
 
 const { log } = require("../lib/logger");
 const { loadMemory, saveMemory } = require("../lib/memory");
 const { events } = require("../lib/paths");
+const { createRoutedText } = require("../lib/llm-client");
 
-const client = new Anthropic();
 const TRADES_FILE = events.trades;
 const FINNHUB_KEY = process.env.FINNHUB_KEY || "d7ibl19r01qu8vfo2410d7ibl19r01qu8vfo241g";
 
@@ -83,23 +82,23 @@ router.post("/analyze-signal", async (req, res) => {
   }
 
   try {
-    const response = await client.messages.create({
+    const routed = await createRoutedText({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 250,
+      maxTokens: 250,
       system: AGENT_02_SYSTEM,
-      messages: [{
-        role: "user",
-        content: `Analyze this signal:
+      userMessage: `Analyze this signal:
 ${signal}
 ${quoteBlock}
 
-Output: Thesis, risk, conviction 1-10, does it align with Wyckoff Markup phase. One paragraph.`
-      }]
+Output: Thesis, risk, conviction 1-10, does it align with Wyckoff Markup phase. One paragraph.`,
+      feature: "signal_score",
+      fallbackFeature: "chat",
+      allowAnthropic: true,
     });
 
-    const reply = response.content[0].text;
-    log("trader-analyze", { signal, ticker, reply });
-    res.json({ reply });
+    const reply = routed.text;
+    log("trader-analyze", { signal, ticker, reply, provider: routed.provider, model: routed.model });
+    res.json({ reply, provider: routed.provider, model: routed.model, fallback: routed.fallback, anthropic_allowed: routed.anthropic_allowed });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -121,25 +120,25 @@ router.post("/check-entry", async (req, res) => {
   const sizingCheck = sizing ? (sizing >= 50 && sizing <= 125 ? "✓ sizing OK" : `⚠ SIZING VIOLATION: $${sizing} is outside $50-$125 range`) : "sizing not provided";
 
   try {
-    const response = await client.messages.create({
+    const routed = await createRoutedText({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 180,
+      maxTokens: 180,
       system: AGENT_02_SYSTEM,
-      messages: [{
-        role: "user",
-        content: `Entry check:
+      userMessage: `Entry check:
 Signal: ${signal}
 ${quoteBlock}
 Premium: ${premium || "not specified"}
 Sizing: ${sizingCheck}
 
-Answer YES or NO. If YES: give strike, expiry, size, OCO stop level. If NO: one sentence why.`
-      }]
+Answer YES or NO. If YES: give strike, expiry, size, OCO stop level. If NO: one sentence why.`,
+      feature: "staged_trade_reason",
+      fallbackFeature: "chat",
+      allowAnthropic: true,
     });
 
-    const reply = response.content[0].text;
-    log("trader-entry-check", { signal, ticker, reply });
-    res.json({ reply });
+    const reply = routed.text;
+    log("trader-entry-check", { signal, ticker, reply, provider: routed.provider, model: routed.model });
+    res.json({ reply, provider: routed.provider, model: routed.model, fallback: routed.fallback, anthropic_allowed: routed.anthropic_allowed });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -240,13 +239,11 @@ router.get("/assess", async (req, res) => {
   ).join("\n");
 
   try {
-    const response = await client.messages.create({
+    const routed = await createRoutedText({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 200,
+      maxTokens: 200,
       system: AGENT_02_SYSTEM,
-      messages: [{
-        role: "user",
-        content: `Assess Conor's recent trading honestly. Don't sugarcoat it.
+      userMessage: `Assess Conor's recent trading honestly. Don't sugarcoat it.
 
 STATS: ${pnl.wins}W / ${pnl.losses}L | Total P&L: $${pnl.total?.toFixed(2) || 0} | Streak: ${pnl.streak} | Open: ${open.length}
 
@@ -257,10 +254,12 @@ Give:
 PATTERN: what's actually happening in the losses (one sentence)
 BROKEN_RULE: most common rule violation or "None"
 HONEST_TAKE: one direct sentence about where he is right now
-ACTION: one concrete thing to do differently next trade`
-      }]
+ACTION: one concrete thing to do differently next trade`,
+      feature: "summarize",
+      fallbackFeature: "summarize",
+      allowAnthropic: false,
     });
-    res.json({ assessment: response.content[0].text, stats: pnl, open_positions: open.length });
+    res.json({ assessment: routed.text, stats: pnl, open_positions: open.length, provider: routed.provider, model: routed.model, fallback: routed.fallback });
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 

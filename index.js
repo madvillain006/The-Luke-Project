@@ -45,9 +45,12 @@ const { buildSystemPrompt, loadDiscordSignals, pruneDiscordHistory } = require("
 const { handleAction, runPython } = require("./lib/actions");
 const { handleSlashCommand } = require("./lib/slash-commands");
 const { buildStoredHeatmapAnswer } = require("./lib/heatmap-context");
+const { llmRoutingStatus, messageNeedsAnthropic, freeAiFirst } = require("./lib/llm-routing-policy");
 const { validateMemoryKey, MAX_TEXT_BYTES, MAX_URL_LENGTH } = require("./lib/validators");
 const { detectPasteIntent } = require("./lib/detect-paste");
 const { handlePasteAccumulate } = require("./lib/daily-accumulator");
+const { handleManualAnalystPaste } = require("./lib/kat-stage2/manual-analyst-capture");
+const { handleManualSybilPaste } = require("./lib/kat-stage2/manual-paste-capture");
 const { events, runtime, snapshots } = require("./lib/paths");
 const { buildOperatorStatus, buildOperatorReadiness, readTradingStateReadOnly } = require("./lib/operator/operator-status-adapter");
 const { buildDecisionResponse } = require("./lib/operator/decision-adapter");
@@ -207,6 +210,65 @@ function checkProactiveAlerts() {
   return alerts;
 }
 
+function extractAnthropicText(response) {
+  return response && response.content && response.content[0] && response.content[0].text
+    ? response.content[0].text
+    : '';
+}
+
+async function callFallbackText(systemPrompt, userMessage, feature) {
+  const fb = await _requireFallback().callFallback(systemPrompt, userMessage, { feature });
+  return {
+    text: fb.reply,
+    provider: fb.provider,
+    model: fb.model || null,
+    fallback: true,
+  };
+}
+
+async function callAnthropicText(request, usageFeature) {
+  const response = await client.messages.create(request);
+  trackUsage(usageFeature, request.model, response.usage?.input_tokens || 0, response.usage?.output_tokens || 0);
+  return {
+    text: extractAnthropicText(response),
+    provider: 'anthropic',
+    model: request.model,
+    fallback: false,
+    response,
+  };
+}
+
+async function callRoutedText(options = {}) {
+  const {
+    systemPrompt,
+    userMessage,
+    messages,
+    feature = 'chat',
+    anthropicModel = 'claude-haiku-4-5-20251001',
+    maxTokens = 300,
+    preferAnthropic = false,
+    allowAnthropic = false,
+  } = options;
+  const request = {
+    model: anthropicModel,
+    max_tokens: maxTokens,
+    ...(systemPrompt ? { system: systemPrompt } : {}),
+    messages: messages || [{ role: 'user', content: userMessage }],
+  };
+  const freeFirst = freeAiFirst() && !preferAnthropic;
+
+  if (freeFirst || !allowAnthropic) {
+    try {
+      return await callFallbackText(systemPrompt || null, userMessage, feature);
+    } catch (fallbackError) {
+      if (!allowAnthropic) throw fallbackError;
+      log('fallback-to-anthropic', { feature, reason: fallbackError.message });
+    }
+  }
+
+  return callAnthropicText(request, feature);
+}
+
 function computeToolHealth() {
   try {
     const cutoff = Date.now() - 24 * 3600000;
@@ -270,7 +332,7 @@ async function routeToAgent(message) {
     }
   }
 
-  if (/(calls|puts|strike|expiry|contract|flow|signal|conviction|wyckoff|spx|spy|qqq|fngu|apg|setup|thesis|premium|ema|pine|watch|bobby|katbot|heatmap|futures|mnq|mes)/i.test(message)) {
+  if (/(calls|puts|strike|expiry|contract|flow|signal|conviction|wyckoff|spx|spy|qqq|fngu|apg|setup|thesis|premium|ema|pine|watch|katbot|heatmap|futures|mnq|mes)/i.test(message)) {
     try {
       const data = await agentFetch("/agent/trader/analyze-signal", "POST", { signal: message, ticker: extractTicker(message) });
       return { reply: data.reply, agent: "trader" };
@@ -456,8 +518,12 @@ app.post("/chat", async (req, res) => {
 
   //  accumulator: auto-classify paste, store piece, ack, fire verdict 
   if (!isSystemSurface && !message.startsWith("/")) {
+    const sybilResult = await handleManualSybilPaste(message, res);
+    if (sybilResult) return;
     const accResult = await handlePasteAccumulate(message, image, res);
     if (accResult) return;
+    const analystPasteResult = await handleManualAnalystPaste(message, res);
+    if (analystPasteResult) return;
   }
 
   //  slash command intercept 
@@ -504,47 +570,49 @@ app.post("/chat", async (req, res) => {
     : "regulated";
   if (!isSystemSurface) logEmotionalState(state, message);
   const alerts = isSystemSurface ? [] : checkProactiveAlerts();
+  const hardCapActive = isHardCap();
 
   saveSessionMessage("user", message);
 
   const ACK_SYSTEM = "You are Luke. Acknowledge this agent result in one sentence. Be brief. No em dashes.";
 
   try {
-    const routed = isSystemSurface ? null : await routeToAgent(message);
+    const routeNeedsAnthropic = messageNeedsAnthropic(message, { feature: "chat" });
+    const routed = isSystemSurface || hardCapActive || !routeNeedsAnthropic ? null : await routeToAgent(message);
     if (routed) {
-      const ackResponse = await client.messages.create({
-        model: "claude-haiku-4-5-20251001",
-        max_tokens: 80,
-        system: ACK_SYSTEM,
-        messages: [
-          ...messages,
-          { role: "assistant", content: "[" + routed.agent.toUpperCase() + " AGENT LOGGED: " + routed.reply + "]" },
-          { role: "user", content: "acknowledge that in one sentence as Luke, naturally. No em dashes. Do not mention mood, state, detection, or system internals." }
-        ]
+      const ack = await callRoutedText({
+        systemPrompt: ACK_SYSTEM,
+        userMessage: "[" + routed.agent.toUpperCase() + " AGENT LOGGED: " + routed.reply + "]\n\nAcknowledge that in one sentence as Luke, naturally. No em dashes. Do not mention mood, state, detection, or system internals.",
+        feature: "chat",
+        maxTokens: 80,
+        allowAnthropic: false,
       });
-      trackUsage("main-ack", "claude-haiku-4-5-20251001", ackResponse.usage?.input_tokens || 0, ackResponse.usage?.output_tokens || 0);
-      let reply = ackResponse.content[0].text;
+      let reply = ack.text;
       if (alerts.length > 0) reply += "\n\n" + alerts.join("\n");
       saveSessionMessage("assistant", reply);
-      log("chat", { user: message, luke: reply, agent: routed.agent, state });
-      return res.json({ reply, state, history: [...messages, { role: "assistant", content: reply }] });
+      log("chat", { user: message, luke: reply, agent: routed.agent, state, provider: ack.provider, model: ack.model });
+      return res.json({ reply, state, provider: ack.provider, model: ack.model, fallback: ack.fallback, history: [...messages, { role: "assistant", content: reply }] });
     }
   } catch {}
 
-  // A10: fallback routing when hard cap hit
-  if (_requireFallback().isActive()) {
+  // A10: fallback routing when fallback mode is active or paid-token hard cap is hit.
+  if (_requireFallback().isActive() || hardCapActive) {
     try {
       const fb = await _requireFallback().callFallback(
         isSystemSurface ? SYSTEM_CHAT_PROMPT : "You are Luke - concise trading and ops copilot. Keep it brief and direct.",
-        message
+        message,
+        { feature: isSystemSurface ? "status" : "chat" }
       );
       let reply = fb.reply;
       if (alerts.length > 0) reply += "\n\n" + alerts.join("\n");
       saveSessionMessage("assistant", reply);
       log("chat-fallback", { user: message, provider: fb.provider, state });
-      return res.json({ reply, state, fallback: true, provider: fb.provider, history: [...messages, { role: "assistant", content: reply }] });
+      return res.json({ reply, state, fallback: true, provider: fb.provider, model: fb.model || null, history: [...messages, { role: "assistant", content: reply }] });
     } catch (fbErr) {
       log("fallback-error", { error: fbErr.message });
+      if (hardCapActive) {
+        return res.status(503).json({ error: "Paid-token hard cap is active and all fallback providers failed", detail: fbErr.message });
+      }
     }
   }
 
@@ -562,17 +630,21 @@ app.post("/chat", async (req, res) => {
   const chatSystemPrompt = isSystemSurface ? SYSTEM_CHAT_PROMPT : useHaiku
     ? "You are Luke - sharp, brief, no filler. No em dashes."
     : buildSystemPrompt(state, message);
+  const allowAnthropic = !hardCapActive && messageNeedsAnthropic(message, { feature: "chat" });
 
   try {
-    const response = await client.messages.create({
-      model: chatModel,
-      max_tokens: useHaiku ? 150 : 800,
-      system: chatSystemPrompt,
+    const llm = await callRoutedText({
+      systemPrompt: chatSystemPrompt,
+      userMessage: message,
       messages,
+      feature: "chat",
+      anthropicModel: chatModel,
+      maxTokens: useHaiku ? 150 : 800,
+      preferAnthropic: false,
+      allowAnthropic,
     });
-    trackUsage("main-chat", chatModel, response.usage?.input_tokens || 0, response.usage?.output_tokens || 0);
 
-    let reply = response.content[0].text;
+    let reply = llm.text;
     let action = null;
     let extra = null;
 
@@ -597,8 +669,8 @@ app.post("/chat", async (req, res) => {
 
     if (alerts.length > 0) reply += "\n\n" + alerts.join("\n");
     saveSessionMessage("assistant", reply);
-    log("chat", { user: message, luke: reply, state });
-    res.json({ reply, state, action, history: [...messages, { role: "assistant", content: response.content[0].text }] });
+    log("chat", { user: message, luke: reply, state, provider: llm.provider, model: llm.model, anthropic_allowed: allowAnthropic });
+    res.json({ reply, state, action, provider: llm.provider, model: llm.model, fallback: llm.fallback, anthropic_allowed: allowAnthropic, history: [...messages, { role: "assistant", content: llm.text }] });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: "AI request failed" });
@@ -607,6 +679,9 @@ app.post("/chat", async (req, res) => {
 
 app.post("/see", async (req, res) => {
   const { question } = req.body;
+  if (!/^(1|true|yes|on)$/i.test(String(process.env.LUKE_ALLOW_ANTHROPIC_VISION || ''))) {
+    return res.status(403).json({ error: "Vision is disabled until free-AI image/OCR routing is explicitly authorized." });
+  }
   try {
     const img = runPython(["screenshot"]);
     const response = await client.messages.create({
@@ -623,6 +698,9 @@ app.post("/see", async (req, res) => {
 app.post("/see-image", async (req, res) => {
   const { image, mime_type, question, surface } = req.body || {};
   if (!image) return res.status(400).json({ error: "No image" });
+  if (!/^(1|true|yes|on)$/i.test(String(process.env.LUKE_ALLOW_ANTHROPIC_VISION || ''))) {
+    return res.status(403).json({ error: "Vision is disabled until free-AI image/OCR routing is explicitly authorized." });
+  }
   try {
     if (surface === "system") {
       const mediaType = typeof mime_type === "string" && /^image\//i.test(mime_type) ? mime_type : "image/png";
@@ -654,7 +732,7 @@ app.post("/see-image", async (req, res) => {
       const walls  = (existing.resistance || []).join(", ") || "none";
       const floors = (existing.support || []).join(", ") || "none";
       const summary = `King nodes: ${kings}. Walls: ${walls}. Floors: ${floors}. Nodes: ${countBobbyNodes(existing)}. Bias: ${existing.bias}.`;
-      return res.json({ reply: `${summary} Bobby heatmap already loaded; duplicate ignored.` });
+      return res.json({ reply: `${summary} Katbot/SPX heatmap already loaded; duplicate ignored.` });
     }
 
     const result = await parseBobbyImage(image);
@@ -667,7 +745,7 @@ app.post("/see-image", async (req, res) => {
     const floors = (result.support || []).join(", ") || "none";
     const pockets = (result.air_pockets || []).join(", ") || "none";
     const summary = `King nodes: ${kings}. Walls: ${walls}. Floors: ${floors}. Air pockets: ${pockets}. Bias: ${result.bias}.`;
-    res.json({ reply: `${summary} Bobby heatmap loaded to confluence.` });
+    res.json({ reply: `${summary} Katbot/SPX heatmap loaded to confluence.` });
   } catch (err) {
     res.status(500).json({ error: "Vision failed" });
   }
@@ -724,13 +802,14 @@ app.post("/research", async (req, res) => {
 
     if (!text || text.length < 50) return res.json({ reply: "Could not extract content from this URL." });
 
-    const response = await client.messages.create({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 384,
-      messages: [{ role: "user", content: "You are Agent 06  research agent for Luke. Extract what is useful for building a personal AI agent system or for trading.\n\nURL: " + url + "\n\nCONTENT:\n" + text + "\n\nFormat exactly like this:\nKEY INSIGHT: one sentence\nAPPLIES TO: scaffold / trader / research / all\nIMPLEMENTATION: one sentence\nPRIORITY: HIGH / MEDIUM / LOW\n\nUnder 80 words total. If not relevant to AI agents or trading, say: NOT RELEVANT" }]
+    const result = await callRoutedText({
+      userMessage: "You are Agent 06  research agent for Luke. Extract what is useful for building a personal AI agent system or for trading.\n\nURL: " + url + "\n\nCONTENT:\n" + text + "\n\nFormat exactly like this:\nKEY INSIGHT: one sentence\nAPPLIES TO: scaffold / trader / research / all\nIMPLEMENTATION: one sentence\nPRIORITY: HIGH / MEDIUM / LOW\n\nUnder 80 words total. If not relevant to AI agents or trading, say: NOT RELEVANT",
+      feature: "summarize",
+      maxTokens: 384,
+      allowAnthropic: false,
     });
 
-    const insight = response.content[0].text;
+    const insight = result.text;
 
     if (!insight.includes("NOT RELEVANT")) {
       const mem = loadMemory();
@@ -741,7 +820,7 @@ app.post("/research", async (req, res) => {
       log("research", { url, insight });
     }
 
-    res.json({ reply: insight });
+    res.json({ reply: insight, provider: result.provider, model: result.model });
   } catch (err) {
     res.status(500).json({ error: "Research failed", detail: err.message });
   }
@@ -808,22 +887,34 @@ app.post("/paste-signals", async (req, res) => {
   const { text, source } = req.body;
   if (!text || typeof text !== "string") return res.status(400).json({ error: "No text provided" });
   if (Buffer.byteLength(text, "utf8") > MAX_TEXT_BYTES) return res.status(400).json({ error: "Text exceeds 10KB limit" });
+  const sourceLabel = String(source || "");
+  const sybilResult = await handleManualSybilPaste(text, res, {
+    force: /\bsybil\b/i.test(sourceLabel),
+    channelName: /\bsybil\b/i.test(sourceLabel) ? "manual-sybil-paste" : undefined,
+    provenanceNote: sourceLabel ? `paste-signals source: ${sourceLabel}` : "paste-signals manual paste",
+  });
+  if (sybilResult) return;
+
+  const analystPasteResult = await handleManualAnalystPaste(text, res, {
+    force: true,
+    sourceLabel,
+    provenanceNote: sourceLabel ? `paste-signals source: ${sourceLabel}` : "paste-signals manual paste",
+  });
+  if (analystPasteResult) return;
 
   try {
-    const response = await client.messages.create({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 500,
-      messages: [{
-        role: "user",
-        content: "Extract every trading signal, level call, and directional bias from this Discord channel paste. Source: " + (source || "unknown") + "\n\nFor each signal found:\nTICKER: \nDIRECTION: \nLEVEL: \nTIMESTAMP: (if visible)\nNOTES: \n\nPaste:\n" + text.slice(0, 8000)
-      }]
+    const result = await callRoutedText({
+      userMessage: "Extract every trading signal, level call, and directional bias from this Discord channel paste. Source: " + (source || "unknown") + "\n\nFor each signal found:\nTICKER: \nDIRECTION: \nLEVEL: \nTIMESTAMP: (if visible)\nNOTES: \n\nPaste:\n" + text.slice(0, 8000),
+      feature: "classify",
+      maxTokens: 500,
+      allowAnthropic: false,
     });
 
-    const insights = response.content[0].text;
+    const insights = result.text;
     const entry = { date: new Date().toISOString(), source: source || "manual-paste", results: [{ scroll: 1, raw: text.slice(0, 500), insights }] };
     fs.appendFileSync(events.discordHistory, JSON.stringify(entry) + "\n");
     log("paste-signals", { source, length: text.length });
-    res.json({ reply: insights });
+    res.json({ reply: insights, provider: result.provider, model: result.model });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -888,6 +979,144 @@ app.get("/webhook/saty", (req, res) => {
   const { loadSatyLevels, buildStatusSummary } = require('./lib/saty-levels');
   const data = loadSatyLevels();
   res.json({ loaded: !!data, summary: buildStatusSummary(data) });
+});
+
+//  LUKE LONG -> NINJATRADER SIM BRIDGE
+// TradingView/Luke alert payload lands here, Luke writes a local JSON file,
+// and the NinjaTrader strategy polls that file. This route does not place live orders.
+function getNinjaBridgeToken(req) {
+  const body = req.body && typeof req.body === "object" ? req.body : {};
+  return req.get("x-luke-bridge-token") || body.token || body.bridge_token || req.query.token;
+}
+
+function requireNinjaBridgeToken(req, res) {
+  const expectedBridgeToken = process.env.LUKE_NINJA_BRIDGE_TOKEN;
+  if (!expectedBridgeToken) return true;
+  if (getNinjaBridgeToken(req) === expectedBridgeToken) return true;
+  res.status(401).json({ ok: false, sim_bridge_only: true, error: "invalid Ninja bridge token" });
+  return false;
+}
+
+function readTextFileTrimmed(filePath, fallback = "") {
+  try {
+    return fs.readFileSync(filePath, "utf8").trim();
+  } catch {
+    return fallback;
+  }
+}
+
+function isoAgeMs(isoText) {
+  const parsed = Date.parse(isoText);
+  return Number.isFinite(parsed) ? Date.now() - parsed : null;
+}
+
+function buildNinjaTunnelWatchdogUiStatus(overrideStatus = null) {
+  const ninjaDir = path.join(__dirname, "data", "ninjatrader");
+  const tunnelStatusPath = path.join(ninjaDir, "tunnel-status.json");
+  const watchdogStatusPath = path.join(ninjaDir, "tunnel-watchdog-status.json");
+  const currentWebhookPath = path.join(ninjaDir, "current-webhook-url.txt");
+  const latestSignalPath = path.join(ninjaDir, "latest-luke-signal.json");
+  const watchdog = overrideStatus || readJsonFile(watchdogStatusPath, null);
+  const tunnel = readJsonFile(tunnelStatusPath, null);
+  const latestSignal = readJsonFile(latestSignalPath, null);
+  const webhookUrl = watchdog?.webhook_url || readTextFileTrimmed(currentWebhookPath) || tunnel?.webhook_url || "";
+  const publicUrl = watchdog?.public_url || tunnel?.public_url || "";
+  const checkedAt = watchdog?.checked_at || tunnel?.updated_at || null;
+  const statusAgeMs = isoAgeMs(checkedAt);
+  const watchdogStale = statusAgeMs === null || statusAgeMs > 3 * 60 * 1000;
+  const tunnelStale = Boolean(watchdog?.stale_warning);
+  const healthy = Boolean(watchdog?.ok && webhookUrl && !watchdogStale && !tunnelStale);
+  const state = healthy ? "healthy" : watchdog?.ok && webhookUrl ? "stale" : "unhealthy";
+  return {
+    ok: Boolean(watchdog?.ok && webhookUrl),
+    state,
+    reason: watchdogStale ? "watchdog_not_recent" : tunnelStale ? "quick_tunnel_age_warning" : watchdog?.reason || "no_watchdog_status",
+    route: watchdog?.route || (publicUrl ? "public_tunnel" : "unknown"),
+    webhook_url: webhookUrl,
+    public_url: publicUrl,
+    checked_at: checkedAt,
+    status_age_ms: statusAgeMs,
+    tunnel_age_ms: typeof watchdog?.tunnel_age_ms === "number" ? watchdog.tunnel_age_ms : null,
+    local_status: watchdog?.local_status ?? null,
+    public_status: watchdog?.public_status ?? null,
+    refreshed: Boolean(watchdog?.refreshed),
+    stability_warning: watchdog?.stability_warning || "",
+    bridge_file_idle: !latestSignal?.signal,
+    bridge_file_written_at: latestSignal?.written_at || null,
+    sim_bridge_only: true,
+    token_required: Boolean(process.env.LUKE_NINJA_BRIDGE_TOKEN),
+  };
+}
+
+app.post("/webhook/luke-long", (req, res) => {
+  try {
+    if (!requireNinjaBridgeToken(req, res)) return;
+
+    const { saveLukeBridgeCommand, LATEST_SIGNAL_FILE } = require("./lib/ninjatrader-alert-bridge");
+    const payload = saveLukeBridgeCommand(req.body);
+    log("ninjatrader-bridge-signal", {
+      id: payload.signal.id,
+      type: payload.signal.type,
+      symbol: payload.signal.symbol,
+      entry: payload.signal.entry,
+      stop: payload.signal.stop,
+      tp1: payload.signal.tp1,
+      tp2: payload.signal.tp2,
+      qty: payload.signal.qty,
+      file: LATEST_SIGNAL_FILE,
+    });
+    res.json({
+      ok: true,
+      sim_bridge_only: true,
+      file: LATEST_SIGNAL_FILE,
+      signal: payload.signal,
+    });
+  } catch (err) {
+    res.status(400).json({ ok: false, sim_bridge_only: true, error: err.message });
+  }
+});
+
+app.get("/api/ninjatrader/bridge-status", (req, res) => {
+  if (!requireNinjaBridgeToken(req, res)) return;
+  const tunnelStatusPath = path.join(__dirname, "data", "ninjatrader", "tunnel-status.json");
+  res.json({
+    ok: true,
+    sim_bridge_only: true,
+    token_required: Boolean(process.env.LUKE_NINJA_BRIDGE_TOKEN),
+    tunnel: readJsonFile(tunnelStatusPath, null),
+  });
+});
+
+app.get("/api/ninjatrader/latest-signal", (req, res) => {
+  if (!requireNinjaBridgeToken(req, res)) return;
+  const { loadLatestLukeSignal, LATEST_SIGNAL_FILE } = require("./lib/ninjatrader-alert-bridge");
+  res.json({
+    ok: true,
+    sim_bridge_only: true,
+    file: LATEST_SIGNAL_FILE,
+    payload: loadLatestLukeSignal(),
+  });
+});
+
+app.get("/api/ninjatrader/tunnel-watchdog", (req, res) => {
+  res.json(buildNinjaTunnelWatchdogUiStatus());
+});
+
+app.post("/api/ninjatrader/tunnel-watchdog/refresh", async (req, res) => {
+  try {
+    const watchdog = require("./agents/agent-15-ninja-tunnel-watchdog");
+    const force = req.query.force === "1" || req.query.force === "true" || req.body?.force === true;
+    await watchdog.runOnce({ refresh: true, force });
+    res.json(buildNinjaTunnelWatchdogUiStatus());
+  } catch (error) {
+    res.status(500).json({
+      ...buildNinjaTunnelWatchdogUiStatus(),
+      ok: false,
+      state: "unhealthy",
+      reason: "refresh_failed",
+      error: error.message,
+    });
+  }
 });
 
 app.get("/agent/saty/auto-pull/status", (req, res) => {
@@ -1181,7 +1410,6 @@ app.use("/agent/income", require("./agents/agent-03-income"));
 app.use("/agent/health", require("./agents/agent-04-health"));
 app.use("/agent/finance", require("./agents/agent-05-finance"));
 app.use("/agent/opportunity", require("./agents/agent-07-opportunity"));
-app.use("/agent/sienna", require("./agents/agent-08-sienna"));
 app.use("/agent/architect", require("./agents/agent-09-architect"));
 app.use("/agent/sweeper", require("./agents/agent-10-sweeper"));
 app.use("/agent/workflows", require("./agents/agent-13-workflows"));
@@ -1193,7 +1421,8 @@ function _requireFallback() {
   return _fallbackMod;
 }
 app.use("/agent/fallback", (req, res, next) => _requireFallback().router(req, res, next));
-app.use('/agent/kat', (req, res, next) => require('./agents/agent-14-kat')(req, res, next));
+const katRouter = require("./agents/agent-14-kat");
+app.use("/agent/kat", katRouter);
 
 // Expose WS token to the browser (localhost only  not a secret across the network)
 app.get("/ws-token", (req, res) => res.json({ token: WS_TOKEN }));
@@ -1321,6 +1550,8 @@ app.get("/luke/boot-check", (req, res) => {
   });
   check("agents-dir", () => { fs.readdirSync(path.join(__dirname, "agents")); return "ok"; });
   check("anthropic-key", () => process.env.ANTHROPIC_API_KEY ? "ok" : null);
+  check("katbot-token", () => process.env.KAT_BOT_TOKEN ? "ok" : null);
+  check("gemini-key", () => process.env.GEMINI_API_KEY ? "ok" : null);
   check("tool-health", () => fs.existsSync(TOOL_HEALTH_FILE) ? "ok" : null);
   check("scheduler-heartbeat", () => fs.existsSync(SCHED_HEARTBEAT_FILE) ? "ok" : null);
   check("scheduler-jobs", () => fs.existsSync(SCHED_JOBS_FILE) ? "ok" : null);
@@ -1513,7 +1744,8 @@ function writeCrashState(reason, err) {
 
 //  BOOT SANITY CHECKS 
 (function bootChecks() {
-  const required_envs = ["ANTHROPIC_API_KEY"];
+  const required_envs = [];
+  const optional_envs = ["ANTHROPIC_API_KEY", "KAT_BOT_TOKEN", "GEMINI_API_KEY", "GROQ_API_KEY", "DEEPSEEK_API_KEY"].filter(key => process.env[key]);
   for (const key of required_envs) {
     if (!process.env[key]) {
       console.error(`[boot] FATAL: required env var ${key} is not set`);
@@ -1532,7 +1764,7 @@ function writeCrashState(reason, err) {
       process.exit(1);
     }
   }
-  log("boot-checks-passed", { envs: required_envs });
+  log("boot-checks-passed", { envs: required_envs, optional_envs });
 })();
 
 // On boot: move any old crash files to archive/ and log them

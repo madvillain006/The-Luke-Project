@@ -230,7 +230,7 @@ describe('operator API adapters', () => {
       getMorningPrepLine: () => null,
       loadTodayContext: () => ({}),
       checkEmotionalState: () => [],
-      getSiennaRegime: () => ({ regime: 'NEUTRAL', reason: 'test' }),
+      getKatbotRegime: () => ({ regime: 'NEUTRAL', reason: 'test' }),
       formatKatSummaryLine: () => null,
       getKatContextSummary: () => null,
     });

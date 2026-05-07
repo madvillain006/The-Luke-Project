@@ -1,15 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
 const { readJsonFile, writeJsonAtomic } = require("../state/lib");
 const { recordConorHealthLog, recordLukeLog } = require("../state/health-store");
 const { events, snapshots } = require("../lib/paths");
+const { createRoutedText } = require("../lib/llm-client");
 
 const { log } = require("../lib/logger");
 const { loadMemory, saveMemory } = require("../lib/memory");
 
-const client = new Anthropic();
 const LUKE_LOG_FILE = events.lukeLog;
 const LUKE_DRAFTS_FILE = snapshots.lukeLogDrafts;
 
@@ -139,20 +138,19 @@ router.get("/luke-status", async (req, res) => {
 
   const recent = logs.slice(-7);
   try {
-    const response = await client.messages.create({
+    const routed = await createRoutedText({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 200,
+      maxTokens: 200,
       system: AGENT_04_SYSTEM,
-      messages: [{
-        role: "user",
-        content: `Luke's last 7 entries:
+      userMessage: `Luke's last 7 entries:
 ${recent.map(e => `${e.date}: food=${e.food_eaten}, stool=${e.stool}, vomiting=${e.vomiting}, energy=${e.energy}, meds=${e.meds}`).join("\n")}
 
-Assess trend. Flag any concerns. One concrete action if needed.`
-      }]
+Assess trend. Flag any concerns. One concrete action if needed.`,
+      feature: "summarize",
+      allowAnthropic: false,
     });
 
-    res.json({ reply: response.content[0].text, logs: recent });
+    res.json({ reply: routed.text, logs: recent, provider: routed.provider, model: routed.model, fallback: routed.fallback });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -181,16 +179,15 @@ router.get("/assess", async (req, res) => {
   const concern = vomitCount > 1 || refusedCount > 2 || diarrheaCount > 1;
 
   try {
-    const response = await client.messages.create({
+    const routed = await createRoutedText({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 200,
+      maxTokens: 200,
       system: AGENT_04_SYSTEM,
-      messages: [{
-        role: "user",
-        content: `Luke's last ${recent.length} entries:\n${recent.map(e => `${e.date}: food=${e.food_eaten}, stool=${e.stool}, vomit=${e.vomiting}, energy=${e.energy}`).join("\n")}\n\nVomiting: ${vomitCount}x | Food refused: ${refusedCount}x | Diarrhea: ${diarrheaCount}x | Low energy: ${lowEnergyCount}x\n\nTwo sentences max: trend and one action if needed. If stable, say so.`
-      }]
+      userMessage: `Luke's last ${recent.length} entries:\n${recent.map(e => `${e.date}: food=${e.food_eaten}, stool=${e.stool}, vomit=${e.vomiting}, energy=${e.energy}`).join("\n")}\n\nVomiting: ${vomitCount}x | Food refused: ${refusedCount}x | Diarrhea: ${diarrheaCount}x | Low energy: ${lowEnergyCount}x\n\nTwo sentences max: trend and one action if needed. If stable, say so.`,
+      feature: "summarize",
+      allowAnthropic: false,
     });
-    res.json({ assessment: response.content[0].text, concern, flags: { vomiting: vomitCount, refused: refusedCount, diarrhea: diarrheaCount, low_energy: lowEnergyCount } });
+    res.json({ assessment: routed.text, concern, flags: { vomiting: vomitCount, refused: refusedCount, diarrhea: diarrheaCount, low_energy: lowEnergyCount }, provider: routed.provider, model: routed.model, fallback: routed.fallback });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

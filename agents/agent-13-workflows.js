@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
 
-const client = new Anthropic();
 const ROOT = path.join(__dirname, "..");
 const WORKFLOWS_DIR   = path.join(ROOT, "workflows");
 const RECORDINGS_DIR  = path.join(ROOT, "state", "runtime", "workflow-recordings");
@@ -175,7 +173,12 @@ async function takeVerifyScreenshot(recDir, stepId) {
 
 async function verifyStep(b64, hint) {
   if (!b64 || !hint) return { ok: true, verdict: "no-verify" };
+  if (!/^(1|true|yes|on)$/i.test(String(process.env.LUKE_ALLOW_ANTHROPIC_VISION || ""))) {
+    return { ok: false, verdict: "vision-disabled: LUKE_ALLOW_ANTHROPIC_VISION is not enabled" };
+  }
   try {
+    const Anthropic = require("@anthropic-ai/sdk");
+    const client = new Anthropic();
     const r = await client.messages.create({
       model: "claude-haiku-4-5-20251001", max_tokens: 80,
       messages: [{ role: "user", content: [

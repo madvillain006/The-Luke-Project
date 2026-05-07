@@ -27,7 +27,7 @@ function main() {
     files: { json: jsonFile, markdown: mdFile },
   }, null, 2));
 
-  if (!['READY_TO_UNGATE_COMMAND_REPLIES', 'PHASE_1_COMMAND_REPLIES_LIVE'].includes(report.status)) {
+  if (!['READY_TO_UNGATE_COMMAND_REPLIES', 'PHASE_1_COMMAND_REPLIES_LIVE', 'KATBOT_LIVE_READY'].includes(report.status)) {
     process.exitCode = 1;
   }
 }

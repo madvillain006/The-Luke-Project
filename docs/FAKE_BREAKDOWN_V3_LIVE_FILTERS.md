@@ -1,6 +1,4 @@
-# Fake Breakdown V3 Pre-Entry Filter Research
-
-Status: research/watchlist only. "Live filters" in older artifact names means pre-entry filters tested on historical/replay data, not live execution.
+# Fake Breakdown V3 Live Filters Research
 
 ## 1. Which Pre-Entry Filters Worked Best?
 

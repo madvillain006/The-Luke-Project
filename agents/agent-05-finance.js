@@ -1,10 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
 const { snapshots, events } = require("../lib/paths");
 
-const client = new Anthropic();
 const MEMORY_FILE = snapshots.memory;
 const LOG_FILE = events.lukeLog;
 

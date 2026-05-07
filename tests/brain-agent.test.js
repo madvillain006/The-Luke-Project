@@ -397,7 +397,7 @@ describe('Luke brain agent core', () => {
     expect(spine.first_30_days).toHaveLength(4);
   });
 
-  it('builds the developer stack spine with Claude, Gemini, then local Ollama order', () => {
+  it('builds the developer stack spine with hosted and local fallback order', () => {
     const paths = makePaths();
     const spine = buildDeveloperStackSpine({
       paths,
@@ -410,10 +410,12 @@ describe('Luke brain agent core', () => {
 
     expect(spine.agent).toBe('developer-stack');
     expect(spine.status).toBe('building');
-    expect(spine.provider_order.map(provider => provider.id)).toEqual(['claude', 'gemini', 'ollama']);
+    expect(spine.provider_order.map(provider => provider.id)).toEqual(['gemini', 'groq', 'deepseek', 'ollama', 'claude']);
     expect(spine.provider_order.find(provider => provider.id === 'claude').configured).toBe(true);
     expect(spine.provider_order.find(provider => provider.id === 'claude').lane).toBe('remote/API');
     expect(spine.provider_order.find(provider => provider.id === 'gemini').configured).toBe(true);
+    expect(spine.provider_order.find(provider => provider.id === 'groq').configured).toBe(false);
+    expect(spine.provider_order.find(provider => provider.id === 'deepseek').configured).toBe(false);
     expect(spine.provider_order.find(provider => provider.id === 'ollama').lane).toBe('local/private');
     expect(spine.local_only_truth).toContain('Only the Ollama/local-model lane');
     expect(Object.keys(spine.subagents)).toEqual([

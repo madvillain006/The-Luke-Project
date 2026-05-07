@@ -1,14 +1,28 @@
 const express = require("express");
 const router = express.Router();
-const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
 const path = require("path");
 const { events } = require("../lib/paths");
+const { createRoutedText, flattenMessages } = require("../lib/llm-client");
 
-const client = new Anthropic();
 const LOG_FILE = events.lukeLog;
 const PIPELINE_FILE = path.join(__dirname, "../OPPORTUNITY_PIPELINE.md");
 const OPPS_FILE = path.join(__dirname, "../opportunities.jsonl");
+
+async function createFreeTextMessage(request) {
+  const routed = await createRoutedText({
+    model: request.model,
+    maxTokens: request.max_tokens || 300,
+    system: request.system,
+    messages: request.messages,
+    userMessage: flattenMessages(request.messages),
+    feature: "summarize",
+    allowAnthropic: false,
+  });
+  return { content: [{ text: routed.text }], usage: {}, routed };
+}
+
+const client = { messages: { create: createFreeTextMessage } };
 
 function log(type, data) {
   fs.appendFileSync(LOG_FILE, JSON.stringify({ timestamp: new Date().toISOString(), type, data }) + "\n");

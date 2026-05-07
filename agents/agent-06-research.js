@@ -1,11 +1,10 @@
 const express = require("express");
-const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
 const path = require("path");
 const { events, snapshots } = require("../lib/paths");
+const { createRoutedText } = require("../lib/llm-client");
 
 const router = express.Router();
-const client = new Anthropic();
 
 const MEMORY_FILE = snapshots.memory;
 const HISTORY_FILE = events.discordHistory;
@@ -64,14 +63,17 @@ function buildAgent06System() {
     "Tone: direct. No filler.";
 }
 
-async function createMessage(model, maxTokens, content) {
-  const response = await client.messages.create({
+async function createMessage(model, maxTokens, content, options = {}) {
+  const routed = await createRoutedText({
     model,
-    max_tokens: maxTokens,
+    maxTokens,
     system: buildAgent06System(),
-    messages: [{ role: "user", content }]
+    userMessage: content,
+    feature: options.feature || (/opus/i.test(model) ? "research_synth" : "summarize"),
+    fallbackFeature: options.fallbackFeature || "summarize",
+    allowAnthropic: options.allowAnthropic ?? /opus/i.test(model),
   });
-  return response.content[0].text;
+  return routed.text;
 }
 
 router.post("/synthesize", async (req, res) => {

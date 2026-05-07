@@ -84,7 +84,7 @@ function populateTrade(trade) {
     document.getElementById('conf').textContent   =
         (trade.confluence_score || trade.confluence?.score || '—') + ' — ' +
         (trade.confluence_confidence || trade.confluence?.confidence || '');
-    document.getElementById('regime').textContent = trade.sienna_regime || '—';
+    document.getElementById('regime').textContent = trade.katbot_regime || '-';
     document.getElementById('sources').textContent =
         'Sources: ' + (trade.confluence?.sources?.join(', ') || '—');
 

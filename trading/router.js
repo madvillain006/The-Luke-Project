@@ -29,7 +29,7 @@ const {
   getApexConsistencyReason,
   getApexPreTradeFloorBlock,
 } = require("./risk");
-const { getSiennaRegime } = require("../lib/sienna-regime");
+const { getKatbotRegime } = require("../lib/katbot-regime");
 const { loadDubzState } = require("../lib/parse-dubz");
 const { loadMemory: loadLevelMemory } = require("../lib/level-memory");
 const { queryLevelsAcrossEquivalents, scoreLevel } = require("../lib/confluence-engine");
@@ -835,10 +835,10 @@ router.post("/evaluate", async (req, res) => {
     signal.phase2_alignment = entriesAlignment.best;
     signal.phase2_freshness = entriesAlignment.freshness;
 
-    // Sienna regime gate
-    const regime = getSiennaRegime();
-    signal.sienna_regime = regime.regime;
-    signal.sienna_reason = regime.reason;
+    // KatBot regime gate
+    const regime = getKatbotRegime();
+    signal.katbot_regime = regime.regime;
+    signal.katbot_reason = regime.reason;
     if (regime.regime === 'RISK_OFF') {
       const todayStr = new Date().toISOString().slice(0, 10);
       let todayCount = 0;
@@ -847,11 +847,11 @@ router.post("/evaluate", async (req, res) => {
         todayCount = tlines.filter(l => { try { return JSON.parse(l).staged_at?.startsWith(todayStr); } catch { return false; } }).length;
       } catch {}
       if (todayCount >= regime.max_trades_today) {
-        log('autonomous-sienna-block', { regime: regime.regime, reason: regime.reason, today_count: todayCount, max: regime.max_trades_today });
+        log('autonomous-katbot-regime-block', { regime: regime.regime, reason: regime.reason, today_count: todayCount, max: regime.max_trades_today });
         return;
       }
       if (signal.confluence_confidence && signal.confluence_confidence !== 'HIGH') {
-        log('autonomous-sienna-block', { regime: regime.regime, reason: 'RISK_OFF requires HIGH confluence', confluence: signal.confluence_confidence });
+        log('autonomous-katbot-regime-block', { regime: regime.regime, reason: 'RISK_OFF requires HIGH confluence', confluence: signal.confluence_confidence });
         return;
       }
     } else if (regime.regime === 'NEUTRAL') {
@@ -862,7 +862,7 @@ router.post("/evaluate", async (req, res) => {
         todayCount = tlines.filter(l => { try { return JSON.parse(l).staged_at?.startsWith(todayStr); } catch { return false; } }).length;
       } catch {}
       if (todayCount >= regime.max_trades_today) {
-        log('autonomous-sienna-block', { regime: regime.regime, reason: regime.reason, today_count: todayCount, max: regime.max_trades_today });
+        log('autonomous-katbot-regime-block', { regime: regime.regime, reason: regime.reason, today_count: todayCount, max: regime.max_trades_today });
         return;
       }
     }

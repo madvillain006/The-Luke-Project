@@ -32,6 +32,7 @@ afterEach(() => {
 describe('Kat ticker watchlist', () => {
   it('extracts repeated non-index tickers without treating index tickers as single-name candidates', () => {
     expect(extractTickerMentions('$GLW breakout with $SPY context')).toEqual(['GLW']);
+    expect(extractTickerMentions('$glw breakout with $spy context')).toEqual(['GLW']);
     expect(isWatchlistTicker('GLW')).toBe(true);
     expect(isWatchlistTicker('SPY')).toBe(false);
   });

@@ -65,7 +65,38 @@ describe('Mancini current log export', () => {
     }
 
     expect(activePrices).not.toContain(2026);
-    expect(activePrices).not.toContain(6591);
+    expect(activePrices).toContain(6591);
     expect(result.posts_scanned).toBeGreaterThanOrEqual(2);
+  });
+
+  it('parses Reddit exports where Adam_Mankini and commented metadata are split across lines', () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'tv-mancini-split-'));
+    const dir = path.join(root, 'data', 'research', 'mancini');
+    fs.mkdirSync(dir, { recursive: true });
+    const file = path.join(dir, 'The Mancini Logs 3-15-2026 - 5-6-2026.txt');
+    fs.writeFileSync(file, [
+      'The Mancini Logs 3-15-2026 - 5-6-2026',
+      '',
+      'r/ThePiratesDen',
+      '- The Airboat for Week of 5/3/2026',
+      'Adam_Mankini',
+      '  commented 19 hr. ago',
+      'Targets given at 8am for next leg up 7268 (hit), 7277 (hit), 7298-302 above.',
+      '',
+      '7268 micro support. 7242 below. Bonus targets are 7311, 7319, 7329.',
+      '',
+      'Upvote',
+    ].join('\n'), 'utf8');
+
+    const result = extractManciniLevelsFromLog({
+      filePath: file,
+      latestDate: '2026-05-06',
+      now: new Date('2026-05-06T17:30:00.000Z'),
+    });
+    const activePrices = result.levels.filter(level => level.active).map(level => level.price);
+
+    for (const price of [7242, 7268, 7277, 7298, 7302, 7311, 7319, 7329]) {
+      expect(activePrices).toContain(price);
+    }
   });
 });

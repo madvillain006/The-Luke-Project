@@ -9,6 +9,7 @@ discord-history.jsonl.bak
 bobby-context.jsonl
 autonomous-state.json
 data/*
+!data/README.md
 !data/futures-rollover-calendar.json
 !data/.gitkeep
 !data/research/
@@ -95,3 +96,8 @@ luke-log-drafts.json
 !.agent/goals/**/
 !.agent/goals/**/ledger.jsonl
 .agent/goals/active/
+.codeboarding/cache/
+.codeboarding/logs/
+.codeboarding/snapshot-worktree/
+.codeboarding/snapshots/
+.codeboarding/*.lock

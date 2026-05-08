@@ -10,6 +10,7 @@ This folder keeps durable project documentation. Generated run outputs belong un
 - `LIVE_BLOCKERS.md` - live execution and live-arming blockers.
 - `TRADINGVIEW_INDICATOR.md` - TradingView/Pine safety notes and rerun commands.
 - `TRADINGVIEW_HARDMODE_RESEARCH.md` - hard-mode strategy and slippage research summary.
+- `LUKE_COMPANION_MEMORY.md` - shared memory contract for Luke Chat and Trading.
 
 ## Historical Or Domain Notes
 

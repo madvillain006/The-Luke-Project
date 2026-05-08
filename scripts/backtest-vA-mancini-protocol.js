@@ -5,7 +5,7 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const PROTOCOL_DIR = path.join(ROOT, 'artifacts', 'research', 'mancini-context-protocol');
-const OUT_DIR = path.join(ROOT, 'artifacts', 'research', 'mancini-v5-protocol-backtest');
+const OUT_DIR = path.join(ROOT, 'artifacts', 'research', 'mancini-vA-protocol-backtest');
 
 const TICK = 0.25;
 const CLOSE_ABOVE = 0.25;
@@ -17,6 +17,7 @@ const POINT_VALUE = 50;
 const COST_PER_CONTRACT = 17.5; // 0.25 ES point entry slip + $5 commission
 const DEDUPE_MINUTES = 20;
 const DEDUPE_POINTS = 1.25;
+const RETEST_LIMIT_EXPIRY_MINUTES = 10;
 
 function ensureDir(dir) {
   fs.mkdirSync(dir, { recursive: true });
@@ -195,6 +196,14 @@ function minutesBetween(a, b) {
   return Math.abs(dateB - dateA) / 60000;
 }
 
+function addMinutesEt(value, minutes) {
+  if (!value) return '';
+  const date = new Date(`${value.replace(' ', 'T')}:00Z`);
+  if (!Number.isFinite(date.getTime())) return '';
+  date.setUTCMinutes(date.getUTCMinutes() + minutes);
+  return `${date.getUTCFullYear()}-${pad2(date.getUTCMonth() + 1)}-${pad2(date.getUTCDate())} ${pad2(date.getUTCHours())}:${pad2(date.getUTCMinutes())}`;
+}
+
 function classifyEvent(row) {
   const primary = row.primary_role;
   const tags = row.tags || '';
@@ -253,8 +262,22 @@ function targetForTrade({ klass, planDate, entry }, targetMap, allLevelMap) {
   return next && next > entry + TP1_POINTS ? next : entry + SCALP_FALLBACK_TP2_POINTS;
 }
 
-function findFirstTouch(bars, startIndex, price) {
-  for (let i = Math.max(0, startIndex); i < bars.length; i += 1) {
+function vALiveSignalCloseEt(event, klass) {
+  if (klass === 'TARGET_ONLY' || klass === 'MANUAL_CAUTION') return '';
+  return klass === 'MANCINI_RECLAIM' ? event.acceptance3_et || '' : event.acceptance2_et || '';
+}
+
+function signalTimeForMode(event, mode) {
+  const klass = classifyEvent(event);
+  if (mode === 'vA_live_1m_retest_limit') {
+    const closeEt = vALiveSignalCloseEt(event, klass);
+    return closeEt ? addMinutesEt(closeEt, 1) : '';
+  }
+  return event.entry_et || '';
+}
+
+function findFirstTouch(bars, startIndex, price, endIndex = bars.length - 1) {
+  for (let i = Math.max(0, startIndex); i < bars.length && i <= endIndex; i += 1) {
     if (bars[i].low <= price && bars[i].high >= price) return i;
   }
   return -1;
@@ -386,11 +409,21 @@ function simulateTrade(event, bars, timeIndex, targetMap, allLevelMap, mode) {
   let fillIndex = -1;
   let signalIndexUsed = signalIndex;
   let orderArmedIndex = signalIndex;
+  let orderExpireIndex = -1;
   if (mode === 'watch_next_minute_limit') {
     const startTime = event.sweep_et || event.touch_et || event.entry_et;
     signalIndexUsed = timeIndex.get(startTime) ?? signalIndex;
     orderArmedIndex = signalIndexUsed + 1;
     fillIndex = findFirstTouch(bars, orderArmedIndex, plannedEntry);
+  } else if (mode === 'vA_live_1m_retest_limit') {
+    const signalCloseEt = vALiveSignalCloseEt(event, klass);
+    const orderArmedEt = addMinutesEt(signalCloseEt, 1);
+    if (!signalCloseEt || !orderArmedEt) return null;
+    signalIndexUsed = timeIndex.get(signalCloseEt);
+    orderArmedIndex = timeIndex.get(orderArmedEt);
+    if (orderArmedIndex === undefined) return null;
+    orderExpireIndex = Math.min(bars.length - 1, orderArmedIndex + RETEST_LIMIT_EXPIRY_MINUTES - 1);
+    fillIndex = findFirstTouch(bars, orderArmedIndex, plannedEntry, orderExpireIndex);
   } else if (mode === 'after_signal_limit') {
     orderArmedIndex = signalIndex;
     fillIndex = findFirstTouch(bars, signalIndex, plannedEntry);
@@ -406,8 +439,9 @@ function simulateTrade(event, bars, timeIndex, targetMap, allLevelMap, mode) {
       class: klass,
       mode,
       status: 'no_fill',
-      signal_et: event.entry_et,
+      signal_et: mode === 'vA_live_1m_retest_limit' ? vALiveSignalCloseEt(event, klass) : event.entry_et,
       order_armed_et: bars[orderArmedIndex]?.et_time || event.entry_et,
+      order_expire_et: orderExpireIndex >= 0 ? bars[orderExpireIndex]?.et_time : '',
       entry,
       tp1: entry + TP1_POINTS,
       tp2: targetForTrade({ klass, planDate, entry }, targetMap, allLevelMap),
@@ -431,9 +465,10 @@ function simulateTrade(event, bars, timeIndex, targetMap, allLevelMap, mode) {
     class: klass,
     mode,
     status: pathResult.status,
-    signal_et: event.entry_et,
+    signal_et: mode === 'vA_live_1m_retest_limit' ? vALiveSignalCloseEt(event, klass) : event.entry_et,
     watch_start_et: event.sweep_et || event.touch_et || '',
     order_armed_et: bars[orderArmedIndex]?.et_time || event.entry_et,
+    order_expire_et: orderExpireIndex >= 0 ? bars[orderExpireIndex]?.et_time : '',
     fill_et: bars[fillIndex]?.et_time || '',
     exit_et: pathResult.exit_et || '',
     entry: round2(entry),
@@ -449,19 +484,21 @@ function simulateTrade(event, bars, timeIndex, targetMap, allLevelMap, mode) {
   };
 }
 
-function dedupeEvents(events) {
+function dedupeEvents(events, mode) {
   const sorted = events
     .filter((row) => row.event_status === 'entry_model_available' && row.entry_et)
     .map((row) => ({ ...row, price_num: Number(row.price), class: classifyEvent(row) }))
     .filter((row) => row.class !== 'TARGET_ONLY')
-    .sort((a, b) => a.entry_et.localeCompare(b.entry_et) || a.price_num - b.price_num);
+    .map((row) => ({ ...row, signal_sort_et: signalTimeForMode(row, mode) }))
+    .filter((row) => row.signal_sort_et)
+    .sort((a, b) => a.signal_sort_et.localeCompare(b.signal_sort_et) || a.price_num - b.price_num);
   const kept = [];
   for (const event of sorted) {
     const duplicate = kept.some((row) => (
       row.plan_date === event.plan_date
       && row.class === event.class
       && Math.abs(row.price_num - event.price_num) <= DEDUPE_POINTS
-      && minutesBetween(row.entry_et, event.entry_et) <= DEDUPE_MINUTES
+      && minutesBetween(row.signal_sort_et, event.signal_sort_et) <= DEDUPE_MINUTES
     ));
     if (!duplicate) kept.push(event);
   }
@@ -469,23 +506,26 @@ function dedupeEvents(events) {
 }
 
 function replayMode(events, barsBySession, targetMap, allLevelMap, mode) {
-  const candidates = dedupeEvents(events);
+  const candidates = dedupeEvents(events, mode);
   const results = [];
   const openUntilByClass = new Map();
+  const useGlobalPending = mode === 'vA_live_1m_retest_limit';
+  let globalBusyUntil = '';
   for (const event of candidates) {
     const bars = barsBySession.get(event.plan_date) || [];
     if (!bars.length) continue;
     const timeIndex = indexByTime(bars);
     const klass = classifyEvent(event);
-    const openUntil = openUntilByClass.get(`${event.plan_date}:${klass}`);
-    if (openUntil && event.entry_et < openUntil) {
+    const signalSortEt = event.signal_sort_et || event.entry_et;
+    const openUntil = useGlobalPending ? globalBusyUntil : openUntilByClass.get(`${event.plan_date}:${klass}`);
+    if (openUntil && signalSortEt < openUntil) {
       results.push({
         plan_date: event.plan_date,
         level: Number(event.price),
         class: klass,
         mode,
         status: 'suppressed_while_open',
-        signal_et: event.entry_et,
+        signal_et: signalSortEt,
         net_dollars: 0,
         gross_points: 0,
         contracts: 0,
@@ -495,7 +535,13 @@ function replayMode(events, barsBySession, targetMap, allLevelMap, mode) {
     const result = simulateTrade(event, bars, timeIndex, targetMap, allLevelMap, mode);
     if (!result) continue;
     results.push(result);
-    if (!['no_fill', 'blocked_by_protocol', 'suppressed_while_open'].includes(result.status) && result.exit_et) {
+    if (useGlobalPending) {
+      if (result.status === 'no_fill' && result.order_expire_et) {
+        globalBusyUntil = result.order_expire_et;
+      } else if (!['blocked_by_protocol', 'suppressed_while_open'].includes(result.status) && result.exit_et) {
+        globalBusyUntil = result.exit_et;
+      }
+    } else if (!['no_fill', 'blocked_by_protocol', 'suppressed_while_open'].includes(result.status) && result.exit_et) {
       openUntilByClass.set(`${event.plan_date}:${klass}`, result.exit_et);
     }
   }
@@ -564,14 +610,14 @@ function writeCsv(filePath, rows) {
 
 function writeReport({ metadata, summaries, samples }) {
   const lines = [];
-  lines.push('# Luke v5 Mancini Protocol Backtest');
+  lines.push('# Luke vA Mancini Protocol Backtest');
   lines.push('');
   lines.push(`Generated: ${metadata.generated_at}`);
   lines.push('');
   lines.push('## Model');
   lines.push('');
-  lines.push('- This is a no-lookahead 1m replay of the v5 protocol idea, not a TradingView compile result.');
-  lines.push('- It uses the same parsed Mancini context artifacts as the v5 Pine candidate.');
+  lines.push('- This is a no-lookahead 1m replay of the vA protocol idea, not a TradingView compile result.');
+  lines.push('- It uses the same parsed Mancini context artifacts as the vA Pine candidate.');
   lines.push('- Duplicates within 20 minutes and 1.25 points are collapsed into one trigger.');
   lines.push('- One open trade per day/class is allowed at a time, matching the Pine single-tracked-candidate behavior.');
   lines.push('- 1m bars cannot prove intraminute order, so mixed stop/target bars are scored conservatively and flagged.');
@@ -579,7 +625,8 @@ function writeReport({ metadata, summaries, samples }) {
   lines.push('## Execution Models');
   lines.push('');
   lines.push('- `watch_next_minute_limit`: assumes a limit is armed only after the WATCH/sweep minute exists.');
-  lines.push('- `after_signal_limit`: sends a limit only after the LONG/reclaim confirmation signal.');
+  lines.push('- `after_signal_limit`: sends a limit only after the LONG/reclaim confirmation signal from the original protocol event.');
+  lines.push('- `vA_live_1m_retest_limit`: closer to current Pine vA; SCALP classes arm after 2 completed 1m acceptance closes, MANCINI_RECLAIM after 3 completed 1m acceptance closes, then rest a limit at Luke entry for 10 minutes with one global pending/open trade at a time.');
   lines.push('- `after_signal_market`: enters at the signal minute open. This is closest to a naked option/swing alert interpretation.');
   lines.push('');
   lines.push('## Summary');
@@ -613,7 +660,7 @@ function writeReport({ metadata, summaries, samples }) {
   lines.push('- In this run, `after_signal_limit` is the strongest model. It implies the edge is in waiting for confirmation, then taking the retest, not blindly resting orders from WATCH.');
   lines.push('- `watch_next_minute_limit` performs poorly because many WATCH sweeps keep chopping through the level before acceptance forms.');
   lines.push('- `after_signal_market` has a high win rate but gives away too much edge on entry price after ES costs; it is more relevant to option-style momentum than futures execution.');
-  lines.push('- `MANUAL_CAUTION` rows are intentionally blocked in v5 default mode.');
+  lines.push('- `MANUAL_CAUTION` rows are intentionally blocked in vA default mode.');
   lines.push('');
   fs.writeFileSync(path.join(OUT_DIR, 'report.md'), `${lines.join('\n')}\n`, 'utf8');
 }
@@ -629,7 +676,7 @@ function main() {
   const completeEvents = events.filter((row) => completeSessions.has(row.plan_date));
   const targetMap = buildTargetMap(levelRows);
   const allLevelMap = buildAllLevelMap(levelRows, satyRows.filter((row) => String(row.valid).toLowerCase() === 'true'));
-  const modes = ['watch_next_minute_limit', 'after_signal_limit', 'after_signal_market'];
+  const modes = ['watch_next_minute_limit', 'after_signal_limit', 'vA_live_1m_retest_limit', 'after_signal_market'];
   const allResults = [];
   const summaries = {};
   for (const mode of modes) {

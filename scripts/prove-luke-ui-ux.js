@@ -153,10 +153,15 @@ async function waitForDailyWindow(page) {
 async function waitForRadarWindow(page) {
   await page.waitForFunction(() => {
     const body = document.body.innerText || '';
+    const chipsReady = ['summary-chip', 'source-health-chip', 'review-chip', 'recent-chip']
+      .every(id => {
+        const text = document.getElementById(id)?.textContent || '';
+        return text.trim() && !/loading/i.test(text);
+      });
     return /Luke Radar/i.test(body)
       && /Capture/i.test(body)
       && /Morning Intel/i.test(body)
-      && !/loading/i.test(body);
+      && chipsReady;
   }, { timeout: 30000 });
 }
 
@@ -190,10 +195,16 @@ async function openRadarPanelFromShell(page) {
   await page.waitForFunction(() => {
     const frame = document.querySelector('#radar-frame');
     const text = frame?.contentWindow?.document?.body?.innerText || '';
+    const doc = frame?.contentWindow?.document;
+    const chipsReady = ['summary-chip', 'source-health-chip', 'review-chip', 'recent-chip']
+      .every(id => {
+        const chipText = doc?.getElementById(id)?.textContent || '';
+        return chipText.trim() && !/loading/i.test(chipText);
+      });
     return /Status/i.test(text)
       && /Capture/i.test(text)
       && /Morning Intel/i.test(text)
-      && !/loading/i.test(text);
+      && chipsReady;
   }, { timeout: 30000 });
 }
 
@@ -316,8 +327,8 @@ async function captureScreenshots() {
         file: 'luke-chat-desktop.png',
         viewport: desktop,
         waitForText: ['DASHBOARD'],
-        action: async page => sendChatCommand(page, '/status', 'LUKE ONLINE'),
-        mustContain: ['LUKE ONLINE', 'Autonomous: recommendation-only'],
+        action: async page => sendChatCommand(page, '/status', 'belongs in the Trading tab'),
+        mustContain: ['Trading tab', 'Trading (Analysis)'],
       },
       {
         key: 'trading-chat-desktop',

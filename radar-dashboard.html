@@ -49,6 +49,7 @@
 
     button,
     input,
+    select,
     textarea {
       font: inherit;
     }
@@ -155,6 +156,13 @@
       text-transform: uppercase;
     }
 
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
     .panel-body {
       padding: 12px;
       display: grid;
@@ -232,6 +240,7 @@
     .chip.warn { color: var(--accent); border-color: rgba(210, 154, 63, 0.45); }
 
     textarea,
+    select,
     input {
       width: 100%;
       border: 1px solid var(--border);
@@ -239,6 +248,15 @@
       background: var(--bg-shell);
       color: var(--text);
       padding: 8px;
+    }
+
+    .mini-select {
+      width: auto;
+      min-height: 24px;
+      max-width: 160px;
+      padding: 3px 6px;
+      color: var(--text-muted);
+      font-size: 11px;
     }
 
     textarea {
@@ -251,11 +269,29 @@
       gap: 8px;
     }
 
+    .review-list {
+      display: grid;
+      gap: 10px;
+    }
+
     .form-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       justify-content: flex-end;
+    }
+
+    .item-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
+    .item-actions button {
+      min-height: 24px;
+      padding: 3px 7px;
+      font-size: 11px;
     }
 
     @media (max-width: 980px) {
@@ -302,12 +338,32 @@
 
       <section class="panel">
         <div class="panel-header">
+          <span>Source Health</span>
+          <span class="chip" id="source-health-chip">loading</span>
+        </div>
+        <div class="panel-body" id="source-health-list"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
           <span>Capture</span>
           <span class="chip good">append-only</span>
         </div>
         <div class="panel-body">
           <form class="form-grid" id="capture-form">
             <input id="source-label" name="source_label" placeholder="source label, e.g. sybil, x, voice" value="manual">
+            <select id="source-type" name="source_type" aria-label="Radar source type">
+              <option value="auto">Auto source type</option>
+              <option value="sybil_paste">Sybil paste</option>
+              <option value="katbot_paste">Katbot paste</option>
+              <option value="voice_note">Voice note</option>
+              <option value="article">Article / reader</option>
+              <option value="link">Link</option>
+              <option value="screenshot_note">Screenshot / OCR note</option>
+              <option value="pine_trading_note">Pine / trading note</option>
+              <option value="reminder">Reminder</option>
+              <option value="manual_paste">Manual paste</option>
+            </select>
             <input id="source-url" name="source_url" placeholder="optional source URL">
             <textarea id="capture-text" name="text" placeholder="Paste a link note, Sybil dump, article excerpt, voice transcript, screenshot note, reminder, or idea."></textarea>
             <div class="form-actions">
@@ -324,7 +380,21 @@
           <span>Needs You</span>
           <span class="chip warn" id="review-chip">loading</span>
         </div>
-        <div class="panel-body" id="review-list"></div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <input id="review-note" placeholder="review note">
+            <input id="review-next-action" placeholder="next action">
+          </div>
+          <div class="review-list" id="review-list"></div>
+        </div>
+      </section>
+
+      <section class="panel full">
+        <div class="panel-header">
+          <span>Evidence Detail</span>
+          <span class="chip" id="detail-chip">none</span>
+        </div>
+        <div class="panel-body" id="detail-body"></div>
       </section>
 
       <section class="panel full">
@@ -338,7 +408,20 @@
       <section class="panel full">
         <div class="panel-header">
           <span>Recent Inbox</span>
-          <span class="chip" id="recent-chip">loading</span>
+          <span class="header-actions">
+            <select class="mini-select" id="recent-state-filter" aria-label="Filter Radar inbox by review state">
+              <option value="all">All states</option>
+              <option value="new">New</option>
+              <option value="reviewing">Reviewing</option>
+              <option value="accepted">Accepted</option>
+              <option value="contradicted">Contradicted</option>
+              <option value="archived">Archived</option>
+            </select>
+            <select class="mini-select" id="recent-source-filter" aria-label="Filter Radar inbox by source type">
+              <option value="all">All types</option>
+            </select>
+            <span class="chip" id="recent-chip">loading</span>
+          </span>
         </div>
         <div class="panel-body" id="recent-list"></div>
       </section>
@@ -349,6 +432,7 @@
     if (new URLSearchParams(location.search).get('embed')) document.body.classList.add('embed');
 
     const $ = id => document.getElementById(id);
+    let latestStatus = null;
 
     function escapeHtml(value) {
       return String(value ?? '').replace(/[&<>"']/g, ch => ({
@@ -367,22 +451,49 @@
       return (values || []).slice(0, 6).map(value => `<span class="chip ${klass}">${escapeHtml(value)}</span>`).join('');
     }
 
-    function itemHtml(item) {
+    function stateClass(state) {
+      if (state === 'accepted') return 'good';
+      if (state === 'contradicted') return 'bad';
+      if (state === 'reviewing') return 'warn';
+      if (state === 'archived') return '';
+      return 'blue';
+    }
+
+    function itemActions(item, options = {}) {
+      return `
+        <div class="item-actions" data-item-id="${escapeHtml(item.id)}">
+          <button type="button" data-detail-id="${escapeHtml(item.id)}">DETAILS</button>
+          ${options.actions ? `
+            <button type="button" data-review-state="reviewing">REVIEWING</button>
+            <button type="button" data-review-state="accepted">ACCEPT</button>
+            <button type="button" data-review-state="contradicted">CONTRADICT</button>
+            <button type="button" data-review-state="archived">ARCHIVE</button>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    function itemHtml(item, options = {}) {
       const title = item.title || item.raw_text_preview || item.source_url || item.source_label || 'Radar item';
       const meta = [
         item.source_label,
         item.source_type,
         item.review_priority,
+        item.latest_review?.next_action,
       ].filter(Boolean).join(' / ');
       return `
         <div class="item">
           <div class="item-title">${escapeHtml(title)}</div>
           <div class="item-meta">${escapeHtml(meta)}</div>
           <div class="chip-row">
+            <span class="chip ${stateClass(item.review_state)}">${escapeHtml(item.review_state || 'new')}</span>
+            <span class="chip">${escapeHtml(item.source_type || 'manual_paste')}</span>
             ${chips(item.symbols, 'blue')}
             ${chips(item.themes, 'warn')}
             ${item.sybil_context?.context_records ? `<span class="chip good">${item.sybil_context.context_records} Sybil contexts</span>` : ''}
           </div>
+          ${item.latest_review?.note ? `<div class="item-meta">Review note: ${escapeHtml(item.latest_review.note)}</div>` : ''}
+          ${itemActions(item, options)}
         </div>
       `;
     }
@@ -405,32 +516,125 @@
       return `<div class="item"><div class="muted">${escapeHtml(text)}</div></div>`;
     }
 
+    function renderDetail(data) {
+      const item = data?.item;
+      if (!item) {
+        $('detail-chip').textContent = 'none';
+        $('detail-body').innerHTML = empty('Select a Radar item to inspect evidence.');
+        return;
+      }
+      $('detail-chip').textContent = item.review_state || 'new';
+      $('detail-body').innerHTML = `
+        <div class="item">
+          <div class="item-title">${escapeHtml(item.title || item.raw_text_preview || item.source_label || item.id)}</div>
+          <div class="item-meta">${escapeHtml([item.source_label, item.source_type, item.review_priority, item.review_state].filter(Boolean).join(' / '))}</div>
+          <div class="chip-row">
+            ${chips(item.symbols, 'blue')}
+            ${chips(item.themes, 'warn')}
+            ${(item.relationship_ids || []).map(id => `<span class="chip">${escapeHtml(id)}</span>`).join('')}
+          </div>
+          <div class="item-meta">${escapeHtml(item.raw_text || item.raw_text_preview || 'No raw evidence text stored for this item.')}</div>
+        </div>
+        ${(item.review_history || []).length ? item.review_history.map(review => `
+          <div class="item">
+            <div class="item-title">${escapeHtml(review.review_state)} / ${escapeHtml(formatAge(review.ts))}</div>
+            <div class="item-meta">${escapeHtml([review.note, review.next_action].filter(Boolean).join(' / ') || 'No note')}</div>
+          </div>
+        `).join('') : empty('No review history yet.')}
+      `;
+    }
+
+    async function loadDetail(itemId) {
+      $('detail-chip').textContent = 'loading';
+      try {
+        renderDetail(await fetchJson(`/agent/brain/radar/item/${encodeURIComponent(itemId)}`));
+      } catch (err) {
+        $('detail-chip').textContent = 'error';
+        $('detail-body').innerHTML = empty(err.message);
+      }
+    }
+
+    function formatAge(value) {
+      const ms = new Date(value || 0).getTime();
+      if (!Number.isFinite(ms)) return 'unknown';
+      const minutes = Math.max(0, Math.round((Date.now() - ms) / 60000));
+      if (minutes < 60) return `${minutes}m ago`;
+      const hours = Math.round(minutes / 60);
+      if (hours < 48) return `${hours}h ago`;
+      return `${Math.round(hours / 24)}d ago`;
+    }
+
+    function renderSourceHealth(status) {
+      const sources = status?.source_health || [];
+      $('source-health-chip').textContent = `${sources.length} sources`;
+      $('source-health-list').innerHTML = sources.length
+        ? sources.map(source => `
+          <div class="item">
+            <div class="item-title">${escapeHtml(source.source_label)}</div>
+            <div class="item-meta">${escapeHtml(source.source_type)} / ${escapeHtml(source.items || 0)} item(s) / last ${escapeHtml(formatAge(source.last_seen_at))}</div>
+            <div class="chip-row">
+              <span class="chip ${source.freshness_status === 'stale' ? 'bad' : 'good'}">${escapeHtml(source.freshness_status || 'unknown')}</span>
+              <span class="chip ${source.quality_score == null ? '' : 'good'}">${source.quality_score == null ? 'quality warming up' : `quality ${source.quality_score}`}</span>
+              <span class="chip good">${escapeHtml(source.decisions?.accepted || 0)} accepted</span>
+              <span class="chip bad">${escapeHtml(source.decisions?.contradicted || 0)} contradicted</span>
+              <span class="chip">${escapeHtml(source.decisions?.archived || 0)} archived</span>
+            </div>
+          </div>
+        `).join('')
+        : empty('No sources captured yet.');
+    }
+
+    function refreshSourceFilter(status) {
+      const select = $('recent-source-filter');
+      const current = select.value || 'all';
+      const types = Object.keys(status?.source_type_counts || {}).sort();
+      select.innerHTML = '<option value="all">All types</option>' + types.map(type => `<option value="${escapeHtml(type)}">${escapeHtml(type)}</option>`).join('');
+      select.value = types.includes(current) ? current : 'all';
+    }
+
+    function renderRecentInbox(status) {
+      const all = status?.recent || [];
+      const state = $('recent-state-filter').value || 'all';
+      const sourceType = $('recent-source-filter').value || 'all';
+      const filtered = all.filter(item => {
+        const stateOk = state === 'all' || item.review_state === state;
+        const sourceOk = sourceType === 'all' || item.source_type === sourceType;
+        return stateOk && sourceOk;
+      });
+      $('recent-chip').textContent = `${filtered.length}/${all.length} shown`;
+      $('recent-list').innerHTML = filtered.length
+        ? filtered.map(itemHtml).join('')
+        : empty('No Radar items match this filter.');
+    }
+
     async function loadRadar() {
       const [status, brief] = await Promise.all([
         fetchJson('/agent/brain/radar'),
         fetchJson('/agent/brain/radar/brief'),
       ]);
+      latestStatus = status;
       $('summary-chip').textContent = status.summary_line || 'ready';
       $('metric-fresh').textContent = status.counts?.fresh_24h ?? 0;
       $('metric-review').textContent = status.counts?.review ?? 0;
       $('metric-total').textContent = status.counts?.total ?? 0;
       $('review-chip').textContent = `${status.review_queue?.length || 0} items`;
-      $('recent-chip').textContent = `${status.recent?.length || 0} shown`;
+      renderSourceHealth(status);
+      refreshSourceFilter(status);
       $('review-list').innerHTML = (status.review_queue || []).length
-        ? status.review_queue.map(itemHtml).join('')
+        ? status.review_queue.map(item => itemHtml(item, { actions: true })).join('')
         : empty('No review items yet. Capture sources to build the Radar queue.');
       $('brief-list').innerHTML = (brief.ideas_to_verify || []).length
         ? brief.ideas_to_verify.map(briefHtml).join('')
         : empty(brief.empty_note || 'No Radar brief yet.');
-      $('recent-list').innerHTML = (status.recent || []).length
-        ? status.recent.map(itemHtml).join('')
-        : empty('No Radar captures yet.');
+      renderRecentInbox(status);
+      if (!$('detail-body').innerHTML.trim()) renderDetail(null);
     }
 
     $('capture-form').addEventListener('submit', async event => {
       event.preventDefault();
       const payload = {
         source_label: $('source-label').value,
+        source_type: $('source-type').value,
         source_url: $('source-url').value,
         text: $('capture-text').value,
       };
@@ -456,8 +660,49 @@
       $('capture-result').textContent = 'Ready.';
     });
 
+    $('review-list').addEventListener('click', async event => {
+      const button = event.target.closest('button[data-review-state]');
+      if (!button) return;
+      const row = button.closest('[data-item-id]');
+      if (!row) return;
+      const reviewState = button.getAttribute('data-review-state');
+      button.disabled = true;
+      try {
+        const note = $('review-note').value.trim();
+        const nextAction = $('review-next-action').value.trim();
+        await fetchJson('/agent/brain/radar/review', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            item_id: row.getAttribute('data-item-id'),
+            review_state: reviewState,
+            note: note || `Marked ${reviewState} from Radar UI`,
+            next_action: nextAction,
+          }),
+        });
+        await loadDetail(row.getAttribute('data-item-id'));
+        await loadRadar();
+      } catch (err) {
+        $('capture-result').textContent = err.message;
+        button.disabled = false;
+      }
+    });
+
+    document.addEventListener('click', event => {
+      const button = event.target.closest('button[data-detail-id]');
+      if (!button) return;
+      loadDetail(button.getAttribute('data-detail-id'));
+    });
+
+    $('recent-state-filter').addEventListener('change', () => renderRecentInbox(latestStatus));
+    $('recent-source-filter').addEventListener('change', () => renderRecentInbox(latestStatus));
+
     loadRadar().catch(err => {
       $('summary-chip').textContent = 'offline';
+      $('source-health-chip').textContent = 'offline';
+      $('source-health-list').innerHTML = empty(err.message);
+      $('detail-chip').textContent = 'offline';
+      $('detail-body').innerHTML = empty(err.message);
       $('review-list').innerHTML = empty(err.message);
       $('brief-list').innerHTML = empty(err.message);
       $('recent-list').innerHTML = empty(err.message);

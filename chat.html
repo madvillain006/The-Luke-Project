@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Trading Bot</title>
+  <title>Luke</title>
   <style>
     :root {
       --bg:  #000000;
@@ -542,6 +542,12 @@
       <span id="tb-trades-val">0 trades 0W 0L</span>
       <span class="tooltip">Today's trades. /review for details</span>
     </div>
+    <span class="tb-div">|</span>
+    <div class="tb-seg has-tt" id="tb-memory-wrap">
+      <span class="tb-lbl">Memory:</span>
+      <span id="tb-memory-val">SHARED</span>
+      <span class="tooltip">Shared context is available to Luke Chat and Trading.</span>
+    </div>
     <div style="margin-left:auto;display:flex;align-items:center;gap:4px;padding-right:2px;">
       <a id="dashboard-link" href="/shell" title="Return to Luke dashboard">DASHBOARD</a>
       <button id="look-btn" class="tb-killbtn has-tt" title="Take a screenshot of the current screen and ask Claude what's on it">LOOK</button>
@@ -611,7 +617,7 @@
     <div id="paste-hint" style="display:none;font-size:10px;color:var(--yel);padding:2px 6px;letter-spacing:0.5px;"></div>
     <div id="input-row">
       <input id="input" type="text" placeholder="..." autocomplete="off" />
-      <button id="send" class="has-tt">SEND<span class="tooltip">Send message to the trading bot sub-agent</span></button>
+      <button id="send" class="has-tt">SEND<span class="tooltip">Send message to Luke</span></button>
     </div>
     <div id="quick-btns">
       <button class="qbtn has-tt" data-cmd="/status">

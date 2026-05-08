@@ -1005,7 +1005,7 @@
     <header class="topbar">
       <div>In memory of my best friend</div>
       <div class="topbar-center">LUKE</div>
-      <div class="topbar-right">Status 0</div>
+      <div class="topbar-right" id="shell-status-count">Status 0</div>
     </header>
 
     <section class="bridge-strip warn" id="shell-bridge-card" aria-label="Ninja bridge watchdog">
@@ -1070,7 +1070,7 @@
     <nav class="filter-row" aria-label="Luke categories">
       <a class="filter-button system-button" data-route="/luke" href="/luke" aria-label="Open Luke system chat">
         <span class="intro-title">Luke System</span>
-        <span class="intro-copy">A local operations dashboard for trading analysis, daily planning, research, automation business work, and developer stack routing.</span>
+        <span class="intro-copy">A local companion dashboard for trading analysis, daily planning, research, automation business work, and developer stack routing.</span>
         <span class="status-copy">
           <span>&gt; Buffalo weather: <strong id="weather-line">loading</strong></span>
           <span>&gt; Brain: <strong id="brain-line">loading</strong></span>
@@ -1129,7 +1129,7 @@
 
       <a class="module-link" id="radar-launch" data-route="/radar" href="/radar">
         <div class="module-art"><div class="radar-art" aria-hidden="true"></div></div>
-        <div class="module-caption"><span>I 004</span><span class="name">Radar</span><span class="module-meta">Inbox, synthesis, review</span></div>
+        <div class="module-caption"><span>I 004</span><span class="name">Radar</span><span class="module-meta" id="radar-module-meta">Inbox, synthesis, review</span></div>
       </a>
 
       <section class="radar-panel" id="radar-panel" aria-hidden="true" aria-label="Luke radar window">
@@ -1559,7 +1559,9 @@
         setText('daily-brief-note', daily.time_label || new Date(daily.generated_at || Date.now()).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }));
         setText('brain-line', `${Object.keys(brain.subagents || {}).length} agents / ${brain.report_inbox?.count || 0} reports`);
         setText('radar-line', radar?.summary_line || 'ready / no items');
+        setText('radar-module-meta', radar?.summary_line ? `Inbox: ${radar.summary_line}` : 'Inbox, synthesis, review');
         setText('blocker-line', brain.attention?.length ? brain.attention.map(item => item.agent).join(', ') : 'none');
+        setText('shell-status-count', `Status ${(brain.attention?.length || 0) + (radar?.counts?.review || 0)}`);
         setText('runtime-line', `${formatMemory(telemetry.process?.rss_bytes)} RSS / ${formatUptime(telemetry.process?.uptime_seconds)}`);
       } catch (err) {
         setText('weather-line', 'offline');
@@ -1572,7 +1574,9 @@
         setText('daily-brief-note', 'daily offline');
         setText('brain-line', 'offline');
         setText('radar-line', 'offline');
+        setText('radar-module-meta', 'Radar offline');
         setText('blocker-line', 'offline');
+        setText('shell-status-count', 'Status !');
         setText('runtime-line', err.message);
       }
     }

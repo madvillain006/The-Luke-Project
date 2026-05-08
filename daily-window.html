@@ -172,7 +172,7 @@
   <header>
     <div>
       <h1>Luke Daily</h1>
-      <p class="subhead">Static daily brief for Luke: personal assistant, calendar, weather, mail, jobs, and attention signals.</p>
+      <p class="subhead">Static daily brief for Luke: companion system, calendar, weather, mail, jobs, Radar, and attention signals.</p>
     </div>
     <button id="refresh" type="button">Refresh</button>
   </header>
@@ -255,7 +255,7 @@
     function statusClass(status) {
       const lower = String(status || '').toLowerCase();
       if (/ok|done|synced|nominal/.test(lower)) return 'status good';
-      if (/attention|open|retry|not_|degraded/.test(lower)) return 'status warn';
+      if (/attention|open|retry|review|not_|degraded/.test(lower)) return 'status warn';
       return 'status';
     }
 
@@ -285,8 +285,16 @@
     }
 
     function renderStaticBrief(daily) {
+      const radar = daily?.radar || {};
+      const radarReviewCount = radar.counts?.review ?? 0;
+      const sourceQuality = (radar.source_health || []).slice(0, 3).map(source => {
+        const score = source.quality_score == null ? 'warming up' : source.quality_score;
+        return `${source.source_label}: ${score}`;
+      }).join('; ') || 'No Radar source history yet.';
       const rows = [
-        { title: 'Luke role', text: 'Luke is Conor\'s personal AI assistant and clawbot, built in memory of Luke, his dog and best friend. Trading is one module, not the whole system.' },
+        { title: 'Luke role', text: 'Luke is Conor\'s local companion system: planning, memory, research, reminders, and a human-gated trading lane.' },
+        { title: 'Radar watch', text: `${radar.summary_line || 'ready / no items'}${radarReviewCount ? ' - review before this enters Daily or Trading context.' : ''}` },
+        { title: 'Source quality', text: sourceQuality },
         { title: 'Calendar watch', text: daily?.schedule?.events?.length ? `${daily.schedule.events.length} synced event(s) this week.` : 'No synced calendar events in the current week cache.' },
         { title: 'Weather watch', text: 'Here, Knoxville, TN, and Wilmington, NC stay visible because those are the places you asked Luke to track.' },
         { title: 'Move watch', text: daily?.move_prompt?.question || 'Luke should keep tracking Tennessee move next actions.' },
@@ -359,6 +367,14 @@
 
     function renderAttention(daily, history, automation) {
       const rows = [];
+      for (const item of daily?.radar?.review_queue || []) {
+        const isReminder = item.review_priority === 'reminder' || (item.themes || []).includes('reminder');
+        rows.push({
+          title: isReminder ? 'Radar reminder' : 'Radar',
+          text: `${item.title || item.raw_text_preview || item.source_label || 'Radar item'} (${item.source_type || 'source'} / ${item.review_state || 'new'})`,
+          status: item.review_state || 'review',
+        });
+      }
       for (const item of daily?.mail_attention?.attention || []) rows.push({ title: 'Mail', text: item, status: 'attention' });
       for (const item of history?.blockers || []) rows.push({ title: 'History projects', text: item, status: 'attention' });
       if (history?.pipeline?.accepted) rows.push({ title: 'History projects', text: `${history.pipeline.accepted} accepted opportunity lead(s) are in Luke.`, status: 'active' });

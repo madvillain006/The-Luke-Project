@@ -45,6 +45,12 @@ const { buildSystemPrompt, loadDiscordSignals, pruneDiscordHistory } = require("
 const { handleAction, runPython } = require("./lib/actions");
 const { handleSlashCommand } = require("./lib/slash-commands");
 const { buildStoredHeatmapAnswer } = require("./lib/heatmap-context");
+const { recoverLukeCommand } = require("./lib/command-recovery");
+const {
+  buildCompanionContext,
+  buildCompanionMemorySnapshot,
+  handleCompanionMemoryTurn,
+} = require("./lib/companion-memory");
 const { llmRoutingStatus, messageNeedsAnthropic, freeAiFirst } = require("./lib/llm-routing-policy");
 const { validateMemoryKey, MAX_TEXT_BYTES, MAX_URL_LENGTH } = require("./lib/validators");
 const { detectPasteIntent } = require("./lib/detect-paste");
@@ -494,7 +500,7 @@ app.get("/brain-dashboard", (req, res) => {
 });
 
 function isTradingSurfaceCommand(text) {
-  return /^\/(?:alert|balance|dubz|entries|heatmap|mancini|ready|review|saty|trade|verdict)\b/i.test(String(text || "").trim());
+  return /^\/(?:alert|backtest|balance|confluence|dubz|entries|heatmap|history|layout|levels|mancini|ready|reset|review|runner|saty|session|status|trade|trading-mode|verdict)\b/i.test(String(text || "").trim());
 }
 
 const PROTECTED_TRADING_SMOKE_PATHS = ["/status", "/balance", "/saty", "/ready", "/alert"];
@@ -515,6 +521,22 @@ const SYSTEM_CHAT_PROMPT = [
   "If the user asks for trading-specific ingestion or recommendations, tell them to use the Trading tab so that process stays isolated.",
   "No em dashes.",
 ].join(" ");
+
+app.get("/luke/memory", (req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  return res.json(buildCompanionMemorySnapshot({ limit: Number(req.query.limit || 12) }));
+});
+
+app.get("/luke/memory/context", (req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  const surface = req.query.surface === "system" ? "system" : "trading";
+  const message = String(req.query.q || req.query.message || "");
+  return res.json({
+    ok: true,
+    surface,
+    context: buildCompanionContext({ surface, message }),
+  });
+});
 
 app.post("/chat", async (req, res) => {
   const { message = "", history, image, surface } = req.body || {};
@@ -537,12 +559,18 @@ app.post("/chat", async (req, res) => {
     const { command, cleanedText } = detectPasteIntent(message, !!image);
     if (command) routedMessage = command + " " + cleanedText;
   }
+  const commandRecovery = recoverLukeCommand(routedMessage, { surface: isSystemSurface ? "system" : "trading" });
+  if (commandRecovery) routedMessage = commandRecovery.command;
+
   if (routedMessage.startsWith("/")) {
     if (isSystemSurface && isTradingSurfaceCommand(routedMessage)) {
+      const recoveredLine = commandRecovery
+        ? `I read that as /${commandRecovery.command_name}, but it belongs in the Trading tab so the trading process stays isolated.`
+        : "That belongs in the Trading tab so the trading process stays isolated.";
       return res.json({
-        reply: "That belongs in the Trading tab so the trading process stays isolated. Open Trading (Analysis) for level ingestion, verdicts, entries, trade logs, and reviews.",
+        reply: `${recoveredLine} Open Trading (Analysis) for level ingestion, verdicts, entries, trade logs, and reviews.`,
         state: "regulated",
-        history: [...(history || []), { role: "user", content: message }, { role: "assistant", content: "That belongs in the Trading tab so the trading process stays isolated." }],
+        history: [...(history || []), { role: "user", content: message }, { role: "assistant", content: recoveredLine }],
       });
     }
     if (image && routedMessage.startsWith("/heatmap")) res._heatmapImage = image;
@@ -567,6 +595,27 @@ app.post("/chat", async (req, res) => {
     }
   }
 
+  let companionTurn = null;
+  if (!image && !routedMessage.startsWith("/")) {
+    companionTurn = handleCompanionMemoryTurn({ text: message, surface: isSystemSurface ? "system" : "trading" });
+    if (companionTurn.handled) {
+      saveSessionMessage("user", message);
+      saveSessionMessage("assistant", companionTurn.reply);
+      log("chat-companion-memory", {
+        user: message,
+        handled: true,
+        surface: isSystemSurface ? "system" : "trading",
+        captured: Boolean(companionTurn.capture?.captured),
+      });
+      return res.json({
+        reply: companionTurn.reply,
+        state: "regulated",
+        memory: { handled: true, captured: Boolean(companionTurn.capture?.captured) },
+        history: [...(history || []), { role: "user", content: message }, { role: "assistant", content: companionTurn.reply }],
+      });
+    }
+  }
+
   const messages = [...(history || []), { role: "user", content: message }];
   const _exitWarnings = isSystemSurface ? [] : checkEmotionalState(loadTodayContext());
   const state = isSystemSurface ? "regulated"
@@ -578,6 +627,7 @@ app.post("/chat", async (req, res) => {
   const hardCapActive = isHardCap();
 
   saveSessionMessage("user", message);
+  const companionContext = buildCompanionContext({ message, surface: isSystemSurface ? "system" : "trading" });
 
   const ACK_SYSTEM = "You are Luke. Acknowledge this agent result in one sentence. Be brief. No em dashes.";
 
@@ -603,8 +653,12 @@ app.post("/chat", async (req, res) => {
   // A10: fallback routing when fallback mode is active or paid-token hard cap is hit.
   if (_requireFallback().isActive() || hardCapActive) {
     try {
-      const fb = await _requireFallback().callFallback(
+      const fallbackSystemPrompt = [
         isSystemSurface ? SYSTEM_CHAT_PROMPT : "You are Luke - concise trading and ops copilot. Keep it brief and direct.",
+        companionContext,
+      ].join("\n\n");
+      const fb = await _requireFallback().callFallback(
+        fallbackSystemPrompt,
         message,
         { feature: isSystemSurface ? "status" : "chat" }
       );
@@ -632,9 +686,10 @@ app.post("/chat", async (req, res) => {
 
   const useHaiku = isSimpleMessage(message);
   const chatModel = useHaiku ? "claude-haiku-4-5-20251001" : "claude-opus-4-7";
-  const chatSystemPrompt = isSystemSurface ? SYSTEM_CHAT_PROMPT : useHaiku
+  const baseChatSystemPrompt = isSystemSurface ? SYSTEM_CHAT_PROMPT : useHaiku
     ? "You are Luke - sharp, brief, no filler. No em dashes."
     : buildSystemPrompt(state, message);
+  const chatSystemPrompt = [baseChatSystemPrompt, companionContext].join("\n\n");
   const allowAnthropic = !hardCapActive && messageNeedsAnthropic(message, { feature: "chat" });
 
   try {

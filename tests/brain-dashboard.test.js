@@ -45,8 +45,10 @@ describe('/brain dashboard shell', () => {
     expect(agent).toContain('os.totalmem()');
     expect(agent).toContain("router.get('/radar'");
     expect(agent).toContain('res.json(buildRadarSnapshot(paths));');
+    expect(agent).toContain("router.get('/radar/item/:id'");
     expect(agent).toContain("router.get('/radar/brief'");
     expect(agent).toContain("router.post('/radar/ingest'");
+    expect(agent).toContain("router.post('/radar/review'");
   });
 
   it('opens the executable to the Luke dashboard shell first', () => {
@@ -151,6 +153,7 @@ describe('/brain dashboard shell', () => {
       'data-src="/radar?embed=1"',
       'id="daily-expand"',
       'id="radar-line"',
+      'id="radar-module-meta"',
       'Calendar, jobs, and next actions',
       'Inbox, synthesis, review',
       'href="/luke"',
@@ -242,6 +245,7 @@ describe('/brain dashboard shell', () => {
       'Luke Radar',
       'DASHBOARD',
       'Status',
+      'Source Health',
       'Capture',
       'Needs You',
       'Morning Intel',
@@ -249,7 +253,20 @@ describe('/brain dashboard shell', () => {
       '/agent/brain/radar',
       '/agent/brain/radar/brief',
       '/agent/brain/radar/ingest',
+      '/agent/brain/radar/review',
+      '/agent/brain/radar/item/',
       'capture-text',
+      'source-type',
+      'review-note',
+      'review-next-action',
+      'Evidence Detail',
+      'data-detail-id',
+      'recent-state-filter',
+      'recent-source-filter',
+      'freshness_status',
+      'quality warming up',
+      'data-review-state="accepted"',
+      'data-review-state="contradicted"',
     ]) {
       expect(html).toContain(label);
     }
@@ -299,7 +316,9 @@ describe('/brain dashboard shell', () => {
       'History Jobs / Leads',
       'Move to Tennessee',
       'Gmail cleanup',
-      "Luke is Conor\\'s personal AI assistant and clawbot",
+      'Radar watch',
+      'Source quality',
+      "Luke is Conor\\'s local companion system",
     ]) {
       expect(html).toContain(label);
     }
@@ -316,6 +335,25 @@ describe('/brain dashboard shell', () => {
     expect(script).toContain('[data-section="daily-morning"]');
     expect(script).toContain('[data-section="developer-plan"]');
     expect(script).toContain('[data-artifact="context-file"]');
+  });
+
+  it('adds a focused proof command for the Radar to Daily loop', () => {
+    const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
+    const script = fs.readFileSync(path.join(ROOT, 'scripts', 'prove-radar-daily-loop.js'), 'utf8');
+
+    expect(pkg.scripts['prove:radar-daily-loop']).toBe('node scripts/prove-radar-daily-loop.js');
+    expect(script).toContain('Daily brief starts with Radar review');
+    expect(script).toContain('snapshot omits raw text');
+  });
+
+  it('adds a repeatable Pine inventory command before flagship promotion', () => {
+    const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
+    const script = fs.readFileSync(path.join(ROOT, 'scripts', 'build-pine-inventory.js'), 'utf8');
+
+    expect(pkg.scripts['tradingview:inventory']).toBe('node scripts/build-pine-inventory.js');
+    expect(script).toContain('PINE_INVENTORY_GENERATED.md');
+    expect(script).toContain('visual/watchlist/research only until compile and signoff');
+    expect(script).toContain('not TradingView compile proof');
   });
 
   it('renders Katbot websocket events as structured DOM text, not raw HTML blocks', () => {

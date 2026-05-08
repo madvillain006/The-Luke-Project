@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Luke / Jarvis / Scaffold Timeline Report</title>
+  <style>
+    @page { size: Letter; margin: 0.42in; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: #17120e;
+      background: #fffdf8;
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 10.2px;
+      line-height: 1.34;
+    }
+    h1, h2, h3, p { margin: 0; }
+    h1 { font-size: 25px; letter-spacing: -0.2px; line-height: 1.03; }
+    h2 {
+      margin: 0 0 8px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6f3b13;
+    }
+    h3 { margin: 0 0 3px; font-size: 11px; }
+    .page {
+      min-height: 9.9in;
+      page-break-after: always;
+      display: grid;
+      align-content: start;
+      gap: 10px;
+    }
+    .page:last-child { page-break-after: auto; }
+    .hero {
+      border: 1px solid #2f261f;
+      background: #14100d;
+      color: #fff8ee;
+      padding: 16px;
+      display: grid;
+      gap: 8px;
+    }
+    .subtitle { color: #ead4bd; max-width: 6.9in; font-size: 11.5px; }
+    .kicker { color: #d08b3e; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .card {
+      border: 1px solid #d6c6b4;
+      background: #fffaf1;
+      padding: 9px;
+      min-height: 76px;
+    }
+    .card.dark {
+      background: #201813;
+      color: #fff8ee;
+      border-color: #201813;
+    }
+    .metric { font-size: 20px; font-weight: 800; color: #6f3b13; }
+    .dark .metric { color: #ffbf67; }
+    .muted { color: #6c6056; }
+    .dark .muted { color: #d3bda4; }
+    .section {
+      border: 1px solid #d6c6b4;
+      background: white;
+      padding: 10px;
+    }
+    .timeline {
+      display: grid;
+      gap: 6px;
+    }
+    .event {
+      display: grid;
+      grid-template-columns: 0.88in 1fr;
+      gap: 8px;
+      border-left: 4px solid #d08b3e;
+      padding: 6px 8px;
+      background: #fff8ed;
+    }
+    .date {
+      font-weight: 800;
+      color: #6f3b13;
+    }
+    ul { margin: 5px 0 0 15px; padding: 0; }
+    li { margin: 2px 0; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td {
+      border-bottom: 1px solid #eadccb;
+      text-align: left;
+      vertical-align: top;
+      padding: 5px 4px;
+    }
+    th {
+      color: #6f3b13;
+      font-size: 9.2px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .callout {
+      border-left: 5px solid #6f3b13;
+      background: #f5eadb;
+      padding: 8px 10px;
+      font-weight: 700;
+    }
+    .small { font-size: 9.2px; }
+    .footer {
+      align-self: end;
+      color: #7d7166;
+      font-size: 8.5px;
+      border-top: 1px solid #e5d8c8;
+      padding-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <section class="page">
+    <div class="hero">
+      <div class="kicker">Presentation Report | Local Evidence Review | May 7, 2026</div>
+      <h1>From Jarvis Rocket Sled to Luke Control Room</h1>
+      <p class="subtitle">A five-page-or-less timeline of the scaffolding, Jarvis legacy, and current Luke build. Honest version: this thing started as a high-speed trading assistant with a toolbelt, then got rebuilt into a local companion shell with trading locked inside a padded, human-gated room.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card dark">
+        <div class="metric">192</div>
+        <h3>Luke commits inspected</h3>
+        <p class="muted">Current repo history spans Apr 19 to May 7. It includes the original Jarvis arc plus the heavier Luke rebuild.</p>
+      </div>
+      <div class="card">
+        <div class="metric">88</div>
+        <h3>Jarvis commits inspected</h3>
+        <p class="muted">Jarvis branch stops at Apr 24 and is dirty on `rename/jarvis-to-luke`. Translation: the old lab is still full of labeled jars.</p>
+      </div>
+      <div class="card">
+        <div class="metric">921</div>
+        <h3>Latest Luke tests passed</h3>
+        <p class="muted">Full Vitest suite passed after Radar landed: 147 files, 921 passed, 1 skipped. The robot has receipts.</p>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Executive Take</h2>
+      <p><b>Jarvis was the prototype organism.</b> It had agents, workflows, trading automation, health logging, research, sweeper/architect scaffolding, and plenty of state files living at repo root like everyone had just survived a hackathon in a broom closet.</p>
+      <p><b>Luke is the consolidation project.</b> The current repo adds explicit safety boundaries, a front-facing shell, proof scripts, state path management, a brain dashboard, Daily, Operator V2, Katbot, Ninja bridge work, and now Radar. The center of gravity moved from "can it do the thing?" to "can it do the thing without quietly sawing through the floor?"</p>
+      <p><b>Scaffolding matured.</b> Early scaffolding was Agent 09 Architect, Agent 10 Sweeper, Agent 13 Workflows, suggestions, SWEEPER maps, and root logs. Current scaffolding is `.agent` goal plans, proof runners, docs/source-of-truth files, ignored runtime state, and tests that enforce the UI and trading boundaries.</p>
+    </div>
+    <div class="callout">Presentation line: "Jarvis proved the engine. Luke is the chassis, dashboard, guardrails, and yes, the cup holder we apparently needed."</div>
+    <div class="footer">Evidence base: `C:\Users\conor\luke`, `C:\Users\conor\jarvis`, git logs, folder inventories, roadmap/docs, package scripts, and recent test/proof results.</div>
+  </section>
+
+  <section class="page">
+    <h2>Timeline</h2>
+    <div class="timeline">
+      <div class="event"><div class="date">Apr 19</div><div><b>Architect starts the repo.</b> Initial commit is `arch: initial commit - git init by agent-09`. Scaffold is literal: Architect, Sweeper, workflows, SWEEPER maps, proposals, and raw state. This is the "let's build the builder" phase.</div></div>
+      <div class="event"><div class="date">Apr 20</div><div><b>Jarvis v1 becomes usable.</b> Commit says "Jarvis v1 - built April 20 2026 - because I'm tired of losing." Subtle? No. Effective? Apparently yes. Bracket calculator, popup chart, safe layout, audits, and production-readiness claims appear quickly.</div></div>
+      <div class="event"><div class="date">Apr 21</div><div><b>Trading and UI sprint explodes.</b> 38 commits. Smart paste routing, tooltips, `/luke`, dry-fire, layout, `/balance`, parsers, Kat ingestion, confluence, session replay, runner protocol, Apex floor checks. Jarvis becomes a trading cockpit with too many switches but real momentum.</div></div>
+      <div class="event"><div class="date">Apr 22</div><div><b>Audit/hardening day.</b> 34 commits. Security fixes, cost controls, prompt caching, pruning, prompt/routing fixes, Bobby/Kat/Ximes confluence, readiness warnings. This is where the project starts admitting: "maybe the stove should not be hot by default."</div></div>
+      <div class="event"><div class="date">Apr 23-24</div><div><b>Eval build and rename plan.</b> Saty parser, Massive API, image routing, Kat fixes, SPX price endpoint, vision error surfacing. Jarvis branch shows `CONOR_RENAME_CHECKLIST.md`, old Jarvis files deleted, Luke files added, and many dirty rename edits. The rename is real but not cleanly closed in that folder.</div></div>
+      <div class="event"><div class="date">Apr 27-28</div><div><b>Luke stabilization begins in earnest.</b> The current Luke repo bridges legacy confluence, hardens JSON reads, removes memorial-era care surfaces, normalizes slash-command text, retires dead premarket UI, and documents operator workflow. Sentiment gets converted into system boundaries. Good move.</div></div>
+      <div class="event"><div class="date">Apr 30</div><div><b>Repo hygiene and compatibility work.</b> Final handoff triage docs, Saty auto-pull, SDK wrapper, heatmap tests, ingestion extraction, and archived/deferred work cleanup. This is the first obvious "we need a maintainable machine, not an archeological dig" phase.</div></div>
+      <div class="event"><div class="date">May 2-5</div><div><b>Luke gets its shell and proof culture.</b> Decision spine, runtime paths, staged flow proof, historical replay, brain shell spines, agent scaffold, launcher cleanup, Operator V2, Daily, UI proof, current status docs, startup gates, and live execution blocks. The dashboard stops being just plumbing and becomes the front door.</div></div>
+      <div class="event"><div class="date">May 6-7</div><div><b>Trading scope narrows, Radar lands.</b> Ximes is retired from the trading surface, Katbot Stage 2/routing hardens, and Radar becomes a front-shell intake/synthesis panel. No duplicate visible launch paths remain in the shell after the latest cleanup.</div></div>
+    </div>
+    <div class="footer">Commit density tells the story: Jarvis had the violent birth. Luke had the cleanup surgery.</div>
+  </section>
+
+  <section class="page">
+    <h2>Folder Map: What Is Involved</h2>
+    <table>
+      <thead><tr><th>Area</th><th>Jarvis Evidence</th><th>Luke Evidence</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><b>Agents</b></td><td>14 agent files, including trader, health, finance, research, architect, sweeper, workflows, Kat.</td><td>15 agent files; adds `agent-00-brain`, fallback growth, Ninja watchdog, larger Kat agent.</td><td>Jarvis had task agents. Luke adds an orchestrating brain layer and more explicit sidecars.</td></tr>
+        <tr><td><b>Scaffold</b></td><td>`agents/agent-09-architect.js`, `agent-10-sweeper.js`, `SWEEPER_MAP.json`, proposals, suggestions.</td><td>`.agent/PLANS.md`, `.agent/goals/...`, proof scripts, docs, reports, paths-managed state.</td><td>Scaffolding moved from "agents mutate/advise" to "plans, gates, tests, proof, then commit." Less magic wand, more clipboard.</td></tr>
+        <tr><td><b>UI</b></td><td>`chat.html` does a lot: chat, panels, tooltips, staged execution buttons, Luke panel.</td><td>`luke-shell.html`, `daily-window.html`, `operator-v2.html`, `trading-window.html`, `brain-dashboard.html`, `radar-dashboard.html`.</td><td>Luke splits surfaces by job. This reduces accidental cross-wiring and duplicate paths.</td></tr>
+        <tr><td><b>State</b></td><td>Many root JSON/JSONL files: logs, memory, boot checks, tool health, action logs.</td><td>`state/events`, `state/snapshots`, `data`, `artifacts`, `reports`, `lib/paths.js` registry.</td><td>State is being domesticated. Still not spotless, but no longer sleeping on the couch at repo root.</td></tr>
+        <tr><td><b>Trading</b></td><td>`trading/` with live/paper/shadow execution and router; strong Apex focus.</td><td>`trading/` plus explicit proof scripts, read-only UI, live/staged gates, Operator V2.</td><td>Trading remains core, but it is now a contained module instead of the whole personality.</td></tr>
+        <tr><td><b>Workflows</b></td><td>Tradovate YAML workflows and workflow recordings.</td><td>Tradovate YAML still exists, with runtime recordings moved under state runtime.</td><td>Automation survived, but Luke is forcing it into safer storage and proof lanes.</td></tr>
+        <tr><td><b>Research</b></td><td>`research-agent.py`, suggestions, strategy docs, Discord exports.</td><td>Katbot Stage 2, research scripts, fake-breakdown, ladder reclaim, Pine, Radar.</td><td>Research has grown from article digestion into a source-intake and replay/review system.</td></tr>
+      </tbody>
+    </table>
+    <div class="section">
+      <h2>Current Evidence Snapshot</h2>
+      <div class="grid-2">
+        <div>
+          <h3>Luke current repo</h3>
+          <ul>
+            <li>Branch: `refactor/decision-spine-cleanup`, ahead of origin by 25 commits.</li>
+            <li>Top active folders include `agents`, `lib`, `scripts`, `tests`, `docs`, `trading`, `tradingview`, `reports`, `.agent`, and `proposals`.</li>
+            <li>Package scripts expanded from basic start/test to proof, runtime, research, replay, Ninja, Katbot, and UI verification commands.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Jarvis legacy repo</h3>
+          <ul>
+            <li>Branch: `rename/jarvis-to-luke`, dirty with rename edits and untracked Luke files.</li>
+            <li>Still contains root logs/state and old rename checklist residue.</li>
+            <li>Useful as evidence of origin, not as the clean current source of truth.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer">The folder story is simple: Jarvis kept everything close. Luke is moving it into lanes.</div>
+  </section>
+
+  <section class="page">
+    <h2>What Changed Architecturally</h2>
+    <div class="grid-2">
+      <div class="section">
+        <h3>1. From single cockpit to front shell</h3>
+        <p>Jarvis mostly lived through `chat.html`. Luke now has `/shell` as the front door, with drilldowns for Daily, Radar, trading, brain status, Operator V2, and replay windows. The recent Radar work also removed duplicate visible launch paths in the front UI.</p>
+      </div>
+      <div class="section">
+        <h3>2. From execution confidence to safety proof</h3>
+        <p>Jarvis had human gates, but the UI still carried live/staged execution affordances. Luke increasingly says: read-only, replay, proof first. Current docs explicitly block live readiness without separate market data and broker proof.</p>
+      </div>
+      <div class="section">
+        <h3>3. From root-state soup to registered paths</h3>
+        <p>Jarvis root included many JSON/JSONL runtime files. Luke uses `lib/paths.js`, `state/events`, `state/snapshots`, `data`, and ignored artifacts. Not glamorous, but neither is labeling the breaker box. You still do it.</p>
+      </div>
+      <div class="section">
+        <h3>4. From scaffold agents to goal protocol</h3>
+        <p>Architect/Sweeper were early self-maintenance scaffolds. Luke now adds `.agent` plans, proof scripts, regression tests, and source-of-truth docs. The scaffolding is less "AI, please freestyle" and more "AI, here is the checklist; try not to invent a basement."</p>
+      </div>
+      <div class="section">
+        <h3>5. From trading-only to companion lanes</h3>
+        <p>Daily, History/Career, Automation Business, Developer Stack, Luke System, and Radar show the broader companion direction. Trading is still important, but it has roommates now, and some of them pay rent.</p>
+      </div>
+      <div class="section">
+        <h3>6. From source capture to synthesis</h3>
+        <p>Jarvis had Discord, Kat, Bobby, Ximes, research, and manual paste workflows. Luke adds Radar as the front-facing intake layer: capture raw sources, preserve provenance, classify, summarize, and feed review queues without claiming magic trading certainty.</p>
+      </div>
+    </div>
+    <div class="callout">The honest joke: Jarvis was "what if we bolted a jet engine to a spreadsheet?" Luke is "what if the jet engine had a dashboard, brakes, and a person with veto power?"</div>
+    <div class="section">
+      <h2>Residual Risks</h2>
+      <ul>
+        <li><b>Jarvis is not clean.</b> It is useful historical evidence, but it is dirty mid-rename. Do not treat it as a deploy target.</li>
+        <li><b>Luke still carries residue.</b> Archives, reports, proof artifacts, Pine variants, and generated evidence are present. Some are useful. Some are probably digital barnacles.</li>
+        <li><b>Live trading remains blocked by design.</b> Current status still calls out missing live/delayed ES 1m OHLC proof, TradingView compile checks, and explicit broker/live unlock gates.</li>
+        <li><b>Docs can drift.</b> `docs/CURRENT_STATUS.md` was May 5, while Radar landed May 7. The code is ahead of some docs. Normal, but worth updating before any formal external handoff.</li>
+      </ul>
+    </div>
+    <div class="footer">This is a strong system, not a finished statue. Statues do not run tests. Luke does.</div>
+  </section>
+
+  <section class="page">
+    <h2>Presentation Readout</h2>
+    <div class="section">
+      <h3>The story in one minute</h3>
+      <p>Jarvis began as a fast, practical assistant for trading, research, and life operations. It quickly grew agents, workflows, confluence parsing, live/paper/shadow trading paths, and a lot of root-level state. Then the project hit the obvious wall: if this thing is going to matter, it cannot be a pile of clever scripts with a steering wheel taped on. Luke is the consolidation: local front shell, separated surfaces, explicit proof scripts, read-only default trading, organized state, and companion lanes like Daily and Radar. The project is not smaller now. It is safer, more presentable, and less likely to bite the person feeding it.</p>
+    </div>
+    <div class="grid-2">
+      <div class="section">
+        <h3>What I would say confidently</h3>
+        <ul>
+          <li>The current source of truth is `C:\Users\conor\luke`, not `jarvis`.</li>
+          <li>Jarvis explains the origin and design DNA.</li>
+          <li>Scaffolding evolved from self-mutating agents into goal plans, proof scripts, and tests.</li>
+          <li>The front UI is now the Luke shell, with backend dashboards as drilldowns.</li>
+          <li>Trading is intentionally human-gated and should stay that way until a separate proof phase says otherwise.</li>
+        </ul>
+      </div>
+      <div class="section">
+        <h3>What I would not oversell</h3>
+        <ul>
+          <li>I would not claim Jarvis migration is historically clean. It is not.</li>
+          <li>I would not claim all residue is gone. It is not, and some residue is evidence.</li>
+          <li>I would not claim live trading readiness. The repo itself says no.</li>
+          <li>I would not claim docs are fully current after May 7. Radar is newer than the May 5 status doc.</li>
+          <li>I would not trust any single dashboard as the whole truth. Use tests, routes, and git history together.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Recommended Next Moves</h2>
+      <ol>
+        <li><b>Update `docs/CURRENT_STATUS.md`</b> with Radar, the unique front-route cleanup, and the latest test counts.</li>
+        <li><b>Declare `jarvis` historical/archive</b> unless you need a specific file from it. It is not the clean operating base.</li>
+        <li><b>Run a residue audit as its own commit series</b>: reports, artifacts, Pine variants, archive, generated state, and old rename docs.</li>
+        <li><b>Keep Radar front-facing but not autonomous</b>: capture, connect, brief, alert for review. No secret confidence casino.</li>
+        <li><b>Do not unlock live execution</b> until market data, TradingView compile, broker gates, and proof docs all agree.</li>
+      </ol>
+    </div>
+    <div class="callout">Bottom line: Luke is no longer just "Jarvis renamed." It is Jarvis after a safety audit, a repo cleanup intervention, a UI identity crisis, and a useful new Radar antenna.</div>
+    <div class="footer">Generated from local repo evidence on 2026-05-07. Parent `C:\Users\conor` enumeration was permission-blocked, but direct Luke and Jarvis repo inspection succeeded.</div>
+  </section>
+</body>
+</html>

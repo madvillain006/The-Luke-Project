@@ -73,7 +73,7 @@ async function shellUiChecks(page) {
   try {
     await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle', timeout: 30000 });
     return await page.evaluate(() => {
-      const dailyBrief = document.querySelector('[data-route="/brain-dashboard#spine-daily"]');
+      const dailyBrief = document.querySelector('#daily-launch');
       const weatherTile = Array.from(document.querySelectorAll('.module-caption .name'))
         .some(item => item.textContent.trim() === 'Daily Weather');
       const box = dailyBrief?.getBoundingClientRect();
@@ -122,7 +122,7 @@ async function main() {
   screenshots.push(await screenshot(page, '/', 'old-shell.png'));
   screenshots.push(await screenshot(page, '/', 'old-shell-viewport.png', { fullPage: false }));
   screenshots.push(await screenshot(page, '/', 'daily-brief-weather-merged.png', {
-    locator: '[data-route="/brain-dashboard#spine-daily"]',
+    locator: '#daily-launch',
     outputPath: path.join(ROOT, 'artifacts', 'proof', 'daily-brief-weather-merged.png'),
   }));
   screenshots.push(await screenshot(page, '/operator-v2', 'operator-v2.png', { waitForText: 'Fake Breakdown Watchlist' }));

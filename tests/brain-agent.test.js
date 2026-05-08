@@ -76,6 +76,8 @@ function makePaths() {
       discordHistory: path.join(eventsDir, 'discord-history.jsonl'),
       historyCareerFindings: path.join(eventsDir, 'history-career-findings.jsonl'),
       automationBusinessEvents: path.join(eventsDir, 'automation-business-events.jsonl'),
+      radarIngest: path.join(eventsDir, 'radar-ingest.jsonl'),
+      radarReviews: path.join(eventsDir, 'radar-reviews.jsonl'),
     },
     snapshots: {
       autonomousState: path.join(snapshotsDir, 'autonomous-state.json'),
@@ -84,6 +86,7 @@ function makePaths() {
       developerStackSpine: path.join(snapshotsDir, 'developer-stack-spine.json'),
       historyCareerSpine: path.join(snapshotsDir, 'history-career-spine.json'),
       automationBusinessSpine: path.join(snapshotsDir, 'automation-business-spine.json'),
+      radarState: path.join(snapshotsDir, 'radar-state.json'),
       schedulerHeartbeat: path.join(snapshotsDir, 'scheduler-heartbeat.json'),
       schedulerJobs: path.join(snapshotsDir, 'scheduler-jobs.json'),
     },
@@ -198,6 +201,8 @@ describe('Luke brain agent core', () => {
     expect(Array.isArray(spine.blockers)).toBe(true);
     expect(spine.next_actions.length).toBeGreaterThan(0);
     expect(spine.pipeline.checkins_today).toBe(1);
+    expect(spine.pipeline.radar_review_items).toBe(0);
+    expect(spine.radar.summary_line).toBe('ready / no items');
     expect(spine.date_label).toContain('May');
     expect(spine.personal_note).toBe('I love Kat');
     expect(spine.move_prompt.label).toBe('Move to Tennessee');
@@ -210,6 +215,61 @@ describe('Luke brain agent core', () => {
     expect(spine.briefs.morning.endpoint).toContain('kind=morning');
     expect(spine.live_news.social_watchlist.some(item => item.id === 'deitaone')).toBe(true);
     expect(buildWeatherUrl({ lat: 40, lon: -75 })).toContain('latitude=40');
+  });
+
+  it('feeds Radar review items into Daily without granting trading authority', () => {
+    const paths = makePaths();
+    const now = new Date('2026-05-02T13:00:00.000Z');
+    appendJsonl(paths.events.radarIngest, {
+      id: 'radar_test_review',
+      ts: now.toISOString(),
+      source_type: 'sybil_paste',
+      source_label: 'sybil',
+      title: 'NVDA contradiction',
+      raw_text: 'Full raw text stays in the append-only event log.',
+      raw_text_preview: 'NVDA contradiction needs review',
+      symbols: ['NVDA'],
+      themes: ['contradiction'],
+      review_priority: 'review',
+      review_state: 'new',
+    });
+
+    const spine = buildDailySpine({ paths, now });
+
+    expect(spine.pipeline.radar_review_items).toBe(1);
+    expect(spine.pipeline.radar_reminders).toBe(0);
+    expect(spine.checklist.find(item => item.id === 'radar-review').status).toBe('open');
+    expect(spine.next_actions).toContain('Radar review: 1 Radar item(s) need review before they become Daily or Trading context.');
+    expect(spine.radar.review_queue[0]).toEqual(expect.objectContaining({
+      id: 'radar_test_review',
+      raw_text_preview: 'NVDA contradiction needs review',
+    }));
+    expect(spine.radar.review_queue[0].raw_text).toBeUndefined();
+  });
+
+  it('carries Radar reminders into Daily without creating a second route', () => {
+    const paths = makePaths();
+    const now = new Date('2026-05-02T13:00:00.000Z');
+    appendJsonl(paths.events.radarIngest, {
+      id: 'radar_test_reminder',
+      ts: now.toISOString(),
+      source_type: 'reminder',
+      source_label: 'manual',
+      raw_text: 'Remind me to check the Knoxville lease documents tomorrow.',
+      raw_text_preview: 'Remind me to check the Knoxville lease documents tomorrow.',
+      symbols: [],
+      themes: ['reminder'],
+      review_priority: 'reminder',
+      review_state: 'new',
+    });
+
+    const spine = buildDailySpine({ paths, now });
+
+    expect(spine.pipeline.radar_reminders).toBe(1);
+    expect(spine.radar.reminders[0]).toEqual(expect.objectContaining({
+      id: 'radar_test_reminder',
+      review_priority: 'reminder',
+    }));
   });
 
   it('extracts public history job leads from source pages', async () => {
@@ -317,6 +377,14 @@ describe('Luke brain agent core', () => {
       kind: 'afternoon',
       news,
       weather: { summary: '71F and clear' },
+      radarBrief: {
+        summary_line: '1 fresh / 1 review',
+        ideas_to_verify: [{
+          title: 'NVDA contradiction needs review',
+          source_label: 'sybil',
+          evidence: ['contradiction'],
+        }],
+      },
       now: new Date('2026-05-02T15:00:00.000Z'),
     });
 
@@ -325,6 +393,8 @@ describe('Luke brain agent core', () => {
     expect(news.by_category.markets[0].title).not.toContain('&apos;');
     expect(news.by_category.bills[0].title).toContain('Bills add receiver');
     expect(brief.label).toBe('Afternoon brief');
+    expect(brief.radar_status).toBe('1 fresh / 1 review');
+    expect(brief.sections[0].id).toBe('radar-review');
     expect(brief.sections.find(section => section.category === 'markets').status).toBe('live');
     expect(formatBriefForNotification(brief)).toContain('AFTERNOON BRIEF');
   });

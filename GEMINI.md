@@ -1,6 +1,6 @@
 # Luke Project Instructions
 
-Luke is Conor's personal AI assistant and clawbot, built in memory of Luke, his dog and best friend. It includes trading decision-support; the human operator makes all final trading decisions. Treat the trading module as live trading support infrastructure, not a playground.
+Luke is Conor's local AI companion and operations dashboard. It includes shared memory, daily planning, Radar intake, research synthesis, and supervised trading decision-support; the human operator makes all final trading decisions. Treat the trading module as live trading support infrastructure, not a playground.
 
 ## Current Mission
 
@@ -10,7 +10,8 @@ Stabilize and harden Luke's core trading workflow first:
 2. Reduce duplicate state, stale residue, mojibake, and dead systems.
 3. Improve live-trading confidence through tests, smoke checks, and boring reliability.
 4. Keep backtesting/research isolated until proven.
-5. Defer Katbot, free LLM backup, and side systems unless explicitly requested.
+5. Preserve shared Luke companion memory across Luke Chat and Trading.
+6. Defer Katbot, free LLM backup, and side systems unless explicitly requested.
 
 Do not add features before protecting the core.
 
@@ -22,6 +23,7 @@ Do not add features before protecting the core.
 - Never restart PM2 or mutate live trading state casually. For server/runtime changes, run tests first, explain the reload reason, then reload only when needed.
 - Always check the current worktree before editing. Preserve unrelated user work and dirty files.
 - Never auto-modify personal health/Agent-04 code without explicit approval.
+- Keep the front-facing UI memorial text intact, but keep public repo docs product-focused.
 
 ## Start Here
 
@@ -58,6 +60,8 @@ Core operator flow:
 `/balance -> /saty -> /dubz -> /heatmap -> optional /mancini -> /status -> /verdict -> /entries ES -> /alert`
 
 Do not weaken stale-input checks, chop-zone protections, readiness checks, Apex floor checks, or human-in-the-loop gates.
+
+Shared companion memory lives under `state/snapshots/memory.json` at `luke_companion_memory`. Both `/luke` and `/trading` should read and write this bin for appointments, reminders, preferences, and active thoughts.
 
 ## Current Verified State
 

@@ -1,6 +1,6 @@
 # Luke
 
-Luke is Conor's local personal AI assistant and clawbot, built in memory of Luke, his dog and best friend. Trading is one supervised module inside the system.
+Luke is a local AI companion and operations dashboard. It combines shared memory, daily planning, Radar intake, research synthesis, and supervised trading decision support in one front-facing app.
 
 It turns daily analyst inputs into a cleaner decision surface:
 - what levels matter
@@ -26,11 +26,13 @@ npm start
 ## What Luke does
 
 Primary workflow:
-1. Load daily structure
-2. Store levels in Level Memory
-3. Score confluence across analysts
-4. Turn top levels into futures entry recommendations
-5. Optionally stage autonomous recommendations without executing them
+1. Capture user context into shared memory
+2. Pull Radar/Daily material into the same operating picture
+3. Load daily trading structure when the user is in the Trading surface
+4. Store levels in Level Memory
+5. Score confluence across analysts
+6. Turn top levels into supervised futures entry recommendations
+7. Optionally stage autonomous recommendations without unattended execution
 
 Main user-facing commands:
 
@@ -78,6 +80,8 @@ Main user-facing commands:
 
 ### Core state files
 
+- `state/snapshots/memory.json`
+  - shared Luke companion memory used by both Luke Chat and Trading
 - `data/level-memory.json`
   - canonical store for levels and mentions
 - `data/dubz-levels.json`
@@ -123,6 +127,10 @@ Main user-facing commands:
   - Ximes-style signal parsing and scoring path
 - `agents/agent-14-kat.js`
   - Katbot Discord ingest/context sidecar
+- `lib/companion-memory.js`
+  - shared memory capture, retrieval, and prompt context for Luke Chat and Trading
+- `lib/command-recovery.js`
+  - typo-aware command recovery for known Luke commands
 
 ## What Luke needs to function
 
@@ -150,6 +158,9 @@ If `/entries ES` refuses because inputs are stale or missing, trust the refusal.
 
 ## Important design truths
 
+- Luke is a companion interface, not a memorial product surface
+- the front-page memorial text stays in the UI; repo docs stay product-focused
+- Luke Chat and Trading share companion memory
 - Saty is SPX truth, not ES truth
 - ES views inherit SPX levels through equivalence mapping
 - Mancini chop zones are exclusion zones, not entries

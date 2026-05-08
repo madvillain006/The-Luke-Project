@@ -703,16 +703,16 @@
               </div>
             </section>
             <section class="demo-script-panel" id="demo-watch-script" aria-label="TradingView watch script status">
-              <div class="panel-title">Luke Level Reclaim Watch Script</div>
-              <div class="line warn-text">Current Pine indicator/watchlist bridge only. No strategy declaration and no order submission.</div>
+                  <div class="panel-title">Luke v4 Mancini Ninja Bridge</div>
+                  <div class="line warn-text">Current Pine indicator emits Ninja bridge JSON when the TradingView alert is enabled. Luke still has no direct broker submit control.</div>
               <div class="pill-row">
                 <span class="pill info">WATCH</span>
                 <span class="pill info">ARMED</span>
                 <span class="pill warn">LONG CANDIDATE</span>
                 <span class="pill bad">BLOCKED</span>
               </div>
-              <div class="line">Used for visual watch signals; Luke remains the source of bracket-plan truth.</div>
-              <div class="mono">tradingview/luke-level-reclaim-watch.pine</div>
+              <div class="line">Used for v4 Mancini/Saty reclaim signals, Ninja SIM bridge inputs, and session performance tracking.</div>
+              <div class="mono">tradingview/LUKE-WATCH-FLAGSHIP-v4-MANCINI-CONTEXT-NINJA-BRIDGE.pine</div>
             </section>
             <section class="demo-script-panel" id="demo-client-script" aria-label="Client demo narration">
               <div class="panel-title">Demo Narration</div>
@@ -1449,7 +1449,7 @@
             ['Size', plan.size],
             ['Risk', plan.risk_dollars != null ? `${fmt(plan.risk_points)} pts / ${fmtMoney(plan.risk_dollars)}` : 'unknown'],
             ['Add rule', 'Human-confirmed retest hold only'],
-            ['Pine script', 'tradingview/luke-level-reclaim-watch.pine']
+            ['Pine script', 'tradingview/LUKE-WATCH-FLAGSHIP-v4-MANCINI-CONTEXT-NINJA-BRIDGE.pine']
           ])}
           <div class="demo-katbot-ack">
             <strong>Katbot / heatmap input acknowledgment</strong>

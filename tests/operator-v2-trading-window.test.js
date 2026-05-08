@@ -31,9 +31,9 @@ describe('trading window read-only surface', () => {
     expect(operator).toContain('Katbot/heatmap input, and Pine watch script');
     expect(operator).toContain('demo-trade-popover');
     expect(operator).toContain('demo-trade-window-chart');
-    expect(operator).toContain('Luke Level Reclaim Watch Script');
+    expect(operator).toContain('Luke v4 Mancini Ninja Bridge');
     expect(operator).toContain('Hypothetical replay/paper plan only');
-    expect(operator).toContain('tradingview/luke-level-reclaim-watch.pine');
+    expect(operator).toContain('tradingview/LUKE-WATCH-FLAGSHIP-v4-MANCINI-CONTEXT-NINJA-BRIDGE.pine');
     expect(shell).toContain('Trading (Analysis) / Trading Bot');
     expect(shell).toContain('data-src="/trading?embed=1"');
     expect(shell).toContain("setTradingPanelMode('window')");
@@ -45,8 +45,8 @@ describe('trading window read-only surface', () => {
     expect(shell).not.toContain('Luke Trading Companion - Dashboard Demo');
     expect(html).toContain('Katbot / SPX Heatmap Feed');
     expect(html).toContain('/api/operator/heatmap-proof');
-    expect(html).toContain('Luke Watch Pine Script');
-    expect(html).toContain('tradingview/luke-level-reclaim-watch.pine');
+    expect(html).toContain('Luke v4 Mancini Ninja Bridge');
+    expect(html).toContain('tradingview/LUKE-WATCH-FLAGSHIP-v4-MANCINI-CONTEXT-NINJA-BRIDGE.pine');
     expect(chat).not.toContain('data-cmd="/alert "');
     expect(chat).not.toMatch(/\bXimes\b/i);
     expect(chat).toContain('Katbot/SPX heatmap');

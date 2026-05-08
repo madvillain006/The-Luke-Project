@@ -2,7 +2,7 @@
 
 Date: 2026-05-08 ET
 
-This doc exists so the Pine work does not turn into filename archaeology. It is an inventory and gate, not compile proof.
+This doc exists so the Pine work does not turn into filename archaeology. It records the current live-test Pine source, where historical variants live, and the checks required before any Pine variant is treated as more than a supervised signal source.
 
 For the generated source inventory, run:
 
@@ -15,88 +15,70 @@ Generated output:
 - `docs/PINE_INVENTORY_GENERATED.md`
 - `artifacts/proof/pine-inventory/pine-inventory.json`
 
+## Current Live-Test Pine
+
+Use this file for the current v4 Mancini/Saty reclaim strategy and Ninja SIM bridge test:
+
+- `tradingview/LUKE-WATCH-FLAGSHIP-v4-MANCINI-CONTEXT-NINJA-BRIDGE.pine`
+
+Why this one stays live:
+
+- It is the user-selected/currently running version.
+- Its header records the v4 trade math baseline and says Mancini context is visual-only.
+- It emits Ninja bridge JSON from the same `trade_long_event` that creates the LONG box.
+- It keeps the TradingView script as an `indicator()`, not a `strategy()`, so order placement remains outside Pine.
+- The documented bridge route in `ninjatrader/README.md` points to this exact file.
+
+Current readiness:
+
+- Luke local webhook accepted the non-order bridge doctor ping on `2026-05-08`.
+- NinjaTrader did not report seeing that ping during the same doctor run, so end-to-end SIM fill tracking still requires NinjaTrader to be compiled/enabled and polling `data/ninjatrader/latest-luke-signal.json`.
+
 ## Current Rule
 
-Pine files are visual/watchlist/research until a specific file is compiled in TradingView, visually checked, alert-checked, and promoted in writing.
+The current live-test file may drive supervised Ninja SIM bridge testing only. It is not autonomous execution authority.
 
-No Luke route, Radar item, Daily brief, or trading-brain output may treat Pine as execution authority.
+No historical Pine file may be used as the default TradingView source unless it is explicitly promoted here with a date, reason, and test evidence.
 
-## Current Candidate Families
+All historical scripts remain visual/watchlist/research only.
 
-### Level Reclaim Base
+## Historical Layout
 
-- `tradingview/luke-level-reclaim-watch.pine`
-- `tradingview/luke-level-reclaim-watch-realistic-accounting.pine`
-- `tradingview/luke-level-reclaim-watch-hardmode.strategy.pine`
+### Ninja Bridge Experiments
 
-Use these as historical/reference implementations for realistic accounting, same-bar policy, and hardmode research.
+- `tradingview/history/ninja-bridge/watch-experiments/`
+- `tradingview/history/ninja-bridge/confirmed-retest-router/`
 
-### Production Test / Ledger Family
+These files include bridge-capable or Ninja-adjacent experiments, including `v0b`, `v5`, `vA`, `OBJECTIVITY`, and `vB`. They are intentionally parked because they changed too much at once or are not the current profitable baseline.
 
-- `tradingview/luke-watch-production-test.pine`
-- `tradingview/luke-watch-production-test-readable-ledger.pine`
-- `tradingview/luke-watch-production-test-readable-ledger-v4-es-ledger-qol.pine`
-- `tradingview/luke-watch-production-test-readable-ledger-v4-ltf-1m-gate.pine`
-- `tradingview/luke-watch-production-test-readable-ledger-v4-ltf-3m-gate.pine`
-- `tradingview/luke-watch-production-test-readable-ledger-v4-ltf-1m-3m-5m-gate.pine`
-- `tradingview/luke-watch-production-test-readable-ledger-v4-ltf-audit-gate.pine`
-- `tradingview/luke-watch-production-test-readable-ledger-v4-noncheat-fill-gate.pine`
-- `tradingview/luke-watch-production-test-readable-ledger-v4-noncheat-light.pine`
-- `tradingview/luke-watch-production-test-simulation.strategy.pine`
+### Pre-Ninja Watch Variants
 
-Use these for audit behavior and readable ledger comparisons. Do not promote the simulation strategy as live behavior.
+- `tradingview/history/pre-ninja/v4-watch-family/`
+- `tradingview/history/pre-ninja/quality-recovery/`
 
-### Luke Watch Candidate Family
+These files are historical watch/recovery/quality variants before the current v4 Ninja bridge choice.
 
-- `tradingview/LUKE-WATCH-BEST-WORKING-v4-LTF-1m-3m-5m.pine`
-- `tradingview/LUKE-WATCH-BETTER-UI-BEST-v4-LTF-1m-3m-5m-CONFIRMED-SAVED.pine`
-- `tradingview/LUKE-WATCH-BEST-LIVE-EXECUTION-v4-LTF-1m-3m-5m.pine`
-- `tradingview/LUKE-WATCH-BEST-CLEAN-SPLIT-v4-LTF-1m-3m-5m.pine`
-- `tradingview/LUKE-WATCH-BEST-CLEAN-SPLIT-v4-VISIBLE-LEVELS-LIVE-CXL.pine`
-- `tradingview/LUKE-WATCH-FLAGSHIP-v4-CANCEL-ACTIVE-WATCH.pine`
-- `tradingview/LUKE-WATCH-FLAGSHIP-v4-MANCINI-SATY-ONLY-TRUSTED-RESTORE.pine`
-- `tradingview/LUKE-WATCH-FLAGSHIP-v4-MANCINI-CONTEXT-LEGEND-TRUSTED.pine`
-- `tradingview/LUKE-WATCH-FLAGSHIP-v4-MANCINI-CONTEXT-NINJA-BRIDGE.pine`
-- `tradingview/LUKE-WATCH-FLAGSHIP-v0b-MANCINI-CONTEXT-NINJA-BRIDGE-UPDATED-LEVELS.pine`
-- `tradingview/LUKE-WATCH-FLAGSHIP-v0b-MANCINI-PROTOCOL-SCALP-SWING-UPDATED-LEVELS.pine`
-- `tradingview/LUKE-WATCH-FLAGSHIP-v5-DAILY-PLAN-QUALITY.pine`
-- `tradingview/LUKE-WATCH-FLAGSHIP-v5-LIGHT-DAILY-PLAN-QUALITY.pine`
-- `tradingview/LUKE-WATCH-FLAGSHIP-v5-MANCINI-PROTOCOL-SCALP-SWING.pine`
-- `tradingview/LUKE-WATCH-FLAGSHIP-v6-EXEC-ONLY-WATCH-RECOVERY.pine`
-- `tradingview/LUKE-WATCH-FLAGSHIP-v6-LIGHT-WATCH-RECOVERY.pine`
-- `tradingview/LUKE-WATCH-FLAGSHIP-v6-USABLE-WATCH-RECOVERY.pine`
-- `tradingview/LUKE-WATCH-v6-VISUAL-COMPANION-LEVELS.pine`
+### Research And Ledger Harnesses
 
-This is the likely flagship-selection family. Pick one flagship and one recovery/experimental branch only after compile/signoff.
+- `tradingview/history/level-reclaim/`
+- `tradingview/history/production-ledger/`
 
-### Mancini Confirmed Retest Candidate Family
-
-- `tradingview/LUKE-MANCINI-FLAGSHIP-v6-CONFIRMED-RETEST-LIMIT-NINJA-DRYFIRE.pine`
-- `tradingview/LUKE-MANCINI-FLAGSHIP-vA-CONFIRMED-RETEST-LIMIT-NINJA-DRYFIRE.pine`
-- `tradingview/LUKE-MANCINI-OBJECTIVITY-MAX-NET-vA-SCALP-2_5-SWING-SPLIT.pine`
-- `tradingview/LUKE-MANCINI-vB-NONCHEAT-ROUTER-185D.pine`
-
-Treat `vA`, `OBJECTIVITY`, and `vB` as local replacement/router candidates only after TradingView compile/signoff. They are still visual/watchlist/research until promoted in writing.
+These files are research, readable-ledger, and strategy/backtest harnesses. Do not use them as the front-facing Pine source.
 
 ### Supporting Sources
 
-- `tradingview/saty-atr-levels-source.pine`
-- `tradingview/LUKE-OPTIONS-MANCINI-TRIGGER-v1.pine`
+- `tradingview/support/saty-reference/`
+- `tradingview/support/options-context/`
 
-Use these as context/source components, not as default front-facing Luke Watch files.
+These are supporting/reference Pine sources, not default live-test scripts.
 
 ## Promotion Checklist
 
-1. Choose one candidate file and record why.
+1. Choose exactly one candidate file.
 2. Compile it in TradingView with the exact symbol/timeframes it claims to support.
-3. Verify labels, levels, alerts, and visibility on desktop chart.
-4. Verify it does not imply live execution if it is only visual/watchlist.
-5. Export or screenshot proof.
-6. Update this doc with the promoted file, date, and proof artifact.
-7. Archive or explicitly park the replaced variants.
-
-## Current Promotion Status
-
-No Pine file is promoted to trusted flagship in this doc yet.
-
-Current allowed use: visual/watchlist/research only.
+3. Verify labels, levels, alerts, visibility, and session panel behavior.
+4. Verify `Any alert() function call` emits valid JSON to `/webhook/luke-long`.
+5. Run `cmd /c npm run ninja:bridge:doctor` and confirm Ninja sees the ping.
+6. If doing an order test, use SIM only and record the Ninja log evidence.
+7. Update this doc with the promoted file, date, and proof artifact.
+8. Move the replaced variant back under `tradingview/history/...`.

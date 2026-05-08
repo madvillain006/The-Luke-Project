@@ -45,13 +45,13 @@ Luke is Conor's local companion system for planning, memory, research, reminders
 - Direct live executor calls also check the live gate before broker credentials or Tradovate order submission.
 - Trading APIs are GET-only for level state, candidates, alerts, candle status, chart data, and source health.
 - Server startup exits cleanly if port 3000 is already held by Luke or another process, and PM2 is configured not to crash-loop clean duplicate-start exits.
-- Pine is a visual/watchlist indicator using `indicator()` and `alertcondition()` only.
+- Current Pine live-test source is `tradingview/LUKE-WATCH-FLAGSHIP-v4-MANCINI-CONTEXT-NINJA-BRIDGE.pine`; it is an `indicator()` that can emit dynamic Ninja bridge JSON when its TradingView `alert()` path is enabled.
 - Pine candidate inventory and promotion gate now lives in `docs/PINE_INVENTORY_AND_FLAGSHIP_GATE.md`.
 - `tradingview:inventory` generated `docs/PINE_INVENTORY_GENERATED.md` and `artifacts/proof/pine-inventory/pine-inventory.json` for 37 local Pine files.
 - Radar/Daily integration is active: Daily surfaces Radar review counts, reminders, and top review items before they can become trusted operating or trading context.
 - Typo-aware command recovery is active for known Luke commands; explicit slash-command typos from Luke Chat route internally through the trading lane instead of bouncing the user to a different chat.
 - Luke Watch production-test Pine is tracked as a realistic-accounting visual indicator; the simulation strategy is TradingView Strategy Tester only.
-- Hard-mode Pine research summary lives in `docs/TRADINGVIEW_HARDMODE_RESEARCH.md`; the strategy file is `tradingview/luke-level-reclaim-watch-hardmode.strategy.pine`.
+- Hard-mode Pine research summary lives in `docs/TRADINGVIEW_HARDMODE_RESEARCH.md`; the strategy file is `tradingview/history/level-reclaim/luke-level-reclaim-watch-hardmode.strategy.pine`.
 - Hard mode supports entry-only, exit-only, both-side, round-trip, and custom slippage with stop-first same-bar accounting.
 - Mancini current log filename now matches its header date: `data/research/mancini/The Mancini Logs 3-15-2026 - 5-4-2026.txt`.
 
@@ -59,7 +59,7 @@ Luke is Conor's local companion system for planning, memory, research, reminders
 
 - No credentialed/proven live or delayed ES 1m OHLC candle provider.
 - Massive/Polygon key exists, but tested snapshot/index endpoints were not entitled or rate-limited.
-- TradingView Pine has not been compiled inside TradingView.
+- Repo-side Pine compile cannot be proven from Codex. The current v4 file is the user-selected running source, but alert/Ninja ping proof must be captured from TradingView and NinjaTrader.
 - Luke Watch production-test Pine and its simulation-only strategy have not been compiled inside TradingView.
 - Hard-mode Pine has not been compiled inside TradingView.
 - Saty parity still needs human TradingView visual signoff.

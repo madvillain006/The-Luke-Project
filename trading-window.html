@@ -567,6 +567,10 @@
                 <div class="label">Local</div>
                 <div class="value" id="ninja-local-status">n/a</div>
               </div>
+              <div class="bridge-detail">
+                <div class="label">Ninja Strat</div>
+                <div class="value" id="ninja-strategy-status">n/a</div>
+              </div>
             </div>
           </div>
           <div class="controls bridge-actions">
@@ -592,12 +596,12 @@
 
       <section id="pine-watch-panel">
         <div class="section-head">
-          <h2>Luke Watch Pine Script</h2>
+          <h2>Luke v4 Mancini Ninja Bridge</h2>
           <span class="pill warn">watch script only</span>
         </div>
         <div class="section-body script-line">
           <div class="warning-band" style="border:1px solid var(--line); border-radius:6px;">
-            <div>Current Pine indicator/watchlist bridge only. Alertconditions are visual/context events, not order submission.</div>
+            <div>Current Pine indicator/watchlist bridge. Dynamic alert JSON can feed the Ninja SIM bridge; this UI still has no direct submit control.</div>
           </div>
           <div class="status-strip">
             <span class="pill info">WATCH</span>
@@ -605,8 +609,8 @@
             <span class="pill warn">PAPER/LONG</span>
             <span class="pill bad">BLOCKED</span>
           </div>
-          <div class="mono">tradingview/luke-level-reclaim-watch.pine</div>
-          <div class="subhead">Visual watch signals only; Luke displays bracket, stop loss, and take-profit context for manual review.</div>
+          <div class="mono">tradingview/LUKE-WATCH-FLAGSHIP-v4-MANCINI-CONTEXT-NINJA-BRIDGE.pine</div>
+          <div class="subhead">Tracks v4 Mancini/Saty reclaim signals, bracket levels, cancels, and realistic session performance.</div>
         </div>
       </section>
 
@@ -834,6 +838,7 @@
       qs('#ninja-bridge-file').textContent = status?.bridge_file_idle ? 'idle/cleared' : 'signal pending';
       qs('#ninja-public-status').textContent = status?.public_status ? `HTTP ${status.public_status}` : 'n/a';
       qs('#ninja-local-status').textContent = status?.local_status ? `HTTP ${status.local_status}` : 'n/a';
+      qs('#ninja-strategy-status').textContent = status?.ninja_strategy?.state ? `${status.ninja_strategy.state.toUpperCase()} ${status.ninja_strategy.timestamp || ''}`.trim() : 'unknown';
       qs('#ninja-refresh-tunnel').textContent = status?.state === 'stale' || status?.state === 'unhealthy' ? 'Refresh tunnel URL' : 'Re-check tunnel';
     }
 

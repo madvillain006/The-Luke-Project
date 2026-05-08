@@ -9,11 +9,11 @@ Hard-mode research strategy detail lives in `docs/TRADINGVIEW_HARDMODE_RESEARCH.
 
 ## Files
 
-- Base Pine: `tradingview/luke-level-reclaim-watch.pine`
-- Saty reference: `tradingview/saty-atr-levels-source.pine`
+- Base Pine: `tradingview/history/level-reclaim/luke-level-reclaim-watch.pine`
+- Saty reference: `tradingview/support/saty-reference/saty-atr-levels-source.pine`
 - Export script: `scripts/export-tradingview-levels.js`
 - Generated Pine: `artifacts/tradingview/luke-level-reclaim-watch.generated.pine`
-- Hard-mode strategy: `tradingview/luke-level-reclaim-watch-hardmode.strategy.pine`
+- Hard-mode strategy: `tradingview/history/level-reclaim/luke-level-reclaim-watch-hardmode.strategy.pine`
 - Generated hard-mode strategy: `artifacts/tradingview/luke-level-reclaim-watch-hardmode.generated.strategy.pine`
 - Export summary: `artifacts/tradingview/export-summary.json`
 - Historical slippage detail: `artifacts/research/pine-slippage-audit/PINE_SLIPPAGE_HISTORICAL_AUDIT.md`

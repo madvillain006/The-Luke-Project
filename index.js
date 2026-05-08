@@ -51,6 +51,7 @@ const {
   buildCompanionMemorySnapshot,
   handleCompanionMemoryTurn,
 } = require("./lib/companion-memory");
+const { buildLukeOperatorCheck } = require("./lib/luke-operator-check");
 const { llmRoutingStatus, messageNeedsAnthropic, freeAiFirst } = require("./lib/llm-routing-policy");
 const { validateMemoryKey, MAX_TEXT_BYTES, MAX_URL_LENGTH } = require("./lib/validators");
 const { detectPasteIntent } = require("./lib/detect-paste");
@@ -536,6 +537,11 @@ app.get("/luke/memory/context", (req, res) => {
     surface,
     context: buildCompanionContext({ surface, message }),
   });
+});
+
+app.get("/luke/operator-check", (req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  return res.json(buildLukeOperatorCheck({ health: buildHealthPayload() }));
 });
 
 app.post("/chat", async (req, res) => {

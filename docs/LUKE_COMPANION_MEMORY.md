@@ -11,6 +11,7 @@ Luke Chat and Trading now share one companion memory bin. The goal is simple: wh
 - Event log: `state/events/companion-memory.jsonl`
 - Code owner: `lib/companion-memory.js`
 - Chat integration: `index.js` `/chat`
+- First-open readiness: `index.js` `/luke/operator-check`
 
 ## What Gets Captured
 
@@ -28,6 +29,7 @@ Large generic pastes are ignored unless they contain explicit memory language. T
 - A typo like `/statsu` is recovered to `/status` instead of falling through to a random model reply.
 - Natural command recovery is limited to the Trading surface so normal Luke Chat questions do not become accidental trading commands.
 - System chat blocks trading commands, including recovered commands, and redirects the user to Trading.
+- Luke Chat opens with a read-only operator check so the user can see whether Luke should be the default daily surface before asking anything.
 
 ## Radar Relationship
 

@@ -9,12 +9,13 @@ Luke is Conor's local companion system for planning, memory, research, reminders
 
 ## Current Proof
 
-- `npm test`: 147 files passed; 928 tests passed; 1 skipped.
+- `npm test`: 151 files passed; 939 tests passed; 1 skipped.
 - Runtime health passed on port 3000.
 - `/operator-v2`, `/trading-window`, replay level-state, live-shaped level-state, and staged-flow proofs passed.
 - `prove:luke-ui-ux` passed across the main shell, embedded Daily panel, embedded Radar panel, Radar window, Daily window, Luke chat, trading chat, trading window, Operator V2, and brain dashboard PNG captures.
 - `prove:radar-daily-loop` verifies the Radar capture/review/Daily brief loop without writing into the live state folder.
 - `prove:companion-memory` verifies shared Luke/Trading memory, deterministic memory answers, and typo-aware command recovery.
+- `prove:luke-operator-check` verifies the first-open Luke readiness contract, front routes, drilldown boundaries, shared memory status, and Codex/code-change boundary.
 - `prove:brain-sections` passed against a fresh proof server; it clicked and captured brain brief, morning brief, afternoon brief, automation plan, developer plan, history searches, and automation artifact output.
 - Screenshot sanity passed for the hostile-audit PNG set.
 - `tradingview:export-levels` passed with no export issues.
@@ -34,6 +35,7 @@ Luke is Conor's local companion system for planning, memory, research, reminders
 - `/daily`: static Daily Brief window with date/time, Buffalo/current weather, Knoxville weather, Wilmington weather, Google Calendar week cache, Gmail cleanup status, Tennessee move prompt, and history job/lead scan.
 - `/radar`: front-facing inbox and synthesis lane with append-only capture, explicit source types, dedupe, review states, custom review notes/actions, on-demand evidence detail, source freshness/quality scaffolding, inbox filters, compact snapshots, and no execution authority.
 - `/luke` and `/trading` share companion memory for appointments, reminders, preferences, and active thoughts through `state/snapshots/memory.json`.
+- `/luke/operator-check` is a read-only front readiness endpoint consumed by the shell and Luke Chat. It does not add another main tab or duplicate the backend operator dashboard.
 - `/brain-dashboard`: non-trading brain surface with clickable brain brief, daily brief, automation-business, developer-stack, and history-career outputs.
 - Legacy chat staged-trade UI is review-only; its execution button is disabled and does not call `/agent/autonomous/execute-staged`.
 - Local staged/paper/shadow execution can be unlocked with `LUKE_ENABLE_STAGED_EXECUTION`; live broker submission still requires separate `LUKE_ENABLE_LIVE_EXECUTION` and the brokerage proof now in progress.

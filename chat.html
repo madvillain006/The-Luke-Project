@@ -1498,6 +1498,26 @@
       messages.scrollTop = messages.scrollHeight;
     }
 
+    async function loadOperatorCheckIntro() {
+      if (chatSurface !== "system") return;
+      try {
+        const r = await fetch(BASE + "/luke/operator-check", { cache: "no-store" });
+        const data = await r.json();
+        const lines = [
+          data.summary_line || "Luke operator check is ready.",
+          data.memory?.summary_line ? `Memory: ${data.memory.summary_line}.` : null,
+          data.radar?.summary_line ? `Radar: ${data.radar.summary_line}.` : null,
+          data.codex_boundary ? `Boundary: ${data.codex_boundary}` : null,
+          Array.isArray(data.next_actions) && data.next_actions.length ? `Next: ${data.next_actions[0]}` : null,
+        ].filter(Boolean);
+        addMessage("assistant", lines.join("\n"), "vision");
+      } catch {
+        addMessage("assistant", "Luke operator check is unavailable. Chat is still open.", "alert");
+      }
+    }
+
+    loadOperatorCheckIntro();
+
     function fmtList(values, fallback) {
       const arr = Array.isArray(values) ? values.filter(v => v !== null && v !== undefined && v !== "") : [];
       return arr.length ? arr.join(", ") : (fallback || "none");

@@ -134,6 +134,7 @@ describe('/brain dashboard shell', () => {
       'Status 0',
       'Luke System',
       'Blockers:',
+      'Operator:',
       'Trading (Analysis)',
       'AI Automation Business',
       'Developer Stack',
@@ -153,6 +154,7 @@ describe('/brain dashboard shell', () => {
       'data-src="/radar?embed=1"',
       'id="daily-expand"',
       'id="radar-line"',
+      'id="operator-line"',
       'id="radar-module-meta"',
       'Calendar, jobs, and next actions',
       'Inbox, synthesis, review',
@@ -178,6 +180,7 @@ describe('/brain dashboard shell', () => {
     expect(html).toContain('/agent/brain/status');
     expect(html).toContain('/agent/brain/telemetry');
     expect(html).toContain('/agent/brain/radar');
+    expect(html).toContain('/luke/operator-check');
     expect(html).toContain('/daily');
     expect(html).toContain('/radar');
     expect(html).toContain('/brain-dashboard#spine-automation');

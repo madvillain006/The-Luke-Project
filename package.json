@@ -15,6 +15,7 @@
     "prove:current-status": "node scripts/run-current-status-proof.js",
     "prove:radar-daily-loop": "node scripts/prove-radar-daily-loop.js",
     "prove:companion-memory": "node scripts/prove-companion-memory-loop.js",
+    "prove:luke-operator-check": "node scripts/prove-luke-operator-check.js",
     "check:katbot-release": "node scripts/check-katbot-release-readiness.js",
     "prove:katbot-phase1-owner": "node scripts/build-katbot-phase1-owner-packet.js",
     "prove:live-level-state": "node scripts/prove-live-level-state.js",

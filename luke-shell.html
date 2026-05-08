@@ -1075,6 +1075,7 @@
           <span>&gt; Buffalo weather: <strong id="weather-line">loading</strong></span>
           <span>&gt; Brain: <strong id="brain-line">loading</strong></span>
           <span>&gt; Radar: <strong id="radar-line">loading</strong></span>
+          <span>&gt; Operator: <strong id="operator-line">loading</strong></span>
           <span>&gt; Blockers: <strong id="blocker-line">loading</strong></span>
           <span>&gt; Runtime: <strong id="runtime-line">loading</strong></span>
         </span>
@@ -1542,11 +1543,12 @@
     async function refresh() {
       refreshBridgeReadOnly();
       try {
-        const [brain, daily, telemetry, radar] = await Promise.all([
+        const [brain, daily, telemetry, radar, operator] = await Promise.all([
           getJson('/agent/brain/status'),
           getJson('/agent/brain/daily'),
           getJson('/agent/brain/telemetry'),
           getJson('/agent/brain/radar').catch(() => null),
+          getJson('/luke/operator-check').catch(() => null),
         ]);
         const weather = daily.weather || {};
         setText('weather-line', weather.summary || 'Buffalo weather unavailable');
@@ -1559,9 +1561,10 @@
         setText('daily-brief-note', daily.time_label || new Date(daily.generated_at || Date.now()).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }));
         setText('brain-line', `${Object.keys(brain.subagents || {}).length} agents / ${brain.report_inbox?.count || 0} reports`);
         setText('radar-line', radar?.summary_line || 'ready / no items');
+        setText('operator-line', operator?.verdict === 'use_luke_first' ? 'Luke-first / Codex for code' : (operator?.summary_line || 'ready'));
         setText('radar-module-meta', radar?.summary_line ? `Inbox: ${radar.summary_line}` : 'Inbox, synthesis, review');
         setText('blocker-line', brain.attention?.length ? brain.attention.map(item => item.agent).join(', ') : 'none');
-        setText('shell-status-count', `Status ${(brain.attention?.length || 0) + (radar?.counts?.review || 0)}`);
+        setText('shell-status-count', `Status ${(brain.attention?.length || 0) + (radar?.counts?.review || 0) + (operator?.counts?.red || 0)}`);
         setText('runtime-line', `${formatMemory(telemetry.process?.rss_bytes)} RSS / ${formatUptime(telemetry.process?.uptime_seconds)}`);
       } catch (err) {
         setText('weather-line', 'offline');
@@ -1574,6 +1577,7 @@
         setText('daily-brief-note', 'daily offline');
         setText('brain-line', 'offline');
         setText('radar-line', 'offline');
+        setText('operator-line', 'offline');
         setText('radar-module-meta', 'Radar offline');
         setText('blocker-line', 'offline');
         setText('shell-status-count', 'Status !');

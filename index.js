@@ -136,6 +136,13 @@ app.use((req, res, next) => {
     return;
   }
   const jsonLimit = (req.path === '/chat') ? '10mb' : '100kb';
+  if (req.path === '/webhook/luke-long' && !/^application\/json\b/i.test(ct)) {
+    express.text({ limit: '100kb', type: '*/*' })(req, res, (err) => {
+      if (err) return res.status(400).json({ error: "Invalid text payload" });
+      next();
+    });
+    return;
+  }
   express.json({ limit: jsonLimit })(req, res, (err) => {
     if (err) return res.status(400).json({ error: "Invalid JSON" });
     next();
@@ -1197,15 +1204,45 @@ app.get("/webhook/saty", (req, res) => {
 //  LUKE LONG -> NINJATRADER SIM BRIDGE
 // TradingView/Luke alert payload lands here, Luke writes a local JSON file,
 // and the NinjaTrader strategy polls that file. This route does not place live orders.
+function parseNinjaBridgeBody(body) {
+  if (body && typeof body === "object" && !Array.isArray(body)) return body;
+  if (typeof body === "string") {
+    try {
+      const parsed = JSON.parse(body);
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) return parsed;
+    } catch {}
+  }
+  return {};
+}
+
 function getNinjaBridgeToken(req) {
-  const body = req.body && typeof req.body === "object" ? req.body : {};
+  const body = parseNinjaBridgeBody(req.body);
   return req.get("x-luke-bridge-token") || body.token || body.bridge_token || req.query.token;
+}
+
+function buildNinjaBridgeRequestSummary(req) {
+  const body = parseNinjaBridgeBody(req.body);
+  return {
+    ip: req.ip || req.socket?.remoteAddress || null,
+    user_agent: req.get("user-agent") || null,
+    content_type: req.get("content-type") || null,
+    has_body: Boolean(req.body),
+    body_keys: Object.keys(body).filter((key) => !/token|secret|authorization/i.test(key)).slice(0, 20),
+    type: body.type || body.signal_type || body.command || null,
+    side: body.side || body.direction || null,
+    symbol: body.symbol || body.ticker || body.instrument || null,
+    id: body.id || body.signal_id || body.target_id || null,
+  };
 }
 
 function requireNinjaBridgeToken(req, res) {
   const expectedBridgeToken = process.env.LUKE_NINJA_BRIDGE_TOKEN;
   if (!expectedBridgeToken) return true;
   if (getNinjaBridgeToken(req) === expectedBridgeToken) return true;
+  log("ninjatrader-bridge-reject", {
+    reason: "invalid_token",
+    ...buildNinjaBridgeRequestSummary(req),
+  });
   res.status(401).json({ ok: false, sim_bridge_only: true, error: "invalid Ninja bridge token" });
   return false;
 }
@@ -1223,6 +1260,49 @@ function isoAgeMs(isoText) {
   return Number.isFinite(parsed) ? Date.now() - parsed : null;
 }
 
+function listRecentNinjaFiles(dir, prefix) {
+  try {
+    return fs.readdirSync(dir)
+      .filter((name) => name.toLowerCase().startsWith(prefix) && name.toLowerCase().endsWith(".txt"))
+      .map((name) => {
+        const full = path.join(dir, name);
+        const stat = fs.statSync(full);
+        return { full, mtimeMs: stat.mtimeMs };
+      })
+      .sort((a, b) => b.mtimeMs - a.mtimeMs)
+      .slice(0, 4)
+      .map((item) => item.full);
+  } catch {
+    return [];
+  }
+}
+
+function latestNinjaBridgeStrategyEvent() {
+  const ninjaUserDir = process.env.NINJATRADER_USER_DIR || "C:\\Users\\conor\\OneDrive\\Documents\\NinjaTrader 8";
+  const files = [
+    ...listRecentNinjaFiles(path.join(ninjaUserDir, "log"), "log."),
+    ...listRecentNinjaFiles(path.join(ninjaUserDir, "trace"), "trace."),
+  ];
+  const events = [];
+  for (const file of files) {
+    try {
+      const lines = fs.readFileSync(file, "utf8").split(/\r?\n/);
+      for (const line of lines) {
+        if (!line.includes("NinjaScript strategy 'LukeAlertBridgeStrategy/")) continue;
+        if (!line.includes("Enabling") && !line.includes("Disabling")) continue;
+        const timestamp = (line.match(/^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}:\d{3})/) || [null, ""])[1];
+        events.push({
+          timestamp,
+          state: line.includes("Enabling") ? "enabled" : "disabled",
+          file,
+          line,
+        });
+      }
+    } catch {}
+  }
+  return events.sort((a, b) => String(a.timestamp).localeCompare(String(b.timestamp))).at(-1) || null;
+}
+
 function buildNinjaTunnelWatchdogUiStatus(overrideStatus = null) {
   const ninjaDir = path.join(__dirname, "data", "ninjatrader");
   const tunnelStatusPath = path.join(ninjaDir, "tunnel-status.json");
@@ -1232,24 +1312,27 @@ function buildNinjaTunnelWatchdogUiStatus(overrideStatus = null) {
   const watchdog = overrideStatus || readJsonFile(watchdogStatusPath, null);
   const tunnel = readJsonFile(tunnelStatusPath, null);
   const latestSignal = readJsonFile(latestSignalPath, null);
+  const ninjaStrategy = latestNinjaBridgeStrategyEvent();
   const webhookUrl = watchdog?.webhook_url || readTextFileTrimmed(currentWebhookPath) || tunnel?.webhook_url || "";
   const publicUrl = watchdog?.public_url || tunnel?.public_url || "";
   const checkedAt = watchdog?.checked_at || tunnel?.updated_at || null;
   const statusAgeMs = isoAgeMs(checkedAt);
   const watchdogStale = statusAgeMs === null || statusAgeMs > 3 * 60 * 1000;
   const tunnelStale = Boolean(watchdog?.stale_warning);
-  const healthy = Boolean(watchdog?.ok && webhookUrl && !watchdogStale && !tunnelStale);
+  const ninjaStrategyDisabled = ninjaStrategy?.state === "disabled";
+  const healthy = Boolean(watchdog?.ok && webhookUrl && !watchdogStale && !ninjaStrategyDisabled);
   const state = healthy ? "healthy" : watchdog?.ok && webhookUrl ? "stale" : "unhealthy";
   return {
     ok: Boolean(watchdog?.ok && webhookUrl),
     state,
-    reason: watchdogStale ? "watchdog_not_recent" : tunnelStale ? "quick_tunnel_age_warning" : watchdog?.reason || "no_watchdog_status",
+    reason: ninjaStrategyDisabled ? "ninjatrader_strategy_disabled" : watchdogStale ? "watchdog_not_recent" : watchdog?.reason || "no_watchdog_status",
     route: watchdog?.route || (publicUrl ? "public_tunnel" : "unknown"),
     webhook_url: webhookUrl,
     public_url: publicUrl,
     checked_at: checkedAt,
     status_age_ms: statusAgeMs,
     tunnel_age_ms: typeof watchdog?.tunnel_age_ms === "number" ? watchdog.tunnel_age_ms : null,
+    quick_tunnel_age_warning: tunnelStale,
     local_status: watchdog?.local_status ?? null,
     public_status: watchdog?.public_status ?? null,
     refreshed: Boolean(watchdog?.refreshed),
@@ -1258,6 +1341,12 @@ function buildNinjaTunnelWatchdogUiStatus(overrideStatus = null) {
     bridge_file_written_at: latestSignal?.written_at || null,
     sim_bridge_only: true,
     token_required: Boolean(process.env.LUKE_NINJA_BRIDGE_TOKEN),
+    ninja_strategy: ninjaStrategy ? {
+      state: ninjaStrategy.state,
+      timestamp: ninjaStrategy.timestamp,
+      file: ninjaStrategy.file,
+      line: ninjaStrategy.line,
+    } : null,
   };
 }
 
@@ -1285,6 +1374,11 @@ app.post("/webhook/luke-long", (req, res) => {
       signal: payload.signal,
     });
   } catch (err) {
+    log("ninjatrader-bridge-reject", {
+      reason: "invalid_payload",
+      error: err.message,
+      ...buildNinjaBridgeRequestSummary(req),
+    });
     res.status(400).json({ ok: false, sim_bridge_only: true, error: err.message });
   }
 });
@@ -1297,6 +1391,7 @@ app.get("/api/ninjatrader/bridge-status", (req, res) => {
     sim_bridge_only: true,
     token_required: Boolean(process.env.LUKE_NINJA_BRIDGE_TOKEN),
     tunnel: readJsonFile(tunnelStatusPath, null),
+    ninja_strategy: latestNinjaBridgeStrategyEvent(),
   });
 });
 

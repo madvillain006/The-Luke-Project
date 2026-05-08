@@ -13,6 +13,7 @@ const TUNNEL_STATUS_FILE = path.join(ROOT, "data", "ninjatrader", "tunnel-status
 const NINJA_USER_DIR = process.env.NINJATRADER_USER_DIR || "C:\\Users\\conor\\OneDrive\\Documents\\NinjaTrader 8";
 const TOKEN = process.env.LUKE_NINJA_BRIDGE_TOKEN || "";
 const LOCAL_BASE_URL = process.env.LUKE_NINJA_LOCAL_URL || "http://localhost:3000";
+const WANTS_TEXT_PAYLOAD = process.argv.includes("--text-payload");
 
 function readJson(file, fallback) {
   try {
@@ -70,10 +71,11 @@ async function requestJson(url, options = {}) {
 }
 
 async function postCommand(url, body) {
+  const payload = JSON.stringify(TOKEN ? { ...body, token: TOKEN } : body);
   return requestJson(url, {
     method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(TOKEN ? { ...body, token: TOKEN } : body),
+    headers: { "content-type": WANTS_TEXT_PAYLOAD ? "text/plain" : "application/json" },
+    body: payload,
   });
 }
 
@@ -127,6 +129,31 @@ function ninjaFilesContain(text) {
   return { found: false, file: null };
 }
 
+function latestNinjaStrategyEvent() {
+  const files = [
+    ...recentFiles(path.join(NINJA_USER_DIR, "log"), "log."),
+    ...recentFiles(path.join(NINJA_USER_DIR, "trace"), "trace."),
+  ];
+  const events = [];
+  for (const file of files) {
+    try {
+      const lines = fs.readFileSync(file, "utf8").split(/\r?\n/);
+      for (const line of lines) {
+        if (!line.includes("NinjaScript strategy 'LukeAlertBridgeStrategy/")) continue;
+        if (!line.includes("Enabling") && !line.includes("Disabling")) continue;
+        const timestamp = (line.match(/^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}:\d{3})/) || [null, ""])[1];
+        events.push({
+          timestamp,
+          state: line.includes("Enabling") ? "enabled" : "disabled",
+          file,
+          line,
+        });
+      }
+    } catch {}
+  }
+  return events.sort((a, b) => String(a.timestamp).localeCompare(String(b.timestamp))).at(-1) || null;
+}
+
 async function waitForNinjaText(text, timeoutMs = 60000, pollMs = 1000) {
   const started = Date.now();
   while (Date.now() - started <= timeoutMs) {
@@ -163,6 +190,7 @@ async function main() {
   }
 
   const webhookUrl = wantsPublicTunnel ? tunnel.webhook_url : `${LOCAL_BASE_URL}/webhook/luke-long`;
+  const strategyEventBeforePing = latestNinjaStrategyEvent();
   const pingId = `doctor-ping-${Date.now()}`;
   const pingResponse = await postCommand(webhookUrl, {
     id: pingId,
@@ -177,8 +205,8 @@ async function main() {
     throw new Error(`Public PING failed: ${pingResponse.status} ${JSON.stringify(pingResponse.body)}`);
   }
 
-  await sleep(5000);
-  const pingSeen = ninjaFilesContain(`LUKE BRIDGE PING ${pingId}`);
+  const pingSeen = await waitForNinjaText(`LUKE BRIDGE PING ${pingId}`, 20000, 500);
+  const strategyEventAfterPing = latestNinjaStrategyEvent();
   clearBridgeFile("cleared after no-order Ninja bridge ping doctor");
 
   if (!pingSeen.found || !wantsOrderTest) {
@@ -190,10 +218,13 @@ async function main() {
       local_status: localStatus.status,
       public_status: publicStatus ? publicStatus.status : null,
       ping_status: pingResponse.status,
+      payload_content_type: WANTS_TEXT_PAYLOAD ? "text/plain" : "application/json",
       ninja_ping_seen: pingSeen.found,
       ninja_ping_file: pingSeen.file,
+      ninja_strategy_state: strategyEventAfterPing?.state || strategyEventBeforePing?.state || "unknown",
+      latest_ninja_strategy_event: strategyEventAfterPing?.line || strategyEventBeforePing?.line || null,
       bridge_file_cleared: true,
-      next: pingSeen.found ? "Ninja bridge is armed; use --order-test only when intentionally testing orders." : "Ninja did not log ping; strategy is not enabled or is still running old compiled code.",
+      next: pingSeen.found ? "Ninja bridge is armed; use --order-test only when intentionally testing orders." : strategyEventAfterPing?.state === "disabled" ? "Enable LukeAlertBridgeStrategy in NinjaTrader, then rerun this ping doctor." : "Ninja did not log ping; strategy is not enabled, is running old compiled code, or did not poll within 20s.",
     }, null, 2));
     process.exit(pingSeen.found ? 0 : 2);
   }
@@ -254,8 +285,11 @@ async function main() {
     local_status: localStatus.status,
     public_status: publicStatus ? publicStatus.status : null,
     ping_status: pingResponse.status,
+    payload_content_type: WANTS_TEXT_PAYLOAD ? "text/plain" : "application/json",
     ninja_ping_seen: pingSeen.found,
     ninja_ping_file: pingSeen.file,
+    ninja_strategy_state: strategyEventAfterPing?.state || strategyEventBeforePing?.state || "unknown",
+    latest_ninja_strategy_event: strategyEventAfterPing?.line || strategyEventBeforePing?.line || null,
     long_status: longResponse.status,
     ninja_long_seen: longSeen.found,
     ninja_long_file: longSeen.file,

@@ -111,7 +111,7 @@ namespace NinjaTrader.NinjaScript.Strategies
                 BridgeFilePath = @"C:\Users\conor\luke\data\ninjatrader\latest-luke-signal.json";
                 ExecutionMode = LukeBridgeExecutionMode.LimitAtLukeEntry;
                 MaxSignalAgeSeconds = 20;
-                LimitOrderExpirySeconds = 60;
+                LimitOrderExpirySeconds = 600;
                 UsePayloadQuantity = true;
                 BridgeDefaultQuantity = 1;
                 SplitTp1Tp2Runner = true;
@@ -119,7 +119,7 @@ namespace NinjaTrader.NinjaScript.Strategies
                 AllowLiveAccounts = false;
                 AllowedAccountName = "LFE05076094670001";
                 MaxQuantity = 2;
-                MaxSignalsPerSession = 10;
+                MaxSignalsPerSession = 20;
                 RequireSymbolPrefixMatch = true;
                 MaxMarketableEntryPoints = 0.25;
             }

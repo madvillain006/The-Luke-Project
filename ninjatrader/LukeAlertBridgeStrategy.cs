@@ -297,7 +297,20 @@ namespace NinjaTrader.NinjaScript.Strategies
             qty = Math.Min(qty, Math.Max(1, MaxQuantity));
             int qtyT1 = qty;
             int qtyT2 = 0;
-            if (SplitTp1Tp2Runner && qty >= 2)
+            if (signal.ForceAllOutAtTp1)
+            {
+                qtyT1 = qty;
+                qtyT2 = 0;
+            }
+            else if (signal.HasExplicitTargetQuantities)
+            {
+                qtyT1 = Math.Min(qty, Math.Max(0, signal.Tp1Quantity));
+                qtyT2 = Math.Min(qty - qtyT1, Math.Max(0, signal.Tp2Quantity));
+                int remainder = qty - qtyT1 - qtyT2;
+                if (remainder > 0)
+                    qtyT1 += remainder;
+            }
+            else if (SplitTp1Tp2Runner && qty >= 2)
             {
                 qtyT1 = Math.Max(1, qty / 2);
                 qtyT2 = qty - qtyT1;
@@ -333,9 +346,9 @@ namespace NinjaTrader.NinjaScript.Strategies
             lastProcessedId = signal.Id;
             signalsSubmittedThisSession++;
             string message = string.Format(CultureInfo.InvariantCulture,
-                "LUKE SIM LONG {0} qty={1} entry={2:F2} stop={3:F2} tp1={4:F2} tp2={5:F2} mode={6} class={7} model={8} expiry={9}s",
-                signal.Id, qty, signal.Entry, signal.Stop, signal.Tp1, signal.Tp2, ExecutionMode,
-                signal.SignalClass, signal.ExecutionModel, activeLimitOrderExpirySeconds);
+                "LUKE SIM LONG {0} qty={1} t1={2} t2={3} entry={4:F2} stop={5:F2} tp1={6:F2} tp2={7:F2} mode={8} class={9} profile={10} model={11} expiry={12}s",
+                signal.Id, qty, qtyT1, qtyT2, signal.Entry, signal.Stop, signal.Tp1, signal.Tp2, ExecutionMode,
+                signal.SignalClass, signal.OrderProfile, signal.ExecutionModel, activeLimitOrderExpirySeconds);
             BridgeInfo(message);
             Alert("LukeBridgeSubmitted-" + signal.Id, Priority.High, message, NinjaTrader.Core.Globals.InstallDir + @"\sounds\Alert1.wav", 1, Brushes.DarkGreen, Brushes.White);
         }
@@ -577,12 +590,16 @@ namespace NinjaTrader.NinjaScript.Strategies
             public string Side;
             public string Symbol;
             public string SignalClass;
+            public string OrderProfile;
             public string ExecutionModel;
             public double Entry;
             public double Stop;
             public double Tp1;
             public double Tp2;
             public int Quantity;
+            public int Tp1Quantity;
+            public int Tp2Quantity;
+            public bool ForceAllOutAtTp1;
             public DateTimeOffset CreatedAt;
 
             public static LukeSignal Parse(string json, DateTime fileWriteUtc)
@@ -592,12 +609,16 @@ namespace NinjaTrader.NinjaScript.Strategies
                 string side = ExtractString(json, "side");
                 string symbol = ExtractString(json, "symbol");
                 string signalClass = ExtractString(json, "class");
+                string orderProfile = ExtractString(json, "profile");
                 string executionModel = ExtractString(json, "execution_model");
                 double entry = ExtractDouble(json, "entry");
                 double stop = ExtractDouble(json, "stop");
                 double tp1 = ExtractDouble(json, "tp1");
                 double tp2 = ExtractDouble(json, "tp2");
                 int qty = ExtractInt(json, "qty", 1);
+                int tp1Qty = ExtractIntAllowZero(json, "tp1_qty", -1);
+                int tp2Qty = ExtractIntAllowZero(json, "tp2_qty", -1);
+                bool allOutAtTp1 = ExtractBool(json, "all_out_tp1");
                 string createdText = ExtractString(json, "created_at");
 
                 DateTimeOffset created;
@@ -620,12 +641,16 @@ namespace NinjaTrader.NinjaScript.Strategies
                     Side = side.ToUpperInvariant(),
                     Symbol = string.IsNullOrWhiteSpace(symbol) ? "ES" : symbol,
                     SignalClass = string.IsNullOrWhiteSpace(signalClass) ? "SCALP_VALID" : signalClass.ToUpperInvariant(),
+                    OrderProfile = string.IsNullOrWhiteSpace(orderProfile) ? "default" : orderProfile.ToUpperInvariant(),
                     ExecutionModel = string.IsNullOrWhiteSpace(executionModel) ? "unknown" : executionModel.ToLowerInvariant(),
                     Entry = entry,
                     Stop = stop,
                     Tp1 = tp1,
                     Tp2 = tp2,
                     Quantity = Math.Max(1, qty),
+                    Tp1Quantity = tp1Qty,
+                    Tp2Quantity = tp2Qty,
+                    ForceAllOutAtTp1 = allOutAtTp1,
                     CreatedAt = created
                 };
             }
@@ -664,6 +689,14 @@ namespace NinjaTrader.NinjaScript.Strategies
                 }
             }
 
+            public bool HasExplicitTargetQuantities
+            {
+                get
+                {
+                    return Tp1Quantity >= 0 || Tp2Quantity >= 0;
+                }
+            }
+
             private static bool IsFinite(double value)
             {
                 return !double.IsNaN(value) && !double.IsInfinity(value);
@@ -690,6 +723,21 @@ namespace NinjaTrader.NinjaScript.Strategies
             {
                 double value = ExtractDouble(json, name);
                 return IsFinite(value) ? Math.Max(1, Convert.ToInt32(value)) : fallback;
+            }
+
+            private static int ExtractIntAllowZero(string json, string name, int fallback)
+            {
+                double value = ExtractDouble(json, name);
+                return IsFinite(value) ? Math.Max(0, Convert.ToInt32(value)) : fallback;
+            }
+
+            private static bool ExtractBool(string json, string name)
+            {
+                Match match = Regex.Match(json, "\\\"" + Regex.Escape(name) + "\\\"\\s*:\\s*(true|false|1|0|\\\"true\\\"|\\\"false\\\"|\\\"1\\\"|\\\"0\\\")", RegexOptions.IgnoreCase);
+                if (!match.Success)
+                    return false;
+                string value = match.Groups[1].Value.Trim().Trim('"');
+                return value.Equals("true", StringComparison.OrdinalIgnoreCase) || value.Equals("1", StringComparison.OrdinalIgnoreCase);
             }
         }
     }

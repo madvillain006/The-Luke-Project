@@ -25,6 +25,11 @@ const LEVEL_TAP_LOOKBACK_MINUTES = 2;
 const LEVEL_TAP_TOLERANCE_POINTS = 0.5;
 const MIN_RECLAIM_CLOSE_LOCATION = 0.55;
 const MAX_RECLAIM_UPPER_WICK_POINTS = 3;
+const MIN_TARGET_SPACE_POINTS = 3;
+const FAILED_REENTRY_COOLDOWN_MINUTES = 40;
+const FAILED_REENTRY_LEVEL_TOLERANCE_POINTS = 1.25;
+const FAILED_REENTRY_RESET_POINTS = 1;
+const SUPPRESSED_STATUSES = new Set(['suppressed_while_open', 'suppressed_failed_cooldown']);
 
 function ensureDir(dir) {
   fs.mkdirSync(dir, { recursive: true });
@@ -136,6 +141,10 @@ function minuteOfDay(etTime) {
   const [, timePart] = etTime.split(' ');
   const [hour, minute] = timePart.split(':').map(Number);
   return hour * 60 + minute;
+}
+
+function isIsoDate(value) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(String(value || ''));
 }
 
 function sessionDateForBar(bar) {
@@ -251,6 +260,7 @@ function buildRawLevelMaps(levelRows, satyRows) {
   const rawByDate = new Map();
   const targetMap = new Map();
   const allMap = new Map();
+  let skippedFutureManciniRows = 0;
   const pushRaw = (date, raw) => {
     if (!rawByDate.has(date)) rawByDate.set(date, []);
     rawByDate.get(date).push(raw);
@@ -263,8 +273,13 @@ function buildRawLevelMaps(levelRows, satyRows) {
   };
   for (const row of levelRows) {
     const date = row.plan_date;
+    const published = row.pub_date;
     const price = Number(row.price);
     if (!date || !Number.isFinite(price)) continue;
+    if (isIsoDate(published) && isIsoDate(date) && published > date) {
+      skippedFutureManciniRows += 1;
+      continue;
+    }
     const klass = classifyLevel(row);
     pushRaw(date, {
       price,
@@ -291,7 +306,7 @@ function buildRawLevelMaps(levelRows, satyRows) {
   }
   for (const levels of targetMap.values()) levels.sort((a, b) => a - b);
   for (const levels of allMap.values()) levels.sort((a, b) => a - b);
-  return { rawByDate, targetMap, allMap };
+  return { rawByDate, targetMap, allMap, levelAudit: { skipped_future_mancini_rows: skippedFutureManciniRows } };
 }
 
 function resolveClusterClass(cluster) {
@@ -356,6 +371,14 @@ function targetForTrade({ klass, planDate, entry }, targetMap, allLevelMap) {
   return next && next > entry + TP1_POINTS ? next : entry + SCALP_FALLBACK_TP2_POINTS;
 }
 
+function targetRoomOk(levels, level, entry) {
+  const next = nextAbove(levels, level);
+  const targetSpace = next == null ? TP1_POINTS * 2 : next - level;
+  const entryTargetSpace = next == null ? TP1_POINTS * 2 : next - entry;
+  const tp1RoomOk = next == null || next - entry >= TP1_POINTS;
+  return (targetSpace >= MIN_TARGET_SPACE_POINTS && entryTargetSpace >= MIN_TARGET_SPACE_POINTS) || tp1RoomOk;
+}
+
 function recentTap(bars, index, level) {
   const start = Math.max(0, index - LEVEL_TAP_LOOKBACK_MINUTES);
   for (let i = start; i <= index; i += 1) {
@@ -411,6 +434,7 @@ function generateDynamicSignals({ sessionDate, bars, rawByDate, targetMap, allLe
       if (!antiStuffOk(bar, level)) continue;
       if (i - state.lastSignalIndex <= DEDUPE_MINUTES) continue;
       const entry = level + TICK;
+      if (!targetRoomOk(allLevelMap.get(sessionDate), level, entry)) continue;
       const tp2 = targetForTrade({ klass: cluster.class, planDate: sessionDate, entry }, targetMap, allLevelMap);
       minuteCandidates.push({
         plan_date: sessionDate,
@@ -456,6 +480,24 @@ function findFirstTouch(bars, startIndex, price, endIndex = bars.length - 1) {
     if (bars[i].low <= price && bars[i].high >= price) return i;
   }
   return -1;
+}
+
+function failedCooldownBlocks(bars, candidate, lastFailed) {
+  if (!lastFailed || lastFailed.index == null || lastFailed.level == null) return false;
+  if (candidate.signal_index - lastFailed.index > FAILED_REENTRY_COOLDOWN_MINUTES) return false;
+  if (Math.abs(candidate.level - lastFailed.level) > FAILED_REENTRY_LEVEL_TOLERANCE_POINTS) return false;
+  const start = Math.max(0, lastFailed.index);
+  for (let i = start; i <= candidate.signal_index && i < bars.length; i += 1) {
+    const bar = bars[i];
+    if (bar.low <= candidate.level - FAILED_REENTRY_RESET_POINTS && bar.close >= candidate.level + CLOSE_ABOVE) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function isPreTpStop(status) {
+  return String(status || '').startsWith('stopped_pre_tp1');
 }
 
 function simulatePath(bars, fillIndex, entry, stop, tp1, tp2) {
@@ -538,7 +580,7 @@ function simulatePath(bars, fillIndex, entry, stop, tp1, tp2) {
     }
   }
   const last = bars[exitIndex];
-  const runnerPoints = tp1Hit ? Math.max(0, last.close - entry) : (last.close - entry) * 2;
+  const runnerPoints = tp1Hit ? last.close - entry : (last.close - entry) * 2;
   return {
     status: tp1Hit ? 'open_after_tp1_marked_eod' : 'open_marked_eod',
     gross_points: tp1Hit ? (tp1 - entry) + runnerPoints : runnerPoints,
@@ -562,12 +604,31 @@ function maxExcursion(bars, startIndex, entry, exitIndex) {
 function replayDynamicSession(sessionDate, bars, candidates) {
   const results = [];
   let busyUntilIndex = -1;
+  let lastFailed = null;
   for (const candidate of candidates) {
     if (candidate.signal_index <= busyUntilIndex) {
       results.push({
         ...candidate,
         mode: 'dynamic_vA_level_grid',
         status: 'suppressed_while_open',
+        order_armed_et: '',
+        order_expire_et: '',
+        fill_et: '',
+        exit_et: '',
+        net_dollars: 0,
+        gross_points: 0,
+        contracts: 0,
+        mfe: 0,
+        mae: 0,
+        ambiguous_1m: false,
+      });
+      continue;
+    }
+    if (failedCooldownBlocks(bars, candidate, lastFailed)) {
+      results.push({
+        ...candidate,
+        mode: 'dynamic_vA_level_grid',
+        status: 'suppressed_failed_cooldown',
         order_armed_et: '',
         order_expire_et: '',
         fill_et: '',
@@ -627,6 +688,9 @@ function replayDynamicSession(sessionDate, bars, candidates) {
       ambiguous_1m: pathResult.ambiguous || false,
     };
     results.push(result);
+    if (isPreTpStop(result.status)) {
+      lastFailed = { index: result.exit_index ?? fillIndex, level: candidate.level };
+    }
     busyUntilIndex = Math.max(busyUntilIndex, pathResult.exit_index ?? fillIndex);
   }
   return results.map((row) => ({ ...row, plan_date: sessionDate }));
@@ -644,6 +708,27 @@ function targetForProfile(candidate, profile, targetMap, allLevelMap) {
 
 function profileForClass(profileSet, klass) {
   return profileSet.classes[klass] || profileSet.classes.DEFAULT;
+}
+
+function signalTimeBucket(candidate) {
+  const signalDate = String(candidate.signal_et || '').slice(0, 10);
+  const minute = minuteOfDay(candidate.signal_et || '');
+  if (signalDate && candidate.plan_date && signalDate < candidate.plan_date) return 'overnight_prior_evening';
+  if (minute < 0) return 'missing_time';
+  if (minute < 9 * 60 + 30) return 'pre_0930';
+  if (minute < 11 * 60) return 'open_0930_1100';
+  if (minute < 13 * 60) return 'mid_1100_1300';
+  return 'afternoon_1300_plus';
+}
+
+function profileFilterAllows(profileSet, candidate) {
+  const filter = profileSet.filter || {};
+  const bucket = signalTimeBucket(candidate);
+  if (filter.includeTimeBuckets && !filter.includeTimeBuckets.includes(bucket)) return false;
+  if (filter.excludeTimeBuckets && filter.excludeTimeBuckets.includes(bucket)) return false;
+  if (filter.minSourceCount != null && Number(candidate.source_count || 0) < filter.minSourceCount) return false;
+  if (filter.maxSourceCount != null && Number(candidate.source_count || 0) > filter.maxSourceCount) return false;
+  return true;
 }
 
 function simulatePathWithProfile(bars, fillIndex, candidate, profile, targetMap, allLevelMap) {
@@ -725,7 +810,7 @@ function simulatePathWithProfile(bars, fillIndex, candidate, profile, targetMap,
     }
   }
   const last = bars[exitIndex];
-  grossPoints += Math.max(0, last.close - entry) * remaining;
+  grossPoints += (last.close - entry) * remaining;
   return {
     status: tp1Hit ? 'open_after_tp1_marked_eod' : 'open_marked_eod',
     gross_points: grossPoints,
@@ -742,8 +827,10 @@ function simulatePathWithProfile(bars, fillIndex, candidate, profile, targetMap,
 function replayDynamicSessionWithProfile(sessionDate, bars, candidates, profileSet, targetMap, allLevelMap) {
   const results = [];
   let busyUntilIndex = -1;
+  let lastFailed = null;
   for (const candidate of candidates) {
     if (profileSet.allowedClasses && !profileSet.allowedClasses.includes(candidate.class)) continue;
+    if (!profileFilterAllows(profileSet, candidate)) continue;
     const profile = profileForClass(profileSet, candidate.class);
     if (candidate.signal_index <= busyUntilIndex) {
       results.push({
@@ -752,6 +839,26 @@ function replayDynamicSessionWithProfile(sessionDate, bars, candidates, profileS
         order_profile: profile.name,
         mode: 'dynamic_vA_profile_sweep',
         status: 'suppressed_while_open',
+        order_armed_et: '',
+        order_expire_et: '',
+        fill_et: '',
+        exit_et: '',
+        net_dollars: 0,
+        gross_points: 0,
+        contracts: 0,
+        mfe: 0,
+        mae: 0,
+        ambiguous_1m: false,
+      });
+      continue;
+    }
+    if (failedCooldownBlocks(bars, candidate, lastFailed)) {
+      results.push({
+        ...candidate,
+        profile: profileSet.name,
+        order_profile: profile.name,
+        mode: 'dynamic_vA_profile_sweep',
+        status: 'suppressed_failed_cooldown',
         order_armed_et: '',
         order_expire_et: '',
         fill_et: '',
@@ -798,7 +905,7 @@ function replayDynamicSessionWithProfile(sessionDate, bars, candidates, profileS
     const contracts = Number(pathResult.contracts || 0);
     const excursion = maxExcursion(bars, fillIndex, candidate.entry, pathResult.exit_index ?? fillIndex);
     const netDollars = grossPoints * POINT_VALUE - contracts * COST_PER_CONTRACT;
-    results.push({
+    const result = {
       ...candidate,
       profile: profileSet.name,
       order_profile: profile.name,
@@ -818,14 +925,18 @@ function replayDynamicSessionWithProfile(sessionDate, bars, candidates, profileS
       mfe: excursion.mfe,
       mae: excursion.mae,
       ambiguous_1m: pathResult.ambiguous || false,
-    });
+    };
+    results.push(result);
+    if (isPreTpStop(result.status)) {
+      lastFailed = { index: result.exit_index ?? fillIndex, level: candidate.level };
+    }
     busyUntilIndex = Math.max(busyUntilIndex, pathResult.exit_index ?? fillIndex);
   }
   return results.map((row) => ({ ...row, plan_date: sessionDate }));
 }
 
 function summarize(results, completeSessionCount) {
-  const tradable = results.filter((row) => !['suppressed_while_open'].includes(row.status));
+  const tradable = results.filter((row) => !SUPPRESSED_STATUSES.has(row.status));
   const filled = tradable.filter((row) => row.status !== 'no_fill');
   const winners = filled.filter((row) => Number(row.net_dollars || 0) > 0);
   const byDay = new Map();
@@ -853,7 +964,7 @@ function summarize(results, completeSessionCount) {
     tradable: tradable.length,
     filled: filled.length,
     no_fill: tradable.filter((row) => row.status === 'no_fill').length,
-    suppressed: results.filter((row) => row.status === 'suppressed_while_open').length,
+    suppressed: results.filter((row) => SUPPRESSED_STATUSES.has(row.status)).length,
     winners: winners.length,
     win_rate: round2((winners.length / (filled.length || 1)) * 100),
     stopped_pre_tp1: filled.filter((row) => String(row.status).startsWith('stopped_pre_tp1')).length,
@@ -882,6 +993,13 @@ function buildProfileSets() {
   const allTp15Stop25 = { ...allTp1Stop3, name: '2ct_all_tp1_1_5pt_stop2_5_exp10', tp1Points: 1.5, stopPoints: 2.5 };
   const allTp25Stop3 = { ...allTp1Stop3, name: '2ct_all_tp1_2_5pt_stop3_exp10', tp1Points: 2.5, stopPoints: 3 };
   const swingStop4 = { ...splitSwing, name: '2ct_split_2pt_swing_target_stop4_exp10', stopPoints: 4 };
+  const swingStop5 = { ...splitSwing, name: '2ct_split_2pt_swing_target_stop5_exp10', stopPoints: 5 };
+  const swingStop4NoBe = { ...swingStop4, name: '2ct_split_2pt_swing_target_stop4_no_be_exp10', moveStopToBEAfterTP1: false };
+  const swingStop5NoBe = { ...swingStop5, name: '2ct_split_2pt_swing_target_stop5_no_be_exp10', moveStopToBEAfterTP1: false };
+  const swingTp3Stop4 = { ...splitSwing, name: '2ct_split_3pt_swing_target_stop4_exp10', tp1Points: 3, stopPoints: 4 };
+  const swingTp3Stop5 = { ...splitSwing, name: '2ct_split_3pt_swing_target_stop5_exp10', tp1Points: 3, stopPoints: 5 };
+  const swingOneRunnerStop4 = { name: '1ct_runner_swing_target_stop4_exp10', contracts: 1, tp1Contracts: 0, tp2Contracts: 1, tp1Points: 2, tp2Points: SWING_FALLBACK_TP2_POINTS, stopPoints: 4, tp2Mode: 'mancini_target', expiryMinutes: 10, moveStopToBEAfterTP1: false };
+  const swingOneRunnerStop5 = { ...swingOneRunnerStop4, name: '1ct_runner_swing_target_stop5_exp10', stopPoints: 5 };
   const swingAllTp1 = { ...allTp1Stop3, name: '2ct_all_tp1_2pt_swing_stop3_exp10', tp2Mode: 'fixed' };
   return [
     {
@@ -921,6 +1039,64 @@ function buildProfileSets() {
       classes: { DEFAULT: allTp25Stop3, SCALP_VALID: allTp25Stop3, SCALP_MAJOR: allTp25Stop3, MANCINI_RECLAIM: splitSwing },
     },
     {
+      name: 'router_scalp_2_5pt_swing_tp3_stop4',
+      classes: { DEFAULT: allTp25Stop3, SCALP_VALID: allTp25Stop3, SCALP_MAJOR: allTp25Stop3, MANCINI_RECLAIM: swingTp3Stop4 },
+    },
+    {
+      name: 'router_scalp_2_5pt_swing_tp3_stop5',
+      classes: { DEFAULT: allTp25Stop3, SCALP_VALID: allTp25Stop3, SCALP_MAJOR: allTp25Stop3, MANCINI_RECLAIM: swingTp3Stop5 },
+    },
+    {
+      name: 'router_scalp_2_5pt_swing_tp3_stop5_no_open',
+      filter: { excludeTimeBuckets: ['open_0930_1100'] },
+      classes: { DEFAULT: allTp25Stop3, SCALP_VALID: allTp25Stop3, SCALP_MAJOR: allTp25Stop3, MANCINI_RECLAIM: swingTp3Stop5 },
+    },
+    {
+      name: 'router_scalp_2_5pt_swing_tp3_stop5_max_source2',
+      filter: { maxSourceCount: 2 },
+      classes: { DEFAULT: allTp25Stop3, SCALP_VALID: allTp25Stop3, SCALP_MAJOR: allTp25Stop3, MANCINI_RECLAIM: swingTp3Stop5 },
+    },
+    {
+      name: 'router_scalp_2_5pt_swing_tp3_stop5_no_open_max_source2',
+      filter: { excludeTimeBuckets: ['open_0930_1100'], maxSourceCount: 2 },
+      classes: { DEFAULT: allTp25Stop3, SCALP_VALID: allTp25Stop3, SCALP_MAJOR: allTp25Stop3, MANCINI_RECLAIM: swingTp3Stop5 },
+    },
+    {
+      name: 'router_scalp_2_5pt_swing_stop5',
+      classes: { DEFAULT: allTp25Stop3, SCALP_VALID: allTp25Stop3, SCALP_MAJOR: allTp25Stop3, MANCINI_RECLAIM: swingStop5 },
+    },
+    {
+      name: 'router_scalp_2_5pt_swing_stop5_no_open',
+      filter: { excludeTimeBuckets: ['open_0930_1100'] },
+      classes: { DEFAULT: allTp25Stop3, SCALP_VALID: allTp25Stop3, SCALP_MAJOR: allTp25Stop3, MANCINI_RECLAIM: swingStop5 },
+    },
+    {
+      name: 'router_scalp_2_5pt_swing_stop5_max_source2',
+      filter: { maxSourceCount: 2 },
+      classes: { DEFAULT: allTp25Stop3, SCALP_VALID: allTp25Stop3, SCALP_MAJOR: allTp25Stop3, MANCINI_RECLAIM: swingStop5 },
+    },
+    {
+      name: 'router_scalp_2_5pt_swing_stop5_no_open_max_source2',
+      filter: { excludeTimeBuckets: ['open_0930_1100'], maxSourceCount: 2 },
+      classes: { DEFAULT: allTp25Stop3, SCALP_VALID: allTp25Stop3, SCALP_MAJOR: allTp25Stop3, MANCINI_RECLAIM: swingStop5 },
+    },
+    {
+      name: 'router_scalp_2_5pt_swing_stop5_no_be',
+      classes: { DEFAULT: allTp25Stop3, SCALP_VALID: allTp25Stop3, SCALP_MAJOR: allTp25Stop3, MANCINI_RECLAIM: swingStop5NoBe },
+    },
+    {
+      name: 'router_scalp_stop3_5_swing_tp3_stop4',
+      classes: { DEFAULT: allTp1Stop35, SCALP_VALID: allTp1Stop35, SCALP_MAJOR: allTp1Stop35, MANCINI_RECLAIM: swingTp3Stop4 },
+    },
+    {
+      name: 'router_scalp_stop3_5_swing_tp3_stop5',
+      classes: { DEFAULT: allTp1Stop35, SCALP_VALID: allTp1Stop35, SCALP_MAJOR: allTp1Stop35, MANCINI_RECLAIM: swingTp3Stop5 },
+    },
+    {
+      name: 'router_scalp_1_5pt_swing_tp3_stop5',
+      classes: { DEFAULT: allTp15Stop25, SCALP_VALID: allTp15Stop25, SCALP_MAJOR: allTp15Stop25, MANCINI_RECLAIM: swingTp3Stop5 },
+    },
+    {
       name: 'futures_scalp_only_all_tp1_stop3_5',
       allowedClasses: ['SCALP_VALID', 'SCALP_MAJOR'],
       classes: { DEFAULT: allTp1Stop35, SCALP_VALID: allTp1Stop35, SCALP_MAJOR: allTp1Stop35 },
@@ -950,6 +1126,46 @@ function buildProfileSets() {
       allowedClasses: ['MANCINI_RECLAIM'],
       classes: { DEFAULT: swingAllTp1, MANCINI_RECLAIM: swingAllTp1 },
     },
+    {
+      name: 'swing_mancini_only_split_stop4',
+      allowedClasses: ['MANCINI_RECLAIM'],
+      classes: { DEFAULT: swingStop4, MANCINI_RECLAIM: swingStop4 },
+    },
+    {
+      name: 'swing_mancini_only_split_stop5',
+      allowedClasses: ['MANCINI_RECLAIM'],
+      classes: { DEFAULT: swingStop5, MANCINI_RECLAIM: swingStop5 },
+    },
+    {
+      name: 'swing_mancini_only_split_stop4_no_be',
+      allowedClasses: ['MANCINI_RECLAIM'],
+      classes: { DEFAULT: swingStop4NoBe, MANCINI_RECLAIM: swingStop4NoBe },
+    },
+    {
+      name: 'swing_mancini_only_split_stop5_no_be',
+      allowedClasses: ['MANCINI_RECLAIM'],
+      classes: { DEFAULT: swingStop5NoBe, MANCINI_RECLAIM: swingStop5NoBe },
+    },
+    {
+      name: 'swing_mancini_only_split_tp3_stop4',
+      allowedClasses: ['MANCINI_RECLAIM'],
+      classes: { DEFAULT: swingTp3Stop4, MANCINI_RECLAIM: swingTp3Stop4 },
+    },
+    {
+      name: 'swing_mancini_only_split_tp3_stop5',
+      allowedClasses: ['MANCINI_RECLAIM'],
+      classes: { DEFAULT: swingTp3Stop5, MANCINI_RECLAIM: swingTp3Stop5 },
+    },
+    {
+      name: 'swing_mancini_only_1ct_runner_stop4',
+      allowedClasses: ['MANCINI_RECLAIM'],
+      classes: { DEFAULT: swingOneRunnerStop4, MANCINI_RECLAIM: swingOneRunnerStop4 },
+    },
+    {
+      name: 'swing_mancini_only_1ct_runner_stop5',
+      allowedClasses: ['MANCINI_RECLAIM'],
+      classes: { DEFAULT: swingOneRunnerStop5, MANCINI_RECLAIM: swingOneRunnerStop5 },
+    },
   ];
 }
 
@@ -978,18 +1194,131 @@ function summarizeProfileSets(profileResults, completeSessionCount) {
   }).sort((a, b) => b.net_dollars - a.net_dollars);
 }
 
+function median(values) {
+  if (!values.length) return 0;
+  const sorted = values.slice().sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+}
+
+function maxDrawdownFromDays(days) {
+  let equity = 0;
+  let peak = 0;
+  let maxDrawdown = 0;
+  for (const day of days) {
+    equity += Number(day.net || 0);
+    peak = Math.max(peak, equity);
+    maxDrawdown = Math.min(maxDrawdown, equity - peak);
+  }
+  return round2(maxDrawdown);
+}
+
+function profileDayRows(profileName, results) {
+  const byDay = new Map();
+  for (const row of results.filter((item) => item.status !== 'no_fill' && !SUPPRESSED_STATUSES.has(item.status))) {
+    const date = row.plan_date;
+    if (!byDay.has(date)) byDay.set(date, {
+      profile: profileName,
+      date,
+      net: 0,
+      gross_points: 0,
+      fills: 0,
+      winners: 0,
+      losers: 0,
+      stops: 0,
+    });
+    const day = byDay.get(date);
+    const net = Number(row.net_dollars || 0);
+    day.net += net;
+    day.gross_points += Number(row.gross_points || 0);
+    day.fills += 1;
+    if (net > 0) day.winners += 1;
+    else day.losers += 1;
+    if (String(row.status).startsWith('stopped')) day.stops += 1;
+  }
+  return [...byDay.values()]
+    .map((row) => ({
+      ...row,
+      net: round2(row.net),
+      gross_points: round2(row.gross_points),
+    }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+function thresholdRowsForProfiles(profileResults, completeSessionCount) {
+  const thresholds = [100, 200, 300, 400, 500, 1000];
+  return profileResults.map(({ profileSet, results }) => {
+    const days = profileDayRows(profileSet.name, results);
+    const nets = days.map((row) => row.net);
+    const totalNet = round2(nets.reduce((sum, value) => sum + value, 0));
+    const positive = days.filter((row) => row.net > 0).length;
+    const negative = days.filter((row) => row.net < 0).length;
+    const topNets = nets.slice().sort((a, b) => b - a);
+    const top1Contribution = totalNet > 0 && topNets.length ? round2((topNets[0] / totalNet) * 100) : 0;
+    const top3Contribution = totalNet > 0 ? round2((topNets.slice(0, 3).reduce((sum, value) => sum + value, 0) / totalNet) * 100) : 0;
+    const row = {
+      profile: profileSet.name,
+      active_sessions: days.length,
+      inactive_sessions: completeSessionCount - days.length,
+      total_net: totalNet,
+      avg_all_sessions: round2(totalNet / (completeSessionCount || 1)),
+      avg_active_sessions: round2(totalNet / (days.length || 1)),
+      median_active_session: round2(median(nets)),
+      best_session: round2(Math.max(...nets, 0)),
+      worst_session: round2(Math.min(...nets, 0)),
+      positive_active_sessions: positive,
+      negative_active_sessions: negative,
+      max_drawdown_active_order: maxDrawdownFromDays(days),
+      top1_contribution_pct: top1Contribution,
+      top3_contribution_pct: top3Contribution,
+    };
+    for (const threshold of thresholds) {
+      const count = days.filter((day) => day.net >= threshold).length;
+      row[`ge_${threshold}_count`] = count;
+      row[`ge_${threshold}_active_pct`] = round2((count / (days.length || 1)) * 100);
+      row[`ge_${threshold}_all_pct`] = round2((count / (completeSessionCount || 1)) * 100);
+    }
+    return row;
+  }).sort((a, b) => b.avg_all_sessions - a.avg_all_sessions);
+}
+
+function compareProfilesByDay(profileResults, leftName, rightName) {
+  const left = profileResults.find((row) => row.profileSet.name === leftName);
+  const right = profileResults.find((row) => row.profileSet.name === rightName);
+  if (!left || !right) return [];
+  const leftDays = new Map(profileDayRows(leftName, left.results).map((row) => [row.date, row]));
+  const rightDays = new Map(profileDayRows(rightName, right.results).map((row) => [row.date, row]));
+  const dates = [...new Set([...leftDays.keys(), ...rightDays.keys()])].sort();
+  return dates.map((date) => {
+    const leftDay = leftDays.get(date);
+    const rightDay = rightDays.get(date);
+    const leftNet = Number(leftDay?.net || 0);
+    const rightNet = Number(rightDay?.net || 0);
+    return {
+      date,
+      left_profile: leftName,
+      left_net: round2(leftNet),
+      right_profile: rightName,
+      right_net: round2(rightNet),
+      right_minus_left: round2(rightNet - leftNet),
+      left_fills: leftDay?.fills || 0,
+      right_fills: rightDay?.fills || 0,
+    };
+  });
+}
+
 function summarizeByClass(results) {
   const classes = [...new Set(results.map((row) => row.class))].sort();
   return Object.fromEntries(classes.map((klass) => {
     const rows = results.filter((row) => row.class === klass);
-    const tradable = rows.filter((row) => row.status !== 'suppressed_while_open');
+    const tradable = rows.filter((row) => !SUPPRESSED_STATUSES.has(row.status));
     const filled = tradable.filter((row) => row.status !== 'no_fill');
     const winners = filled.filter((row) => Number(row.net_dollars || 0) > 0);
     return [klass, {
       signals: rows.length,
       filled: filled.length,
       no_fill: tradable.filter((row) => row.status === 'no_fill').length,
-      suppressed: rows.filter((row) => row.status === 'suppressed_while_open').length,
+      suppressed: rows.filter((row) => SUPPRESSED_STATUSES.has(row.status)).length,
       winners: winners.length,
       win_rate: round2((winners.length / (filled.length || 1)) * 100),
       gross_points: round2(filled.reduce((sum, row) => sum + Number(row.gross_points || 0), 0)),
@@ -1000,7 +1329,7 @@ function summarizeByClass(results) {
   }));
 }
 
-function writeReport({ metadata, summary, byClass, topDays, bottomDays, mayRows, profileSummary }) {
+function writeReport({ metadata, summary, byClass, topDays, bottomDays, mayRows, profileSummary, thresholdRows, currentVsBestRows }) {
   const lines = [];
   lines.push('# Luke vA Dynamic Level Grid Backtest');
   lines.push('');
@@ -1036,6 +1365,22 @@ function writeReport({ metadata, summary, byClass, topDays, bottomDays, mayRows,
     lines.push(`| ${row.profile} | ${row.filled} | ${row.win_rate}% | ${row.gross_points} | ${row.net_dollars} | ${row.avg_active_session_net} | ${row.sessions_ge_500} | ${row.sessions_ge_1000} | ${row.sessions_le_neg500} |`);
   }
   lines.push('');
+  lines.push('## Daily Target Bars');
+  lines.push('');
+  lines.push('| Profile | Avg All | Avg Active | Median Active | Worst | >=$100 | >=$200 | >=$300 | >=$400 | >=$500 | >=$1000 | Max DD | Top3 % |');
+  lines.push('|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|');
+  for (const row of thresholdRows) {
+    lines.push(`| ${row.profile} | ${row.avg_all_sessions} | ${row.avg_active_sessions} | ${row.median_active_session} | ${row.worst_session} | ${row.ge_100_count}/${metadata.complete_sessions} | ${row.ge_200_count}/${metadata.complete_sessions} | ${row.ge_300_count}/${metadata.complete_sessions} | ${row.ge_400_count}/${metadata.complete_sessions} | ${row.ge_500_count}/${metadata.complete_sessions} | ${row.ge_1000_count}/${metadata.complete_sessions} | ${row.max_drawdown_active_order} | ${row.top3_contribution_pct}% |`);
+  }
+  lines.push('');
+  lines.push('## Current Split vs Best Scalp Profile');
+  lines.push('');
+  lines.push('| Date | Current Split Net | Best Profile Net | Best Minus Current | Current Fills | Best Fills |');
+  lines.push('|---|---:|---:|---:|---:|---:|');
+  for (const row of currentVsBestRows) {
+    lines.push(`| ${row.date} | ${row.left_net} | ${row.right_net} | ${row.right_minus_left} | ${row.left_fills} | ${row.right_fills} |`);
+  }
+  lines.push('');
   lines.push('## Best Sessions');
   lines.push('');
   lines.push('| Date | Net $ | Gross Pts | Fills | Winners | Stops |');
@@ -1065,7 +1410,7 @@ function main() {
   const { files, bars } = loadMergedEsBars();
   const barsBySession = groupBarsByEtSession(bars);
   const completeSessions = completeSessionDates(barsBySession);
-  const { rawByDate, targetMap, allMap } = buildRawLevelMaps(levelRows, satyRows);
+  const { rawByDate, targetMap, allMap, levelAudit } = buildRawLevelMaps(levelRows, satyRows);
   const allResults = [];
   const candidatesBySession = new Map();
   for (const sessionDate of [...completeSessions].sort()) {
@@ -1090,7 +1435,14 @@ function main() {
     return { profileSet, results };
   });
   const profileSummary = summarizeProfileSets(profileResults, completeSessions.size);
+  const thresholdRows = thresholdRowsForProfiles(profileResults, completeSessions.size);
   const bestProfile = profileResults.find((row) => row.profileSet.name === profileSummary[0]?.profile);
+  const bestProfileName = profileSummary[0]?.profile || '';
+  const currentVsBestRows = compareProfilesByDay(profileResults, 'current_all_split_stop3', bestProfileName);
+  const allProfileDayRows = profileResults.flatMap(({ profileSet, results }) => profileDayRows(profileSet.name, results));
+  const allProfileTradeRows = profileResults.flatMap(({ profileSet, results }) => (
+    results.map((row) => ({ ...row, profile: row.profile || profileSet.name }))
+  ));
   const summary = summarize(allResults, completeSessions.size);
   const byClass = summarizeByClass(allResults);
   const topDays = summary.by_day.slice().sort((a, b) => b.net - a.net).slice(0, 12);
@@ -1106,19 +1458,25 @@ function main() {
     complete_sessions: completeSessions.size,
     files: files.map((file) => path.relative(ROOT, file).replace(/\\/g, '/')),
     protocol_dir: path.relative(ROOT, PROTOCOL_DIR).replace(/\\/g, '/'),
+    level_audit: levelAudit,
   };
   fs.writeFileSync(path.join(OUT_DIR, 'summary.json'), JSON.stringify({
     metadata,
     summary,
     by_class: byClass,
     profile_summary: profileSummary,
+    threshold_rows: thresholdRows,
     top_days: topDays,
     bottom_days: bottomDays,
   }, null, 2), 'utf8');
   writeCsv(path.join(OUT_DIR, 'trades.csv'), allResults);
   writeCsv(path.join(OUT_DIR, 'profile-sweep.csv'), profileSummary);
+  writeCsv(path.join(OUT_DIR, 'profile-thresholds.csv'), thresholdRows);
+  writeCsv(path.join(OUT_DIR, 'profile-day-results.csv'), allProfileDayRows);
+  writeCsv(path.join(OUT_DIR, 'profile-trades.csv'), allProfileTradeRows);
+  writeCsv(path.join(OUT_DIR, 'current-vs-best-profile-by-day.csv'), currentVsBestRows);
   if (bestProfile) writeCsv(path.join(OUT_DIR, 'best-profile-trades.csv'), bestProfile.results);
-  writeReport({ metadata, summary, byClass, topDays, bottomDays, mayRows, profileSummary });
+  writeReport({ metadata, summary, byClass, topDays, bottomDays, mayRows, profileSummary, thresholdRows, currentVsBestRows });
   console.log(JSON.stringify({
     ok: true,
     out_dir: path.relative(ROOT, OUT_DIR).replace(/\\/g, '/'),
@@ -1126,6 +1484,7 @@ function main() {
     summary,
     by_class: byClass,
     profile_summary: profileSummary,
+    threshold_rows: thresholdRows,
     top_days: topDays,
     bottom_days: bottomDays,
   }, null, 2));

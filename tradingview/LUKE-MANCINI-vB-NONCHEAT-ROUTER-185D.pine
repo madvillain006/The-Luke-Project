@@ -1,19 +1,14 @@
 ﻿//@version=5
-indicator("LUKE MANCINI FLAGSHIP - vA Confirmed Retest Limit", shorttitle="LUKE MANCINI vA", overlay=true, max_lines_count=260, max_labels_count=180)
+indicator("LUKE MANCINI vB - Non-Cheat Router 185D", shorttitle="LUKE vB 185D", overlay=true, max_lines_count=260, max_labels_count=180)
 
-// FLAGSHIP COPY - 2026-05-06
-// Baseline: v4 trade math + friend ribbon compile fix.
-// Current live TradingView read: 77% success, 10/13, about $1500 net.
-// Same strategy as LUKE-WATCH-BEST-WORKING, with the two stats panels merged.
-// The old event ledger table is intentionally removed; LONG boxes carry trade status.
-// Signal timing can be confirmed_5m for audit/backtest or live_intrabar for execution.
-// Live intrabar fizzles are marked CANCELLED immediately and counted separately, not as failed trades.
-// Cancelled live LONGs also leave one active-watch marker for that same level.
-// Restored trusted v4 with only Mancini + Saty level inputs active for live simplicity.
-// Historical note: v5 added Mancini context-aware routing while preserving the trusted v4 scalp engine.
-// Historical note: v6 changed execution semantics to match the strongest historical replay:
-// WATCH is context only; LONG means acceptance confirmed, then Ninja rests a limit
-// at the planned entry for a retest instead of requiring same-bar entry touch.
+// vB COPY - 2026-05-07
+// Non-cheating router selected from 48 complete ES 1m sessions:
+// router_scalp_2_5pt_swing_tp3_stop5_no_open_max_source2.
+// Fixed signal-time rules only: no 09:30-11:00 ET LONG automation, no clusters
+// with more than two raw merged level members, scalp LONGs all out at +2.5,
+// Mancini reclaim LONGs use 3pt TP1 + target/runner with 5pt stop.
+// No daily winner switching, no hindsight day classification, no target-first
+// mixed-bar scoring.
 
 // TradingView visual bridge only. This script does not submit orders, uses an
 // indicator declaration only, and cannot read manual TradingView drawing objects.
@@ -49,8 +44,6 @@ pnl_contract_plan = input.string("auto", "PnL contract plan", options=["auto", "
 realistic_accounting_mode = input.string("entry_only_0_25", "Realistic accounting mode", options=["commission_only", "entry_only_0_25", "exit_only_0_25", "both_sides_0_25_each", "custom_entry_only", "custom_exit_only", "custom_both_sides"], tooltip="Realistic default charges commission plus one-way entry slippage. Use both_sides only as stress, not as the default read.")
 custom_slippage_points = input.float(0.25, "Custom slippage points", minval=0.0, step=0.25)
 commission_per_contract_round_trip = input.float(5.0, "Commission per contract round trip", minval=0.0, step=0.25)
-cancel_entry_slippage_points = input.float(0.25, "Cancel est entry slippage", minval=-2.0, step=0.25, tooltip="Estimated cancellation accounting only. Positive hurts a long entry; negative models price improvement.")
-cancel_exit_slippage_points = input.float(0.25, "Cancel est exit slippage", minval=-2.0, step=0.25, tooltip="Estimated cancellation accounting only. Positive hurts a long exit; negative models price improvement.")
 eval_loss_limit_dollars = input.float(0.0, "Eval max session loss $ (0 off)", minval=0.0, step=50.0)
 mixed_bar_pnl_policy = input.string("conservative_stop", "Mixed-bar PnL policy", options=["conservative_stop", "zero", "target_first"], tooltip="When one candle touches target and stop, OHLC cannot prove order. Conservative stop is the safest default.")
 enable_alertconditions = input.bool(true, "Enable alertconditions")
@@ -63,12 +56,12 @@ alert_blocked_events = input.bool(true, "Alert BLOCKED events")
 enable_ninja_bridge_alerts = input.bool(false, "Enable Ninja bridge alert() JSON", tooltip="Creates dynamic JSON via alert() on the exact same LUKE LONG event. Use TradingView condition: Any alert() function call.")
 ninja_bridge_token = input.string("culEyYkQrx7nqBgWopdfvDzJT40bU8Ve632tMO9N", "Ninja bridge token", tooltip="Optional. Must match LUKE_NINJA_BRIDGE_TOKEN if Luke requires a bridge token.")
 
-mancini_levels_input = input.string("", "Mancini levels", tooltip="Comma-separated prices exported from Luke.")
-mancini_major_levels_input = input.string("", "Mancini major levels", tooltip="Context metadata. In vA this can tag LONGs as major/context but does not automatically force entries.")
-mancini_focus_long_levels_input = input.string("", "Mancini focus long levels", tooltip="Context metadata for levels where long-side behavior deserves extra attention.")
-mancini_reclaim_trigger_levels_input = input.string("", "Mancini reclaim/trigger levels", tooltip="Context metadata for explicit recover/reclaim or failed-breakdown trigger levels.")
-mancini_target_only_levels_input = input.string("", "Mancini target-only levels", tooltip="Context metadata for target/runner destinations. These are excluded from LONG automation.")
-mancini_caution_levels_input = input.string("", "Mancini caution/read-reaction levels", tooltip="Context metadata for levels to read rather than blindly trade.")
+mancini_levels_input = input.string("7121,7128,7135,7147,7159,7165,7173,7181,7186,7194,7200,7204,7209,7214,7218,7225,7233,7242,7248,7257,7262,7268,7273,7279,7284,7289,7295,7297,7300,7309,7311,7326,7332,7338,7345,7356,7369,7378,7387,7391,7400,7411,7418,7426", "Mancini levels", tooltip="Comma-separated prices exported from Luke.")
+mancini_major_levels_input = input.string("7121,7135,7147,7165,7173,7186,7200,7209,7218,7233,7248,7257,7268,7284,7295,7300,7311,7332,7345,7369,7387,7400,7426", "Mancini major levels", tooltip="Context metadata. In v0b this can tag LONGs as major/context but does not automatically force entries.")
+mancini_focus_long_levels_input = input.string("7284,7311,7332,7345,7355,7369,7378,7387,7391,7400,7411,7426", "Mancini focus long levels", tooltip="Context metadata for levels where long-side behavior deserves extra attention.")
+mancini_reclaim_trigger_levels_input = input.string("7369,7345,7332,7311,7284,7400,7426", "Mancini reclaim/trigger levels", tooltip="Context metadata for explicit recover/reclaim or failed-breakdown trigger levels.")
+mancini_target_only_levels_input = input.string("7378,7387,7391,7400,7411,7418,7426,7430,7435,7443,7451,7454,7458,7464,7474,7484,7490,7497,7500,7515,7528,7538,7545,7553", "Mancini target-only levels", tooltip="Context metadata for target/runner destinations. These are excluded from LONG automation.")
+mancini_caution_levels_input = input.string("7369,7345,7311,7400,7426", "Mancini caution/read-reaction levels", tooltip="Context metadata for levels to read rather than blindly trade.")
 mancini_protocol_mode = input.string("context_aware", "Mancini protocol mode", options=["legacy_v4", "context_aware"], tooltip="legacy_v4 preserves the prior signal engine. context_aware applies target/caution/reclaim metadata without changing the base scalp rules.")
 mancini_context_tolerance_points = input.float(1.25, "Mancini context match tolerance", minval=0.0, step=0.25)
 enable_mancini_context_recovery_watch = input.bool(true, "Context recovery WATCH", tooltip="Allows a WATCH label on a level reclaim/recovery, not only on the first flush candle.")
@@ -76,6 +69,12 @@ enable_mancini_swing_class = input.bool(true, "Enable Mancini reclaim swing clas
 mancini_swing_acceptance_minutes = input.int(3, "Swing acceptance minutes", minval=2, maxval=5, tooltip="Requires this many completed 1m closes above an explicit reclaim level before the swing class can fire.")
 mancini_swing_runner_points = input.float(8.0, "Swing runner fallback points", minval=2.0, step=0.25, tooltip="If no pasted target-only level is above entry, a Mancini reclaim LONG uses at least this TP2 distance.")
 mancini_caution_auto_mode = input.string("manual_only", "Mancini caution automation", options=["manual_only", "strict_acceptance", "legacy"], tooltip="manual_only shows WATCH/context but blocks LONG. strict_acceptance allows LONG only after stronger 1m acceptance. legacy ignores caution metadata.")
+enable_vb_noncheat_router = input.bool(true, "Enable vB non-cheat router", tooltip="Fixed backtested router: block 09:30-11:00 ET LONG automation, block raw cluster member count above 2, scalp all out +2.5, Mancini reclaim 3pt TP1 with 5pt stop.")
+vb_block_open_0930_1100 = input.bool(true, "vB block 09:30-11:00 LONGs")
+vb_max_cluster_members = input.int(2, "vB max raw cluster members", minval=1, maxval=10)
+vb_scalp_tp1_points = input.float(2.5, "vB scalp all-out TP points", minval=0.25, step=0.25)
+vb_swing_tp1_points = input.float(3.0, "vB Mancini reclaim TP1 points", minval=0.25, step=0.25)
+vb_swing_stop_points = input.float(5.0, "vB Mancini reclaim stop points", minval=0.25, step=0.25)
 
 account_mode = input.string("25K", "Account mode", options=["25K", "50K", "100K", "Custom"])
 size_mode = input.string("2ES split", "Size mode", options=["2ES split", "2MES split", "1ES starter", "MES starter", "watch only"])
@@ -84,9 +83,6 @@ tp2_mode = input.string("next_cluster", "TP2 mode", options=["next_cluster", "fi
 entry_price_mode = input.string("cluster_plus_tick", "Candidate entry price", options=["cluster_plus_tick", "signal_close"], tooltip="cluster_plus_tick makes the bracket a reclaim-level plan; signal_close uses the candle close.")
 signal_timing_mode = input.string("live_intrabar", "Signal timing", options=["live_intrabar", "confirmed_5m"], tooltip="live_intrabar can alert before the 5m candle closes. confirmed_5m is stable for audit/backtest.")
 require_confirmed_signal_bar = signal_timing_mode == "confirmed_5m"
-execution_order_model = input.string("confirmed_retest_limit", "Execution order model", options=["confirmed_retest_limit", "same_bar_ltf_fill_gate"], tooltip="confirmed_retest_limit sends LONG after acceptance and lets Ninja rest a limit at entry. same_bar_ltf_fill_gate preserves the older behavior that required entry touch inside the signal bar.")
-confirmed_retest_limit_model = execution_order_model == "confirmed_retest_limit"
-retest_limit_expiry_minutes = input.int(10, "Retest limit expiry minutes", minval=1, maxval=60, tooltip="Mirrors Ninja LimitOrderExpirySeconds. Default 10 minutes = 600 seconds.")
 ltf_fill_validation_mode = input.string("1m", "Fill validation", options=["off", "1m", "3m", "5m_chart", "either_1m_or_3m", "both_1m_and_3m", "any_1m_3m_5m", "all_1m_3m_5m"], tooltip="1m and 3m use lower-timeframe OHLC arrays. 5m_chart uses the current chart candle OHLC as a coarser fallback.")
 ltf_enforcement_mode = input.string("gate_alerts_and_accounting", "LTF enforcement", options=["audit_only", "gate_alerts_and_accounting"], tooltip="audit_only keeps v4 behavior and labels reasons. gate_alerts_and_accounting only starts a LONG when the LTF validation passes.")
 show_ltf_audit_labels = input.bool(false, "Show LTF audit labels")
@@ -399,23 +395,6 @@ f_ltf_holds_above(float[] closes, float level, int count, float extra) =>
             ok := ok and value >= level + extra
     ok
 
-f_ltf_reclaim_ready(float[] lows, float[] closes, float level, int hold_count, float extra, int lookback_count) =>
-    bool saw_flush = false
-    bool reclaimed = false
-    int n = math.min(array.size(lows), array.size(closes))
-    if n > 0 and not na(level)
-        int effective_hold = math.max(1, hold_count)
-        int effective_lookback = math.max(effective_hold + 1, lookback_count)
-        int start_index = math.max(0, n - effective_lookback)
-        for i = start_index to n - 1
-            float lo = array.get(lows, i)
-            float cl = array.get(closes, i)
-            if lo <= level - syminfo.mintick
-                saw_flush := true
-            if saw_flush and cl >= level + extra
-                reclaimed := true
-    reclaimed and f_ltf_holds_above(closes, level, math.max(1, hold_count), extra)
-
 float[] raw_prices = array.new_float()
 string[] raw_sources = array.new_string()
 bool[] raw_fresh = array.new_bool()
@@ -454,6 +433,7 @@ float[] cluster_mins = array.new_float()
 float[] cluster_maxs = array.new_float()
 string[] cluster_labels = array.new_string()
 int[] cluster_strengths = array.new_int()
+int[] cluster_member_counts = array.new_int()
 
 if array.size(raw_prices) > 0
     for i = 0 to array.size(raw_prices) - 1
@@ -478,6 +458,7 @@ if array.size(raw_prices) > 0
                 array.set(cluster_maxs, last, high_edge)
                 array.set(cluster_labels, last, str.contains(old_label, source) ? old_label : old_label + "+" + source)
                 array.set(cluster_strengths, last, new_source ? old_strength + 1 : old_strength)
+                array.set(cluster_member_counts, last, array.get(cluster_member_counts, last) + 1)
                 merged := true
         if not merged
             array.push(cluster_prices, price)
@@ -485,6 +466,7 @@ if array.size(raw_prices) > 0
             array.push(cluster_maxs, price)
             array.push(cluster_labels, source)
             array.push(cluster_strengths, 1)
+            array.push(cluster_member_counts, 1)
 
 var line[] level_lines = array.new_line()
 var label[] level_labels = array.new_label()
@@ -509,16 +491,11 @@ var int session_breakevens = 0
 var int session_mixed = 0
 var int session_refreshed = 0
 var int session_ltf_filtered = 0
-var int session_order_signals = 0
-var int session_limit_fills = 0
-var int session_limit_no_fills = 0
 varip int session_live_cancelled = 0
 var int session_protocol_scalp_longs = 0
 var int session_protocol_swing_longs = 0
 var int session_protocol_caution_blocks = 0
 var int session_protocol_target_blocks = 0
-varip float session_cancel_estimated_net_dollars = 0.0
-varip float session_cancel_estimated_friction_dollars = 0.0
 var float session_realized_points = 0.0
 var float session_realized_dollars = 0.0
 var float session_cost_dollars = 0.0
@@ -531,6 +508,7 @@ var table session_scorecard = table.new(position.top_right, 2, 15, bgcolor=color
 var bool tracked_candidate_open = false
 var bool tracked_candidate_tp1_hit = false
 var bool tracked_candidate_success_counted = false
+var bool tracked_candidate_all_out_tp1 = false
 var int tracked_candidate_id = na
 var int tracked_candidate_start_bar = na
 var float tracked_candidate_level = na
@@ -542,19 +520,6 @@ var float tracked_candidate_tp2 = na
 var label tracked_candidate_entry_label = na
 var string tracked_candidate_entry_text = ""
 var string tracked_candidate_protocol_class = ""
-varip bool pending_limit_order = false
-varip int pending_limit_bar = na
-varip int pending_limit_expire_time = na
-varip int pending_limit_candidate_id = na
-varip float pending_limit_level = na
-varip float pending_limit_entry = na
-varip float pending_limit_stop = na
-varip float pending_limit_tp1 = na
-varip float pending_limit_tp2 = na
-varip string pending_limit_protocol_class = ""
-varip string pending_limit_entry_text = ""
-varip int pending_limit_ltf_seen_count = na
-var label pending_limit_entry_label = na
 var label[] status_labels = array.new_label()
 varip bool live_pending_long = false
 varip int live_pending_bar = na
@@ -658,12 +623,6 @@ f_session_slippage_dollars() =>
 f_event_net_dollars(float event_points, float contracts) =>
     event_points * pnl_dollars_per_point - f_event_cost_dollars(contracts)
 
-f_cancel_estimated_friction_dollars(float contracts) =>
-    size_mode == "watch only" ? 0.0 : ((cancel_entry_slippage_points + cancel_exit_slippage_points) * pnl_dollars_per_point + commission_per_contract_round_trip) * contracts
-
-f_cancel_estimated_net_dollars(float entry_price, float cancel_price, float contracts) =>
-    (cancel_price - entry_price) * pnl_dollars_per_point * contracts - f_cancel_estimated_friction_dollars(contracts)
-
 f_open_contract_count(bool tp1_already_hit) =>
     size_mode == "watch only" ? 0.0 : split_contract_pnl and not tp1_already_hit ? 2.0 : 1.0
 
@@ -684,16 +643,11 @@ if new_futures_session
     session_mixed := 0
     session_refreshed := 0
     session_ltf_filtered := 0
-    session_order_signals := 0
-    session_limit_fills := 0
-    session_limit_no_fills := 0
     session_live_cancelled := 0
     session_protocol_scalp_longs := 0
     session_protocol_swing_longs := 0
     session_protocol_caution_blocks := 0
     session_protocol_target_blocks := 0
-    session_cancel_estimated_net_dollars := 0.0
-    session_cancel_estimated_friction_dollars := 0.0
     session_realized_points := 0.0
     session_realized_dollars := 0.0
     session_cost_dollars := 0.0
@@ -707,19 +661,7 @@ if new_futures_session
     tracked_candidate_open := false
     tracked_candidate_tp1_hit := false
     tracked_candidate_success_counted := false
-    pending_limit_order := false
-    pending_limit_bar := na
-    pending_limit_expire_time := na
-    pending_limit_candidate_id := na
-    pending_limit_level := na
-    pending_limit_entry := na
-    pending_limit_stop := na
-    pending_limit_tp1 := na
-    pending_limit_tp2 := na
-    pending_limit_protocol_class := ""
-    pending_limit_entry_text := ""
-    pending_limit_ltf_seen_count := na
-    pending_limit_entry_label := na
+    tracked_candidate_all_out_tp1 := false
     live_pending_long := false
     live_pending_bar := na
     live_pending_text := ""
@@ -808,21 +750,18 @@ float paper_stop = na
 float paper_tp1 = na
 float paper_tp2 = na
 string paper_protocol_class = ""
-int paper_protocol_priority = 0
 float armed_level = na
 float armed_entry = na
 float armed_stop = na
 float armed_tp1 = na
 float armed_tp2 = na
 string armed_protocol_class = ""
-int armed_protocol_priority = 0
 float watch_level = na
 float watch_entry = na
 float watch_stop = na
 float watch_tp1 = na
 float watch_tp2 = na
 string watch_protocol_class = ""
-int watch_protocol_priority = 0
 bool paper_fresh_retest = false
 bool paper_failed_chase_block = false
 
@@ -830,6 +769,7 @@ if enable_luke_levels and enable_reclaim_signals and array.size(cluster_prices) 
     for i = 0 to array.size(cluster_prices) - 1
         float level = array.get(cluster_prices, i)
         float next_cluster = f_next_above(cluster_prices, level)
+        int cluster_member_count = array.get(cluster_member_counts, i)
         string sources = array.get(cluster_labels, i)
         bool level_has_saty = str.contains(sources, "saty")
         bool level_has_mancini = str.contains(sources, "mancini")
@@ -844,11 +784,15 @@ if enable_luke_levels and enable_reclaim_signals and array.size(cluster_prices) 
         bool protocol_caution_manual_block = context_caution and not protocol_reclaim_level and mancini_caution_auto_mode == "manual_only"
         bool protocol_caution_strict = context_caution and not protocol_reclaim_level and mancini_caution_auto_mode == "strict_acceptance"
         string level_protocol_class = protocol_reclaim_level ? "MANCINI_RECLAIM" : (protocol_caution_manual_block or protocol_caution_strict) ? "MANUAL_CAUTION" : protocol_target_block ? "TARGET_ONLY" : (context_major or level_has_saty_mancini) ? "SCALP_MAJOR" : "SCALP_VALID"
-        int level_protocol_priority = level_protocol_class == "MANCINI_RECLAIM" ? 3 : level_protocol_class == "SCALP_MAJOR" ? 2 : level_protocol_class == "SCALP_VALID" ? 1 : 0
+        bool vb_open_block_window = (hour(time, "America/New_York") == 9 and minute(time, "America/New_York") >= 30) or hour(time, "America/New_York") == 10
+        bool vb_time_ok = not enable_vb_noncheat_router or not vb_block_open_0930_1100 or not vb_open_block_window
+        bool vb_cluster_size_ok = not enable_vb_noncheat_router or cluster_member_count <= vb_max_cluster_members
+        float vb_candidate_tp1_points = enable_vb_noncheat_router ? (protocol_reclaim_level ? vb_swing_tp1_points : vb_scalp_tp1_points) : tp1_points
+        float vb_candidate_stop_points = enable_vb_noncheat_router and protocol_reclaim_level ? vb_swing_stop_points : math.min(max_stop_points, hard_stop_points)
         float target_space = na(next_cluster) ? tp1_points * 2.0 : next_cluster - level
         float candidate_entry = entry_price_mode == "signal_close" ? close : level + math.max(min_close_above_level_points, syminfo.mintick)
-        float candidate_stop = level - math.min(max_stop_points, hard_stop_points)
-        float candidate_tp1 = candidate_entry + tp1_points
+        float candidate_stop = level - vb_candidate_stop_points
+        float candidate_tp1 = candidate_entry + vb_candidate_tp1_points
         float candidate_tp2_base = tp2_mode == "next_cluster" and not na(next_cluster) and next_cluster > candidate_tp1 ? next_cluster : candidate_entry + tp1_points * 2.0
         float next_mancini_target = f_next_above(mancini_target_context_prices, candidate_entry)
         float candidate_tp2 = protocol_reclaim_level ? (not na(next_mancini_target) and next_mancini_target > candidate_tp1 ? next_mancini_target : math.max(candidate_tp2_base, candidate_entry + mancini_swing_runner_points)) : candidate_tp2_base
@@ -877,11 +821,9 @@ if enable_luke_levels and enable_reclaim_signals and array.size(cluster_prices) 
         for hold_bar = 0 to reclaim_hold_bars - 1
             hold_above := hold_above and close[hold_bar] >= level
         int protocol_required_acceptance = protocol_reclaim_level ? mancini_swing_acceptance_minutes : protocol_caution_strict ? (reclaim_hold_bars > 3 ? reclaim_hold_bars : 3) : 0
-        int ltf_required_acceptance = protocol_required_acceptance > 0 ? protocol_required_acceptance : reclaim_hold_bars
-        bool ltf_reclaim_entry_ready = signal_timing_mode == "live_intrabar" and f_ltf_reclaim_ready(ltf_1m_lows, ltf_1m_closes, level, ltf_required_acceptance, min_close_above_level_points, math.max(ltf_required_acceptance + 2, flush_lookback_bars))
         bool protocol_chart_acceptance_ok = barstate.isconfirmed and hold_above
         bool protocol_ltf_acceptance_ok = f_ltf_holds_above(ltf_1m_closes, level, protocol_required_acceptance, min_close_above_level_points)
-        bool protocol_ltf_entry_ready = protocol_required_acceptance > 0 and ltf_reclaim_entry_ready and protocol_ltf_acceptance_ok
+        bool protocol_ltf_entry_ready = protocol_required_acceptance > 0 and reclaim_recent and protocol_ltf_acceptance_ok
         bool protocol_waiting_for_acceptance = protocol_required_acceptance > 0 and not (protocol_ltf_acceptance_ok or protocol_chart_acceptance_ok)
         bool protocol_auto_block = protocol_target_block or protocol_caution_manual_block
         float entry_target_space = na(next_cluster) ? tp1_points * 2.0 : next_cluster - candidate_entry
@@ -899,10 +841,10 @@ if enable_luke_levels and enable_reclaim_signals and array.size(cluster_prices) 
         bool target_ok = (target_space >= min_target_space_points and entry_target_space >= min_target_space_points) or tp1_room_ok
         bool context_recovery_watch_here = enable_mancini_context_recovery_watch and (protocol_reclaim_level or context_major or level_has_saty_mancini) and reclaim_recent and fresh_level_retest
         bool watch_here = (flush_event or context_recovery_watch_here) and target_ok and not protocol_target_block
-        bool armed_here = ((reclaim_recent and hold_above) or ltf_reclaim_entry_ready or impulse_reclaim_here or protocol_ltf_entry_ready) and target_ok and not_stuffed_reclaim and not failed_chase_block and not protocol_auto_block and not protocol_waiting_for_acceptance
+        bool armed_here = ((reclaim_recent and hold_above) or impulse_reclaim_here or protocol_ltf_entry_ready) and target_ok and not_stuffed_reclaim and not failed_chase_block and not protocol_auto_block and not protocol_waiting_for_acceptance and vb_time_ok and vb_cluster_size_ok
         bool paper_here = armed_here and risk_ok
         bool invalid_here = reclaim_recent and close < level - syminfo.mintick and close[1] >= level
-        bool blocked_here = reclaim_recent and hold_above and (not target_ok or not not_stuffed_reclaim or not risk_ok or failed_chase_block or protocol_auto_block)
+        bool blocked_here = reclaim_recent and hold_above and (not target_ok or not not_stuffed_reclaim or not risk_ok or failed_chase_block or protocol_auto_block or not vb_time_ok or not vb_cluster_size_ok)
         string blocked_reason = "blocked"
         if not target_ok
             blocked_reason := "target room"
@@ -923,6 +865,10 @@ if enable_luke_levels and enable_reclaim_signals and array.size(cluster_prices) 
             blocked_reason := "target only"
         else if protocol_caution_manual_block
             blocked_reason := "manual caution"
+        else if not vb_time_ok
+            blocked_reason := "vB open block"
+        else if not vb_cluster_size_ok
+            blocked_reason := "vB cluster size"
         raw_flush_signal := raw_flush_signal or flush_event
         raw_reclaim_signal := raw_reclaim_signal or reclaim_event
         blocked_signal := blocked_signal or blocked_here
@@ -934,35 +880,52 @@ if enable_luke_levels and enable_reclaim_signals and array.size(cluster_prices) 
         invalidated_signal := invalidated_signal or invalid_here
         if blocked_here and str.length(active_block_reason) == 0
             active_block_reason := blocked_reason + " @ " + str.tostring(level, format.mintick)
-        bool replace_paper_candidate = paper_here and (na(paper_level) or level_protocol_priority > paper_protocol_priority or (level_protocol_priority == paper_protocol_priority and level > paper_level))
-        if replace_paper_candidate
+        if paper_here and na(paper_level)
             paper_level := level
             paper_entry := candidate_entry
             paper_stop := candidate_stop
             paper_tp1 := candidate_tp1
             paper_tp2 := candidate_tp2
             paper_protocol_class := level_protocol_class
-            paper_protocol_priority := level_protocol_priority
             paper_fresh_retest := fresh_level_retest
             paper_failed_chase_block := failed_chase_block
-        bool replace_armed_candidate = armed_here and (na(armed_level) or level_protocol_priority > armed_protocol_priority or (level_protocol_priority == armed_protocol_priority and level > armed_level))
-        if replace_armed_candidate
+        else if paper_here and level > paper_level
+            paper_level := level
+            paper_entry := candidate_entry
+            paper_stop := candidate_stop
+            paper_tp1 := candidate_tp1
+            paper_tp2 := candidate_tp2
+            paper_protocol_class := level_protocol_class
+            paper_fresh_retest := fresh_level_retest
+            paper_failed_chase_block := failed_chase_block
+        if armed_here and na(armed_level)
             armed_level := level
             armed_entry := candidate_entry
             armed_stop := candidate_stop
             armed_tp1 := candidate_tp1
             armed_tp2 := candidate_tp2
             armed_protocol_class := level_protocol_class
-            armed_protocol_priority := level_protocol_priority
-        bool replace_watch_candidate = watch_here and (na(watch_level) or level_protocol_priority > watch_protocol_priority or (level_protocol_priority == watch_protocol_priority and level > watch_level))
-        if replace_watch_candidate
+        else if armed_here and level > armed_level
+            armed_level := level
+            armed_entry := candidate_entry
+            armed_stop := candidate_stop
+            armed_tp1 := candidate_tp1
+            armed_tp2 := candidate_tp2
+            armed_protocol_class := level_protocol_class
+        if watch_here and na(watch_level)
             watch_level := level
             watch_entry := candidate_entry
             watch_stop := candidate_stop
             watch_tp1 := candidate_tp1
             watch_tp2 := candidate_tp2
             watch_protocol_class := level_protocol_class
-            watch_protocol_priority := level_protocol_priority
+        else if watch_here and level > watch_level
+            watch_level := level
+            watch_entry := candidate_entry
+            watch_stop := candidate_stop
+            watch_tp1 := candidate_tp1
+            watch_tp2 := candidate_tp2
+            watch_protocol_class := level_protocol_class
 
 if not na(paper_level)
     active_level := paper_level
@@ -997,11 +960,10 @@ bool paper_event = paper_edge_event or paper_retest_reentry
 bool invalidated_event = invalidated_signal and invalidated_signal[1] != true
 bool blocked_event = blocked_signal and blocked_signal[1] != true
 bool candidate_level_changed = paper_setup_now and not paper_failed_chase_block and not tracked_candidate_open and not na(active_level) and not na(active_level[1]) and math.abs(active_level - active_level[1]) >= syminfo.mintick
-bool long_candidate_event = paper_setup_now and not paper_failed_chase_block and not tracked_candidate_open and not pending_limit_order and (paper_event or candidate_level_changed)
+bool long_candidate_event = paper_setup_now and not paper_failed_chase_block and not tracked_candidate_open and (paper_event or candidate_level_changed)
 bool confirmed_signal_ok = not require_confirmed_signal_bar or barstate.isconfirmed
 bool ltf_1m_has_data = array.size(ltf_1m_lows) > 0 and array.size(ltf_1m_highs) > 0
 bool ltf_3m_has_data = array.size(ltf_3m_lows) > 0 and array.size(ltf_3m_highs) > 0
-int ltf_latest_1m_close_time = ltf_1m_has_data ? time + array.size(ltf_1m_closes) * 60000 : na
 bool ltf_1m_entry_touched = entry_price_mode == "signal_close" ? true : f_ltf_touched(ltf_1m_lows, ltf_1m_highs, active_entry)
 bool ltf_3m_entry_touched = entry_price_mode == "signal_close" ? true : f_ltf_touched(ltf_3m_lows, ltf_3m_highs, active_entry)
 bool ltf_1m_stop_first = entry_price_mode == "signal_close" ? false : f_ltf_stop_before_tp1_after_entry(ltf_1m_lows, ltf_1m_highs, active_entry, active_stop, active_tp1)
@@ -1023,10 +985,10 @@ bool ltf_mode_uses_5m = ltf_fill_validation_mode == "5m_chart" or ltf_fill_valid
 int ltf_best_entry_time = na
 string ltf_best_entry_source = "bar"
 if ltf_mode_uses_1m and ltf_1m_ok and not na(ltf_1m_entry_index)
-    ltf_best_entry_time := time + (ltf_1m_entry_index + 1) * 60000
+    ltf_best_entry_time := time + ltf_1m_entry_index * 60000
     ltf_best_entry_source := "1m"
 if ltf_mode_uses_3m and ltf_3m_ok and not na(ltf_3m_entry_index)
-    int candidate_3m_time = time + (ltf_3m_entry_index + 1) * 180000
+    int candidate_3m_time = time + ltf_3m_entry_index * 180000
     if na(ltf_best_entry_time) or candidate_3m_time < ltf_best_entry_time
         ltf_best_entry_time := candidate_3m_time
         ltf_best_entry_source := "3m"
@@ -1035,14 +997,12 @@ if ltf_mode_uses_5m and chart_5m_ok and na(ltf_best_entry_time)
     ltf_best_entry_source := "5m close"
 string ltf_best_entry_time_text = na(ltf_best_entry_time) ? "bar " + f_et_time_from_timestamp(na(time_close) ? time : time_close) : ltf_best_entry_source + " " + f_et_time_from_timestamp(ltf_best_entry_time)
 bool audited_long_event = confirmed_signal_ok and long_candidate_event
-bool ltf_gate_applies_to_alert = not confirmed_retest_limit_model
-bool ltf_filtered_long_event = audited_long_event and ltf_gate_applies_to_alert and ltf_enforcement_mode == "gate_alerts_and_accounting" and not ltf_gate_ok
-bool trade_long_event = audited_long_event and (confirmed_retest_limit_model or ltf_enforcement_mode == "audit_only" or ltf_gate_ok)
+bool ltf_filtered_long_event = audited_long_event and ltf_enforcement_mode == "gate_alerts_and_accounting" and not ltf_gate_ok
+bool trade_long_event = audited_long_event and (ltf_enforcement_mode == "audit_only" or ltf_gate_ok)
 string ltf_1m_text = not ltf_1m_has_data ? "NODATA" : not ltf_1m_entry_touched ? "NOENTRY" : ltf_1m_stop_first ? "STOP1ST" : "OK"
 string ltf_3m_text = not ltf_3m_has_data ? "NODATA" : not ltf_3m_entry_touched ? "NOENTRY" : ltf_3m_stop_first ? "STOP1ST" : "OK"
 string chart_5m_text = not chart_5m_entry_touched ? "NOENTRY" : chart_5m_stop_risk and chart_5m_tp1_same_bar ? "MIXED_STOP" : chart_5m_stop_first ? "STOP1ST" : "OK"
 string ltf_audit_text = "1m " + ltf_1m_text + " / 3m " + ltf_3m_text + " / 5m " + chart_5m_text
-string signal_fire_text = signal_timing_mode == "live_intrabar" and not na(ltf_latest_1m_close_time) ? "fire 1m " + f_et_time_from_timestamp(ltf_latest_1m_close_time) : "fire " + f_et_time_from_timestamp(na(time_close) ? time : time_close)
 
 plotshape(show_raw_event_markers and raw_flush_signal, title="LUKE RAW FLUSH", text="FLUSH", style=shape.circle, location=location.belowbar, color=color.new(color.orange, 0), textcolor=color.black, size=size.tiny)
 plotshape(show_raw_event_markers and raw_reclaim_signal, title="LUKE RAW RECLAIM", text="RECLAIM", style=shape.circle, location=location.belowbar, color=color.new(color.blue, 0), textcolor=color.white, size=size.tiny)
@@ -1076,73 +1036,69 @@ if watch_event and not na(active_level)
     latest_watch_level := active_level
     if show_watch_label
         f_add_watch_label(watch_labels, bar_index, low, "WATCH #" + str.tostring(watch_id) + " " + f_et_time_from_timestamp(na(time_close) ? time : time_close) + "\n" + str.tostring(active_level, format.mintick) + " " + active_protocol_class)
-
-bool pending_limit_same_bar_ltf_fill = false
-if confirmed_retest_limit_model and pending_limit_order and bar_index == pending_limit_bar and ltf_1m_has_data and not na(pending_limit_ltf_seen_count) and array.size(ltf_1m_lows) > pending_limit_ltf_seen_count
-    for pending_ltf_i = pending_limit_ltf_seen_count to array.size(ltf_1m_lows) - 1
-        bool pending_ltf_touch = array.get(ltf_1m_lows, pending_ltf_i) <= pending_limit_entry and array.get(ltf_1m_highs, pending_ltf_i) >= pending_limit_entry
-        pending_limit_same_bar_ltf_fill := pending_limit_same_bar_ltf_fill or pending_ltf_touch
-bool pending_limit_fill_now = confirmed_retest_limit_model and pending_limit_order and ((bar_index > pending_limit_bar and low <= pending_limit_entry and high >= pending_limit_entry) or pending_limit_same_bar_ltf_fill)
-bool pending_limit_expire_now = confirmed_retest_limit_model and pending_limit_order and not pending_limit_fill_now and not na(pending_limit_expire_time) and time >= pending_limit_expire_time
-if pending_limit_fill_now
-    session_limit_fills += 1
-    session_attempts += 1
-    if pending_limit_protocol_class == "MANCINI_RECLAIM"
-        session_protocol_swing_longs += 1
-    else
-        session_protocol_scalp_longs += 1
-    tracked_candidate_open := track_candidate_results
-    tracked_candidate_tp1_hit := false
-    tracked_candidate_success_counted := false
-    tracked_candidate_id := pending_limit_candidate_id
-    tracked_candidate_start_bar := bar_index
-    tracked_candidate_level := pending_limit_level
-    tracked_candidate_entry := pending_limit_entry
-    tracked_candidate_stop := pending_limit_stop
-    tracked_candidate_active_stop := pending_limit_stop
-    tracked_candidate_tp1 := pending_limit_tp1
-    tracked_candidate_tp2 := pending_limit_tp2
-    tracked_candidate_entry_label := pending_limit_entry_label
-    tracked_candidate_entry_text := pending_limit_entry_text
-    tracked_candidate_protocol_class := pending_limit_protocol_class
-    tracked_candidate_trade_net_dollars := 0.0
-    f_update_entry_signal_label(pending_limit_entry_label, pending_limit_entry_text, "Status: RETEST FILLED " + f_et_time_from_timestamp(na(time_close) ? time : time_close), color.new(color.green, 8))
-    pending_limit_order := false
-    pending_limit_bar := na
-    pending_limit_expire_time := na
-    pending_limit_candidate_id := na
-    pending_limit_level := na
-    pending_limit_entry := na
-    pending_limit_stop := na
-    pending_limit_tp1 := na
-    pending_limit_tp2 := na
-    pending_limit_protocol_class := ""
-    pending_limit_entry_text := ""
-    pending_limit_ltf_seen_count := na
-    pending_limit_entry_label := na
-if pending_limit_expire_now
-    session_limit_no_fills += 1
-    f_update_entry_signal_label(pending_limit_entry_label, pending_limit_entry_text, "Status: NO FILL expired " + f_et_time_from_timestamp(na(time_close) ? time : time_close), color.new(color.gray, 18))
-    pending_limit_order := false
-    pending_limit_bar := na
-    pending_limit_expire_time := na
-    pending_limit_candidate_id := na
-    pending_limit_level := na
-    pending_limit_entry := na
-    pending_limit_stop := na
-    pending_limit_tp1 := na
-    pending_limit_tp2 := na
-    pending_limit_protocol_class := ""
-    pending_limit_entry_text := ""
-    pending_limit_ltf_seen_count := na
-    pending_limit_entry_label := na
 bool tracked_candidate_ended = false
 if track_candidate_results and tracked_candidate_open and bar_index > tracked_candidate_start_bar
     bool tracked_hit_stop = low <= tracked_candidate_active_stop
     bool tracked_hit_tp1 = high >= tracked_candidate_tp1
     bool tracked_hit_tp2 = high >= tracked_candidate_tp2
     float accounting_entry = tracked_candidate_entry
-    if single_contract_pnl and tracked_hit_stop and tracked_hit_tp1 and not tracked_candidate_tp1_hit
+    if tracked_candidate_all_out_tp1 and tracked_hit_stop and tracked_hit_tp1 and not tracked_candidate_tp1_hit
+        float result_contracts = 2.0
+        float stop_first_points = (tracked_candidate_active_stop - accounting_entry) * result_contracts
+        float target_first_points = (tracked_candidate_tp1 - accounting_entry) * result_contracts
+        float result_points = mixed_bar_pnl_policy == "target_first" ? target_first_points : mixed_bar_pnl_policy == "zero" ? 0.0 : stop_first_points
+        float event_net_dollars = f_event_net_dollars(result_points, result_contracts)
+        session_realized_points += result_points
+        session_realized_dollars += result_points * pnl_dollars_per_point
+        session_cost_dollars += f_event_cost_dollars(result_contracts)
+        session_net_dollars += event_net_dollars
+        tracked_candidate_trade_net_dollars += event_net_dollars
+        session_mixed += 1
+        if result_points > 0
+            session_successes += 1
+            tracked_candidate_success_counted := true
+            session_tp1_hits += 1
+        else if result_points < 0
+            session_stopped += 1
+            last_failed_candidate_bar := bar_index
+            last_failed_candidate_level := tracked_candidate_level
+        f_update_entry_signal_label(tracked_candidate_entry_label, tracked_candidate_entry_text, (result_points > 0 ? "Result: TP1 all mixed " : "Result: STOPPED mixed ") + f_money(tracked_candidate_trade_net_dollars), result_points > 0 ? color.new(color.green, 10) : color.new(color.red, 12))
+        tracked_candidate_open := false
+        last_candidate_closed_bar := bar_index
+        tracked_candidate_ended := true
+    else if tracked_candidate_all_out_tp1 and tracked_hit_tp1 and not tracked_candidate_tp1_hit
+        float result_points = (tracked_candidate_tp1 - accounting_entry) * 2.0
+        float result_contracts = 2.0
+        float event_net_dollars = f_event_net_dollars(result_points, result_contracts)
+        session_realized_points += result_points
+        session_realized_dollars += result_points * pnl_dollars_per_point
+        session_cost_dollars += f_event_cost_dollars(result_contracts)
+        session_net_dollars += event_net_dollars
+        tracked_candidate_trade_net_dollars += event_net_dollars
+        session_successes += 1
+        session_tp1_hits += 1
+        tracked_candidate_success_counted := true
+        f_update_entry_signal_label(tracked_candidate_entry_label, tracked_candidate_entry_text, "Result: TP1 all " + f_money(tracked_candidate_trade_net_dollars), color.new(color.green, 10))
+        tracked_candidate_open := false
+        last_candidate_closed_bar := bar_index
+        tracked_candidate_ended := true
+    else if tracked_candidate_all_out_tp1 and tracked_hit_stop
+        float result_contracts = 2.0
+        float result_points = (tracked_candidate_active_stop - accounting_entry) * result_contracts
+        float event_net_dollars = f_event_net_dollars(result_points, result_contracts)
+        session_realized_points += result_points
+        session_realized_dollars += result_points * pnl_dollars_per_point
+        session_cost_dollars += f_event_cost_dollars(result_contracts)
+        session_net_dollars += event_net_dollars
+        tracked_candidate_trade_net_dollars += event_net_dollars
+        session_stopped += 1
+        last_failed_candidate_bar := bar_index
+        last_failed_candidate_level := tracked_candidate_level
+        f_update_entry_signal_label(tracked_candidate_entry_label, tracked_candidate_entry_text, "Result: STOPPED " + f_money(tracked_candidate_trade_net_dollars), color.new(color.red, 12))
+        tracked_candidate_open := false
+        last_candidate_closed_bar := bar_index
+        tracked_candidate_ended := true
+    else if single_contract_pnl and tracked_hit_stop and tracked_hit_tp1 and not tracked_candidate_tp1_hit
         float result_points = f_mixed_realized_points(tracked_candidate_active_stop, accounting_entry, tracked_candidate_tp1)
         float result_contracts = 1.0
         float event_net_dollars = f_event_net_dollars(result_points, result_contracts)
@@ -1318,52 +1274,41 @@ if trade_long_event and not na(active_level)
     if not na(tp2_line)
         line.delete(tp2_line)
     candidate_id += 1
-    session_order_signals += 1
-    if not confirmed_retest_limit_model
-        session_attempts += 1
-        if active_protocol_class == "MANCINI_RECLAIM"
-            session_protocol_swing_longs += 1
-        else
-            session_protocol_scalp_longs += 1
-        tracked_candidate_open := track_candidate_results
-        tracked_candidate_tp1_hit := false
-        tracked_candidate_success_counted := false
-        tracked_candidate_id := candidate_id
-        tracked_candidate_start_bar := bar_index
-        tracked_candidate_level := active_level
-        tracked_candidate_entry := active_entry
-        tracked_candidate_stop := active_stop
-        tracked_candidate_active_stop := active_stop
-        tracked_candidate_tp1 := active_tp1
-        tracked_candidate_tp2 := active_tp2
-        tracked_candidate_entry_label := na
-        tracked_candidate_entry_text := ""
-        tracked_candidate_protocol_class := active_protocol_class
-        tracked_candidate_trade_net_dollars := 0.0
+    session_attempts += 1
+    if active_protocol_class == "MANCINI_RECLAIM"
+        session_protocol_swing_longs += 1
+    else
+        session_protocol_scalp_longs += 1
+    tracked_candidate_open := track_candidate_results
+    tracked_candidate_tp1_hit := false
+    tracked_candidate_success_counted := false
+    tracked_candidate_all_out_tp1 := enable_vb_noncheat_router and active_protocol_class != "MANCINI_RECLAIM"
+    tracked_candidate_id := candidate_id
+    tracked_candidate_start_bar := bar_index
+    tracked_candidate_level := active_level
+    tracked_candidate_entry := active_entry
+    tracked_candidate_stop := active_stop
+    tracked_candidate_active_stop := active_stop
+    tracked_candidate_tp1 := active_tp1
+    tracked_candidate_tp2 := active_tp2
+    tracked_candidate_entry_label := na
+    tracked_candidate_entry_text := ""
+    tracked_candidate_protocol_class := active_protocol_class
+    tracked_candidate_trade_net_dollars := 0.0
     string program_context = show_program_context ? "\nmode " + account_mode + " / " + size_mode + " / acct " + realistic_accounting_mode : ""
     string watch_context = not na(latest_watch_bar) ? "\nwatch #" + str.tostring(watch_id) + " @ " + str.tostring(latest_watch_level, format.mintick) : ""
-    string order_context = confirmed_retest_limit_model ? "CONFIRMED RETEST LIMIT" : "SAME-BAR LTF FILL"
-    string details = "LONG #" + str.tostring(candidate_id) + " " + signal_fire_text + " " + order_context + " " + active_protocol_class + " cluster " + str.tostring(active_level, format.mintick) + watch_context + program_context + "\n" + ltf_audit_text + "\nlimit E " + str.tostring(active_entry, format.mintick) + " / acct fill " + str.tostring(f_accounting_entry(active_entry), format.mintick) + "\nS " + str.tostring(active_stop, format.mintick) + " / T1 " + str.tostring(active_tp1, format.mintick) + " / T2 " + str.tostring(active_tp2, format.mintick)
+    bool active_all_out_tp1 = enable_vb_noncheat_router and active_protocol_class != "MANCINI_RECLAIM"
+    string active_order_profile = enable_vb_noncheat_router ? "router_scalp_2_5pt_swing_tp3_stop5_no_open_max_source2" : "legacy_context_aware"
+    string details = "LONG #" + str.tostring(candidate_id) + " " + ltf_best_entry_time_text + " " + active_protocol_class + " cluster " + str.tostring(active_level, format.mintick) + watch_context + program_context + "\n" + ltf_audit_text + "\nE " + str.tostring(active_entry, format.mintick) + " / acct fill " + str.tostring(f_accounting_entry(active_entry), format.mintick) + "\nS " + str.tostring(active_stop, format.mintick) + " / T1 " + str.tostring(active_tp1, format.mintick) + " / T2 " + str.tostring(active_tp2, format.mintick)
     tracked_candidate_entry_text := details
     string ninja_id = "luke-long-" + str.tostring(timenow) + "-" + str.tostring(candidate_id) + "-" + str.tostring(active_entry, format.mintick)
-    if confirmed_retest_limit_model
-        pending_limit_order := true
-        pending_limit_bar := bar_index
-        pending_limit_expire_time := time + retest_limit_expiry_minutes * 60000
-        pending_limit_candidate_id := candidate_id
-        pending_limit_level := active_level
-        pending_limit_entry := active_entry
-        pending_limit_stop := active_stop
-        pending_limit_tp1 := active_tp1
-        pending_limit_tp2 := active_tp2
-        pending_limit_protocol_class := active_protocol_class
-        pending_limit_entry_text := details
-        pending_limit_ltf_seen_count := array.size(ltf_1m_lows)
-        pending_limit_entry_label := na
     if enable_ninja_bridge_alerts
         string ninja_qty = size_mode == "2ES split" or size_mode == "2MES split" ? "2" : "1"
+        string ninja_tp1_qty = active_all_out_tp1 ? ninja_qty : "1"
+        string ninja_tp2_qty = active_all_out_tp1 ? "0" : (ninja_qty == "2" ? "1" : "0")
+        string ninja_all_out = active_all_out_tp1 ? "true" : "false"
         string ninja_token_part = str.length(ninja_bridge_token) > 0 ? ",\"token\":\"" + ninja_bridge_token + "\"" : ""
-        string ninja_payload = "{\"id\":\"" + ninja_id + "\",\"type\":\"LUKE_LONG\",\"symbol\":\"" + syminfo.ticker + "\",\"side\":\"LONG\",\"class\":\"" + active_protocol_class + "\",\"execution_model\":\"" + execution_order_model + "\",\"entry\":" + str.tostring(active_entry, format.mintick) + ",\"stop\":" + str.tostring(active_stop, format.mintick) + ",\"tp1\":" + str.tostring(active_tp1, format.mintick) + ",\"tp2\":" + str.tostring(active_tp2, format.mintick) + ",\"qty\":" + ninja_qty + ",\"timestamp\":\"" + str.tostring(timenow) + "\",\"bar_time\":\"" + str.tostring(time) + "\",\"source\":\"luke-pine-ninja-bridge\"" + ninja_token_part + "}"
+        string ninja_payload = "{\"id\":\"" + ninja_id + "\",\"symbol\":\"" + syminfo.ticker + "\",\"side\":\"LONG\",\"class\":\"" + active_protocol_class + "\",\"profile\":\"" + active_order_profile + "\",\"execution_model\":\"limit_retest_noncheat_vB\",\"entry\":" + str.tostring(active_entry, format.mintick) + ",\"stop\":" + str.tostring(active_stop, format.mintick) + ",\"tp1\":" + str.tostring(active_tp1, format.mintick) + ",\"tp2\":" + str.tostring(active_tp2, format.mintick) + ",\"qty\":" + ninja_qty + ",\"tp1_qty\":" + ninja_tp1_qty + ",\"tp2_qty\":" + ninja_tp2_qty + ",\"all_out_tp1\":" + ninja_all_out + ",\"timestamp\":\"" + str.tostring(timenow) + "\",\"bar_time\":\"" + str.tostring(time) + "\",\"source\":\"luke-pine-ninja-bridge\"" + ninja_token_part + "}"
         alert(ninja_payload, alert.freq_all)
     if signal_timing_mode == "live_intrabar" and not barstate.isconfirmed
         live_pending_long := true
@@ -1380,26 +1325,18 @@ if trade_long_event and not na(active_level)
         tp1_line := line.new(bar_index, active_tp1, bar_index + bracket_bars, active_tp1, color=color.new(color.green, 0), width=2)
         tp2_line := line.new(bar_index, active_tp2, bar_index + bracket_bars, active_tp2, color=color.new(color.lime, 0), width=2)
     if show_latest_candidate_label
-        string initial_status = confirmed_retest_limit_model ? "Status: order sent - waiting retest" : "Status: open"
-        label new_entry_label = f_add_entry_signal_label(entry_signal_labels, bar_index, candidate_label_y, details + "\n" + initial_status)
+        label new_entry_label = f_add_entry_signal_label(entry_signal_labels, bar_index, candidate_label_y, details + "\nStatus: open")
         tracked_candidate_entry_label := new_entry_label
-        if confirmed_retest_limit_model
-            pending_limit_entry_label := new_entry_label
         if signal_timing_mode == "live_intrabar" and live_pending_long and live_pending_bar == bar_index
             live_pending_label := new_entry_label
 
-bool live_cancel_now = signal_timing_mode == "live_intrabar" and live_pending_long and live_pending_bar == bar_index and not trade_long_event and not confirmed_retest_limit_model
+bool live_cancel_now = signal_timing_mode == "live_intrabar" and live_pending_long and live_pending_bar == bar_index and not trade_long_event
 if live_cancel_now
     bool cancel_area_still_active = na(live_pending_level) or na(live_pending_entry) ? true : low <= live_pending_entry and high >= live_pending_level - syminfo.mintick
-    float cancel_contracts = f_open_contract_count(false)
-    float cancel_estimated_friction = f_cancel_estimated_friction_dollars(cancel_contracts)
-    float cancel_estimated_net = na(live_pending_entry) ? -cancel_estimated_friction : f_cancel_estimated_net_dollars(live_pending_entry, close, cancel_contracts)
-    session_cancel_estimated_friction_dollars += cancel_estimated_friction
-    session_cancel_estimated_net_dollars += cancel_estimated_net
     session_live_cancelled += 1
     live_cancelled_this_bar := true
     live_cancelled_bar := bar_index
-    live_cancelled_text := str.length(live_pending_text) > 0 ? live_pending_text + "\nStatus: CANCELLED live " + f_et_time_from_timestamp(timenow) + " est " + f_money(cancel_estimated_net) + " - can refire" : "LONG cancelled live " + f_et_time_from_timestamp(timenow) + " est " + f_money(cancel_estimated_net) + " - can refire"
+    live_cancelled_text := str.length(live_pending_text) > 0 ? live_pending_text + "\nStatus: CANCELLED live - can refire" : "LONG cancelled live - can refire"
     live_cancelled_y := na(live_pending_y) ? candidate_label_y : live_pending_y
     live_cancelled_label := live_pending_label
     array.push(live_cancelled_texts, live_cancelled_text)
@@ -1414,6 +1351,7 @@ if live_cancel_now
     tracked_candidate_open := false
     tracked_candidate_tp1_hit := false
     tracked_candidate_success_counted := false
+    tracked_candidate_all_out_tp1 := false
     live_pending_long := false
     live_pending_bar := na
     live_pending_text := ""
@@ -1455,18 +1393,18 @@ if barstate.islast
         string after_commission_text = show_session_pnl ? f_money(session_after_commissions) : ""
         string after_all_text = show_session_pnl ? f_money(session_after_all_costs) : ""
         string eval_text = eval_loss_limit_dollars > 0 and session_net_dollars <= -eval_loss_limit_dollars ? " BREACH" : ""
-        string counts_text = "W " + str.tostring(session_watches) + " / O " + str.tostring(session_order_signals) + " / F " + str.tostring(session_attempts) + " / NF " + str.tostring(session_limit_no_fills) + " / C " + str.tostring(session_live_cancelled)
+        string counts_text = "W " + str.tostring(session_watches) + " / L " + str.tostring(session_attempts) + " / C " + str.tostring(session_live_cancelled)
         string miss_text = str.tostring(total_signal_misses) + " = S " + str.tostring(session_stopped) + " + C " + str.tostring(session_live_cancelled)
         string milestone_text = "T1 " + str.tostring(session_tp1_hits) + " / T2 " + str.tostring(session_tp2_hits) + " / BE " + str.tostring(session_breakevens) + " / M " + str.tostring(session_mixed)
         string cost_text = "comm " + f_money(session_commission_dollars) + " / slip " + f_money(session_slippage_dollars)
         string protocol_text = "scalp " + str.tostring(session_protocol_scalp_longs) + " | swing " + str.tostring(session_protocol_swing_longs) + " | block T " + str.tostring(session_protocol_target_blocks) + " C " + str.tostring(session_protocol_caution_blocks)
         string enforcement_text = ltf_enforcement_mode == "audit_only" ? "audit" : "gated"
         string timing_text = signal_timing_mode == "live_intrabar" ? "live" : "confirmed"
-        table.cell(session_scorecard, 0, 0, "Luke vA retest", text_color=color.white, bgcolor=color.new(color.black, 10), text_size=size.small)
-        table.cell(session_scorecard, 1, 0, execution_order_model + " " + timing_text, text_color=color.white, bgcolor=color.new(color.black, 10), text_size=size.small)
+        table.cell(session_scorecard, 0, 0, enable_vb_noncheat_router ? "Luke vB non-cheat" : "Luke legacy protocol", text_color=color.white, bgcolor=color.new(color.black, 10), text_size=size.small)
+        table.cell(session_scorecard, 1, 0, ltf_fill_validation_mode + " " + enforcement_text + " " + timing_text + " " + mancini_protocol_mode, text_color=color.white, bgcolor=color.new(color.black, 10), text_size=size.small)
         table.cell(session_scorecard, 0, 1, "score incl cxl", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 1, 1, score_text + "  " + score_pct_text, text_color=session_successes > 0 ? color.lime : color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
-        table.cell(session_scorecard, 0, 2, "watch/order/fill", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
+        table.cell(session_scorecard, 0, 2, "watch/long/cxl", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 1, 2, counts_text, text_color=session_live_cancelled > 0 ? color.orange : color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 0, 3, "misses incl cxl", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 1, 3, miss_text, text_color=total_signal_misses > 0 ? color.red : color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
@@ -1478,10 +1416,10 @@ if barstate.islast
         table.cell(session_scorecard, 1, 6, after_commission_text, text_color=session_after_commissions >= 0 ? color.lime : color.red, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 0, 7, "realistic net", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 1, 7, after_all_text + eval_text, text_color=session_after_all_costs >= 0 ? color.lime : color.red, bgcolor=color.new(color.black, 45), text_size=size.small)
-        table.cell(session_scorecard, 0, 8, "cxl est net/fric", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
-        table.cell(session_scorecard, 1, 8, f_money(session_cancel_estimated_net_dollars) + " / " + f_money(session_cancel_estimated_friction_dollars), text_color=session_live_cancelled > 0 ? color.orange : color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
+        table.cell(session_scorecard, 0, 8, "cxl min comm", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
+        table.cell(session_scorecard, 1, 8, f_money(cancel_min_commission), text_color=session_live_cancelled > 0 ? color.orange : color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 0, 9, "mode/costs", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
-        table.cell(session_scorecard, 1, 9, realistic_accounting_mode + " | " + cost_text + " | cxl slp " + str.tostring(cancel_entry_slippage_points, "#.##") + "/" + str.tostring(cancel_exit_slippage_points, "#.##"), text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
+        table.cell(session_scorecard, 1, 9, realistic_accounting_mode + " | " + cost_text, text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 0, 10, "protocol", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 1, 10, protocol_text, text_color=session_protocol_swing_longs > 0 ? color.fuchsia : color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 0, 11, "base lines", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
@@ -1499,7 +1437,7 @@ if barstate.islast
 
 alertcondition(enable_alertconditions and alert_watch_events and watch_event, "LUKE WATCH", "LUKE WATCHLIST ONLY - not an order - WATCH level condition")
 alertcondition(enable_alertconditions and alert_armed_events and armed_event, "LUKE ARMED", "LUKE WATCHLIST ONLY - not an order - ARMED reclaim condition")
-alertcondition(enable_alertconditions and alert_paper_candidate_events and trade_long_event, "LUKE LONG", "LUKE WATCHLIST ONLY - confirmed retest-limit LONG condition")
-alertcondition(enable_alertconditions and alert_mancini_reclaim_events and trade_long_event and active_protocol_class == "MANCINI_RECLAIM", "LUKE MANCINI RECLAIM", "LUKE WATCHLIST ONLY - confirmed Mancini reclaim retest-limit LONG condition")
+alertcondition(enable_alertconditions and alert_paper_candidate_events and trade_long_event, "LUKE LONG", "LUKE WATCHLIST ONLY - not an order - LTF-audited LONG condition")
+alertcondition(enable_alertconditions and alert_mancini_reclaim_events and trade_long_event and active_protocol_class == "MANCINI_RECLAIM", "LUKE MANCINI RECLAIM", "LUKE WATCHLIST ONLY - not an order - Mancini reclaim swing-class LONG condition")
 alertcondition(enable_alertconditions and alert_invalidated_events and invalidated_event, "LUKE INVALIDATED", "LUKE WATCHLIST ONLY - not an order - INVALIDATED reclaim condition")
 alertcondition(enable_alertconditions and alert_blocked_events and blocked_event, "LUKE BLOCKED", "LUKE WATCHLIST ONLY - not an order - reclaim sequence blocked by target/risk/freshness gate")

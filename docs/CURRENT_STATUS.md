@@ -47,7 +47,7 @@ Luke is Conor's local companion system for planning, memory, research, reminders
 - Server startup exits cleanly if port 3000 is already held by Luke or another process, and PM2 is configured not to crash-loop clean duplicate-start exits.
 - Pine is a visual/watchlist indicator using `indicator()` and `alertcondition()` only.
 - Pine candidate inventory and promotion gate now lives in `docs/PINE_INVENTORY_AND_FLAGSHIP_GATE.md`.
-- `tradingview:inventory` generated `docs/PINE_INVENTORY_GENERATED.md` and `artifacts/proof/pine-inventory/pine-inventory.json` for 32 local Pine files.
+- `tradingview:inventory` generated `docs/PINE_INVENTORY_GENERATED.md` and `artifacts/proof/pine-inventory/pine-inventory.json` for 37 local Pine files.
 - Radar/Daily integration is active: Daily surfaces Radar review counts, reminders, and top review items before they can become trusted operating or trading context.
 - Typo-aware command recovery is active for known Luke commands; explicit slash-command typos from Luke Chat route internally through the trading lane instead of bouncing the user to a different chat.
 - Luke Watch production-test Pine is tracked as a realistic-accounting visual indicator; the simulation strategy is TradingView Strategy Tester only.

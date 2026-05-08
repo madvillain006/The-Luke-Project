@@ -57,6 +57,8 @@ Use these for audit behavior and readable ledger comparisons. Do not promote the
 - `tradingview/LUKE-WATCH-FLAGSHIP-v4-MANCINI-SATY-ONLY-TRUSTED-RESTORE.pine`
 - `tradingview/LUKE-WATCH-FLAGSHIP-v4-MANCINI-CONTEXT-LEGEND-TRUSTED.pine`
 - `tradingview/LUKE-WATCH-FLAGSHIP-v4-MANCINI-CONTEXT-NINJA-BRIDGE.pine`
+- `tradingview/LUKE-WATCH-FLAGSHIP-v0b-MANCINI-CONTEXT-NINJA-BRIDGE-UPDATED-LEVELS.pine`
+- `tradingview/LUKE-WATCH-FLAGSHIP-v0b-MANCINI-PROTOCOL-SCALP-SWING-UPDATED-LEVELS.pine`
 - `tradingview/LUKE-WATCH-FLAGSHIP-v5-DAILY-PLAN-QUALITY.pine`
 - `tradingview/LUKE-WATCH-FLAGSHIP-v5-LIGHT-DAILY-PLAN-QUALITY.pine`
 - `tradingview/LUKE-WATCH-FLAGSHIP-v5-MANCINI-PROTOCOL-SCALP-SWING.pine`
@@ -71,8 +73,10 @@ This is the likely flagship-selection family. Pick one flagship and one recovery
 
 - `tradingview/LUKE-MANCINI-FLAGSHIP-v6-CONFIRMED-RETEST-LIMIT-NINJA-DRYFIRE.pine`
 - `tradingview/LUKE-MANCINI-FLAGSHIP-vA-CONFIRMED-RETEST-LIMIT-NINJA-DRYFIRE.pine`
+- `tradingview/LUKE-MANCINI-OBJECTIVITY-MAX-NET-vA-SCALP-2_5-SWING-SPLIT.pine`
+- `tradingview/LUKE-MANCINI-vB-NONCHEAT-ROUTER-185D.pine`
 
-Treat `vA` as the current local replacement candidate only after TradingView compile/signoff. It is still visual/watchlist/research until promoted in writing.
+Treat `vA`, `OBJECTIVITY`, and `vB` as local replacement/router candidates only after TradingView compile/signoff. They are still visual/watchlist/research until promoted in writing.
 
 ### Supporting Sources
 

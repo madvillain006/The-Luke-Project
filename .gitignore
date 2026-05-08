@@ -71,6 +71,7 @@ screenshot.png
 artifacts/
 tmp/
 tools/cloudflared/
+tools/reference-repos/
 icon.ico
 luke-log.jsonl
 action-log.jsonl

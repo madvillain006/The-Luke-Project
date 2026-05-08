@@ -7,9 +7,12 @@ Luke Chat and Trading now share one companion memory bin. The goal is simple: wh
 ## Canonical Store
 
 - Runtime snapshot: `state/snapshots/memory.json`
+- Rolling context snapshot: `state/snapshots/context-bins.json`
 - Store key: `luke_companion_memory`
 - Event log: `state/events/companion-memory.jsonl`
+- Context-bin event log: `state/events/context-bins.jsonl`
 - Code owner: `lib/companion-memory.js`
+- Context-bin owner: `lib/luke-context-bins.js`
 - Chat integration: `index.js` `/chat`
 - First-open readiness: `index.js` `/luke/operator-check`
 
@@ -27,9 +30,13 @@ Large generic pastes are ignored unless they contain explicit memory language. T
 
 - A question like "what do I have at 2?" is answered from shared memory before the LLM path.
 - A typo like `/statsu` is recovered to `/status` instead of falling through to a random model reply.
-- Natural command recovery is limited to the Trading surface so normal Luke Chat questions do not become accidental trading commands.
-- System chat blocks trading commands, including recovered commands, and redirects the user to Trading.
+- Natural command recovery remains conservative, but explicit slash-command typos from Luke Chat route through the trading lane inside the same merged conversation.
+- Luke Chat and Trading are two doors into one conversation layer. The route is tracked in rolling bins instead of making the user switch chats.
 - Luke Chat opens with a read-only operator check so the user can see whether Luke should be the default daily surface before asking anything.
+
+## Rolling Context Bins
+
+Luke keeps compact rolling bins for personal, daily, Radar, trading, Luke project, and general conversation context. These bins are not a full Obsidian replacement yet; they are the short working index that lets Luke remember what lane a message belonged to and bring the relevant recent context into the next answer.
 
 ## Radar Relationship
 

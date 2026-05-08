@@ -54,7 +54,7 @@ describe('operator surface comparison script', () => {
     }));
 
     const verdict = parseVerdictReply([
-      'Context warning: missing /saty. This is confluence-only; use /entries for PASS/trade truth.',
+      'Context warning: missing /heatmap. This is confluence-only; use /entries for PASS/trade truth.',
       '## Confluence Verdict',
       '- **ES 7155**  ->  **C** (0.45)  bobby vision',
       '- **ES 7180**  ->  **C** (0.42)  dubz key',
@@ -90,7 +90,7 @@ describe('operator surface comparison script', () => {
     expect(decision.vetoes).toEqual(['stale_or_missing_input']);
 
     const status = normalizeOperatorStatus({
-      blockers: ['fresh Saty context missing'],
+      blockers: ['Bobby heatmap missing or stale'],
       autonomous: { recommendation_only: true, staged_only: true },
       freshness: {
         saty: { loaded: false },
@@ -100,7 +100,7 @@ describe('operator surface comparison script', () => {
     });
     expect(status.recommendation_only).toBe(true);
     expect(status.staged_only).toBe(true);
-    expect(status.risk_blockers).toEqual(['fresh Saty context missing']);
+    expect(status.risk_blockers).toEqual(['Bobby heatmap missing or stale']);
   });
 
   it('marks field comparison statuses', () => {

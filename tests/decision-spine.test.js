@@ -159,7 +159,12 @@ describe('decision spine buildTradeDecision', () => {
       vetoes: expect.any(Array),
       evidence: expect.any(Array),
     }));
-    expect(decision.vetoes.map(v => v.source)).toEqual(expect.arrayContaining(['saty', 'bobby']));
+    expect(decision.vetoes.map(v => v.source)).toEqual(['bobby']);
+    expect(decision.freshness.saty).toEqual(expect.objectContaining({
+      loaded: true,
+      generated: true,
+      source: 'previous_close_levels',
+    }));
   });
 
   it('recognizes fresh same-day Saty, Bobby, and Dubz context', () => {

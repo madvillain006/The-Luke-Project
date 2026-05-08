@@ -27,10 +27,10 @@ Expected: luke-server and luke-scheduler both online, no luke-intraday.
 If anything is errored or missing, run:
   pm2 reload ecosystem.config.js
 
-## 3. Saty levels load
+## 3. Saty levels
 
-Open chat UI, paste day's Saty ATR levels via /saty.
-Verify response shows 13 levels loaded, no parse errors.
+Saty is generated automatically from previous close levels. Use `/saty` only
+for a deliberate override/debug check.
 
 Important:
 - Saty levels are stored as SPX structure
@@ -59,7 +59,7 @@ the system output with skepticism for that session.
 
 Never enter a trade off Luke's confluence read alone. Required 
 checklist still applies:
-- Saty levels loaded
+- Saty generated context
 - Bobby heatmap or Kat/Jefe heatmap parsed
 - Ximes LIVE_ENTRY signal (text path, untouched in 5d)
 - Manual visual verification of all three before pulling the trigger

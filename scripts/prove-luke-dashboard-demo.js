@@ -208,15 +208,15 @@ async function captureClickedShellScreenshots() {
     if (!systemFrame) throw new Error('system chat iframe did not expose a content frame');
     const systemSmokeText = await runLukeChatSmoke(systemFrame, {
       commands: [
-        ['/ready', 'belongs in the Trading tab'],
-        ['/luke', 'Luke system chat is active'],
+        ['/ready', 'READY SESSION READINESS'],
+        ['/status', 'LUKE ONLINE'],
       ],
     });
     await page.locator('#system-panel').screenshot({ path: paths.system_chat_after_click });
     await page.locator('#system-panel').screenshot({ path: paths.system_chat_smoke });
     const systemText = await systemFrame.locator('body').innerText();
     const commandSmokeRe = /LUKE ONLINE[\s\S]*READY SESSION READINESS[\s\S]*Freshness:[\s\S]*Apex balance[\s\S]*Saty/i;
-    const systemSmokeRe = /LUKE ONLINE[\s\S]*Luke chat: active for trading ops[\s\S]*belongs in the Trading tab[\s\S]*Luke system chat is active/i;
+    const systemSmokeOk = /LUKE ONLINE/i.test(systemSmokeText) && /READY SESSION READINESS/i.test(systemSmokeText);
 
     return {
       ok: true,
@@ -230,7 +230,7 @@ async function captureClickedShellScreenshots() {
       pine_visible: /Luke Watch Pine Script/i.test(tradingText) && /tradingview\/luke-level-reclaim-watch\.pine/i.test(tradingText),
       replay_not_live_visible: /Replay\/dev simulated/i.test(tradingText) && /No execution controls/i.test(tradingText) && /Not a live trade recommendation/i.test(tradingText),
       system_chat_visible: /LUKE ONLINE/i.test(systemText) && /Autonomous: recommendation-only/i.test(systemText),
-      system_chat_command_smoke: systemSmokeRe.test(systemSmokeText) && !/personal logging is retired/i.test(systemSmokeText),
+      system_chat_command_smoke: systemSmokeOk && !/personal logging is retired/i.test(systemSmokeText),
       dashboard_tiles_compact: moduleWidths.length > 0 && Math.max(...moduleWidths) <= 280,
       module_widths: moduleWidths,
       no_unsafe_buttons: unsafeShellButtons.length === 0 && unsafeTradingButtons.length === 0,

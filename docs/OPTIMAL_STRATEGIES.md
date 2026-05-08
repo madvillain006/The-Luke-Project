@@ -324,7 +324,7 @@ April 7 was a volatile opening session. Here is what each strategy produced that
 
 7. **No session-level context (FOMC, major news, gap-fill days).** The 7 backtest dates include 2026-04-07 which appears to be a high-volatility opening session. Real strategy would filter or reduce size on known high-volatility event days.
 
-8. **Mancini/Bobby/Saty levels were not eyeballed for accuracy.** The levels in the session files were generated from the raw data normalizers. Some may be misclassified or stale relative to what a human would have used in real trading.
+8. **Mancini/Bobby/Saty levels were not eyeballed for accuracy.** The levels in the session files were generated from the raw data normalizers. Some may be misclassified or differ from what a human would have used in real trading.
 
 ---
 

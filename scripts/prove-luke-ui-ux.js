@@ -327,8 +327,9 @@ async function captureScreenshots() {
         file: 'luke-chat-desktop.png',
         viewport: desktop,
         waitForText: ['DASHBOARD'],
-        action: async page => sendChatCommand(page, '/status', 'belongs in the Trading tab'),
-        mustContain: ['Trading tab', 'Trading (Analysis)'],
+        action: async page => sendChatCommand(page, '/status', 'LUKE ONLINE'),
+        mustContain: ['LUKE ONLINE', 'Bins:'],
+        mustNotContain: ['belongs in the Trading tab'],
       },
       {
         key: 'trading-chat-desktop',

@@ -196,7 +196,7 @@ describe('slash-commands Phase 2 workflow status', () => {
 
     await handleSlashCommand('/verdict ES', res);
 
-    expect(payload.reply).toContain('Context warning: missing /saty, /heatmap.');
+    expect(payload.reply).toContain('Context warning: missing /heatmap.');
     expect(payload.reply).toContain('This is confluence-only; use /entries for PASS/trade truth.');
     expect(payload.reply).toContain('## Confluence verdict');
     expect(payload.reply).toContain('No levels recorded yet.');
@@ -244,9 +244,9 @@ describe('slash-commands /entries hardening', () => {
     await handleSlashCommand('/entries ES', res);
 
     expect(payload.reply).toContain('No fresh entries available for ES.');
-    expect(payload.reply).toContain('Freshness: Saty MISSING');
-    expect(payload.reply).toContain('Missing/stale: /saty, /heatmap');
-    expect(payload.reply).toContain('Next: run /saty, /heatmap, then /ready before /entries ES.');
+    expect(payload.reply).toContain('Freshness: Saty OK (generated)');
+    expect(payload.reply).toContain('Missing/stale: /heatmap');
+    expect(payload.reply).toContain('Next: run /heatmap, then /ready before /entries ES.');
   });
 
   it('surfaces Mancini chop zones inside /entries output', async () => {
@@ -375,8 +375,9 @@ describe('slash-commands /entries hardening', () => {
     await handleSlashCommand('/entries ES', res);
 
     expect(payload.reply).toContain('## Futures Entries ES');
-    expect(payload.reply).toContain('Freshness: Saty OK | Dubz OK (1) | Bobby OK');
-    expect(payload.reply).toContain('Recommendation: WAIT - market price unavailable | LONG ES 6809 | A grade | full size');
+    expect(payload.reply).toMatch(/Current: ES (?:market price UNKNOWN|\d+(?:\.\d+)? \((?:delayed|reference|quoted|live|replay).*\))/);
+    expect(payload.reply).toContain('Freshness: Saty OK (generated) | Dubz OK (1) | Bobby OK');
+    expect(payload.reply).toMatch(/Recommendation: WAIT - (?:live price not trusted|market price UNKNOWN) \| LONG ES 6809 \| A grade \| full size/);
     expect(payload.reply).toContain('Anchor: ES 6809 | A grade | full size | side LONG');
     expect(payload.reply).toContain('Vetoes: none active');
     expect(payload.reply).toContain('Plan: entry 6809.25 | ok 6809.75 | stop');
@@ -424,7 +425,8 @@ describe('slash-commands output cleanliness - mojibake guard', () => {
     const res = { json(obj) { payload = obj; return obj; } };
     await handleSlashCommand('/luke', res);
     expect(payload.reply).toContain('Luke system chat is active');
-    expect(payload.reply).toContain('Use Trading (Analysis)');
+    expect(payload.reply).toContain('same front chat');
+    expect(payload.reply).toContain('shared context bins');
     expect(payload.reply).not.toContain('personal logging is retired');
     expect(MOJIBAKE_RE.test(payload.reply)).toBe(false);
   });
@@ -554,7 +556,7 @@ describe('slash-commands command boundary coverage', () => {
     await handleSlashCommand('/ready', res);
     expect(payload.reply).toMatch(/^READY SESSION READINESS/);
     expect(payload.reply).toContain('OK Balance set today');
-    expect(payload.reply).toContain('OK Saty ATR levels loaded');
+    expect(payload.reply).toContain('OK Saty generated from previous close levels');
     expect(payload.reply).toContain('OK Katbot/SPX heatmap loaded');
     expect(payload.reply).toContain('OK READY TO TRADE');
     expect(payload.reply).not.toMatch(MOJIBAKE_RE);

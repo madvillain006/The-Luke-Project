@@ -244,7 +244,7 @@ function buildMarkdownReport(report, unmatchedRows) {
 
   if (s.invalidDates.length > 0) {
     lines.push('');
-    lines.push('**Dates without valid Saty (missing prior ES futures-session ATR):**');
+    lines.push('**Dates without valid Saty (prior ES futures-session ATR unavailable):**');
     for (const d of s.invalidDates) lines.push(`  - ${d}`);
   }
 
@@ -362,7 +362,7 @@ async function main() {
 
   const satyValid   = Object.values(satyResult).filter(v => v.valid).length;
   const satyInvalid = Object.values(satyResult).filter(v => !v.valid).length;
-  console.log(`[build-dataset]   Saty: ${satyValid} valid, ${satyInvalid} missing prior ES futures-session ATR`);
+  console.log(`[build-dataset]   Saty: ${satyValid} valid, ${satyInvalid} prior ES futures-session ATR unavailable`);
 
   fs.writeFileSync(
     path.join(args.out, 'saty-levels-by-date.json'),

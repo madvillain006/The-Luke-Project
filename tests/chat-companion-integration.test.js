@@ -11,13 +11,17 @@ describe('chat companion integration', () => {
 
     expect(index).toContain('handleCompanionMemoryTurn');
     expect(index).toContain('buildCompanionContext');
+    expect(index).toContain('recordContextTurn');
+    expect(index).toContain('buildContextBinPrompt');
     expect(index).toContain('recoverLukeCommand');
     expect(index).toContain('app.get("/luke/memory"');
     expect(index).toContain('app.get("/luke/memory/context"');
+    expect(index).toContain('app.get("/luke/context-bins"');
     expect(index).toContain('app.get("/luke/operator-check"');
     expect(index).toContain('buildLukeOperatorCheck');
-    expect(index).toContain('I read that as /');
+    expect(index).toContain('wrapResponseForContext');
     expect(index).toMatch(/alert\|backtest\|balance[\s\S]*status[\s\S]*verdict/);
+    expect(index).not.toContain('Open Trading (Analysis) for level ingestion');
   });
 
   it('shows shared memory as one front-facing chat affordance', () => {
@@ -25,8 +29,11 @@ describe('chat companion integration', () => {
 
     expect(html).toContain('id="tb-memory-val"');
     expect(html).toContain('SHARED');
+    expect(html).toContain('id="tb-bins-val"');
+    expect(html).toContain('syncContextBinsBadge');
     expect(html).toContain('loadOperatorCheckIntro');
     expect(html).toContain('/luke/operator-check');
+    expect(html).toContain('/luke/context-bins');
     expect(html).toContain('Boundary:');
     expect(html).toContain('Send message to Luke');
     expect(html).not.toContain('Send message to the trading bot sub-agent');

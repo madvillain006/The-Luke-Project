@@ -21,6 +21,7 @@ function makePaths() {
     },
     snapshots: {
       dailySpine: path.join(snapshotsDir, 'daily-spine.json'),
+      contextBins: path.join(snapshotsDir, 'context-bins.json'),
       radarState: path.join(snapshotsDir, 'radar-state.json'),
       memory: path.join(snapshotsDir, 'memory.json'),
     },
@@ -63,12 +64,14 @@ describe('Luke operator check', () => {
     expect(check.summary_line).toContain('daily operator surface');
     expect(check.can_replace_codex_for_daily_use).toBe(true);
     expect(check.codex_boundary).toContain('code-improvement tool');
+    expect(check.context_bins.summary_line).toContain('ready');
     expect(check.front_routes).toEqual(['/luke', '/trading', '/daily', '/radar']);
     expect(check.drilldown_routes).toContain('/operator-v2');
     expect(check.operator_lines.join('\n')).toContain('Codex for code changes');
     expect(check.checks.map(item => item.id)).toEqual([
       'shared-memory',
       'luke-chat',
+      'context-bins',
       'trading-boundary',
       'radar',
       'daily-brief',

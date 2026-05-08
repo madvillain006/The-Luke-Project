@@ -286,7 +286,8 @@ describe('/brain dashboard shell', () => {
     expect(html).toContain('fetch(BASE + "/chat"');
     expect(html).toContain('const chatSurface = window.location.pathname === "/luke" ? "system" : "trading"');
     expect(html).toContain('surface: chatSurface');
-    expect(html).toContain('chatSurface !== "system" && !text.startsWith');
+    expect(html).toContain("if (!text.startsWith('/'))");
+    expect(html).toContain('id="tb-bins-val"');
     expect(html).toContain('body.system-chat #quick-btns');
     expect(html).toContain('href="/shell"');
     expect(html).toContain('grid-template-columns: repeat(auto-fit, minmax(96px, 1fr))');

@@ -548,6 +548,12 @@
       <span id="tb-memory-val">SHARED</span>
       <span class="tooltip">Shared context is available to Luke Chat and Trading.</span>
     </div>
+    <span class="tb-div">|</span>
+    <div class="tb-seg has-tt" id="tb-bins-wrap">
+      <span class="tb-lbl">Bins:</span>
+      <span id="tb-bins-val">AUTO</span>
+      <span class="tooltip">Rolling context bins route personal, daily, Radar, trading, and Luke project context behind one chat.</span>
+    </div>
     <div style="margin-left:auto;display:flex;align-items:center;gap:4px;padding-right:2px;">
       <a id="dashboard-link" href="/shell" title="Return to Luke dashboard">DASHBOARD</a>
       <button id="look-btn" class="tb-killbtn has-tt" title="Take a screenshot of the current screen and ask Claude what's on it">LOOK</button>
@@ -781,6 +787,7 @@
     const input    = document.getElementById("input");
     const sendBtn  = document.getElementById("send");
     const chatSurface = window.location.pathname === "/luke" ? "system" : "trading";
+    const binsVal = document.getElementById("tb-bins-val");
     let history = [];
     let intradayActive = false;
     let toastTimer = null;
@@ -797,6 +804,26 @@
     }
 
     applyChatSurface();
+
+    function setRouteBadge(route) {
+      if (!binsVal || !route) return;
+      const bins = Array.isArray(route.bins) && route.bins.length ? route.bins : [route.primary_bin || "general"];
+      binsVal.textContent = bins.map(bin => String(bin || "").toUpperCase()).slice(0, 3).join("+") || "AUTO";
+    }
+
+    async function syncContextBinsBadge() {
+      if (!binsVal) return;
+      try {
+        const r = await fetch(BASE + "/luke/context-bins?limit=1&recentLimit=3", { cache: "no-store" });
+        const data = await r.json();
+        const active = Object.values(data.bins || {}).filter(bin => bin.count > 0).map(bin => bin.id.toUpperCase());
+        binsVal.textContent = active.length ? active.slice(0, 3).join("+") : "AUTO";
+      } catch {
+        binsVal.textContent = "OFFLINE";
+      }
+    }
+
+    syncContextBinsBadge();
 
     fetch(BASE + "/ws-token").then(r => r.json()).then(({ token }) => {
       ws = new WebSocket(wsProtocol + "//" + wsHost + "/?token=" + encodeURIComponent(token));
@@ -1506,6 +1533,7 @@
         const lines = [
           data.summary_line || "Luke operator check is ready.",
           data.memory?.summary_line ? `Memory: ${data.memory.summary_line}.` : null,
+          data.context_bins?.summary_line ? `Bins: ${data.context_bins.summary_line}.` : null,
           data.radar?.summary_line ? `Radar: ${data.radar.summary_line}.` : null,
           data.codex_boundary ? `Boundary: ${data.codex_boundary}` : null,
           Array.isArray(data.next_actions) && data.next_actions.length ? `Next: ${data.next_actions[0]}` : null,
@@ -1771,6 +1799,8 @@
         hideThinking();
         addMessage("assistant", d.reply);
         if (typeof checkMC === 'function') checkMC(text, d.reply);
+        if (d.route) setRouteBadge(d.route);
+        syncContextBinsBadge();
         if (d.state) updateStateIndicator(d.state);
         history = d.history;
       } catch {
@@ -1788,7 +1818,7 @@
         input.value = "";
         const ph = document.getElementById("paste-hint");
         if (ph) ph.style.display = "none";
-        if (chatSurface !== "system" && !text.startsWith('/')) {
+        if (!text.startsWith('/')) {
           try {
             const det = detectPasteIntent(text, false);
             if (det && det.command) {

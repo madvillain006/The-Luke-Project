@@ -241,7 +241,7 @@ describe('operator API adapters', () => {
     expect(api.autonomous.staged_only).toBe(true);
     expect(api.autonomous.recommendation_only).toBe(true);
     expect(api.autonomous.wording).toContain('recommendations to Luke chat');
-    expect(res.payload.reply).toContain('Freshness: Dubz OK (1) | Bobby OK (1) | Saty OK');
+    expect(res.payload.reply).toContain('Freshness: Dubz OK (1) | Bobby OK (1) | Saty OK (generated)');
     expect(res.payload.reply).toContain('Autonomous: recommendation-only');
     expect(res.payload.reply).toContain('Luke chat: active for trading ops');
     expect(res.payload.reply).not.toContain('personal logging is retired');

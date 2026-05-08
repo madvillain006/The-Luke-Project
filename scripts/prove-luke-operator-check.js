@@ -28,6 +28,7 @@ function makePaths() {
     },
     snapshots: {
       dailySpine: path.join(snapshotsDir, 'daily-spine.json'),
+      contextBins: path.join(snapshotsDir, 'context-bins.json'),
       radarState: path.join(snapshotsDir, 'radar-state.json'),
       memory: path.join(snapshotsDir, 'memory.json'),
     },

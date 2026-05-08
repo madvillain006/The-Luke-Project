@@ -197,9 +197,9 @@ describe('decision spine regression harness', () => {
     await handleSlashCommand('/entries ES', res);
 
     expect(payload.reply).toContain('No fresh entries available for ES.');
-    expect(payload.reply).toContain('Freshness: Saty MISSING');
-    expect(payload.reply).toContain('Missing/stale: /saty, /heatmap');
-    expect(payload.reply).toContain('Next: run /saty, /heatmap, then /ready before /entries ES.');
+    expect(payload.reply).toContain('Freshness: Saty OK (generated)');
+    expect(payload.reply).toContain('Missing/stale: /heatmap');
+    expect(payload.reply).toContain('Next: run /heatmap, then /ready before /entries ES.');
   });
 
   it('fresh same-day Bobby, Dubz, Saty, and Mancini context is recognized as fresh', () => {
@@ -329,7 +329,7 @@ describe('decision spine regression harness', () => {
 
     expect(result.ok).toBe(false);
     expect(result.blockers).toContain('fresh same-day Bobby/Dubz context missing');
-    expect(result.blockers).toContain('fresh Saty context missing');
+    expect(result.blockers).not.toEqual(expect.arrayContaining([expect.stringMatching(/Saty/i)]));
     expect(result.blockers.some(blocker => blocker.startsWith('decision spine not actionable:'))).toBe(true);
     expect(result.risk_status.staged_only).toBe(true);
     expect(result.staged_only).toBe(true);

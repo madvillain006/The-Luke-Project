@@ -298,7 +298,7 @@ function buildSession({
     saty: {
       included: Boolean(saty),
       levels: saty,
-      excludedReason: saty ? null : 'missing_or_invalid_saty_levels',
+      excludedReason: saty ? null : 'unavailable_or_invalid_saty_levels',
     },
     levels,
   };

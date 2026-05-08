@@ -42,7 +42,7 @@ async function main() {
   }
 
   if (!satyData.valid) {
-    console.warn('[backfill-saty] saty-levels.json has valid: false — data may be stale, proceeding anyway');
+    console.warn('[backfill-saty] saty-levels.json has valid: false - data may be out of date, proceeding anyway');
   }
 
   const timestamp = satyData.updated || new Date().toISOString();
@@ -54,7 +54,7 @@ async function main() {
   for (const { field, significance } of SATY_FIELDS) {
     const price = satyData[field];
     if (typeof price !== 'number') {
-      console.warn(`[backfill-saty] Field "${field}" missing or non-numeric — skipping`);
+      console.warn(`[backfill-saty] Field "${field}" unavailable or non-numeric - skipping`);
       continue;
     }
 

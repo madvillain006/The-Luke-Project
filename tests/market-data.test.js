@@ -68,6 +68,53 @@ describe('market data provider abstraction', () => {
     expect(quote.price).toBe(5220);
   });
 
+  it('continues down the provider ladder when a provider throws', async () => {
+    const quote = await getMarketPrice('ES', {
+      cache: false,
+      providerFns: {
+        tradovate: () => {
+          throw new Error('tradovate blew up token=abc123');
+        },
+        finnhub: info => makeUnknownResult(info, 'finnhub_down', 'finnhub', 3),
+        yahoo: info => ok(info, 'yahoo_chart', 5220, { priority: 3, delayed: true, confidence: 0.6 }),
+      },
+    });
+
+    expect(quote.source).toBe('yahoo_chart');
+    expect(quote.price).toBe(5220);
+    expect(quote.fallback_used).toBe(true);
+    expect(quote.minimum_hookups_ok).toBe(true);
+    expect(quote.provider_attempts).toEqual(['tradovate', 'finnhub', 'yahoo']);
+    expect(quote.provider_errors.tradovate).toContain('SECRET_REDACTED');
+  });
+
+  it('returns structured UNKNOWN instead of throwing when every provider throws', async () => {
+    const quote = await getMarketPrice('ES', {
+      cache: false,
+      providerFns: {
+        tradovate: () => { throw new Error('tradovate_down'); },
+        finnhub: () => { throw new Error('finnhub_down'); },
+        yahoo: () => { throw new Error('yahoo_down'); },
+      },
+    });
+
+    expect(quote.price).toBeNull();
+    expect(quote.source).toBe('UNKNOWN');
+    expect(quote.error).toContain('tradovate');
+    expect(quote.provider_errors).toEqual(expect.objectContaining({
+      tradovate: 'tradovate_down',
+      finnhub: 'finnhub_down',
+      yahoo: 'yahoo_down',
+    }));
+  });
+
+  it('keeps at least two configured price hooks for core market symbols', () => {
+    for (const symbol of ['ES', 'NQ', 'SPX', 'SPY', 'QQQ']) {
+      const providers = _internal.providerListFor(normalizeMarketSymbol(symbol));
+      expect(providers.length).toBeGreaterThanOrEqual(2);
+    }
+  });
+
   it('marks latest-close data stale and non-live', async () => {
     const quote = await getMarketPrice('SPX', {
       cache: false,

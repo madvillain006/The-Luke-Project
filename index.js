@@ -51,6 +51,12 @@ const {
   buildCompanionMemorySnapshot,
   handleCompanionMemoryTurn,
 } = require("./lib/companion-memory");
+const {
+  buildContextBinPrompt,
+  buildContextBinsSnapshot,
+  classifyContextTurn,
+  recordContextTurn,
+} = require("./lib/luke-context-bins");
 const { buildLukeOperatorCheck } = require("./lib/luke-operator-check");
 const { llmRoutingStatus, messageNeedsAnthropic, freeAiFirst } = require("./lib/llm-routing-policy");
 const { validateMemoryKey, MAX_TEXT_BYTES, MAX_URL_LENGTH } = require("./lib/validators");
@@ -515,11 +521,12 @@ app.all(PROTECTED_TRADING_SMOKE_PATHS, async (req, res) => {
 });
 
 const SYSTEM_CHAT_PROMPT = [
-  "You are Luke's system chat for the local dashboard.",
-  "Be concise, practical, and collaborative.",
-  "You can discuss the state of the overall Luke system, daily planning, research, automation business work, developer workflow, and where trading fits in the architecture.",
-  "Do not parse trading signals, ingest market levels, stage trades, or alter trading state from this surface.",
-  "If the user asks for trading-specific ingestion or recommendations, tell them to use the Trading tab so that process stays isolated.",
+  "You are Luke, one merged local companion chat for the Luke dashboard.",
+  "Be concise, practical, collaborative, honest, and useful without placating.",
+  "Luke Chat and Trading are two doors into the same conversation layer. Distinguish the lane internally and do not bounce the user between chat surfaces.",
+  "Use rolling context bins for personal memory, daily ops, Radar/source synthesis, trading review, and Luke project work.",
+  "Trading is supervised and human-gated. You may discuss trading context and route explicit trading commands, but you must not stage, submit, or claim live execution unless a verified runtime gate says so.",
+  "If data is missing, say what is missing and what would make the answer stronger.",
   "No em dashes.",
 ].join(" ");
 
@@ -532,11 +539,24 @@ app.get("/luke/memory/context", (req, res) => {
   res.setHeader("Cache-Control", "no-store");
   const surface = req.query.surface === "system" ? "system" : "trading";
   const message = String(req.query.q || req.query.message || "");
+  const route = classifyContextTurn({ text: message, surface });
   return res.json({
     ok: true,
     surface,
-    context: buildCompanionContext({ surface, message }),
+    route,
+    context: [
+      buildCompanionContext({ surface, message }),
+      buildContextBinPrompt({ surface, message, route }),
+    ].join("\n\n"),
   });
+});
+
+app.get("/luke/context-bins", (req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  return res.json(buildContextBinsSnapshot({
+    limit: Number(req.query.limit || 8),
+    recentLimit: Number(req.query.recentLimit || 12),
+  }));
 });
 
 app.get("/luke/operator-check", (req, res) => {
@@ -544,13 +564,86 @@ app.get("/luke/operator-check", (req, res) => {
   return res.json(buildLukeOperatorCheck({ health: buildHealthPayload() }));
 });
 
+function normalizeChatSurface(value) {
+  return value === "trading" ? "trading" : "system";
+}
+
+function recordChatContext(input = {}) {
+  try {
+    return recordContextTurn(input);
+  } catch (err) {
+    log("context-bin-error", { error: err.message, surface: input.surface, role: input.role });
+    return null;
+  }
+}
+
+function buildMergedChatContext({ message, surface, route }) {
+  return [
+    buildCompanionContext({ message, surface }),
+    buildContextBinPrompt({ message, surface, route }),
+  ].join("\n\n");
+}
+
+function sendMergedChatResponse(res, payload, contextInfo = {}) {
+  if (payload && typeof payload.reply === "string") {
+    recordChatContext({
+      role: "assistant",
+      text: payload.reply,
+      surface: contextInfo.surface,
+      route: contextInfo.route,
+      source: contextInfo.source || "chat",
+    });
+  }
+  return res.json({
+    ...payload,
+    route: contextInfo.route || payload.route || null,
+  });
+}
+
+function wrapResponseForContext(res, contextInfo = {}) {
+  const rawJson = res.json.bind(res);
+  res.json = (payload) => {
+    if (payload && typeof payload.reply === "string") {
+      recordChatContext({
+        role: "assistant",
+        text: payload.reply,
+        surface: contextInfo.surface,
+        route: contextInfo.route,
+        source: contextInfo.source || "slash-command",
+      });
+      payload = {
+        ...payload,
+        route: contextInfo.route || payload.route || null,
+      };
+    }
+    return rawJson(payload);
+  };
+  return res;
+}
+
 app.post("/chat", async (req, res) => {
   const { message = "", history, image, surface } = req.body || {};
-  const isSystemSurface = surface === "system";
+  const chatSurface = normalizeChatSurface(surface);
+  const isSystemSurface = chatSurface === "system";
   if (!message && !image) return res.status(400).json({ error: "No message" });
 
+  let routedMessage = message;
+  let pasteIntent = null;
+  if (!message.startsWith("/")) {
+    try {
+      pasteIntent = detectPasteIntent(message, !!image);
+    } catch {}
+  }
+  let route = classifyContextTurn({
+    text: pasteIntent?.command ? `${pasteIntent.command} ${pasteIntent.cleanedText || ""}` : message,
+    surface: chatSurface,
+    hasImage: !!image,
+  });
+  recordChatContext({ role: "user", text: message || "[image]", surface: chatSurface, route });
+
   //  accumulator: auto-classify paste, store piece, ack, fire verdict 
-  if (!isSystemSurface && !message.startsWith("/")) {
+  const shouldUseTradingIntake = !message.startsWith("/") && (chatSurface === "trading" || route.should_attempt_ingest);
+  if (shouldUseTradingIntake) {
     const sybilResult = await handleManualSybilPaste(message, res);
     if (sybilResult) return;
     const accResult = await handlePasteAccumulate(message, image, res);
@@ -560,42 +653,41 @@ app.post("/chat", async (req, res) => {
   }
 
   //  slash command intercept 
-  let routedMessage = message;
-  if (!isSystemSurface && !message.startsWith("/")) {
-    const { command, cleanedText } = detectPasteIntent(message, !!image);
-    if (command) routedMessage = command + " " + cleanedText;
+  if (!message.startsWith("/") && pasteIntent?.command) {
+    routedMessage = pasteIntent.command + " " + pasteIntent.cleanedText;
+    route = classifyContextTurn({ text: routedMessage, surface: chatSurface, hasImage: !!image });
   }
-  const commandRecovery = recoverLukeCommand(routedMessage, { surface: isSystemSurface ? "system" : "trading" });
-  if (commandRecovery) routedMessage = commandRecovery.command;
+  const recoverySurface = routedMessage.trim().startsWith("/") ? "trading" : chatSurface;
+  const commandRecovery = recoverLukeCommand(routedMessage, { surface: recoverySurface });
+  if (commandRecovery) {
+    routedMessage = commandRecovery.command;
+    route = classifyContextTurn({ text: routedMessage, surface: chatSurface, hasImage: !!image });
+  }
 
   if (routedMessage.startsWith("/")) {
-    if (isSystemSurface && isTradingSurfaceCommand(routedMessage)) {
-      const recoveredLine = commandRecovery
-        ? `I read that as /${commandRecovery.command_name}, but it belongs in the Trading tab so the trading process stays isolated.`
-        : "That belongs in the Trading tab so the trading process stays isolated.";
-      return res.json({
-        reply: `${recoveredLine} Open Trading (Analysis) for level ingestion, verdicts, entries, trade logs, and reviews.`,
-        state: "regulated",
-        history: [...(history || []), { role: "user", content: message }, { role: "assistant", content: recoveredLine }],
-      });
-    }
     if (image && routedMessage.startsWith("/heatmap")) res._heatmapImage = image;
     if (image && routedMessage.startsWith("/dubz"))    res._dubzImage    = image;
-    const handled = await handleSlashCommand(routedMessage, res);
+    const handled = await handleSlashCommand(
+      routedMessage,
+      wrapResponseForContext(res, { surface: chatSurface, route, source: "slash-command" })
+    );
     if (handled !== null) return;
   }
 
   //  end slash commands 
 
-  if (!isSystemSurface && !message.startsWith("/")) {
+  const shouldUseTradingContext = chatSurface === "trading" || route.bins?.includes("trading");
+  if (shouldUseTradingContext && !message.startsWith("/")) {
     const heatmapAnswer = buildStoredHeatmapAnswer(message);
     if (heatmapAnswer) {
       saveSessionMessage("user", message);
       saveSessionMessage("assistant", heatmapAnswer);
+      recordChatContext({ role: "assistant", text: heatmapAnswer, surface: chatSurface, route, source: "heatmap-context" });
       log("chat-heatmap-context", { user: message, answered: true });
       return res.json({
         reply: heatmapAnswer,
         state: "regulated",
+        route,
         history: [...(history || []), { role: "user", content: message }, { role: "assistant", content: heatmapAnswer }],
       });
     }
@@ -603,22 +695,22 @@ app.post("/chat", async (req, res) => {
 
   let companionTurn = null;
   if (!image && !routedMessage.startsWith("/")) {
-    companionTurn = handleCompanionMemoryTurn({ text: message, surface: isSystemSurface ? "system" : "trading" });
+    companionTurn = handleCompanionMemoryTurn({ text: message, surface: chatSurface });
     if (companionTurn.handled) {
       saveSessionMessage("user", message);
       saveSessionMessage("assistant", companionTurn.reply);
       log("chat-companion-memory", {
         user: message,
         handled: true,
-        surface: isSystemSurface ? "system" : "trading",
+        surface: chatSurface,
         captured: Boolean(companionTurn.capture?.captured),
       });
-      return res.json({
+      return sendMergedChatResponse(res, {
         reply: companionTurn.reply,
         state: "regulated",
         memory: { handled: true, captured: Boolean(companionTurn.capture?.captured) },
         history: [...(history || []), { role: "user", content: message }, { role: "assistant", content: companionTurn.reply }],
-      });
+      }, { surface: chatSurface, route, source: "companion-memory" });
     }
   }
 
@@ -633,7 +725,7 @@ app.post("/chat", async (req, res) => {
   const hardCapActive = isHardCap();
 
   saveSessionMessage("user", message);
-  const companionContext = buildCompanionContext({ message, surface: isSystemSurface ? "system" : "trading" });
+  const companionContext = buildMergedChatContext({ message, surface: chatSurface, route });
 
   const ACK_SYSTEM = "You are Luke. Acknowledge this agent result in one sentence. Be brief. No em dashes.";
 
@@ -652,7 +744,14 @@ app.post("/chat", async (req, res) => {
       if (alerts.length > 0) reply += "\n\n" + alerts.join("\n");
       saveSessionMessage("assistant", reply);
       log("chat", { user: message, luke: reply, agent: routed.agent, state, provider: ack.provider, model: ack.model });
-      return res.json({ reply, state, provider: ack.provider, model: ack.model, fallback: ack.fallback, history: [...messages, { role: "assistant", content: reply }] });
+      return sendMergedChatResponse(res, {
+        reply,
+        state,
+        provider: ack.provider,
+        model: ack.model,
+        fallback: ack.fallback,
+        history: [...messages, { role: "assistant", content: reply }],
+      }, { surface: chatSurface, route, source: "agent-ack" });
     }
   } catch {}
 
@@ -672,7 +771,14 @@ app.post("/chat", async (req, res) => {
       if (alerts.length > 0) reply += "\n\n" + alerts.join("\n");
       saveSessionMessage("assistant", reply);
       log("chat-fallback", { user: message, provider: fb.provider, state });
-      return res.json({ reply, state, fallback: true, provider: fb.provider, model: fb.model || null, history: [...messages, { role: "assistant", content: reply }] });
+      return sendMergedChatResponse(res, {
+        reply,
+        state,
+        fallback: true,
+        provider: fb.provider,
+        model: fb.model || null,
+        history: [...messages, { role: "assistant", content: reply }],
+      }, { surface: chatSurface, route, source: "fallback" });
     } catch (fbErr) {
       log("fallback-error", { error: fbErr.message });
       if (hardCapActive) {
@@ -692,9 +798,9 @@ app.post("/chat", async (req, res) => {
 
   const useHaiku = isSimpleMessage(message);
   const chatModel = useHaiku ? "claude-haiku-4-5-20251001" : "claude-opus-4-7";
-  const baseChatSystemPrompt = isSystemSurface ? SYSTEM_CHAT_PROMPT : useHaiku
-    ? "You are Luke - sharp, brief, no filler. No em dashes."
-    : buildSystemPrompt(state, message);
+  const baseChatSystemPrompt = shouldUseTradingContext
+    ? [SYSTEM_CHAT_PROMPT, useHaiku ? "Keep this reply short." : buildSystemPrompt(state, message)].join("\n\n")
+    : SYSTEM_CHAT_PROMPT;
   const chatSystemPrompt = [baseChatSystemPrompt, companionContext].join("\n\n");
   const allowAnthropic = !hardCapActive && messageNeedsAnthropic(message, { feature: "chat" });
 
@@ -736,7 +842,16 @@ app.post("/chat", async (req, res) => {
     if (alerts.length > 0) reply += "\n\n" + alerts.join("\n");
     saveSessionMessage("assistant", reply);
     log("chat", { user: message, luke: reply, state, provider: llm.provider, model: llm.model, anthropic_allowed: allowAnthropic });
-    res.json({ reply, state, action, provider: llm.provider, model: llm.model, fallback: llm.fallback, anthropic_allowed: allowAnthropic, history: [...messages, { role: "assistant", content: llm.text }] });
+    sendMergedChatResponse(res, {
+      reply,
+      state,
+      action,
+      provider: llm.provider,
+      model: llm.model,
+      fallback: llm.fallback,
+      anthropic_allowed: allowAnthropic,
+      history: [...messages, { role: "assistant", content: llm.text }],
+    }, { surface: chatSurface, route, source: "chat" });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: "AI request failed" });
@@ -991,23 +1106,55 @@ app.get("/signals", (req, res) => {
   res.json({ count: signals.length, signals });
 });
 
+async function sendPrice(req, res, symbol) {
+  const { getMarketPrice } = require('./lib/market-data');
+  try {
+    const ticker = String(symbol || 'SPX').toUpperCase();
+    const data = await getMarketPrice(ticker);
+    return res.json({
+      ok: Number.isFinite(data.price),
+      ticker,
+      price: data.price,
+      timestamp: data.timestamp,
+      data_date: data.timestamp ? data.timestamp.slice(0, 10) : null,
+      source: data.source,
+      price_approximation: false,
+      stale: data.stale,
+      delayed: data.delayed,
+      confidence: data.confidence,
+      provider_attempts: data.provider_attempts || [],
+      provider_count: data.provider_count || 0,
+      provider_errors: data.provider_errors || {},
+      fallback_used: data.fallback_used === true,
+      minimum_hookups_ok: data.minimum_hookups_ok === true,
+      marketData: data,
+    });
+  } catch (err) {
+    return res.json({
+      ok: false,
+      ticker: String(symbol || 'SPX').toUpperCase(),
+      price: null,
+      source: 'UNKNOWN',
+      stale: true,
+      delayed: true,
+      confidence: 0,
+      provider_attempts: [],
+      provider_count: 0,
+      provider_errors: { route: err.message },
+      fallback_used: false,
+      minimum_hookups_ok: false,
+      marketData: null,
+    });
+  }
+}
+
 // PRICE - structured market data; stale/latest-close is labeled explicitly.
 app.get("/price/spx", async (req, res) => {
-  const { getMarketPrice } = require('./lib/market-data');
-  const data = await getMarketPrice('SPX');
-  if (!data || !Number.isFinite(data.price)) return res.status(503).json({ error: 'price unavailable', marketData: data || null });
-  res.json({
-    ticker: 'SPX',
-    price: data.price,
-    timestamp: data.timestamp,
-    data_date: data.timestamp ? data.timestamp.slice(0, 10) : null,
-    source: data.source,
-    price_approximation: false,
-    stale: data.stale,
-    delayed: data.delayed,
-    confidence: data.confidence,
-    marketData: data,
-  });
+  return sendPrice(req, res, 'SPX');
+});
+
+app.get("/price/:symbol", async (req, res) => {
+  return sendPrice(req, res, req.params.symbol);
 });
 
 //  SATY ATR WEBHOOK (TradingView  Luke) 

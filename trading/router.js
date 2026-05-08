@@ -340,7 +340,6 @@ async function buildAutonomousPreflight(state) {
   if (!window.ok) blockers.push(window.reason);
   if (consistencyReason) blockers.push(consistencyReason);
   if (!freshness.dubz_today || !freshness.bobby_today) blockers.push("fresh same-day Bobby/Dubz context missing");
-  if (!decision.freshness?.saty?.loaded) blockers.push("fresh Saty context missing");
   if (!freshness.mancini_today) warnings.push("Mancini context missing - chop-zone veto coverage may be incomplete");
   if (!decision.ok || decision.action === "PASS") blockers.push(`decision spine not actionable: ${decision.reason}`);
   if (marketCtx && marketCtx.stale) blockers.push(`market context stale: ${marketCtx.error || "unknown"}`);

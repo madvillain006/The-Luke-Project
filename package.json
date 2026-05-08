@@ -17,6 +17,7 @@
     "prove:companion-memory": "node scripts/prove-companion-memory-loop.js",
     "prove:luke-context-bins": "node scripts/prove-luke-context-bins.js",
     "prove:luke-operator-check": "node scripts/prove-luke-operator-check.js",
+    "prove:luke-hostile-audit": "node scripts/prove-luke-hostile-audit.js",
     "check:katbot-release": "node scripts/check-katbot-release-readiness.js",
     "prove:katbot-phase1-owner": "node scripts/build-katbot-phase1-owner-packet.js",
     "prove:live-level-state": "node scripts/prove-live-level-state.js",

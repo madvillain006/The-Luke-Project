@@ -294,7 +294,7 @@ describe('operator API adapters', () => {
     expect(api.trade_instruction).toBeNull();
   });
 
-  it('/api/decision mirrors /entries WAIT when live price is unavailable', async () => {
+  it('/api/decision mirrors /entries WAIT when live price is UNKNOWN', async () => {
     const ts = new Date().toISOString();
     writeFreshFixture(ts);
     fs.copyFileSync(LEVEL_MEMORY_FILE, tempMemoryFile);
@@ -311,7 +311,7 @@ describe('operator API adapters', () => {
     expect(api.spine_decision.action).toBe('LONG');
     expect(api.decision.action).toBe('PASS');
     expect(api.decision.side).toBe('LONG');
-    expect(api.decision.reason).toContain('WAIT - market price unavailable');
+    expect(api.decision.reason).toContain('WAIT - market price UNKNOWN');
     expect(api.actionable).toBe(false);
     expect(api.trade_instruction).toBeNull();
   });

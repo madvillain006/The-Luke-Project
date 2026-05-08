@@ -70,7 +70,7 @@ describe('Luke companion memory', () => {
     const context = buildCompanionContext({ surface: 'system', message: 'Radar source quality' }, h.options);
 
     expect(matches[0].kind).toBe('thought');
-    expect(context).toContain('System chat and Trading chat share one companion memory bin');
+    expect(context).toContain('Luke Chat and Trading share one companion memory bin');
     expect(context).toContain('Radar source quality loop');
     expect(context).toContain('blunt answers');
   });

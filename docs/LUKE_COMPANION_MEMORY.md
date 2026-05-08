@@ -46,5 +46,5 @@ New reminder and appointment memories are mirrored into Radar as reviewable remi
 
 - Shared memory does not execute trades.
 - Shared memory does not make broker, TradingView, or live-data readiness claims.
-- System chat may discuss trading architecture, but trading ingestion, verdicts, entries, and trade logs stay inside Trading.
+- Luke Chat may discuss trading architecture, and explicit trading commands route through the trading lane internally. Trading ingestion, verdicts, entries, and trade logs still use trading-owned code paths and safety checks.
 - The front-shell memorial text stays in the UI. Public repo docs stay product-focused.

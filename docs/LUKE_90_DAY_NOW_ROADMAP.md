@@ -37,7 +37,7 @@ Every new feature must feed this loop:
 - Front-shell memorial text remains on the topbar.
 - Shared companion memory added for Luke Chat and Trading at `state/snapshots/memory.json` under `luke_companion_memory`.
 - Deterministic memory answers added for appointment/reminder/thought questions before the generic LLM path.
-- Typo-aware command recovery added for known Luke commands, with system chat still blocking trading commands.
+- Typo-aware command recovery added for known Luke commands, with explicit Luke Chat slash-command typos routed through the trading lane internally.
 - Professional repo-facing folder labels added through top-level README files.
 - Pine inventory and flagship promotion gate documented in `docs/PINE_INVENTORY_AND_FLAGSHIP_GATE.md`.
 - Runnable Pine inventory generator added as `cmd /c npm run tradingview:inventory`.
@@ -52,6 +52,7 @@ npx vitest run
 npm run prove:radar-daily-loop
 npm run prove:companion-memory
 npm run prove:luke-ui-ux
+npm run market:data:test
 git diff --check
 ```
 

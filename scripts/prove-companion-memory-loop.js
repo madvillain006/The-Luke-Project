@@ -50,7 +50,7 @@ const context = buildCompanionContext({
   surface: 'system',
   message: 'Radar source quality',
 }, options);
-assert.match(context, /System chat and Trading chat share one companion memory bin/);
+assert.match(context, /Luke Chat and Trading share one companion memory bin/);
 assert.match(context, /Radar source-quality loop/);
 
 const recovered = recoverLukeCommand('/statsu', { surface: 'trading' });

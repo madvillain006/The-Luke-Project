@@ -9,7 +9,7 @@ Luke runs as a local Electron shell around an Express server on port `3000`.
 - Server entry: `index.js`
 - Default shell route: `/shell`
 - Trading chat route: `/trading`
-- General Luke chat route: `/luke`
+- Luke chat route: `/luke`
 
 The launcher uses the repo-local Electron dependency. Electron starts `node index.js` when port `3000` is free, or reuses the existing local server when it is already running.
 
@@ -17,7 +17,7 @@ The launcher uses the repo-local Electron dependency. Electron starts `node inde
 
 - `/shell` - main dashboard shell and agent tiles
 - `/trading` - trading analysis chat, human-gated and read-only
-- `/luke` - general system chat outside the trading context
+- `/luke` - front Luke chat; shares memory with Trading and routes explicit trading commands through the trading lane internally
 - `/brain-dashboard` - brain/spine status dashboard
 - `/operator-v2` - operator/test surface
 
@@ -34,6 +34,8 @@ The launcher uses the repo-local Electron dependency. Electron starts `node inde
 - Trading snapshot: `state/snapshots/trading-state.json`
 - Trading event stream: `state/events/trading-events.jsonl`
 - General Luke event stream: `state/events/luke-log.jsonl`
+- Shared companion memory: `state/snapshots/memory.json`
+- Rolling context bins: `state/snapshots/context-bins.json`
 
 Generated runtime files under `state/events`, `state/snapshots`, `artifacts`, and Discord exports are ignored unless explicitly promoted into tests or fixtures.
 

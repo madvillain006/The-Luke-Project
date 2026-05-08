@@ -114,7 +114,7 @@ function buildChart(trade) {
         wickUpColor: '#3fb950', wickDownColor: '#f85149'
     });
 
-    // TODO: replace sample data with real Finnhub/Tradovate feed
+    // Demo-only synthetic candles; production market data flows through lib/market-data.
     const candles = [];
     let price = entry;
     const now = Math.floor(Date.now() / 1000);

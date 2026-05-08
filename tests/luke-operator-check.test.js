@@ -65,6 +65,8 @@ describe('Luke operator check', () => {
     expect(check.can_replace_codex_for_daily_use).toBe(true);
     expect(check.codex_boundary).toContain('code-improvement tool');
     expect(check.context_bins.summary_line).toContain('ready');
+    expect(check.market_data.minimum_hookups_ok).toBe(true);
+    expect(check.market_data.provider_ladders.ES.length).toBeGreaterThanOrEqual(2);
     expect(check.front_routes).toEqual(['/luke', '/trading', '/daily', '/radar']);
     expect(check.drilldown_routes).toContain('/operator-v2');
     expect(check.operator_lines.join('\n')).toContain('Codex for code changes');
@@ -73,6 +75,7 @@ describe('Luke operator check', () => {
       'luke-chat',
       'context-bins',
       'trading-boundary',
+      'market-data',
       'radar',
       'daily-brief',
       'runtime',

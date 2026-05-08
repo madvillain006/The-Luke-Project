@@ -9,7 +9,7 @@ Luke is Conor's local companion system for planning, memory, research, reminders
 
 ## Current Proof
 
-- `npm test`: 152 files passed; 940 tests passed; 1 skipped.
+- `npm test`: 153 files passed; 945 tests passed; 1 skipped.
 - Runtime health passed on port 3000.
 - `/operator-v2`, `/trading-window`, replay level-state, live-shaped level-state, and staged-flow proofs passed.
 - `prove:luke-ui-ux` passed across the main shell, embedded Daily panel, embedded Radar panel, Radar window, Daily window, Luke chat, trading chat, trading window, Operator V2, and brain dashboard PNG captures.
@@ -20,7 +20,7 @@ Luke is Conor's local companion system for planning, memory, research, reminders
 - `prove:brain-sections` passed against a fresh proof server; it clicked and captured brain brief, morning brief, afternoon brief, automation plan, developer plan, history searches, and automation artifact output.
 - Screenshot sanity passed for the hostile-audit PNG set.
 - `tradingview:export-levels` passed with no export issues.
-- `market:data:test` returned ES/MES/NQ/MNQ/SPX/SPY/QQQ prices, but every result was stale/delayed and `usable_for_live_arming:false`.
+- `market:data:test` returns structured market-data payloads for ES/MES/NQ/MNQ/SPX/SPY/QQQ. Provider outages degrade to `UNKNOWN` with provider attempts instead of throwing, and stale/delayed/reference quotes remain `usable_for_live_arming:false`.
 
 ## Local Replay Candles
 
@@ -49,7 +49,7 @@ Luke is Conor's local companion system for planning, memory, research, reminders
 - Pine candidate inventory and promotion gate now lives in `docs/PINE_INVENTORY_AND_FLAGSHIP_GATE.md`.
 - `tradingview:inventory` generated `docs/PINE_INVENTORY_GENERATED.md` and `artifacts/proof/pine-inventory/pine-inventory.json` for 32 local Pine files.
 - Radar/Daily integration is active: Daily surfaces Radar review counts, reminders, and top review items before they can become trusted operating or trading context.
-- Typo-aware command recovery is active for known Luke commands; recovered trading commands remain blocked from the system chat surface.
+- Typo-aware command recovery is active for known Luke commands; explicit slash-command typos from Luke Chat route internally through the trading lane instead of bouncing the user to a different chat.
 - Luke Watch production-test Pine is tracked as a realistic-accounting visual indicator; the simulation strategy is TradingView Strategy Tester only.
 - Hard-mode Pine research summary lives in `docs/TRADINGVIEW_HARDMODE_RESEARCH.md`; the strategy file is `tradingview/luke-level-reclaim-watch-hardmode.strategy.pine`.
 - Hard mode supports entry-only, exit-only, both-side, round-trip, and custom slippage with stop-first same-bar accounting.

@@ -252,6 +252,37 @@ describe('decision adapter market data behavior', () => {
     expect(decision.current_price).toBeNull();
     expect(decision.marketData.stale).toBe(true);
     expect(decision.decision.action).toBe('PASS');
-    expect(decision.decision.reason).toContain('WAIT - market price unavailable');
+    expect(decision.decision.reason).toContain('WAIT - live price not trusted');
+  });
+
+  it('blocks actionable decisions when market lookup is explicitly disabled', async () => {
+    const decision = await buildDecisionResponse({
+      instrument: 'ES',
+      state: null,
+      getMarketPriceFn: false,
+      getLivePriceFn: false,
+      buildTradeDecisionFn: () => ({
+        ok: true,
+        action: 'LONG',
+        reason: 'would arm without adapter guard',
+        instrument: 'ES',
+        entry: 5232,
+        acceptable_entry: 5234,
+        stop: 5228,
+        target: 5248,
+        sizing: 'quarter',
+        confluence: { anchor: 5232 },
+        freshness: {},
+        vetoes: [],
+        evidence: [],
+      }),
+    });
+
+    expect(decision.current_price).toBeNull();
+    expect(decision.marketData.source).toBe('UNKNOWN');
+    expect(decision.decision.action).toBe('PASS');
+    expect(decision.decision.adapter_blocker).toBe('market_price_unknown');
+    expect(decision.decision.reason).toContain('WAIT - market price UNKNOWN');
+    expect(decision.actionable).toBe(false);
   });
 });

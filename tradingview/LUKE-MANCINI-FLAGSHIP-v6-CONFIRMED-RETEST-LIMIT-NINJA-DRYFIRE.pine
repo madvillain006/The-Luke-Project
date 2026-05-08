@@ -399,6 +399,23 @@ f_ltf_holds_above(float[] closes, float level, int count, float extra) =>
             ok := ok and value >= level + extra
     ok
 
+f_ltf_reclaim_ready(float[] lows, float[] closes, float level, int hold_count, float extra, int lookback_count) =>
+    bool saw_flush = false
+    bool reclaimed = false
+    int n = math.min(array.size(lows), array.size(closes))
+    if n > 0 and not na(level)
+        int effective_hold = math.max(1, hold_count)
+        int effective_lookback = math.max(effective_hold + 1, lookback_count)
+        int start_index = math.max(0, n - effective_lookback)
+        for i = start_index to n - 1
+            float lo = array.get(lows, i)
+            float cl = array.get(closes, i)
+            if lo <= level - syminfo.mintick
+                saw_flush := true
+            if saw_flush and cl >= level + extra
+                reclaimed := true
+    reclaimed and f_ltf_holds_above(closes, level, math.max(1, hold_count), extra)
+
 float[] raw_prices = array.new_float()
 string[] raw_sources = array.new_string()
 bool[] raw_fresh = array.new_bool()
@@ -525,17 +542,17 @@ var float tracked_candidate_tp2 = na
 var label tracked_candidate_entry_label = na
 var string tracked_candidate_entry_text = ""
 var string tracked_candidate_protocol_class = ""
-var bool pending_limit_order = false
-var int pending_limit_bar = na
-var int pending_limit_expire_time = na
-var int pending_limit_candidate_id = na
-var float pending_limit_level = na
-var float pending_limit_entry = na
-var float pending_limit_stop = na
-var float pending_limit_tp1 = na
-var float pending_limit_tp2 = na
-var string pending_limit_protocol_class = ""
-var string pending_limit_entry_text = ""
+varip bool pending_limit_order = false
+varip int pending_limit_bar = na
+varip int pending_limit_expire_time = na
+varip int pending_limit_candidate_id = na
+varip float pending_limit_level = na
+varip float pending_limit_entry = na
+varip float pending_limit_stop = na
+varip float pending_limit_tp1 = na
+varip float pending_limit_tp2 = na
+varip string pending_limit_protocol_class = ""
+varip string pending_limit_entry_text = ""
 var label pending_limit_entry_label = na
 var label[] status_labels = array.new_label()
 varip bool live_pending_long = false
@@ -858,9 +875,11 @@ if enable_luke_levels and enable_reclaim_signals and array.size(cluster_prices) 
         for hold_bar = 0 to reclaim_hold_bars - 1
             hold_above := hold_above and close[hold_bar] >= level
         int protocol_required_acceptance = protocol_reclaim_level ? mancini_swing_acceptance_minutes : protocol_caution_strict ? (reclaim_hold_bars > 3 ? reclaim_hold_bars : 3) : 0
+        int ltf_required_acceptance = protocol_required_acceptance > 0 ? protocol_required_acceptance : reclaim_hold_bars
+        bool ltf_reclaim_entry_ready = signal_timing_mode == "live_intrabar" and f_ltf_reclaim_ready(ltf_1m_lows, ltf_1m_closes, level, ltf_required_acceptance, min_close_above_level_points, math.max(ltf_required_acceptance + 2, flush_lookback_bars))
         bool protocol_chart_acceptance_ok = barstate.isconfirmed and hold_above
         bool protocol_ltf_acceptance_ok = f_ltf_holds_above(ltf_1m_closes, level, protocol_required_acceptance, min_close_above_level_points)
-        bool protocol_ltf_entry_ready = protocol_required_acceptance > 0 and reclaim_recent and protocol_ltf_acceptance_ok
+        bool protocol_ltf_entry_ready = protocol_required_acceptance > 0 and ltf_reclaim_entry_ready and protocol_ltf_acceptance_ok
         bool protocol_waiting_for_acceptance = protocol_required_acceptance > 0 and not (protocol_ltf_acceptance_ok or protocol_chart_acceptance_ok)
         bool protocol_auto_block = protocol_target_block or protocol_caution_manual_block
         float entry_target_space = na(next_cluster) ? tp1_points * 2.0 : next_cluster - candidate_entry
@@ -878,7 +897,7 @@ if enable_luke_levels and enable_reclaim_signals and array.size(cluster_prices) 
         bool target_ok = (target_space >= min_target_space_points and entry_target_space >= min_target_space_points) or tp1_room_ok
         bool context_recovery_watch_here = enable_mancini_context_recovery_watch and (protocol_reclaim_level or context_major or level_has_saty_mancini) and reclaim_recent and fresh_level_retest
         bool watch_here = (flush_event or context_recovery_watch_here) and target_ok and not protocol_target_block
-        bool armed_here = ((reclaim_recent and hold_above) or impulse_reclaim_here or protocol_ltf_entry_ready) and target_ok and not_stuffed_reclaim and not failed_chase_block and not protocol_auto_block and not protocol_waiting_for_acceptance
+        bool armed_here = ((reclaim_recent and hold_above) or ltf_reclaim_entry_ready or impulse_reclaim_here or protocol_ltf_entry_ready) and target_ok and not_stuffed_reclaim and not failed_chase_block and not protocol_auto_block and not protocol_waiting_for_acceptance
         bool paper_here = armed_here and risk_ok
         bool invalid_here = reclaim_recent and close < level - syminfo.mintick and close[1] >= level
         bool blocked_here = reclaim_recent and hold_above and (not target_ok or not not_stuffed_reclaim or not risk_ok or failed_chase_block or protocol_auto_block)
@@ -980,6 +999,7 @@ bool long_candidate_event = paper_setup_now and not paper_failed_chase_block and
 bool confirmed_signal_ok = not require_confirmed_signal_bar or barstate.isconfirmed
 bool ltf_1m_has_data = array.size(ltf_1m_lows) > 0 and array.size(ltf_1m_highs) > 0
 bool ltf_3m_has_data = array.size(ltf_3m_lows) > 0 and array.size(ltf_3m_highs) > 0
+int ltf_latest_1m_close_time = ltf_1m_has_data ? time + array.size(ltf_1m_closes) * 60000 : na
 bool ltf_1m_entry_touched = entry_price_mode == "signal_close" ? true : f_ltf_touched(ltf_1m_lows, ltf_1m_highs, active_entry)
 bool ltf_3m_entry_touched = entry_price_mode == "signal_close" ? true : f_ltf_touched(ltf_3m_lows, ltf_3m_highs, active_entry)
 bool ltf_1m_stop_first = entry_price_mode == "signal_close" ? false : f_ltf_stop_before_tp1_after_entry(ltf_1m_lows, ltf_1m_highs, active_entry, active_stop, active_tp1)
@@ -1001,10 +1021,10 @@ bool ltf_mode_uses_5m = ltf_fill_validation_mode == "5m_chart" or ltf_fill_valid
 int ltf_best_entry_time = na
 string ltf_best_entry_source = "bar"
 if ltf_mode_uses_1m and ltf_1m_ok and not na(ltf_1m_entry_index)
-    ltf_best_entry_time := time + ltf_1m_entry_index * 60000
+    ltf_best_entry_time := time + (ltf_1m_entry_index + 1) * 60000
     ltf_best_entry_source := "1m"
 if ltf_mode_uses_3m and ltf_3m_ok and not na(ltf_3m_entry_index)
-    int candidate_3m_time = time + ltf_3m_entry_index * 180000
+    int candidate_3m_time = time + (ltf_3m_entry_index + 1) * 180000
     if na(ltf_best_entry_time) or candidate_3m_time < ltf_best_entry_time
         ltf_best_entry_time := candidate_3m_time
         ltf_best_entry_source := "3m"
@@ -1020,6 +1040,7 @@ string ltf_1m_text = not ltf_1m_has_data ? "NODATA" : not ltf_1m_entry_touched ?
 string ltf_3m_text = not ltf_3m_has_data ? "NODATA" : not ltf_3m_entry_touched ? "NOENTRY" : ltf_3m_stop_first ? "STOP1ST" : "OK"
 string chart_5m_text = not chart_5m_entry_touched ? "NOENTRY" : chart_5m_stop_risk and chart_5m_tp1_same_bar ? "MIXED_STOP" : chart_5m_stop_first ? "STOP1ST" : "OK"
 string ltf_audit_text = "1m " + ltf_1m_text + " / 3m " + ltf_3m_text + " / 5m " + chart_5m_text
+string signal_fire_text = signal_timing_mode == "live_intrabar" and not na(ltf_latest_1m_close_time) ? "fire 1m " + f_et_time_from_timestamp(ltf_latest_1m_close_time) : "fire " + f_et_time_from_timestamp(na(time_close) ? time : time_close)
 
 plotshape(show_raw_event_markers and raw_flush_signal, title="LUKE RAW FLUSH", text="FLUSH", style=shape.circle, location=location.belowbar, color=color.new(color.orange, 0), textcolor=color.black, size=size.tiny)
 plotshape(show_raw_event_markers and raw_reclaim_signal, title="LUKE RAW RECLAIM", text="RECLAIM", style=shape.circle, location=location.belowbar, color=color.new(color.blue, 0), textcolor=color.white, size=size.tiny)
@@ -1313,7 +1334,7 @@ if trade_long_event and not na(active_level)
     string program_context = show_program_context ? "\nmode " + account_mode + " / " + size_mode + " / acct " + realistic_accounting_mode : ""
     string watch_context = not na(latest_watch_bar) ? "\nwatch #" + str.tostring(watch_id) + " @ " + str.tostring(latest_watch_level, format.mintick) : ""
     string order_context = confirmed_retest_limit_model ? "CONFIRMED RETEST LIMIT" : "SAME-BAR LTF FILL"
-    string details = "LONG #" + str.tostring(candidate_id) + " " + order_context + " " + active_protocol_class + " cluster " + str.tostring(active_level, format.mintick) + watch_context + program_context + "\n" + ltf_audit_text + "\nlimit E " + str.tostring(active_entry, format.mintick) + " / acct fill " + str.tostring(f_accounting_entry(active_entry), format.mintick) + "\nS " + str.tostring(active_stop, format.mintick) + " / T1 " + str.tostring(active_tp1, format.mintick) + " / T2 " + str.tostring(active_tp2, format.mintick)
+    string details = "LONG #" + str.tostring(candidate_id) + " " + signal_fire_text + " " + order_context + " " + active_protocol_class + " cluster " + str.tostring(active_level, format.mintick) + watch_context + program_context + "\n" + ltf_audit_text + "\nlimit E " + str.tostring(active_entry, format.mintick) + " / acct fill " + str.tostring(f_accounting_entry(active_entry), format.mintick) + "\nS " + str.tostring(active_stop, format.mintick) + " / T1 " + str.tostring(active_tp1, format.mintick) + " / T2 " + str.tostring(active_tp2, format.mintick)
     tracked_candidate_entry_text := details
     string ninja_id = "luke-long-" + str.tostring(timenow) + "-" + str.tostring(candidate_id) + "-" + str.tostring(active_entry, format.mintick)
     if confirmed_retest_limit_model

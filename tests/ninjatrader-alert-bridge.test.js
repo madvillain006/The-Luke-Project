@@ -37,6 +37,8 @@ describe('NinjaTrader alert bridge', () => {
       tp1: 7397.25,
       tp2: 7400,
       qty: 2,
+      class: 'MANCINI_RECLAIM',
+      execution_model: 'confirmed_retest_limit',
       timestamp: '2026-05-07T10:31:00-04:00',
     }, new Date('2026-05-07T14:31:03Z'));
 
@@ -45,6 +47,8 @@ describe('NinjaTrader alert bridge', () => {
       type: 'LUKE_LONG',
       side: 'LONG',
       symbol: 'ESM26',
+      class: 'MANCINI_RECLAIM',
+      execution_model: 'confirmed_retest_limit',
       entry: 7395.25,
       stop: 7392.25,
       tp1: 7397.25,
@@ -153,11 +157,15 @@ describe('NinjaTrader alert bridge', () => {
       tp1: 7397.25,
       tp2: 7400,
       qty: 1,
+      class: 'SCALP_MAJOR',
+      execution_model: 'confirmed_retest_limit',
       token: 'do-not-store',
     }, { now: new Date('2026-05-07T14:31:03Z') });
 
     const saved = JSON.parse(fs.readFileSync(LATEST_SIGNAL_FILE, 'utf8'));
     expect(saved.signal.id).toBe('sig-write-test');
+    expect(saved.signal.class).toBe('SCALP_MAJOR');
+    expect(saved.signal.execution_model).toBe('confirmed_retest_limit');
     expect(saved.safety.live_broker_execution).toBe(false);
     expect(saved.raw.token).toBeUndefined();
     expect(payload.signal.id).toBe(saved.signal.id);

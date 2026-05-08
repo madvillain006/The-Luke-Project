@@ -34,6 +34,7 @@ namespace NinjaTrader.NinjaScript.Strategies
         private int signalsSubmittedThisSession;
         private LukeSignal activeSignal;
         private int activeRunnerQuantity;
+        private int activeLimitOrderExpirySeconds;
         private bool runnerStopMovedToBreakEven;
 
         [NinjaScriptProperty]
@@ -95,6 +96,16 @@ namespace NinjaTrader.NinjaScript.Strategies
         [Display(Name = "Max marketable entry points", GroupName = "Luke Safety", Order = 7)]
         public double MaxMarketableEntryPoints { get; set; }
 
+        [NinjaScriptProperty]
+        [Range(1, 7200)]
+        [Display(Name = "Scalp limit expiry seconds", GroupName = "Luke Order Profiles", Order = 1)]
+        public int ScalpLimitOrderExpirySeconds { get; set; }
+
+        [NinjaScriptProperty]
+        [Range(1, 7200)]
+        [Display(Name = "Mancini reclaim limit expiry seconds", GroupName = "Luke Order Profiles", Order = 2)]
+        public int ManciniReclaimLimitOrderExpirySeconds { get; set; }
+
         protected override void OnStateChange()
         {
             if (State == State.SetDefaults)
@@ -117,11 +128,13 @@ namespace NinjaTrader.NinjaScript.Strategies
                 SplitTp1Tp2Runner = true;
                 RequireFlatPosition = true;
                 AllowLiveAccounts = false;
-                AllowedAccountName = "LFE05076094670001";
+                AllowedAccountName = "LFE050706094670001";
                 MaxQuantity = 2;
                 MaxSignalsPerSession = 20;
                 RequireSymbolPrefixMatch = true;
                 MaxMarketableEntryPoints = 0.25;
+                ScalpLimitOrderExpirySeconds = 600;
+                ManciniReclaimLimitOrderExpirySeconds = 600;
             }
             else if (State == State.Realtime)
             {
@@ -245,6 +258,7 @@ namespace NinjaTrader.NinjaScript.Strategies
             submittedUtc = DateTime.MinValue;
             activeSignal = null;
             activeRunnerQuantity = 0;
+            activeLimitOrderExpirySeconds = 0;
             runnerStopMovedToBreakEven = false;
             lastCancelledId = signal.Id;
 
@@ -300,6 +314,7 @@ namespace NinjaTrader.NinjaScript.Strategies
             submittedUtc = DateTime.UtcNow;
             activeSignal = signal;
             activeRunnerQuantity = qtyT2;
+            activeLimitOrderExpirySeconds = ResolveLimitOrderExpirySeconds(signal);
             runnerStopMovedToBreakEven = false;
 
             if (ExecutionMode == LukeBridgeExecutionMode.MarketOnAlert)
@@ -318,10 +333,22 @@ namespace NinjaTrader.NinjaScript.Strategies
             lastProcessedId = signal.Id;
             signalsSubmittedThisSession++;
             string message = string.Format(CultureInfo.InvariantCulture,
-                "LUKE SIM LONG {0} qty={1} entry={2:F2} stop={3:F2} tp1={4:F2} tp2={5:F2} mode={6}",
-                signal.Id, qty, signal.Entry, signal.Stop, signal.Tp1, signal.Tp2, ExecutionMode);
+                "LUKE SIM LONG {0} qty={1} entry={2:F2} stop={3:F2} tp1={4:F2} tp2={5:F2} mode={6} class={7} model={8} expiry={9}s",
+                signal.Id, qty, signal.Entry, signal.Stop, signal.Tp1, signal.Tp2, ExecutionMode,
+                signal.SignalClass, signal.ExecutionModel, activeLimitOrderExpirySeconds);
             BridgeInfo(message);
             Alert("LukeBridgeSubmitted-" + signal.Id, Priority.High, message, NinjaTrader.Core.Globals.InstallDir + @"\sounds\Alert1.wav", 1, Brushes.DarkGreen, Brushes.White);
+        }
+
+        private int ResolveLimitOrderExpirySeconds(LukeSignal signal)
+        {
+            if (ExecutionMode != LukeBridgeExecutionMode.LimitAtLukeEntry)
+                return 0;
+            if (signal != null && signal.IsManciniReclaim && ManciniReclaimLimitOrderExpirySeconds > 0)
+                return ManciniReclaimLimitOrderExpirySeconds;
+            if (signal != null && signal.IsScalpClass && ScalpLimitOrderExpirySeconds > 0)
+                return ScalpLimitOrderExpirySeconds;
+            return Math.Max(1, LimitOrderExpirySeconds);
         }
 
         private bool IsLongPriceContextAllowed(LukeSignal signal, out string rejectReason)
@@ -387,6 +414,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 
             activeSignal = null;
             activeRunnerQuantity = 0;
+            activeLimitOrderExpirySeconds = 0;
             runnerStopMovedToBreakEven = false;
         }
 
@@ -500,7 +528,8 @@ namespace NinjaTrader.NinjaScript.Strategies
         {
             if (ExecutionMode != LukeBridgeExecutionMode.LimitAtLukeEntry || submittedUtc == DateTime.MinValue)
                 return;
-            if ((DateTime.UtcNow - submittedUtc).TotalSeconds < LimitOrderExpirySeconds)
+            int expirySeconds = activeLimitOrderExpirySeconds > 0 ? activeLimitOrderExpirySeconds : Math.Max(1, LimitOrderExpirySeconds);
+            if ((DateTime.UtcNow - submittedUtc).TotalSeconds < expirySeconds)
                 return;
 
             if (IsActive(entryOrderT1))
@@ -508,7 +537,8 @@ namespace NinjaTrader.NinjaScript.Strategies
             if (IsActive(entryOrderT2))
                 CancelOrder(entryOrderT2);
             submittedUtc = DateTime.MinValue;
-            Print("Luke bridge limit entry expired and was cancelled.");
+            activeLimitOrderExpirySeconds = 0;
+            Print("Luke bridge limit entry expired after " + expirySeconds + "s and was cancelled.");
         }
 
         private void Reject(LukeSignal signal, string reason)
@@ -546,6 +576,8 @@ namespace NinjaTrader.NinjaScript.Strategies
             public string Type;
             public string Side;
             public string Symbol;
+            public string SignalClass;
+            public string ExecutionModel;
             public double Entry;
             public double Stop;
             public double Tp1;
@@ -559,6 +591,8 @@ namespace NinjaTrader.NinjaScript.Strategies
                 string type = ExtractString(json, "type");
                 string side = ExtractString(json, "side");
                 string symbol = ExtractString(json, "symbol");
+                string signalClass = ExtractString(json, "class");
+                string executionModel = ExtractString(json, "execution_model");
                 double entry = ExtractDouble(json, "entry");
                 double stop = ExtractDouble(json, "stop");
                 double tp1 = ExtractDouble(json, "tp1");
@@ -585,6 +619,8 @@ namespace NinjaTrader.NinjaScript.Strategies
                     Type = string.IsNullOrWhiteSpace(type) ? "LUKE_LONG" : type.ToUpperInvariant(),
                     Side = side.ToUpperInvariant(),
                     Symbol = string.IsNullOrWhiteSpace(symbol) ? "ES" : symbol,
+                    SignalClass = string.IsNullOrWhiteSpace(signalClass) ? "SCALP_VALID" : signalClass.ToUpperInvariant(),
+                    ExecutionModel = string.IsNullOrWhiteSpace(executionModel) ? "unknown" : executionModel.ToLowerInvariant(),
                     Entry = entry,
                     Stop = stop,
                     Tp1 = tp1,
@@ -609,6 +645,22 @@ namespace NinjaTrader.NinjaScript.Strategies
                 {
                     return (Type ?? string.Empty).IndexOf("PING", StringComparison.OrdinalIgnoreCase) >= 0
                         || string.Equals(Side, "PING", StringComparison.OrdinalIgnoreCase);
+                }
+            }
+
+            public bool IsManciniReclaim
+            {
+                get
+                {
+                    return string.Equals(SignalClass, "MANCINI_RECLAIM", StringComparison.OrdinalIgnoreCase);
+                }
+            }
+
+            public bool IsScalpClass
+            {
+                get
+                {
+                    return (SignalClass ?? string.Empty).StartsWith("SCALP", StringComparison.OrdinalIgnoreCase);
                 }
             }
 

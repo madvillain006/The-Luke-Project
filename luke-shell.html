@@ -1078,6 +1078,9 @@
           <span>&gt; Operator: <strong id="operator-line">loading</strong></span>
           <span>&gt; Blockers: <strong id="blocker-line">loading</strong></span>
           <span>&gt; Runtime: <strong id="runtime-line">loading</strong></span>
+          <span id="shell-retry-row" style="display:none;margin-top:4px;">
+            <button id="shell-retry" type="button" style="background:transparent;border:1px solid var(--border-accent);color:var(--accent);padding:2px 10px;font-size:10px;font-family:inherit;cursor:pointer;border-radius:3px;letter-spacing:1px;">RETRY</button>
+          </span>
         </span>
       </a>
       <section class="system-chat-panel" id="system-panel" aria-hidden="true" aria-label="Luke system chat">
@@ -1162,28 +1165,28 @@
     <section class="focus-view shell-view" data-view-panel="focus" aria-label="Luke focus view">
       <div class="view-header">
         <div class="view-title">Focus</div>
-        <div class="view-subtitle">Less noise. More signal.</div>
+        <div class="view-subtitle">Live state — refreshed every 30s.</div>
       </div>
       <div class="view-grid">
         <div class="ops-card">
-          <span class="view-code">LOCAL</span>
-          <span class="view-name">Current Focus</span>
-          <span class="view-note">Use the smallest lane that answers the next operator need.</span>
+          <span class="view-code">OPERATOR</span>
+          <span class="view-name" id="focus-operator-name">loading</span>
+          <span class="view-note" id="focus-operator-note">Checking Luke readiness…</span>
+        </div>
+        <div class="ops-card" style="cursor:pointer;" onclick="setShellView('operations');openRadarPanel();" title="Open Radar">
+          <span class="view-code">RADAR</span>
+          <span class="view-name" id="focus-radar-name">loading</span>
+          <span class="view-note" id="focus-radar-note">Checking review queue…</span>
         </div>
         <div class="ops-card">
-          <span class="view-code">NEXT</span>
-          <span class="view-name">Next Action</span>
-          <span class="view-note">Open the module that has the live blocker or the next review item.</span>
-        </div>
-        <div class="ops-card">
-          <span class="view-code">REVIEW</span>
-          <span class="view-name">Review Load</span>
-          <span class="view-note">Fresh captures, contradictions, and reminders.</span>
+          <span class="view-code">BLOCKERS</span>
+          <span class="view-name" id="focus-blocker-name">loading</span>
+          <span class="view-note" id="focus-blocker-note">Brain attention signals.</span>
         </div>
         <div class="ops-card">
           <span class="view-code">RUNTIME</span>
-          <span class="view-name">Runtime Readiness</span>
-          <span class="view-note">Weather, brain, bridge, and blockers.</span>
+          <span class="view-name" id="focus-runtime-name">loading</span>
+          <span class="view-note" id="focus-runtime-note">Memory and uptime.</span>
         </div>
       </div>
     </section>
@@ -1191,28 +1194,28 @@
     <section class="missions-view shell-view" data-view-panel="missions" aria-label="Luke missions view">
       <div class="view-header">
         <div class="view-title">Missions</div>
-        <div class="view-subtitle">Operational lanes.</div>
+        <div class="view-subtitle">Tap a lane to open it.</div>
       </div>
       <div class="view-grid">
-        <div class="ops-card">
+        <div class="ops-card" style="cursor:pointer;" onclick="setShellView('operations');openTradingPanel();" title="Open trading panel">
           <span class="view-code">MARKET</span>
           <span class="view-name">Market Work</span>
-          <span class="view-note">Human-gated analysis and review.</span>
+          <span class="view-note">Human-gated analysis and review. Opens trading chat.</span>
         </div>
-        <div class="ops-card">
+        <div class="ops-card" style="cursor:pointer;" onclick="setShellView('operations');openDailyPanel();" title="Open daily panel">
           <span class="view-code">PERSONAL</span>
           <span class="view-name">Personal Ops</span>
-          <span class="view-note">Calendar, jobs, reminders, and moves.</span>
+          <span class="view-note">Calendar, jobs, reminders, and moves. Opens daily brief.</span>
         </div>
-        <div class="ops-card">
+        <div class="ops-card" style="cursor:pointer;" onclick="setShellView('operations');openSystemPanel();" title="Open Luke system chat">
           <span class="view-code">BUILD</span>
           <span class="view-name">Build Work</span>
-          <span class="view-note">Automation business and developer stack.</span>
+          <span class="view-note">Automation business and developer stack. Opens Luke system chat.</span>
         </div>
-        <div class="ops-card">
+        <div class="ops-card" style="cursor:pointer;" onclick="setShellView('operations');openRadarPanel();" title="Open Radar panel">
           <span class="view-code">RESEARCH</span>
           <span class="view-name">Research Queue</span>
-          <span class="view-note">Leads, source bins, and synthesis.</span>
+          <span class="view-note">Leads, source bins, and synthesis. Opens Radar.</span>
         </div>
       </div>
     </section>
@@ -1226,8 +1229,16 @@
       if (el) el.textContent = value == null || value === '' ? '--' : String(value);
     }
 
+    function fetchWithTimeout(url, ms) {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), ms || 5000);
+      return fetch(url, { cache: 'no-store', signal: ctrl.signal }).finally(() => clearTimeout(timer));
+    }
+
     async function getJson(url, options = {}) {
-      const res = await fetch(url, { cache: 'no-store', ...options });
+      const res = options.signal !== undefined
+        ? await fetch(url, { cache: 'no-store', ...options })
+        : await fetchWithTimeout(url, 5000);
       if (!res.ok) throw new Error(`${url} ${res.status}`);
       return res.json();
     }
@@ -1541,6 +1552,8 @@
     }
 
     async function refresh() {
+      const retryRow = $('shell-retry-row');
+      if (retryRow) retryRow.style.display = 'none';
       refreshBridgeReadOnly();
       try {
         const [brain, daily, telemetry, radar, operator] = await Promise.all([
@@ -1569,6 +1582,22 @@
         setText('blocker-line', brain.attention?.length ? brain.attention.map(item => item.agent).join(', ') : 'none');
         setText('shell-status-count', `Status ${(brain.attention?.length || 0) + (radar?.counts?.review || 0) + (operator?.counts?.red || 0)}`);
         setText('runtime-line', `${formatMemory(telemetry.process?.rss_bytes)} RSS / ${formatUptime(telemetry.process?.uptime_seconds)}`);
+
+        // Focus view live cards
+        const focusOperatorOk = operator?.verdict === 'use_luke_first';
+        setText('focus-operator-name', focusOperatorOk ? 'Luke-first' : (operator?.verdict || 'checking'));
+        const memCount = operator?.memory?.recent_count;
+        const memNote = operator?.memory?.summary_line || 'shared memory ready';
+        setText('focus-operator-note', memCount != null ? `${memNote} | ${memCount} recent entries` : memNote);
+        const radarReview = radar?.counts?.review || 0;
+        const radarTotal = (radar?.counts?.total || 0);
+        setText('focus-radar-name', radarTotal > 0 ? `${radarReview} to review / ${radarTotal} total` : 'inbox clear');
+        setText('focus-radar-note', radar?.summary_line || 'ready / no items');
+        const blockers = brain.attention || [];
+        setText('focus-blocker-name', blockers.length ? `${blockers.length} blocker${blockers.length !== 1 ? 's' : ''}` : 'none');
+        setText('focus-blocker-note', blockers.length ? blockers.map(b => b.agent || b.label || 'agent').slice(0, 3).join(', ') : 'Brain attention is clear.');
+        setText('focus-runtime-name', formatMemory(telemetry.process?.rss_bytes) + ' RSS');
+        setText('focus-runtime-note', `up ${formatUptime(telemetry.process?.uptime_seconds)}`);
       } catch (err) {
         setText('weather-line', 'offline');
         setText('weather-emoji', '!');
@@ -1584,7 +1613,17 @@
         setText('radar-module-meta', 'Radar offline');
         setText('blocker-line', 'offline');
         setText('shell-status-count', 'Status !');
-        setText('runtime-line', err.message);
+        setText('runtime-line', err.name === 'AbortError' ? 'timed out (5s)' : err.message);
+        if (retryRow) retryRow.style.display = '';
+        // Focus view offline
+        setText('focus-operator-name', 'offline');
+        setText('focus-operator-note', err.name === 'AbortError' ? 'timed out — RETRY above' : 'server unreachable');
+        setText('focus-radar-name', 'offline');
+        setText('focus-radar-note', 'Radar unavailable');
+        setText('focus-blocker-name', 'offline');
+        setText('focus-blocker-note', 'Brain unavailable');
+        setText('focus-runtime-name', 'offline');
+        setText('focus-runtime-note', err.message.slice(0, 60));
       }
     }
 
@@ -1633,6 +1672,7 @@
     $('radar-close')?.addEventListener('click', closeRadarPanel);
     $('shell-bridge-copy')?.addEventListener('click', copyBridgeUrl);
     $('shell-bridge-refresh')?.addEventListener('click', refreshBridgeStatus);
+    $('shell-retry')?.addEventListener('click', refresh);
     $('shell-bridge-card')?.addEventListener('click', event => {
       if (event.target.closest('button')) return;
       const status = window.__lukeBridgeStatus;

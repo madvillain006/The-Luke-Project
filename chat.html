@@ -250,6 +250,7 @@
     }
 
     .msg-ts { font-size: 10px; color: var(--dim); flex-shrink: 0; padding-bottom: 3px; }
+    .msg-provider { font-size: 9px; color: var(--dim); flex-shrink: 0; padding-bottom: 3px; letter-spacing: 0.3px; opacity: 0.65; }
 
     .thinking { color: var(--dim); font-size: 10px; letter-spacing: 2px; padding: 3px 0; align-self: flex-start; }
 
@@ -1500,7 +1501,7 @@
       return card;
     }
 
-    function addMessage(role, text, type) {
+    function addMessage(role, text, type, providerMeta) {
       const row = document.createElement("div");
       row.className = "msg-row " + (role === "user" ? "user" : "luke");
 
@@ -1520,6 +1521,13 @@
       ts.className = "msg-ts";
       ts.textContent = nowTs();
       row.appendChild(ts);
+
+      if (providerMeta && role !== "user") {
+        const prov = document.createElement("span");
+        prov.className = "msg-provider";
+        prov.textContent = providerMeta;
+        row.appendChild(prov);
+      }
 
       messages.appendChild(row);
       messages.scrollTop = messages.scrollHeight;
@@ -1795,17 +1803,32 @@
       sendBtn.disabled = true;
       try {
         const r = await fetch(BASE + "/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: text, history, surface: chatSurface }) });
+        if (!r.ok) {
+          hideThinking();
+          const errData = await r.json().catch(() => ({}));
+          const detail = errData.error || errData.detail || `HTTP ${r.status}`;
+          addMessage("assistant", `Luke error: ${detail}`, "alert");
+          sendBtn.disabled = false;
+          input.focus();
+          return;
+        }
         const d = await r.json();
         hideThinking();
-        addMessage("assistant", d.reply);
+        const providerLabel = d.provider
+          ? (d.model ? `${d.provider} / ${d.model.split('-').slice(0, 3).join('-')}` : d.provider)
+          : null;
+        addMessage("assistant", d.reply, undefined, providerLabel);
         if (typeof checkMC === 'function') checkMC(text, d.reply);
         if (d.route) setRouteBadge(d.route);
         syncContextBinsBadge();
         if (d.state) updateStateIndicator(d.state);
         history = d.history;
-      } catch {
+      } catch (err) {
         hideThinking();
-        addMessage("assistant", "Connection error.");
+        const isNetworkErr = err instanceof TypeError || (err.message && err.message.includes('fetch'));
+        addMessage("assistant", isNetworkErr
+          ? "Luke server is not responding — check that it is running on port 3000."
+          : `Connection error: ${err.message}`, "alert");
       }
       sendBtn.disabled = false;
       input.focus();

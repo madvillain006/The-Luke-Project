@@ -872,8 +872,13 @@ app.post("/chat", async (req, res) => {
       history: [...messages, { role: "assistant", content: llm.text }],
     }, { surface: chatSurface, route, source: "chat" });
   } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ error: "AI request failed" });
+    console.error('[chat-error]', err.message);
+    const providerHint = allowAnthropic ? 'free providers + Anthropic' : 'free providers (Gemini/Groq/DeepSeek)';
+    const isApiKey = /api.?key|auth|401|403/i.test(err.message);
+    const hint = isApiKey
+      ? 'Check that ANTHROPIC_API_KEY (or free provider keys) are set in .env'
+      : `All ${providerHint} failed — check network or .env keys`;
+    res.status(500).json({ error: `AI request failed: ${err.message}`, detail: hint });
   }
 });
 

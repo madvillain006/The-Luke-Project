@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Luke AI Integration Orchestrator Handoff - 2026-05-08</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --panel: #151b23;
+      --panel-2: #1c2430;
+      --text: #e6edf3;
+      --muted: #9da7b3;
+      --line: #303846;
+      --accent: #7dd3fc;
+      --warn: #facc15;
+      --bad: #fb7185;
+      --good: #86efac;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 14px/1.55 Inter, Segoe UI, Arial, sans-serif;
+    }
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 20px 56px;
+    }
+    h1, h2, h3 { line-height: 1.18; margin: 0 0 12px; }
+    h1 { font-size: 30px; letter-spacing: 0; }
+    h2 { font-size: 21px; margin-top: 28px; border-top: 1px solid var(--line); padding-top: 22px; }
+    h3 { font-size: 16px; margin-top: 20px; }
+    p { margin: 0 0 12px; }
+    ul, ol { margin: 8px 0 16px 22px; padding: 0; }
+    li { margin: 5px 0; }
+    code, pre {
+      font-family: Consolas, "SFMono-Regular", Menlo, monospace;
+      font-size: 12.5px;
+    }
+    code {
+      color: #c4b5fd;
+      background: #0b1220;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+    pre {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      background: #080d14;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      color: #dbeafe;
+    }
+    .hero, .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      margin: 16px 0;
+    }
+    .hero { background: linear-gradient(180deg, #151b23, #101720); }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .card {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .tag {
+      display: inline-block;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 3px 9px;
+      margin: 0 6px 6px 0;
+      color: var(--muted);
+      background: #0b1220;
+      font-size: 12px;
+    }
+    .good { color: var(--good); }
+    .warn { color: var(--warn); }
+    .bad { color: var(--bad); }
+    .accent { color: var(--accent); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 18px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+    }
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      padding: 10px;
+    }
+    th {
+      color: var(--accent);
+      background: #111827;
+      font-weight: 700;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .callout {
+      border-left: 4px solid var(--accent);
+      background: #0b1220;
+      padding: 12px 14px;
+      margin: 14px 0;
+    }
+    .danger { border-left-color: var(--bad); }
+    .warning { border-left-color: var(--warn); }
+    @media (max-width: 780px) {
+      .grid { grid-template-columns: 1fr; }
+      main { padding: 20px 14px 40px; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <h1>Luke AI Integration Orchestrator Handoff</h1>
+    <p><b>Date:</b> 2026-05-08</p>
+    <p><b>Status:</b> paused by operator while separate trading, Pine, and Ninja automation work is in progress.</p>
+    <p><b>Purpose:</b> hand a future AI/chat a one-shot, non-circular prompt and a concrete roadmap for resuming Hermes/Radar/MemPalace-style intelligence work only after trading work is clear.</p>
+    <p>
+      <span class="tag">Process_narration=false</span>
+      <span class="tag">Measure twice, cut once</span>
+      <span class="tag">No tmp files</span>
+      <span class="tag">No dead code</span>
+      <span class="tag">No dead files</span>
+      <span class="tag">Do not touch trading work in progress</span>
+    </p>
+  </section>
+
+  <section class="panel">
+    <h2>Current Truth</h2>
+    <p>The AI repo integration task was approved, then paused before implementation because another chat began active trading, Pine, and Ninja work. This handoff must protect that work. The next AI must not assume a clean worktree, must not revert user or other-agent edits, and must not blend memory/Radar work into trading automation unless the operator explicitly resumes this track.</p>
+    <div class="callout warning">
+      <b>Important:</b> as of this handoff, the worktree contains substantial in-progress TradingView/Ninja changes, including staged renames under <code>tradingview/history/</code>, new Ninja native/parity files, edits to <code>index.js</code>, Ninja bridge modules, tests, package scripts, and dashboard files. Treat all of that as owned by the trading automation chat.
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Agent Progress Analysis</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Agent</th>
+          <th>Assigned Task</th>
+          <th>Progress</th>
+          <th>Returned Report</th>
+          <th>Next Instruction</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>Linnaeus</code><br><code>019e076a-497a-7561-bbc1-b36cb55fb654</code></td>
+          <td>Read-only inspection of Hermes, MemPalace, Luke memory, and Radar. Identify top native ideas for short-term memory, long-term memory, Radar review, and fallback context.</td>
+          <td>Spawned and running when the operator paused the project.</td>
+          <td><span class="bad">No.</span> The agent was shut down before completion.</td>
+          <td>Do not resume automatically. If restarted later, give it the same read-only scope plus this handoff file.</td>
+        </tr>
+        <tr>
+          <td><code>Pascal</code><br><code>019e076a-6be3-7cf3-9e1d-30eca59752fe</code></td>
+          <td>Read-only risk map for Radar, dashboard, Katbot, registry, and UI integration. Identify files, functions, routes, tests, and breakage risks.</td>
+          <td>Spawned and running when the operator paused the project.</td>
+          <td><span class="bad">No.</span> The agent was shut down before completion.</td>
+          <td>Do not resume automatically. If restarted later, force a route/test map before edits.</td>
+        </tr>
+        <tr>
+          <td><code>Heisenberg</code><br><code>019e076a-8938-7440-94c9-885734611a44</code></td>
+          <td>Read-only inspection of fallback/free AI routing and chat context assembly so cheaper models can use enriched Luke context.</td>
+          <td>Spawned and running when the operator paused the project.</td>
+          <td><span class="bad">No.</span> The agent was shut down before completion.</td>
+          <td>Do not resume automatically. If restarted later, focus on provider-neutral context packets and tests.</td>
+        </tr>
+        <tr>
+          <td>Parent Orchestrator</td>
+          <td>Run approved goal mode, inspect baseline, spawn read-only agents, then implement memory/Radar/Katbot/fallback upgrades.</td>
+          <td>Attempted <code>slop-janitor goals run</code>; command was unavailable. Manually gathered baseline, read Hermes and MemPalace README excerpts, inspected memory/Radar/fallback tests, then paused on user request.</td>
+          <td><span class="warn">Partial.</span> No implementation report because implementation was intentionally stopped.</td>
+          <td>Resume only after trading automation work is either committed or explicitly handed off with exact file ownership.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>What Was Actually Completed</h2>
+    <ul>
+      <li>Installed reference repos earlier under <code>tools/reference-repos/</code>, ignored by git.</li>
+      <li>Created <code>reports/ai-repo-selection-2026-05-08.md</code>.</li>
+      <li>Created <code>reports/luke-ai-repo-integration-plan-2026-05-08.md</code>.</li>
+      <li>Created active goal plan under <code>.agent/goals/2026-05-08-ai-repo-integration-plan/</code>.</li>
+      <li>Set <code>.agent/goals/active</code> to that integration plan.</li>
+      <li>Confirmed <code>slop-janitor</code> is unavailable in this environment.</li>
+      <li>Spawned three read-only subagents, then closed all three on operator pause.</li>
+      <li>Read enough Hermes and MemPalace top-level docs to confirm the right conceptual direction: local-first memory, cross-session recall, skill/idea extraction, provider-neutral models, and reviewable context.</li>
+    </ul>
+
+    <h3>What Was Not Completed</h3>
+    <ul>
+      <li>No code integration was performed for reference repo registry, Radar source types, memory scopes, Katbot bridge, or fallback context packets.</li>
+      <li>No tests were run for the integration task after the pause.</li>
+      <li>No subagent produced an in-depth final report before shutdown.</li>
+      <li>No trading, Pine, Ninja, or broker files were intentionally edited by this AI integration track.</li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <h2>Overall Roadmap</h2>
+    <ol>
+      <li><b>Wait for trading work to settle.</b> Do not resume AI integration while another chat is actively changing Pine, Ninja, bridge, parity, and trading dashboard files.</li>
+      <li><b>Freeze baseline.</b> Capture <code>git status --short --branch</code>, <code>git diff --stat</code>, and ownership notes. Do not proceed if file ownership is ambiguous.</li>
+      <li><b>Reference registry.</b> Create a small Luke-native registry for the ten cloned repos. Store local path, upstream URL, commit, category, allowed surfaces, banned surfaces, and notes.</li>
+      <li><b>Radar reference-review lane.</b> Add source type/theme support for reference-derived ideas. Only actionable ideas enter Radar. Rejected ideas remain durable so Luke stops repeating bad suggestions.</li>
+      <li><b>Short-term memory.</b> Strengthen rolling context bins and current-session recall. The immediate result should make fallback/free models smarter in the same session.</li>
+      <li><b>Long-term memory.</b> Add scoped durable entries: project, person, topic, source, relationship IDs, recall reasons, accepted/rejected status, and optional verbatim capture.</li>
+      <li><b>Fallback AI compatibility.</b> Ensure enriched context is built before provider choice. Gemini/Groq/DeepSeek/Ollama/fallback systems should receive the same compact memory/Radar packet as Anthropic.</li>
+      <li><b>Katbot review bridge.</b> Route selected Katbot captures, vision summaries, and confluence alerts into Radar and memory as reviewable evidence. Keep Katbot confluence-only and human-gated.</li>
+      <li><b>Dashboard exposure.</b> Add UI only after Radar proves useful. Start with Radar labels and a compact brain/shell status line. Do not clutter trading screens.</li>
+      <li><b>Two hardening loops.</b> After implementation, run a full verification pass, fix issues, run a second independent sanity pass, then only report when residual risk is explicit.</li>
+    </ol>
+  </section>
+
+  <section class="panel">
+    <h2>Hard Policies</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Process Narration</h3>
+        <p><code>Process_narration=false</code></p>
+        <p>Keep user updates short and operational. Do not narrate every internal thought. Reports must contain evidence, decisions, commands, and file paths.</p>
+      </div>
+      <div class="card">
+        <h3>Orchestrator Role</h3>
+        <p>Act as an orchestrator. Use parallel agents for research and execution only when useful. The parent owns integration, review, and final judgment.</p>
+      </div>
+      <div class="card">
+        <h3>Measure Twice, Cut Once</h3>
+        <p>Before edits: inspect live code, inspect tests, inspect current git status, name file ownership, and define validation. Then patch once with narrow scope.</p>
+      </div>
+      <div class="card">
+        <h3>Clean Codebase</h3>
+        <p>Keep the codebase clean. No tmp files, no dead code, no dead files, no unnecessary folders, no unnecessary subfolders, and no untracked residue.</p>
+      </div>
+      <div class="card">
+        <h3>Trading Boundary</h3>
+        <p>No live trading enablement. No broker execution changes. No Katbot item creates a live candidate. Protect <code>/status</code>, <code>/balance</code>, <code>/saty</code>, <code>/ready</code>, and <code>/alert</code>.</p>
+      </div>
+      <div class="card">
+        <h3>Foreign Repo Boundary</h3>
+        <p>Borrow ideas from Hermes, MemPalace, Qlib, and others. Do not blindly graft frameworks, installers, services, or new runtime dependencies.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Non-Circular Execution Protocol</h2>
+    <ol>
+      <li>Read the latest handoff and live git status.</li>
+      <li>State the exact files you will not touch because another agent owns them.</li>
+      <li>Open the actual target files before creating a plan.</li>
+      <li>Spawn subagents only for independent, bounded tasks with explicit output contracts.</li>
+      <li>Do not let subagents decide architecture. They report evidence. Parent decides.</li>
+      <li>Patch only after target functions and tests are known.</li>
+      <li>Run syntax checks immediately after each code slice.</li>
+      <li>Run focused tests after each behavioral slice.</li>
+      <li>Run proof scripts only after focused tests are green or documented.</li>
+      <li>Perform hardening loop 1: review diffs, remove residue, fix discovered issues.</li>
+      <li>Perform hardening loop 2: fresh sanity review against policies and acceptance criteria.</li>
+      <li>Final report must include changed files, commands, outcomes, skipped checks, risk, and next approvals.</li>
+    </ol>
+  </section>
+
+  <section class="panel">
+    <h2>One-Shot Prompt For Next AI</h2>
+    <pre>Process_narration=false
+
+Act as an orchestrator. Use parallel agents to do the research and execution work. Write detailed tasks for each parallel agent and force them to act, iterate, get their tasks done, and bring back an in-depth report. Your job is to deeply analyze the agents' work, provide feedback, and provide them with continuous tasks.
+
+You are taking over C:\Users\conor\luke. Your task is to resume the paused AI intelligence integration only after confirming the current trading, Pine, and Ninja automation work is safe to work around.
+
+Hard rules:
+1. Measure twice, cut once policy.
+2. Keep the codebase clean, no tmp files, no dead code, no dead files. Stay organized all the time. No unnecessary folders, subfolders, or files.
+3. Do not revert or overwrite user-owned or other-agent-owned changes.
+4. Do not touch active trading/Pine/Ninja work unless the operator explicitly assigns that scope.
+5. No live trading enablement. No broker execution changes. No new live candidate path.
+6. Protect the sacred trading smoke paths: /status, /balance, /saty, /ready, /alert.
+7. Reference repos under tools/reference-repos are idea sources, not vendored runtime code.
+8. Free/cheap fallback AI systems must receive the same improved Luke context as Anthropic. No Anthropic-only intelligence path.
+9. Radar is the review and approval surface. Memory and Katbot should feed Radar before any autonomous behavior is trusted.
+10. If you cannot prove something with code, tests, or a current command, label it as unverified.
+
+First, do not edit. Inspect:
+- git status --short --branch
+- git diff --stat
+- git log --oneline -10
+- reports/luke-ai-orchestrator-handoff-2026-05-08.html
+- reports/luke-ai-repo-integration-plan-2026-05-08.md
+- .agent/goals/2026-05-08-ai-repo-integration-plan/brief.md
+- .agent/goals/2026-05-08-ai-repo-integration-plan/goals.json
+- reports/ai-repo-selection-2026-05-08.md
+- tools/reference-repos/hermes-agent/README.md
+- tools/reference-repos/mempalace/README.md
+- lib/companion-memory.js
+- lib/luke-context-bins.js
+- lib/radar/ingest.js
+- lib/brain/radar-layer.js
+- agents/agent-00-brain.js
+- agents/agent-14-kat.js
+- lib/llm-routing-policy.js
+- index.js
+- tests/companion-memory.test.js
+- tests/luke-context-bins.test.js
+- tests/radar-layer.test.js
+- tests/llm-routing-policy.test.js
+
+Then state the live ownership map:
+- Files changed by the active trading/Pine/Ninja work that you will not touch.
+- Files you intend to touch for AI integration.
+- Tests and proof commands you will run.
+
+Spawn parallel agents only after baseline:
+Agent A, Hermes and MemPalace memory researcher:
+- Read Hermes and MemPalace docs/source only enough to extract practical concepts.
+- Return top native Luke ideas for short-term memory, long-term memory, skills/experience capture, and session recall.
+- Map every idea to exact Luke files and tests.
+- Do not edit.
+
+Agent B, Radar and UI integration mapper:
+- Inspect Radar routes, radar-dashboard, shell, brain dashboard, operator, and trading window.
+- Return exact API/UI changes needed to expose reference ideas without clutter.
+- Include tests and proof scripts.
+- Do not edit.
+
+Agent C, Katbot bridge mapper:
+- Inspect agents/agent-14-kat.js, Katbot support libs, Radar ingest, and existing Katbot tests.
+- Return a deduped, human-gated path for selected Katbot captures/confluence alerts into Radar and memory.
+- Prove no live candidate or broker path is created.
+- Do not edit.
+
+Agent D, fallback context mapper:
+- Inspect llm-routing-policy, fallback agent, chat prompt assembly, and tests.
+- Return the provider-neutral context packet design so free/cheap models receive memory/Radar context.
+- Do not edit.
+
+Parent orchestrator must analyze all agent reports, reject weak ideas, and implement only the smallest safe slice:
+Phase 1:
+- Reference repo registry.
+- Radar source/theme support for reference ideas.
+- Provider-neutral Luke intelligence context packet.
+- Memory recall reasons and basic scopes.
+- Tests for all of the above.
+
+Phase 2 only if Phase 1 is green:
+- Katbot selected-event-to-Radar bridge.
+- Accepted/rejected Radar context visibility in memory/operator summaries.
+- Tests and proof scripts.
+
+Phase 3 only if Phase 2 is green:
+- Minimal dashboard exposure.
+- No dashboard clutter.
+- No trading screen authority claims.
+
+Validation minimum:
+- node --check index.js
+- node --check lib/companion-memory.js
+- node --check lib/luke-context-bins.js
+- node --check lib/radar/ingest.js
+- node --check lib/brain/radar-layer.js
+- node --check agents/agent-00-brain.js
+- node --check agents/agent-14-kat.js if touched
+- cmd /c npx vitest run tests/companion-memory.test.js tests/luke-context-bins.test.js tests/radar-layer.test.js tests/llm-routing-policy.test.js
+- If UI touched: cmd /c npx vitest run tests/brain-dashboard.test.js tests/operator-v2-ui.test.js tests/trading-ui-readonly.test.js
+- If Katbot touched: cmd /c npx vitest run tests/*kat*.test.js tests/radar-layer.test.js
+- If slash/trading command path touched: verify /status, /balance, /saty, /ready, /alert.
+
+Hardening loop 1:
+- Review git diff.
+- Remove residue, tmp files, dead code, unused exports, unnecessary folders.
+- Rerun focused tests.
+
+Hardening loop 2:
+- Fresh sanity check against hard rules.
+- Confirm fallback providers use enriched context.
+- Confirm no live trading path changed.
+- Confirm Radar/memory behavior is explainable and reversible.
+- Rerun final selected checks.
+
+Final answer must include:
+- Exact files changed.
+- What Hermes/MemPalace/Radar ideas were adopted.
+- What was rejected and why.
+- Commands run and outcomes.
+- Known skipped checks or environmental blockers.
+- Current git status summary.
+- Whether the repo is clean or intentionally dirty.
+- What the operator should review next.</pre>
+  </section>
+
+  <section class="panel">
+    <h2>Resume Gate</h2>
+    <p>Do not resume this AI integration until one of these is true:</p>
+    <ul>
+      <li>The trading/Pine/Ninja automation chat commits or clearly hands off its work.</li>
+      <li>The operator explicitly says the integration chat may work around the active trading files.</li>
+      <li>The operator assigns only read-only analysis.</li>
+    </ul>
+    <div class="callout danger">
+      <b>Stop condition:</b> if a future AI sees unresolved ownership conflicts in <code>index.js</code>, dashboard HTML, Ninja bridge files, TradingView files, package scripts, or shared tests, it must stop and ask for scope confirmation before editing.
+    </div>
+  </section>
+</main>
+</body>
+</html>

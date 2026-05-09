@@ -1,6 +1,6 @@
 # Luke Watch Failed Breakdown Audit - 2026-05-07
 
-Scope: read-only audit of `tradingview/LUKE-WATCH-FLAGSHIP-v4-CANCEL-ACTIVE-WATCH.pine` against the pasted Mancini failed-breakdown/acceptance framework and Thursday ES trade plan.
+Scope: read-only audit of `tradingview/history/pre-ninja/v4-watch-family/LUKE-WATCH-FLAGSHIP-v4-CANCEL-ACTIVE-WATCH.pine` against the pasted Mancini failed-breakdown/acceptance framework and Thursday ES trade plan.
 
 No existing Pine was edited.
 

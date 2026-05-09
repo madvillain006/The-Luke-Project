@@ -4,7 +4,7 @@ Date: 2026-05-05 ET
 
 ## 1. What Hard Mode Is
 
-`tradingview/luke-level-reclaim-watch-hardmode.strategy.pine` is a research/backtest harness for Luke-style reclaim signals. It uses `strategy()` so TradingView can run a Strategy Tester comparison, but its manual hard-mode table is the pessimistic accounting source of record.
+`tradingview/history/level-reclaim/luke-level-reclaim-watch-hardmode.strategy.pine` is a research/backtest harness for Luke-style reclaim signals. It uses `strategy()` so TradingView can run a Strategy Tester comparison, but its manual hard-mode table is the pessimistic accounting source of record.
 
 It is not broker automation, not live readiness, and not an execution recommendation.
 
@@ -56,7 +56,7 @@ The strategy-safe Saty calculation uses `barmerge.lookahead_off`. It does not pl
 
 ## 6. Saty Source Risk
 
-`tradingview/saty-atr-levels-source.pine` remains the display/reference file and still uses the Saty-style `request.security(..., barmerge.lookahead_on)` behavior. Hard mode deliberately does not reuse that display lookahead for backtest signals.
+`tradingview/support/saty-reference/saty-atr-levels-source.pine` remains the display/reference file and still uses the Saty-style `request.security(..., barmerge.lookahead_on)` behavior. Hard mode deliberately does not reuse that display lookahead for backtest signals.
 
 Difference:
 

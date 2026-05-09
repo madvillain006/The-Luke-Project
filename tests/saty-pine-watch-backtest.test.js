@@ -93,6 +93,7 @@ describe('Saty Pine watch backtest port', () => {
         pivotRibbonFilterMode: 'off',
         requireImpulseCloudBreak: false,
         minTargetSpacePoints: 3,
+        contractPlan: 'single_tp1',
       },
     });
 
@@ -134,6 +135,7 @@ describe('Saty Pine watch backtest port', () => {
         pivotRibbonFilterMode: 'off',
         requireImpulseCloudBreak: false,
         minTargetSpacePoints: 3,
+        contractPlan: 'single_tp1',
         entrySlippagePoints: 0.25,
         roundTripFeePerContract: 5,
       },
@@ -143,15 +145,17 @@ describe('Saty Pine watch backtest port', () => {
       entry: 100.25,
       filled_entry: 100.5,
       outcome: 'tp1_first',
-      points: 1.75,
-      gross_dollars: 87.5,
-      fees: 5,
+      points: 2,
+      gross_dollars: 100,
+      fees: 17.5,
+      commission_dollars: 5,
+      slippage_dollars: 12.5,
       dollars: 82.5,
       net_dollars: 82.5,
     });
     expect(result.summary.total_dollars).toBe(82.5);
-    expect(result.summary.total_gross_dollars).toBe(87.5);
-    expect(result.summary.total_fees).toBe(5);
+    expect(result.summary.total_gross_dollars).toBe(100);
+    expect(result.summary.total_fees).toBe(17.5);
   });
 
   it('shows 0.5 point adverse entry slippage worsening stop-first losses', () => {
@@ -168,15 +172,48 @@ describe('Saty Pine watch backtest port', () => {
     }, {
       entrySlippagePoints: 0.5,
       roundTripFeePerContract: 5,
+      contractPlan: 'single_tp1',
     });
 
     expect(outcome).toMatchObject({
       outcome: 'stop_first',
-      points: -3.5,
-      gross_dollars: -175,
-      fees: 5,
+      points: -3,
+      gross_dollars: -150,
+      fees: 30,
+      commission_dollars: 5,
+      slippage_dollars: 25,
       dollars: -180,
       net_dollars: -180,
+    });
+  });
+
+  it('matches the locked Pine default 2ES split accounting', () => {
+    const outcome = _internal.evaluateOutcome([
+      bar('2026-04-02T09:30:00-04:00', 100, 101, 99.5, 100.5),
+      bar('2026-04-02T09:31:00-04:00', 100.5, 102.5, 100.25, 102.25),
+      bar('2026-04-02T09:32:00-04:00', 102.25, 104.5, 102, 104.25),
+    ], 0, {
+      entry: 100.25,
+      filled_entry: 100.5,
+      stop: 97.25,
+      tp1: 102.25,
+      tp2: 104.25,
+      contracts: 2,
+    }, {
+      contractPlan: 'split_tp1_tp2',
+      entrySlippagePoints: 0.25,
+      roundTripFeePerContract: 5,
+    });
+
+    expect(outcome).toMatchObject({
+      outcome: 'tp1_then_tp2',
+      points: 6,
+      contracts: 2,
+      gross_dollars: 300,
+      fees: 35,
+      commission_dollars: 10,
+      slippage_dollars: 25,
+      dollars: 265,
     });
   });
 });

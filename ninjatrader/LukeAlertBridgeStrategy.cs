@@ -22,6 +22,7 @@ namespace NinjaTrader.NinjaScript.Strategies
     {
         private const string EntryT1Name = "LukeLongT1";
         private const string EntryT2Name = "LukeLongT2";
+        private const string LiveBridgeArmPhrase = "LUKE_BRIDGE_LIVE_ACK";
 
         private string lastProcessedId = string.Empty;
         private string lastRejectedId = string.Empty;
@@ -36,6 +37,7 @@ namespace NinjaTrader.NinjaScript.Strategies
         private int activeRunnerQuantity;
         private int activeLimitOrderExpirySeconds;
         private bool runnerStopMovedToBreakEven;
+        private System.Timers.Timer bridgePollTimer;
 
         [NinjaScriptProperty]
         [Display(Name = "Bridge file path", GroupName = "Luke Bridge", Order = 1)]
@@ -66,6 +68,11 @@ namespace NinjaTrader.NinjaScript.Strategies
         public bool SplitTp1Tp2Runner { get; set; }
 
         [NinjaScriptProperty]
+        [Range(25, 2000)]
+        [Display(Name = "Bridge poll milliseconds", GroupName = "Luke Bridge", Order = 8)]
+        public int BridgePollMilliseconds { get; set; }
+
+        [NinjaScriptProperty]
         [Display(Name = "Require flat position", GroupName = "Luke Safety", Order = 1)]
         public bool RequireFlatPosition { get; set; }
 
@@ -83,18 +90,26 @@ namespace NinjaTrader.NinjaScript.Strategies
         public int MaxQuantity { get; set; }
 
         [NinjaScriptProperty]
+        [Display(Name = "Live bridge arm phrase", GroupName = "Luke Safety", Order = 5)]
+        public string LiveBridgeArmCode { get; set; }
+
+        [NinjaScriptProperty]
         [Range(0, 50)]
-        [Display(Name = "Max signals per session", GroupName = "Luke Safety", Order = 5)]
+        [Display(Name = "Max signals per session", GroupName = "Luke Safety", Order = 6)]
         public int MaxSignalsPerSession { get; set; }
 
         [NinjaScriptProperty]
-        [Display(Name = "Require symbol prefix match", GroupName = "Luke Safety", Order = 6)]
+        [Display(Name = "Require symbol prefix match", GroupName = "Luke Safety", Order = 7)]
         public bool RequireSymbolPrefixMatch { get; set; }
 
         [NinjaScriptProperty]
         [Range(0.0, 10.0)]
-        [Display(Name = "Max marketable entry points", GroupName = "Luke Safety", Order = 7)]
+        [Display(Name = "Max marketable entry points", GroupName = "Luke Safety", Order = 8)]
         public double MaxMarketableEntryPoints { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Require cancel matches active signal", GroupName = "Luke Safety", Order = 9)]
+        public bool RequireCancelMatchesActiveSignal { get; set; }
 
         [NinjaScriptProperty]
         [Range(1, 7200)]
@@ -126,19 +141,27 @@ namespace NinjaTrader.NinjaScript.Strategies
                 UsePayloadQuantity = true;
                 BridgeDefaultQuantity = 1;
                 SplitTp1Tp2Runner = true;
+                BridgePollMilliseconds = 50;
                 RequireFlatPosition = true;
                 AllowLiveAccounts = false;
                 AllowedAccountName = "LFE050706094670001";
                 MaxQuantity = 2;
+                LiveBridgeArmCode = "";
                 MaxSignalsPerSession = 20;
                 RequireSymbolPrefixMatch = true;
                 MaxMarketableEntryPoints = 0.25;
+                RequireCancelMatchesActiveSignal = true;
                 ScalpLimitOrderExpirySeconds = 600;
                 ManciniReclaimLimitOrderExpirySeconds = 600;
             }
             else if (State == State.Realtime)
             {
+                StartBridgePollTimer();
                 BridgeInfo("LukeAlertBridgeStrategy realtime. Account guard: " + AccountGuardDescription() + ". Account: " + GetCurrentAccountName() + ". Polling: " + BridgeFilePath);
+            }
+            else if (State == State.Terminated)
+            {
+                StopBridgePollTimer();
             }
         }
 
@@ -152,6 +175,14 @@ namespace NinjaTrader.NinjaScript.Strategies
 
             if (Bars.IsFirstBarOfSession && IsFirstTickOfBar)
                 signalsSubmittedThisSession = 0;
+
+            ProcessBridgeCycle();
+        }
+
+        private void ProcessBridgeCycle()
+        {
+            if (CurrentBar < 1 || State != State.Realtime)
+                return;
 
             CancelExpiredLimitOrders();
             MoveRunnerStopToBreakEvenIfNeeded();
@@ -228,6 +259,37 @@ namespace NinjaTrader.NinjaScript.Strategies
             SubmitLukeLong(signal);
         }
 
+        private void StartBridgePollTimer()
+        {
+            StopBridgePollTimer();
+            int interval = Math.Max(25, BridgePollMilliseconds);
+            bridgePollTimer = new System.Timers.Timer(interval);
+            bridgePollTimer.AutoReset = true;
+            bridgePollTimer.Elapsed += OnBridgePollTimerElapsed;
+            bridgePollTimer.Start();
+        }
+
+        private void StopBridgePollTimer()
+        {
+            if (bridgePollTimer == null)
+                return;
+            bridgePollTimer.Stop();
+            bridgePollTimer.Elapsed -= OnBridgePollTimerElapsed;
+            bridgePollTimer.Dispose();
+            bridgePollTimer = null;
+        }
+
+        private void OnBridgePollTimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            try
+            {
+                TriggerCustomEvent(state => ProcessBridgeCycle(), null);
+            }
+            catch
+            {
+            }
+        }
+
         private void ProcessCancel(LukeSignal signal)
         {
             if (signal.Id == lastCancelledId)
@@ -242,6 +304,13 @@ namespace NinjaTrader.NinjaScript.Strategies
             if (!IsAccountAllowed())
             {
                 Reject(signal, "cancel ignored because account guard rejected " + GetCurrentAccountName() + "; allowed " + AccountGuardDescription());
+                return;
+            }
+
+            if (RequireCancelMatchesActiveSignal && activeSignal != null
+                && !string.Equals(signal.Id, activeSignal.Id, StringComparison.Ordinal))
+            {
+                Reject(signal, "cancel id does not match active signal " + activeSignal.Id);
                 return;
             }
 
@@ -346,9 +415,9 @@ namespace NinjaTrader.NinjaScript.Strategies
             lastProcessedId = signal.Id;
             signalsSubmittedThisSession++;
             string message = string.Format(CultureInfo.InvariantCulture,
-                "LUKE SIM LONG {0} qty={1} t1={2} t2={3} entry={4:F2} stop={5:F2} tp1={6:F2} tp2={7:F2} mode={8} class={9} profile={10} model={11} expiry={12}s",
+                "LUKE SIM LONG {0} qty={1} t1={2} t2={3} entry={4:F2} stop={5:F2} tp1={6:F2} tp2={7:F2} mode={8} class={9} profile={10} model={11} expiry={12}s pollMs={13}",
                 signal.Id, qty, qtyT1, qtyT2, signal.Entry, signal.Stop, signal.Tp1, signal.Tp2, ExecutionMode,
-                signal.SignalClass, signal.OrderProfile, signal.ExecutionModel, activeLimitOrderExpirySeconds);
+                signal.SignalClass, signal.OrderProfile, signal.ExecutionModel, activeLimitOrderExpirySeconds, BridgePollMilliseconds);
             BridgeInfo(message);
             Alert("LukeBridgeSubmitted-" + signal.Id, Priority.High, message, NinjaTrader.Core.Globals.InstallDir + @"\sounds\Alert1.wav", 1, Brushes.DarkGreen, Brushes.White);
         }
@@ -388,9 +457,9 @@ namespace NinjaTrader.NinjaScript.Strategies
                 return false;
             }
 
-            if (ExecutionMode == LukeBridgeExecutionMode.LimitAtLukeEntry && signal.Entry > lastPrice + MaxMarketableEntryPoints)
+            if (ExecutionMode == LukeBridgeExecutionMode.LimitAtLukeEntry && Math.Abs(signal.Entry - lastPrice) > MaxMarketableEntryPoints)
             {
-                rejectReason = FormatPriceReject("buy limit would be marketable too far above current market", signal, lastPrice);
+                rejectReason = FormatPriceReject("entry is outside current market wiggle", signal, lastPrice);
                 return false;
             }
 
@@ -469,13 +538,15 @@ namespace NinjaTrader.NinjaScript.Strategies
 
         private bool IsAccountAllowed()
         {
-            if (AllowLiveAccounts)
-                return true;
             string accountName = GetCurrentAccountName();
+            if (IsSimOrPlaybackAccount(accountName))
+                return true;
+
             string allowedAccount = string.IsNullOrWhiteSpace(AllowedAccountName) ? string.Empty : AllowedAccountName.Trim();
-            return accountName.StartsWith("Sim", StringComparison.OrdinalIgnoreCase)
-                || accountName.StartsWith("Playback", StringComparison.OrdinalIgnoreCase)
-                || (!string.IsNullOrEmpty(allowedAccount) && string.Equals(accountName, allowedAccount, StringComparison.OrdinalIgnoreCase));
+            if (string.IsNullOrEmpty(allowedAccount) || !string.Equals(accountName, allowedAccount, StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            return AllowLiveAccounts && IsLiveBridgeArmed();
         }
 
         private string GetCurrentAccountName()
@@ -485,10 +556,25 @@ namespace NinjaTrader.NinjaScript.Strategies
 
         private string AccountGuardDescription()
         {
-            if (AllowLiveAccounts)
-                return "all accounts allowed";
             string allowedAccount = string.IsNullOrWhiteSpace(AllowedAccountName) ? "" : AllowedAccountName.Trim();
-            return string.IsNullOrEmpty(allowedAccount) ? "Sim*/Playback* only" : "Sim*/Playback* or exact " + allowedAccount;
+            if (string.IsNullOrEmpty(allowedAccount))
+                return "Sim*/Playback* only; live disabled until exact account, AllowLiveAccounts=true, and arm phrase are set";
+            if (!AllowLiveAccounts)
+                return "Sim*/Playback* only; exact " + allowedAccount + " configured but live toggle is off";
+            if (!IsLiveBridgeArmed())
+                return "Sim*/Playback* only; exact " + allowedAccount + " configured but arm phrase is missing";
+            return "Sim*/Playback* or exact armed account " + allowedAccount;
+        }
+
+        private static bool IsSimOrPlaybackAccount(string accountName)
+        {
+            return accountName.StartsWith("Sim", StringComparison.OrdinalIgnoreCase)
+                || accountName.StartsWith("Playback", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private bool IsLiveBridgeArmed()
+        {
+            return string.Equals((LiveBridgeArmCode ?? string.Empty).Trim(), LiveBridgeArmPhrase, StringComparison.Ordinal);
         }
 
         private bool IsInstrumentAllowed(LukeSignal signal)

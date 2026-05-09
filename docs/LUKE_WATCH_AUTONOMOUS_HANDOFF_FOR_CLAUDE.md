@@ -4,13 +4,13 @@ This is the handoff package for the final broker-adapter step. It intentionally 
 
 ## Current Files
 
-- `tradingview/luke-watch-production-test.pine`
+- `tradingview/history/production-ledger/luke-watch-production-test.pine`
   - Chart-facing indicator.
   - Realistic accounting default: `entry_only_0_25`.
   - Shows LONG entry boxes and per-trade result lines.
   - Does not submit orders.
 
-- `tradingview/luke-watch-production-test-simulation.strategy.pine`
+- `tradingview/history/production-ledger/luke-watch-production-test-simulation.strategy.pine`
   - TradingView Strategy Tester version.
   - Emits `strategy.entry` / `strategy.exit` broker-emulator orders only.
   - Alerts are explicitly non-executable.
@@ -37,7 +37,7 @@ Claude should receive:
 
 1. `trading/luke-watch-safety-checks.js`
 2. `tests/luke-watch-safety-checks.test.js`
-3. `tradingview/luke-watch-production-test-simulation.strategy.pine`
+3. `tradingview/history/production-ledger/luke-watch-production-test-simulation.strategy.pine`
 4. this document
 5. the selected broker API documentation
 

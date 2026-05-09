@@ -86,7 +86,7 @@ async function waitForTradingFrame(page) {
   await frame.getByText('Trading Bot Window').waitFor({ timeout: 15000 });
   await frame.getByText('Katbot / SPX Heatmap Feed').waitFor({ timeout: 15000 });
   await frame.getByText('Luke Watch Pine Script').waitFor({ timeout: 15000 });
-  await frame.getByText('tradingview/luke-level-reclaim-watch.pine').waitFor({ timeout: 15000 });
+  await frame.getByText('tradingview/LUKE-WATCH-FLAGSHIP-v4-MANCINI-CONTEXT-NINJA-BRIDGE.pine').waitFor({ timeout: 15000 });
   await frame.getByText('ACK Bobby heatmap 10:03').waitFor({ timeout: 15000 });
   await frame.waitForFunction(() => {
     const focus = document.querySelector('#chart-focus-summary')?.textContent || '';

@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Luke Ninja Parity Handoff - 2026-05-08</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #101114;
+      --panel: #17191f;
+      --panel2: #20232b;
+      --text: #f3f4f6;
+      --muted: #b7bdc9;
+      --line: #343946;
+      --green: #65d67d;
+      --red: #ff6f6f;
+      --yellow: #ffd166;
+      --blue: #77b7ff;
+      --orange: #ffb15c;
+      --mono: "Consolas", "SFMono-Regular", "Menlo", monospace;
+      --sans: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 15px/1.5 var(--sans);
+    }
+    main {
+      width: min(1180px, calc(100vw - 36px));
+      margin: 0 auto;
+      padding: 28px 0 64px;
+    }
+    h1, h2, h3 { line-height: 1.15; margin: 0; }
+    h1 { font-size: 34px; letter-spacing: 0; }
+    h2 { font-size: 22px; margin-top: 32px; border-top: 1px solid var(--line); padding-top: 24px; }
+    h3 { font-size: 17px; margin-top: 20px; color: var(--yellow); }
+    p { margin: 10px 0; }
+    a { color: var(--blue); }
+    code, pre {
+      font-family: var(--mono);
+      font-size: 13px;
+    }
+    code {
+      background: #0c0d10;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+    pre {
+      background: #0b0c0f;
+      color: #f6f7fb;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+    .hero {
+      background: linear-gradient(180deg, #1f2430, #16181f);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 24px;
+      box-shadow: 0 14px 44px rgba(0, 0, 0, 0.28);
+    }
+    .hero .meta {
+      color: var(--muted);
+      font-family: var(--mono);
+      margin-top: 10px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .card strong { color: var(--text); }
+    .ok { color: var(--green); font-weight: 700; }
+    .warn { color: var(--yellow); font-weight: 700; }
+    .bad { color: var(--red); font-weight: 700; }
+    .info { color: var(--blue); font-weight: 700; }
+    .tag {
+      display: inline-block;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 2px 8px;
+      margin: 0 4px 4px 0;
+      color: var(--muted);
+      background: #111318;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--panel2);
+      color: var(--text);
+      font-weight: 700;
+    }
+    tr:last-child td { border-bottom: 0; }
+    ul, ol { padding-left: 22px; }
+    li { margin: 6px 0; }
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 18px;
+    }
+    .callout {
+      border-left: 4px solid var(--yellow);
+      background: #1d1a10;
+      padding: 12px 14px;
+      margin: 14px 0;
+    }
+    .danger {
+      border-left-color: var(--red);
+      background: #211416;
+    }
+    .success {
+      border-left-color: var(--green);
+      background: #102015;
+    }
+    @media (max-width: 850px) {
+      .grid, .two-col { grid-template-columns: 1fr; }
+      main { width: min(100vw - 22px, 1180px); padding-top: 14px; }
+      h1 { font-size: 27px; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <h1>Luke Ninja Parity Handoff</h1>
+    <p class="meta">Generated 2026-05-08, America/New_York. Workspace: <code>C:\Users\conor\luke</code>.</p>
+    <p>This is the no-romance, no-fan-fiction state handoff for the Luke TradingView-to-Ninja parity work. The locked Pine works as the visual truth source. The job now is getting NinjaTrader to show enough of the same picture that the operator can verify parity before promoting native Ninja execution.</p>
+    <p><span class="tag">Measure twice, cut once</span><span class="tag">Do not edit flagship Pine</span><span class="tag">Chart-visible parity first</span><span class="tag">Ninja UI compile required</span></p>
+  </section>
+
+  <h2>Executive Truth</h2>
+  <div class="grid">
+    <div class="card">
+      <strong class="ok">What is working</strong>
+      <p>The standalone Ninja indicator is installed and visible on the chart. It reads the Pine bridge event file because the screenshot shows <code>pine 27/8</code>. It is chart-only and has no order APIs.</p>
+    </div>
+    <div class="card">
+      <strong class="warn">What is not yet parity</strong>
+      <p>The screenshot shows <code>levels 0</code> and <code>saty prev -- atr --</code>. That means Ninja is not yet showing the same level field as TradingView. Do not call native parity proven until those are fixed on the chart.</p>
+    </div>
+    <div class="card">
+      <strong class="info">What changed after the screenshot</strong>
+      <p>The overlay now prints explicit diagnostics instead of silently showing blank values: empty manual level file, insufficient daily bars for Saty, and whether Saty is ready.</p>
+    </div>
+    <div class="card">
+      <strong class="bad">Hard rule</strong>
+      <p>Do not edit <code>C:\Users\conor\luke\tradingview\LUKE-WATCH-FLAGSHIP-v4-MANCINI-CONTEXT-NINJA-BRIDGE.pine</code> unless the user explicitly says to change the flagship Pine.</p>
+    </div>
+  </div>
+
+  <h2>Screenshot Diagnosis</h2>
+  <table>
+    <thead>
+      <tr><th>Observed in screenshot</th><th>Meaning</th><th>Fix / next action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>LukeParityOverlayIndicator(...)</code> appears in the top-left chart label.</td>
+        <td>The indicator is attached to the ES 06-26 5-minute chart and rendering.</td>
+        <td>No install issue for the indicator itself. If it disappears later, compile NinjaScript and re-add <code>LukeParityOverlayIndicator</code> from Indicators.</td>
+      </tr>
+      <tr>
+        <td>Top-right overlay says <code>pine 27/8</code>.</td>
+        <td>The indicator is reading <code>C:\Users\conor\luke\state\events\ninjatrader-bridge.jsonl</code>. Pine bridge history is visible to Ninja.</td>
+        <td>If this ever returns <code>pine 0/0</code>, the bridge event path is wrong or the event file has not received TradingView alerts today.</td>
+      </tr>
+      <tr>
+        <td>Top-right overlay says <code>native 0/0</code>.</td>
+        <td>The native shadow telemetry file has no native LONG/CANCEL events for the session. The chart's plotted <code>LukeLongT1/T2</code> order markers are likely from the bridge strategy/order history, not the native shadow port.</td>
+        <td>Run the native strategy in <code>Shadow</code> when doing side-by-side comparison. Then check <code>C:\Users\conor\luke\state\events\ninja-native-shadow.jsonl</code>.</td>
+      </tr>
+      <tr>
+        <td>Overlay says <code>levels 0</code>.</td>
+        <td>The manual external level file is empty. Current file content was just a blank line.</td>
+        <td>Put comma-separated Mancini/current external prices into <code>C:\Users\conor\luke\data\ninjatrader\luke-native-levels.txt</code>, or fix the export pipeline that should populate it.</td>
+      </tr>
+      <tr>
+        <td>Overlay says <code>saty prev -- atr --</code>.</td>
+        <td>The indicator could not calculate Saty from Ninja's daily secondary series. Most likely the chart did not load enough daily bars for ATR(14).</td>
+        <td>In NinjaTrader chart Data Series, set <code>Days to load</code> to at least <code>30</code>, preferably <code>60</code>, then right-click chart and reload historical data. The patched overlay will now say exactly how many daily bars it has.</td>
+      </tr>
+      <tr>
+        <td>Many green <code>PINE LONG</code> text labels are clustered around past signals.</td>
+        <td>The overlay is marking Pine bridge LONG events from the local event file. These are debug markers, not new orders.</td>
+        <td>Useful for visual audit. If too noisy, set <code>Show event markers = false</code> in the indicator properties.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>Bottom line from the screenshot:</strong> the indicator is alive. The missing pieces are not mysterious. The external level file is empty, and Saty needs enough daily history loaded inside Ninja. That is not an LLM latency issue and not a TradingView bridge issue.
+  </div>
+
+  <h2>Fix Applied In This Pass</h2>
+  <ul>
+    <li>Patched <code>C:\Users\conor\luke\ninjatrader\LukeParityOverlayIndicator.cs</code> so the overlay reports exact causes for missing Saty and missing manual levels.</li>
+    <li>Fixed a Saty refresh bug: the indicator was checking for a source exactly named <code>saty</code>, but actual Saty source names are <code>saty_prev_close</code>, <code>saty_call_trigger</code>, etc. It now checks <code>Source.StartsWith("saty", StringComparison.Ordinal)</code>.</li>
+    <li>Installed the updated indicator into <code>C:\Users\conor\OneDrive\Documents\NinjaTrader 8\bin\Custom\Indicators\LukeParityOverlayIndicator.cs</code>.</li>
+    <li>Kept the indicator chart-only. It still contains no <code>EnterLong</code>, <code>SubmitOrder</code>, <code>SetStopLoss</code>, <code>SetProfitTarget</code>, or <code>CancelOrder</code>.</li>
+  </ul>
+
+  <h2>Current Verification</h2>
+  <table>
+    <thead>
+      <tr><th>Check</th><th>Result</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>cmd /c npx vitest run tests\ninja-parity-overlay-indicator.test.js tests\ninja-native-source.test.js tests\ninjatrader-alert-bridge.test.js tests\ninja-bridge-latency.test.js tests\ninja-native-telemetry.test.js tests\ninja-native-install.test.js tests\ninja-native-level-export.test.js tests\ninja-parity-ledger.test.js --pool=threads --maxWorkers=1</code></td><td class="ok">8 files passed, 30 tests passed.</td></tr>
+      <tr><td>Direct C# compile of <code>LukeParityOverlayIndicator.cs</code> using Roslyn <code>csc.exe</code>.</td><td class="ok">Passed.</td></tr>
+      <tr><td><code>node scripts\install-ninja-parity-overlay.js</code></td><td class="ok"><code>target_same=true</code>, <code>project_changed=false</code>.</td></tr>
+      <tr><td>Order API scan for <code>LukeParityOverlayIndicator.cs</code>.</td><td class="ok"><code>indicator-order-api-gate-ok</code>.</td></tr>
+      <tr><td>Full <code>NinjaTrader.Custom.csproj</code> MSBuild from shell.</td><td class="warn">Blocked because the machine has no registered .NET SDK. Use NinjaTrader UI compile as the actual gate.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Path Map</h2>
+  <table>
+    <thead>
+      <tr><th>Purpose</th><th>Path</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Locked TradingView truth source</td>
+        <td><code>C:\Users\conor\luke\tradingview\LUKE-WATCH-FLAGSHIP-v4-MANCINI-CONTEXT-NINJA-BRIDGE.pine</code></td>
+        <td>Read-only unless user explicitly asks to change flagship Pine.</td>
+      </tr>
+      <tr>
+        <td>Shareable sanitized Pine</td>
+        <td><code>C:\Users\conor\luke\tradingview\share\LUKE-WATCH-FLAGSHIP-v4-MANCINI-CONTEXT-NINJA-BRIDGE-SANITIZED.pine</code></td>
+        <td>For sending to a friend. Should not contain private bridge token.</td>
+      </tr>
+      <tr>
+        <td>Ninja chart-only parity indicator source</td>
+        <td><code>C:\Users\conor\luke\ninjatrader\LukeParityOverlayIndicator.cs</code></td>
+        <td>Shows scorecard, Saty diagnostics, manual levels, and event markers. No orders.</td>
+      </tr>
+      <tr>
+        <td>Installed indicator target</td>
+        <td><code>C:\Users\conor\OneDrive\Documents\NinjaTrader 8\bin\Custom\Indicators\LukeParityOverlayIndicator.cs</code></td>
+        <td>Run NinjaScript compile after install.</td>
+      </tr>
+      <tr>
+        <td>Ninja native shadow/execution strategy source</td>
+        <td><code>C:\Users\conor\luke\ninjatrader\LukeNativeShadowStrategy.cs</code></td>
+        <td>Native port. Defaults to <code>Shadow</code>. Guarded execution modes exist but are not parity-approved yet.</td>
+      </tr>
+      <tr>
+        <td>Installed native strategy target</td>
+        <td><code>C:\Users\conor\OneDrive\Documents\NinjaTrader 8\bin\Custom\Strategies\LukeNativeShadowStrategy.cs</code></td>
+        <td>Installed previously. Compile in Ninja UI.</td>
+      </tr>
+      <tr>
+        <td>Bridge strategy</td>
+        <td><code>C:\Users\conor\luke\ninjatrader\LukeAlertBridgeStrategy.cs</code></td>
+        <td>TradingView webhook-to-Ninja execution path. This is the older bridge path, not the native port.</td>
+      </tr>
+      <tr>
+        <td>Manual external level file</td>
+        <td><code>C:\Users\conor\luke\data\ninjatrader\luke-native-levels.txt</code></td>
+        <td>Currently empty in the screenshot. Put comma-separated prices here, for example <code>7408.25,7413.25,7418.50,7421.00</code>.</td>
+      </tr>
+      <tr>
+        <td>Pine bridge events</td>
+        <td><code>C:\Users\conor\luke\state\events\ninjatrader-bridge.jsonl</code></td>
+        <td>Indicator reads this as Pine-side LONG/CANCEL history. Screenshot proved it was readable.</td>
+      </tr>
+      <tr>
+        <td>Native telemetry events</td>
+        <td><code>C:\Users\conor\luke\state\events\ninja-native-shadow.jsonl</code></td>
+        <td>Native strategy writes here. If native LONG/CANCEL stays zero, inspect this file first.</td>
+      </tr>
+      <tr>
+        <td>Parity ledger output</td>
+        <td><code>C:\Users\conor\luke\artifacts\research\ninja-parity-today\2026-05-08\ledger.md</code></td>
+        <td>Current status remains review until native shadow emits matching events.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Commands That Matter</h2>
+  <div class="two-col">
+    <div>
+      <h3>Install / dry-run</h3>
+      <pre>node scripts\install-ninja-parity-overlay.js
+node scripts\install-ninja-parity-overlay.js --write
+node scripts\install-ninja-native-shadow.js
+node scripts\install-ninja-native-shadow.js --write</pre>
+    </div>
+    <div>
+      <h3>Proof tests</h3>
+      <pre>cmd /c npx vitest run tests\ninja-parity-overlay-indicator.test.js tests\ninja-native-source.test.js tests\ninjatrader-alert-bridge.test.js tests\ninja-bridge-latency.test.js tests\ninja-native-telemetry.test.js tests\ninja-native-install.test.js tests\ninja-native-level-export.test.js tests\ninja-parity-ledger.test.js --pool=threads --maxWorkers=1</pre>
+    </div>
+  </div>
+  <div class="two-col">
+    <div>
+      <h3>Parity ledger</h3>
+      <pre>cmd /c npm run ninja:parity:ledger</pre>
+      <p>PowerShell blocks <code>npm.ps1</code> on this machine, so use <code>cmd /c npm ...</code>.</p>
+    </div>
+    <div>
+      <h3>Native source gate</h3>
+      <pre>node scripts\check-ninja-native-port.js</pre>
+      <p>This checks source rules and telemetry readiness. It is not the same as visual chart parity.</p>
+    </div>
+  </div>
+
+  <h2>NinjaTrader UI Steps</h2>
+  <ol>
+    <li>Open NinjaTrader.</li>
+    <li>Open <strong>New &gt; NinjaScript Editor</strong>.</li>
+    <li>Right-click inside the editor and choose <strong>Compile</strong>. If compile fails, fix compile errors before touching trading logic.</li>
+    <li>Open ES 06-26 5-minute chart.</li>
+    <li>Right-click chart &gt; <strong>Data Series</strong> &gt; set <strong>Days to load</strong> to at least <code>30</code>, preferably <code>60</code>.</li>
+    <li>Right-click chart &gt; <strong>Reload All Historical Data</strong>.</li>
+    <li>Add <code>LukeParityOverlayIndicator</code> from Indicators.</li>
+    <li>Confirm overlay no longer says <code>saty WAIT daily bars</code>. If it still does, Ninja is not loading enough daily history for the secondary daily series.</li>
+    <li>Populate <code>data\ninjatrader\luke-native-levels.txt</code> with current external/Mancini levels if you need those to match TradingView input levels.</li>
+    <li>Add <code>LukeNativeShadowStrategy</code> separately only for native parity testing. Leave it in <code>Shadow</code> until visual/event parity is proven.</li>
+  </ol>
+
+  <h2>Decision Tree For The Next Debug Pass</h2>
+  <table>
+    <thead>
+      <tr><th>Symptom</th><th>Likely cause</th><th>Do this first</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Indicator not visible in Ninja indicators list.</td>
+        <td>NinjaScript not compiled after installer copied file.</td>
+        <td>Compile inside NinjaScript Editor. Then dry-run <code>node scripts\install-ninja-parity-overlay.js</code> and confirm <code>target_same=true</code>.</td>
+      </tr>
+      <tr>
+        <td>Overlay visible but <code>pine 0/0</code>.</td>
+        <td>Wrong bridge file path or no bridge events for current date.</td>
+        <td>Open <code>state\events\ninjatrader-bridge.jsonl</code>. Confirm today's LONG/CANCEL rows exist.</td>
+      </tr>
+      <tr>
+        <td>Overlay visible but <code>native 0/0</code>.</td>
+        <td>Native strategy is not running in shadow, or no native signals have fired yet.</td>
+        <td>Enable <code>LukeNativeShadowStrategy</code> in <code>Shadow</code>, then tail <code>state\events\ninja-native-shadow.jsonl</code>.</td>
+      </tr>
+      <tr>
+        <td>Overlay says manual levels empty.</td>
+        <td><code>luke-native-levels.txt</code> is empty.</td>
+        <td>Paste comma-separated current Mancini/external levels into <code>data\ninjatrader\luke-native-levels.txt</code>. Do not add labels or dates to that file because the strategy parses numbers.</td>
+      </tr>
+      <tr>
+        <td>Overlay says Saty waiting for daily bars.</td>
+        <td>Ninja secondary daily series does not have at least <code>ATR length + 1</code> daily bars.</td>
+        <td>Set chart days to load to <code>60</code>, reload historical data, and make sure the instrument has daily historical data available.</td>
+      </tr>
+      <tr>
+        <td>Ninja chart levels look different from TradingView.</td>
+        <td>Either TradingView has manually pasted Mancini/context levels not present in Luke, or Ninja daily session data differs from TradingView's Saty data.</td>
+        <td>First compare manual levels. Then compare Saty previous close and ATR shown in overlay to TradingView's Saty values.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Current Dirty Worktree Warning</h2>
+  <div class="callout danger">
+    <p>The repo is dirty from several prior tasks. Do not run broad cleanup or formatting. Do not stage everything blindly. The current parity files are mixed with older docs, history moves, frontend files, and the locked flagship Pine showing modified in git status from previous work.</p>
+  </div>
+  <p>High-risk dirty paths include:</p>
+  <pre>tradingview\LUKE-WATCH-FLAGSHIP-v4-MANCINI-CONTEXT-NINJA-BRIDGE.pine
+tradingview\README.md
+trading-window.html
+lib\backtest-data\saty-pine-watch.js
+package.json
+ninjatrader\LukeAlertBridgeStrategy.cs</pre>
+
+  <h2>Files Added Or Touched For Ninja Parity</h2>
+  <table>
+    <thead>
+      <tr><th>Path</th><th>Role</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>ninjatrader\LukeParityOverlayIndicator.cs</code></td><td>Standalone chart-only visual overlay for Ninja parity. Patched after screenshot to expose missing Saty/level causes.</td></tr>
+      <tr><td><code>ninjatrader\LukeNativeShadowStrategy.cs</code></td><td>Native strategy port. Its ledger overlay was changed to draw before early returns. Defaults to Shadow.</td></tr>
+      <tr><td><code>scripts\install-ninja-parity-overlay.js</code></td><td>Copies the indicator into NinjaTrader Custom Indicators and adds csproj compile include.</td></tr>
+      <tr><td><code>scripts\install-ninja-native-shadow.js</code></td><td>Copies the native strategy into NinjaTrader Custom Strategies and adds csproj compile include.</td></tr>
+      <tr><td><code>tests\ninja-parity-overlay-indicator.test.js</code></td><td>Source gate for indicator: chart-only, local file defaults, Saty diagnostics, no order APIs.</td></tr>
+      <tr><td><code>tests\ninja-native-source.test.js</code></td><td>Source gate for native strategy defaults, guardrails, and overlay draw timing.</td></tr>
+      <tr><td><code>lib\ninja-parity-ledger.js</code></td><td>Compares Pine bridge events to native telemetry rows.</td></tr>
+      <tr><td><code>scripts\build-ninja-parity-ledger.js</code></td><td>Writes parity report under <code>artifacts\research\ninja-parity-today</code>.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Fresh-Chat Prompt For Next Codex Run</h2>
+  <pre>We are in C:\Users\conor\luke on Windows/PowerShell. The locked TradingView truth source is tradingview\LUKE-WATCH-FLAGSHIP-v4-MANCINI-CONTEXT-NINJA-BRIDGE.pine. You may read it but must not edit it unless the user explicitly says to change flagship Pine.
+
+Immediate job: continue NinjaTrader visual parity. Read reports\ninja-parity-handoff-2026-05-08.html first. The latest screenshot showed LukeParityOverlayIndicator visible on ES 06-26 5m, with pine 27/8, native 0/0, levels 0, saty prev -- atr --. Diagnosis: indicator is alive, bridge file readable, manual level file is empty, and Ninja did not have enough daily bars for Saty ATR(14). The indicator was patched to show explicit diagnostics: empty manual file, daily bars loaded, and Saty status.
+
+Important paths:
+- Indicator source: ninjatrader\LukeParityOverlayIndicator.cs
+- Installed indicator: C:\Users\conor\OneDrive\Documents\NinjaTrader 8\bin\Custom\Indicators\LukeParityOverlayIndicator.cs
+- Native strategy source: ninjatrader\LukeNativeShadowStrategy.cs
+- Installed strategy: C:\Users\conor\OneDrive\Documents\NinjaTrader 8\bin\Custom\Strategies\LukeNativeShadowStrategy.cs
+- Manual levels: data\ninjatrader\luke-native-levels.txt
+- Pine bridge events: state\events\ninjatrader-bridge.jsonl
+- Native telemetry: state\events\ninja-native-shadow.jsonl
+- Parity ledger: artifacts\research\ninja-parity-today\2026-05-08\ledger.md
+
+Do not broad-clean the repo. It is dirty. Do not stage all. Use apply_patch for edits. After every edit run focused tests. Use cmd /c for npm/npx if PowerShell blocks scripts.
+
+Verification commands:
+node scripts\install-ninja-parity-overlay.js
+node scripts\install-ninja-parity-overlay.js --write
+node scripts\install-ninja-native-shadow.js
+cmd /c npx vitest run tests\ninja-parity-overlay-indicator.test.js tests\ninja-native-source.test.js tests\ninjatrader-alert-bridge.test.js tests\ninja-bridge-latency.test.js tests\ninja-native-telemetry.test.js tests\ninja-native-install.test.js tests\ninja-native-level-export.test.js tests\ninja-parity-ledger.test.js --pool=threads --maxWorkers=1
+cmd /c npm run ninja:parity:ledger
+
+The next true acceptance gate is visual: Ninja must show the same Saty/manual levels and enough LONG/CANCEL/ledger context for the user to compare it to TradingView. Do not promote native execution from this until the chart-level parity is visually sane.</pre>
+
+  <h2>What To Do Next</h2>
+  <ol>
+    <li>Compile NinjaScript inside NinjaTrader.</li>
+    <li>Reload ES chart with at least 30-60 days loaded.</li>
+    <li>Confirm the overlay now reports either <code>saty OK daily bars N</code> or a precise waiting message.</li>
+    <li>Populate <code>luke-native-levels.txt</code> with the actual external levels used in TradingView.</li>
+    <li>Run a side-by-side visual check: TradingView flagship vs Ninja indicator.</li>
+    <li>Only after visual parity is acceptable, enable <code>LukeNativeShadowStrategy</code> in Shadow and compare native events to Pine bridge events with <code>cmd /c npm run ninja:parity:ledger</code>.</li>
+  </ol>
+
+  <div class="callout success">
+    <strong>Current state in one sentence:</strong> Ninja can now show a real parity surface, and the blank screenshot state has been turned into explicit operator diagnostics; the next proof is a Ninja UI compile plus enough loaded daily data and current manual levels.
+  </div>
+</main>
+</body>
+</html>

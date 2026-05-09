@@ -6,7 +6,9 @@ process.env.LUKE_NINJA_BRIDGE_EVENTS_FILE = path.join(__dirname, '..', 'tmp', 't
 
 const {
   LATEST_SIGNAL_FILE,
+  bridgeLongsAccepted,
   normalizeTimestamp,
+  latencyMs,
   normalizeLukeBridgePayload,
   normalizeLukeCancelPayload,
   normalizeLukePingPayload,
@@ -16,6 +18,7 @@ const {
 } = require('../lib/ninjatrader-alert-bridge');
 
 const originalMaxQty = process.env.LUKE_NINJA_MAX_QTY;
+const originalAcceptLongs = process.env.LUKE_NINJA_BRIDGE_ACCEPT_LONGS;
 
 afterEach(() => {
   fs.rmSync(path.dirname(LATEST_SIGNAL_FILE), { recursive: true, force: true });
@@ -23,6 +26,11 @@ afterEach(() => {
     delete process.env.LUKE_NINJA_MAX_QTY;
   } else {
     process.env.LUKE_NINJA_MAX_QTY = originalMaxQty;
+  }
+  if (originalAcceptLongs === undefined) {
+    delete process.env.LUKE_NINJA_BRIDGE_ACCEPT_LONGS;
+  } else {
+    process.env.LUKE_NINJA_BRIDGE_ACCEPT_LONGS = originalAcceptLongs;
   }
 });
 
@@ -40,6 +48,7 @@ describe('NinjaTrader alert bridge', () => {
       class: 'MANCINI_RECLAIM',
       execution_model: 'confirmed_retest_limit',
       timestamp: '2026-05-07T10:31:00-04:00',
+      bar_time: '2026-05-07T10:30:00-04:00',
     }, new Date('2026-05-07T14:31:03Z'));
 
     expect(signal).toMatchObject({
@@ -55,6 +64,7 @@ describe('NinjaTrader alert bridge', () => {
       tp2: 7400,
       qty: 2,
       created_at: '2026-05-07T14:31:00.000Z',
+      bar_time: '2026-05-07T14:30:00.000Z',
       received_at: '2026-05-07T14:31:03.000Z',
     });
   });
@@ -64,6 +74,36 @@ describe('NinjaTrader alert bridge', () => {
     expect(normalizeTimestamp(String(ms), new Date('2026-05-07T14:31:03Z'))).toBe('2026-05-07T14:31:00.000Z');
     expect(normalizeTimestamp(String(Math.floor(ms / 1000)), new Date('2026-05-07T14:31:03Z'))).toBe('2026-05-07T14:31:00.000Z');
     expect(normalizeTimestamp('not-a-date', new Date('2026-05-07T14:31:03Z'))).toBe('2026-05-07T14:31:03.000Z');
+  });
+
+  it('records source-to-Luke latency for bottleneck diagnostics', () => {
+    expect(latencyMs('2026-05-08T14:40:00.372Z', '2026-05-08T14:40:04.426Z')).toBe(4054);
+
+    const payload = saveLukeBridgeCommand({
+      id: 'luke-long-1778251200372-22-7413.25',
+      symbol: 'ESM26',
+      side: 'LONG',
+      entry: 7413.25,
+      stop: 7410,
+      tp1: 7415.25,
+      tp2: 7418.25,
+      qty: 2,
+      timestamp: '1778251200372',
+      source: 'luke-pine-ninja-bridge',
+    }, { now: new Date('2026-05-08T14:40:04.426Z'), allowLong: true });
+
+    expect(payload.signal.created_at).toBe('2026-05-08T14:40:00.372Z');
+    expect(payload.signal.received_at).toBe('2026-05-08T14:40:04.426Z');
+
+    const events = fs.readFileSync(process.env.LUKE_NINJA_BRIDGE_EVENTS_FILE, 'utf8').trim().split(/\r?\n/);
+    const event = JSON.parse(events.at(-1));
+    expect(event).toMatchObject({
+      id: 'luke-long-1778251200372-22-7413.25',
+      created_at: '2026-05-08T14:40:00.372Z',
+      received_at: '2026-05-08T14:40:04.426Z',
+      source_to_luke_ms: 4054,
+      source: 'luke-pine-ninja-bridge',
+    });
   });
 
   it('normalizes cancel commands without requiring order geometry', () => {
@@ -160,7 +200,7 @@ describe('NinjaTrader alert bridge', () => {
       class: 'SCALP_MAJOR',
       execution_model: 'confirmed_retest_limit',
       token: 'do-not-store',
-    }, { now: new Date('2026-05-07T14:31:03Z') });
+    }, { now: new Date('2026-05-07T14:31:03Z'), allowLong: true });
 
     const saved = JSON.parse(fs.readFileSync(LATEST_SIGNAL_FILE, 'utf8'));
     expect(saved.signal.id).toBe('sig-write-test');
@@ -170,6 +210,30 @@ describe('NinjaTrader alert bridge', () => {
     expect(saved.raw.token).toBeUndefined();
     expect(payload.signal.id).toBe(saved.signal.id);
     expect(path.basename(LATEST_SIGNAL_FILE)).toBe('latest-luke-signal.test.json');
+  });
+
+  it('accepts TradingView JSON payloads even when Express receives them as text', () => {
+    const payload = saveLukeBridgeCommand(JSON.stringify({
+      id: 'sig-text-body',
+      symbol: 'ESM26',
+      side: 'LONG',
+      entry: 7395.25,
+      stop: 7392.25,
+      tp1: 7397.25,
+      tp2: 7400,
+      qty: 2,
+      token: 'do-not-store',
+    }), { now: new Date('2026-05-07T14:31:03Z'), allowLong: true });
+
+    const saved = JSON.parse(fs.readFileSync(LATEST_SIGNAL_FILE, 'utf8'));
+    expect(payload.signal).toMatchObject({
+      id: 'sig-text-body',
+      type: 'LUKE_LONG',
+      side: 'LONG',
+      qty: 2,
+    });
+    expect(saved.signal.id).toBe('sig-text-body');
+    expect(saved.raw.token).toBeUndefined();
   });
 
   it('writes cancel commands as the latest Ninja bridge command', () => {
@@ -206,12 +270,60 @@ describe('NinjaTrader alert bridge', () => {
       tp1: 7397.25,
       tp2: 7400,
       qty: 1,
-    }, { now: new Date('2026-05-07T14:31:05Z') })).toThrow(/already cancelled/);
+    }, { now: new Date('2026-05-07T14:31:05Z'), allowLong: true })).toThrow(/already cancelled/);
 
     const saved = JSON.parse(fs.readFileSync(LATEST_SIGNAL_FILE, 'utf8'));
     expect(saved.signal).toMatchObject({
       id: 'sig-out-of-order',
       type: 'LUKE_CANCEL',
     });
+  });
+
+  it('keeps the Ninja bridge entry guard symmetric around current price', () => {
+    const source = fs.readFileSync(path.join(__dirname, '..', 'ninjatrader', 'LukeAlertBridgeStrategy.cs'), 'utf8');
+    expect(source).toContain('Math.Abs(signal.Entry - lastPrice) > MaxMarketableEntryPoints');
+    expect(source).toContain('entry is outside current market wiggle');
+  });
+
+  it('blocks TradingView bridge LONG writes unless the fallback path is explicitly armed', () => {
+    expect(bridgeLongsAccepted()).toBe(false);
+    expect(() => saveLukeBridgeCommand({
+      id: 'sig-disabled-long',
+      symbol: 'ESM26',
+      side: 'LONG',
+      entry: 7395.25,
+      stop: 7392.25,
+      tp1: 7397.25,
+      tp2: 7400,
+      qty: 1,
+    }, { now: new Date('2026-05-07T14:31:03Z') })).toThrow(/TradingView Ninja bridge LONGs are disabled/);
+
+    process.env.LUKE_NINJA_BRIDGE_ACCEPT_LONGS = 'true';
+    expect(bridgeLongsAccepted()).toBe(true);
+    const payload = saveLukeBridgeCommand({
+      id: 'sig-armed-long',
+      symbol: 'ESM26',
+      side: 'LONG',
+      entry: 7395.25,
+      stop: 7392.25,
+      tp1: 7397.25,
+      tp2: 7400,
+      qty: 1,
+    }, { now: new Date('2026-05-07T14:31:03Z') });
+    expect(payload.signal.id).toBe('sig-armed-long');
+  });
+
+  it('fails closed for live accounts even if a saved Ninja template flips AllowLiveAccounts', () => {
+    const source = fs.readFileSync(path.join(__dirname, '..', 'ninjatrader', 'LukeAlertBridgeStrategy.cs'), 'utf8');
+    expect(source).toContain('private const string LiveBridgeArmPhrase = "LUKE_BRIDGE_LIVE_ACK"');
+    expect(source).toContain('return AllowLiveAccounts && IsLiveBridgeArmed();');
+    expect(source).not.toContain('if (AllowLiveAccounts)\r\n                return true;');
+    expect(source).not.toContain('return "all accounts allowed"');
+  });
+
+  it('keeps bridge doctor order tests behind an explicit risk acknowledgement', () => {
+    const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'check-ninjatrader-bridge.js'), 'utf8');
+    expect(source).toContain('ORDER_TEST_ACK = "I_ACCEPT_NINJA_ORDER_TEST_RISK"');
+    expect(source).toContain('Refusing --order-test without LUKE_NINJA_ORDER_TEST_ACK=');
   });
 });

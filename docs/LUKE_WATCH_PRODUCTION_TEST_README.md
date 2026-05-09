@@ -2,7 +2,7 @@
 
 This README explains how to use the TradingView indicator we just built:
 
-- Source template: `tradingview/luke-watch-production-test.pine`
+- Source template: `tradingview/history/production-ledger/luke-watch-production-test.pine`
 - Paste-ready generated Pine: `artifacts/tradingview/luke-watch-production-test.generated.pine`
 
 Use the generated file when pasting into TradingView. It includes the current exported Mancini, Dubz, heatmap/GEX, and other Luke level inputs.

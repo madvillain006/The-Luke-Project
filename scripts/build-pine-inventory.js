@@ -17,13 +17,18 @@ function listTrackedPine() {
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'ignore'],
     }).split(/\r?\n/).filter(file => file.endsWith('.pine')).map(file => file.replace(/\\/g, '/')));
-  } catch {
-    return new Set();
+  } catch (err) {
+    throw new Error(`Unable to inspect git-tracked Pine files: ${err.message}`);
   }
 }
 
-function classifyFamily(name) {
-  const lower = name.toLowerCase();
+function classifyFamily(file) {
+  const lower = file.toLowerCase();
+  if (lower.includes('history/ninja-bridge/')) return 'historical-ninja-bridge';
+  if (lower.includes('history/pre-ninja/')) return 'historical-pre-ninja';
+  if (lower.includes('history/production-ledger/')) return 'historical-production-ledger';
+  if (lower.includes('history/level-reclaim/')) return 'historical-level-reclaim';
+  if (lower.includes('support/')) return 'supporting-source';
   if (lower.includes('production-test')) return 'production-test-ledger';
   if (lower.includes('level-reclaim')) return 'level-reclaim-base';
   if (lower.includes('flagship')) return 'flagship-candidate';
@@ -35,7 +40,8 @@ function classifyFamily(name) {
 function analyzeFile(file, tracked) {
   const full = path.join(PINE_DIR, file);
   const text = fs.readFileSync(full, 'utf8');
-  const rel = `tradingview/${file}`;
+  const normalizedFile = file.replace(/\\/g, '/');
+  const rel = `tradingview/${normalizedFile}`;
   const mode = /\bstrategy\s*\(/.test(text) || /\.strategy\.pine$/i.test(file)
     ? 'strategy'
     : /\bindicator\s*\(/.test(text) ? 'indicator' : 'unknown';
@@ -46,7 +52,7 @@ function analyzeFile(file, tracked) {
   return {
     file: rel,
     bytes: fs.statSync(full).size,
-    family: classifyFamily(file),
+    family: classifyFamily(normalizedFile),
     mode,
     alert_conditions: alertConditions,
     strategy_calls: strategyCalls,
@@ -56,6 +62,16 @@ function analyzeFile(file, tracked) {
     allowed_use: 'visual/watchlist/research only until compile and signoff',
     risk: likelyExecutionRisk ? 'needs_explicit_gate_review' : 'standard_visual_review',
   };
+}
+
+function listPineFilesRecursive(dir = PINE_DIR, prefix = '') {
+  return fs.readdirSync(dir, { withFileTypes: true })
+    .flatMap((entry) => {
+      const full = path.join(dir, entry.name);
+      const rel = prefix ? path.join(prefix, entry.name) : entry.name;
+      if (entry.isDirectory()) return listPineFilesRecursive(full, rel);
+      return entry.isFile() && entry.name.endsWith('.pine') ? [rel] : [];
+    });
 }
 
 function renderMarkdown(inventory) {
@@ -116,8 +132,7 @@ function renderMarkdown(inventory) {
 
 function main() {
   const tracked = listTrackedPine();
-  const files = fs.readdirSync(PINE_DIR)
-    .filter(file => file.endsWith('.pine'))
+  const files = listPineFilesRecursive()
     .sort((a, b) => a.localeCompare(b));
   const inventory = files.map(file => analyzeFile(file, tracked));
   fs.mkdirSync(path.dirname(OUT_MD), { recursive: true });

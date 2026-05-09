@@ -1,0 +1,381 @@
+{
+  "id": "2026-05-08-ai-repo-integration-plan",
+  "title": "AI repo integration plan for Luke",
+  "status": "active",
+  "active_goal_id": "goal-1",
+  "created_at": "2026-05-08T11:27:12Z",
+  "updated_at": "2026-05-08T11:27:12Z",
+  "goals": [
+    {
+      "id": "goal-1",
+      "title": "Freeze integration baseline",
+      "objective": "Capture the current state of reference clones, Luke git status, and existing Radar, memory, dashboard, and Katbot integration seams before implementation.",
+      "rationale": "Luke already has active dirty work and working Radar/Katbot/UI paths; integration should start from exact evidence.",
+      "scope": [
+        "Record `git status --short --branch`.",
+        "Verify `tools/reference-repos/` contains the ten selected shallow clones.",
+        "Record the current Radar routes in `agents/agent-00-brain.js`.",
+        "Record the current UI surfaces: `radar-dashboard.html`, `luke-shell.html`, `brain-dashboard.html`, `operator-v2.html`, `trading-window.html`.",
+        "Record the current Katbot capture and broadcast seams in `agents/agent-14-kat.js`."
+      ],
+      "non_goals": [
+        "No implementation.",
+        "No dependency installation.",
+        "No trading-path edits."
+      ],
+      "stop_condition": "A baseline section exists in the implementation report with exact paths and current behavior.",
+      "acceptance_criteria": [
+        "Reference clone list and commits are recorded.",
+        "Radar, memory, UI, and Katbot seam files are listed.",
+        "Existing user-owned dirty files are explicitly left untouched."
+      ],
+      "validation": [
+        "git status --short --branch",
+        "Get-ChildItem tools/reference-repos -Directory",
+        "rg -n \"radar|Katbot|companion-memory|operator-v2|trading-window\" agents lib *.html index.js"
+      ],
+      "depends_on": [],
+      "status": "ready",
+      "result_summary": null,
+      "evidence": [],
+      "risks": [
+        "A dirty worktree can hide unrelated user changes."
+      ],
+      "assumptions": [
+        "The existing dirty trading/NinjaTrader work remains user-owned."
+      ]
+    },
+    {
+      "id": "goal-2",
+      "title": "Add reference repo registry",
+      "objective": "Create a Luke-native registry describing each external reference repo, its local path, upstream URL, commit, category, and approved Luke use.",
+      "rationale": "A registry prevents the cloned repos from becoming unmanaged mystery folders or accidental runtime dependencies.",
+      "scope": [
+        "Add `config/ai-reference-repos.json` or equivalent.",
+        "Add a small reader module such as `lib/reference-repos/registry.js`.",
+        "Include local path, upstream URL, checked-out commit, license when available, category, allowed surfaces, and banned surfaces.",
+        "Add tests for registry loading and missing-path behavior."
+      ],
+      "non_goals": [
+        "Do not import upstream repo source into Luke runtime.",
+        "Do not fetch network updates automatically."
+      ],
+      "stop_condition": "Luke can load and summarize the reference repo registry without scanning arbitrary files.",
+      "acceptance_criteria": [
+        "The registry names all ten repos.",
+        "Each repo has allowed and disallowed Luke surfaces.",
+        "Missing clone directories degrade to a clear warning, not a crash."
+      ],
+      "validation": [
+        "node --check lib/reference-repos/registry.js",
+        "cmd /c npx vitest run tests/reference-repos-registry.test.js"
+      ],
+      "depends_on": [
+        "goal-1"
+      ],
+      "status": "ready",
+      "result_summary": null,
+      "evidence": [],
+      "risks": [
+        "Over-modeling the registry could add unnecessary abstraction."
+      ],
+      "assumptions": [
+        "A simple JSON registry is enough for the first pass."
+      ]
+    },
+    {
+      "id": "goal-3",
+      "title": "Add agent and coder guidance",
+      "objective": "Integrate the useful guidance patterns from Karpathy, Matt Pocock, and selected SuperClaude material into concise Luke-specific instructions.",
+      "rationale": "The user wants collaborative/helpful behavior and better coder workflow without importing a large framework.",
+      "scope": [
+        "Create or update `AGENTS.md`.",
+        "Add Luke-specific engineering rules for small verified steps, explicit assumptions, helpful pushback, and dirty-worktree protection.",
+        "Add shared-language guidance in `docs/LUKE_SHARED_LANGUAGE.md` only if it reduces future ambiguity.",
+        "Preserve sacred trading smoke paths and human-gated trading rules."
+      ],
+      "non_goals": [
+        "Do not copy full upstream instruction files wholesale.",
+        "Do not make simple tasks ceremony-heavy."
+      ],
+      "stop_condition": "Luke has concise repo-local guidance that future Codex sessions can follow.",
+      "acceptance_criteria": [
+        "`AGENTS.md` is short, Luke-specific, and references external repos only as inspiration.",
+        "Guidance includes friendly collaboration, concrete pushback, and verifiable completion.",
+        "Guidance preserves `/status`, `/balance`, `/saty`, `/ready`, and `/alert`."
+      ],
+      "validation": [
+        "Get-Content AGENTS.md",
+        "rg -n \"status|balance|saty|ready|alert|human-gated|reference\" AGENTS.md"
+      ],
+      "depends_on": [
+        "goal-2"
+      ],
+      "status": "ready",
+      "result_summary": null,
+      "evidence": [],
+      "risks": [
+        "Too much guidance can slow small fixes."
+      ],
+      "assumptions": [
+        "The repo currently needs concise operational rules more than a full framework."
+      ]
+    },
+    {
+      "id": "goal-4",
+      "title": "Add Radar reference-review lane",
+      "objective": "Make Radar the approval surface for reference-derived ideas before they become implementation work.",
+      "rationale": "Radar already has source typing, review states, source health, item detail, and dashboard routes.",
+      "scope": [
+        "Add source types or themes for reference repos and integration ideas.",
+        "Add a script or module that turns selected registry entries into reviewable Radar items.",
+        "Add accept/reject/defer guidance so rejected ideas remain durable evidence.",
+        "Update `radar-dashboard.html` only as much as needed to filter or label reference ideas."
+      ],
+      "non_goals": [
+        "Do not turn Radar into a bookmark manager.",
+        "Do not ingest every upstream file."
+      ],
+      "stop_condition": "A small set of reference-derived integration ideas can be reviewed in Radar.",
+      "acceptance_criteria": [
+        "Radar can distinguish reference ideas from manual pastes and trading notes.",
+        "Accepted, contradicted, and archived states work for reference ideas.",
+        "Daily/Radar brief does not treat reference ideas as trading authority."
+      ],
+      "validation": [
+        "node --check lib/radar/ingest.js",
+        "node --check lib/brain/radar-layer.js",
+        "cmd /c npx vitest run tests/radar*.test.js",
+        "npm run prove:radar-daily-loop"
+      ],
+      "depends_on": [
+        "goal-2"
+      ],
+      "status": "ready",
+      "result_summary": null,
+      "evidence": [],
+      "risks": [
+        "Too many reference cards could bury real operator Radar items."
+      ],
+      "assumptions": [
+        "Only actionable reference ideas should enter Radar."
+      ]
+    },
+    {
+      "id": "goal-5",
+      "title": "Improve memory and context",
+      "objective": "Borrow MemPalace and Hermes memory concepts to add scoped recall and relationships without replacing Luke's existing storage.",
+      "rationale": "Luke already has companion memory and context bins, but needs better source scoping and recall reasons.",
+      "scope": [
+        "Add optional project/person/topic scopes to memory entries.",
+        "Add recall reason metadata to memory search results.",
+        "Add relationships between companion memory entries and Radar items.",
+        "Update `docs/LUKE_COMPANION_MEMORY.md` with current storage and boundaries."
+      ],
+      "non_goals": [
+        "Do not install MemPalace into Luke runtime yet.",
+        "Do not migrate memory storage in the first pass."
+      ],
+      "stop_condition": "Memory recall is more explainable and cross-linked to Radar while retaining current storage compatibility.",
+      "acceptance_criteria": [
+        "Existing memory tests still pass.",
+        "Old memory entries still load.",
+        "New scoped entries include safe defaults."
+      ],
+      "validation": [
+        "node --check lib/companion-memory.js",
+        "node --check lib/luke-context-bins.js",
+        "cmd /c npx vitest run tests/companion-memory*.test.js tests/luke-context-bins*.test.js",
+        "npm run prove:companion-memory"
+      ],
+      "depends_on": [
+        "goal-4"
+      ],
+      "status": "ready",
+      "result_summary": null,
+      "evidence": [],
+      "risks": [
+        "Memory schema changes can strand older entries if compatibility is not preserved."
+      ],
+      "assumptions": [
+        "JSON plus JSONL remain the first-pass storage model."
+      ]
+    },
+    {
+      "id": "goal-6",
+      "title": "Bridge Katbot into Radar and memory",
+      "objective": "Route selected Katbot captures, vision records, and confluence alerts into Radar and memory context as reviewable evidence.",
+      "rationale": "Katbot already captures Discord content and broadcasts context, but Radar can provide durable review state.",
+      "scope": [
+        "Add a narrow bridge from Katbot capture/confluence paths to Radar ingest.",
+        "Link Katbot Radar items back to message ids, source labels, and vision ids where available.",
+        "Expose accepted/rejected Katbot context to memory and operator readouts.",
+        "Keep all Katbot output read-only and human-gated."
+      ],
+      "non_goals": [
+        "Do not let Katbot create live candidates.",
+        "Do not post extra Discord messages.",
+        "Do not expand live vision model use without explicit approval."
+      ],
+      "stop_condition": "Katbot context has a review trail in Radar without changing execution behavior.",
+      "acceptance_criteria": [
+        "Katbot bridge is gated and deduped.",
+        "Radar items include provenance and review state.",
+        "Operator/trading windows still show read-only no-execution status."
+      ],
+      "validation": [
+        "node --check agents/agent-14-kat.js",
+        "node --check lib/kat-vision-store.js",
+        "cmd /c npx vitest run tests/*kat*.test.js tests/*radar*.test.js",
+        "npm run prove:katbot-plain",
+        "npm run prove:operator-v2",
+        "npm run prove:trading-window"
+      ],
+      "depends_on": [
+        "goal-4",
+        "goal-5"
+      ],
+      "status": "ready",
+      "result_summary": null,
+      "evidence": [],
+      "risks": [
+        "Katbot can generate high-volume events; bridge must avoid Radar spam."
+      ],
+      "assumptions": [
+        "Only selected or summarized Katbot events should become Radar items."
+      ]
+    },
+    {
+      "id": "goal-7",
+      "title": "Add research-loop metadata",
+      "objective": "Apply Qlib and autoresearch patterns to Luke research scripts through metadata, export formats, and keep/discard reports.",
+      "rationale": "Luke has many research and backtest scripts; they need stronger experiment discipline before more strategy work.",
+      "scope": [
+        "Define a lightweight research run metadata format.",
+        "Record hypothesis, input data window, commit, command, result, and accept/reject decision.",
+        "Add optional export shape for later Qlib-compatible analysis.",
+        "Apply first to one bounded research lane before broad rollout."
+      ],
+      "non_goals": [
+        "Do not install Qlib as a runtime dependency.",
+        "Do not run unattended overnight code-edit loops.",
+        "Do not promote research output to live trading."
+      ],
+      "stop_condition": "One Luke research lane emits auditable experiment metadata and a keep/discard summary.",
+      "acceptance_criteria": [
+        "Generated research output stays under `artifacts/research/` unless promoted.",
+        "Reports distinguish hypothesis from proven result.",
+        "Trading UI remains read-only."
+      ],
+      "validation": [
+        "node --check scripts/strategy-combination-agent-analyze.js",
+        "cmd /c npx vitest run tests/*research*.test.js tests/*backtest*.test.js",
+        "npm run prove:replay-level-state"
+      ],
+      "depends_on": [
+        "goal-2"
+      ],
+      "status": "ready",
+      "result_summary": null,
+      "evidence": [],
+      "risks": [
+        "Research reports can look authoritative even when based on narrow samples."
+      ],
+      "assumptions": [
+        "Metadata discipline is higher leverage than adopting a Python quant platform immediately."
+      ]
+    },
+    {
+      "id": "goal-8",
+      "title": "Expose integration status in UI",
+      "objective": "Add restrained dashboard visibility for approved reference integration status after Radar proves useful.",
+      "rationale": "The dashboard should show useful operating state, not hide new intelligence in files.",
+      "scope": [
+        "Start with Radar labels or filters.",
+        "Add a small shell/brain status line only if the Radar lane is useful.",
+        "Show trading research status in operator/trading windows only when relevant and read-only.",
+        "Avoid decorative redesign."
+      ],
+      "non_goals": [
+        "No marketing page.",
+        "No large visual redesign.",
+        "No trading execution controls."
+      ],
+      "stop_condition": "The UI exposes integration status without cluttering core daily/trading workflows.",
+      "acceptance_criteria": [
+        "Radar displays reference idea status clearly.",
+        "Shell/brain additions are optional and compact.",
+        "Operator/trading windows remain read-only."
+      ],
+      "validation": [
+        "node --check index.js",
+        "cmd /c npx vitest run tests/brain-dashboard.test.js tests/operator-v2-ui.test.js tests/trading-ui-readonly.test.js",
+        "npm run prove:luke-dashboard-demo",
+        "npm run prove:operator-v2",
+        "npm run prove:trading-window"
+      ],
+      "depends_on": [
+        "goal-4",
+        "goal-6",
+        "goal-7"
+      ],
+      "status": "ready",
+      "result_summary": null,
+      "evidence": [],
+      "risks": [
+        "Dashboard clutter would make Luke less useful during trading."
+      ],
+      "assumptions": [
+        "Radar is the primary review surface; dashboards are status surfaces."
+      ]
+    },
+    {
+      "id": "goal-9",
+      "title": "Verify and report decisions",
+      "objective": "Run focused verification and produce a final integration decision report covering accepted, rejected, deferred, and risky items.",
+      "rationale": "The user wants a plan they can push back on and later a trustworthy implementation record.",
+      "scope": [
+        "Run focused syntax checks and relevant tests.",
+        "Run Radar, memory, operator, and trading-window proof scripts when touched.",
+        "Document skipped checks and exact reasons.",
+        "Update the report with accepted, rejected, deferred, and next recommended slices."
+      ],
+      "non_goals": [
+        "Do not hide failed or skipped checks.",
+        "Do not claim live readiness."
+      ],
+      "stop_condition": "The final report is sufficient for the user to approve, reject, or redirect the integration.",
+      "acceptance_criteria": [
+        "Exact commands and outcomes are recorded.",
+        "Residual risks are listed.",
+        "No unreviewed external code is wired into Luke runtime."
+      ],
+      "validation": [
+        "git status --short --branch",
+        "node --check index.js",
+        "cmd /c npx vitest run",
+        "npm run prove:radar-daily-loop",
+        "npm run prove:companion-memory",
+        "npm run prove:luke-operator-check"
+      ],
+      "depends_on": [
+        "goal-2",
+        "goal-3",
+        "goal-4",
+        "goal-5",
+        "goal-6",
+        "goal-7",
+        "goal-8"
+      ],
+      "status": "ready",
+      "result_summary": null,
+      "evidence": [],
+      "risks": [
+        "Full verification may be blocked by current dirty work or environment-specific services."
+      ],
+      "assumptions": [
+        "Implementation should pause after goals 1-4 unless the user explicitly approves deeper memory/Katbot/research changes."
+      ]
+    }
+  ]
+}

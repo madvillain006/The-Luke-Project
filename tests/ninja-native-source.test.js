@@ -42,6 +42,11 @@ describe('LukeNativeShadowStrategy source gate', () => {
     expect(source).toContain('Calculate = Calculate.OnEachTick');
     expect(source).toContain('Math.Abs(decision.ActiveEntry - lastPrice) > MaxMarketableEntryPoints');
     expect(source).not.toContain('culEyYkQrx7nqBgWopdfvDzJT40bU8Ve632tMO9N');
+    expect(source).toContain('IsTradeLevelLine');
+    expect(source).toContain('key == "trade" || key == "mancini" || key == "trade_levels"');
+    expect(source).toContain('WriteTelemetry("NO_CLUSTERS"');
+    expect(source).toContain('raw_count=');
+    expect(source).toContain('has_sections=');
   });
 
   it('keeps the core Pine-style defaults aligned with the existing replay engine', () => {
@@ -107,7 +112,11 @@ describe('LukeNativeShadowStrategy source gate', () => {
     expect(source).toContain('SessionCommissionDollars');
     expect(source).toContain('PineBridgeEventsPath = @"C:\\Users\\conor\\luke\\state\\events\\ninjatrader-bridge.jsonl"');
     expect(source).toContain('BuildPivotState');
-    expect(source).toContain('State == State.Realtime ? 1 : 0');
+    expect(source).not.toContain('int barsAgo = State == State.Realtime ? 1 : 0');
+    expect(source).toContain('int barsAgo = 0;');
+    expect(source).toContain('ShadowLongEvent');
+    expect(source).toContain('WriteShadowOnlyLongTelemetry');
+    expect(source).toContain('shadow_only=true');
     expect(source).toContain('TrackCandidateOutcome');
     expect(source).toContain('OpenContractCount(false)');
     expect(source).toContain('trackedCandidateActiveStop = trackedCandidateEntry');
@@ -120,6 +129,8 @@ describe('LukeNativeShadowStrategy source gate', () => {
     expect(source).toContain('WriteTelemetry("LONG"');
     expect(source).toContain('WriteTelemetry("CANCEL"');
     expect(source).toContain('WriteTelemetry("TP1"');
+    expect(source).toContain('WriteCancelTelemetry');
+    expect(source).toContain('cross_bar=true');
     expect(source).toContain('STOP_FIRST');
     expect(source).toContain('MIXED_STOP_FIRST');
     expect(normalizedSource).toContain('DrawLedgerOverlay();\n\n            if (AutonomyMode == LukeNativeAutonomyMode.Disabled)');

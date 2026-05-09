@@ -22,6 +22,7 @@ namespace NinjaTrader.NinjaScript.Strategies
     {
         private const string EntryT1Name = "LukeLongT1";
         private const string EntryT2Name = "LukeLongT2";
+        private const string LiveBridgeArmPhrase = "LUKE_BRIDGE_LIVE_ACK";
 
         private string lastProcessedId = string.Empty;
         private string lastRejectedId = string.Empty;
@@ -89,21 +90,25 @@ namespace NinjaTrader.NinjaScript.Strategies
         public int MaxQuantity { get; set; }
 
         [NinjaScriptProperty]
+        [Display(Name = "Live bridge arm phrase", GroupName = "Luke Safety", Order = 5)]
+        public string LiveBridgeArmCode { get; set; }
+
+        [NinjaScriptProperty]
         [Range(0, 50)]
-        [Display(Name = "Max signals per session", GroupName = "Luke Safety", Order = 5)]
+        [Display(Name = "Max signals per session", GroupName = "Luke Safety", Order = 6)]
         public int MaxSignalsPerSession { get; set; }
 
         [NinjaScriptProperty]
-        [Display(Name = "Require symbol prefix match", GroupName = "Luke Safety", Order = 6)]
+        [Display(Name = "Require symbol prefix match", GroupName = "Luke Safety", Order = 7)]
         public bool RequireSymbolPrefixMatch { get; set; }
 
         [NinjaScriptProperty]
         [Range(0.0, 10.0)]
-        [Display(Name = "Max marketable entry points", GroupName = "Luke Safety", Order = 7)]
+        [Display(Name = "Max marketable entry points", GroupName = "Luke Safety", Order = 8)]
         public double MaxMarketableEntryPoints { get; set; }
 
         [NinjaScriptProperty]
-        [Display(Name = "Require cancel matches active signal", GroupName = "Luke Safety", Order = 8)]
+        [Display(Name = "Require cancel matches active signal", GroupName = "Luke Safety", Order = 9)]
         public bool RequireCancelMatchesActiveSignal { get; set; }
 
         [NinjaScriptProperty]
@@ -141,6 +146,7 @@ namespace NinjaTrader.NinjaScript.Strategies
                 AllowLiveAccounts = false;
                 AllowedAccountName = "LFE050706094670001";
                 MaxQuantity = 2;
+                LiveBridgeArmCode = "";
                 MaxSignalsPerSession = 20;
                 RequireSymbolPrefixMatch = true;
                 MaxMarketableEntryPoints = 0.25;
@@ -532,13 +538,15 @@ namespace NinjaTrader.NinjaScript.Strategies
 
         private bool IsAccountAllowed()
         {
-            if (AllowLiveAccounts)
-                return true;
             string accountName = GetCurrentAccountName();
+            if (IsSimOrPlaybackAccount(accountName))
+                return true;
+
             string allowedAccount = string.IsNullOrWhiteSpace(AllowedAccountName) ? string.Empty : AllowedAccountName.Trim();
-            return accountName.StartsWith("Sim", StringComparison.OrdinalIgnoreCase)
-                || accountName.StartsWith("Playback", StringComparison.OrdinalIgnoreCase)
-                || (!string.IsNullOrEmpty(allowedAccount) && string.Equals(accountName, allowedAccount, StringComparison.OrdinalIgnoreCase));
+            if (string.IsNullOrEmpty(allowedAccount) || !string.Equals(accountName, allowedAccount, StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            return AllowLiveAccounts && IsLiveBridgeArmed();
         }
 
         private string GetCurrentAccountName()
@@ -548,10 +556,25 @@ namespace NinjaTrader.NinjaScript.Strategies
 
         private string AccountGuardDescription()
         {
-            if (AllowLiveAccounts)
-                return "all accounts allowed";
             string allowedAccount = string.IsNullOrWhiteSpace(AllowedAccountName) ? "" : AllowedAccountName.Trim();
-            return string.IsNullOrEmpty(allowedAccount) ? "Sim*/Playback* only" : "Sim*/Playback* or exact " + allowedAccount;
+            if (string.IsNullOrEmpty(allowedAccount))
+                return "Sim*/Playback* only; live disabled until exact account, AllowLiveAccounts=true, and arm phrase are set";
+            if (!AllowLiveAccounts)
+                return "Sim*/Playback* only; exact " + allowedAccount + " configured but live toggle is off";
+            if (!IsLiveBridgeArmed())
+                return "Sim*/Playback* only; exact " + allowedAccount + " configured but arm phrase is missing";
+            return "Sim*/Playback* or exact armed account " + allowedAccount;
+        }
+
+        private static bool IsSimOrPlaybackAccount(string accountName)
+        {
+            return accountName.StartsWith("Sim", StringComparison.OrdinalIgnoreCase)
+                || accountName.StartsWith("Playback", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private bool IsLiveBridgeArmed()
+        {
+            return string.Equals((LiveBridgeArmCode ?? string.Empty).Trim(), LiveBridgeArmPhrase, StringComparison.Ordinal);
         }
 
         private bool IsInstrumentAllowed(LukeSignal signal)

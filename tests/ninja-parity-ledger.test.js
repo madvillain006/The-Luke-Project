@@ -151,4 +151,90 @@ describe('Ninja/Pine parity ledger', () => {
     expect(report.summary.status).toBe('review');
     expect(report.summary.blockers).toContain('pine_bridge_missing_bar_time');
   });
+
+  it('Tier 2: matches pine row without bar_time to native by entry + timestamp proximity', () => {
+    const bridgeText = jsonl([
+      {
+        ts: '2026-05-08T14:31:03.000Z',
+        type: 'luke_long_signal_saved',
+        id: 'luke-long-ts-only',
+        received_at: '2026-05-08T14:31:03.000Z',
+        entry: 7421.25,
+        stop: 7418.25,
+        tp1: 7423.25,
+        tp2: 7426.25,
+        // no bar_time
+      },
+    ]);
+    const nativeText = jsonl([
+      {
+        ts: '2026-05-08T14:30:02.000Z',
+        source: 'ninja-native-shadow',
+        event: 'LONG',
+        signal_id: 'ninja-native-t2-1',
+        instrument: 'ES 06-26',
+        // no bar_time
+        entry: 7421.25,
+        stop: 7418.25,
+        tp1: 7423.25,
+        tp2: 7426.25,
+        note: 'id=ninja-native-t2-1',
+      },
+    ]);
+
+    const report = buildParityLedger({
+      bridgeText,
+      nativeText,
+      date: '2026-05-08',
+      timeZone: 'America/New_York',
+    });
+
+    expect(report.summary.counts.matched).toBe(1);
+    expect(report.summary.counts.missing_native).toBe(0);
+    expect(report.summary.blockers).not.toContain('pine_bridge_missing_bar_time');
+  });
+
+  it('Tier 2: does not match when pine and native timestamps are beyond the proximity window', () => {
+    // Native always has bar_time (strategy writes it via PineBarTime).
+    // When native has bar_time and pine does not, Tier 3 key mismatch forces Tier 2.
+    // The native bar_time here is 2.5 hours before the pine ts — Tier 2 proximity fails.
+    const bridgeText = jsonl([
+      {
+        ts: '2026-05-08T14:31:03.000Z',
+        type: 'luke_long_signal_saved',
+        id: 'luke-long-ts-far',
+        received_at: '2026-05-08T14:31:03.000Z',
+        entry: 7421.25,
+        stop: 7418.25,
+        tp1: 7423.25,
+        tp2: 7426.25,
+        // no bar_time
+      },
+    ]);
+    const nativeText = jsonl([
+      {
+        ts: '2026-05-08T12:00:00.000Z',
+        source: 'ninja-native-shadow',
+        event: 'LONG',
+        signal_id: 'ninja-native-far-1',
+        instrument: 'ES 06-26',
+        bar_time: '2026-05-08T08:00:00.0000000', // 2.5 h before pine ts — outside 10-min window
+        entry: 7421.25,
+        stop: 7418.25,
+        tp1: 7423.25,
+        tp2: 7426.25,
+        note: 'id=ninja-native-far-1',
+      },
+    ]);
+
+    const report = buildParityLedger({
+      bridgeText,
+      nativeText,
+      date: '2026-05-08',
+      timeZone: 'America/New_York',
+    });
+
+    expect(report.summary.counts.missing_native).toBe(1);
+    expect(report.summary.blockers).toContain('pine_bridge_missing_bar_time');
+  });
 });

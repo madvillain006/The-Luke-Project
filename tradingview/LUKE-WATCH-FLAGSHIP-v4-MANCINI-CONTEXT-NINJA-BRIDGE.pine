@@ -1,6 +1,11 @@
 ﻿//@version=5
 indicator("LUKE WATCH FLAGSHIP - v4 Mancini Context Ninja Bridge", shorttitle="LUKE v4 NINJA", overlay=true, max_lines_count=260, max_labels_count=180)
 
+// PRODUCTION COPY - 2026-05-08
+// Unsanitized from the share-safe flagship. Private Luke/Ninja token restored.
+// Bridge alert() JSON is emitted on executable LONG/CANCEL events for the
+// TradingView alert condition "Any alert() function call".
+//
 // FLAGSHIP COPY - 2026-05-06
 // Baseline: v4 trade math + friend ribbon compile fix.
 // Current live TradingView read: 77% success, 10/13, about $1500 net.
@@ -11,12 +16,15 @@ indicator("LUKE WATCH FLAGSHIP - v4 Mancini Context Ninja Bridge", shorttitle="L
 // Cancelled live LONGs also leave one active-watch marker for that same level.
 // Restored trusted v4 with only Mancini + Saty level inputs active for live simplicity.
 // Mancini context inputs are visual-only metadata and do not feed the signal engine.
-// Ninja bridge alerts are dynamic JSON emitted from the same LONG event; signal logic is unchanged.
+// Ninja bridge alerts are dynamic JSON emitted from the same LONG event when enabled; signal logic is unchanged.
 
 // TradingView visual bridge only. This script does not submit orders, uses an
 // indicator declaration only, and cannot read manual TradingView drawing objects.
 // Realistic accounting keeps signal logic visual-only while letting costs model
 // commission-only, one-way slippage, or both-side stress without changing fills.
+
+f_json_text(string value) =>
+    str.replace_all(str.replace_all(str.replace_all(value, "\\", "\\\\"), "\"", "'"), "\n", " ")
 
 enable_luke_levels = input.bool(true, "Enable Luke levels")
 enable_saty = input.bool(true, "Enable Saty")
@@ -55,11 +63,13 @@ alert_armed_events = input.bool(true, "Alert ARMED events")
 alert_paper_candidate_events = input.bool(true, "Alert LONG events")
 alert_invalidated_events = input.bool(true, "Alert INVALIDATED events")
 alert_blocked_events = input.bool(true, "Alert BLOCKED events")
-enable_ninja_bridge_alerts = input.bool(false, "Enable Ninja bridge alert() JSON", tooltip="Creates dynamic JSON via alert() on the exact same LUKE LONG event. Use TradingView condition: Any alert() function call.")
-ninja_bridge_token = input.string("culEyYkQrx7nqBgWopdfvDzJT40bU8Ve632tMO9N", "Ninja bridge token", tooltip="Optional. Must match LUKE_NINJA_BRIDGE_TOKEN if Luke requires a bridge token.")
+show_ninja_bridge_labels = input.bool(true, "Show Ninja bridge send labels", tooltip="Marks actual bridge alert() sends. If there is no BRIDGE SEND label, Ninja was not called from this Pine instance.")
+ninja_bridge_token = input.string("culEyYkQrx7nqBgWopdfvDzJT40bU8Ve632tMO9N", "Ninja bridge token", tooltip="Must match LUKE_NINJA_BRIDGE_TOKEN when Luke requires a bridge token.")
+bridge_source = input.string("luke-pine-ninja-bridge", "Bridge source tag", tooltip="Included as the JSON source field for Luke/Ninja.")
+bridge_tag = input.string("", "Bridge tag", tooltip="Optional short tag added to outgoing JSON as user_tag.")
 
-mancini_levels_input = input.string("", "Mancini levels", tooltip="Comma-separated prices exported from Luke.")
-mancini_major_levels_input = input.string("", "Mancini major levels (visual only)", tooltip="Visual-only context. Does not change WATCH/LONG logic.")
+mancini_levels_input = input.string("6990.00,6999.00,7008.00,7016.00,7020.00,7029.00,7034.00,7041.00,7049.00,7053.00,7058.00,7061.00,7066.00,7076.00,7079.00,7085.00,7095.00,7105.00,7111.00,7122.00,7135.00,7146.00,7152.00,7160.00,7166.00,7171.00,7173.00,7189.00,7194.00,7199.00,7207.00,7212.00,7220.00,7228.00,7240.00,7248.00,7257.00,7265.00,7272.00,7283.00,7288.00,7300.00,7313.00,7318.00,7323.00,7337.00,7345.00,7355.00,7363.00,7370.00,7378.00,7384.00,7391.00,7396.00,7402.00,7410.00", "Mancini levels", tooltip="Comma-separated prices exported from Luke.")
+mancini_major_levels_input = input.string("6990.00,7008.00,7016.00,7034.00,7049.00,7058.00,7066.00,7079.00,7095.00,7105.00,7135.00,7160.00,7173.00,7199.00,7212.00,7228.00,7248.00,7265.00,7283.00,7300.00,7318.00,7337.00,7345.00,7363.00,7378.00,7391.00,7402.00", "Mancini major levels (visual only)", tooltip="Visual-only context. Does not change WATCH/LONG logic.")
 mancini_focus_long_levels_input = input.string("", "Mancini focus long levels (visual only)", tooltip="Visual-only context. Does not change WATCH/LONG logic.")
 mancini_reclaim_trigger_levels_input = input.string("", "Mancini reclaim/trigger levels (visual only)", tooltip="Visual-only context for recover/reclaim trigger levels. Does not change WATCH/LONG logic.")
 mancini_target_only_levels_input = input.string("", "Mancini target-only levels (visual only)", tooltip="Visual-only context. Does not change WATCH/LONG logic.")
@@ -430,6 +440,10 @@ var int session_mixed = 0
 var int session_refreshed = 0
 var int session_ltf_filtered = 0
 varip int session_live_cancelled = 0
+varip float session_cancel_realized_points = 0.0
+varip float session_cancel_realized_dollars = 0.0
+varip float session_cancel_cost_dollars = 0.0
+varip float session_cancel_net_dollars = 0.0
 var float session_realized_points = 0.0
 var float session_realized_dollars = 0.0
 var float session_cost_dollars = 0.0
@@ -545,12 +559,15 @@ f_accounting_entry(float entry_price) =>
 f_event_cost_dollars(float contracts) =>
     size_mode == "watch only" ? 0.0 : ((f_round_trip_slippage_points() * pnl_dollars_per_point) + commission_per_contract_round_trip) * contracts
 
+f_session_total_cost_dollars() =>
+    session_cost_dollars + session_cancel_cost_dollars
+
 f_session_commission_dollars() =>
     float cost_per_contract = (f_round_trip_slippage_points() * pnl_dollars_per_point) + commission_per_contract_round_trip
-    cost_per_contract > 0 ? session_cost_dollars * commission_per_contract_round_trip / cost_per_contract : 0.0
+    cost_per_contract > 0 ? f_session_total_cost_dollars() * commission_per_contract_round_trip / cost_per_contract : 0.0
 
 f_session_slippage_dollars() =>
-    session_cost_dollars - f_session_commission_dollars()
+    f_session_total_cost_dollars() - f_session_commission_dollars()
 
 f_event_net_dollars(float event_points, float contracts) =>
     event_points * pnl_dollars_per_point - f_event_cost_dollars(contracts)
@@ -576,6 +593,10 @@ if new_futures_session
     session_refreshed := 0
     session_ltf_filtered := 0
     session_live_cancelled := 0
+    session_cancel_realized_points := 0.0
+    session_cancel_realized_dollars := 0.0
+    session_cancel_cost_dollars := 0.0
+    session_cancel_net_dollars := 0.0
     session_realized_points := 0.0
     session_realized_dollars := 0.0
     session_cost_dollars := 0.0
@@ -869,6 +890,9 @@ string ltf_best_entry_time_text = na(ltf_best_entry_time) ? "bar " + f_et_time_f
 bool audited_long_event = confirmed_signal_ok and long_candidate_event
 bool ltf_filtered_long_event = audited_long_event and ltf_enforcement_mode == "gate_alerts_and_accounting" and not ltf_gate_ok
 bool trade_long_event = audited_long_event and (ltf_enforcement_mode == "audit_only" or ltf_gate_ok)
+// Strict live-bar sequence: LONG must be followed by CANCEL or bar close before another live LONG.
+bool live_pending_long_blocks_realert = signal_timing_mode == "live_intrabar" and live_pending_long and live_pending_bar == bar_index
+bool executable_long_event = trade_long_event and not live_pending_long_blocks_realert
 string ltf_1m_text = not ltf_1m_has_data ? "NODATA" : not ltf_1m_entry_touched ? "NOENTRY" : ltf_1m_stop_first ? "STOP1ST" : "OK"
 string ltf_3m_text = not ltf_3m_has_data ? "NODATA" : not ltf_3m_entry_touched ? "NOENTRY" : ltf_3m_stop_first ? "STOP1ST" : "OK"
 string chart_5m_text = not chart_5m_entry_touched ? "NOENTRY" : chart_5m_stop_risk and chart_5m_tp1_same_bar ? "MIXED_STOP" : chart_5m_stop_first ? "STOP1ST" : "OK"
@@ -880,13 +904,14 @@ plotshape(show_blocked_markers and blocked_event, title="LUKE BLOCKED", text="",
 plotshape(show_blocked_markers and ltf_filtered_long_event, title="LUKE LTF FILTERED", text="", style=shape.xcross, location=location.belowbar, color=color.new(color.orange, 0), textcolor=color.white, size=size.tiny)
 plotshape(show_historical_signal_markers and watch_event, title="LUKE WATCH", text="", style=shape.circle, location=location.belowbar, color=color.new(color.gray, 0), textcolor=color.white, size=size.tiny)
 plotshape(show_historical_signal_markers and armed_event, title="LUKE ARMED", text="", style=shape.triangleup, location=location.belowbar, color=color.new(color.aqua, 0), textcolor=color.black, size=size.tiny)
-plotshape(show_long_signal_marker and trade_long_event, title="LUKE LONG", text="LONG", style=shape.triangleup, location=location.belowbar, color=color.new(color.green, 0), textcolor=color.white, size=size.small)
+plotshape(show_long_signal_marker and executable_long_event, title="LUKE LONG", text="LONG", style=shape.triangleup, location=location.belowbar, color=color.new(color.green, 0), textcolor=color.white, size=size.small)
+plotshape(show_blocked_markers and live_pending_long_blocks_realert and trade_long_event, title="LUKE LONG SUPPRESSED", text="", style=shape.xcross, location=location.belowbar, color=color.new(color.yellow, 0), textcolor=color.black, size=size.tiny)
 plotshape(show_historical_signal_markers and invalidated_event, title="LUKE INVALIDATED", text="", style=shape.triangledown, location=location.abovebar, color=color.new(color.red, 0), textcolor=color.white, size=size.tiny)
 
 if blocked_event and show_blocked_reason_labels and str.length(active_block_reason) > 0
     f_add_status_label(status_labels, bar_index, high, "BLOCKED " + active_block_reason, color.new(color.orange, 0))
 
-if trade_long_event and show_ltf_audit_labels
+if executable_long_event and show_ltf_audit_labels
     color audit_color = ltf_gate_ok ? color.new(color.teal, 18) : color.new(color.orange, 12)
     f_add_status_label(status_labels, bar_index, candidate_label_y, "LTF " + ltf_audit_text, audit_color)
 
@@ -1059,7 +1084,7 @@ if track_candidate_results and tracked_candidate_open and bar_index > tracked_ca
             line.set_y2(stop_line, tracked_candidate_active_stop)
             line.set_color(stop_line, color.new(color.yellow, 0))
         f_update_entry_signal_label(tracked_candidate_entry_label, tracked_candidate_entry_text, "Status: TP1 banked " + f_money(tracked_candidate_trade_net_dollars) + " / runner BE", color.new(color.teal, 12))
-if trade_long_event and not na(active_level)
+if executable_long_event and not na(active_level)
     if track_candidate_results and tracked_candidate_open and not tracked_candidate_ended
         session_refreshed += 1
         float result_contracts = f_open_contract_count(tracked_candidate_tp1_hit)
@@ -1102,11 +1127,14 @@ if trade_long_event and not na(active_level)
     string details = "LONG #" + str.tostring(candidate_id) + " " + ltf_best_entry_time_text + " cluster " + str.tostring(active_level, format.mintick) + watch_context + program_context + "\n" + ltf_audit_text + "\nE " + str.tostring(active_entry, format.mintick) + " / acct fill " + str.tostring(f_accounting_entry(active_entry), format.mintick) + "\nS " + str.tostring(active_stop, format.mintick) + " / T1 " + str.tostring(active_tp1, format.mintick) + " / T2 " + str.tostring(active_tp2, format.mintick)
     tracked_candidate_entry_text := details
     string ninja_id = "luke-long-" + str.tostring(timenow) + "-" + str.tostring(candidate_id) + "-" + str.tostring(active_entry, format.mintick)
-    if enable_ninja_bridge_alerts
-        string ninja_qty = size_mode == "2ES split" or size_mode == "2MES split" ? "2" : "1"
-        string ninja_token_part = str.length(ninja_bridge_token) > 0 ? ",\"token\":\"" + ninja_bridge_token + "\"" : ""
-        string ninja_payload = "{\"id\":\"" + ninja_id + "\",\"symbol\":\"" + syminfo.ticker + "\",\"side\":\"LONG\",\"entry\":" + str.tostring(active_entry, format.mintick) + ",\"stop\":" + str.tostring(active_stop, format.mintick) + ",\"tp1\":" + str.tostring(active_tp1, format.mintick) + ",\"tp2\":" + str.tostring(active_tp2, format.mintick) + ",\"qty\":" + ninja_qty + ",\"timestamp\":\"" + str.tostring(timenow) + "\",\"bar_time\":\"" + str.tostring(time) + "\",\"source\":\"luke-pine-ninja-bridge\"" + ninja_token_part + "}"
-        alert(ninja_payload, alert.freq_all)
+    string ninja_qty = size_mode == "2ES split" or size_mode == "2MES split" ? "2" : "1"
+    string ninja_token_part = str.length(ninja_bridge_token) > 0 ? ",\"token\":\"" + f_json_text(ninja_bridge_token) + "\"" : ""
+    string user_tag_part = str.length(bridge_tag) > 0 ? ",\"user_tag\":\"" + f_json_text(bridge_tag) + "\"" : ""
+    // Production JSON hook for Luke/Ninja.
+    string ninja_payload = "{\"id\":\"" + ninja_id + "\",\"type\":\"LUKE_LONG\",\"symbol\":\"" + syminfo.ticker + "\",\"side\":\"LONG\",\"entry\":" + str.tostring(active_entry, format.mintick) + ",\"stop\":" + str.tostring(active_stop, format.mintick) + ",\"tp1\":" + str.tostring(active_tp1, format.mintick) + ",\"tp2\":" + str.tostring(active_tp2, format.mintick) + ",\"qty\":" + ninja_qty + ",\"timestamp\":\"" + str.tostring(timenow) + "\",\"bar_time\":\"" + str.tostring(time) + "\",\"source\":\"" + f_json_text(bridge_source) + "\"" + user_tag_part + ninja_token_part + "}"
+    alert(ninja_payload, alert.freq_all)
+    if show_ninja_bridge_labels
+        f_add_status_label(status_labels, bar_index, active_entry, "BRIDGE SEND LONG\nE " + str.tostring(active_entry, format.mintick), color.new(color.lime, 0))
     if signal_timing_mode == "live_intrabar" and not barstate.isconfirmed
         live_pending_long := true
         live_pending_bar := bar_index
@@ -1130,10 +1158,20 @@ if trade_long_event and not na(active_level)
 bool live_cancel_now = signal_timing_mode == "live_intrabar" and live_pending_long and live_pending_bar == bar_index and not trade_long_event
 if live_cancel_now
     bool cancel_area_still_active = na(live_pending_level) or na(live_pending_entry) ? true : low <= live_pending_entry and high >= live_pending_level - syminfo.mintick
+    float cancel_contracts = na(live_pending_entry) ? 0.0 : f_open_contract_count(false)
+    float cancel_exit = close
+    float cancel_points = na(live_pending_entry) ? 0.0 : (cancel_exit - live_pending_entry) * cancel_contracts
+    float cancel_net_dollars = f_event_net_dollars(cancel_points, cancel_contracts)
+    float cancel_cost_dollars = f_event_cost_dollars(cancel_contracts)
+    session_cancel_realized_points += cancel_points
+    session_cancel_realized_dollars += cancel_points * pnl_dollars_per_point
+    session_cancel_cost_dollars += cancel_cost_dollars
+    session_cancel_net_dollars += cancel_net_dollars
     session_live_cancelled += 1
     live_cancelled_this_bar := true
     live_cancelled_bar := bar_index
-    live_cancelled_text := str.length(live_pending_text) > 0 ? live_pending_text + "\nStatus: CANCELLED live - can refire" : "LONG cancelled live - can refire"
+    string cancel_accounting_text = "\nStatus: CANCELLED live @ " + str.tostring(cancel_exit, format.mintick) + " " + f_signed_points(cancel_points) + " / " + f_money(cancel_net_dollars) + " - can refire"
+    live_cancelled_text := str.length(live_pending_text) > 0 ? live_pending_text + cancel_accounting_text : "LONG cancelled live" + cancel_accounting_text
     live_cancelled_y := na(live_pending_y) ? candidate_label_y : live_pending_y
     live_cancelled_label := live_pending_label
     array.push(live_cancelled_texts, live_cancelled_text)
@@ -1141,10 +1179,16 @@ if live_cancel_now
     if show_cancel_watch_label and cancel_area_still_active
         string cancel_watch_text = "CXL WATCH\n" + (na(live_pending_level) ? "" : str.tostring(live_pending_level, format.mintick)) + "\ncan refire"
         f_add_cancel_watch_label(watch_labels, bar_index, low, cancel_watch_text)
-    if enable_ninja_bridge_alerts and str.length(live_pending_ninja_id) > 0
-        string ninja_cancel_token_part = str.length(ninja_bridge_token) > 0 ? ",\"token\":\"" + ninja_bridge_token + "\"" : ""
-        string ninja_cancel_payload = "{\"id\":\"" + live_pending_ninja_id + "\",\"type\":\"LUKE_CANCEL\",\"side\":\"CANCEL\",\"symbol\":\"" + syminfo.ticker + "\",\"timestamp\":\"" + str.tostring(timenow) + "\",\"bar_time\":\"" + str.tostring(time) + "\",\"reason\":\"live_cancel\",\"source\":\"luke-pine-ninja-bridge\"" + ninja_cancel_token_part + "}"
+    if str.length(live_pending_ninja_id) > 0
+        string ninja_cancel_token_part = str.length(ninja_bridge_token) > 0 ? ",\"token\":\"" + f_json_text(ninja_bridge_token) + "\"" : ""
+        string cancel_user_tag_part = str.length(bridge_tag) > 0 ? ",\"user_tag\":\"" + f_json_text(bridge_tag) + "\"" : ""
+        // Production JSON hook for Luke/Ninja cancels.
+        string ninja_cancel_payload = "{\"id\":\"" + live_pending_ninja_id + "\",\"type\":\"LUKE_CANCEL\",\"side\":\"CANCEL\",\"symbol\":\"" + syminfo.ticker + "\",\"timestamp\":\"" + str.tostring(timenow) + "\",\"bar_time\":\"" + str.tostring(time) + "\",\"reason\":\"live_cancel\",\"source\":\"" + f_json_text(bridge_source) + "\"" + cancel_user_tag_part + ninja_cancel_token_part + "}"
         alert(ninja_cancel_payload, alert.freq_all)
+        if show_ninja_bridge_labels
+            f_add_status_label(status_labels, bar_index, close, "BRIDGE SEND CANCEL", color.new(color.orange, 0))
+    else if show_ninja_bridge_labels
+        f_add_status_label(status_labels, bar_index, close, "BRIDGE SKIP CANCEL\nNO ID", color.new(color.red, 0))
     tracked_candidate_open := false
     tracked_candidate_tp1_hit := false
     tracked_candidate_success_counted := false
@@ -1176,19 +1220,22 @@ if barstate.islast
     if show_session_scorecard
         int total_signal_attempts = session_attempts + session_live_cancelled
         int total_signal_misses = session_stopped + session_live_cancelled
-        float cancel_min_commission = session_live_cancelled * commission_per_contract_round_trip * f_open_contract_count(false)
+        string cancel_net_text = show_session_pnl ? f_signed_points(session_cancel_realized_points) + "  " + f_money(session_cancel_net_dollars) : ""
+        float total_realized_points = session_realized_points + session_cancel_realized_points
+        float total_realized_dollars = session_realized_dollars + session_cancel_realized_dollars
+        float total_session_net_dollars = session_net_dollars + session_cancel_net_dollars
         string score_text = str.tostring(session_successes) + "/" + str.tostring(total_signal_attempts)
         float score_pct = total_signal_attempts > 0 ? (session_successes * 100.0) / total_signal_attempts : na
         string score_pct_text = na(score_pct) ? "n/a" : str.tostring(score_pct, "#.0") + "%"
-        string realized_text = show_session_pnl ? f_signed_points(session_realized_points) : ""
-        string realized_money_text = show_session_pnl ? f_money(session_realized_dollars) : ""
+        string realized_text = show_session_pnl ? f_signed_points(total_realized_points) : ""
+        string realized_money_text = show_session_pnl ? f_money(total_realized_dollars) : ""
         float session_commission_dollars = f_session_commission_dollars()
         float session_slippage_dollars = f_session_slippage_dollars()
-        float session_after_commissions = session_realized_dollars - session_commission_dollars
-        float session_after_all_costs = session_net_dollars
+        float session_after_commissions = total_realized_dollars - session_commission_dollars
+        float session_after_all_costs = total_session_net_dollars
         string after_commission_text = show_session_pnl ? f_money(session_after_commissions) : ""
         string after_all_text = show_session_pnl ? f_money(session_after_all_costs) : ""
-        string eval_text = eval_loss_limit_dollars > 0 and session_net_dollars <= -eval_loss_limit_dollars ? " BREACH" : ""
+        string eval_text = eval_loss_limit_dollars > 0 and total_session_net_dollars <= -eval_loss_limit_dollars ? " BREACH" : ""
         string counts_text = "W " + str.tostring(session_watches) + " / L " + str.tostring(session_attempts) + " / C " + str.tostring(session_live_cancelled)
         string miss_text = str.tostring(total_signal_misses) + " = S " + str.tostring(session_stopped) + " + C " + str.tostring(session_live_cancelled)
         string milestone_text = "T1 " + str.tostring(session_tp1_hits) + " / T2 " + str.tostring(session_tp2_hits) + " / BE " + str.tostring(session_breakevens) + " / M " + str.tostring(session_mixed)
@@ -1206,13 +1253,13 @@ if barstate.islast
         table.cell(session_scorecard, 0, 4, "milestones", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 1, 4, milestone_text, text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 0, 5, "gross total", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
-        table.cell(session_scorecard, 1, 5, realized_text + "  " + realized_money_text, text_color=session_realized_points >= 0 ? color.lime : color.red, bgcolor=color.new(color.black, 45), text_size=size.small)
+        table.cell(session_scorecard, 1, 5, realized_text + "  " + realized_money_text, text_color=total_realized_points >= 0 ? color.lime : color.red, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 0, 6, "minus comm", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 1, 6, after_commission_text, text_color=session_after_commissions >= 0 ? color.lime : color.red, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 0, 7, "realistic net", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 1, 7, after_all_text + eval_text, text_color=session_after_all_costs >= 0 ? color.lime : color.red, bgcolor=color.new(color.black, 45), text_size=size.small)
-        table.cell(session_scorecard, 0, 8, "cxl min comm", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
-        table.cell(session_scorecard, 1, 8, f_money(cancel_min_commission), text_color=session_live_cancelled > 0 ? color.orange : color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
+        table.cell(session_scorecard, 0, 8, "cxl net", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
+        table.cell(session_scorecard, 1, 8, cancel_net_text, text_color=session_cancel_net_dollars > 0 ? color.lime : session_cancel_net_dollars < 0 ? color.red : session_live_cancelled > 0 ? color.orange : color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 0, 9, "mode/costs", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 1, 9, realistic_accounting_mode + " | " + cost_text, text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
         table.cell(session_scorecard, 0, 10, "base lines", text_color=color.silver, bgcolor=color.new(color.black, 45), text_size=size.small)
@@ -1228,6 +1275,6 @@ if barstate.islast
 
 alertcondition(enable_alertconditions and alert_watch_events and watch_event, "LUKE WATCH", "LUKE WATCHLIST ONLY - not an order - WATCH level condition")
 alertcondition(enable_alertconditions and alert_armed_events and armed_event, "LUKE ARMED", "LUKE WATCHLIST ONLY - not an order - ARMED reclaim condition")
-alertcondition(enable_alertconditions and alert_paper_candidate_events and trade_long_event, "LUKE LONG", "LUKE WATCHLIST ONLY - not an order - LTF-audited LONG condition")
+alertcondition(enable_alertconditions and alert_paper_candidate_events and executable_long_event, "LUKE LONG", "LUKE WATCHLIST ONLY - not an order - LTF-audited LONG condition")
 alertcondition(enable_alertconditions and alert_invalidated_events and invalidated_event, "LUKE INVALIDATED", "LUKE WATCHLIST ONLY - not an order - INVALIDATED reclaim condition")
 alertcondition(enable_alertconditions and alert_blocked_events and blocked_event, "LUKE BLOCKED", "LUKE WATCHLIST ONLY - not an order - reclaim sequence blocked by target/risk/freshness gate")

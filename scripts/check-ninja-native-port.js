@@ -45,7 +45,9 @@ const REQUIRED_SNIPPETS = [
   "score incl cxl",
   "realistic net",
   "SessionCommissionDollars",
-  "State == State.Realtime ? 1 : 0",
+  "int barsAgo = 0;",
+  "WriteShadowOnlyLongTelemetry",
+  "shadow_only=true",
   "EntrySlippagePoints = 0.25",
   "CommissionPerContractRoundTrip = 5.0",
   "WriteTelemetry(\"LONG\"",
@@ -166,12 +168,17 @@ function auditSource(source) {
 
 function readLevelFile(filePath = LEVEL_FILE) {
   const text = readText(filePath);
-  const prices = [...text.matchAll(/[-+]?\d+(?:\.\d+)?/g)]
+  const hasSections = /(?:^|\n)\s*(trade|mancini|major|focus_long|target_only|read_reaction|caution|trigger|reclaim)\s*:/i.test(text);
+  const executableText = hasSections
+    ? text.split(/\r?\n/).filter((line) => /^\s*(trade|mancini|trade_levels)\s*:/i.test(line)).join("\n")
+    : text;
+  const prices = [...executableText.matchAll(/[-+]?\d+(?:\.\d+)?/g)]
     .map((match) => Number(match[0]))
     .filter(Number.isFinite);
   return {
     file: filePath,
     prices: prices.length,
+    sectioned: hasSections,
     first: prices[0] ?? null,
     last: prices.at(-1) ?? null,
   };

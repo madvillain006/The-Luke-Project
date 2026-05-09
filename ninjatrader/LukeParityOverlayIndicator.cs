@@ -24,9 +24,9 @@ namespace NinjaTrader.NinjaScript.Indicators
         private readonly List<LukeOverlayLevel> levels = new List<LukeOverlayLevel>();
         private readonly List<LukeOverlayEvent> events = new List<LukeOverlayEvent>();
         private readonly List<string> activeMarkerTags = new List<string>();
+        private readonly List<string> activeLevelTags = new List<string>();
         private DateTime lastRefreshUtc = DateTime.MinValue;
         private DateTime lastLevelWriteUtc = DateTime.MinValue;
-        private DateTime lastBridgeWriteUtc = DateTime.MinValue;
         private DateTime lastNativeWriteUtc = DateTime.MinValue;
         private DateTime lastSatySessionDate = DateTime.MinValue;
         private double previousClose = double.NaN;
@@ -43,22 +43,23 @@ namespace NinjaTrader.NinjaScript.Indicators
         public string LevelFilePath { get; set; }
 
         [NinjaScriptProperty]
-        [Display(Name = "Pine bridge events path", GroupName = "Luke Overlay", Order = 2)]
-        public string PineBridgeEventsPath { get; set; }
-
-        [NinjaScriptProperty]
-        [Display(Name = "Native telemetry path", GroupName = "Luke Overlay", Order = 3)]
+        [Display(Name = "Native telemetry path", GroupName = "Luke Overlay", Order = 2)]
         public string NativeTelemetryPath { get; set; }
 
         [NinjaScriptProperty]
         [Range(1, 300)]
-        [Display(Name = "Refresh seconds", GroupName = "Luke Overlay", Order = 4)]
+        [Display(Name = "Refresh seconds", GroupName = "Luke Overlay", Order = 3)]
         public int RefreshSeconds { get; set; }
 
         [NinjaScriptProperty]
         [Range(1, 100)]
-        [Display(Name = "Max visible levels", GroupName = "Luke Overlay", Order = 5)]
+        [Display(Name = "Max visible levels", GroupName = "Luke Overlay", Order = 4)]
         public int MaxVisibleLevels { get; set; }
+
+        [NinjaScriptProperty]
+        [Range(5.0, 500.0)]
+        [Display(Name = "Level window points", GroupName = "Luke Overlay", Order = 5)]
+        public double LevelWindowPoints { get; set; }
 
         [NinjaScriptProperty]
         [Display(Name = "Show event markers", GroupName = "Luke Overlay", Order = 6)]
@@ -78,6 +79,21 @@ namespace NinjaTrader.NinjaScript.Indicators
         [Display(Name = "Saty trigger percentage", GroupName = "Luke Overlay", Order = 9)]
         public double SatyTriggerPct { get; set; }
 
+        [NinjaScriptProperty]
+        [Range(1.0, 500.0)]
+        [Display(Name = "PnL dollars per point", GroupName = "Luke Overlay", Order = 10)]
+        public double PnlDollarsPerPoint { get; set; }
+
+        [NinjaScriptProperty]
+        [Range(0.0, 10.0)]
+        [Display(Name = "Entry slippage points", GroupName = "Luke Overlay", Order = 11)]
+        public double EntrySlippagePoints { get; set; }
+
+        [NinjaScriptProperty]
+        [Range(0.0, 100.0)]
+        [Display(Name = "Commission per contract round trip", GroupName = "Luke Overlay", Order = 12)]
+        public double CommissionPerContractRoundTrip { get; set; }
+
         protected override void OnStateChange()
         {
             if (State == State.SetDefaults)
@@ -91,14 +107,17 @@ namespace NinjaTrader.NinjaScript.Indicators
                 IsSuspendedWhileInactive = true;
 
                 LevelFilePath = @"C:\Users\conor\luke\data\ninjatrader\luke-native-levels.txt";
-                PineBridgeEventsPath = @"C:\Users\conor\luke\state\events\ninjatrader-bridge.jsonl";
                 NativeTelemetryPath = @"C:\Users\conor\luke\state\events\ninja-native-shadow.jsonl";
                 RefreshSeconds = 5;
                 MaxVisibleLevels = 60;
+                LevelWindowPoints = 80.0;
                 ShowEventMarkers = true;
                 ShowSatyLevels = true;
                 SatyAtrLength = 14;
                 SatyTriggerPct = 0.236;
+                PnlDollarsPerPoint = 50.0;
+                EntrySlippagePoints = 0.25;
+                CommissionPerContractRoundTrip = 5.0;
             }
             else if (State == State.Configure)
             {
@@ -142,13 +161,21 @@ namespace NinjaTrader.NinjaScript.Indicators
 
             string text = SafeRead(LevelFilePath);
             externalLevelCount = 0;
-            foreach (Match match in Regex.Matches(text, @"[-+]?\d+(?:\.\d+)?"))
+            string[] lines = text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+            for (int lineIndex = 0; lineIndex < lines.Length; lineIndex++)
             {
-                double value;
-                if (double.TryParse(match.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out value))
+                string trimmedLine = (lines[lineIndex] ?? string.Empty).Trim();
+                if (trimmedLine.Length == 0 || trimmedLine.StartsWith("#", StringComparison.Ordinal))
+                    continue;
+                string source = LevelSourceForLine(lines[lineIndex]);
+                foreach (Match match in Regex.Matches(lines[lineIndex], @"[-+]?\d+(?:\.\d+)?"))
                 {
-                    AddUniqueLevel(value, "mancini");
-                    externalLevelCount++;
+                    double value;
+                    if (double.TryParse(match.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out value))
+                    {
+                        AddUniqueLevel(value, source);
+                        externalLevelCount++;
+                    }
                 }
             }
             levelFileStatus = externalLevelCount > 0
@@ -160,15 +187,11 @@ namespace NinjaTrader.NinjaScript.Indicators
 
         private bool RefreshEvents()
         {
-            DateTime bridgeWriteUtc = SafeWriteUtc(PineBridgeEventsPath);
             DateTime nativeWriteUtc = SafeWriteUtc(NativeTelemetryPath);
-            if (bridgeWriteUtc == lastBridgeWriteUtc && nativeWriteUtc == lastNativeWriteUtc)
+            if (nativeWriteUtc == lastNativeWriteUtc)
                 return false;
-
-            lastBridgeWriteUtc = bridgeWriteUtc;
             lastNativeWriteUtc = nativeWriteUtc;
             events.Clear();
-            ReadEventFile(PineBridgeEventsPath, "pine");
             ReadEventFile(NativeTelemetryPath, "native");
             events.Sort((a, b) => a.Time.CompareTo(b.Time));
             if (events.Count > MaxRowsToRead)
@@ -263,22 +286,80 @@ namespace NinjaTrader.NinjaScript.Indicators
 
         private void DrawLevels()
         {
-            int visible = Math.Min(MaxVisibleLevels, levels.Count);
-            for (int i = 0; i < visible; i++)
+            ClearLevelDrawObjects();
+            List<LukeOverlayLevel> visibleLevels = VisibleLevels();
+            for (int i = 0; i < visibleLevels.Count; i++)
             {
-                LukeOverlayLevel level = levels[i];
+                LukeOverlayLevel level = visibleLevels[i];
                 Brush brush = LevelBrush(level.Source);
                 int width = LevelWidth(level.Source);
-                Draw.HorizontalLine(this, "LukeParityLevel" + i, level.Price, brush, DashStyleHelper.Solid, width);
+                string lineTag = "LukeParityLevel" + i;
+                Draw.HorizontalLine(this, lineTag, level.Price, brush, DashStyleHelper.Solid, width);
+                activeLevelTags.Add(lineTag);
                 if (i < 24)
-                    Draw.Text(this, "LukeParityLevelLabel" + i, LevelLabel(level), 0, level.Price, brush);
+                {
+                    string labelTag = "LukeParityLevelLabel" + i;
+                    Draw.Text(this, labelTag, LevelLabel(level), 0, level.Price, brush);
+                    activeLevelTags.Add(labelTag);
+                }
             }
-            for (int i = visible; i < lastDrawnLevelCount; i++)
+            lastDrawnLevelCount = visibleLevels.Count;
+        }
+
+        private void ClearLevelDrawObjects()
+        {
+            for (int i = 0; i < activeLevelTags.Count; i++)
+                RemoveDrawObject(activeLevelTags[i]);
+            activeLevelTags.Clear();
+        }
+
+        private List<LukeOverlayLevel> VisibleLevels()
+        {
+            List<LukeOverlayLevel> merged = MergeVisibleLevels();
+            double last = Close[0];
+            if (LevelWindowPoints > 0.0)
+                merged.RemoveAll(level => Math.Abs(level.Price - last) > LevelWindowPoints);
+            merged.Sort((a, b) =>
             {
-                RemoveDrawObject("LukeParityLevel" + i);
-                RemoveDrawObject("LukeParityLevelLabel" + i);
+                int distance = Math.Abs(a.Price - last).CompareTo(Math.Abs(b.Price - last));
+                return distance != 0 ? distance : a.Price.CompareTo(b.Price);
+            });
+            if (merged.Count > MaxVisibleLevels)
+                merged.RemoveRange(MaxVisibleLevels, merged.Count - MaxVisibleLevels);
+            merged.Sort((a, b) => a.Price.CompareTo(b.Price));
+            return merged;
+        }
+
+        private List<LukeOverlayLevel> MergeVisibleLevels()
+        {
+            List<LukeOverlayLevel> merged = new List<LukeOverlayLevel>();
+            for (int i = 0; i < levels.Count; i++)
+            {
+                LukeOverlayLevel source = levels[i];
+                LukeOverlayLevel existing = null;
+                for (int j = 0; j < merged.Count; j++)
+                {
+                    if (Math.Abs(merged[j].Price - source.Price) < 0.005)
+                    {
+                        existing = merged[j];
+                        break;
+                    }
+                }
+                if (existing == null)
+                    merged.Add(new LukeOverlayLevel(source.Price, source.Source));
+                else if (!existing.Source.Contains(source.Source))
+                    existing.Source = CombineSources(existing.Source, source.Source);
             }
-            lastDrawnLevelCount = visible;
+            return merged;
+        }
+
+        private static string CombineSources(string left, string right)
+        {
+            bool hasMancini = IsManciniSource(left) || IsManciniSource(right);
+            bool hasSaty = IsSatySource(left) || IsSatySource(right);
+            if (hasMancini && hasSaty)
+                return "both";
+            return left + "+" + right;
         }
 
         private void DrawLedger()
@@ -336,59 +417,397 @@ namespace NinjaTrader.NinjaScript.Indicators
             return -1;
         }
 
+        private double CostPerContract()
+        {
+            return EntrySlippagePoints * PnlDollarsPerPoint + CommissionPerContractRoundTrip;
+        }
+
+        private static string FmtNet(double net)
+        {
+            if (double.IsNaN(net) || double.IsInfinity(net)) return "?";
+            return net >= 0
+                ? string.Format(CultureInfo.InvariantCulture, "+${0:F2}", net)
+                : string.Format(CultureInfo.InvariantCulture, "-${0:F2}", Math.Abs(net));
+        }
+
+        private static string FmtPts(double pts)
+        {
+            if (double.IsNaN(pts) || double.IsInfinity(pts)) return "?pt";
+            return pts >= 0
+                ? string.Format(CultureInfo.InvariantCulture, "+{0:F2}pt", pts)
+                : string.Format(CultureInfo.InvariantCulture, "{0:F2}pt", pts);
+        }
+
         private string BuildLedgerText()
         {
-            int pineLong = 0;
-            int pineCancel = 0;
-            int nativeLong = 0;
-            int nativeCancel = 0;
-            int tp1 = 0;
-            int stops = 0;
-            double net = 0.0;
-            int netRows = 0;
-
+            int nativeLong = 0, allNativeLong = 0, nativeCancel = 0;
+            int tp1Count = 0, tp2Count = 0, stopCount = 0;
+            double realizedNet = 0.0, cancelNet = 0.0;
+            double costPerContract = CostPerContract();
+            var recentRows = new List<string>();
+            var todayLongs = new List<LukeOverlayEvent>();
             DateTime sessionDate = Time[0].Date;
+
+            // Pass 1: index today's LONG events by signal_id so CANCEL can resolve tp1/stop
+            var longIndex = new Dictionary<string, LukeOverlayEvent>(StringComparer.Ordinal);
             for (int i = 0; i < events.Count; i++)
             {
                 LukeOverlayEvent row = events[i];
-                DateTime keyTime = row.BarTime == DateTime.MinValue ? row.Time : row.BarTime;
-                if (keyTime != DateTime.MinValue && keyTime.Date != sessionDate)
-                    continue;
-                if (row.Source == "pine" && row.Kind == "LONG") pineLong++;
-                if (row.Source == "pine" && row.Kind == "CANCEL") pineCancel++;
-                if (row.Source == "native" && row.Kind == "LONG") nativeLong++;
-                if (row.Source == "native" && row.Kind == "CANCEL") nativeCancel++;
-                if (row.Kind == "TP1") tp1++;
-                if (row.Kind.IndexOf("STOP", StringComparison.OrdinalIgnoreCase) >= 0) stops++;
-                if (row.HasNet)
+                if (row.Source != "native" || row.Kind != "LONG") continue;
+                DateTime keyTime = row.BarTime == DateTime.MinValue ? row.Time : row.BarTime.ToLocalTime();
+                if (keyTime != DateTime.MinValue && keyTime.Date != sessionDate) continue;
+                if (!string.IsNullOrEmpty(row.SignalId))
+                    longIndex[row.SignalId] = row;
+            }
+
+            for (int i = 0; i < events.Count; i++)
+            {
+                LukeOverlayEvent row = events[i];
+                if (row.Source != "native") continue;
+                DateTime keyTime = row.BarTime == DateTime.MinValue ? row.Time : row.BarTime.ToLocalTime();
+                if (keyTime != DateTime.MinValue && keyTime.Date != sessionDate) continue;
+
+                if (row.Kind == "LONG")
                 {
-                    net += row.Net;
-                    netRows++;
+                    allNativeLong++;
+                    if (!row.IsShadowOnly) { nativeLong++; todayLongs.Add(row); }
+                    continue;
+                }
+
+                double pts = double.NaN;
+                double net;
+                bool entryKnown = !double.IsNaN(row.Entry) && !double.IsInfinity(row.Entry);
+
+                if (row.Kind == "CANCEL")
+                {
+                    nativeCancel++;
+                    bool priceKnown = !double.IsNaN(row.Price) && !double.IsInfinity(row.Price);
+
+                    // Resolve tp1/tp2/stop from matched LONG (CANCEL events have null targets in JSONL)
+                    LukeOverlayEvent matched = null;
+                    if (!string.IsNullOrEmpty(row.SignalId))
+                        longIndex.TryGetValue(row.SignalId, out matched);
+                    double resolvedTp1  = (matched != null && IsFinite(matched.EntryTp1))  ? matched.EntryTp1  : row.EntryTp1;
+                    double resolvedTp2  = (matched != null && IsFinite(matched.EntryTp2))  ? matched.EntryTp2  : row.EntryTp2;
+                    double resolvedStop = (matched != null && IsFinite(matched.EntryStop)) ? matched.EntryStop : row.EntryStop;
+                    double resolvedEntry = entryKnown ? row.Entry : (matched != null ? matched.Entry : double.NaN);
+                    bool tp1Known  = IsFinite(resolvedTp1);
+                    bool tp2Known  = IsFinite(resolvedTp2) && resolvedTp2 > resolvedTp1;
+                    bool stopKnown = IsFinite(resolvedStop);
+
+                    if (priceKnown && tp2Known && row.Price >= resolvedTp2)
+                    {
+                        // Price blew through TP2 at cancel
+                        tp2Count++;
+                        nativeCancel--;
+                        pts = resolvedTp2 - resolvedEntry;
+                        net = IsFinite(pts) ? pts * PnlDollarsPerPoint - costPerContract : 0.0;
+                        realizedNet += net;
+                        recentRows.Add(string.Format(CultureInfo.InvariantCulture,
+                            "{0:HH:mm} CXL→T2 E{1} {2} {3}",
+                            row.Time, IsFinite(resolvedEntry) ? resolvedEntry.ToString("F2", CultureInfo.InvariantCulture) : "?",
+                            FmtPts(pts), FmtNet(net)));
+                    }
+                    else if (priceKnown && tp1Known && row.Price >= resolvedTp1)
+                    {
+                        // Price blew through TP1 at cancel
+                        tp1Count++;
+                        nativeCancel--;
+                        pts = resolvedTp1 - resolvedEntry;
+                        net = IsFinite(pts) ? pts * PnlDollarsPerPoint - costPerContract : 0.0;
+                        realizedNet += net;
+                        recentRows.Add(string.Format(CultureInfo.InvariantCulture,
+                            "{0:HH:mm} CXL→T1 E{1} {2} {3}",
+                            row.Time, IsFinite(resolvedEntry) ? resolvedEntry.ToString("F2", CultureInfo.InvariantCulture) : "?",
+                            FmtPts(pts), FmtNet(net)));
+                    }
+                    else if (priceKnown && stopKnown && row.Price <= resolvedStop)
+                    {
+                        // Price hit stop level at cancel — direction loss
+                        stopCount++;
+                        nativeCancel--;
+                        pts = resolvedStop - resolvedEntry;
+                        net = IsFinite(pts) ? pts * PnlDollarsPerPoint - costPerContract : 0.0;
+                        realizedNet += net;
+                        recentRows.Add(string.Format(CultureInfo.InvariantCulture,
+                            "{0:HH:mm} CXL→ST E{1} {2} {3}",
+                            row.Time, IsFinite(resolvedEntry) ? resolvedEntry.ToString("F2", CultureInfo.InvariantCulture) : "?",
+                            FmtPts(pts), FmtNet(net)));
+                    }
+                    else
+                    {
+                        // Neutral cancel: between entry and tp1/stop
+                        if (priceKnown && IsFinite(resolvedEntry))
+                        {
+                            pts = row.Price - resolvedEntry;
+                            net = pts * PnlDollarsPerPoint - costPerContract;
+                        }
+                        else
+                        {
+                            net = row.HasNet ? row.Net : 0.0;
+                        }
+                        cancelNet += net;
+                        recentRows.Add(string.Format(CultureInfo.InvariantCulture,
+                            "{0:HH:mm} CANCEL E{1} {2} {3}",
+                            row.Time, IsFinite(resolvedEntry) ? resolvedEntry.ToString("F2", CultureInfo.InvariantCulture) : "?",
+                            FmtPts(pts), FmtNet(net)));
+                    }
+                }
+                else if (row.Kind == "TP1" || row.Kind == "TP2")
+                {
+                    if (row.Kind == "TP2") tp2Count++; else tp1Count++;
+                    bool tp1Known = !double.IsNaN(row.EntryTp1) && !double.IsInfinity(row.EntryTp1);
+                    if (row.HasNet)
+                    {
+                        net = row.Net;
+                        if (entryKnown && tp1Known) pts = row.EntryTp1 - row.Entry;
+                    }
+                    else if (entryKnown && tp1Known)
+                    {
+                        pts = row.EntryTp1 - row.Entry;
+                        net = pts * PnlDollarsPerPoint - costPerContract;
+                    }
+                    else
+                    {
+                        net = 0.0;
+                    }
+                    realizedNet += net;
+                    recentRows.Add(string.Format(CultureInfo.InvariantCulture,
+                        "{0:HH:mm} {1,-4}   E{2} {3} {4}",
+                        row.Time, row.Kind,
+                        entryKnown ? row.Entry.ToString("F2", CultureInfo.InvariantCulture) : "?",
+                        FmtPts(pts), FmtNet(net)));
+                }
+                else if (row.Kind == "STOP"
+                    || row.Kind.IndexOf("STOP", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    stopCount++;
+                    bool stopKnown = !double.IsNaN(row.EntryStop) && !double.IsInfinity(row.EntryStop);
+                    if (row.HasNet)
+                    {
+                        net = row.Net;
+                        if (entryKnown && stopKnown) pts = row.EntryStop - row.Entry;
+                    }
+                    else if (entryKnown && stopKnown)
+                    {
+                        pts = row.EntryStop - row.Entry;
+                        net = pts * PnlDollarsPerPoint - costPerContract;
+                    }
+                    else
+                    {
+                        net = 0.0;
+                    }
+                    realizedNet += net;
+                    recentRows.Add(string.Format(CultureInfo.InvariantCulture,
+                        "{0:HH:mm} STOP   E{1} {2} {3}",
+                        row.Time, entryKnown ? row.Entry.ToString("F2", CultureInfo.InvariantCulture) : "?",
+                        FmtPts(pts), FmtNet(net)));
                 }
             }
 
-            return string.Format(CultureInfo.InvariantCulture,
-                "Luke best UI - Ninja parity\nsession {0:yyyy-MM-dd}\nscore incl cxl     native {4}/{5} | pine {2}/{3}\nwatch/long/cxl     pine L {2} / C {3}\nmisses incl cxl    visual compare required\nmilestones         TP1 {6} / STOP {7}\nrealistic net      net rows {8} / {9:F2}\nbase lines         M blue | S lime | both yellow\nmancini ctx        target purple | read gray\nlevels             total {1} manual {12}\nmanual file        {14}\nsaty               {13}\nsaty values        prev {10} atr {11}\nchart-only: no order APIs",
-                sessionDate,
-                levels.Count,
-                pineLong,
-                pineCancel,
-                nativeLong,
-                nativeCancel,
-                tp1,
-                stops,
-                netRows,
-                net,
-                FormatPrice(previousClose),
-                FormatPrice(satyAtr),
-                externalLevelCount,
-                satyStatus,
-                levelFileStatus);
+            int sessionSuccesses = tp1Count + tp2Count;
+            int closedSignals = sessionSuccesses + stopCount;
+            // Pine formula: score denominator = outcomes(closed) + cancels, NOT all LONGs fired
+            int totalAttempts = closedSignals + nativeCancel;
+            double totalNet = realizedNet + cancelNet;
+            double commDollars = CommissionPerContractRoundTrip * totalAttempts;
+            double slipDollars = EntrySlippagePoints * PnlDollarsPerPoint * totalAttempts;
+
+            string scorePct = totalAttempts > 0
+                ? string.Format(CultureInfo.InvariantCulture,
+                    "{0}/{1}  {2:F1}%", sessionSuccesses, totalAttempts,
+                    100.0 * sessionSuccesses / totalAttempts)
+                : "0/0";
+
+            // Simulation: scan forward through chart bars to find what should have happened
+            int simTp1 = 0, simTp2 = 0, simBE = 0, simStop = 0, simOpen = 0, simNoFill = 0;
+            double simNet = 0.0;
+            var simRows = new List<string>();
+            const int SimLookforward = 500; // 500 one-minute bars covers full RTH session
+
+            foreach (LukeOverlayEvent longEvt in todayLongs)
+            {
+                SimResult sim = SimulateLong(longEvt, costPerContract, SimLookforward);
+                DateTime simTime = longEvt.BarTime != DateTime.MinValue
+                    ? longEvt.BarTime.ToLocalTime()
+                    : longEvt.Time.ToLocalTime();
+                switch (sim.Outcome)
+                {
+                    case "TP1":  simTp1++;  simNet += sim.Net; break;
+                    case "TP2":  simTp2++;  simNet += sim.Net; break;
+                    case "BE":   simBE++;   simNet += sim.Net; break;
+                    case "STOP": simStop++; simNet += sim.Net; break;
+                    case "OPEN": simOpen++;  break;
+                    default:     simNoFill++; break;
+                }
+                bool simResolved = sim.Outcome == "TP1" || sim.Outcome == "TP2" || sim.Outcome == "BE" || sim.Outcome == "STOP";
+                simRows.Add(string.Format(CultureInfo.InvariantCulture,
+                    "{0:HH:mm} SIM {1,-5} E{2} {3} {4}",
+                    simTime, sim.Outcome,
+                    IsFinite(longEvt.Entry) ? longEvt.Entry.ToString("F2", CultureInfo.InvariantCulture) : "?",
+                    simResolved ? FmtPts(sim.Pts) : "",
+                    simResolved ? FmtNet(sim.Net) : ""));
+            }
+
+            int simWins = simTp1 + simTp2 + simBE;
+            string simScorePct = nativeLong > 0
+                ? string.Format(CultureInfo.InvariantCulture,
+                    "{0}/{1}  {2:F1}%", simWins, nativeLong, 100.0 * simWins / nativeLong)
+                : "0/0";
+
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            sb.AppendLine("Luke best UI");
+            sb.AppendFormat(CultureInfo.InvariantCulture, "session {0:yyyy-MM-dd}\n", sessionDate);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "score incl cxl     {0}\n", scorePct);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "watch/long/cxl     W 0 / L {0} / C {1}\n", nativeLong, nativeCancel);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "misses incl cxl    {0} = S {1} + C {2}\n", stopCount + nativeCancel, stopCount, nativeCancel);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "milestones         T1 {0} / T2 {1} / STOP {2}\n", tp1Count, tp2Count, stopCount);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "gross total        {0:+0.00;-0.00;0.00}\n", realizedNet);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "realistic net      {0:+0.00;-0.00;0.00}\n", totalNet);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "cxl net            {0:+0.00;-0.00;0.00}\n", cancelNet);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "mode/costs         entry_only_0.25 | comm ${0:F2} / slip ${1:F2}\n", commDollars, slipDollars);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "native L/C         {0}/{1}\n", allNativeLong, nativeCancel);
+            sb.AppendLine("base lines         M blue | S lime | both yellow");
+            sb.AppendLine("mancini ctx        target purple | read gray");
+            sb.AppendFormat(CultureInfo.InvariantCulture, "levels             total {0} manual {1} window +/-{2:F0}\n", levels.Count, externalLevelCount, LevelWindowPoints);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "manual file        {0}\n", levelFileStatus);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "saty               {0}\n", satyStatus);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "saty values        prev {0} atr {1}\n", FormatPrice(previousClose), FormatPrice(satyAtr));
+            sb.AppendLine("chart-only: no order APIs");
+            sb.AppendLine("--- sim: what should have happened ---");
+            sb.AppendFormat(CultureInfo.InvariantCulture, "sim score          {0}\n", simScorePct);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "sim net            {0:+0.00;-0.00;0.00}\n", simNet);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "sim detail         T1 {0} / T2 {1} / BE {2} / STOP {3} / OPEN {4} / NOFILL {5}\n", simTp1, simTp2, simBE, simStop, simOpen, simNoFill);
+
+            int startIdx = Math.Max(0, recentRows.Count - 8);
+            for (int i = startIdx; i < recentRows.Count; i++)
+            {
+                sb.Append("\n");
+                sb.Append(recentRows[i]);
+            }
+
+            int simStartIdx = Math.Max(0, simRows.Count - 8);
+            for (int i = simStartIdx; i < simRows.Count; i++)
+            {
+                sb.Append("\n");
+                sb.Append(simRows[i]);
+            }
+
+            return sb.ToString();
+        }
+
+        private struct SimResult
+        {
+            public string Outcome;  // "TP1", "TP2", "BE", "STOP", "OPEN", "NOFILL", "?"
+            public double Pts;      // pts locked in (tp1 pts for BE; tp2 pts for TP2)
+            public double Net;
+        }
+
+        // Scan forward through chart bars from signal bar to find simulated outcome.
+        // Protocol: limit fills when Low <= entry; TP2 checked first; once TP1 hit on a split plan,
+        // stop moves to entry (breakeven) and scan continues for TP2. Stopped at entry after TP1 = BE.
+        private SimResult SimulateLong(LukeOverlayEvent evt, double costPerContract, int maxBarsForward)
+        {
+            if (!IsFinite(evt.Entry) || !IsFinite(evt.EntryTp1) || !IsFinite(evt.EntryStop))
+                return new SimResult { Outcome = "?" };
+
+            DateTime signalTime = evt.BarTime != DateTime.MinValue
+                ? evt.BarTime.ToLocalTime()
+                : evt.Time.ToLocalTime();
+
+            // Find barsAgo for signal bar by scanning Time[] for closest match (within 90 seconds)
+            int signalBarsAgo = -1;
+            int scanLimit = Math.Min(CurrentBar, maxBarsForward + 60);
+            for (int b = 0; b <= scanLimit; b++)
+            {
+                if (Math.Abs((Time[b] - signalTime).TotalSeconds) < 90)
+                {
+                    signalBarsAgo = b;
+                    break;
+                }
+            }
+            if (signalBarsAgo < 0)
+                return new SimResult { Outcome = "?" };
+
+            bool filled = false;
+            bool tp1Hit = false;
+            // Split plan (2ES): one contract exits at TP1, runner continues to TP2 with stop at entry (BE)
+            bool hasTp2 = IsFinite(evt.EntryTp2) && evt.EntryTp2 > evt.EntryTp1;
+
+            for (int b = signalBarsAgo; b >= 0 && (signalBarsAgo - b) <= maxBarsForward; b--)
+            {
+                if (!filled)
+                {
+                    // Pine fill condition: bar must SPAN entry (low <= entry AND high >= entry).
+                    // Prevents gap-down bars from triggering a false fill.
+                    if (Low[b] <= evt.Entry && High[b] >= evt.Entry) filled = true;
+                    else continue;
+                }
+
+                // Active stop: original stop before TP1; entry (breakeven) after TP1
+                double activeStop = tp1Hit ? evt.Entry : evt.EntryStop;
+
+                // Conservative stop first: matches Pine's conservative_stop default.
+                // When the same bar hits both stop and TP, assume stop was hit first (worst case).
+                if (Low[b] <= activeStop)
+                {
+                    if (tp1Hit)
+                    {
+                        // Runner stopped at breakeven: TP1 contract locked, runner = 0 pts on exit
+                        // Cost: 2 contracts round-trip (TP1 exit + BE exit)
+                        double tp1Pts = evt.EntryTp1 - evt.Entry;
+                        return new SimResult { Outcome = "BE", Pts = tp1Pts, Net = tp1Pts * PnlDollarsPerPoint - 2.0 * costPerContract };
+                    }
+                    double stopPts = evt.EntryStop - evt.Entry;
+                    // Split plan: both contracts exit at stop
+                    double stopNet = hasTp2
+                        ? stopPts * PnlDollarsPerPoint * 2.0 - 2.0 * costPerContract
+                        : stopPts * PnlDollarsPerPoint - costPerContract;
+                    return new SimResult { Outcome = "STOP", Pts = stopPts, Net = stopNet };
+                }
+
+                // TP2: High >= tp2 means both TP1 and TP2 hit on this bar.
+                // Split plan P&L: contract1 exits at TP1 + contract2 exits at TP2 - 2x commission.
+                if (hasTp2 && High[b] >= evt.EntryTp2)
+                {
+                    double tp1Pts = evt.EntryTp1 - evt.Entry;
+                    double tp2Pts = evt.EntryTp2 - evt.Entry;
+                    double tp2Net = (tp1Pts + tp2Pts) * PnlDollarsPerPoint - 2.0 * costPerContract;
+                    return new SimResult { Outcome = "TP2", Pts = tp2Pts, Net = tp2Net };
+                }
+
+                if (!tp1Hit && High[b] >= evt.EntryTp1)
+                {
+                    if (!hasTp2)
+                    {
+                        // Single-contract plan: full exit at TP1
+                        double pts = evt.EntryTp1 - evt.Entry;
+                        return new SimResult { Outcome = "TP1", Pts = pts, Net = pts * PnlDollarsPerPoint - costPerContract };
+                    }
+                    // Split plan: first contract exits at TP1; stop now moves to entry (breakeven) for runner
+                    tp1Hit = true;
+                    continue;
+                }
+            }
+
+            if (tp1Hit)
+            {
+                // Session ended with TP1 locked but runner still open (counts as TP1)
+                double tp1Pts = evt.EntryTp1 - evt.Entry;
+                return new SimResult { Outcome = "TP1", Pts = tp1Pts, Net = tp1Pts * PnlDollarsPerPoint - 2.0 * costPerContract };
+            }
+            return new SimResult { Outcome = filled ? "OPEN" : "NOFILL" };
         }
 
         private static Brush LevelBrush(string source)
         {
+            if (source == "both") return Brushes.Yellow;
             if (source == "mancini") return Brushes.DodgerBlue;
+            if (source == "mancini_major") return Brushes.Aqua;
+            if (source == "mancini_focus") return Brushes.Orange;
+            if (source == "mancini_trigger") return Brushes.DeepPink;
+            if (source == "mancini_target") return Brushes.Purple;
+            if (source == "mancini_read") return Brushes.Gray;
             if (source == "saty_prev_close") return Brushes.Gray;
             if (source == "saty_call_trigger") return Brushes.LimeGreen;
             if (source == "saty_put_trigger") return Brushes.Red;
@@ -401,7 +820,11 @@ namespace NinjaTrader.NinjaScript.Indicators
 
         private static int LevelWidth(string source)
         {
-            return source == "mancini"
+            return source == "both"
+                || source == "mancini"
+                || source == "mancini_major"
+                || source == "mancini_focus"
+                || source == "mancini_trigger"
                 || source == "saty_call_trigger"
                 || source == "saty_put_trigger"
                 || source.StartsWith("saty_atr", StringComparison.Ordinal)
@@ -411,7 +834,33 @@ namespace NinjaTrader.NinjaScript.Indicators
 
         private static string LevelLabel(LukeOverlayLevel level)
         {
+            if (level.Source == "both") return "BOTH " + FormatPrice(level.Price);
             return level.Source.Replace("saty_", "S ").Replace("_", " ") + " " + FormatPrice(level.Price);
+        }
+
+        private static bool IsManciniSource(string source)
+        {
+            return (source ?? string.Empty).StartsWith("mancini", StringComparison.Ordinal);
+        }
+
+        private static bool IsSatySource(string source)
+        {
+            return (source ?? string.Empty).StartsWith("saty", StringComparison.Ordinal);
+        }
+
+        private static string LevelSourceForLine(string line)
+        {
+            string text = (line ?? string.Empty).Trim().ToLowerInvariant();
+            if (text.StartsWith("#", StringComparison.Ordinal) || text.Length == 0)
+                return "mancini";
+            int colon = text.IndexOf(':');
+            string key = colon >= 0 ? text.Substring(0, colon).Trim() : text;
+            if (key == "major" || key == "mancini_major") return "mancini_major";
+            if (key == "focus_long" || key == "focus" || key == "mancini_focus") return "mancini_focus";
+            if (key == "trigger" || key == "reclaim" || key == "reclaim_trigger" || key == "mancini_trigger") return "mancini_trigger";
+            if (key == "target" || key == "target_only" || key == "mancini_target") return "mancini_target";
+            if (key == "read" || key == "read_reaction" || key == "caution" || key == "mancini_read") return "mancini_read";
+            return "mancini";
         }
 
         private static string MarkerText(LukeOverlayEvent row)
@@ -527,10 +976,17 @@ namespace NinjaTrader.NinjaScript.Indicators
         {
             public string Source;
             public string Kind;
+            public string SignalId;
             public DateTime Time;
             public DateTime BarTime;
             public double Price;
+            public double Entry;
+            public double EntryTp1;
+            public double EntryTp2;
+            public double EntryStop;
             public double Net;
+            public string Note;
+            public bool IsShadowOnly;
 
             public bool HasPrice
             {
@@ -552,7 +1008,7 @@ namespace NinjaTrader.NinjaScript.Indicators
                 if (string.IsNullOrWhiteSpace(json))
                     return null;
 
-                string eventText = source == "pine" ? ExtractString(json, "type") : ExtractString(json, "event");
+                string eventText = ExtractString(json, "event");
                 string kind = NormalizeKind(eventText);
                 if (string.IsNullOrWhiteSpace(kind))
                     return null;
@@ -562,17 +1018,31 @@ namespace NinjaTrader.NinjaScript.Indicators
                     ts = ExtractTime(json, "received_at");
                 DateTime bar = ExtractTime(json, "bar_time");
                 double entry = ExtractDouble(json, "entry");
-                double price = IsFinite(entry) ? entry : ExtractDouble(json, "price");
+                double rawPrice = ExtractDouble(json, "price");
+                double price = IsFinite(rawPrice) ? rawPrice : (IsFinite(entry) ? entry : double.NaN);
+                double tp1 = ExtractDouble(json, "tp1");
+                double tp2 = ExtractDouble(json, "tp2");
+                double stop = ExtractDouble(json, "stop");
+                string note = ExtractString(json, "note");
                 double net = ExtractDouble(json, "net");
+                if (!IsFinite(net))
+                    net = NoteDouble(note, "net");
 
                 return new LukeOverlayEvent
                 {
                     Source = source,
                     Kind = kind,
+                    SignalId = ExtractString(json, "signal_id"),
                     Time = ts == DateTime.MinValue ? DateTime.UtcNow : ts,
                     BarTime = bar,
                     Price = price,
-                    Net = net
+                    Entry = entry,
+                    EntryTp1 = tp1,
+                    EntryTp2 = tp2,
+                    EntryStop = stop,
+                    Net = net,
+                    Note = note,
+                    IsShadowOnly = note.IndexOf("shadow_only=true", StringComparison.Ordinal) >= 0
                 };
             }
 
@@ -617,6 +1087,17 @@ namespace NinjaTrader.NinjaScript.Indicators
                 if (bare.Success && double.TryParse(bare.Groups[1].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out epochMs) && epochMs > 946684800000.0)
                     return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(epochMs).ToLocalTime();
                 return DateTime.MinValue;
+            }
+
+            private static double NoteDouble(string note, string key)
+            {
+                if (string.IsNullOrEmpty(note)) return double.NaN;
+                Match m = Regex.Match(note,
+                    @"(?:^|\s)" + Regex.Escape(key) + @"=([-+]?\d+(?:\.\d+)?)");
+                double v;
+                return m.Success && double.TryParse(m.Groups[1].Value,
+                    NumberStyles.Float, CultureInfo.InvariantCulture, out v)
+                    ? v : double.NaN;
             }
 
             private static bool IsFinite(double value)

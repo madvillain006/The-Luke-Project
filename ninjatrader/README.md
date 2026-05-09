@@ -54,6 +54,7 @@ Cancel payloads use the same signal id:
 - `Split TP1/TP2 runner`: `true`
 - `Bridge poll milliseconds`: `50`
 - `Max quantity`: `2`
+- `Live bridge arm phrase`: blank
 - `Max signals per session`: `20`
 - `Require symbol prefix match`: `true`
 - `Require cancel matches active signal`: `true`
@@ -87,9 +88,13 @@ In TradingView:
 
 ## Safety
 
-This does not use the existing Tradovate live execution code. Live accounts are blocked unless `Allow live accounts` is manually enabled in NinjaTrader.
+This does not use the existing Tradovate live execution code. The TradingView bridge is no longer the production execution path because TradingView alert delivery is too slow for the edge. Luke now rejects bridge `LONG` writes unless `LUKE_NINJA_BRIDGE_ACCEPT_LONGS=true` is set for an intentional fallback test. Ping and cancel diagnostics still work.
 
-The bridge rejects malformed brackets, stale LONG signals, duplicate signal IDs, oversize payload quantities, late LONG payloads for already-cancelled ids, and symbol-family mismatches by default. The Ninja strategy still must be compiled and tested inside NinjaTrader before this can be called proven end to end.
+The Ninja strategy is also fail-closed for live accounts: `Allow live accounts=true` is not enough by itself. A live account must also match `Allowed exact account`, and `Live bridge arm phrase` must be exactly `LUKE_BRIDGE_LIVE_ACK`. Without all three, the strategy accepts only `Sim*` and `Playback*` accounts.
+
+The bridge rejects malformed brackets, stale LONG signals, duplicate signal IDs, oversize payload quantities, late LONG payloads for already-cancelled ids, live accounts without the full arm gate, and symbol-family mismatches by default. The Ninja strategy still must be compiled and tested inside NinjaTrader before this can be called proven end to end.
+
+`npm run ninja:bridge:doctor` is ping-only by default. `--order-test` is blocked unless `LUKE_NINJA_ORDER_TEST_ACK=I_ACCEPT_NINJA_ORDER_TEST_RISK` is set for that shell, because order-test intentionally writes a LONG and CANCEL payload for Ninja to consume.
 
 ## Ninja-Native Shadow Port
 
@@ -140,7 +145,22 @@ The level file can contain comma-separated or newline-separated Mancini prices. 
 13. Run:
    `npm run ninja:native:telemetry`
 14. Run the today parity ledger:
-   `npm run ninja:parity:ledger`
+    `npm run ninja:parity:ledger`
+
+### Chart-Only Parity Overlay
+
+Use this when the goal is to visually compare Ninja against the TradingView ledger without enabling orders.
+
+1. Export operator-context levels:
+   `npm run ninja:parity:levels`
+2. Install the overlay source:
+   `npm run ninja:parity:overlay:install`
+3. In NinjaTrader, open NinjaScript Editor and compile.
+4. Open an ES 06-26 5-minute chart with at least 60 days loaded, then run `Reload All Historical Data`.
+5. Add `LukeParityOverlayIndicator`.
+6. Confirm `Level file path` is `C:\Users\conor\luke\data\ninjatrader\luke-native-levels.txt`.
+7. Confirm `Level window points` is near `80` so the chart shows the current useful ladder instead of every archived level.
+8. The overlay is chart-only. It has no order APIs. Yellow means a Mancini/Saty overlap; blue/green/red/purple/gray show the underlying source family.
 
 Expected first proof after enabling: `ENGINE_READY`, then `LEVELS_LOADED`, then the top-right `LUKE NATIVE SESSION LEDGER` overlay. The overlay mirrors the TradingView scorecard rows: `score incl cxl`, `watch/long/cxl`, `misses incl cxl`, `milestones`, `gross total`, `minus comm`, `realistic net`, `cxl net`, and `mode/costs`. `LEVELS_LOADED` can be zero if there are no Mancini levels; Saty is still available from the internal daily calculation once Ninja has enough daily bars.
 

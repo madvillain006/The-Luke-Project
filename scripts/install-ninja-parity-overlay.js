@@ -46,8 +46,10 @@ function auditIndicatorSource(source) {
     "Draw.HorizontalLine",
     "AddDataSeries(BarsPeriodType.Day, 1)",
     "ComputeSatyAtr",
-    "PineBridgeEventsPath",
     "NativeTelemetryPath",
+    "score incl cxl",
+    "realistic net",
+    "IsShadowOnly",
     "chart-only: no order APIs",
   ]) {
     if (!source.includes(snippet)) blockers.push(`missing:${snippet}`);

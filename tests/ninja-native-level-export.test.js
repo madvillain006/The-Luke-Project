@@ -1,5 +1,7 @@
 const {
   activeNativeLevel,
+  loadDailyPlanLevels,
+  renderNativeLevelFile,
   historicalSatyLevels,
   uniqueSortedPrices,
 } = require('../scripts/export-ninja-native-levels');
@@ -24,6 +26,23 @@ describe('Ninja-native level export', () => {
       { price: 7413.25 },
       { price: 'not-a-price' },
     ])).toEqual([7413.25, 7418.5]);
+  });
+
+  it('loads corrected daily-plan Mancini levels and renders context without making every context line executable', () => {
+    const daily = loadDailyPlanLevels();
+    expect(daily.date).toBe('2026-05-08');
+    expect(daily.target_session).toBe('2026-05-11');
+    expect(daily.levels.trade).toContain(7391);
+    expect(daily.levels.trade).toContain(7402);
+    expect(daily.levels.target_only).toContain(7434);
+    expect(daily.levels.target_only).toContain(7462);
+
+    const text = renderNativeLevelFile({ dailyPlan: daily, generatedAt: '2026-05-08T00:00:00.000Z', includeContext: true });
+    expect(text).toContain('trade: ');
+    expect(text).toContain('target_only: ');
+    expect(text).toContain('read_reaction: ');
+    expect(text).toContain('target_session: 2026-05-11 ES');
+    expect(text).toContain('Strategy parser trades only the trade/mancini section');
   });
 
   it('derives historical Ninja Saty levels from the same previous-close Barchart formula as the Pine parity replay', () => {

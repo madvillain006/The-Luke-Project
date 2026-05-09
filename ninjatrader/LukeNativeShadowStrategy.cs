@@ -58,6 +58,7 @@ namespace NinjaTrader.NinjaScript.Strategies
         private readonly List<LevelCluster> clusters = new List<LevelCluster>();
         private DateTime lastLevelLoadUtc = DateTime.MinValue;
         private string lastLevelFileText = string.Empty;
+        private int lastNoClustersTelemetryBar = -1;
         private bool previousWatchSignal;
         private bool previousArmedSignal;
         private bool previousPaperSignal;
@@ -485,7 +486,17 @@ namespace NinjaTrader.NinjaScript.Strategies
             LoadLevelsIfNeeded();
             BuildClusters();
             if (clusters.Count == 0)
+            {
+                if (lastNoClustersTelemetryBar != CurrentBar)
+                {
+                    lastNoClustersTelemetryBar = CurrentBar;
+                    WriteTelemetry("NO_CLUSTERS", null, "raw_levels=" + rawLevels.Count.ToString(CultureInfo.InvariantCulture)
+                        + " close=" + Format(Close[0])
+                        + " window=" + Format(LiveLevelWindowPoints)
+                        + " level_path=" + LevelFilePath);
+                }
                 return;
+            }
 
             ShadowDecision decision = EvaluateDecision();
             EmitDecisionEvents(decision);
@@ -591,14 +602,40 @@ namespace NinjaTrader.NinjaScript.Strategies
 
             rawLevels.Clear();
             lastLevelFileText = text;
-            foreach (Match match in Regex.Matches(text, @"[-+]?\d+(?:\.\d+)?"))
+            string[] lines = text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+            bool hasSections = Regex.IsMatch(text, @"(?im)^\s*(trade|mancini|major|focus_long|target_only|read_reaction|caution|trigger|reclaim)\s*:");
+            int rawMatches = 0;
+            for (int lineIndex = 0; lineIndex < lines.Length; lineIndex++)
             {
-                double value;
-                if (!double.TryParse(match.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out value))
+                string line = (lines[lineIndex] ?? string.Empty).Trim();
+                if (line.Length == 0 || line.StartsWith("#", StringComparison.Ordinal))
                     continue;
-                InsertSorted(rawLevels, new LevelInput(RoundPrice(value), "mancini"));
+                if (hasSections && !IsTradeLevelLine(line))
+                    continue;
+                foreach (Match match in Regex.Matches(line, @"[-+]?\d+(?:\.\d+)?"))
+                {
+                    rawMatches++;
+                    double value;
+                    if (!double.TryParse(match.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out value))
+                        continue;
+                    InsertSorted(rawLevels, new LevelInput(RoundPrice(value), "mancini"));
+                }
             }
-            WriteTelemetry("LEVELS_LOADED", null, "count=" + rawLevels.Count.ToString(CultureInfo.InvariantCulture));
+            WriteTelemetry("LEVELS_LOADED", null, "count=" + rawLevels.Count.ToString(CultureInfo.InvariantCulture)
+                + " raw_count=" + rawMatches.ToString(CultureInfo.InvariantCulture)
+                + " bytes=" + text.Length.ToString(CultureInfo.InvariantCulture)
+                + " has_sections=" + (hasSections ? "true" : "false")
+                + " path=" + LevelFilePath);
+        }
+
+        private static bool IsTradeLevelLine(string line)
+        {
+            string text = (line ?? string.Empty).Trim().ToLowerInvariant();
+            int colon = text.IndexOf(':');
+            if (colon < 0)
+                return true;
+            string key = text.Substring(0, colon).Trim();
+            return key == "trade" || key == "mancini" || key == "trade_levels";
         }
 
         private void BuildClusters()
@@ -826,6 +863,12 @@ namespace NinjaTrader.NinjaScript.Strategies
             decision.CancelEvent = pendingLong && pendingLongBar == CurrentBar && !(longCandidate && ltfOk);
             decision.InvalidatedEvent = decision.InvalidatedSignal && !previousInvalidatedSignal;
             decision.BlockedEvent = decision.BlockedSignal && !previousBlockedSignal;
+            bool shadowCandidate = decision.PaperSignal
+                && !decision.PaperFailedChaseBlock
+                && (paperEvent || candidateLevelChanged);
+            decision.ShadowLongEvent = AutonomyMode == LukeNativeAutonomyMode.Shadow
+                ? shadowCandidate && ltfOk && !(pendingLong && pendingLongBar == CurrentBar)
+                : decision.LongEvent;
             return decision;
         }
 
@@ -862,6 +905,13 @@ namespace NinjaTrader.NinjaScript.Strategies
                 WriteTelemetry("LONG", decision, "id=" + pendingLongId);
                 TrySubmitNativeLong(decision, pendingLongId);
             }
+            else if (AutonomyMode == LukeNativeAutonomyMode.Shadow
+                && decision.ShadowLongEvent
+                && !decision.LongEvent
+                && !double.IsNaN(decision.ActiveLevel))
+            {
+                WriteShadowOnlyLongTelemetry(decision);
+            }
             else if (decision.CancelEvent)
             {
                 double cancelPoints = (Close[0] - pendingLongEntry) * OpenContractCount(false);
@@ -879,11 +929,18 @@ namespace NinjaTrader.NinjaScript.Strategies
 
             if (IsFirstTickOfBar && pendingLong && pendingLongBar < CurrentBar)
             {
-                pendingLong = false;
-                pendingLongBar = -1;
-                pendingLongId = string.Empty;
+                string xId    = pendingLongId;
+                double xEntry = pendingLongEntry;
+                double xLevel = pendingLongLevel;
+
+                pendingLong      = false;
+                pendingLongBar   = -1;
+                pendingLongId    = string.Empty;
                 pendingLongLevel = double.NaN;
                 pendingLongEntry = double.NaN;
+
+                ClearTrackedCandidate();
+                WriteCancelTelemetry(xId, xEntry, xLevel, "cross_bar=true");
             }
 
             currentBarWatchSignal = decision.WatchSignal;
@@ -1152,7 +1209,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 
         private PivotState BuildPivotState()
         {
-            int barsAgo = State == State.Realtime ? 1 : 0;
+            int barsAgo = 0;
             if (CurrentBar <= barsAgo)
                 return new PivotState(false, double.NaN, false);
             double fast = EMA(PivotFastEma)[barsAgo];
@@ -1711,6 +1768,86 @@ namespace NinjaTrader.NinjaScript.Strategies
             }
         }
 
+        private void WriteCancelTelemetry(string signalId, double entry, double level, string noteSuffix)
+        {
+            if (string.IsNullOrWhiteSpace(TelemetryFilePath))
+                return;
+            try
+            {
+                string directory = Path.GetDirectoryName(TelemetryFilePath);
+                if (!string.IsNullOrWhiteSpace(directory))
+                    Directory.CreateDirectory(directory);
+                bool hasBar = CurrentBar >= 0;
+                string barTime = hasBar
+                    ? PineBarTime().ToString("O", CultureInfo.InvariantCulture)
+                    : string.Empty;
+                string note = "id=" + signalId + " " + noteSuffix;
+                string line = "{"
+                    + "\"ts\":\""        + DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture) + "\","
+                    + "\"source\":\"ninja-native-shadow\","
+                    + "\"event\":\"CANCEL\","
+                    + "\"signal_id\":\"" + Escape(signalId) + "\","
+                    + "\"instrument\":\"" + Escape(Instrument == null ? "" : Instrument.FullName) + "\","
+                    + "\"bar\":"         + CurrentBar.ToString(CultureInfo.InvariantCulture) + ","
+                    + "\"bar_time\":\""  + Escape(barTime) + "\","
+                    + "\"price\":"       + FormatNullable(hasBar ? Open[0] : double.NaN) + ","
+                    + "\"level\":"       + FormatNullable(level) + ","
+                    + "\"entry\":"       + FormatNullable(entry) + ","
+                    + "\"stop\":null,\"tp1\":null,\"tp2\":null,"
+                    + "\"ltf_ok\":false,"
+                    + "\"note\":\""      + Escape(note) + "\""
+                    + "}";
+                File.AppendAllText(TelemetryFilePath, line + Environment.NewLine);
+                // RecordLedgerOverlayRow intentionally skipped — null decision safety; overlay reads file on next tick
+            }
+            catch (Exception ex)
+            {
+                Print("LukeNativeShadow cancel-telemetry failed: " + ex.Message);
+            }
+        }
+
+        private void WriteShadowOnlyLongTelemetry(ShadowDecision decision)
+        {
+            if (string.IsNullOrWhiteSpace(TelemetryFilePath))
+                return;
+            try
+            {
+                string directory = Path.GetDirectoryName(TelemetryFilePath);
+                if (!string.IsNullOrWhiteSpace(directory))
+                    Directory.CreateDirectory(directory);
+                bool hasBar = CurrentBar >= 0;
+                string barTime = hasBar
+                    ? PineBarTime().ToString("O", CultureInfo.InvariantCulture)
+                    : string.Empty;
+                string signalId = "shadow-" + CurrentBar.ToString(CultureInfo.InvariantCulture)
+                    + "-" + FormatNullable(decision.ActiveEntry);
+                string line = "{"
+                    + "\"ts\":\""       + DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture) + "\","
+                    + "\"source\":\"ninja-native-shadow\","
+                    + "\"event\":\"LONG\","
+                    + "\"signal_id\":\"" + Escape(signalId) + "\","
+                    + "\"instrument\":\"" + Escape(Instrument == null ? "" : Instrument.FullName) + "\","
+                    + "\"bar\":"         + CurrentBar.ToString(CultureInfo.InvariantCulture) + ","
+                    + "\"bar_time\":\""  + Escape(barTime) + "\","
+                    + "\"price\":"       + FormatNullable(hasBar ? Close[0] : double.NaN) + ","
+                    + "\"level\":"       + FormatNullable(decision.ActiveLevel) + ","
+                    + "\"entry\":"       + FormatNullable(decision.ActiveEntry) + ","
+                    + "\"stop\":"        + FormatNullable(decision.ActiveStop) + ","
+                    + "\"tp1\":"         + FormatNullable(decision.ActiveTp1) + ","
+                    + "\"tp2\":"         + FormatNullable(decision.ActiveTp2) + ","
+                    + "\"ltf_ok\":"      + (decision.LtfOk ? "true" : "false") + ","
+                    + "\"note\":\"shadow_only=true\""
+                    + "}";
+                File.AppendAllText(TelemetryFilePath, line + Environment.NewLine);
+                // RecordLedgerOverlayRow intentionally skipped — shadow-only events must not
+                // inflate the strategy's in-chart LUKE NATIVE SESSION LEDGER overlay count
+            }
+            catch (Exception ex)
+            {
+                Print("LukeNativeShadow shadow-only telemetry failed: " + ex.Message);
+            }
+        }
+
         private void RecordLedgerOverlayRow(string eventType, ShadowDecision decision, string note)
         {
             if (!ShowParityLedgerOverlay || !IsLedgerOverlayEvent(eventType))
@@ -2019,6 +2156,7 @@ namespace NinjaTrader.NinjaScript.Strategies
             public bool LtfOk;
             public bool PaperFreshRetest;
             public bool PaperFailedChaseBlock;
+            public bool ShadowLongEvent;
             public string BlockedReason = string.Empty;
             public double ActiveLevel = double.NaN;
             public double ActiveEntry = double.NaN;

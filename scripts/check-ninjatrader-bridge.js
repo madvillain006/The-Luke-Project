@@ -14,6 +14,7 @@ const NINJA_USER_DIR = process.env.NINJATRADER_USER_DIR || "C:\\Users\\conor\\On
 const TOKEN = process.env.LUKE_NINJA_BRIDGE_TOKEN || "";
 const LOCAL_BASE_URL = process.env.LUKE_NINJA_LOCAL_URL || "http://localhost:3000";
 const WANTS_TEXT_PAYLOAD = process.argv.includes("--text-payload");
+const ORDER_TEST_ACK = "I_ACCEPT_NINJA_ORDER_TEST_RISK";
 
 function readJson(file, fallback) {
   try {
@@ -171,6 +172,9 @@ async function main() {
   const wantsPublicTunnel = process.argv.includes("--public-tunnel") || process.env.LUKE_NINJA_USE_PUBLIC_TUNNEL === "true";
   const wantsOrderTest = process.argv.includes("--order-test") || process.env.LUKE_NINJA_DO_ORDER_TEST === "true";
   if (!TOKEN) throw new Error("LUKE_NINJA_BRIDGE_TOKEN is not set");
+  if (wantsOrderTest && process.env.LUKE_NINJA_ORDER_TEST_ACK !== ORDER_TEST_ACK) {
+    throw new Error(`Refusing --order-test without LUKE_NINJA_ORDER_TEST_ACK=${ORDER_TEST_ACK}. The bridge doctor ping is no-order by default.`);
+  }
 
   if (wantsPublicTunnel && (!tunnel || !tunnel.ok || !tunnel.webhook_url)) {
     throw new Error(`Tunnel is not ready: ${JSON.stringify(tunnel)}`);

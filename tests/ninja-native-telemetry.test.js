@@ -101,4 +101,48 @@ describe('Ninja-native shadow telemetry', () => {
       missing: ['level', 'stop', 'tp1', 'tp2'],
     });
   });
+
+  it('does not call lifecycle-only native telemetry clean', () => {
+    const events = parseNativeTelemetry([
+      JSON.stringify({
+        ts: '2026-05-08T18:47:49.3699520Z',
+        source: 'ninja-native-shadow',
+        event: 'LEVELS_LOADED',
+        signal_id: '',
+        instrument: 'ES 06-26',
+        bar: 50,
+        bar_time: '2026-05-03T18:50:00.0000000',
+        price: 7265.75,
+        level: null,
+        entry: null,
+        stop: null,
+        tp1: null,
+        tp2: null,
+        ltf_ok: false,
+        note: 'count=0',
+      }),
+      JSON.stringify({
+        ts: '2026-05-08T18:47:49.4030358Z',
+        source: 'ninja-native-shadow',
+        event: 'ENGINE_READY',
+        signal_id: '',
+        instrument: 'ES 06-26',
+        bar: 4,
+        bar_time: '2026-05-08T16:55:00.0000000',
+        price: 7417.25,
+        level: null,
+        entry: null,
+        stop: null,
+        tp1: null,
+        tp2: null,
+        ltf_ok: false,
+        note: 'mode=Shadow account=test guard=shadow/no orders',
+      }),
+    ].join('\n'));
+
+    const summary = summarizeNativeTelemetry(events);
+    expect(summary.readiness.status).toBe('review');
+    expect(summary.readiness.blockers).toContain('latest_level_load_zero');
+    expect(summary.readiness.blockers).toContain('no_native_long_cancel_events');
+  });
 });

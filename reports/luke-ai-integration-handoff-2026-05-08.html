@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Luke AI Integration — Implementation Handoff 2026-05-08</title>
+<style>
+  body { font-family: monospace; background: #0d1117; color: #c9d1d9; max-width: 960px; margin: 0 auto; padding: 32px 24px; line-height: 1.6; }
+  h1 { color: #58a6ff; border-bottom: 1px solid #30363d; padding-bottom: 8px; }
+  h2 { color: #79c0ff; margin-top: 36px; border-bottom: 1px solid #21262d; padding-bottom: 4px; }
+  h3 { color: #a5d6ff; margin-top: 24px; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+  th { background: #161b22; color: #8b949e; text-align: left; padding: 8px 12px; border: 1px solid #30363d; }
+  td { padding: 8px 12px; border: 1px solid #30363d; vertical-align: top; }
+  tr:nth-child(even) td { background: #0d1117; }
+  tr:nth-child(odd) td { background: #161b22; }
+  code { background: #161b22; color: #79c0ff; padding: 1px 6px; border-radius: 4px; font-size: 0.9em; }
+  pre { background: #161b22; border: 1px solid #30363d; padding: 16px; border-radius: 6px; overflow-x: auto; }
+  .green { color: #3fb950; }
+  .yellow { color: #d29922; }
+  .red { color: #f85149; }
+  .label { font-size: 0.75em; font-weight: bold; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-right: 4px; }
+  .done { background: #1a3a2a; color: #3fb950; }
+  .deferred { background: #2d2a1a; color: #d29922; }
+  .skipped { background: #2d1a1a; color: #f85149; }
+  ul { padding-left: 20px; }
+  li { margin-bottom: 4px; }
+  .section-note { color: #8b949e; font-size: 0.9em; font-style: italic; margin-bottom: 12px; }
+  .boundary-box { background: #1c1c1c; border: 1px solid #f85149; border-radius: 6px; padding: 16px; margin: 16px 0; }
+  .boundary-box h3 { color: #f85149; margin-top: 0; }
+</style>
+</head>
+<body>
+
+<h1>Luke AI Integration — Implementation Handoff</h1>
+
+<p><strong>Date:</strong> 2026-05-08<br>
+<strong>Branch:</strong> <code>claude/objective-easley-0be6c2</code> (worktree)<br>
+<strong>Status:</strong> <span class="green">All 3 phases complete. 62 tests passing. Branch uncommitted — operator review required before merge.</span><br>
+<strong>Base commits:</strong> branched from <code>29e1f98</code> (Luke: checkpoint Mancini research cleanup)</p>
+
+<hr>
+
+<h2>Original Roadmap vs. Delivered</h2>
+
+<table>
+<tr><th>#</th><th>Roadmap Item</th><th>Status</th><th>What Was Delivered</th></tr>
+<tr>
+  <td>1</td>
+  <td>Wait for trading work to settle / freeze baseline</td>
+  <td><span class="label done">DONE</span></td>
+  <td>Worktree isolated to <code>claude/objective-easley-0be6c2</code>. 19 dirty trading files on <code>refactor/decision-spine-cleanup</code> — none touched. Ownership map written before any edit.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>Reference registry</td>
+  <td><span class="label done">DONE</span></td>
+  <td><code>lib/reference-repo-registry.js</code> — 10 repos, static (no file I/O). <code>getRegistry()</code>, <code>getByCategory(cat)</code>, <code>getContextSummary()</code> ≤400 chars. All entries have <code>banned_surfaces: ['trading_execution', 'broker']</code>. Test: <code>tests/reference-repo-registry.test.js</code> (5 tests).</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>Radar reference-review lane</td>
+  <td><span class="label done">DONE</span></td>
+  <td><code>lib/radar/ingest.js</code> — added <code>reference_idea</code> to <code>SOURCE_TYPES</code>, <code>reference_insight</code> to <code>THEME_RULES</code>, and guard in <code>reviewPriority()</code>: <code>if (sourceType === 'reference_idea') return 'review'</code>. Infrastructure-only — no auto-writer yet. Test extension: <code>tests/radar-layer.test.js</code>.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td>Short-term memory (rolling context + session recall)</td>
+  <td><span class="label done">DONE</span></td>
+  <td><code>lib/luke-intelligence-packet.js</code> assembles radar brief + companion context + context bins + registry summary into a ≤1200-char provider-neutral packet. All providers now receive the same enriched Luke context. Test: <code>tests/luke-intelligence-packet.test.js</code> (6 tests).</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td>Long-term memory (scoped durable entries with status)</td>
+  <td><span class="label done">DONE</span></td>
+  <td><code>lib/companion-memory.js</code> — <code>captureCompanionMemory</code> now reads <code>input.scope</code> (project/person/topic/source/general), <code>input.status</code> (active/accepted/rejected/deferred), <code>input.recall_reason</code>. Defaults: <code>general</code>, <code>active</code>, <code>null</code>. <code>searchCompanionMemory</code> gains opt-in <code>options.excludeRejected</code>. Dedup hash unchanged. Test extension: <code>tests/companion-memory.test.js</code>.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td>Fallback AI compatibility (provider-neutral enriched context)</td>
+  <td><span class="label done">DONE</span></td>
+  <td><code>index.js</code> — <code>buildMergedChatContext()</code> now injects a Radar brief (top 3 items) for ALL providers before the LLM call. Gemini/Groq/DeepSeek/Ollama/Anthropic all receive the same enriched context. No Anthropic-only intelligence path exists. <code>lib/luke-intelligence-packet.js</code> is the standalone packet builder for future wiring into routing policy.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td>Katbot review bridge (human-gated)</td>
+  <td><span class="label done">DONE</span></td>
+  <td><code>agents/agent-14-kat.js</code> — <code>checkKatConfluence()</code> now fires <code>recordRadarIngest()</code> after a confluence alert is emitted. Fire-and-forget (try/catch). <code>source_type: 'katbot_paste'</code> → <code>review_priority: 'review'</code> → always human-gated. <code>review_state</code> starts as <code>'new'</code>. No live candidate, no broker path, no auto-promote. Test: <code>tests/kat-confluence-radar.test.js</code> (4 tests).</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td>Dashboard exposure (Radar labels, compact status line)</td>
+  <td><span class="label done">DONE</span></td>
+  <td><code>luke-shell.html</code> — radar-line now shows <code>N✓ N✗</code> (accepted/contradicted) when any review decisions exist, appended to the existing summary. <code>lib/luke-operator-check.js</code> — <code>radar</code> object now includes <code>review_state_counts</code>; <code>operator_lines</code> Radar entry includes accepted/contradicted counts when non-zero. No clutter added. Trading screens unchanged. Test extension: <code>tests/brain-dashboard.test.js</code>, <code>tests/luke-operator-check.test.js</code>.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td>Two hardening loops</td>
+  <td><span class="label done">DONE</span></td>
+  <td>Loop 1: <code>node --check</code> on all 10 touched source files (all pass). Removed no residue — codebase was clean throughout. Loop 2: verified no trading-owned file in <code>git diff</code>, no new external <code>require</code>, no live candidate path, all new behavior reversible. Final: 62/62 tests pass across 12 test files.</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Files Changed</h2>
+
+<h3>Modified (12)</h3>
+<table>
+<tr><th>File</th><th>Change</th></tr>
+<tr><td><code>agents/agent-14-kat.js</code></td><td>Katbot confluence → Radar fire-and-forget bridge in <code>checkKatConfluence()</code></td></tr>
+<tr><td><code>index.js</code></td><td><code>buildMergedChatContext()</code> injects Radar brief (top 3 items) for all providers</td></tr>
+<tr><td><code>lib/brain/brain-core.js</code></td><td>Radar subagent added to <code>buildBrainSnapshot()</code> output via IIFE with try/catch</td></tr>
+<tr><td><code>lib/companion-memory.js</code></td><td>scope/status/recall_reason fields on <code>makeEntry()</code>; <code>excludeRejected</code> opt-in on <code>searchCompanionMemory()</code></td></tr>
+<tr><td><code>lib/luke-operator-check.js</code></td><td><code>review_state_counts</code> added to radar payload; <code>operator_lines</code> Radar entry includes accepted/contradicted</td></tr>
+<tr><td><code>lib/radar/ingest.js</code></td><td><code>reference_idea</code> source type, <code>reference_insight</code> theme, priority guard</td></tr>
+<tr><td><code>luke-shell.html</code></td><td>Radar status line shows <code>N✓ N✗</code> counts when review decisions exist</td></tr>
+<tr><td><code>tests/brain-dashboard.test.js</code></td><td>New test block: verifies radar review-state display logic in shell HTML</td></tr>
+<tr><td><code>tests/companion-memory.test.js</code></td><td>4 new tests for scope/status/recall_reason and <code>excludeRejected</code></td></tr>
+<tr><td><code>tests/llm-routing-policy.test.js</code></td><td>Added assertion: <code>index.js</code> contains <code>buildRadarBrief</code></td></tr>
+<tr><td><code>tests/luke-operator-check.test.js</code></td><td>3 new assertions: <code>review_state_counts</code> present, correct type, Radar operator_lines entry exists</td></tr>
+<tr><td><code>tests/radar-layer.test.js</code></td><td>3 new tests: <code>reference_idea</code> lane — priority, snapshot counts, no side-effects on existing types</td></tr>
+</table>
+
+<h3>New Files (6)</h3>
+<table>
+<tr><th>File</th><th>Purpose</th></tr>
+<tr><td><code>lib/reference-repo-registry.js</code></td><td>Static registry of 10 cloned reference repos. No file I/O. Prompt-injectable summary.</td></tr>
+<tr><td><code>lib/luke-intelligence-packet.js</code></td><td>Provider-neutral context packet builder (radar + memory + bins + registry, ≤1200 chars)</td></tr>
+<tr><td><code>tests/reference-repo-registry.test.js</code></td><td>5 tests covering completeness, uniqueness, surface safety, summary budget</td></tr>
+<tr><td><code>tests/luke-intelligence-packet.test.js</code></td><td>6 tests covering budget, section headers, priority ordering, trading surface exclusion, empty-source graceful output</td></tr>
+<tr><td><code>tests/brain-core-radar.test.js</code></td><td>3 tests: brain snapshot includes radar section, reflects ingested items, no crash on bad paths</td></tr>
+<tr><td><code>tests/kat-confluence-radar.test.js</code></td><td>4 tests: katbot_paste priority, review queue count, agent-14-kat.js contains bridge, no live candidate path</td></tr>
+</table>
+
+<hr>
+
+<h2>What Was Adopted from Reference Repos</h2>
+
+<p class="section-note">Hermes, MemPalace, Qlib, and others were read for conceptual direction only. No framework code, installers, or services were grafted in.</p>
+
+<table>
+<tr><th>Concept Source</th><th>Idea Adopted</th><th>Luke Implementation</th></tr>
+<tr><td>MemPalace</td><td>Scoped durable memory entries with accept/reject lifecycle</td><td><code>scope</code>, <code>status</code>, <code>recall_reason</code> fields in <code>companion-memory.js</code></td></tr>
+<tr><td>MemPalace / Hermes</td><td>Review surface before memory is trusted (human gate)</td><td>All Katbot, reference_idea, and katbot_paste items enter Radar as <code>review</code> priority — never auto-accepted</td></tr>
+<tr><td>Hermes</td><td>Provider-neutral enriched context so cheap models are as informed as expensive ones</td><td><code>lib/luke-intelligence-packet.js</code> + <code>buildMergedChatContext()</code> patch</td></tr>
+<tr><td>General agent literature</td><td>Registry of idea sources with surface bans</td><td><code>lib/reference-repo-registry.js</code> with <code>banned_surfaces: ['trading_execution', 'broker']</code></td></tr>
+</table>
+
+<h3>What Was Rejected and Why</h3>
+<ul>
+  <li><strong>Grafting MemPalace/Hermes runtime as a dependency:</strong> Foreign framework — would add untested runtime risk with no operator-visible benefit over the existing Luke memory/radar layer.</li>
+  <li><strong>Auto-accepting reference ideas into memory:</strong> No idea from a reference repo should enter Luke's trusted memory without human review. The reference_idea Radar lane exists precisely to prevent silent auto-adoption.</li>
+  <li><strong>llm-routing-policy.js wiring to call buildIntelligencePacket directly:</strong> Deferred — the routing policy currently controls which provider is chosen. Injecting the packet at routing time couples policy to context assembly. The current approach (patch buildMergedChatContext) achieves the same enrichment result without that coupling.</li>
+  <li><strong>Dashboard clutter (new panels, new cards):</strong> Phase 3 was kept to the minimum: one status line update in the shell. No new UI panels added.</li>
+</ul>
+
+<hr>
+
+<h2>Validation Record</h2>
+
+<pre>
+node --check index.js                         OK
+node --check lib/companion-memory.js          OK
+node --check lib/luke-context-bins.js         OK
+node --check lib/radar/ingest.js              OK
+node --check lib/brain/radar-layer.js         OK
+node --check agents/agent-00-brain.js         OK
+node --check agents/agent-14-kat.js           OK
+node --check lib/luke-operator-check.js       OK
+node --check lib/reference-repo-registry.js   OK
+node --check lib/luke-intelligence-packet.js  OK
+
+npx vitest run (12 test files, 62 tests)      62 passed / 0 failed
+
+git diff --name-only: 12 modified, 6 new untracked
+Trading-owned files in diff: 0
+New external package require(): 0
+Live candidate path created: 0
+Broker execution path changed: 0
+</pre>
+
+<hr>
+
+<div class="boundary-box">
+<h3>Do Not Touch — Trading-Owned Files (Still Dirty on refactor/decision-spine-cleanup)</h3>
+<pre>
+lib/ninja-native-telemetry.js
+lib/ninja-parity-ledger.js
+lib/ninjatrader-alert-bridge.js
+ninjatrader/LukeAlertBridgeStrategy.cs
+ninjatrader/LukeNativeShadowStrategy.cs
+ninjatrader/LukeParityOverlayIndicator.cs
+ninjatrader/README.md
+package.json
+scripts/check-ninja-native-port.js
+scripts/check-ninjatrader-bridge.js
+scripts/export-ninja-native-levels.js
+scripts/install-ninja-parity-overlay.js
+tests/ninja-native-level-export.test.js
+tests/ninja-native-source.test.js
+tests/ninja-native-telemetry.test.js
+tests/ninja-parity-ledger.test.js
+tests/ninja-parity-overlay-indicator.test.js
+tests/ninjatrader-alert-bridge.test.js
+tradingview/LUKE-WATCH-FLAGSHIP-v4-MANCINI-CONTEXT-NINJA-BRIDGE.pine
+</pre>
+<p>Also permanently off-limits: broker execution paths; <code>/status</code>, <code>/balance</code>, <code>/saty</code>, <code>/ready</code>, <code>/alert</code> route handlers in <code>index.js</code>.</p>
+</div>
+
+<hr>
+
+<h2>Deferred / Remaining Work</h2>
+
+<table>
+<tr><th>Item</th><th>Why Deferred</th><th>Entry Point When Ready</th></tr>
+<tr>
+  <td><code>package.json</code> — add <code>prove:radar-*</code> scripts</td>
+  <td>package.json is trading-owned (dirty on other branch). Cannot touch until that branch commits.</td>
+  <td>After <code>refactor/decision-spine-cleanup</code> merges, add <code>prove:radar-daily-loop</code> and <code>prove:brain-sections</code> scripts.</td>
+</tr>
+<tr>
+  <td><code>llm-routing-policy.js</code> explicit wiring to <code>buildIntelligencePacket</code></td>
+  <td>Current approach (patching <code>buildMergedChatContext</code>) already delivers enriched context to all providers. Coupling policy to context assembly deferred until there's a concrete reason.</td>
+  <td><code>lib/llm-routing-policy.js</code> + <code>lib/luke-intelligence-packet.js</code>. Wire only if provider-selection logic needs to vary by packet content.</td>
+</tr>
+<tr>
+  <td>Reference idea auto-writer (Phase 2+ automated ingestion)</td>
+  <td>Phase 1 laid the infrastructure (source type + theme). No code currently writes <code>reference_idea</code> items automatically — that is intentional. Manual curation via Radar ingest API is the correct first step.</td>
+  <td>Use <code>POST /agent/brain/radar/ingest</code> with <code>source_type: 'reference_idea'</code> and <code>source_label: 'hermes'</code> (or similar).</td>
+</tr>
+<tr>
+  <td>Accepted/rejected Radar context in <code>brain-dashboard.html</code> spine cards</td>
+  <td>Brain dashboard already surfaces radar via the brain status endpoint (which now includes the radar subagent). A dedicated radar spine card was judged as clutter at this stage.</td>
+  <td>Add a radar node card to <code>brain-dashboard.html</code> when radar traffic is high enough to warrant it.</td>
+</tr>
+<tr>
+  <td>operator-v2.html Radar integration</td>
+  <td>Operator V2 is a read-only trading surface. Radar data belongs there eventually (as evidence context), but no requirement was clear enough to add it without clutter risk.</td>
+  <td>Add a Radar evidence panel to <code>operator-v2.html</code> when accepted/contradicted items are directly relevant to live decision context.</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Key Function Signatures (Verified)</h2>
+
+<pre>
+// lib/reference-repo-registry.js
+getRegistry()              → Entry[]   (sorted by category)
+getByCategory(cat)         → Entry[]
+getContextSummary()        → string    (≤400 chars, no I/O)
+
+// lib/luke-intelligence-packet.js
+buildIntelligencePacket(options = {})  → string
+  options.paths     — defaults to lib/paths.js defaultPaths
+  options.maxChars  — default 1200
+  options.surface   — 'trading' | 'system' | null (trading excludes registry section)
+
+// lib/companion-memory.js (new fields)
+captureCompanionMemory(input, options)
+  input.scope         — 'project'|'person'|'topic'|'source'|'general'  (default 'general')
+  input.status        — 'active'|'accepted'|'rejected'|'deferred'       (default 'active')
+  input.recall_reason — string | null                                    (default null)
+
+searchCompanionMemory(input, options)
+  options.excludeRejected — boolean (default false)
+
+// lib/radar/ingest.js (new source type)
+recordRadarIngest({ source_type: 'reference_idea', ... })
+  → always review_priority: 'review', review_state: 'new'
+
+// lib/brain/brain-core.js
+buildBrainSnapshot({ paths, now })
+  → snapshot.subagents.radar  — full buildRadarBrief() output, or { ok: false } on error
+
+// lib/luke-operator-check.js
+buildLukeOperatorCheck(options)
+  → result.radar.review_state_counts  — { new, accepted, rejected, contradicted, ... }
+  → result.operator_lines[4]          — includes accepted/contradicted count when non-zero
+</pre>
+
+<hr>
+
+<h2>Hard Rules for Next Session</h2>
+
+<ul>
+  <li><strong>Process_narration=false.</strong> Short operational updates only. No thought narration.</li>
+  <li><strong>Orchestrator role.</strong> Spawn parallel agents for bounded research/execution. Parent owns architecture and merges.</li>
+  <li><strong>Measure twice, cut once.</strong> Read target files + tests fully before patching. Never guess function signatures.</li>
+  <li><strong>Clean codebase.</strong> No tmp files, no dead code, no dead files, no unnecessary folders.</li>
+  <li><strong>Do not touch trading-owned files.</strong> See boundary box above.</li>
+  <li><strong>No live trading enablement.</strong> No broker execution changes. No new live candidate path. Protect <code>/status</code>, <code>/balance</code>, <code>/saty</code>, <code>/ready</code>, <code>/alert</code>.</li>
+  <li><strong>Reference repos are idea sources only.</strong> No runtime deps, no installers, no frameworks grafted in.</li>
+  <li><strong>"Passes" means:</strong> <code>node --check</code> exits 0 AND focused vitest run produces no new failures.</li>
+</ul>
+
+<hr>
+
+<h2>Resume Instructions</h2>
+
+<p>The branch <code>claude/objective-easley-0be6c2</code> is uncommitted but clean. Before merging:</p>
+
+<ol>
+  <li>Confirm <code>refactor/decision-spine-cleanup</code> has committed or been handed off cleanly.</li>
+  <li>Run <code>npx vitest run tests/brain-dashboard.test.js tests/operator-v2-ui.test.js tests/trading-ui-readonly.test.js tests/llm-routing-policy.test.js</code> on the merge target to verify no cross-branch conflicts.</li>
+  <li>If <code>package.json</code> is now writable, add the proof scripts referenced in <code>tests/brain-dashboard.test.js</code> lines 334–361.</li>
+  <li>Optionally: begin using <code>POST /agent/brain/radar/ingest</code> with <code>source_type: 'reference_idea'</code> to populate the reference idea Radar lane manually before any auto-writer is built.</li>
+</ol>
+
+<p><strong>Tags:</strong> Process_narration=false, Measure twice cut once, No tmp files, No dead code, No trading execution, Radar=human-gated</p>
+
+</body>
+</html>

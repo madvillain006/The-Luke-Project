@@ -1560,7 +1560,10 @@
         setText('daily-brief-state', daily.date_label || new Date(daily.generated_at || Date.now()).toLocaleDateString());
         setText('daily-brief-note', daily.time_label || new Date(daily.generated_at || Date.now()).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }));
         setText('brain-line', `${Object.keys(brain.subagents || {}).length} agents / ${brain.report_inbox?.count || 0} reports`);
-        setText('radar-line', radar?.summary_line || 'ready / no items');
+        const radarRsc = radar?.review_state_counts || {};
+        const radarDecisionCount = (radarRsc.accepted || 0) + (radarRsc.contradicted || 0);
+        const radarDecisionLabel = radarDecisionCount > 0 ? ` | ${radarRsc.accepted || 0}✓ ${radarRsc.contradicted || 0}✗` : '';
+        setText('radar-line', (radar?.summary_line || 'ready / no items') + radarDecisionLabel);
         setText('operator-line', operator?.verdict === 'use_luke_first' ? 'Luke-first / Codex for code' : (operator?.summary_line || 'ready'));
         setText('radar-module-meta', radar?.summary_line ? `Inbox: ${radar.summary_line}` : 'Inbox, synthesis, review');
         setText('blocker-line', brain.attention?.length ? brain.attention.map(item => item.agent).join(', ') : 'none');

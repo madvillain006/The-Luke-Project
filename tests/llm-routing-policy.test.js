@@ -45,6 +45,7 @@ describe('LLM routing policy', () => {
     expect(index).toContain('preferAnthropic: false');
     expect(index).toContain('Vision is disabled until free-AI image/OCR routing is explicitly authorized.');
     expect(index).toContain('allowAnthropic: false');
+    expect(index).toContain('buildRadarBrief');
     expect(agent02).not.toContain('require("@anthropic-ai/sdk")');
     expect(agent04).not.toContain('require("@anthropic-ai/sdk")');
     expect(agent14).toContain("envFlagEnabled('KATBOT_ENABLE_LIVE_VISION') && envFlagEnabled('LUKE_ALLOW_ANTHROPIC_VISION')");

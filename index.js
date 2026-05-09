@@ -578,10 +578,22 @@ function recordChatContext(input = {}) {
 }
 
 function buildMergedChatContext({ message, surface, route }) {
-  return [
+  const parts = [
     buildCompanionContext({ message, surface }),
     buildContextBinPrompt({ message, surface, route }),
-  ].join("\n\n");
+  ];
+  try {
+    const { buildRadarBrief } = require("./lib/brain/radar-layer");
+    const brief = buildRadarBrief();
+    if (brief && brief.ok && (brief.ideas_to_verify || []).length > 0) {
+      const radarLines = ["Radar:"];
+      for (const idea of brief.ideas_to_verify.slice(0, 3)) {
+        radarLines.push("- [" + (idea.review_state || "new") + "] " + (idea.title || idea.raw_text_preview || ""));
+      }
+      parts.push(radarLines.join("\n"));
+    }
+  } catch {}
+  return parts.filter(Boolean).join("\n\n");
 }
 
 function sendMergedChatResponse(res, payload, contextInfo = {}) {

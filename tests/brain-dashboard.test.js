@@ -360,6 +360,16 @@ describe('/brain dashboard shell', () => {
     expect(script).toContain('not TradingView compile proof');
   });
 
+  it('shows Radar review-state labels in the shell status line', () => {
+    const html = fs.readFileSync(SHELL_FILE, 'utf8');
+
+    expect(html).toContain('review_state_counts');
+    expect(html).toContain('radarDecisionCount');
+    expect(html).toContain('radarDecisionLabel');
+    expect(html).toContain('radarRsc.accepted');
+    expect(html).toContain('radarRsc.contradicted');
+  });
+
   it('renders Katbot websocket events as structured DOM text, not raw HTML blocks', () => {
     const html = fs.readFileSync(CHAT_FILE, 'utf8');
 

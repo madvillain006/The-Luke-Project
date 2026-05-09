@@ -70,6 +70,9 @@ describe('Luke operator check', () => {
     expect(check.front_routes).toEqual(['/luke', '/trading', '/daily', '/radar']);
     expect(check.drilldown_routes).toContain('/operator-v2');
     expect(check.operator_lines.join('\n')).toContain('Codex for code changes');
+    expect(check.radar).toHaveProperty('review_state_counts');
+    expect(typeof check.radar.review_state_counts).toBe('object');
+    expect(check.operator_lines.find(l => l.startsWith('Radar:'))).toBeDefined();
     expect(check.checks.map(item => item.id)).toEqual([
       'shared-memory',
       'luke-chat',

@@ -1232,6 +1232,20 @@ function checkKatConfluence() {
 
       // Set cooldown
       _lastKatAlert[instrument] = Date.now();
+
+      // Fire-and-forget: record in Radar for human review. Does not affect alert or trade path.
+      try {
+        const { recordRadarIngest } = require('../lib/radar/ingest');
+        recordRadarIngest({
+          source_label: 'katbot-confluence',
+          source_type: 'katbot_paste',
+          title: biasTag + ' ' + instrument + ' confluence',
+          text: lines.join('\n'),
+          relationship_ids: dominantAnalysts.map(a => 'kat:' + a),
+        });
+      } catch (e) {
+        console.error('[kat] radar ingest error:', e.message);
+      }
     }
   } catch (e) {
     console.error('[kat] checkKatConfluence error:', e.message);

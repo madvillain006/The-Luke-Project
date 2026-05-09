@@ -147,3 +147,55 @@ describe('radar layer', () => {
     }));
   });
 });
+
+describe('reference_idea source lane', () => {
+  it('reference_idea items always get review_priority review', () => {
+    const { paths } = tempPaths();
+    const now = new Date('2026-05-08T10:00:00.000Z');
+    const result = recordRadarIngest({
+      source_label: 'mempalace-ref',
+      source_type: 'reference_idea',
+      text: 'MemPalace uses hybrid keyword plus temporal boosting for context retrieval.',
+      reference_repo: 'mempalace',
+    }, { paths, now });
+
+    expect(result.ok).toBe(true);
+    expect(result.duplicate).toBe(false);
+    expect(result.item.source_type).toBe('reference_idea');
+    expect(result.item.review_priority).toBe('review');
+  });
+
+  it('reference_idea items appear in snapshot source_type_counts', () => {
+    const { paths } = tempPaths();
+    const now = new Date('2026-05-08T10:00:00.000Z');
+    recordRadarIngest({
+      source_label: 'hermes-ref',
+      source_type: 'reference_idea',
+      text: 'Hermes agent uses skill persistence and session recall across conversations.',
+    }, { paths, now });
+
+    const snapshot = buildRadarSnapshot(paths, now);
+    expect(snapshot.source_type_counts.reference_idea).toBe(1);
+  });
+
+  it('existing source types are unaffected by the new reference_idea type', () => {
+    const { paths } = tempPaths();
+    const now = new Date('2026-05-08T10:00:00.000Z');
+    recordRadarIngest({
+      source_label: 'sybil',
+      source_type: 'sybil_paste',
+      text: '$NVDA data center capex note.',
+    }, { paths, now });
+
+    const result = recordRadarIngest({
+      source_label: 'pine',
+      source_type: 'pine_trading_note',
+      text: 'ES 5900 support level watch.',
+    }, { paths, now });
+
+    const snapshot = buildRadarSnapshot(paths, now);
+    expect(snapshot.source_type_counts.sybil_paste).toBe(1);
+    expect(snapshot.source_type_counts.pine_trading_note).toBe(1);
+    expect(result.item.review_priority).toBe('review');
+  });
+});

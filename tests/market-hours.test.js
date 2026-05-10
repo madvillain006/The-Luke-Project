@@ -66,6 +66,28 @@ describe('market-hours module', () => {
     expect(minsUntilFuturesOpen(mondayBreak)).toBe(30);
   });
 
+  it('maps Saturday and Sunday daytime to the prior Friday market session', () => {
+    const { marketSessionDate, previousMarketDay } = require('../lib/market-hours');
+
+    expect(marketSessionDate(new Date('2026-05-09T16:00:00Z'))).toBe('2026-05-08');
+    expect(marketSessionDate(new Date('2026-05-10T16:00:00Z'))).toBe('2026-05-08');
+    expect(previousMarketDay('2026-05-11')).toBe('2026-05-08');
+  });
+
+  it('maps Sunday futures reopen to the Monday target session', () => {
+    const { marketSessionDate } = require('../lib/market-hours');
+
+    expect(marketSessionDate(new Date('2026-05-10T22:30:00Z'))).toBe('2026-05-11');
+  });
+
+  it('skips injected holidays when finding the previous market day', () => {
+    const { isMarketDate, previousMarketDay } = require('../lib/market-hours');
+    const holidays = ['2026-05-25'];
+
+    expect(isMarketDate('2026-05-25', { holidays })).toBe(false);
+    expect(previousMarketDay('2026-05-26', { holidays })).toBe('2026-05-22');
+  });
+
   it('window values are one of known valid strings', () => {
     const { isGoodTradingTime } = require('../lib/market-hours');
     const VALID = ['closed', 'morning', 'lunch', 'afternoon', 'last10'];

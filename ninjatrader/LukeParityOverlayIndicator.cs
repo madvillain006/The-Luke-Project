@@ -442,7 +442,7 @@ namespace NinjaTrader.NinjaScript.Indicators
         {
             int nativeLong = 0, allNativeLong = 0, nativeCancel = 0;
             int tp1Count = 0, tp2Count = 0, stopCount = 0;
-            double realizedNet = 0.0, cancelNet = 0.0;
+            double realizedGross = 0.0, realizedNet = 0.0, cancelNet = 0.0;
             double costPerContract = CostPerContract();
             var recentRows = new List<string>();
             var todayLongs = new List<LukeOverlayEvent>();
@@ -497,46 +497,52 @@ namespace NinjaTrader.NinjaScript.Indicators
 
                     if (priceKnown && tp2Known && row.Price >= resolvedTp2)
                     {
-                        // Price blew through TP2 at cancel
+                        // Price was at/past TP2 at cancel - counts as TP2 outcome
                         tp2Count++;
                         nativeCancel--;
-                        pts = resolvedTp2 - resolvedEntry;
-                        net = IsFinite(pts) ? pts * PnlDollarsPerPoint - costPerContract : 0.0;
+                        double t1Pts = IsFinite(resolvedTp1) && IsFinite(resolvedEntry) ? resolvedTp1 - resolvedEntry : double.NaN;
+                        pts = IsFinite(resolvedTp2) && IsFinite(resolvedEntry) ? resolvedTp2 - resolvedEntry : double.NaN;
+                        // Split plan: contract1 exits at TP1 + contract2 exits at TP2
+                        double grossPts = (IsFinite(t1Pts) ? t1Pts : 0.0) + (IsFinite(pts) ? pts : 0.0);
+                        net = IsFinite(grossPts) ? grossPts * PnlDollarsPerPoint - 2.0 * costPerContract : 0.0;
+                        realizedGross += grossPts * PnlDollarsPerPoint;
                         realizedNet += net;
                         recentRows.Add(string.Format(CultureInfo.InvariantCulture,
-                            "{0:HH:mm} CXL→T2 E{1} {2} {3}",
+                            "{0:HH:mm} CXL->T2 E{1} {2} {3}",
                             row.Time, IsFinite(resolvedEntry) ? resolvedEntry.ToString("F2", CultureInfo.InvariantCulture) : "?",
                             FmtPts(pts), FmtNet(net)));
                     }
                     else if (priceKnown && tp1Known && row.Price >= resolvedTp1)
                     {
-                        // Price blew through TP1 at cancel
+                        // Price was at/past TP1 at cancel - counts as TP1 outcome
                         tp1Count++;
                         nativeCancel--;
                         pts = resolvedTp1 - resolvedEntry;
                         net = IsFinite(pts) ? pts * PnlDollarsPerPoint - costPerContract : 0.0;
+                        realizedGross += IsFinite(pts) ? pts * PnlDollarsPerPoint : 0.0;
                         realizedNet += net;
                         recentRows.Add(string.Format(CultureInfo.InvariantCulture,
-                            "{0:HH:mm} CXL→T1 E{1} {2} {3}",
+                            "{0:HH:mm} CXL->T1 E{1} {2} {3}",
                             row.Time, IsFinite(resolvedEntry) ? resolvedEntry.ToString("F2", CultureInfo.InvariantCulture) : "?",
                             FmtPts(pts), FmtNet(net)));
                     }
                     else if (priceKnown && stopKnown && row.Price <= resolvedStop)
                     {
-                        // Price hit stop level at cancel — direction loss
+                        // Price was at/below stop at cancel - direction loss
                         stopCount++;
                         nativeCancel--;
                         pts = resolvedStop - resolvedEntry;
                         net = IsFinite(pts) ? pts * PnlDollarsPerPoint - costPerContract : 0.0;
+                        realizedGross += IsFinite(pts) ? pts * PnlDollarsPerPoint : 0.0;
                         realizedNet += net;
                         recentRows.Add(string.Format(CultureInfo.InvariantCulture,
-                            "{0:HH:mm} CXL→ST E{1} {2} {3}",
+                            "{0:HH:mm} CXL->ST E{1} {2} {3}",
                             row.Time, IsFinite(resolvedEntry) ? resolvedEntry.ToString("F2", CultureInfo.InvariantCulture) : "?",
                             FmtPts(pts), FmtNet(net)));
                     }
                     else
                     {
-                        // Neutral cancel: between entry and tp1/stop
+                        // Neutral cancel: price between entry and tp1/stop - informational only
                         if (priceKnown && IsFinite(resolvedEntry))
                         {
                             pts = row.Price - resolvedEntry;
@@ -555,21 +561,50 @@ namespace NinjaTrader.NinjaScript.Indicators
                 }
                 else if (row.Kind == "TP1" || row.Kind == "TP2")
                 {
-                    if (row.Kind == "TP2") tp2Count++; else tp1Count++;
-                    bool tp1Known = !double.IsNaN(row.EntryTp1) && !double.IsInfinity(row.EntryTp1);
-                    if (row.HasNet)
+                    bool tp1Known = IsFinite(row.EntryTp1);
+                    bool tp2Known2 = IsFinite(row.EntryTp2);
+                    if (row.Kind == "TP2")
                     {
-                        net = row.Net;
-                        if (entryKnown && tp1Known) pts = row.EntryTp1 - row.Entry;
-                    }
-                    else if (entryKnown && tp1Known)
-                    {
-                        pts = row.EntryTp1 - row.Entry;
-                        net = pts * PnlDollarsPerPoint - costPerContract;
+                        tp2Count++;
+                        // TP2_FIRST: split plan - contract1 exits at TP1, contract2 at TP2
+                        double t1Pts = (entryKnown && tp1Known) ? row.EntryTp1 - row.Entry : double.NaN;
+                        double t2Pts = (entryKnown && tp2Known2) ? row.EntryTp2 - row.Entry : double.NaN;
+                        pts = IsFinite(t2Pts) ? t2Pts : t1Pts;
+                        if (row.HasNet)
+                        {
+                            net = row.Net;
+                            if (IsFinite(t1Pts) && IsFinite(t2Pts)) realizedGross += (t1Pts + t2Pts) * PnlDollarsPerPoint;
+                            else if (IsFinite(t2Pts)) realizedGross += t2Pts * PnlDollarsPerPoint;
+                            else if (IsFinite(t1Pts)) realizedGross += t1Pts * PnlDollarsPerPoint;
+                        }
+                        else if (IsFinite(t1Pts) && IsFinite(t2Pts))
+                        {
+                            net = (t1Pts + t2Pts) * PnlDollarsPerPoint - 2.0 * costPerContract;
+                            realizedGross += (t1Pts + t2Pts) * PnlDollarsPerPoint;
+                        }
+                        else if (IsFinite(t2Pts))
+                        {
+                            net = t2Pts * PnlDollarsPerPoint - costPerContract;
+                            realizedGross += t2Pts * PnlDollarsPerPoint;
+                        }
+                        else { net = 0.0; }
                     }
                     else
                     {
-                        net = 0.0;
+                        tp1Count++;
+                        // TP1 or TP1_THEN_STOP (normalised to "TP1"): single or split plan
+                        pts = (entryKnown && tp1Known) ? row.EntryTp1 - row.Entry : double.NaN;
+                        if (row.HasNet)
+                        {
+                            net = row.Net;
+                            if (IsFinite(pts)) realizedGross += pts * PnlDollarsPerPoint;
+                        }
+                        else if (IsFinite(pts))
+                        {
+                            net = pts * PnlDollarsPerPoint - costPerContract;
+                            realizedGross += pts * PnlDollarsPerPoint;
+                        }
+                        else { net = 0.0; }
                     }
                     realizedNet += net;
                     recentRows.Add(string.Format(CultureInfo.InvariantCulture,
@@ -578,25 +613,26 @@ namespace NinjaTrader.NinjaScript.Indicators
                         entryKnown ? row.Entry.ToString("F2", CultureInfo.InvariantCulture) : "?",
                         FmtPts(pts), FmtNet(net)));
                 }
-                else if (row.Kind == "STOP"
-                    || row.Kind.IndexOf("STOP", StringComparison.OrdinalIgnoreCase) >= 0)
+                else if (row.Kind == "STOP")
                 {
                     stopCount++;
-                    bool stopKnown = !double.IsNaN(row.EntryStop) && !double.IsInfinity(row.EntryStop);
+                    bool stopKnown = IsFinite(row.EntryStop);
                     if (row.HasNet)
                     {
                         net = row.Net;
-                        if (entryKnown && stopKnown) pts = row.EntryStop - row.Entry;
+                        if (entryKnown && stopKnown)
+                        {
+                            pts = row.EntryStop - row.Entry;
+                            realizedGross += pts * PnlDollarsPerPoint;
+                        }
                     }
                     else if (entryKnown && stopKnown)
                     {
                         pts = row.EntryStop - row.Entry;
                         net = pts * PnlDollarsPerPoint - costPerContract;
+                        realizedGross += pts * PnlDollarsPerPoint;
                     }
-                    else
-                    {
-                        net = 0.0;
-                    }
+                    else { net = 0.0; }
                     realizedNet += net;
                     recentRows.Add(string.Format(CultureInfo.InvariantCulture,
                         "{0:HH:mm} STOP   E{1} {2} {3}",
@@ -609,7 +645,8 @@ namespace NinjaTrader.NinjaScript.Indicators
             int closedSignals = sessionSuccesses + stopCount;
             // Pine formula: score denominator = outcomes(closed) + cancels, NOT all LONGs fired
             int totalAttempts = closedSignals + nativeCancel;
-            double totalNet = realizedNet + cancelNet;
+            // cxl net is informational only - never added to realizedNet (no fills on cancelled signals)
+            double totalNet = realizedNet;
             double commDollars = CommissionPerContractRoundTrip * totalAttempts;
             double slipDollars = EntrySlippagePoints * PnlDollarsPerPoint * totalAttempts;
 
@@ -662,7 +699,7 @@ namespace NinjaTrader.NinjaScript.Indicators
             sb.AppendFormat(CultureInfo.InvariantCulture, "watch/long/cxl     W 0 / L {0} / C {1}\n", nativeLong, nativeCancel);
             sb.AppendFormat(CultureInfo.InvariantCulture, "misses incl cxl    {0} = S {1} + C {2}\n", stopCount + nativeCancel, stopCount, nativeCancel);
             sb.AppendFormat(CultureInfo.InvariantCulture, "milestones         T1 {0} / T2 {1} / STOP {2}\n", tp1Count, tp2Count, stopCount);
-            sb.AppendFormat(CultureInfo.InvariantCulture, "gross total        {0:+0.00;-0.00;0.00}\n", realizedNet);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "gross total        {0:+0.00;-0.00;0.00}\n", realizedGross);
             sb.AppendFormat(CultureInfo.InvariantCulture, "realistic net      {0:+0.00;-0.00;0.00}\n", totalNet);
             sb.AppendFormat(CultureInfo.InvariantCulture, "cxl net            {0:+0.00;-0.00;0.00}\n", cancelNet);
             sb.AppendFormat(CultureInfo.InvariantCulture, "mode/costs         entry_only_0.25 | comm ${0:F2} / slip ${1:F2}\n", commDollars, slipDollars);
@@ -698,76 +735,51 @@ namespace NinjaTrader.NinjaScript.Indicators
 
         private struct SimResult
         {
-            public string Outcome;  // "TP1", "TP2", "BE", "STOP", "OPEN", "NOFILL", "?"
-            public double Pts;      // pts locked in (tp1 pts for BE; tp2 pts for TP2)
+            public string Outcome;  
+            public double Pts;      
             public double Net;
         }
 
-        // Scan forward through chart bars from signal bar to find simulated outcome.
-        // Protocol: limit fills when Low <= entry; TP2 checked first; once TP1 hit on a split plan,
-        // stop moves to entry (breakeven) and scan continues for TP2. Stopped at entry after TP1 = BE.
         private SimResult SimulateLong(LukeOverlayEvent evt, double costPerContract, int maxBarsForward)
         {
             if (!IsFinite(evt.Entry) || !IsFinite(evt.EntryTp1) || !IsFinite(evt.EntryStop))
                 return new SimResult { Outcome = "?" };
 
-            DateTime signalTime = evt.BarTime != DateTime.MinValue
-                ? evt.BarTime.ToLocalTime()
-                : evt.Time.ToLocalTime();
+            int signalBarsAgo = FindBarsAgo(evt.ChartTime);
 
-            // Find barsAgo for signal bar by scanning Time[] for closest match (within 90 seconds)
-            int signalBarsAgo = -1;
-            int scanLimit = Math.Min(CurrentBar, maxBarsForward + 60);
-            for (int b = 0; b <= scanLimit; b++)
-            {
-                if (Math.Abs((Time[b] - signalTime).TotalSeconds) < 90)
-                {
-                    signalBarsAgo = b;
-                    break;
-                }
-            }
             if (signalBarsAgo < 0)
                 return new SimResult { Outcome = "?" };
 
             bool filled = false;
             bool tp1Hit = false;
-            // Split plan (2ES): one contract exits at TP1, runner continues to TP2 with stop at entry (BE)
             bool hasTp2 = IsFinite(evt.EntryTp2) && evt.EntryTp2 > evt.EntryTp1;
 
             for (int b = signalBarsAgo; b >= 0 && (signalBarsAgo - b) <= maxBarsForward; b--)
             {
+                if ((Time[b] - evt.ChartTime).TotalMinutes > 480.0) break;
+
                 if (!filled)
                 {
-                    // Pine fill condition: bar must SPAN entry (low <= entry AND high >= entry).
-                    // Prevents gap-down bars from triggering a false fill.
                     if (Low[b] <= evt.Entry && High[b] >= evt.Entry) filled = true;
                     else continue;
                 }
 
-                // Active stop: original stop before TP1; entry (breakeven) after TP1
                 double activeStop = tp1Hit ? evt.Entry : evt.EntryStop;
 
-                // Conservative stop first: matches Pine's conservative_stop default.
-                // When the same bar hits both stop and TP, assume stop was hit first (worst case).
                 if (Low[b] <= activeStop)
                 {
                     if (tp1Hit)
                     {
-                        // Runner stopped at breakeven: TP1 contract locked, runner = 0 pts on exit
-                        // Cost: 2 contracts round-trip (TP1 exit + BE exit)
                         double tp1Pts = evt.EntryTp1 - evt.Entry;
                         return new SimResult { Outcome = "BE", Pts = tp1Pts, Net = tp1Pts * PnlDollarsPerPoint - 2.0 * costPerContract };
                     }
                     double stopPts = evt.EntryStop - evt.Entry;
-                    // Split plan: both contracts exit at stop
                     double stopNet = hasTp2
                         ? stopPts * PnlDollarsPerPoint * 2.0 - 2.0 * costPerContract
                         : stopPts * PnlDollarsPerPoint - costPerContract;
                     return new SimResult { Outcome = "STOP", Pts = stopPts, Net = stopNet };
                 }
 
-                // TP2: High >= tp2 means both TP1 and TP2 hit on this bar.
-                // Split plan P&L: contract1 exits at TP1 + contract2 exits at TP2 - 2x commission.
                 if (hasTp2 && High[b] >= evt.EntryTp2)
                 {
                     double tp1Pts = evt.EntryTp1 - evt.Entry;
@@ -780,11 +792,9 @@ namespace NinjaTrader.NinjaScript.Indicators
                 {
                     if (!hasTp2)
                     {
-                        // Single-contract plan: full exit at TP1
                         double pts = evt.EntryTp1 - evt.Entry;
                         return new SimResult { Outcome = "TP1", Pts = pts, Net = pts * PnlDollarsPerPoint - costPerContract };
                     }
-                    // Split plan: first contract exits at TP1; stop now moves to entry (breakeven) for runner
                     tp1Hit = true;
                     continue;
                 }
@@ -792,7 +802,6 @@ namespace NinjaTrader.NinjaScript.Indicators
 
             if (tp1Hit)
             {
-                // Session ended with TP1 locked but runner still open (counts as TP1)
                 double tp1Pts = evt.EntryTp1 - evt.Entry;
                 return new SimResult { Outcome = "TP1", Pts = tp1Pts, Net = tp1Pts * PnlDollarsPerPoint - 2.0 * costPerContract };
             }
@@ -1017,22 +1026,44 @@ namespace NinjaTrader.NinjaScript.Indicators
                 if (ts == DateTime.MinValue)
                     ts = ExtractTime(json, "received_at");
                 DateTime bar = ExtractTime(json, "bar_time");
-                double entry = ExtractDouble(json, "entry");
-                double rawPrice = ExtractDouble(json, "price");
-                double price = IsFinite(rawPrice) ? rawPrice : (IsFinite(entry) ? entry : double.NaN);
-                double tp1 = ExtractDouble(json, "tp1");
-                double tp2 = ExtractDouble(json, "tp2");
-                double stop = ExtractDouble(json, "stop");
+                
                 string note = ExtractString(json, "note");
+
+                double rawPrice = ExtractDouble(json, "price");
+                if (!IsFinite(rawPrice)) rawPrice = NoteDouble(note, "price");
+
+                double entry = ExtractDouble(json, "entry");
+                if (!IsFinite(entry)) entry = NoteDouble(note, "entry");
+                if (!IsFinite(entry) && IsFinite(rawPrice)) entry = rawPrice;
+
+                double price = IsFinite(rawPrice) ? rawPrice : (IsFinite(entry) ? entry : double.NaN);
+
+                double tp1 = ExtractDouble(json, "tp1");
+                if (!IsFinite(tp1)) tp1 = NoteDouble(note, "tp1");
+
+                double tp2 = ExtractDouble(json, "tp2");
+                if (!IsFinite(tp2)) tp2 = NoteDouble(note, "tp2");
+
+                double stop = ExtractDouble(json, "stop");
+                if (!IsFinite(stop)) stop = NoteDouble(note, "stop");
+
                 double net = ExtractDouble(json, "net");
                 if (!IsFinite(net))
                     net = NoteDouble(note, "net");
+
+                string signalId = ExtractString(json, "signal_id");
+                if (string.IsNullOrEmpty(signalId) && !string.IsNullOrEmpty(note))
+                {
+                    Match noteIdMatch = Regex.Match(note, @"(?:^|\s)id=(\S+)");
+                    if (noteIdMatch.Success)
+                        signalId = noteIdMatch.Groups[1].Value;
+                }
 
                 return new LukeOverlayEvent
                 {
                     Source = source,
                     Kind = kind,
-                    SignalId = ExtractString(json, "signal_id"),
+                    SignalId = signalId,
                     Time = ts == DateTime.MinValue ? DateTime.UtcNow : ts,
                     BarTime = bar,
                     Price = price,
@@ -1049,11 +1080,13 @@ namespace NinjaTrader.NinjaScript.Indicators
             private static string NormalizeKind(string value)
             {
                 string text = (value ?? string.Empty).ToUpperInvariant();
-                if (text.Contains("LONG")) return "LONG";
+                if (text.Contains("LONG"))   return "LONG";
                 if (text.Contains("CANCEL")) return "CANCEL";
-                if (text.Contains("TP1")) return "TP1";
-                if (text.Contains("STOP")) return "STOP";
-                if (text.Contains("PING")) return "PING";
+                // TP2 check must precede TP1: "TP2_FIRST" contains both "TP2" and "TP1" substring.
+                if (text.Contains("TP2"))    return "TP2";
+                if (text.Contains("TP1"))    return "TP1";   // also matches "TP1_THEN_STOP" -> TP1 (BE outcome counts as success)
+                if (text.Contains("STOP"))   return "STOP";  // STOP_FIRST, MIXED_STOP_FIRST
+                if (text.Contains("PING"))   return "PING";
                 return string.Empty;
             }
 

@@ -27,6 +27,9 @@ describe('LLM routing policy', () => {
     expect(llmRoutingStatus({ LUKE_FREE_AI_FIRST: '1' })).toEqual(expect.objectContaining({
       free_ai_first: true,
       anthropic_mode: 'smart-only',
+      fallback_readiness: expect.objectContaining({
+        secret_policy: expect.stringContaining('never returned'),
+      }),
     }));
   });
 

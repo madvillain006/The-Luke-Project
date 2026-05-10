@@ -4,8 +4,8 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const READABLE_PINE = path.join(ROOT, 'tradingview', 'luke-watch-production-test-readable-ledger.pine');
-const SIMULATION_PINE = path.join(ROOT, 'tradingview', 'luke-watch-production-test-simulation.strategy.pine');
+const READABLE_PINE = path.join(ROOT, 'tradingview', 'history', 'production-ledger', 'luke-watch-production-test-readable-ledger.pine');
+const SIMULATION_PINE = path.join(ROOT, 'tradingview', 'history', 'production-ledger', 'luke-watch-production-test-simulation.strategy.pine');
 
 function slippagePoints(mode, custom = 0.25) {
   const entry =

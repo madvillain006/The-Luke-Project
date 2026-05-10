@@ -39,6 +39,11 @@ describe('katbot confluence radar bridge', () => {
     expect(result.ok).toBe(true);
     expect(result.item.source_type).toBe('katbot_paste');
     expect(result.item.review_priority).toBe('review');
+    expect(result.item.scope).toBe('katbot_confluence');
+    expect(result.item.status).toBe('review_only');
+    expect(result.item.recall_reason).toBe('katbot_confluence_evidence');
+    expect(result.item.review_only).toBe(true);
+    expect(result.item.trading_authority).toBe('none');
     expect(result.item.relationship_ids).toEqual(['kat:kapri', 'kat:dubz']);
   });
 
@@ -54,6 +59,11 @@ describe('katbot confluence radar bridge', () => {
     const snapshot = buildRadarSnapshot(paths, now);
     expect(snapshot.counts.review).toBe(1);
     expect(snapshot.source_type_counts.katbot_paste).toBe(1);
+    expect(snapshot.review_queue[0]).toEqual(expect.objectContaining({
+      review_only: true,
+      trading_authority: 'none',
+      recall_reason: 'katbot_confluence_evidence',
+    }));
   });
 
   it('agent-14-kat.js contains the radar ingest call for confluence alerts', () => {

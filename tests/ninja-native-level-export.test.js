@@ -1,5 +1,6 @@
 const {
   activeNativeLevel,
+  exportNativeLevels,
   loadDailyPlanLevels,
   renderNativeLevelFile,
   historicalSatyLevels,
@@ -43,6 +44,29 @@ describe('Ninja-native level export', () => {
     expect(text).toContain('read_reaction: ');
     expect(text).toContain('target_session: 2026-05-11 ES');
     expect(text).toContain('Strategy parser trades only the trade/mancini section');
+  });
+
+  it('selects Mancini trade levels by explicit target session for replay dates', () => {
+    const daily = loadDailyPlanLevels({ targetSession: '2026-05-11' });
+
+    expect(daily.date).toBe('2026-05-08');
+    expect(daily.target_session).toBe('2026-05-11');
+    expect(daily.levels.trade).toContain(7391);
+    expect(daily.levels.trade).toContain(7402);
+  });
+
+  it('fails closed instead of reusing stale levels for an unknown target session', () => {
+    expect(() => loadDailyPlanLevels({ targetSession: '2026-05-12' }))
+      .toThrow('No Mancini daily plan found for target session 2026-05-12');
+  });
+
+  it('uses --historical-date as the Mancini target session instead of emitting Saty-only levels', () => {
+    const result = exportNativeLevels({ historicalDate: '2026-05-11', includeContext: true });
+
+    expect(result.source).toBe('mancini_daily_plan');
+    expect(result.target_session).toBe('2026-05-11');
+    expect(result.daily_plan.date).toBe('2026-05-08');
+    expect(result.by_family.saty || 0).toBe(0);
   });
 
   it('derives historical Ninja Saty levels from the same previous-close Barchart formula as the Pine parity replay', () => {

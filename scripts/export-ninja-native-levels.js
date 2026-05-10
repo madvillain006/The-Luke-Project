@@ -48,36 +48,68 @@ function uniqueSortedPrices(levels) {
     .sort((a, b) => a - b);
 }
 
-function discoverLatestDailyPlan({ rootDir = ROOT } = {}) {
+function isIsoDate(value) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(String(value || ""));
+}
+
+function discoverDailyPlans({ rootDir = ROOT } = {}) {
   const dir = path.join(rootDir, "data", "research", "mancini", "daily-plans");
-  if (!fs.existsSync(dir)) return null;
-  const candidates = fs.readdirSync(dir)
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir)
     .filter((name) => /^\d{4}-\d{2}-\d{2}-.+\.json$/i.test(name))
-    .map((name) => path.join(dir, name))
-    .sort((a, b) => path.basename(a).localeCompare(path.basename(b)));
-  return candidates[candidates.length - 1] || null;
+    .map((name) => {
+      const filePath = path.join(dir, name);
+      const plan = JSON.parse(fs.readFileSync(filePath, "utf8"));
+      const date = String(plan.date || path.basename(filePath).slice(0, 10));
+      const targetSession = String(plan.target_session || date);
+      return {
+        filePath,
+        plan,
+        date,
+        targetSession,
+        score: `${targetSession}|${date}|${name}`,
+      };
+    })
+    .sort((a, b) => a.score.localeCompare(b.score));
 }
 
-function pricesFrom(values) {
-  return uniqueSortedPrices((values || []).map((price) => ({ price })));
+function discoverLatestDailyPlan({ rootDir = ROOT } = {}) {
+  const candidates = discoverDailyPlans({ rootDir });
+  return candidates[candidates.length - 1]?.filePath || null;
 }
 
-function loadDailyPlanLevels({ rootDir = ROOT } = {}) {
-  const filePath = discoverLatestDailyPlan({ rootDir });
-  if (!filePath) return null;
-  const plan = JSON.parse(fs.readFileSync(filePath, "utf8"));
+function selectDailyPlan({ rootDir = ROOT, targetSession = null } = {}) {
+  const candidates = discoverDailyPlans({ rootDir });
+  if (!targetSession) return candidates[candidates.length - 1] || null;
+  if (!isIsoDate(targetSession)) throw new Error(`Invalid target session date: ${targetSession}`);
+  const matches = candidates.filter((candidate) => candidate.targetSession === targetSession);
+  if (matches.length === 0) throw new Error(`No Mancini daily plan found for target session ${targetSession}`);
+  return matches[matches.length - 1];
+}
+
+function pricesFrom(values, fieldName = "levels") {
+  if (!Array.isArray(values)) throw new Error(`Daily plan ${fieldName} must be an array`);
+  return uniqueSortedPrices(values.map((price) => ({ price })));
+}
+
+function loadDailyPlanLevels({ rootDir = ROOT, targetSession = null } = {}) {
+  const selected = selectDailyPlan({ rootDir, targetSession });
+  if (!selected) return null;
+  const { filePath, plan } = selected;
+  if (!isIsoDate(plan.date || path.basename(filePath).slice(0, 10))) throw new Error(`Daily plan has invalid date: ${filePath}`);
   const inputs = plan.corrected_luke_inputs || {};
+  if (!Array.isArray(inputs.trade_levels)) throw new Error(`Daily plan missing corrected_luke_inputs.trade_levels: ${filePath}`);
   const levels = {
-    trade: pricesFrom(inputs.trade_levels),
-    major: pricesFrom(inputs.major_levels),
-    focus_long: pricesFrom(inputs.focus_long_levels),
+    trade: pricesFrom(inputs.trade_levels, "trade_levels"),
+    major: pricesFrom(inputs.major_levels || [], "major_levels"),
+    focus_long: pricesFrom(inputs.focus_long_levels || [], "focus_long_levels"),
     trigger: pricesFrom((inputs.focus_long_levels || []).filter((price) => (
       (plan.trigger_guidance || []).some((row) => Number(row.level) === Number(price) && !/short/i.test(String(row.type || "")))
-    ))),
-    target_only: pricesFrom(inputs.target_only_levels),
+    )), "trigger_levels"),
+    target_only: pricesFrom(inputs.target_only_levels || [], "target_only_levels"),
     read_reaction: pricesFrom(inputs.read_reaction_levels || (plan.trigger_guidance || [])
       .filter((row) => /read|sweep|defend|support|backtest/i.test(String(row.type || "")))
-      .map((row) => row.level)),
+      .map((row) => row.level), "read_reaction_levels"),
   };
   const prices = pricesFrom([
     ...levels.trade,
@@ -154,26 +186,10 @@ function historicalSatyLevels(targetDate, instrument = "ES") {
   }));
 }
 
-function exportNativeLevels({ rootDir = ROOT, outFile = DEFAULT_OUT, historicalDate = null, includeContext = false } = {}) {
-  if (historicalDate) {
-    const levels = historicalSatyLevels(historicalDate, "ES");
-    const prices = uniqueSortedPrices(levels);
-    fs.mkdirSync(path.dirname(outFile), { recursive: true });
-    fs.writeFileSync(outFile, `${prices.map((price) => price.toFixed(2)).join(",")}\n`, "utf8");
-    return {
-      ok: true,
-      generated_at: new Date().toISOString(),
-      out_file: outFile,
-      mode: "historical_barchart_es",
-      historical_date: historicalDate,
-      prices: prices.length,
-      by_family: { saty: levels.length },
-      issues: [],
-    };
-  }
-
+function exportNativeLevels({ rootDir = ROOT, outFile = DEFAULT_OUT, historicalDate = null, targetSession = null, includeContext = false } = {}) {
+  const effectiveTargetSession = targetSession || historicalDate || null;
   const exportData = buildTradingViewLevelExport({ rootDir });
-  const dailyPlan = loadDailyPlanLevels({ rootDir });
+  const dailyPlan = loadDailyPlanLevels({ rootDir, targetSession: effectiveTargetSession });
   const levels = exportData.levels.filter(activeNativeLevel);
   const prices = dailyPlan?.levels?.trade?.length ? dailyPlan.levels.trade : uniqueSortedPrices(levels);
   const byFamily = {};
@@ -188,6 +204,8 @@ function exportNativeLevels({ rootDir = ROOT, outFile = DEFAULT_OUT, historicalD
     out_file: outFile,
     source: dailyPlan ? "mancini_daily_plan" : "tradingview_level_export",
     level_file_mode: includeContext ? "sectioned_context" : "trade_levels_only",
+    target_session: effectiveTargetSession || dailyPlan?.target_session || dailyPlan?.date || null,
+    historical_date: historicalDate,
     daily_plan: dailyPlan ? {
       file: dailyPlan.file_path,
       date: dailyPlan.date,
@@ -210,8 +228,9 @@ function exportNativeLevels({ rootDir = ROOT, outFile = DEFAULT_OUT, historicalD
 function main() {
   const outFile = argValue("--out", DEFAULT_OUT);
   const historicalDate = argValue("--historical-date", null);
+  const targetSession = argValue("--target-session", null);
   const includeContext = process.argv.includes("--context");
-  const result = exportNativeLevels({ outFile, historicalDate, includeContext });
+  const result = exportNativeLevels({ outFile, historicalDate, targetSession, includeContext });
   console.log(JSON.stringify(result, null, 2));
 }
 
@@ -221,9 +240,11 @@ if (require.main === module) {
 
 module.exports = {
   activeNativeLevel,
+  discoverDailyPlans,
   discoverLatestDailyPlan,
   exportNativeLevels,
   loadDailyPlanLevels,
+  selectDailyPlan,
   renderNativeLevelFile,
   historicalSatyLevels,
   uniqueSortedPrices,

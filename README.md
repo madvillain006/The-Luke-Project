@@ -142,6 +142,39 @@ Main user-facing commands:
 - writable local state files
 - fresh same-day Bobby/Dubz context before recommendations should be trusted
 
+## Fallback AI setup
+
+Luke is free-provider-first for routine chat and status work. Anthropic is reserved for explicit smart-task escalation and blocked features. Fallback mode never receives live-trading authority.
+
+Safe setup checklist:
+
+- `GEMINI_API_KEY` for Gemini fallback.
+- `GROQ_API_KEY` and optional `GROQ_MODEL` for Groq fallback.
+- `DEEPSEEK_API_KEY`, optional `DEEPSEEK_MODEL`, and optional `DEEPSEEK_BASE_URL` for DeepSeek fallback.
+- `OLLAMA_HOST` and `OLLAMA_MODEL` for local/offline fallback.
+- `FALLBACK_PROVIDER_ORDER` to choose the order, for example `gemini,groq,deepseek,ollama`.
+
+Readiness surfaces:
+
+- `GET /agent/fallback/config` returns provider configuration with keys masked.
+- `GET /agent/fallback/readiness` returns configured/missing providers without returning secrets.
+- `GET /agent/brain/status` and `/luke/operator-check` show front-facing readiness for the local app.
+
+Blocked fallback features stay blocked: live trading, screen control, vision verification, staged-trade reasoning, signal scoring, and research synthesis that requires the paid smart route.
+
+## Radar, memory, and reference ideas
+
+Radar is a review lane, not an execution lane. Items can come from manual notes, Sybil/Katbot context, articles, reminders, Pine/trading notes, or `reference_idea` records. `reference_idea` is for reviewable Hermes/MemPalace-style concepts only; it does not import a reference repo, vendor code, or promote a trading strategy.
+
+Each Radar item carries review metadata where available:
+
+- `scope`: what lane the idea belongs to.
+- `status`: current review posture such as `review_only` or `candidate`.
+- `recall_reason`: why Luke pulled it into the packet.
+- `review_only` and `trading_authority:none`: explicit safety boundaries.
+
+Runtime Radar state lives under ignored `state/events/` and `state/snapshots/`. Tests use temporary paths instead of writing production runtime state.
+
 ## Morning workflow
 
 Use this order:

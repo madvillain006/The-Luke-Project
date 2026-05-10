@@ -44,8 +44,15 @@ describe('LukeNativeShadowStrategy source gate', () => {
     expect(source).not.toContain('culEyYkQrx7nqBgWopdfvDzJT40bU8Ve632tMO9N');
     expect(source).toContain('IsTradeLevelLine');
     expect(source).toContain('key == "trade" || key == "mancini" || key == "trade_levels"');
+    expect(source).toContain('ExtractTargetSessionDate');
+    expect(source).toContain('ChartFuturesSessionDate');
+    expect(source).toContain('LEVEL_SESSION_MISMATCH');
+    expect(source).toContain('IsValidExternalEsLevel');
     expect(source).toContain('WriteTelemetry("NO_CLUSTERS"');
     expect(source).toContain('raw_count=');
+    expect(source).toContain('rejected_count=');
+    expect(source).toContain('target_session=');
+    expect(source).toContain('chart_session=');
     expect(source).toContain('has_sections=');
   });
 
@@ -114,9 +121,6 @@ describe('LukeNativeShadowStrategy source gate', () => {
     expect(source).toContain('BuildPivotState');
     expect(source).not.toContain('int barsAgo = State == State.Realtime ? 1 : 0');
     expect(source).toContain('int barsAgo = 0;');
-    expect(source).toContain('ShadowLongEvent');
-    expect(source).toContain('WriteShadowOnlyLongTelemetry');
-    expect(source).toContain('shadow_only=true');
     expect(source).toContain('TrackCandidateOutcome');
     expect(source).toContain('OpenContractCount(false)');
     expect(source).toContain('trackedCandidateActiveStop = trackedCandidateEntry');
@@ -130,7 +134,9 @@ describe('LukeNativeShadowStrategy source gate', () => {
     expect(source).toContain('WriteTelemetry("CANCEL"');
     expect(source).toContain('WriteTelemetry("TP1"');
     expect(source).toContain('WriteCancelTelemetry');
-    expect(source).toContain('cross_bar=true');
+    expect(source).not.toContain('cross_bar=true');
+    expect(normalizedSource).toContain('if (State != State.Realtime)\n                return;');
+    expect(normalizedSource).toContain('Pending alert expires at bar close; tracked candidate continues to monitor TP/stop.');
     expect(source).toContain('STOP_FIRST');
     expect(source).toContain('MIXED_STOP_FIRST');
     expect(normalizedSource).toContain('DrawLedgerOverlay();\n\n            if (AutonomyMode == LukeNativeAutonomyMode.Disabled)');

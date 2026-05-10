@@ -82,6 +82,7 @@ shifts.jsonl
 state/snapshots/
 state/events/*.jsonl
 state/events/*.log
+state/events/*.bak
 state/runtime/
 state/legacy-root/
 config/fallback-config.json

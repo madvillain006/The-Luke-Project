@@ -81,7 +81,7 @@ describe('TradingView level export workflow', () => {
       exportData,
       rootDir: root,
       artifactDir,
-      basePinePath: path.join(__dirname, '..', 'tradingview', 'luke-level-reclaim-watch.pine'),
+      basePinePath: path.join(__dirname, '..', 'tradingview', 'history', 'level-reclaim', 'luke-level-reclaim-watch.pine'),
     });
 
     expect(exportData.source_files.mancini_misnamed).toBe(true);
@@ -166,7 +166,7 @@ describe('TradingView level export workflow', () => {
       heatmap: [],
       heatmapSnapshotTime: '',
     });
-    const base = fs.readFileSync(path.join(__dirname, '..', 'tradingview', 'luke-level-reclaim-watch.pine'), 'utf8');
+    const base = fs.readFileSync(path.join(__dirname, '..', 'tradingview', 'history', 'level-reclaim', 'luke-level-reclaim-watch.pine'), 'utf8');
     const generated = renderGeneratedPine(base, {
       mancini: '',
       dubz: '',
@@ -185,7 +185,7 @@ describe('TradingView level export workflow', () => {
     expect(generated).not.toContain('alert(');
     expect(generated).not.toContain('strategy(');
 
-    const hardmode = renderGeneratedPine(fs.readFileSync(path.join(__dirname, '..', 'tradingview', 'luke-level-reclaim-watch-hardmode.strategy.pine'), 'utf8'), {
+    const hardmode = renderGeneratedPine(fs.readFileSync(path.join(__dirname, '..', 'tradingview', 'history', 'level-reclaim', 'luke-level-reclaim-watch-hardmode.strategy.pine'), 'utf8'), {
       mancini: '',
       dubz: '',
       heatmap: '',
@@ -218,7 +218,7 @@ describe('TradingView level export workflow', () => {
   });
 
   it('keeps the local Saty ATR reference available for parity review', () => {
-    const sourcePath = path.join(__dirname, '..', 'tradingview', 'saty-atr-levels-source.pine');
+    const sourcePath = path.join(__dirname, '..', 'tradingview', 'support', 'saty-reference', 'saty-atr-levels-source.pine');
     const satySource = fs.readFileSync(sourcePath, 'utf8');
 
     expect(fs.existsSync(sourcePath)).toBe(true);
@@ -231,7 +231,7 @@ describe('TradingView level export workflow', () => {
   });
 
   it('keeps the base Pine indicator safe and Saty-backed', () => {
-    const pine = fs.readFileSync(path.join(__dirname, '..', 'tradingview', 'luke-level-reclaim-watch.pine'), 'utf8');
+    const pine = fs.readFileSync(path.join(__dirname, '..', 'tradingview', 'history', 'level-reclaim', 'luke-level-reclaim-watch.pine'), 'utf8');
 
     expect(pine).toContain('request.security');
     expect(pine).toContain('atr_value');

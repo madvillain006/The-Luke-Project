@@ -45,6 +45,26 @@ describe('free AI fallback agent', () => {
     expect(fallback.parseCsvList('gemini, groq, gemini')).toEqual(['gemini', 'groq']);
   });
 
+  it('reports fallback provider readiness without exposing secrets', () => {
+    const readiness = fallback.providerReadiness({
+      gemini_key: 'test-gemini-key',
+      gemini_models: ['gemini-test'],
+      groq_key: '',
+      groq_model: 'llama-test',
+      deepseek_key: '',
+      deepseek_model: 'deepseek-test',
+      ollama_configured: true,
+      ollama_model: 'llama3',
+      provider_order: ['gemini', 'groq', 'ollama'],
+    });
+
+    expect(readiness.ok).toBe(true);
+    expect(readiness.configured_providers).toEqual(['gemini', 'ollama']);
+    expect(readiness.missing_providers).toEqual(['groq']);
+    expect(JSON.stringify(readiness)).not.toContain('test-gemini-key');
+    expect(readiness.blocked_features).toContain('live_trade');
+  });
+
   it('reports provider HTTP errors without leaking API-key-shaped secrets', async () => {
     const fakeGoogleKey = ['AIza', '123456789012345678901234567890'].join('');
     await expect(fallback.readProviderJson(fakeResponse({

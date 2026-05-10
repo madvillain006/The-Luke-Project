@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const HARDMODE = path.join(__dirname, '..', 'tradingview', 'luke-level-reclaim-watch-hardmode.strategy.pine');
+const HARDMODE = path.join(__dirname, '..', 'tradingview', 'history', 'level-reclaim', 'luke-level-reclaim-watch-hardmode.strategy.pine');
 
 describe('Pine hard-mode same-bar ambiguity', () => {
   it('defaults ambiguous same-bar target/stop touches to stop-first hard mode', () => {

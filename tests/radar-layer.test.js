@@ -50,6 +50,10 @@ describe('radar layer', () => {
     expect(first.item.symbols).toContain('NVDA');
     expect(first.item.themes).toEqual(expect.arrayContaining(['ai_capex', 'reminder', 'contradiction']));
     expect(first.item.review_priority).toBe('review');
+    expect(first.item.scope).toBe('general');
+    expect(first.item.status).toBe('captured');
+    expect(first.item.recall_reason).toBe('contradiction_or_risk_signal');
+    expect(first.item.trading_authority).toBe('none');
     expect(duplicate.ok).toBe(true);
     expect(duplicate.duplicate).toBe(true);
     expect(snapshot.counts).toMatchObject({ total: 1, fresh_24h: 1, review: 1 });
@@ -103,6 +107,8 @@ describe('radar layer', () => {
     expect(snapshot.recent[0]).toEqual(expect.objectContaining({
       id: captured.item.id,
       review_state: 'accepted',
+      review_only: true,
+      trading_authority: 'none',
       raw_text_preview: expect.stringContaining('ES level 5900'),
     }));
     expect(snapshot.recent[0].raw_text).toBeUndefined();
@@ -157,12 +163,20 @@ describe('reference_idea source lane', () => {
       source_type: 'reference_idea',
       text: 'MemPalace uses hybrid keyword plus temporal boosting for context retrieval.',
       reference_repo: 'mempalace',
+      scope: 'memory-retrieval',
+      status: 'candidate',
+      recall_reason: 'Hermes-style context retrieval pattern',
     }, { paths, now });
 
     expect(result.ok).toBe(true);
     expect(result.duplicate).toBe(false);
     expect(result.item.source_type).toBe('reference_idea');
     expect(result.item.review_priority).toBe('review');
+    expect(result.item.scope).toBe('memory-retrieval');
+    expect(result.item.status).toBe('candidate');
+    expect(result.item.recall_reason).toBe('Hermes-style context retrieval pattern');
+    expect(result.item.review_only).toBe(true);
+    expect(result.item.trading_authority).toBe('none');
   });
 
   it('reference_idea items appear in snapshot source_type_counts', () => {
@@ -176,6 +190,11 @@ describe('reference_idea source lane', () => {
 
     const snapshot = buildRadarSnapshot(paths, now);
     expect(snapshot.source_type_counts.reference_idea).toBe(1);
+    expect(snapshot.review_queue[0]).toEqual(expect.objectContaining({
+      review_only: true,
+      trading_authority: 'none',
+      recall_reason: 'reference_idea_review_lane',
+    }));
   });
 
   it('existing source types are unaffected by the new reference_idea type', () => {

@@ -4,8 +4,8 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const PRODUCTION = path.join(ROOT, 'tradingview', 'luke-watch-production-test.pine');
-const READABLE = path.join(ROOT, 'tradingview', 'luke-watch-production-test-readable-ledger.pine');
+const PRODUCTION = path.join(ROOT, 'tradingview', 'history', 'production-ledger', 'luke-watch-production-test.pine');
+const READABLE = path.join(ROOT, 'tradingview', 'history', 'production-ledger', 'luke-watch-production-test-readable-ledger.pine');
 
 function read(file) {
   return fs.readFileSync(file, 'utf8');

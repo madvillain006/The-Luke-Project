@@ -63,6 +63,42 @@ function loadConfig() {
 
 function isActive() { return loadState().active === true; }
 
+function providerReadiness(config = loadConfig()) {
+  const providers = {
+    gemini: {
+      configured: Boolean(config.gemini_key),
+      models: config.gemini_models || [],
+      setup: "Set GEMINI_API_KEY.",
+    },
+    groq: {
+      configured: Boolean(config.groq_key),
+      models: [config.groq_model].filter(Boolean),
+      setup: "Set GROQ_API_KEY.",
+    },
+    deepseek: {
+      configured: Boolean(config.deepseek_key),
+      models: [config.deepseek_model].filter(Boolean),
+      setup: "Set DEEPSEEK_API_KEY.",
+    },
+    ollama: {
+      configured: Boolean(config.ollama_configured),
+      models: [config.ollama_model].filter(Boolean),
+      setup: "Set OLLAMA_HOST and run the local Ollama model.",
+    },
+  };
+  const order = config.provider_order || [];
+  return {
+    ok: order.some(provider => providers[provider]?.configured),
+    provider_order: order,
+    providers,
+    configured_providers: order.filter(provider => providers[provider]?.configured),
+    missing_providers: order.filter(provider => providers[provider] && !providers[provider].configured),
+    blocked_features: BLOCKED_FEATURES,
+    allowed_features: ALLOWED_FEATURES,
+    secret_policy: "keys are read from env/config and never returned by readiness status",
+  };
+}
+
 function logCall(provider, model, prompt_len, reply_len) {
   try {
     fs.appendFileSync(CALLS_FILE, JSON.stringify({
@@ -253,6 +289,10 @@ router.get("/config", (req, res) => {
   });
 });
 
+router.get("/readiness", (req, res) => {
+  res.json(providerReadiness());
+});
+
 router.post("/activate", (req, res) => {
   const { reason } = req.body;
   saveState({ active: true, provider: "auto", entered_at: new Date().toISOString(), reason: reason || "manual" });
@@ -286,6 +326,7 @@ module.exports = {
   router,
   isActive,
   loadConfig,
+  providerReadiness,
   callFallback,
   callGemini,
   callGeminiModels,

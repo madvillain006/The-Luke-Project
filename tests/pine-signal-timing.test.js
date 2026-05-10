@@ -3,8 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const HARDMODE = path.join(__dirname, '..', 'tradingview', 'luke-level-reclaim-watch-hardmode.strategy.pine');
-const SATY = path.join(__dirname, '..', 'tradingview', 'saty-atr-levels-source.pine');
+const HARDMODE = path.join(__dirname, '..', 'tradingview', 'history', 'level-reclaim', 'luke-level-reclaim-watch-hardmode.strategy.pine');
+const SATY = path.join(__dirname, '..', 'tradingview', 'support', 'saty-reference', 'saty-atr-levels-source.pine');
 
 describe('Pine hard-mode signal timing and repaint controls', () => {
   it('gates research signals on confirmed bars and next-bar entry timing', () => {

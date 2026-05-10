@@ -58,6 +58,22 @@ describe('luke intelligence packet', () => {
     expect(packet).toContain('Radar');
   });
 
+  it('includes why-recalled review metadata for Radar items', () => {
+    const { paths } = tempPaths();
+    recordRadarIngest({
+      source_label: 'hermes-ref',
+      source_type: 'reference_idea',
+      title: 'Session recall pattern',
+      text: 'Hermes keeps scoped recall metadata on session memories.',
+    }, { paths });
+
+    const packet = buildIntelligencePacket({ paths, maxChars: 1200 });
+    expect(packet).toContain('Session recall pattern');
+    expect(packet).toContain('scope=reference_review');
+    expect(packet).toContain('why=reference_idea_review_lane');
+    expect(packet).toContain('review_only');
+  });
+
   it('excludes reference registry section when surface is trading', () => {
     const { paths } = tempPaths();
     const packet = buildIntelligencePacket({ paths, surface: 'trading' });

@@ -4,9 +4,9 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const HARDMODE = path.join(ROOT, 'tradingview', 'luke-level-reclaim-watch-hardmode.strategy.pine');
-const VISUAL = path.join(ROOT, 'tradingview', 'luke-level-reclaim-watch.pine');
-const REALISTIC = path.join(ROOT, 'tradingview', 'luke-level-reclaim-watch-realistic-accounting.pine');
+const HARDMODE = path.join(ROOT, 'tradingview', 'history', 'level-reclaim', 'luke-level-reclaim-watch-hardmode.strategy.pine');
+const VISUAL = path.join(ROOT, 'tradingview', 'history', 'level-reclaim', 'luke-level-reclaim-watch.pine');
+const REALISTIC = path.join(ROOT, 'tradingview', 'history', 'level-reclaim', 'luke-level-reclaim-watch-realistic-accounting.pine');
 
 function read(file) {
   return fs.readFileSync(file, 'utf8');

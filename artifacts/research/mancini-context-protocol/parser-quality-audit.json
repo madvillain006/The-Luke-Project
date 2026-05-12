@@ -1,0 +1,226 @@
+{
+  "level_rows": 2456,
+  "notes": [
+    "Direction conflicts are not always parser errors; a level can be support and resistance in different contexts.",
+    "Snippet/full-price failures are hard failures because Hermes cannot audit evidence that omits the claimed level."
+  ],
+  "pass": true,
+  "plan_date_price_direction_conflict_count": 220,
+  "plan_date_price_direction_conflict_examples": [
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-02-20",
+      "price": "6791"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-02-20",
+      "price": "6808"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-02-20",
+      "price": "6845"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-02-20",
+      "price": "6867"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-02-20",
+      "price": "6876"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-02-20",
+      "price": "6884"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-02-20",
+      "price": "6893"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-02-20",
+      "price": "6898"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-02-20",
+      "price": "6913"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-02-20",
+      "price": "6923"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-02-20",
+      "price": "6925"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-03-04",
+      "price": "6718"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-03-04",
+      "price": "6742"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-03-04",
+      "price": "6791"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-03-04",
+      "price": "6795"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-03-04",
+      "price": "6808"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-03-04",
+      "price": "6912"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-03-04",
+      "price": "6913"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-03-10",
+      "price": "6588"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-03-10",
+      "price": "6738"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-03-10",
+      "price": "6739"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-03-10",
+      "price": "6778"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-03-10",
+      "price": "6813"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-03-10",
+      "price": "6829"
+    },
+    {
+      "directions": [
+        "resistance",
+        "support"
+      ],
+      "plan_date": "2026-03-10",
+      "price": "6850"
+    }
+  ],
+  "primary_role_counts": {
+    "DIRECT_BID_CONDITIONAL": 5,
+    "FAILED_BREAKDOWN_RECLAIM": 269,
+    "FIRST_SUPPORT_CAUTION": 24,
+    "MAJOR_SUPPORT": 347,
+    "RESISTANCE_ONLY": 1158,
+    "SUPPORT_LEVEL": 653
+  },
+  "review_only": true,
+  "snippet_without_full_price_count": 0,
+  "snippet_without_full_price_examples": [],
+  "source_kind_counts": {
+    "daily_plan_text": 2456
+  },
+  "trading_authority": "none"
+}

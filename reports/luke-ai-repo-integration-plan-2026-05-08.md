@@ -330,3 +330,130 @@ Approve goals 1-4 first:
 Then pause for review before memory, Katbot, research, and UI changes.
 
 This keeps the first pass useful to you as the coder while avoiding a risky graft into Luke's trading and runtime surfaces.
+
+## Goal 1 Baseline Evidence
+
+Recorded: 2026-05-10.
+
+This section closes the baseline evidence requirement for `.agent/goals/2026-05-08-ai-repo-integration-plan/goal-1`. It is evidence only. No runtime integration, runtime state write, trading edit, Pine edit, NinjaTrader edit, broker/account routing edit, credential edit, or reference runtime dependency was added while recording it.
+
+### Git Status
+
+Command:
+
+```powershell
+git status --short --branch
+```
+
+Observed output:
+
+```text
+## main...origin/main
+warning: unable to access 'C:\Users\conor/.config/git/ignore': Permission denied
+warning: unable to access 'C:\Users\conor/.config/git/ignore': Permission denied
+```
+
+Interpretation: the Luke repo itself is clean and aligned with `origin/main`. The Git warning is a user-level config ignore permission issue outside the repo and did not dirty the worktree.
+
+### Reference Repo Baseline
+
+Command:
+
+```powershell
+Get-ChildItem tools\reference-repos -Directory
+```
+
+Observed directories and commits:
+
+```text
+ai-agents-for-beginners: e145657
+andrej-karpathy-skills: 2c60614
+autoresearch: 228791f
+awesome-claude-code: 614f102
+awesome-llm-apps: 20381f9
+hermes-agent: 81928f0
+mattpocock-skills: 733d312
+mempalace: 018ded5
+qlib: d5379c5
+SuperClaude_Framework: 226c45c
+```
+
+Interpretation: all ten selected reference clones are present under `tools/reference-repos/`. They remain ignored reference material, not vendored Luke runtime source.
+
+### Current Radar Routes
+
+Evidence from `agents/agent-00-brain.js` and Radar modules:
+
+```text
+GET  /agent/brain/radar
+GET  /agent/brain/radar/items
+GET  /agent/brain/radar/item/:id
+GET  /agent/brain/radar/brief
+POST /agent/brain/radar/ingest
+POST /agent/brain/radar/review
+```
+
+Supporting functions:
+
+```text
+lib/radar/ingest.js: buildRadarSnapshot
+lib/radar/ingest.js: recordRadarIngest
+lib/radar/ingest.js: buildRadarItems
+lib/radar/ingest.js: buildRadarItemDetail
+lib/radar/ingest.js: recordRadarReview
+lib/brain/radar-layer.js: buildRadarBrief and Radar passthrough exports
+```
+
+Safety note: `recordRadarIngest()` and `recordRadarReview()` write runtime state by default. Subconscious work must stay offline until dry-run/write-gate support exists.
+
+### Current UI Surfaces
+
+Observed files:
+
+```text
+radar-dashboard.html  24009 bytes
+luke-shell.html       58809 bytes
+brain-dashboard.html  25785 bytes
+operator-v2.html      76470 bytes
+trading-window.html   48259 bytes
+```
+
+Interpretation: the planned UI surfaces exist. Future reference/Subconscious visibility should start in Radar, then only expand to shell/brain/operator/trading surfaces after review-only value is proven.
+
+### Current Katbot Seams
+
+Read-only evidence from `agents/agent-14-kat.js`:
+
+```text
+broadcastKatCapture(entry, signal)
+discordClient.on('messageCreate', ...)
+discordClient.on('messageUpdate', ...)
+recordKatOutputBin(...)
+recordVisionRecord(...)
+global.broadcast({ type: 'kat_vision', ... })
+KATBOT_ENABLE_LIVE_VISION and LUKE_ALLOW_ANTHROPIC_VISION gate live vision
+```
+
+Interpretation: Katbot has capture, command, vision, broadcast, and output-bin seams. It remains confluence/context only. It is not trade execution authority.
+
+### Current Safe Integration Seams
+
+The current safe spine is:
+
+```text
+reference idea -> Radar review lane -> brain/subagent report -> human/Main approval -> later QA
+```
+
+Existing support:
+
+- `lib/reference-repo-registry.js` lists reference repos with `allowed_surfaces` and `banned_surfaces`; all entries ban `trading_execution` and `broker`.
+- `lib/radar/ingest.js` supports `source_type: reference_idea`, `review_only`, `review_state`, `scope`, `status`, `recall_reason`, `relationship_ids`, and `trading_authority: none`.
+- `lib/paths.js` centralizes event and snapshot paths.
+- `agents/agent-00-brain.js` exposes `/agent/brain/report` for subagent reports.
+- `tests/autonomous-recommendation-only.test.js` asserts autonomous behavior remains recommendation-only and execution blocked.
+
+### Baseline Decision
+
+Goal 1 is satisfied as a read-only baseline.
+
+Next goal should be goal 2, but the current repo already has a lightweight `lib/reference-repo-registry.js` implementation. Before marking goal 2 complete, verify whether the existing module satisfies the goal as written or whether the goal should be revised to match the landed path.

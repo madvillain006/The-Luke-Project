@@ -1,0 +1,300 @@
+{
+  "acceptance_family_classifier": {
+    "backtest_tolerance_points": 0.5,
+    "classic_selloff_min_points": 2.0,
+    "non_acceptance_danger_zone_points": 5.0,
+    "non_acceptance_hold_bars": 2,
+    "note": "Classifier is deterministic OHLC research plumbing, not a live strategy rule.",
+    "research_only": true
+  },
+  "acceptance_family_summary": {
+    "classic_acceptance_backtest_from_below": {
+      "accepted_for_timing_test_count": 23,
+      "avg_acceptance_closes": 14.0435,
+      "avg_flush_points": 6.6522,
+      "avg_mae_15m": 3.1413,
+      "avg_mae_60m": 5.3587,
+      "avg_mfe_15m": 5.6304,
+      "avg_mfe_60m": 10.5652,
+      "avg_trap_candle_volume": 870.3478,
+      "avg_trap_candle_wick_to_body": 1.9931,
+      "packet_count": 23
+    },
+    "classic_acceptance_second_attempt_reclaim": {
+      "accepted_for_timing_test_count": 24,
+      "avg_acceptance_closes": 2.25,
+      "avg_flush_points": 6.7083,
+      "avg_mae_15m": 5.7396,
+      "avg_mae_60m": 11.4896,
+      "avg_mfe_15m": 3.3333,
+      "avg_mfe_60m": 7.0104,
+      "avg_trap_candle_volume": 2282.9583,
+      "avg_trap_candle_wick_to_body": 2.3432,
+      "packet_count": 24
+    },
+    "non_acceptance_protocol": {
+      "accepted_for_timing_test_count": 57,
+      "avg_acceptance_closes": 14.3509,
+      "avg_flush_points": 11.8947,
+      "avg_mae_15m": 4.9912,
+      "avg_mae_60m": 10.1754,
+      "avg_mfe_15m": 10.75,
+      "avg_mfe_60m": 14.5877,
+      "avg_trap_candle_volume": 4103.9649,
+      "avg_trap_candle_wick_to_body": 3.2136,
+      "packet_count": 57
+    },
+    "simple_reclaim_unclassified": {
+      "accepted_for_timing_test_count": 24,
+      "avg_acceptance_closes": 14.8333,
+      "avg_flush_points": 4.5417,
+      "avg_mae_15m": 1.9792,
+      "avg_mae_60m": 3.0521,
+      "avg_mfe_15m": 3.9896,
+      "avg_mfe_60m": 10.0521,
+      "avg_trap_candle_volume": 907.4167,
+      "avg_trap_candle_wick_to_body": 2.5774,
+      "packet_count": 24
+    },
+    "unmeasurable": {
+      "accepted_for_timing_test_count": 0,
+      "avg_acceptance_closes": null,
+      "avg_flush_points": null,
+      "avg_mae_15m": null,
+      "avg_mae_60m": null,
+      "avg_mfe_15m": null,
+      "avg_mfe_60m": null,
+      "avg_trap_candle_volume": null,
+      "avg_trap_candle_wick_to_body": null,
+      "packet_count": 0
+    }
+  },
+  "accepted_for_timing_test_count": 128,
+  "accepted_timing_family_summary": {
+    "classic_acceptance_backtest_from_below": {
+      "accepted_for_timing_test_count": 23,
+      "avg_acceptance_closes": 14.0435,
+      "avg_flush_points": 6.6522,
+      "avg_mae_15m": 3.1413,
+      "avg_mae_60m": 5.3587,
+      "avg_mfe_15m": 5.6304,
+      "avg_mfe_60m": 10.5652,
+      "avg_trap_candle_volume": 870.3478,
+      "avg_trap_candle_wick_to_body": 1.9931,
+      "packet_count": 23
+    },
+    "classic_acceptance_second_attempt_reclaim": {
+      "accepted_for_timing_test_count": 24,
+      "avg_acceptance_closes": 2.25,
+      "avg_flush_points": 6.7083,
+      "avg_mae_15m": 5.7396,
+      "avg_mae_60m": 11.4896,
+      "avg_mfe_15m": 3.3333,
+      "avg_mfe_60m": 7.0104,
+      "avg_trap_candle_volume": 2282.9583,
+      "avg_trap_candle_wick_to_body": 2.3432,
+      "packet_count": 24
+    },
+    "non_acceptance_protocol": {
+      "accepted_for_timing_test_count": 57,
+      "avg_acceptance_closes": 14.3509,
+      "avg_flush_points": 11.8947,
+      "avg_mae_15m": 4.9912,
+      "avg_mae_60m": 10.1754,
+      "avg_mfe_15m": 10.75,
+      "avg_mfe_60m": 14.5877,
+      "avg_trap_candle_volume": 4103.9649,
+      "avg_trap_candle_wick_to_body": 3.2136,
+      "packet_count": 57
+    },
+    "simple_reclaim_unclassified": {
+      "accepted_for_timing_test_count": 24,
+      "avg_acceptance_closes": 14.8333,
+      "avg_flush_points": 4.5417,
+      "avg_mae_15m": 1.9792,
+      "avg_mae_60m": 3.0521,
+      "avg_mfe_15m": 3.9896,
+      "avg_mfe_60m": 10.0521,
+      "avg_trap_candle_volume": 907.4167,
+      "avg_trap_candle_wick_to_body": 2.5774,
+      "packet_count": 24
+    },
+    "unmeasurable": {
+      "accepted_for_timing_test_count": 0,
+      "avg_acceptance_closes": null,
+      "avg_flush_points": null,
+      "avg_mae_15m": null,
+      "avg_mae_60m": null,
+      "avg_mfe_15m": null,
+      "avg_mfe_60m": null,
+      "avg_trap_candle_volume": null,
+      "avg_trap_candle_wick_to_body": null,
+      "packet_count": 0
+    }
+  },
+  "all_packet_family_summary": {
+    "classic_acceptance_backtest_from_below": {
+      "accepted_for_timing_test_count": 23,
+      "avg_acceptance_closes": 14.0435,
+      "avg_flush_points": 6.6522,
+      "avg_mae_15m": 3.1413,
+      "avg_mae_60m": 5.3587,
+      "avg_mfe_15m": 5.6304,
+      "avg_mfe_60m": 10.5652,
+      "avg_trap_candle_volume": 870.3478,
+      "avg_trap_candle_wick_to_body": 1.9931,
+      "packet_count": 23
+    },
+    "classic_acceptance_second_attempt_reclaim": {
+      "accepted_for_timing_test_count": 24,
+      "avg_acceptance_closes": 2.1707,
+      "avg_flush_points": 6.8171,
+      "avg_mae_15m": 7.3375,
+      "avg_mae_60m": 12.1562,
+      "avg_mfe_15m": 3.4688,
+      "avg_mfe_60m": 8.5188,
+      "avg_trap_candle_volume": 2114.7805,
+      "avg_trap_candle_wick_to_body": 2.8813,
+      "packet_count": 41
+    },
+    "non_acceptance_protocol": {
+      "accepted_for_timing_test_count": 57,
+      "avg_acceptance_closes": 13.8955,
+      "avg_flush_points": 11.1045,
+      "avg_mae_15m": 5.7276,
+      "avg_mae_60m": 11.0299,
+      "avg_mfe_15m": 9.9701,
+      "avg_mfe_60m": 13.9254,
+      "avg_trap_candle_volume": 3732.7164,
+      "avg_trap_candle_wick_to_body": 3.6694,
+      "packet_count": 67
+    },
+    "simple_reclaim_unclassified": {
+      "accepted_for_timing_test_count": 24,
+      "avg_acceptance_closes": 11.1538,
+      "avg_flush_points": 7.5,
+      "avg_mae_15m": 5.2714,
+      "avg_mae_60m": 7.1429,
+      "avg_mfe_15m": 3.3214,
+      "avg_mfe_60m": 8.4786,
+      "avg_trap_candle_volume": 1157.6923,
+      "avg_trap_candle_wick_to_body": 4.5349,
+      "packet_count": 39
+    },
+    "unmeasurable": {
+      "accepted_for_timing_test_count": 0,
+      "avg_acceptance_closes": 16.0,
+      "avg_flush_points": null,
+      "avg_mae_15m": null,
+      "avg_mae_60m": null,
+      "avg_mfe_15m": null,
+      "avg_mfe_60m": null,
+      "avg_trap_candle_volume": null,
+      "avg_trap_candle_wick_to_body": null,
+      "packet_count": 2
+    }
+  },
+  "bucket_definitions": {
+    "0_to_1": ">0 and <=1 minute",
+    "10_plus": ">10 minutes",
+    "1_to_2": ">1 and <=2 minutes",
+    "2_to_3_5": ">2 and <=3.5 minutes",
+    "3_5_to_10": ">3.5 and <=10 minutes",
+    "missing": "reclaim_minutes_from_trap_candle is null or non-positive"
+  },
+  "bucket_summary": {
+    "0_to_1": {
+      "accepted_for_timing_test_count": 1,
+      "avg_acceptance_closes": 15.0,
+      "avg_flush_points": 1.5,
+      "avg_mae_15m": 2.5,
+      "avg_mae_60m": 2.5,
+      "avg_mfe_15m": 14.25,
+      "avg_mfe_60m": 26.5,
+      "avg_trap_candle_volume": 399.0,
+      "avg_trap_candle_wick_to_body": 0.5556,
+      "packet_count": 1
+    },
+    "10_plus": {
+      "accepted_for_timing_test_count": 54,
+      "avg_acceptance_closes": 11.3148,
+      "avg_flush_points": 10.4167,
+      "avg_mae_15m": 3.8148,
+      "avg_mae_60m": 7.4306,
+      "avg_mfe_15m": 5.1111,
+      "avg_mfe_60m": 8.7037,
+      "avg_trap_candle_volume": 1274.1667,
+      "avg_trap_candle_wick_to_body": 2.0556,
+      "packet_count": 54
+    },
+    "1_to_2": {
+      "accepted_for_timing_test_count": 0,
+      "avg_acceptance_closes": null,
+      "avg_flush_points": null,
+      "avg_mae_15m": null,
+      "avg_mae_60m": null,
+      "avg_mfe_15m": null,
+      "avg_mfe_60m": null,
+      "avg_trap_candle_volume": null,
+      "avg_trap_candle_wick_to_body": null,
+      "packet_count": 0
+    },
+    "2_to_3_5": {
+      "accepted_for_timing_test_count": 13,
+      "avg_acceptance_closes": 13.7692,
+      "avg_flush_points": 2.7692,
+      "avg_mae_15m": 2.4231,
+      "avg_mae_60m": 7.7308,
+      "avg_mfe_15m": 8.4038,
+      "avg_mfe_60m": 11.3269,
+      "avg_trap_candle_volume": 4939.4615,
+      "avg_trap_candle_wick_to_body": 3.6768,
+      "packet_count": 13
+    },
+    "3_5_to_10": {
+      "accepted_for_timing_test_count": 60,
+      "avg_acceptance_closes": 12.4333,
+      "avg_flush_points": 8.35,
+      "avg_mae_15m": 5.0333,
+      "avg_mae_60m": 9.1333,
+      "avg_mfe_15m": 8.6417,
+      "avg_mfe_60m": 14.0042,
+      "avg_trap_candle_volume": 3284.9333,
+      "avg_trap_candle_wick_to_body": 3.1227,
+      "packet_count": 60
+    },
+    "missing": {
+      "accepted_for_timing_test_count": 0,
+      "avg_acceptance_closes": null,
+      "avg_flush_points": null,
+      "avg_mae_15m": null,
+      "avg_mae_60m": null,
+      "avg_mfe_15m": null,
+      "avg_mfe_60m": null,
+      "avg_trap_candle_volume": null,
+      "avg_trap_candle_wick_to_body": null,
+      "packet_count": 44
+    }
+  },
+  "not_accepted_for_timing_test_count": 44,
+  "packet_count": 172,
+  "reject_reason_counts": {
+    "missing_flush_points": 2,
+    "missing_or_nonpositive_reclaim_minutes": 44
+  },
+  "review_only": true,
+  "schema_version": 1,
+  "status": "research_viable_machine_tuning_not_final",
+  "trading_authority": "none",
+  "trigger_validation_summary": {
+    "not_validated_for_trigger": 169,
+    "note": "Only validated_replay_trigger_candidate rows may be considered positive training/shadow-model examples. Timing acceptance and heuristic family labels are not sufficient.",
+    "validated_replay_trigger_candidate": 3
+  },
+  "unsupported_claims": [
+    "No universal stop formula is proven.",
+    "No universal volume threshold is proven.",
+    "No universal acceptance close count is proven.",
+    "No live trading authority is granted."
+  ]
+}

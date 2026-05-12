@@ -1,0 +1,40 @@
+{
+  "counts": {
+    "nightly_manifest": 12,
+    "nightly_png": 12,
+    "real_case_manifest": 36,
+    "real_case_png": 36,
+    "real_packet_gallery_manifest": 172,
+    "real_packet_gallery_png": 172,
+    "simulated_manifest": 5,
+    "simulated_png": 5,
+    "social_manifest": 8,
+    "social_png": 8,
+    "total_png": 233
+  },
+  "errors": [],
+  "pass": true,
+  "raw_match_quality_counts": {
+    "exact_snippet": 50,
+    "partial_snippet": 11,
+    "price_and_role": 98,
+    "price_only": 13
+  },
+  "review_only": true,
+  "trading_authority": "none",
+  "warnings": [
+    "gallery_raw_source_price_only_match=mancini-es1m:2026-03-03T1928:6800.0:398c6bacdc82",
+    "gallery_raw_source_price_only_match=mancini-es1m:2026-03-18T0110:6754.0:69f5ee4e53f3",
+    "gallery_raw_source_price_only_match=mancini-es1m:2026-03-26T0443:6586.0:cd4ff89e7fb3",
+    "gallery_raw_source_price_only_match=mancini-es1m:2026-04-05T2113:6620.0:6d688467940c",
+    "gallery_raw_source_price_only_match=mancini-es1m:2026-04-21T2040:7140.0:0551de6999a3",
+    "gallery_raw_source_price_only_match=mancini-es1m:2026-04-22T1500:7170.0:5d93acc39c98",
+    "gallery_raw_source_price_only_match=mancini-es1m:2026-04-22T1921:7130.0:f23775d2ceac",
+    "gallery_raw_source_price_only_match=mancini-es1m:2026-04-28T0844:7177.0:ec0f8eaadff6",
+    "gallery_raw_source_price_only_match=mancini-es1m:2026-04-29T1058:7149.0:b9ec03c29384",
+    "gallery_raw_source_price_only_match=mancini-es1m:2026-04-30T0120:7138.0:c1394dc0e7d2",
+    "gallery_raw_source_price_only_match=mancini-es1m:2026-05-03T1716:7267.0:96410338307b",
+    "gallery_raw_source_price_only_match=mancini-es1m:2026-05-05T0717:7266.0:91f893b01585",
+    "gallery_raw_source_price_only_match=mancini-es1m:2026-05-05T0830:7267.0:bfed98aa1b3b"
+  ]
+}

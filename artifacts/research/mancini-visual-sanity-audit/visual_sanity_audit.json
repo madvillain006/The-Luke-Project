@@ -1,0 +1,4579 @@
+{
+  "rows": [
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6776.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-04T0023:6776.0:6eac29c1821f",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\001_accepted_non_acceptance_protocol_20260304_0023_6776.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -1.75,
+      "post_reclaim_mfe_from_level": 19.0,
+      "pre_trap_bars": 8,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 4,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6782.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-03T2139:6782.0:8cb8c2777bb4",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\002_accepted_classic_acceptance_backtest_from_below_20260303_2139_6782.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 2.5,
+      "post_reclaim_mfe_from_level": 9.25,
+      "pre_trap_bars": 10,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 4,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6790.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-03T2039:6790.0:a70152a4e786",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\003_accepted_non_acceptance_protocol_20260303_2039_6790.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -1.25,
+      "post_reclaim_mfe_from_level": 15.25,
+      "pre_trap_bars": 12,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": false,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": true,
+      "level": 6800.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-03T1928:6800.0:398c6bacdc82",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\004_excluded_classic_acceptance_second_attempt_reclaim_20260303_1928_6800.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 4.75,
+      "post_reclaim_mfe_from_level": 14.0,
+      "pre_trap_bars": 18,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 10,
+      "raw_match_quality": "price_only",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "weak_raw_price_only_provenance",
+        "reclaim_not_after_trap_in_crop",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6802.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-03T1940:6802.0:7287cc965506",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\005_accepted_non_acceptance_protocol_20260303_1940_6802.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 4.5,
+      "post_reclaim_mfe_from_level": 12.0,
+      "pre_trap_bars": 6,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 5,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 8
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6818.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-03T1715:6818.0:4df8690d4034",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\006_accepted_classic_acceptance_backtest_from_below_20260303_1715_6818.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 7.0,
+      "post_reclaim_mfe_from_level": 6.75,
+      "pre_trap_bars": 6,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 7
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6822.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-03T1820:6822.0:ceea33247e1a",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\007_accepted_non_acceptance_protocol_20260303_1820_6822.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 9.75,
+      "post_reclaim_mfe_from_level": 11.0,
+      "pre_trap_bars": 4,
+      "primary_role": "FIRST_SUPPORT_CAUTION",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof",
+        "mancini_first_support_caution"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 11
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_partial_snippet",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6853.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-04T0912:6853.0:4e1e52046e44",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\008_accepted_non_acceptance_protocol_20260304_0912_6853.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 2.25,
+      "post_reclaim_mfe_from_level": 33.25,
+      "pre_trap_bars": 2,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "partial_snippet",
+      "reasons": [],
+      "status": "insufficient_visual_context",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6764.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-09T1913:6764.0:33352b2c422b",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\009_accepted_non_acceptance_protocol_20260309_1913_6764.0.png",
+      "post_reclaim_bars": 14,
+      "post_reclaim_mae_from_level": 1.5,
+      "post_reclaim_mfe_from_level": 15.25,
+      "pre_trap_bars": 15,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 3,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof",
+        "weak_visible_acceptance_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 0
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6774.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-09T1927:6774.0:2758841277d0",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\010_accepted_non_acceptance_protocol_20260309_1927_6774.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -1.5,
+      "post_reclaim_mfe_from_level": 15.0,
+      "pre_trap_bars": 1,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": false,
+      "level": 6800.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-10T0222:6800.0:f437fd432408",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\011_accepted_non_acceptance_protocol_20260310_0222_6800.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -6.0,
+      "post_reclaim_mfe_from_level": 19.0,
+      "pre_trap_bars": 5,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 5,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [],
+      "status": "training_candidate",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6630.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-13T1450:6630.0:edd154316406",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\012_accepted_classic_acceptance_backtest_from_below_20260313_1450_6630.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 2.0,
+      "post_reclaim_mfe_from_level": 8.75,
+      "pre_trap_bars": 8,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 4,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 12
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6638.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-13T1254:6638.0:37a31f30e5e5",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\013_accepted_simple_reclaim_unclassified_20260313_1254_6638.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 1.0,
+      "post_reclaim_mfe_from_level": 8.75,
+      "pre_trap_bars": 11,
+      "primary_role": "MAJOR_SUPPORT",
+      "prior_visible_level_tests": 1,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_partial_snippet"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6641.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-13T0314:6641.0:b3545754af5a",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\014_excluded_non_acceptance_protocol_20260313_0314_6641.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 1.0,
+      "post_reclaim_mfe_from_level": 9.75,
+      "pre_trap_bars": 16,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 5,
+      "raw_match_quality": "partial_snippet",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6646.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-13T0308:6646.0:d6a01c34bab9",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\015_excluded_classic_acceptance_second_attempt_reclaim_20260313_0308_6646.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 6.0,
+      "post_reclaim_mfe_from_level": 5.0,
+      "pre_trap_bars": 22,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 4,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6652.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-13T0226:6652.0:ff2f764293d8",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\016_accepted_non_acceptance_protocol_20260313_0226_6652.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -3.0,
+      "post_reclaim_mfe_from_level": 12.5,
+      "pre_trap_bars": 11,
+      "primary_role": "MAJOR_SUPPORT",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6656.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-13T0210:6656.0:149a80c09b51",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\017_excluded_classic_acceptance_second_attempt_reclaim_20260313_0210_6656.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 5.5,
+      "post_reclaim_mfe_from_level": 3.0,
+      "pre_trap_bars": 27,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 15,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 3
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6663.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-13T0353:6663.0:e51c17892298",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\018_accepted_non_acceptance_protocol_20260313_0353_6663.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -4.0,
+      "post_reclaim_mfe_from_level": 20.75,
+      "pre_trap_bars": 8,
+      "primary_role": "MAJOR_SUPPORT",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6667.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-13T0355:6667.0:473442daff01",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\019_accepted_classic_acceptance_backtest_from_below_20260313_0355_6667.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 0.0,
+      "post_reclaim_mfe_from_level": 16.75,
+      "pre_trap_bars": 6,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6676.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-12T1908:6676.0:bbd7eff65630",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\020_accepted_non_acceptance_protocol_20260312_1908_6676.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -3.0,
+      "post_reclaim_mfe_from_level": 25.75,
+      "pre_trap_bars": 9,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6685.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-12T1731:6685.0:11b5eb37471f",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\021_accepted_non_acceptance_protocol_20260312_1731_6685.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -1.5,
+      "post_reclaim_mfe_from_level": 8.25,
+      "pre_trap_bars": 2,
+      "primary_role": "FIRST_SUPPORT_CAUTION",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof",
+        "mancini_first_support_caution"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6697.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-12T1919:6697.0:fc8f5c1b495c",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\022_accepted_classic_acceptance_backtest_from_below_20260312_1919_6697.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -0.5,
+      "post_reclaim_mfe_from_level": 9.75,
+      "pre_trap_bars": 0,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [],
+      "status": "insufficient_visual_context",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6699.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-12T1919:6699.0:95ee11585d82",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\023_accepted_simple_reclaim_unclassified_20260312_1919_6699.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 1.5,
+      "post_reclaim_mfe_from_level": 7.75,
+      "pre_trap_bars": 0,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "weak_visible_acceptance_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 0
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6705.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-12T1935:6705.0:7e8020f96f27",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\024_accepted_classic_acceptance_second_attempt_reclaim_20260312_1935_6705.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 4.0,
+      "post_reclaim_mfe_from_level": 2.75,
+      "pre_trap_bars": 4,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_partial_snippet",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6712.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-13T0748:6712.0:ae9878e26bb0",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\025_accepted_simple_reclaim_unclassified_20260313_0748_6712.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 9.5,
+      "post_reclaim_mfe_from_level": 5.5,
+      "pre_trap_bars": 5,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "partial_snippet",
+      "reasons": [
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 2
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6721.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-13T0845:6721.0:8e30e84dcbf5",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\026_accepted_non_acceptance_protocol_20260313_0845_6721.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 3.25,
+      "post_reclaim_mfe_from_level": 16.5,
+      "pre_trap_bars": 6,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 5
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6727.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-13T0846:6727.0:c8d48af5481f",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\027_accepted_non_acceptance_protocol_20260313_0846_6727.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 9.25,
+      "post_reclaim_mfe_from_level": 10.5,
+      "pre_trap_bars": 5,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 3
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6623.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T1459:6623.0:119749312ede",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\028_excluded_simple_reclaim_unclassified_20260318_1459_6623.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 10.25,
+      "post_reclaim_mfe_from_level": 7.0,
+      "pre_trap_bars": 29,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 6,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 6
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6632.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T1442:6632.0:2b576122b343",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\029_excluded_classic_acceptance_second_attempt_reclaim_20260318_1442_6632.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 4.5,
+      "post_reclaim_mfe_from_level": 2.5,
+      "pre_trap_bars": 20,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 4,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6635.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T1441:6635.0:3b9205c20946",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\030_excluded_non_acceptance_protocol_20260318_1441_6635.0.png",
+      "post_reclaim_bars": 30,
+      "post_reclaim_mae_from_level": 2.75,
+      "post_reclaim_mfe_from_level": 8.25,
+      "pre_trap_bars": 21,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 5,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 15
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6639.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T1430:6639.0:3fe1d44cd2d1",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\031_excluded_simple_reclaim_unclassified_20260318_1430_6639.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 11.0,
+      "post_reclaim_mfe_from_level": 4.25,
+      "pre_trap_bars": 30,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 15,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 5
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6648.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T1405:6648.0:706990a114ff",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\032_accepted_non_acceptance_protocol_20260318_1405_6648.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 4.5,
+      "post_reclaim_mfe_from_level": 10.5,
+      "pre_trap_bars": 10,
+      "primary_role": "MAJOR_SUPPORT",
+      "prior_visible_level_tests": 7,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 11
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6655.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T1410:6655.0:adddfa132039",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\033_excluded_classic_acceptance_second_attempt_reclaim_20260318_1410_6655.0.png",
+      "post_reclaim_bars": 21,
+      "post_reclaim_mae_from_level": 10.25,
+      "post_reclaim_mfe_from_level": 3.5,
+      "pre_trap_bars": 28,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 7,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_partial_snippet"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6658.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T1338:6658.0:d6e77f2ee797",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\034_excluded_non_acceptance_protocol_20260318_1338_6658.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 10.75,
+      "post_reclaim_mfe_from_level": 9.5,
+      "pre_trap_bars": 30,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 12,
+      "raw_match_quality": "partial_snippet",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 2
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6662.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T1339:6662.0:e22614beb874",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\035_excluded_simple_reclaim_unclassified_20260318_1339_6662.0.png",
+      "post_reclaim_bars": 12,
+      "post_reclaim_mae_from_level": 16.5,
+      "post_reclaim_mfe_from_level": 4.5,
+      "pre_trap_bars": 30,
+      "primary_role": "MAJOR_SUPPORT",
+      "prior_visible_level_tests": 10,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 2
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6667.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T1215:6667.0:80fe456b996e",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\036_accepted_simple_reclaim_unclassified_20260318_1215_6667.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 1.25,
+      "post_reclaim_mfe_from_level": 5.75,
+      "pre_trap_bars": 11,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 15
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": true,
+      "level": 6673.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T0933:6673.0:3968093a577f",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\037_accepted_classic_acceptance_second_attempt_reclaim_20260318_0933_6673.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 4.25,
+      "post_reclaim_mfe_from_level": 8.25,
+      "pre_trap_bars": 10,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "quant_agent_demote_last_ditch_support_immediate_failure_risk",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 4
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6678.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T1001:6678.0:42b543d65f3f",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\038_accepted_non_acceptance_protocol_20260318_1001_6678.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -0.75,
+      "post_reclaim_mfe_from_level": 13.75,
+      "pre_trap_bars": 3,
+      "primary_role": "MAJOR_SUPPORT",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6686.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T0752:6686.0:33acb1fbb3fc",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\039_excluded_classic_acceptance_second_attempt_reclaim_20260318_0752_6686.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 5.0,
+      "post_reclaim_mfe_from_level": 8.0,
+      "pre_trap_bars": 24,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 9,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 5
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6689.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T0823:6689.0:b3b99000408f",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\040_accepted_non_acceptance_protocol_20260318_0823_6689.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -0.25,
+      "post_reclaim_mfe_from_level": 16.5,
+      "pre_trap_bars": 8,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 7,
+      "raw_match_quality": "price_and_role",
+      "reasons": [],
+      "status": "review_only_context",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6690.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T0823:6690.0:c8543266ad89",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\041_accepted_non_acceptance_protocol_20260318_0823_6690.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 0.75,
+      "post_reclaim_mfe_from_level": 15.5,
+      "pre_trap_bars": 8,
+      "primary_role": "MAJOR_SUPPORT",
+      "prior_visible_level_tests": 6,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6696.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T0834:6696.0:54c457ba56c0",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\042_accepted_non_acceptance_protocol_20260318_0834_6696.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 2.0,
+      "post_reclaim_mfe_from_level": 13.75,
+      "pre_trap_bars": 1,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6703.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T0736:6703.0:2ad254850080",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\043_excluded_non_acceptance_protocol_20260318_0736_6703.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 19.5,
+      "post_reclaim_mfe_from_level": 12.5,
+      "pre_trap_bars": 29,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 3,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 6
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6708.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T0741:6708.0:a73f47c3381e",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\044_excluded_simple_reclaim_unclassified_20260318_0741_6708.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 24.5,
+      "post_reclaim_mfe_from_level": 7.25,
+      "pre_trap_bars": 24,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 8,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6713.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T0741:6713.0:4fa5cfd97720",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\045_excluded_simple_reclaim_unclassified_20260318_0741_6713.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 29.5,
+      "post_reclaim_mfe_from_level": 2.25,
+      "pre_trap_bars": 24,
+      "primary_role": "MAJOR_SUPPORT",
+      "prior_visible_level_tests": 6,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "limited_pre_trap_context_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6716.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-17T1800:6716.0:d5b1f274f69e",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\046_accepted_classic_acceptance_second_attempt_reclaim_20260317_1800_6716.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 1.5,
+      "post_reclaim_mfe_from_level": 1.75,
+      "pre_trap_bars": 3,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 2
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6717.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-17T1719:6717.0:cffa438efe5e",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\047_excluded_classic_acceptance_second_attempt_reclaim_20260317_1719_6717.0.png",
+      "post_reclaim_bars": 14,
+      "post_reclaim_mae_from_level": 0.75,
+      "post_reclaim_mfe_from_level": 2.5,
+      "pre_trap_bars": 17,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 7,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 0
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6727.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-17T1948:6727.0:4ef53d48bbfb",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\048_accepted_simple_reclaim_unclassified_20260317_1948_6727.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -0.5,
+      "post_reclaim_mfe_from_level": 6.5,
+      "pre_trap_bars": 0,
+      "primary_role": "MAJOR_SUPPORT",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6734.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-17T2024:6734.0:4b765d5e99f1",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\049_accepted_classic_acceptance_second_attempt_reclaim_20260317_2024_6734.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 1.25,
+      "post_reclaim_mfe_from_level": 0.75,
+      "pre_trap_bars": 3,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_partial_snippet",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6735.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-17T2103:6735.0:9511992689d1",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\050_accepted_simple_reclaim_unclassified_20260317_2103_6735.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 0.0,
+      "post_reclaim_mfe_from_level": 4.5,
+      "pre_trap_bars": 4,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "partial_snippet",
+      "reasons": [],
+      "status": "insufficient_visual_context",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6743.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-17T2248:6743.0:bbcf8b904297",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\051_accepted_simple_reclaim_unclassified_20260317_2248_6743.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -0.5,
+      "post_reclaim_mfe_from_level": 5.25,
+      "pre_trap_bars": 5,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 4,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6749.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T0020:6749.0:6ecef92d0ce8",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\052_accepted_simple_reclaim_unclassified_20260318_0020_6749.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 0.0,
+      "post_reclaim_mfe_from_level": 3.5,
+      "pre_trap_bars": 1,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 1,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof",
+        "weak_visible_acceptance_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 0
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6752.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T0051:6752.0:a73cc921eaba",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\053_accepted_classic_acceptance_second_attempt_reclaim_20260318_0051_6752.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 0.25,
+      "post_reclaim_mfe_from_level": 1.75,
+      "pre_trap_bars": 0,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 0
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": false,
+      "level": 6754.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T0110:6754.0:69f5ee4e53f3",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\054_accepted_classic_acceptance_second_attempt_reclaim_20260318_0110_6754.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 0.75,
+      "post_reclaim_mfe_from_level": 7.5,
+      "pre_trap_bars": 9,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 7,
+      "raw_match_quality": "price_only",
+      "reasons": [
+        "weak_raw_price_only_provenance"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 5
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6760.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-18T0128:6760.0:8e8aabe33540",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\055_accepted_classic_acceptance_backtest_from_below_20260318_0128_6760.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 2.25,
+      "post_reclaim_mfe_from_level": 2.0,
+      "pre_trap_bars": 2,
+      "primary_role": "MAJOR_SUPPORT",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 6
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6530.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-26T1438:6530.0:f7513b311918",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\056_excluded_simple_reclaim_unclassified_20260326_1438_6530.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 5.75,
+      "post_reclaim_mfe_from_level": 2.75,
+      "pre_trap_bars": 30,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 17,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 5
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6536.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-26T1418:6536.0:0d1bafc1597d",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\057_excluded_simple_reclaim_unclassified_20260326_1418_6536.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 10.0,
+      "post_reclaim_mfe_from_level": 2.75,
+      "pre_trap_bars": 29,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 9,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 2
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6549.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-26T1249:6549.0:cfca81ba1bce",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\058_excluded_non_acceptance_protocol_20260326_1249_6549.0.png",
+      "post_reclaim_bars": 30,
+      "post_reclaim_mae_from_level": 1.5,
+      "post_reclaim_mfe_from_level": 13.75,
+      "pre_trap_bars": 25,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 4,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 15
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6553.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-26T1230:6553.0:bda69ff8eaba",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\059_excluded_non_acceptance_protocol_20260326_1230_6553.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 3.0,
+      "post_reclaim_mfe_from_level": 9.75,
+      "pre_trap_bars": 28,
+      "primary_role": "MAJOR_SUPPORT",
+      "prior_visible_level_tests": 7,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 12
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6558.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-26T1236:6558.0:4ad5c8227af8",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\060_excluded_classic_acceptance_second_attempt_reclaim_20260326_1236_6558.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 14.5,
+      "post_reclaim_mfe_from_level": 3.25,
+      "pre_trap_bars": 29,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 14,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6564.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-26T1137:6564.0:e4a01e982080",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\061_accepted_classic_acceptance_second_attempt_reclaim_20260326_1137_6564.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 2.75,
+      "post_reclaim_mfe_from_level": 5.0,
+      "pre_trap_bars": 10,
+      "primary_role": "MAJOR_SUPPORT",
+      "prior_visible_level_tests": 4,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 2
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6572.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-26T1120:6572.0:89457855078b",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\062_excluded_classic_acceptance_second_attempt_reclaim_20260326_1120_6572.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 11.25,
+      "post_reclaim_mfe_from_level": 8.75,
+      "pre_trap_bars": 27,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 5,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 2
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6575.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-26T0706:6575.0:ae1beec489b6",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\063_accepted_non_acceptance_protocol_20260326_0706_6575.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -4.75,
+      "post_reclaim_mfe_from_level": 18.5,
+      "pre_trap_bars": 12,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6584.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-26T0436:6584.0:2860be03da2c",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\064_accepted_classic_acceptance_backtest_from_below_20260326_0436_6584.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 0.5,
+      "post_reclaim_mfe_from_level": 6.75,
+      "pre_trap_bars": 11,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "limited_pre_trap_context_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6586.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-26T0443:6586.0:cd4ff89e7fb3",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\065_accepted_classic_acceptance_second_attempt_reclaim_20260326_0443_6586.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 1.25,
+      "post_reclaim_mfe_from_level": 7.25,
+      "pre_trap_bars": 4,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "price_only",
+      "reasons": [
+        "weak_raw_price_only_provenance",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 3
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6588.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-26T0453:6588.0:011612b2d763",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\066_accepted_classic_acceptance_backtest_from_below_20260326_0453_6588.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 2.0,
+      "post_reclaim_mfe_from_level": 12.25,
+      "pre_trap_bars": 1,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6603.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-26T0847:6603.0:86e99e218426",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\067_accepted_non_acceptance_protocol_20260326_0847_6603.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 2.0,
+      "post_reclaim_mfe_from_level": 17.25,
+      "pre_trap_bars": 8,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [],
+      "status": "insufficient_visual_context",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6604.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-26T0848:6604.0:2a124fc9f24b",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\068_accepted_non_acceptance_protocol_20260326_0848_6604.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 3.0,
+      "post_reclaim_mfe_from_level": 16.25,
+      "pre_trap_bars": 7,
+      "primary_role": "FIRST_SUPPORT_CAUTION",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof",
+        "mancini_first_support_caution"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6608.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-26T0853:6608.0:f5e73a340550",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\069_accepted_non_acceptance_protocol_20260326_0853_6608.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 7.0,
+      "post_reclaim_mfe_from_level": 13.25,
+      "pre_trap_bars": 2,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 5
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": true,
+      "level": 6616.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-26T0902:6616.0:e1f0ca306fd8",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\070_accepted_classic_acceptance_second_attempt_reclaim_20260326_0902_6616.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 9.25,
+      "post_reclaim_mfe_from_level": 6.0,
+      "pre_trap_bars": 12,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 6,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 0
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": true,
+      "level": 6617.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-03-26T0917:6617.0:55f735ad6a3e",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\071_accepted_classic_acceptance_second_attempt_reclaim_20260326_0917_6617.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 8.25,
+      "post_reclaim_mfe_from_level": 3.5,
+      "pre_trap_bars": 9,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 6,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6575.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-05T1717:6575.0:51d1775ea4bc",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\072_accepted_non_acceptance_protocol_20260405_1717_6575.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -1.0,
+      "post_reclaim_mfe_from_level": 11.0,
+      "pre_trap_bars": 9,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 5,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6582.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-05T1731:6582.0:575cb5749915",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\073_accepted_classic_acceptance_second_attempt_reclaim_20260405_1731_6582.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 2.5,
+      "post_reclaim_mfe_from_level": 6.25,
+      "pre_trap_bars": 0,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 2
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6586.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-05T1741:6586.0:d43405f4c313",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\074_accepted_classic_acceptance_second_attempt_reclaim_20260405_1741_6586.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 5.25,
+      "post_reclaim_mfe_from_level": 2.5,
+      "pre_trap_bars": 9,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 1,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6597.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-05T1904:6597.0:f0fa6411b42f",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\075_accepted_non_acceptance_protocol_20260405_1904_6597.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -1.0,
+      "post_reclaim_mfe_from_level": 7.0,
+      "pre_trap_bars": 0,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6603.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-05T1926:6603.0:efc98bbb7e7b",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\076_accepted_classic_acceptance_second_attempt_reclaim_20260405_1926_6603.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 1.5,
+      "post_reclaim_mfe_from_level": 5.0,
+      "pre_trap_bars": 6,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 4,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 3
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6604.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-05T1937:6604.0:63b2af3c3995",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\077_accepted_classic_acceptance_second_attempt_reclaim_20260405_1937_6604.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 1.0,
+      "post_reclaim_mfe_from_level": 5.25,
+      "pre_trap_bars": 0,
+      "primary_role": "FIRST_SUPPORT_CAUTION",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof",
+        "mancini_first_support_caution",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": false,
+      "level": 6608.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-05T1958:6608.0:ba0d8c969158",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\078_accepted_classic_acceptance_backtest_from_below_20260405_1958_6608.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -0.75,
+      "post_reclaim_mfe_from_level": 5.75,
+      "pre_trap_bars": 8,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 7,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [],
+      "status": "training_candidate",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6609.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-05T2000:6609.0:a36ba0c1f4b2",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\079_accepted_simple_reclaim_unclassified_20260405_2000_6609.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 0.0,
+      "post_reclaim_mfe_from_level": 4.75,
+      "pre_trap_bars": 6,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6616.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-05T2112:6616.0:ccd0382b1fb1",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\080_accepted_non_acceptance_protocol_20260405_2112_6616.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -4.75,
+      "post_reclaim_mfe_from_level": 19.75,
+      "pre_trap_bars": 0,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6620.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-05T2113:6620.0:6d688467940c",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\081_accepted_classic_acceptance_backtest_from_below_20260405_2113_6620.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -0.75,
+      "post_reclaim_mfe_from_level": 15.75,
+      "pre_trap_bars": 0,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_only",
+      "reasons": [
+        "weak_raw_price_only_provenance"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 6848.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-10T1147:6848.0:22eca68cb885",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\082_accepted_non_acceptance_protocol_20260410_1147_6848.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -2.75,
+      "post_reclaim_mfe_from_level": 11.0,
+      "pre_trap_bars": 12,
+      "primary_role": "FIRST_SUPPORT_CAUTION",
+      "prior_visible_level_tests": 3,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof",
+        "mancini_first_support_caution"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6853.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-09T1759:6853.0:1d847dba8b47",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\083_excluded_classic_acceptance_second_attempt_reclaim_20260409_1759_6853.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 2.0,
+      "post_reclaim_mfe_from_level": 1.75,
+      "pre_trap_bars": 18,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 7,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": false,
+      "level": 6861.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-09T2001:6861.0:fa3554ae88df",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\084_accepted_classic_acceptance_backtest_from_below_20260409_2001_6861.0.png",
+      "post_reclaim_bars": 14,
+      "post_reclaim_mae_from_level": 0.25,
+      "post_reclaim_mfe_from_level": 2.75,
+      "pre_trap_bars": 10,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 3,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 15
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 6873.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-10T0733:6873.0:af6d88df54c0",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\085_accepted_classic_acceptance_second_attempt_reclaim_20260410_0733_6873.0.png",
+      "post_reclaim_bars": 9,
+      "post_reclaim_mae_from_level": 2.5,
+      "post_reclaim_mfe_from_level": 1.75,
+      "pre_trap_bars": 0,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 2
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7109.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-19T1744:7109.0:ede0bdac343c",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\086_accepted_classic_acceptance_backtest_from_below_20260419_1744_7109.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -1.25,
+      "post_reclaim_mfe_from_level": 7.0,
+      "pre_trap_bars": 2,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 7128.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-20T0224:7128.0:8bcd023bfaed",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\087_excluded_classic_acceptance_second_attempt_reclaim_20260420_0224_7128.0.png",
+      "post_reclaim_bars": 29,
+      "post_reclaim_mae_from_level": 3.75,
+      "post_reclaim_mfe_from_level": 3.25,
+      "pre_trap_bars": 21,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 14,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 0
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7135.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-20T0749:7135.0:b75c0d0c4cdb",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\088_accepted_classic_acceptance_backtest_from_below_20260420_0749_7135.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -0.75,
+      "post_reclaim_mfe_from_level": 6.0,
+      "pre_trap_bars": 4,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 1,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7139.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-20T0811:7139.0:24d5067940e1",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\089_accepted_simple_reclaim_unclassified_20260420_0811_7139.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -0.5,
+      "post_reclaim_mfe_from_level": 5.5,
+      "pre_trap_bars": 12,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7147.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-20T0832:7147.0:419ee4aff98b",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\090_accepted_non_acceptance_protocol_20260420_0832_7147.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 4.75,
+      "post_reclaim_mfe_from_level": 7.5,
+      "pre_trap_bars": 1,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 7
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7153.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-20T0857:7153.0:33347074898e",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\091_accepted_classic_acceptance_second_attempt_reclaim_20260420_0857_7153.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 6.25,
+      "post_reclaim_mfe_from_level": 6.25,
+      "pre_trap_bars": 0,
+      "primary_role": "FIRST_SUPPORT_CAUTION",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof",
+        "mancini_first_support_caution"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 7
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7086.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-21T1447:7086.0:69876f9279db",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\092_accepted_non_acceptance_protocol_20260421_1447_7086.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -6.5,
+      "post_reclaim_mfe_from_level": 21.0,
+      "pre_trap_bars": 12,
+      "primary_role": "MAJOR_SUPPORT",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 7095.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-21T1449:7095.0:475069d6aaa9",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\093_accepted_classic_acceptance_second_attempt_reclaim_20260421_1449_7095.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 2.5,
+      "post_reclaim_mfe_from_level": 12.0,
+      "pre_trap_bars": 10,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 3
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 7104.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-21T1215:7104.0:a3ee39a214fd",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\094_excluded_classic_acceptance_second_attempt_reclaim_20260421_1215_7104.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 7.25,
+      "post_reclaim_mfe_from_level": 4.75,
+      "pre_trap_bars": 20,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 7,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 3
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 7110.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-21T1210:7110.0:50f6105f00c0",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\095_excluded_simple_reclaim_unclassified_20260421_1210_7110.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 13.25,
+      "post_reclaim_mfe_from_level": 4.0,
+      "pre_trap_bars": 25,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 7,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": false,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": false,
+      "level": 7116.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-21T1147:7116.0:0f18cf305c88",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\096_excluded_non_acceptance_protocol_20260421_1147_7116.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 2.5,
+      "post_reclaim_mfe_from_level": 9.5,
+      "pre_trap_bars": 27,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 4,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 12
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7121.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-21T1008:7121.0:93909238342d",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\097_accepted_non_acceptance_protocol_20260421_1008_7121.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -10.0,
+      "post_reclaim_mfe_from_level": 20.5,
+      "pre_trap_bars": 12,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": false,
+      "level": 7125.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-21T1009:7125.0:f658c3c64aec",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\098_accepted_non_acceptance_protocol_20260421_1009_7125.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -5.5,
+      "post_reclaim_mfe_from_level": 16.5,
+      "pre_trap_bars": 11,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 4,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [],
+      "status": "training_candidate",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7126.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-21T1010:7126.0:59b2b2f93767",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\099_accepted_non_acceptance_protocol_20260421_1010_7126.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -2.25,
+      "post_reclaim_mfe_from_level": 15.5,
+      "pre_trap_bars": 10,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 4,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 7135.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-21T1012:7135.0:7469ae980e21",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\100_accepted_classic_acceptance_second_attempt_reclaim_20260421_1012_7135.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 13.25,
+      "post_reclaim_mfe_from_level": 6.5,
+      "pre_trap_bars": 8,
+      "primary_role": "FIRST_SUPPORT_CAUTION",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof",
+        "mancini_first_support_caution",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 4
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": false,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": false,
+      "level": 7148.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-21T0838:7148.0:620a47ce7a39",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\101_excluded_non_acceptance_protocol_20260421_0838_7148.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 1.0,
+      "post_reclaim_mfe_from_level": 20.5,
+      "pre_trap_bars": 16,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 3,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7160.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-20T2033:7160.0:9e8f1e81d547",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\102_accepted_simple_reclaim_unclassified_20260420_2033_7160.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -0.25,
+      "post_reclaim_mfe_from_level": 2.5,
+      "pre_trap_bars": 2,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [],
+      "status": "insufficient_visual_context",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "unmeasurable",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7121.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-21T1753:7121.0:ac4d423be8d1",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\103_excluded_unmeasurable_20260421_1753_7121.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -0.25,
+      "post_reclaim_mfe_from_level": 6.75,
+      "pre_trap_bars": 0,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "unmeasurable_family",
+        "trap_candle_not_visible"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7121.5,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-21T1756:7121.5:782d3124881c",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\104_accepted_simple_reclaim_unclassified_20260421_1756_7121.5.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -1.25,
+      "post_reclaim_mfe_from_level": 6.25,
+      "pre_trap_bars": 12,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [],
+      "status": "insufficient_visual_context",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7121.75,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-21T1756:7121.75:c16681604480",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\105_accepted_simple_reclaim_unclassified_20260421_1756_7121.75.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -1.0,
+      "post_reclaim_mfe_from_level": 6.0,
+      "pre_trap_bars": 12,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [],
+      "status": "insufficient_visual_context",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7130.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-21T1851:7130.0:cd0eb694dd72",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\106_accepted_simple_reclaim_unclassified_20260421_1851_7130.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 0.25,
+      "post_reclaim_mfe_from_level": 4.0,
+      "pre_trap_bars": 0,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "weak_visible_acceptance_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7135.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-21T1913:7135.0:cca99af8e09a",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\107_accepted_simple_reclaim_unclassified_20260421_1913_7135.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 0.75,
+      "post_reclaim_mfe_from_level": 5.0,
+      "pre_trap_bars": 0,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [],
+      "status": "insufficient_visual_context",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 7140.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-21T2040:7140.0:0551de6999a3",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\108_accepted_simple_reclaim_unclassified_20260421_2040_7140.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 3.25,
+      "post_reclaim_mfe_from_level": 1.5,
+      "pre_trap_bars": 3,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_only",
+      "reasons": [
+        "weak_raw_price_only_provenance",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7170.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-22T1500:7170.0:5d93acc39c98",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\109_accepted_classic_acceptance_backtest_from_below_20260422_1500_7170.0.png",
+      "post_reclaim_bars": 13,
+      "post_reclaim_mae_from_level": 6.75,
+      "post_reclaim_mfe_from_level": 3.0,
+      "pre_trap_bars": 0,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_only",
+      "reasons": [
+        "weak_raw_price_only_provenance",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 7
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7086.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-23T1250:7086.0:bce63b515a40",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\110_accepted_non_acceptance_protocol_20260423_1250_7086.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 1.25,
+      "post_reclaim_mfe_from_level": 50.75,
+      "pre_trap_bars": 11,
+      "primary_role": "MAJOR_SUPPORT",
+      "prior_visible_level_tests": 1,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7093.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-23T1256:7093.0:b62c6a385891",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\111_accepted_non_acceptance_protocol_20260423_1256_7093.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -22.5,
+      "post_reclaim_mfe_from_level": 46.75,
+      "pre_trap_bars": 5,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 3,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": false,
+      "level": 7097.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-23T1256:7097.0:30dca8a80e9c",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\112_accepted_non_acceptance_protocol_20260423_1256_7097.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -18.5,
+      "post_reclaim_mfe_from_level": 42.75,
+      "pre_trap_bars": 5,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [],
+      "status": "training_candidate",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": false,
+      "level": 7100.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-23T1256:7100.0:c1350f3bac36",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\113_accepted_non_acceptance_protocol_20260423_1256_7100.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -15.5,
+      "post_reclaim_mfe_from_level": 39.75,
+      "pre_trap_bars": 5,
+      "primary_role": "MAJOR_SUPPORT",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [],
+      "status": "review_only_context",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_partial_snippet",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7105.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-23T1256:7105.0:761d36beed0e",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\114_accepted_non_acceptance_protocol_20260423_1256_7105.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -10.5,
+      "post_reclaim_mfe_from_level": 34.75,
+      "pre_trap_bars": 5,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 1,
+      "raw_match_quality": "partial_snippet",
+      "reasons": [],
+      "status": "insufficient_visual_context",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": false,
+      "level": 7130.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-22T1921:7130.0:f23775d2ceac",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\115_accepted_non_acceptance_protocol_20260422_1921_7130.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -9.25,
+      "post_reclaim_mfe_from_level": 28.25,
+      "pre_trap_bars": 10,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "price_only",
+      "reasons": [
+        "weak_raw_price_only_provenance"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7134.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-22T1921:7134.0:47027a711351",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\116_accepted_non_acceptance_protocol_20260422_1921_7134.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -5.25,
+      "post_reclaim_mfe_from_level": 24.25,
+      "pre_trap_bars": 10,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": false,
+      "level": 7149.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-28T0734:7149.0:2b460ce02af9",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\117_accepted_non_acceptance_protocol_20260428_0734_7149.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -1.5,
+      "post_reclaim_mfe_from_level": 13.0,
+      "pre_trap_bars": 12,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 3,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "source_text_is_target_or_context_not_failed_breakdown_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": false,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": false,
+      "level": 7153.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-28T0715:7153.0:8239c6c6b054",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\118_excluded_classic_acceptance_second_attempt_reclaim_20260428_0715_7153.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 3.5,
+      "post_reclaim_mfe_from_level": 11.0,
+      "pre_trap_bars": 22,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 6,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 6
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": false,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": true,
+      "level": 7161.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-28T0644:7161.0:0c9162fde6f5",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\119_excluded_non_acceptance_protocol_20260428_0644_7161.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 5.75,
+      "post_reclaim_mfe_from_level": 8.5,
+      "pre_trap_bars": 23,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 6,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 4
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 7167.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-28T0635:7167.0:45954f4d59a5",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\120_excluded_simple_reclaim_unclassified_20260428_0635_7167.0.png",
+      "post_reclaim_bars": 6,
+      "post_reclaim_mae_from_level": 10.25,
+      "post_reclaim_mfe_from_level": 2.5,
+      "pre_trap_bars": 29,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 14,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 2
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 7177.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-28T0844:7177.0:ec0f8eaadff6",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\121_accepted_classic_acceptance_second_attempt_reclaim_20260428_0844_7177.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 13.5,
+      "post_reclaim_mfe_from_level": 3.0,
+      "pre_trap_bars": 2,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_only",
+      "reasons": [
+        "weak_raw_price_only_provenance",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_partial_snippet"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7185.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-28T0607:7185.0:a8043403abe4",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\122_excluded_simple_reclaim_unclassified_20260428_0607_7185.0.png",
+      "post_reclaim_bars": 30,
+      "post_reclaim_mae_from_level": 2.25,
+      "post_reclaim_mfe_from_level": 6.75,
+      "pre_trap_bars": 29,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "partial_snippet",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 15
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7186.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-28T0607:7186.0:623a8abe7bb3",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\123_excluded_simple_reclaim_unclassified_20260428_0607_7186.0.png",
+      "post_reclaim_bars": 30,
+      "post_reclaim_mae_from_level": 3.25,
+      "post_reclaim_mfe_from_level": 5.75,
+      "pre_trap_bars": 29,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 3,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 14
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 7193.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-28T0146:7193.0:497348f16f0e",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\124_accepted_classic_acceptance_second_attempt_reclaim_20260428_0146_7193.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 2.0,
+      "post_reclaim_mfe_from_level": 2.0,
+      "pre_trap_bars": 12,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7194.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-28T0238:7194.0:96d4228a6660",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\125_accepted_simple_reclaim_unclassified_20260428_0238_7194.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 0.5,
+      "post_reclaim_mfe_from_level": 4.0,
+      "pre_trap_bars": 4,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "price_and_role",
+      "reasons": [],
+      "status": "insufficient_visual_context",
+      "visible_acceptance_closes": 12
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7198.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-28T0041:7198.0:7fa75bdf38c4",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\126_accepted_classic_acceptance_backtest_from_below_20260428_0041_7198.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 0.75,
+      "post_reclaim_mfe_from_level": 4.25,
+      "pre_trap_bars": 11,
+      "primary_role": "FIRST_SUPPORT_CAUTION",
+      "prior_visible_level_tests": 1,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof",
+        "mancini_first_support_caution"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7204.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-28T0024:7204.0:f6db02e9ca73",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\127_excluded_simple_reclaim_unclassified_20260428_0024_7204.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 8.0,
+      "post_reclaim_mfe_from_level": 1.5,
+      "pre_trap_bars": 28,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 21,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 6
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7149.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-29T1058:7149.0:b9ec03c29384",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\128_accepted_non_acceptance_protocol_20260429_1058_7149.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 0.0,
+      "post_reclaim_mfe_from_level": 11.75,
+      "pre_trap_bars": 11,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 1,
+      "raw_match_quality": "price_only",
+      "reasons": [
+        "weak_raw_price_only_provenance"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7153.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-29T0836:7153.0:dbef4182389b",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\129_excluded_simple_reclaim_unclassified_20260429_0836_7153.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 3.5,
+      "post_reclaim_mfe_from_level": 6.75,
+      "pre_trap_bars": 25,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 6,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 9
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7161.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-29T0915:7161.0:aa68f08f2c35",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\130_accepted_classic_acceptance_backtest_from_below_20260429_0915_7161.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -1.75,
+      "post_reclaim_mfe_from_level": 8.75,
+      "pre_trap_bars": 2,
+      "primary_role": "FIRST_SUPPORT_CAUTION",
+      "prior_visible_level_tests": 1,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof",
+        "mancini_first_support_caution"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_partial_snippet",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 7185.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-28T1916:7185.0:52a0c6aab282",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\131_accepted_classic_acceptance_second_attempt_reclaim_20260428_1916_7185.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 1.75,
+      "post_reclaim_mfe_from_level": 3.0,
+      "pre_trap_bars": 0,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "partial_snippet",
+      "reasons": [
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 0
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7136.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-30T0115:7136.0:5d5f8f04e0a3",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\132_accepted_classic_acceptance_backtest_from_below_20260430_0115_7136.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -0.75,
+      "post_reclaim_mfe_from_level": 9.75,
+      "pre_trap_bars": 11,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 1,
+      "raw_match_quality": "price_and_role",
+      "reasons": [],
+      "status": "insufficient_visual_context",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7137.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-30T0117:7137.0:643da9bff5cb",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\133_accepted_classic_acceptance_backtest_from_below_20260430_0117_7137.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 0.0,
+      "post_reclaim_mfe_from_level": 14.25,
+      "pre_trap_bars": 9,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 2,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": false,
+      "level": 7138.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-30T0120:7138.0:c1394dc0e7d2",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\134_accepted_classic_acceptance_backtest_from_below_20260430_0120_7138.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 1.0,
+      "post_reclaim_mfe_from_level": 18.75,
+      "pre_trap_bars": 6,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 4,
+      "raw_match_quality": "price_only",
+      "reasons": [
+        "weak_raw_price_only_provenance"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7145.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-30T0002:7145.0:269125268965",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\135_accepted_non_acceptance_protocol_20260430_0002_7145.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -4.0,
+      "post_reclaim_mfe_from_level": 13.75,
+      "pre_trap_bars": 12,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 1,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [],
+      "status": "insufficient_visual_context",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7185.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-29T1717:7185.0:fcf59234d20c",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\136_accepted_non_acceptance_protocol_20260429_1717_7185.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -0.75,
+      "post_reclaim_mfe_from_level": 11.5,
+      "pre_trap_bars": 0,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [],
+      "status": "insufficient_visual_context",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7186.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-29T1718:7186.0:88c265e86f37",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\137_accepted_non_acceptance_protocol_20260429_1718_7186.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 0.25,
+      "post_reclaim_mfe_from_level": 10.5,
+      "pre_trap_bars": 1,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "source_text_is_target_or_context_not_failed_breakdown_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 9
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7187.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-29T1718:7187.0:99e6ef656ae8",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\138_accepted_non_acceptance_protocol_20260429_1718_7187.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 1.25,
+      "post_reclaim_mfe_from_level": 9.5,
+      "pre_trap_bars": 1,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [],
+      "status": "insufficient_visual_context",
+      "visible_acceptance_closes": 9
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7188.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-29T1719:7188.0:27f9c20985cb",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\139_accepted_non_acceptance_protocol_20260429_1719_7188.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 2.25,
+      "post_reclaim_mfe_from_level": 8.5,
+      "pre_trap_bars": 0,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "source_text_is_target_or_context_not_failed_breakdown_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 7
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7200.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-30T0714:7200.0:88a521f8add4",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\140_accepted_non_acceptance_protocol_20260430_0714_7200.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -1.5,
+      "post_reclaim_mfe_from_level": 11.5,
+      "pre_trap_bars": 0,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [],
+      "status": "insufficient_visual_context",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": false,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": true,
+      "level": 7208.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-30T0727:7208.0:b6b4964d09eb",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\141_excluded_classic_acceptance_second_attempt_reclaim_20260430_0727_7208.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 8.75,
+      "post_reclaim_mfe_from_level": 2.5,
+      "pre_trap_bars": 24,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 15,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_partial_snippet",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7213.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-30T1233:7213.0:532a03df99ad",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\142_accepted_non_acceptance_protocol_20260430_1233_7213.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -1.5,
+      "post_reclaim_mfe_from_level": 9.5,
+      "pre_trap_bars": 0,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "partial_snippet",
+      "reasons": [
+        "source_text_is_target_or_context_not_failed_breakdown_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7214.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-30T1233:7214.0:08789e63503b",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\143_accepted_simple_reclaim_unclassified_20260430_1233_7214.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -0.5,
+      "post_reclaim_mfe_from_level": 8.5,
+      "pre_trap_bars": 0,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "source_text_is_target_or_context_not_failed_breakdown_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_partial_snippet",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 7221.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-30T1249:7221.0:97231e7109c1",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\144_accepted_classic_acceptance_second_attempt_reclaim_20260430_1249_7221.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 1.5,
+      "post_reclaim_mfe_from_level": 12.25,
+      "pre_trap_bars": 0,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "partial_snippet",
+      "reasons": [
+        "source_text_is_target_or_context_not_failed_breakdown_proof",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 2
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7224.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-30T1301:7224.0:49038b17b0ea",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\145_accepted_non_acceptance_protocol_20260430_1301_7224.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -4.5,
+      "post_reclaim_mfe_from_level": 11.0,
+      "pre_trap_bars": 6,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [],
+      "status": "insufficient_visual_context",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7234.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-30T1333:7234.0:3c00cd0b2ac2",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\146_accepted_simple_reclaim_unclassified_20260430_1333_7234.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 0.5,
+      "post_reclaim_mfe_from_level": 6.75,
+      "pre_trap_bars": 9,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 3,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "source_text_is_target_or_context_not_failed_breakdown_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_partial_snippet",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7244.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-30T1414:7244.0:9e791381d366",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\147_accepted_classic_acceptance_backtest_from_below_20260430_1414_7244.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 0.25,
+      "post_reclaim_mfe_from_level": 4.0,
+      "pre_trap_bars": 1,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "partial_snippet",
+      "reasons": [
+        "source_text_is_target_or_context_not_failed_breakdown_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": false,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": true,
+      "level": 7246.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-30T1427:7246.0:ddfe5aa99504",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\148_excluded_classic_acceptance_second_attempt_reclaim_20260430_1427_7246.0.png",
+      "post_reclaim_bars": 14,
+      "post_reclaim_mae_from_level": 4.75,
+      "post_reclaim_mfe_from_level": 0.75,
+      "pre_trap_bars": 20,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 18,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 0
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7252.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-04-30T1825:7252.0:74a393d62e09",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\149_accepted_simple_reclaim_unclassified_20260430_1825_7252.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -0.5,
+      "post_reclaim_mfe_from_level": 5.25,
+      "pre_trap_bars": 5,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "source_text_is_target_or_context_not_failed_breakdown_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7267.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-05-01T0834:7267.0:a3d3e3c826de",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\150_accepted_non_acceptance_protocol_20260501_0834_7267.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -3.75,
+      "post_reclaim_mfe_from_level": 10.5,
+      "pre_trap_bars": 11,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "source_text_is_target_or_context_not_failed_breakdown_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7205.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": "viewed_7205_quick_reclaim",
+      "packet_id": "mancini-es1m:2026-05-04T1111:7205.0:53db965edf54",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\151_accepted_non_acceptance_protocol_20260504_1111_7205.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 1.0,
+      "post_reclaim_mfe_from_level": 23.25,
+      "pre_trap_bars": 12,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7212.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": "viewed_7212_major_failed_breakdown_zone",
+      "packet_id": "mancini-es1m:2026-05-04T1120:7212.0:3aa4c0792b84",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\152_accepted_non_acceptance_protocol_20260504_1120_7212.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -5.75,
+      "post_reclaim_mfe_from_level": 16.25,
+      "pre_trap_bars": 3,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 1,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 7220.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-05-04T0512:7220.0:b251578eda6d",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\153_excluded_classic_acceptance_second_attempt_reclaim_20260504_0512_7220.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 6.25,
+      "post_reclaim_mfe_from_level": 15.5,
+      "pre_trap_bars": 25,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 13,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 0
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7228.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-05-04T0528:7228.0:824ea98cdc78",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\154_accepted_non_acceptance_protocol_20260504_0528_7228.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -1.75,
+      "post_reclaim_mfe_from_level": 26.0,
+      "pre_trap_bars": 9,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 1,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7237.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-05-04T0535:7237.0:a0298424fc3d",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\155_accepted_non_acceptance_protocol_20260504_0535_7237.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -5.5,
+      "post_reclaim_mfe_from_level": 15.75,
+      "pre_trap_bars": 2,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7241.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-05-04T0535:7241.0:c6aa21c6593a",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\156_accepted_non_acceptance_protocol_20260504_0535_7241.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -1.5,
+      "post_reclaim_mfe_from_level": 11.75,
+      "pre_trap_bars": 2,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 7252.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-05-04T0721:7252.0:69e875eda5ec",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\157_accepted_classic_acceptance_second_attempt_reclaim_20260504_0721_7252.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 4.75,
+      "post_reclaim_mfe_from_level": 3.0,
+      "pre_trap_bars": 9,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "source_text_is_target_or_context_not_failed_breakdown_proof",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 0
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7253.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-05-04T0850:7253.0:8757c1d32fa7",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\158_accepted_classic_acceptance_backtest_from_below_20260504_0850_7253.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 2.25,
+      "post_reclaim_mfe_from_level": 4.75,
+      "pre_trap_bars": 3,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 5
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7257.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-05-03T1930:7257.0:045494a685f8",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\159_accepted_classic_acceptance_backtest_from_below_20260503_1930_7257.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -0.5,
+      "post_reclaim_mfe_from_level": 6.0,
+      "pre_trap_bars": 6,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 4,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": false,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": false,
+      "level": 7259.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-05-03T1904:7259.0:6763382fb035",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\160_excluded_non_acceptance_protocol_20260503_1904_7259.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 2.0,
+      "post_reclaim_mfe_from_level": 7.25,
+      "pre_trap_bars": 30,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 7,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 13
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7264.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-05-03T1727:7264.0:79d90f8150db",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\161_accepted_simple_reclaim_unclassified_20260503_1727_7264.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 0.75,
+      "post_reclaim_mfe_from_level": 4.0,
+      "pre_trap_bars": 11,
+      "primary_role": "FIRST_SUPPORT_CAUTION",
+      "prior_visible_level_tests": 1,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "support_resistance_list_only_not_training_proof",
+        "mancini_first_support_caution"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 4
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 7267.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-05-03T1716:7267.0:96410338307b",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\162_excluded_simple_reclaim_unclassified_20260503_1716_7267.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 4.75,
+      "post_reclaim_mfe_from_level": 3.5,
+      "pre_trap_bars": 22,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 13,
+      "raw_match_quality": "price_only",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "weak_raw_price_only_provenance",
+        "reclaim_not_after_trap_in_crop",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 5
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7237.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-05-04T2128:7237.0:46b978839608",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\163_accepted_simple_reclaim_unclassified_20260504_2128_7237.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -1.25,
+      "post_reclaim_mfe_from_level": 4.0,
+      "pre_trap_bars": 0,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [],
+      "status": "insufficient_visual_context",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7247.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-05-05T0201:7247.0:8438d65f7a79",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\164_accepted_simple_reclaim_unclassified_20260505_0201_7247.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -0.75,
+      "post_reclaim_mfe_from_level": 5.0,
+      "pre_trap_bars": 0,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [],
+      "status": "insufficient_visual_context",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "raw_source_match_quality_price_and_role"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 7253.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-05-05T0241:7253.0:f019439f6e21",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\165_excluded_simple_reclaim_unclassified_20260505_0241_7253.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 7.25,
+      "post_reclaim_mfe_from_level": 3.0,
+      "pre_trap_bars": 30,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 8,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "reclaim_not_after_trap_in_crop",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 2
+    },
+    {
+      "acceptance_family": "classic_acceptance_backtest_from_below",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 7266.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-05-05T0717:7266.0:91f893b01585",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\166_accepted_classic_acceptance_backtest_from_below_20260505_0717_7266.0.png",
+      "post_reclaim_bars": 6,
+      "post_reclaim_mae_from_level": 2.5,
+      "post_reclaim_mfe_from_level": 0.5,
+      "pre_trap_bars": 2,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_only",
+      "reasons": [
+        "quant_agent_demote_late_elevator_context_not_clean_accumulation",
+        "weak_raw_price_only_provenance",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim",
+        "post_reclaim_adverse_excursion_exceeds_favorable_move"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "simple_reclaim_unclassified",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "unclassified_reclaim_not_a_clean_mancini_family",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7267.0,
+      "mancini_explicitness": "mancini_context_text",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-05-05T0830:7267.0:bfed98aa1b3b",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\167_accepted_simple_reclaim_unclassified_20260505_0830_7267.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 2.75,
+      "post_reclaim_mfe_from_level": 7.75,
+      "pre_trap_bars": 9,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_only",
+      "reasons": [
+        "source_text_is_target_or_context_not_failed_breakdown_proof",
+        "weak_raw_price_only_provenance",
+        "weak_visible_acceptance_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": true,
+      "level": 7275.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-05-05T0853:7275.0:488506c4aebd",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\168_accepted_classic_acceptance_second_attempt_reclaim_20260505_0853_7275.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 4.5,
+      "post_reclaim_mfe_from_level": 7.0,
+      "pre_trap_bars": 5,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 0
+    },
+    {
+      "acceptance_family": "unmeasurable",
+      "accepted_for_timing_test": false,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "limited_pre_trap_context_in_crop",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7345.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-05-07T1345:7345.0:711b297c2c50",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\169_excluded_unmeasurable_20260507_1345_7345.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": -0.5,
+      "post_reclaim_mfe_from_level": 17.75,
+      "pre_trap_bars": 0,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 0,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "unmeasurable_family",
+        "trap_candle_not_visible"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 16
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7355.0,
+      "mancini_explicitness": "explicit_mancini_narrative",
+      "manual_review_label": "viewed_7355_defend_7345_recover_7355",
+      "packet_id": "mancini-es1m:2026-05-07T1237:7355.0:3a8cb95abc7c",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\170_accepted_non_acceptance_protocol_20260507_1237_7355.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 5.5,
+      "post_reclaim_mfe_from_level": 10.25,
+      "pre_trap_bars": 5,
+      "primary_role": "FAILED_BREAKDOWN_RECLAIM",
+      "prior_visible_level_tests": 1,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "quant_agent_demote_late_reclaim_rolls_back_through_level"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 8
+    },
+    {
+      "acceptance_family": "non_acceptance_protocol",
+      "accepted_for_timing_test": true,
+      "caution_notes": [
+        "raw_source_match_quality_price_and_role",
+        "prior_shelf_or_cluster_not_visible_in_crop"
+      ],
+      "immediate_failure_after_reclaim": false,
+      "level": 7356.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": null,
+      "packet_id": "mancini-es1m:2026-05-07T1237:7356.0:1877d17eb451",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\171_accepted_non_acceptance_protocol_20260507_1237_7356.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 6.5,
+      "post_reclaim_mfe_from_level": 9.25,
+      "pre_trap_bars": 5,
+      "primary_role": "SUPPORT_LEVEL",
+      "prior_visible_level_tests": 1,
+      "raw_match_quality": "price_and_role",
+      "reasons": [
+        "quant_agent_high_risk_late_or_weak_source_subset",
+        "support_resistance_list_only_not_training_proof"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 7
+    },
+    {
+      "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+      "accepted_for_timing_test": false,
+      "caution_notes": [],
+      "immediate_failure_after_reclaim": true,
+      "level": 7369.0,
+      "mancini_explicitness": "support_resistance_list",
+      "manual_review_label": "viewed_7369_first_support_caution",
+      "packet_id": "mancini-es1m:2026-05-07T1118:7369.0:4e3777c6272c",
+      "png_path": "artifacts\\research\\mancini-real-packet-gallery\\172_excluded_classic_acceptance_second_attempt_reclaim_20260507_1118_7369.0.png",
+      "post_reclaim_bars": 15,
+      "post_reclaim_mae_from_level": 3.25,
+      "post_reclaim_mfe_from_level": 17.0,
+      "pre_trap_bars": 17,
+      "primary_role": "FIRST_SUPPORT_CAUTION",
+      "prior_visible_level_tests": 5,
+      "raw_match_quality": "exact_snippet",
+      "reasons": [
+        "excluded_from_timing_stats",
+        "quant_agent_demote_first_support_desperation_caution",
+        "mancini_first_support_caution",
+        "reclaim_not_after_trap_in_crop",
+        "weak_visible_acceptance_after_reclaim",
+        "closed_back_below_level_soon_after_reclaim"
+      ],
+      "status": "dangerous_demote_for_training",
+      "visible_acceptance_closes": 1
+    }
+  ],
+  "summary": {
+    "dangerous_demote_count": 148,
+    "manual_reviewed_packet_ids": {
+      "mancini-es1m:2026-05-04T1111:7205.0:53db965edf54": "viewed_7205_quick_reclaim",
+      "mancini-es1m:2026-05-04T1120:7212.0:3aa4c0792b84": "viewed_7212_major_failed_breakdown_zone",
+      "mancini-es1m:2026-05-07T1118:7369.0:4e3777c6272c": "viewed_7369_first_support_caution",
+      "mancini-es1m:2026-05-07T1237:7355.0:3a8cb95abc7c": "viewed_7355_defend_7345_recover_7355"
+    },
+    "reason_counts": {
+      "closed_back_below_level_soon_after_reclaim": 54,
+      "excluded_from_timing_stats": 44,
+      "mancini_first_support_caution": 11,
+      "post_reclaim_adverse_excursion_exceeds_favorable_move": 26,
+      "quant_agent_demote_first_support_desperation_caution": 1,
+      "quant_agent_demote_last_ditch_support_immediate_failure_risk": 1,
+      "quant_agent_demote_late_elevator_context_not_clean_accumulation": 1,
+      "quant_agent_demote_late_reclaim_rolls_back_through_level": 1,
+      "quant_agent_high_risk_late_or_weak_source_subset": 28,
+      "reclaim_not_after_trap_in_crop": 42,
+      "source_text_is_target_or_context_not_failed_breakdown_proof": 12,
+      "support_resistance_list_only_not_training_proof": 67,
+      "trap_candle_not_visible": 2,
+      "unmeasurable_family": 2,
+      "weak_raw_price_only_provenance": 13,
+      "weak_visible_acceptance_after_reclaim": 34
+    },
+    "review_only": true,
+    "rows": 172,
+    "status_counts": {
+      "dangerous_demote_for_training": 148,
+      "insufficient_visual_context": 18,
+      "review_only_context": 2,
+      "training_candidate": 4
+    },
+    "trading_authority": "none",
+    "training_candidate_count": 4
+  }
+}

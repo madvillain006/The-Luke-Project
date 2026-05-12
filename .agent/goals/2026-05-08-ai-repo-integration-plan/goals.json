@@ -1,380 +1,689 @@
 {
   "id": "2026-05-08-ai-repo-integration-plan",
-  "title": "AI repo integration plan for Luke",
+  "title": "Luke Subconscious and reference integration roadmap",
   "status": "active",
-  "active_goal_id": "goal-1",
+  "active_goal_id": "phase-3",
   "created_at": "2026-05-08T11:27:12Z",
-  "updated_at": "2026-05-08T11:27:12Z",
+  "updated_at": "2026-05-10T00:00:00Z",
+  "policy": {
+    "process_narration": false,
+    "measure_twice_cut_once": true,
+    "clean_codebase": "no tmp files, no dead code, no dead files, no unnecessary folders, subfolders, or files",
+    "no_touch_boundaries": [
+      "trading/",
+      "tradingview/",
+      "ninjatrader/",
+      "lib/market-hours.js",
+      "trading/router.js",
+      "trading/signals.js",
+      "trading/risk.js",
+      "broker/auth/token/credential/execution paths",
+      ".env",
+      "state/events/",
+      "state/snapshots/",
+      "agents/agent-14-kat.js",
+      "lib/kat*"
+    ],
+    "core_rules": [
+      "Subconscious signals are review-only and cannot become Coder jobs without Main approval.",
+      "A thought is not a task and a build marker is not approval.",
+      "Reference systems are idea sources only unless explicitly wired in with approval.",
+      "No live trading behavior is allowed during research, parser, UI, memory, Radar, context, or Subconscious work.",
+      "Auto-build cannot be implemented until signal board, Main approval, Coder job state, QA packet, runtime monitor, sprint lock, rollback path, and tests exist."
+    ],
+    "protected_note": "Subconscious signals are review-only and cannot become Coder jobs without Main approval. Auto-build cannot be implemented until signal board, Main approval, Coder job state, QA packet, runtime monitor, sprint lock, rollback path, and tests exist.",
+    "known_loopholes": [
+      "recordRadarIngest currently writes runtime state immediately via appendJsonl and snapshot rebuilds.",
+      "recordRadarReview currently writes runtime state and snapshots.",
+      "Brain /radar/ingest and /radar/review are live write routes and need dry-run/write gates before Subconscious use.",
+      "Brain /agent/brain/report is evidence only and must never count as Main approval.",
+      "Radar SOURCE_TYPES does not include subconscious_signal; use reference_idea review-only until a dedicated type is approved.",
+      "Package scripts include write-capable and sensitive surfaces; inspect scripts before running PM2, Ninja, Pine, broker, credential, market-data, or install commands."
+    ]
+  },
+  "already_landed": [
+    {
+      "item": "AGENTS.md",
+      "evidence": "Root AGENTS.md contains Process_narration=false, Measure twice/cut once, clean-codebase rule, dirty-worktree protection, reference systems as idea sources only, and trading no-touch boundaries."
+    },
+    {
+      "item": "Reference repo registry",
+      "evidence": "lib/reference-repo-registry.js lists ten reference repos with allowed_surfaces and banned_surfaces; entries ban trading_execution and broker."
+    },
+    {
+      "item": "Radar review/reference idea lane",
+      "evidence": "lib/radar/ingest.js supports reference_idea, review_only, review states, scope/status/recall_reason/relationship_ids, and trading_authority none."
+    },
+    {
+      "item": "Event/snapshot path conventions",
+      "evidence": "lib/paths.js centralizes state/events/*.jsonl and state/snapshots/*.json paths; production writes remain forbidden until approved."
+    },
+    {
+      "item": "Brain report endpoint",
+      "evidence": "agents/agent-00-brain.js exposes POST /agent/brain/report for subagent reports; reports are evidence only, not approval."
+    },
+    {
+      "item": "Autonomous recommendation-only protection",
+      "evidence": "tests/autonomous-recommendation-only.test.js checks recommendation_only/staged_only posture and blocked execution routes."
+    },
+    {
+      "item": "Roadmaps and proposal schema",
+      "evidence": "docs/HERMES_SUBCONSCIOUS_SOURCE_ROADMAP.md, docs/LUKE_SUBCONSCIOUS_AUTOBUILD_ROADMAP.md, and docs/LUKE_SUBCONSCIOUS_PROPOSAL_SCHEMA.md define safe separation and dry-run/write-gate requirements."
+    }
+  ],
   "goals": [
     {
-      "id": "goal-1",
-      "title": "Freeze integration baseline",
-      "objective": "Capture the current state of reference clones, Luke git status, and existing Radar, memory, dashboard, and Katbot integration seams before implementation.",
-      "rationale": "Luke already has active dirty work and working Radar/Katbot/UI paths; integration should start from exact evidence.",
-      "scope": [
-        "Record `git status --short --branch`.",
-        "Verify `tools/reference-repos/` contains the ten selected shallow clones.",
-        "Record the current Radar routes in `agents/agent-00-brain.js`.",
-        "Record the current UI surfaces: `radar-dashboard.html`, `luke-shell.html`, `brain-dashboard.html`, `operator-v2.html`, `trading-window.html`.",
-        "Record the current Katbot capture and broadcast seams in `agents/agent-14-kat.js`."
+      "id": "phase-0",
+      "title": "Baseline and safety freeze",
+      "objective": "Establish exact repo truth before Subconscious/Hermes/Luke auto-build work continues.",
+      "rationale": "Advance the Luke Subconscious/auto-build roadmap without weakening trading safety or adding hidden runtime behavior.",
+      "allowed_paths": [
+        "reports/luke-ai-repo-integration-plan-2026-05-08.md",
+        ".agent/goals/2026-05-08-ai-repo-integration-plan/"
       ],
-      "non_goals": [
-        "No implementation.",
-        "No dependency installation.",
-        "No trading-path edits."
+      "forbidden_paths": [
+        "trading/",
+        "tradingview/",
+        "ninjatrader/",
+        "lib/market-hours.js",
+        "trading/router.js",
+        "trading/signals.js",
+        "trading/risk.js",
+        "broker/auth/token/credential/execution paths",
+        ".env",
+        "state/events/",
+        "state/snapshots/",
+        "agents/agent-14-kat.js",
+        "lib/kat*"
       ],
-      "stop_condition": "A baseline section exists in the implementation report with exact paths and current behavior.",
-      "acceptance_criteria": [
-        "Reference clone list and commits are recorded.",
-        "Radar, memory, UI, and Katbot seam files are listed.",
-        "Existing user-owned dirty files are explicitly left untouched."
-      ],
-      "validation": [
+      "required_tests": [
         "git status --short --branch",
         "Get-ChildItem tools/reference-repos -Directory",
         "rg -n \"radar|Katbot|companion-memory|operator-v2|trading-window\" agents lib *.html index.js"
       ],
+      "stop_condition": "Baseline evidence is recorded with git status, reference repo list/commits, Radar routes, UI surfaces, Katbot seams, and safe integration seams.",
+      "rollback_expectation": "Revert only this phase's owned plan/doc/code changes; do not touch unrelated work. If runtime state is written unexpectedly, stop and report before further action. If protected paths appear in git diff --name-only, stop before commit/push unless the user explicitly approved that exact surface.",
+      "evidence_required": [
+        "Clean git status evidence.",
+        "Reference repo list with commits.",
+        "Radar route evidence.",
+        "UI surface evidence.",
+        "Katbot seam evidence.",
+        "No-touch safety confirmation."
+      ],
+      "non_goals": [
+        "No Pine changes.",
+        "No NinjaTrader changes.",
+        "No market-hours changes.",
+        "No trading execution, broker routing, risk, credential, secret, or .env changes.",
+        "No production runtime state writes unless this phase explicitly allows them.",
+        "No reference runtime dependency.",
+        "No automatic reference ingestion.",
+        "No auto-build implementation."
+      ],
       "depends_on": [],
-      "status": "ready",
-      "result_summary": null,
-      "evidence": [],
+      "status": "completed",
+      "result_summary": "Baseline evidence recorded in reports/luke-ai-repo-integration-plan-2026-05-08.md. Repo was clean on main...origin/main; all ten reference repos were present with commits; Radar routes, UI surfaces, Katbot seams, and safe integration seams were recorded.",
+      "evidence": [
+        "reports/luke-ai-repo-integration-plan-2026-05-08.md#goal-1-baseline-evidence"
+      ],
       "risks": [
-        "A dirty worktree can hide unrelated user changes."
+        "Git emits a user-level C:/Users/conor/.config/git/ignore permission warning outside the repo."
       ],
       "assumptions": [
-        "The existing dirty trading/NinjaTrader work remains user-owned."
+        "Current uncommitted changes are intentional planning/doc changes owned by this roadmap work."
       ]
     },
     {
-      "id": "goal-2",
-      "title": "Add reference repo registry",
-      "objective": "Create a Luke-native registry describing each external reference repo, its local path, upstream URL, commit, category, and approved Luke use.",
-      "rationale": "A registry prevents the cloned repos from becoming unmanaged mystery folders or accidental runtime dependencies.",
-      "scope": [
-        "Add `config/ai-reference-repos.json` or equivalent.",
-        "Add a small reader module such as `lib/reference-repos/registry.js`.",
-        "Include local path, upstream URL, checked-out commit, license when available, category, allowed surfaces, and banned surfaces.",
-        "Add tests for registry loading and missing-path behavior."
+      "id": "phase-1",
+      "title": "Reader and operator roadmaps",
+      "objective": "Keep the Hermes source roadmap and Luke adaptation roadmap available to fresh agents.",
+      "rationale": "Advance the Luke Subconscious/auto-build roadmap without weakening trading safety or adding hidden runtime behavior.",
+      "allowed_paths": [
+        "docs/HERMES_SUBCONSCIOUS_SOURCE_ROADMAP.md",
+        "docs/LUKE_SUBCONSCIOUS_AUTOBUILD_ROADMAP.md"
+      ],
+      "forbidden_paths": [
+        "trading/",
+        "tradingview/",
+        "ninjatrader/",
+        "lib/market-hours.js",
+        "trading/router.js",
+        "trading/signals.js",
+        "trading/risk.js",
+        "broker/auth/token/credential/execution paths",
+        ".env",
+        "state/events/",
+        "state/snapshots/",
+        "agents/agent-14-kat.js",
+        "lib/kat*"
+      ],
+      "required_tests": [
+        "Test-Path docs/HERMES_SUBCONSCIOUS_SOURCE_ROADMAP.md",
+        "Test-Path docs/LUKE_SUBCONSCIOUS_AUTOBUILD_ROADMAP.md"
+      ],
+      "stop_condition": "Both roadmap docs are present and state thought/signal/approval/coding/QA/memory separation.",
+      "rollback_expectation": "Revert only this phase's owned plan/doc/code changes; do not touch unrelated work. If runtime state is written unexpectedly, stop and report before further action. If protected paths appear in git diff --name-only, stop before commit/push unless the user explicitly approved that exact surface.",
+      "evidence_required": [
+        "Both roadmap file paths exist.",
+        "Luke roadmap contains no-touch boundaries and phase map.",
+        "Hermes roadmap states a thought is not a task and build marker is not approval."
       ],
       "non_goals": [
-        "Do not import upstream repo source into Luke runtime.",
-        "Do not fetch network updates automatically."
+        "No Pine changes.",
+        "No NinjaTrader changes.",
+        "No market-hours changes.",
+        "No trading execution, broker routing, risk, credential, secret, or .env changes.",
+        "No production runtime state writes unless this phase explicitly allows them.",
+        "No reference runtime dependency.",
+        "No automatic reference ingestion.",
+        "No auto-build implementation."
       ],
-      "stop_condition": "Luke can load and summarize the reference repo registry without scanning arbitrary files.",
-      "acceptance_criteria": [
-        "The registry names all ten repos.",
-        "Each repo has allowed and disallowed Luke surfaces.",
-        "Missing clone directories degrade to a clear warning, not a crash."
+      "depends_on": [],
+      "status": "completed",
+      "result_summary": "Both roadmap docs are present and define the safe translation: free-thinking, review-only signaling, Main approval, Coder from plan, QA proof.",
+      "evidence": [
+        "docs/HERMES_SUBCONSCIOUS_SOURCE_ROADMAP.md",
+        "docs/LUKE_SUBCONSCIOUS_AUTOBUILD_ROADMAP.md"
       ],
-      "validation": [
-        "node --check lib/reference-repos/registry.js",
-        "cmd /c npx vitest run tests/reference-repos-registry.test.js"
+      "risks": [],
+      "assumptions": []
+    },
+    {
+      "id": "phase-2",
+      "title": "Active goal plan refresh",
+      "objective": "Refresh the active .agent goal plan to reflect current repo truth, landed support, no-touch boundaries, and phases 0-9.",
+      "rationale": "Advance the Luke Subconscious/auto-build roadmap without weakening trading safety or adding hidden runtime behavior.",
+      "allowed_paths": [
+        ".agent/goals/2026-05-08-ai-repo-integration-plan/",
+        "docs/LUKE_SUBCONSCIOUS_PROPOSAL_SCHEMA.md"
+      ],
+      "forbidden_paths": [
+        "trading/",
+        "tradingview/",
+        "ninjatrader/",
+        "lib/market-hours.js",
+        "trading/router.js",
+        "trading/signals.js",
+        "trading/risk.js",
+        "broker/auth/token/credential/execution paths",
+        ".env",
+        "state/events/",
+        "state/snapshots/",
+        "agents/agent-14-kat.js",
+        "lib/kat*"
+      ],
+      "required_tests": [
+        "node -e \"JSON.parse(require('fs').readFileSync('.agent/goals/2026-05-08-ai-repo-integration-plan/goals.json','utf8')); console.log('goals-json-ok')\"",
+        "git diff --stat",
+        "git diff -- .agent/goals/2026-05-08-ai-repo-integration-plan docs/LUKE_SUBCONSCIOUS_PROPOSAL_SCHEMA.md"
+      ],
+      "stop_condition": "Plan records already-landed pieces, future phase contracts, no-touch paths, tests, stop conditions, rollback expectations, and evidence requirements.",
+      "rollback_expectation": "Revert only this phase's owned plan/doc/code changes; do not touch unrelated work. If runtime state is written unexpectedly, stop and report before further action. If protected paths appear in git diff --name-only, stop before commit/push unless the user explicitly approved that exact surface.",
+      "evidence_required": [
+        "Updated goals.json parses as JSON.",
+        "Brief explains phase roadmap.",
+        "Ledger records plan refresh.",
+        "Diff is limited to allowed planning/doc paths."
+      ],
+      "non_goals": [
+        "No Pine changes.",
+        "No NinjaTrader changes.",
+        "No market-hours changes.",
+        "No trading execution, broker routing, risk, credential, secret, or .env changes.",
+        "No production runtime state writes unless this phase explicitly allows them.",
+        "No reference runtime dependency.",
+        "No automatic reference ingestion.",
+        "No auto-build implementation."
+      ],
+      "depends_on": [],
+      "status": "completed",
+      "result_summary": "Active goal plan refreshed into phases 0-9. Already-landed evidence and future gates are recorded. Active next phase is phase-3.",
+      "evidence": [
+        ".agent/goals/2026-05-08-ai-repo-integration-plan/goals.json",
+        ".agent/goals/2026-05-08-ai-repo-integration-plan/brief.md",
+        ".agent/goals/2026-05-08-ai-repo-integration-plan/ledger.jsonl",
+        "docs/LUKE_SUBCONSCIOUS_PROPOSAL_SCHEMA.md"
+      ],
+      "risks": [
+        "This phase is planning only; no runtime gate is implemented yet."
+      ],
+      "assumptions": []
+    },
+    {
+      "id": "phase-3",
+      "title": "Review-only Subconscious signal schema",
+      "objective": "Define and, only after approval, test a review-only Subconscious proposal schema that maps to existing Radar fields without production state writes.",
+      "rationale": "Advance the Luke Subconscious/auto-build roadmap without weakening trading safety or adding hidden runtime behavior.",
+      "allowed_paths": [
+        "docs/LUKE_SUBCONSCIOUS_PROPOSAL_SCHEMA.md",
+        ".agent/goals/2026-05-08-ai-repo-integration-plan/",
+        "tests/ only if implementing schema validation in a later approved code chunk"
+      ],
+      "forbidden_paths": [
+        "trading/",
+        "tradingview/",
+        "ninjatrader/",
+        "lib/market-hours.js",
+        "trading/router.js",
+        "trading/signals.js",
+        "trading/risk.js",
+        "broker/auth/token/credential/execution paths",
+        ".env",
+        "state/events/",
+        "state/snapshots/",
+        "agents/agent-14-kat.js",
+        "lib/kat*"
+      ],
+      "required_tests": [
+        "node --check lib/radar/ingest.js if code is touched later",
+        "cmd /c npx vitest run tests/*radar*.test.js only if Radar code/tests are touched later",
+        "A no-production-state-write check using temporary paths before any runtime write support"
+      ],
+      "stop_condition": "A proposal schema exists, maps to `reference_idea`, preserves review-only status, and proves it cannot create Coder jobs or write production runtime state.",
+      "rollback_expectation": "Revert only this phase's owned plan/doc/code changes; do not touch unrelated work. If runtime state is written unexpectedly, stop and report before further action. If protected paths appear in git diff --name-only, stop before commit/push unless the user explicitly approved that exact surface.",
+      "evidence_required": [
+        "Proposal packet schema.",
+        "Radar field mapping.",
+        "Known metadata-loss caveat.",
+        "Dry-run/write-gate requirements.",
+        "Proof no state/events or state/snapshots write occurs."
+      ],
+      "non_goals": [
+        "No Pine changes.",
+        "No NinjaTrader changes.",
+        "No market-hours changes.",
+        "No trading execution, broker routing, risk, credential, secret, or .env changes.",
+        "No production runtime state writes unless this phase explicitly allows them.",
+        "No reference runtime dependency.",
+        "No automatic reference ingestion.",
+        "No auto-build implementation."
       ],
       "depends_on": [
-        "goal-1"
+        "phase-2"
       ],
       "status": "ready",
       "result_summary": null,
       "evidence": [],
       "risks": [
-        "Over-modeling the registry could add unnecessary abstraction."
+        "Current Radar drops arbitrary extra fields; proposal metadata must be encoded or Radar schema must be extended later."
       ],
       "assumptions": [
-        "A simple JSON registry is enough for the first pass."
+        "Use `source_type: reference_idea` until a dedicated source type is explicitly approved."
       ]
     },
     {
-      "id": "goal-3",
-      "title": "Add agent and coder guidance",
-      "objective": "Integrate the useful guidance patterns from Karpathy, Matt Pocock, and selected SuperClaude material into concise Luke-specific instructions.",
-      "rationale": "The user wants collaborative/helpful behavior and better coder workflow without importing a large framework.",
-      "scope": [
-        "Create or update `AGENTS.md`.",
-        "Add Luke-specific engineering rules for small verified steps, explicit assumptions, helpful pushback, and dirty-worktree protection.",
-        "Add shared-language guidance in `docs/LUKE_SHARED_LANGUAGE.md` only if it reduces future ambiguity.",
-        "Preserve sacred trading smoke paths and human-gated trading rules."
+      "id": "phase-4",
+      "title": "Signal board snapshot",
+      "objective": "Design and later implement a deterministic signal board that distinguishes interesting, ready_for_main_review, blocked, cooldown, queued_after_approval, active, built, failed_qa, repaired, and archived.",
+      "rationale": "Advance the Luke Subconscious/auto-build roadmap without weakening trading safety or adding hidden runtime behavior.",
+      "allowed_paths": [
+        "docs/ for design first",
+        "lib/radar/ or new non-trading module only after explicit approval",
+        "tests/ for temporary-path validation only after approval"
+      ],
+      "forbidden_paths": [
+        "trading/",
+        "tradingview/",
+        "ninjatrader/",
+        "lib/market-hours.js",
+        "trading/router.js",
+        "trading/signals.js",
+        "trading/risk.js",
+        "broker/auth/token/credential/execution paths",
+        ".env",
+        "state/events/",
+        "state/snapshots/",
+        "agents/agent-14-kat.js",
+        "lib/kat*"
+      ],
+      "required_tests": [
+        "node --check touched JS files",
+        "focused vitest for signal board using temporary paths",
+        "git status --short --branch before and after"
+      ],
+      "stop_condition": "Signal board exists or is fully specified, reads only approved inputs, and cannot mark anything ready_to_build without Main approval.",
+      "rollback_expectation": "Revert only this phase's owned plan/doc/code changes; do not touch unrelated work. If runtime state is written unexpectedly, stop and report before further action. If protected paths appear in git diff --name-only, stop before commit/push unless the user explicitly approved that exact surface.",
+      "evidence_required": [
+        "Board state definitions.",
+        "Input/output paths.",
+        "Temporary-path tests.",
+        "No production state write proof.",
+        "No Coder job creation proof."
       ],
       "non_goals": [
-        "Do not copy full upstream instruction files wholesale.",
-        "Do not make simple tasks ceremony-heavy."
-      ],
-      "stop_condition": "Luke has concise repo-local guidance that future Codex sessions can follow.",
-      "acceptance_criteria": [
-        "`AGENTS.md` is short, Luke-specific, and references external repos only as inspiration.",
-        "Guidance includes friendly collaboration, concrete pushback, and verifiable completion.",
-        "Guidance preserves `/status`, `/balance`, `/saty`, `/ready`, and `/alert`."
-      ],
-      "validation": [
-        "Get-Content AGENTS.md",
-        "rg -n \"status|balance|saty|ready|alert|human-gated|reference\" AGENTS.md"
+        "No Pine changes.",
+        "No NinjaTrader changes.",
+        "No market-hours changes.",
+        "No trading execution, broker routing, risk, credential, secret, or .env changes.",
+        "No production runtime state writes unless this phase explicitly allows them.",
+        "No reference runtime dependency.",
+        "No automatic reference ingestion.",
+        "No auto-build implementation."
       ],
       "depends_on": [
-        "goal-2"
+        "phase-3"
       ],
-      "status": "ready",
+      "status": "blocked",
       "result_summary": null,
       "evidence": [],
       "risks": [
-        "Too much guidance can slow small fixes."
+        "A board can become a task queue if states are vague. Use ready_for_main_review, not ready_to_build."
       ],
       "assumptions": [
-        "The repo currently needs concise operational rules more than a full framework."
+        "Runtime state paths require explicit approval and dry-run first."
       ]
     },
     {
-      "id": "goal-4",
-      "title": "Add Radar reference-review lane",
-      "objective": "Make Radar the approval surface for reference-derived ideas before they become implementation work.",
-      "rationale": "Radar already has source typing, review states, source health, item detail, and dashboard routes.",
-      "scope": [
-        "Add source types or themes for reference repos and integration ideas.",
-        "Add a script or module that turns selected registry entries into reviewable Radar items.",
-        "Add accept/reject/defer guidance so rejected ideas remain durable evidence.",
-        "Update `radar-dashboard.html` only as much as needed to filter or label reference ideas."
+      "id": "phase-5",
+      "title": "Main approval and Coder job boundary",
+      "objective": "Define the approval artifact and job-state boundary that prevents direct Subconscious-to-code execution.",
+      "rationale": "Advance the Luke Subconscious/auto-build roadmap without weakening trading safety or adding hidden runtime behavior.",
+      "allowed_paths": [
+        "docs/ for approval contract",
+        ".agent/goals/ for plan updates",
+        "tests/ only after approved code work"
+      ],
+      "forbidden_paths": [
+        "trading/",
+        "tradingview/",
+        "ninjatrader/",
+        "lib/market-hours.js",
+        "trading/router.js",
+        "trading/signals.js",
+        "trading/risk.js",
+        "broker/auth/token/credential/execution paths",
+        ".env",
+        "state/events/",
+        "state/snapshots/",
+        "agents/agent-14-kat.js",
+        "lib/kat*"
+      ],
+      "required_tests": [
+        "focused tests for any job-state module later",
+        "protected-path diff guard before commit",
+        "git status --short --branch"
+      ],
+      "stop_condition": "Main approval is a separate artifact with owner, scope, allowed paths, forbidden paths, tests, rollback, expiration, and explicit promotion statement.",
+      "rollback_expectation": "Revert only this phase's owned plan/doc/code changes; do not touch unrelated work. If runtime state is written unexpectedly, stop and report before further action. If protected paths appear in git diff --name-only, stop before commit/push unless the user explicitly approved that exact surface.",
+      "evidence_required": [
+        "Approval artifact schema.",
+        "Coder job state list.",
+        "No direct Subconscious-to-Coder transition rule.",
+        "Sprint lock requirement.",
+        "Rollback path."
       ],
       "non_goals": [
-        "Do not turn Radar into a bookmark manager.",
-        "Do not ingest every upstream file."
-      ],
-      "stop_condition": "A small set of reference-derived integration ideas can be reviewed in Radar.",
-      "acceptance_criteria": [
-        "Radar can distinguish reference ideas from manual pastes and trading notes.",
-        "Accepted, contradicted, and archived states work for reference ideas.",
-        "Daily/Radar brief does not treat reference ideas as trading authority."
-      ],
-      "validation": [
-        "node --check lib/radar/ingest.js",
-        "node --check lib/brain/radar-layer.js",
-        "cmd /c npx vitest run tests/radar*.test.js",
-        "npm run prove:radar-daily-loop"
+        "No Pine changes.",
+        "No NinjaTrader changes.",
+        "No market-hours changes.",
+        "No trading execution, broker routing, risk, credential, secret, or .env changes.",
+        "No production runtime state writes unless this phase explicitly allows them.",
+        "No reference runtime dependency.",
+        "No automatic reference ingestion.",
+        "No auto-build implementation."
       ],
       "depends_on": [
-        "goal-2"
+        "phase-4"
       ],
-      "status": "ready",
+      "status": "blocked",
       "result_summary": null,
       "evidence": [],
       "risks": [
-        "Too many reference cards could bury real operator Radar items."
+        "Subagent reports can launder approval unless reports remain evidence only."
       ],
       "assumptions": [
-        "Only actionable reference ideas should enter Radar."
+        "No Coder job may be created without Main approval."
       ]
     },
     {
-      "id": "goal-5",
-      "title": "Improve memory and context",
-      "objective": "Borrow MemPalace and Hermes memory concepts to add scoped recall and relationships without replacing Luke's existing storage.",
-      "rationale": "Luke already has companion memory and context bins, but needs better source scoping and recall reasons.",
-      "scope": [
-        "Add optional project/person/topic scopes to memory entries.",
-        "Add recall reason metadata to memory search results.",
-        "Add relationships between companion memory entries and Radar items.",
-        "Update `docs/LUKE_COMPANION_MEMORY.md` with current storage and boundaries."
+      "id": "phase-6",
+      "title": "QA and recovery loop",
+      "objective": "Define and later implement QA packet and repair routing before autonomous phase advancement.",
+      "rationale": "Advance the Luke Subconscious/auto-build roadmap without weakening trading safety or adding hidden runtime behavior.",
+      "allowed_paths": [
+        "docs/ for QA contract",
+        "tests/ for approved QA utilities later",
+        ".agent/goals/ for plan updates"
+      ],
+      "forbidden_paths": [
+        "trading/",
+        "tradingview/",
+        "ninjatrader/",
+        "lib/market-hours.js",
+        "trading/router.js",
+        "trading/signals.js",
+        "trading/risk.js",
+        "broker/auth/token/credential/execution paths",
+        ".env",
+        "state/events/",
+        "state/snapshots/",
+        "agents/agent-14-kat.js",
+        "lib/kat*"
+      ],
+      "required_tests": [
+        "focused tests for QA packet validation if code is added",
+        "cmd /c npx vitest run tests/autonomous-recommendation-only.test.js if trading posture could be affected",
+        "git status --short --branch"
+      ],
+      "stop_condition": "QA packet records files changed, protected paths touched/not touched, tests run/skipped, behavior proven, regression risk, rollback path, and final status.",
+      "rollback_expectation": "Revert only this phase's owned plan/doc/code changes; do not touch unrelated work. If runtime state is written unexpectedly, stop and report before further action. If protected paths appear in git diff --name-only, stop before commit/push unless the user explicitly approved that exact surface.",
+      "evidence_required": [
+        "QA packet template.",
+        "Failure-to-repair-plan rule.",
+        "No blind patch rule.",
+        "Protected path confirmation."
       ],
       "non_goals": [
-        "Do not install MemPalace into Luke runtime yet.",
-        "Do not migrate memory storage in the first pass."
-      ],
-      "stop_condition": "Memory recall is more explainable and cross-linked to Radar while retaining current storage compatibility.",
-      "acceptance_criteria": [
-        "Existing memory tests still pass.",
-        "Old memory entries still load.",
-        "New scoped entries include safe defaults."
-      ],
-      "validation": [
-        "node --check lib/companion-memory.js",
-        "node --check lib/luke-context-bins.js",
-        "cmd /c npx vitest run tests/companion-memory*.test.js tests/luke-context-bins*.test.js",
-        "npm run prove:companion-memory"
+        "No Pine changes.",
+        "No NinjaTrader changes.",
+        "No market-hours changes.",
+        "No trading execution, broker routing, risk, credential, secret, or .env changes.",
+        "No production runtime state writes unless this phase explicitly allows them.",
+        "No reference runtime dependency.",
+        "No automatic reference ingestion.",
+        "No auto-build implementation."
       ],
       "depends_on": [
-        "goal-4"
+        "phase-5"
       ],
-      "status": "ready",
+      "status": "blocked",
       "result_summary": null,
       "evidence": [],
       "risks": [
-        "Memory schema changes can strand older entries if compatibility is not preserved."
+        "A passing report without evidence can hide regressions. Require command output summaries and skipped-test reasons."
       ],
-      "assumptions": [
-        "JSON plus JSONL remain the first-pass storage model."
-      ]
+      "assumptions": []
     },
     {
-      "id": "goal-6",
-      "title": "Bridge Katbot into Radar and memory",
-      "objective": "Route selected Katbot captures, vision records, and confluence alerts into Radar and memory context as reviewable evidence.",
-      "rationale": "Katbot already captures Discord content and broadcasts context, but Radar can provide durable review state.",
-      "scope": [
-        "Add a narrow bridge from Katbot capture/confluence paths to Radar ingest.",
-        "Link Katbot Radar items back to message ids, source labels, and vision ids where available.",
-        "Expose accepted/rejected Katbot context to memory and operator readouts.",
-        "Keep all Katbot output read-only and human-gated."
+      "id": "phase-7",
+      "title": "Runtime monitor",
+      "objective": "Define and later implement a monitor that detects stuck loops, repeated failures, unapproved path edits, dirty-worktree conflict, missing tests, and policy violations.",
+      "rationale": "Advance the Luke Subconscious/auto-build roadmap without weakening trading safety or adding hidden runtime behavior.",
+      "allowed_paths": [
+        "docs/ for monitor contract",
+        "tests/ for approved monitor utilities later",
+        "no runtime process changes without explicit approval"
+      ],
+      "forbidden_paths": [
+        "trading/",
+        "tradingview/",
+        "ninjatrader/",
+        "lib/market-hours.js",
+        "trading/router.js",
+        "trading/signals.js",
+        "trading/risk.js",
+        "broker/auth/token/credential/execution paths",
+        ".env",
+        "state/events/",
+        "state/snapshots/",
+        "agents/agent-14-kat.js",
+        "lib/kat*"
+      ],
+      "required_tests": [
+        "focused monitor tests using fixture diffs if code is added",
+        "protected-path diff guard",
+        "git status --short --branch"
+      ],
+      "stop_condition": "Monitor can stop a run and report why, without making hidden code or runtime state changes.",
+      "rollback_expectation": "Revert only this phase's owned plan/doc/code changes; do not touch unrelated work. If runtime state is written unexpectedly, stop and report before further action. If protected paths appear in git diff --name-only, stop before commit/push unless the user explicitly approved that exact surface.",
+      "evidence_required": [
+        "Stop conditions.",
+        "Violation taxonomy.",
+        "Report format.",
+        "No hidden writes proof.",
+        "Operator escalation rule."
       ],
       "non_goals": [
-        "Do not let Katbot create live candidates.",
-        "Do not post extra Discord messages.",
-        "Do not expand live vision model use without explicit approval."
-      ],
-      "stop_condition": "Katbot context has a review trail in Radar without changing execution behavior.",
-      "acceptance_criteria": [
-        "Katbot bridge is gated and deduped.",
-        "Radar items include provenance and review state.",
-        "Operator/trading windows still show read-only no-execution status."
-      ],
-      "validation": [
-        "node --check agents/agent-14-kat.js",
-        "node --check lib/kat-vision-store.js",
-        "cmd /c npx vitest run tests/*kat*.test.js tests/*radar*.test.js",
-        "npm run prove:katbot-plain",
-        "npm run prove:operator-v2",
-        "npm run prove:trading-window"
+        "No Pine changes.",
+        "No NinjaTrader changes.",
+        "No market-hours changes.",
+        "No trading execution, broker routing, risk, credential, secret, or .env changes.",
+        "No production runtime state writes unless this phase explicitly allows them.",
+        "No reference runtime dependency.",
+        "No automatic reference ingestion.",
+        "No auto-build implementation."
       ],
       "depends_on": [
-        "goal-4",
-        "goal-5"
+        "phase-6"
       ],
-      "status": "ready",
+      "status": "blocked",
       "result_summary": null,
       "evidence": [],
       "risks": [
-        "Katbot can generate high-volume events; bridge must avoid Radar spam."
+        "A monitor that patches automatically becomes an executor. Keep monitor stop/report first."
       ],
-      "assumptions": [
-        "Only selected or summarized Katbot events should become Radar items."
-      ]
+      "assumptions": []
     },
     {
-      "id": "goal-7",
-      "title": "Add research-loop metadata",
-      "objective": "Apply Qlib and autoresearch patterns to Luke research scripts through metadata, export formats, and keep/discard reports.",
-      "rationale": "Luke has many research and backtest scripts; they need stronger experiment discipline before more strategy work.",
-      "scope": [
-        "Define a lightweight research run metadata format.",
-        "Record hypothesis, input data window, commit, command, result, and accept/reject decision.",
-        "Add optional export shape for later Qlib-compatible analysis.",
-        "Apply first to one bounded research lane before broad rollout."
+      "id": "phase-8",
+      "title": "Scheduled auto-think",
+      "objective": "Add scheduled thinking only after review-only signal flow, write gates, monitor, and QA packet exist.",
+      "rationale": "Advance the Luke Subconscious/auto-build roadmap without weakening trading safety or adding hidden runtime behavior.",
+      "allowed_paths": [
+        "docs/ for schedule policy first",
+        "scheduler-related code only after explicit approval and focused plan"
+      ],
+      "forbidden_paths": [
+        "trading/",
+        "tradingview/",
+        "ninjatrader/",
+        "lib/market-hours.js",
+        "trading/router.js",
+        "trading/signals.js",
+        "trading/risk.js",
+        "broker/auth/token/credential/execution paths",
+        ".env",
+        "state/events/",
+        "state/snapshots/",
+        "agents/agent-14-kat.js",
+        "lib/kat*"
+      ],
+      "required_tests": [
+        "inspect scripts before any npm run",
+        "node --check scheduler.js only if scheduler is touched",
+        "focused tests for schedule gating if code is added"
+      ],
+      "stop_condition": "Auto-think can read approved sources and produce review-only proposals without creating jobs, routing commands, writing production state without approval, or calling expensive models for empty queues.",
+      "rollback_expectation": "Revert only this phase's owned plan/doc/code changes; do not touch unrelated work. If runtime state is written unexpectedly, stop and report before further action. If protected paths appear in git diff --name-only, stop before commit/push unless the user explicitly approved that exact surface.",
+      "evidence_required": [
+        "Schedule policy.",
+        "Model routing policy.",
+        "Empty queue behavior.",
+        "No scheduled automation without approval.",
+        "No command/context routing proof."
       ],
       "non_goals": [
-        "Do not install Qlib as a runtime dependency.",
-        "Do not run unattended overnight code-edit loops.",
-        "Do not promote research output to live trading."
-      ],
-      "stop_condition": "One Luke research lane emits auditable experiment metadata and a keep/discard summary.",
-      "acceptance_criteria": [
-        "Generated research output stays under `artifacts/research/` unless promoted.",
-        "Reports distinguish hypothesis from proven result.",
-        "Trading UI remains read-only."
-      ],
-      "validation": [
-        "node --check scripts/strategy-combination-agent-analyze.js",
-        "cmd /c npx vitest run tests/*research*.test.js tests/*backtest*.test.js",
-        "npm run prove:replay-level-state"
+        "No Pine changes.",
+        "No NinjaTrader changes.",
+        "No market-hours changes.",
+        "No trading execution, broker routing, risk, credential, secret, or .env changes.",
+        "No production runtime state writes unless this phase explicitly allows them.",
+        "No reference runtime dependency.",
+        "No automatic reference ingestion.",
+        "No auto-build implementation."
       ],
       "depends_on": [
-        "goal-2"
+        "phase-7"
       ],
-      "status": "ready",
+      "status": "blocked",
       "result_summary": null,
       "evidence": [],
       "risks": [
-        "Research reports can look authoritative even when based on narrow samples."
+        "Scheduled work can become invisible autopilot. Require monitor and digest/reporting first."
       ],
-      "assumptions": [
-        "Metadata discipline is higher leverage than adopting a Python quant platform immediately."
-      ]
+      "assumptions": []
     },
     {
-      "id": "goal-8",
-      "title": "Expose integration status in UI",
-      "objective": "Add restrained dashboard visibility for approved reference integration status after Radar proves useful.",
-      "rationale": "The dashboard should show useful operating state, not hide new intelligence in files.",
-      "scope": [
-        "Start with Radar labels or filters.",
-        "Add a small shell/brain status line only if the Radar lane is useful.",
-        "Show trading research status in operator/trading windows only when relevant and read-only.",
-        "Avoid decorative redesign."
+      "id": "phase-9",
+      "title": "Gated auto-build",
+      "objective": "Permit bounded auto-build only after all prerequisite gates exist mechanically and pass tests.",
+      "rationale": "Advance the Luke Subconscious/auto-build roadmap without weakening trading safety or adding hidden runtime behavior.",
+      "allowed_paths": [
+        "docs/ and .agent/goals/ for approval first",
+        "code paths only after separate explicit implementation plan"
+      ],
+      "forbidden_paths": [
+        "trading/",
+        "tradingview/",
+        "ninjatrader/",
+        "lib/market-hours.js",
+        "trading/router.js",
+        "trading/signals.js",
+        "trading/risk.js",
+        "broker/auth/token/credential/execution paths",
+        ".env",
+        "state/events/",
+        "state/snapshots/",
+        "agents/agent-14-kat.js",
+        "lib/kat*"
+      ],
+      "required_tests": [
+        "cmd /c npx vitest run for touched areas",
+        "full suite when feasible",
+        "protected-path diff guard",
+        "QA packet",
+        "runtime monitor report",
+        "git status --short --branch"
+      ],
+      "stop_condition": "One phase runs at a time, sprint lock is active, QA must pass before the next phase, failure creates repair work, and final QA runs end-to-end.",
+      "rollback_expectation": "Revert only this phase's owned plan/doc/code changes; do not touch unrelated work. If runtime state is written unexpectedly, stop and report before further action. If protected paths appear in git diff --name-only, stop before commit/push unless the user explicitly approved that exact surface.",
+      "evidence_required": [
+        "Signal board exists.",
+        "Main approval exists.",
+        "Coder job state exists.",
+        "QA packet exists.",
+        "Runtime monitor exists.",
+        "Sprint lock exists.",
+        "Rollback path exists.",
+        "Tests pass."
       ],
       "non_goals": [
-        "No marketing page.",
-        "No large visual redesign.",
-        "No trading execution controls."
-      ],
-      "stop_condition": "The UI exposes integration status without cluttering core daily/trading workflows.",
-      "acceptance_criteria": [
-        "Radar displays reference idea status clearly.",
-        "Shell/brain additions are optional and compact.",
-        "Operator/trading windows remain read-only."
-      ],
-      "validation": [
-        "node --check index.js",
-        "cmd /c npx vitest run tests/brain-dashboard.test.js tests/operator-v2-ui.test.js tests/trading-ui-readonly.test.js",
-        "npm run prove:luke-dashboard-demo",
-        "npm run prove:operator-v2",
-        "npm run prove:trading-window"
+        "No Pine changes.",
+        "No NinjaTrader changes.",
+        "No market-hours changes.",
+        "No trading execution, broker routing, risk, credential, secret, or .env changes.",
+        "No production runtime state writes unless this phase explicitly allows them.",
+        "No reference runtime dependency.",
+        "No automatic reference ingestion.",
+        "No auto-build implementation."
       ],
       "depends_on": [
-        "goal-4",
-        "goal-6",
-        "goal-7"
+        "phase-3",
+        "phase-4",
+        "phase-5",
+        "phase-6",
+        "phase-7",
+        "phase-8"
       ],
-      "status": "ready",
+      "status": "blocked",
       "result_summary": null,
       "evidence": [],
       "risks": [
-        "Dashboard clutter would make Luke less useful during trading."
+        "Auto-build is unsafe until every gate exists and is tested."
       ],
       "assumptions": [
-        "Radar is the primary review surface; dashboards are status surfaces."
-      ]
-    },
-    {
-      "id": "goal-9",
-      "title": "Verify and report decisions",
-      "objective": "Run focused verification and produce a final integration decision report covering accepted, rejected, deferred, and risky items.",
-      "rationale": "The user wants a plan they can push back on and later a trustworthy implementation record.",
-      "scope": [
-        "Run focused syntax checks and relevant tests.",
-        "Run Radar, memory, operator, and trading-window proof scripts when touched.",
-        "Document skipped checks and exact reasons.",
-        "Update the report with accepted, rejected, deferred, and next recommended slices."
-      ],
-      "non_goals": [
-        "Do not hide failed or skipped checks.",
-        "Do not claim live readiness."
-      ],
-      "stop_condition": "The final report is sufficient for the user to approve, reject, or redirect the integration.",
-      "acceptance_criteria": [
-        "Exact commands and outcomes are recorded.",
-        "Residual risks are listed.",
-        "No unreviewed external code is wired into Luke runtime."
-      ],
-      "validation": [
-        "git status --short --branch",
-        "node --check index.js",
-        "cmd /c npx vitest run",
-        "npm run prove:radar-daily-loop",
-        "npm run prove:companion-memory",
-        "npm run prove:luke-operator-check"
-      ],
-      "depends_on": [
-        "goal-2",
-        "goal-3",
-        "goal-4",
-        "goal-5",
-        "goal-6",
-        "goal-7",
-        "goal-8"
-      ],
-      "status": "ready",
-      "result_summary": null,
-      "evidence": [],
-      "risks": [
-        "Full verification may be blocked by current dirty work or environment-specific services."
-      ],
-      "assumptions": [
-        "Implementation should pause after goals 1-4 unless the user explicitly approves deeper memory/Katbot/research changes."
+        "No live trading, broker, risk, Pine, NinjaTrader, credential, or runtime-state authority is implied by auto-build."
       ]
     }
   ]

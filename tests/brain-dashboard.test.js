@@ -54,7 +54,8 @@ describe('/brain dashboard shell', () => {
   it('opens the executable to the Luke dashboard shell first', () => {
     const electron = fs.readFileSync(ELECTRON_FILE, 'utf8');
 
-    expect(electron).toContain("win.loadURL('http://localhost:3000/shell')");
+    expect(electron).toContain('const APP_BASE_URL = `http://${APP_HOST}:${APP_PORT}`');
+    expect(electron).toContain('win.loadURL(`${APP_BASE_URL}/shell`)');
     expect(electron).not.toContain("win.loadURL('http://localhost:3000')");
     expect(electron).not.toContain('alwaysOnTop: true');
   });

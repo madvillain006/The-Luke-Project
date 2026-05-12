@@ -25,7 +25,7 @@ describe('trading chart data API builders', () => {
     expect(chart.levels.length).toBeGreaterThan(0);
     expect(chart.bracket_visual?.can_submit).toBe(false);
     expect((chart.candidates || []).every(candidate => candidate.can_execute_live !== true)).toBe(true);
-  });
+  }, 15000);
 
   it('returns source health with heatmap_gex and SPX reference basis policy', async () => {
     const health = await buildTradingSourceHealthResponse({

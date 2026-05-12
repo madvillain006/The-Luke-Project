@@ -1,0 +1,388 @@
+{
+  "calendar_gap_ranges_global_first_to_last": [
+    "2025-12-20..2026-02-28",
+    "2026-03-07",
+    "2026-03-14",
+    "2026-03-21..2026-03-25",
+    "2026-03-28",
+    "2026-04-04",
+    "2026-04-11",
+    "2026-04-18",
+    "2026-04-25",
+    "2026-05-02"
+  ],
+  "calendar_gap_ranges_inside_file_spans": [
+    "2026-03-07",
+    "2026-03-14",
+    "2026-03-28",
+    "2026-04-04",
+    "2026-04-11",
+    "2026-04-18",
+    "2026-04-25",
+    "2026-05-02"
+  ],
+  "covered_date_count": 60,
+  "es_file_count": 8,
+  "es_files": [
+    {
+      "actual_row_date_count": 18,
+      "first_timestamp": "2026-03-01 20:37:00",
+      "last_timestamp": "2026-03-20 08:29:00",
+      "path": "data\\backtest\\esh26_intraday-1min_historical-data-download-04-22-2026 (1).csv",
+      "rows": 19999
+    },
+    {
+      "actual_row_date_count": 19,
+      "first_timestamp": "2026-04-01 17:06:00",
+      "last_timestamp": "2026-04-22 12:09:00",
+      "path": "data\\backtest\\esm26_intraday-1min_historical-data-download-04-22-2026.csv",
+      "rows": 19999
+    },
+    {
+      "actual_row_date_count": 18,
+      "first_timestamp": "2026-03-26 03:56:00",
+      "last_timestamp": "2026-04-15 23:59:00",
+      "path": "data\\backtest\\esm26_intraday-1min_historical-data-download-04-29-2026 (1).csv",
+      "rows": 19999
+    },
+    {
+      "actual_row_date_count": 5,
+      "first_timestamp": "2025-12-15 00:00:00",
+      "last_timestamp": "2025-12-19 08:29:00",
+      "path": "data\\backtest\\esz25_intraday-1min_historical-data-download-04-22-2026.csv",
+      "rows": 5872
+    },
+    {
+      "actual_row_date_count": 18,
+      "first_timestamp": "2026-03-01 20:37:00",
+      "last_timestamp": "2026-03-20 08:29:00",
+      "path": "data\\historical\\esh26_intraday-1min_historical-data-download-04-29-2026.csv",
+      "rows": 19999
+    },
+    {
+      "actual_row_date_count": 18,
+      "first_timestamp": "2026-03-26 03:56:00",
+      "last_timestamp": "2026-04-15 23:59:00",
+      "path": "data\\historical\\esm26_intraday-1min_historical-data-download-04-29-2026 (1).csv",
+      "rows": 19999
+    },
+    {
+      "actual_row_date_count": 19,
+      "first_timestamp": "2026-04-08 21:10:00",
+      "last_timestamp": "2026-04-29 08:29:00",
+      "path": "data\\historical\\esm26_intraday-1min_historical-data-download-04-29-2026.csv",
+      "rows": 19999
+    },
+    {
+      "actual_row_date_count": 18,
+      "first_timestamp": "2026-04-17 04:51:00",
+      "last_timestamp": "2026-05-07 17:10:00",
+      "path": "data\\research\\mancini\\esm26_intraday-1min_historical-data-download-05-07-2026.csv",
+      "rows": 19999
+    }
+  ],
+  "es_total_rows": 145865,
+  "es_unique_timestamp_count": 67540,
+  "first_covered_date": "2025-12-15",
+  "last_covered_date": "2026-05-07",
+  "mancini_plan_date_count": 24,
+  "mancini_plan_date_source_counts": {
+    "2026-02-20": {
+      "max_bars_in_session": 0,
+      "rows": 124,
+      "sources": {
+        "longer-mancini-logs-2": 124
+      }
+    },
+    "2026-03-04": {
+      "max_bars_in_session": 1321,
+      "rows": 96,
+      "sources": {
+        "longer-mancini-logs-2": 96
+      }
+    },
+    "2026-03-10": {
+      "max_bars_in_session": 1321,
+      "rows": 100,
+      "sources": {
+        "longer-mancini-logs-2": 100
+      }
+    },
+    "2026-03-13": {
+      "max_bars_in_session": 1321,
+      "rows": 108,
+      "sources": {
+        "longer-mancini-logs-2": 108
+      }
+    },
+    "2026-03-18": {
+      "max_bars_in_session": 1320,
+      "rows": 105,
+      "sources": {
+        "longer-mancini-logs-2": 105
+      }
+    },
+    "2026-03-23": {
+      "max_bars_in_session": 0,
+      "rows": 115,
+      "sources": {
+        "longer-mancini-logs": 115
+      }
+    },
+    "2026-03-26": {
+      "max_bars_in_session": 665,
+      "rows": 91,
+      "sources": {
+        "longer-mancini-logs": 91
+      }
+    },
+    "2026-04-06": {
+      "max_bars_in_session": 1321,
+      "rows": 108,
+      "sources": {
+        "longer-mancini-logs": 108
+      }
+    },
+    "2026-04-10": {
+      "max_bars_in_session": 1321,
+      "rows": 120,
+      "sources": {
+        "longer-mancini-logs": 120
+      }
+    },
+    "2026-04-14": {
+      "max_bars_in_session": 1321,
+      "rows": 113,
+      "sources": {
+        "longer-mancini-logs": 113
+      }
+    },
+    "2026-04-20": {
+      "max_bars_in_session": 1321,
+      "rows": 110,
+      "sources": {
+        "longer-mancini-logs": 110
+      }
+    },
+    "2026-04-21": {
+      "max_bars_in_session": 1321,
+      "rows": 95,
+      "sources": {
+        "longer-mancini-logs": 95
+      }
+    },
+    "2026-04-22": {
+      "max_bars_in_session": 1321,
+      "rows": 129,
+      "sources": {
+        "longer-mancini-logs": 129
+      }
+    },
+    "2026-04-23": {
+      "max_bars_in_session": 1321,
+      "rows": 98,
+      "sources": {
+        "longer-mancini-logs": 98
+      }
+    },
+    "2026-04-27": {
+      "max_bars_in_session": 1321,
+      "rows": 97,
+      "sources": {
+        "longer-mancini-logs": 97
+      }
+    },
+    "2026-04-28": {
+      "max_bars_in_session": 1321,
+      "rows": 86,
+      "sources": {
+        "longer-mancini-logs": 86
+      }
+    },
+    "2026-04-29": {
+      "max_bars_in_session": 1320,
+      "rows": 98,
+      "sources": {
+        "longer-mancini-logs": 98
+      }
+    },
+    "2026-04-30": {
+      "max_bars_in_session": 1321,
+      "rows": 100,
+      "sources": {
+        "longer-mancini-logs": 100
+      }
+    },
+    "2026-05-01": {
+      "max_bars_in_session": 1321,
+      "rows": 100,
+      "sources": {
+        "longer-mancini-logs": 100
+      }
+    },
+    "2026-05-04": {
+      "max_bars_in_session": 1321,
+      "rows": 89,
+      "sources": {
+        "longer-mancini-logs": 89
+      }
+    },
+    "2026-05-05": {
+      "max_bars_in_session": 1321,
+      "rows": 106,
+      "sources": {
+        "longer-mancini-logs": 106
+      }
+    },
+    "2026-05-06": {
+      "max_bars_in_session": 1321,
+      "rows": 81,
+      "sources": {
+        "longer-mancini-logs": 81
+      }
+    },
+    "2026-05-07": {
+      "max_bars_in_session": 1321,
+      "rows": 80,
+      "sources": {
+        "longer-mancini-logs": 80
+      }
+    },
+    "2026-05-08": {
+      "max_bars_in_session": 11,
+      "rows": 107,
+      "sources": {
+        "longer-mancini-logs": 107
+      }
+    }
+  },
+  "mancini_plan_date_status_counts": {
+    "2026-02-20": {
+      "no_bars_for_plan_date": 124
+    },
+    "2026-03-04": {
+      "entry_model_available": 10,
+      "not_long_eligible": 51,
+      "not_touched": 35
+    },
+    "2026-03-10": {
+      "entry_model_available": 4,
+      "not_long_eligible": 40,
+      "not_touched": 56
+    },
+    "2026-03-13": {
+      "entry_model_available": 17,
+      "not_long_eligible": 64,
+      "not_touched": 27
+    },
+    "2026-03-18": {
+      "entry_model_available": 25,
+      "not_long_eligible": 52,
+      "not_touched": 25,
+      "touched_no_entry_model": 3
+    },
+    "2026-03-23": {
+      "no_bars_for_plan_date": 115
+    },
+    "2026-03-26": {
+      "entry_model_available": 17,
+      "not_long_eligible": 54,
+      "not_touched": 20
+    },
+    "2026-04-06": {
+      "entry_model_available": 10,
+      "not_long_eligible": 42,
+      "not_touched": 55,
+      "touched_no_entry_model": 1
+    },
+    "2026-04-10": {
+      "entry_model_available": 4,
+      "not_long_eligible": 58,
+      "not_touched": 58
+    },
+    "2026-04-14": {
+      "not_long_eligible": 53,
+      "not_touched": 60
+    },
+    "2026-04-20": {
+      "entry_model_available": 12,
+      "not_long_eligible": 41,
+      "not_touched": 57
+    },
+    "2026-04-21": {
+      "entry_model_available": 11,
+      "not_long_eligible": 44,
+      "not_touched": 40
+    },
+    "2026-04-22": {
+      "entry_model_available": 8,
+      "not_long_eligible": 48,
+      "not_touched": 72,
+      "touched_no_entry_model": 1
+    },
+    "2026-04-23": {
+      "entry_model_available": 7,
+      "not_long_eligible": 47,
+      "not_touched": 44
+    },
+    "2026-04-27": {
+      "not_long_eligible": 52,
+      "not_touched": 45
+    },
+    "2026-04-28": {
+      "entry_model_available": 10,
+      "not_long_eligible": 38,
+      "not_touched": 36,
+      "touched_no_entry_model": 2
+    },
+    "2026-04-29": {
+      "entry_model_available": 5,
+      "not_long_eligible": 58,
+      "not_touched": 35
+    },
+    "2026-04-30": {
+      "entry_model_available": 21,
+      "not_long_eligible": 44,
+      "not_touched": 35
+    },
+    "2026-05-01": {
+      "entry_model_available": 3,
+      "not_long_eligible": 45,
+      "not_touched": 52
+    },
+    "2026-05-04": {
+      "entry_model_available": 12,
+      "not_long_eligible": 30,
+      "not_touched": 47
+    },
+    "2026-05-05": {
+      "entry_model_available": 7,
+      "not_long_eligible": 48,
+      "not_touched": 51
+    },
+    "2026-05-06": {
+      "not_long_eligible": 37,
+      "not_touched": 44
+    },
+    "2026-05-07": {
+      "entry_model_available": 3,
+      "not_long_eligible": 38,
+      "not_touched": 38,
+      "touched_no_entry_model": 1
+    },
+    "2026-05-08": {
+      "entry_model_available": 4,
+      "not_long_eligible": 42,
+      "not_touched": 61
+    }
+  },
+  "mancini_plan_dates_missing_es_coverage": [
+    "2026-02-20",
+    "2026-03-23",
+    "2026-05-08"
+  ],
+  "note": "Coverage dates are actual calendar dates present in CSV rows; context parser separately applies ET session rules.",
+  "review_only": true,
+  "span_date_count_if_first_to_last_expanded": 68,
+  "trading_authority": "none"
+}

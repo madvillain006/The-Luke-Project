@@ -1,0 +1,66 @@
+{
+  "generated_at": "2026-05-12T11:19:28.129Z",
+  "research_only": true,
+  "no_pine_changes": true,
+  "source_map": [
+    {
+      "source_id": "longer-mancini-logs",
+      "source_kind": "daily_plan_text",
+      "source_path": "data/research/mancini/The Longer Mancini Logs.txt",
+      "include_in_daily_plan_extraction": true,
+      "include_in_methodology_rules": false,
+      "ocr_verified": false,
+      "exists": true
+    },
+    {
+      "source_id": "longer-mancini-logs-2",
+      "source_kind": "daily_plan_text",
+      "source_path": "data/research/mancini/Longer Mancini Logs 2.txt",
+      "include_in_daily_plan_extraction": true,
+      "include_in_methodology_rules": false,
+      "ocr_verified": false,
+      "exists": true
+    },
+    {
+      "source_id": "mancini-methodology",
+      "source_kind": "methodology_text",
+      "source_path": "data/research/mancini/methodology.txt",
+      "include_in_daily_plan_extraction": false,
+      "include_in_methodology_rules": true,
+      "ocr_verified": false,
+      "exists": true
+    },
+    {
+      "source_id": "mancini-parsing-text",
+      "source_kind": "mixed_ocr_and_plan_text",
+      "source_path": "data/research/mancini/parsing text.txt",
+      "include_in_daily_plan_extraction": false,
+      "include_in_methodology_rules": true,
+      "ocr_verified": false,
+      "exists": true
+    }
+  ],
+  "daily_plan_sources": [
+    "data/research/mancini/The Longer Mancini Logs.txt",
+    "data/research/mancini/Longer Mancini Logs 2.txt"
+  ],
+  "sections": 25,
+  "level_records": 2456,
+  "events": 2456,
+  "es_files": [
+    "data/backtest/esh26_intraday-1min_historical-data-download-04-22-2026 (1).csv",
+    "data/backtest/esm26_intraday-1min_historical-data-download-04-22-2026.csv",
+    "data/backtest/esm26_intraday-1min_historical-data-download-04-29-2026 (1).csv",
+    "data/backtest/esz25_intraday-1min_historical-data-download-04-22-2026.csv",
+    "data/historical/esh26_intraday-1min_historical-data-download-04-29-2026.csv",
+    "data/historical/esm26_intraday-1min_historical-data-download-04-29-2026 (1).csv",
+    "data/historical/esm26_intraday-1min_historical-data-download-04-29-2026.csv",
+    "data/research/mancini/esm26_intraday-1min_historical-data-download-05-07-2026.csv"
+  ],
+  "es_bars": 67540,
+  "first_ct": "2025-12-15 00:00",
+  "last_ct": "2026-05-07 17:10",
+  "first_et": "2025-12-15 01:00",
+  "last_et": "2026-05-07 18:10",
+  "timezone_note": "Barchart rows are treated as CT/CDT and ET is derived by adding one hour for this export set."
+}

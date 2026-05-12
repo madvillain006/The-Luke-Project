@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="980" viewBox="0 0 1200 980">
+<rect width="100%" height="100%" fill="#0b0d10"/>
+<text x="28.0" y="38.0" font-size="24" fill="#ffffff" text-anchor="start" font-family="Arial, sans-serif">Real Mancini Packet - Excluded Timing - non_acceptance_protocol - level 6658.0</text>
+<text x="28.0" y="65.0" font-size="15" fill="#d9e6ff" text-anchor="start" font-family="Arial, sans-serif">non_acceptance_protocol | level 6658.00 | packet mancini-es1m:2026-03-18T1338:6658.0:d6e77f2ee797</text>
+<line x1="70.0" y1="90.0" x2="1110.0" y2="90.0" stroke="#263241" stroke-width="1"/>
+<text x="1120.0" y="95.0" font-size="12" fill="#aeb9c8" text-anchor="start" font-family="Arial, sans-serif">6676.25</text>
+<line x1="70.0" y1="190.0" x2="1110.0" y2="190.0" stroke="#263241" stroke-width="1"/>
+<text x="1120.0" y="195.0" font-size="12" fill="#aeb9c8" text-anchor="start" font-family="Arial, sans-serif">6670.00</text>
+<line x1="70.0" y1="290.0" x2="1110.0" y2="290.0" stroke="#263241" stroke-width="1"/>
+<text x="1120.0" y="295.0" font-size="12" fill="#aeb9c8" text-anchor="start" font-family="Arial, sans-serif">6663.75</text>
+<line x1="70.0" y1="390.0" x2="1110.0" y2="390.0" stroke="#263241" stroke-width="1"/>
+<text x="1120.0" y="395.0" font-size="12" fill="#aeb9c8" text-anchor="start" font-family="Arial, sans-serif">6657.50</text>
+<line x1="70.0" y1="490.0" x2="1110.0" y2="490.0" stroke="#263241" stroke-width="1"/>
+<text x="1120.0" y="495.0" font-size="12" fill="#aeb9c8" text-anchor="start" font-family="Arial, sans-serif">6651.25</text>
+<line x1="70.0" y1="590.0" x2="1110.0" y2="590.0" stroke="#263241" stroke-width="1"/>
+<text x="1120.0" y="595.0" font-size="12" fill="#aeb9c8" text-anchor="start" font-family="Arial, sans-serif">6645.00</text>
+<line x1="70.0" y1="382.0" x2="1110.0" y2="382.0" stroke="#f4d35e" stroke-width="2"/>
+<text x="78.0" y="374.0" font-size="13" fill="#f4d35e" text-anchor="start" font-family="Arial, sans-serif">reclaimed level 6658.00</text>
+<line x1="70.0" y1="302.0" x2="1110.0" y2="302.0" stroke="#5bc0eb" stroke-width="1.5" stroke-dasharray="8 6"/>
+<text x="78.0" y="294.0" font-size="13" fill="#5bc0eb" text-anchor="start" font-family="Arial, sans-serif">non-acceptance danger line level + 5 = 6663.00</text>
+<line x1="70.0" y1="558.0" x2="1110.0" y2="558.0" stroke="#f25f5c" stroke-width="1.5" stroke-dasharray="5 5"/>
+<text x="78.0" y="576.0" font-size="13" fill="#f25f5c" text-anchor="start" font-family="Arial, sans-serif">invalidation anchor 6647.00</text>
+<line x1="86.8" y1="210.0" x2="86.8" y2="242.0" stroke="#ff5c5c" stroke-width="1"/>
+<rect x="72.0" y="210.0" width="29.5" height="32.0" fill="#ff5c5c" opacity="0.9"/>
+<line x1="120.3" y1="202.0" x2="120.3" y2="266.0" stroke="#32d074" stroke-width="1"/>
+<rect x="105.5" y="206.0" width="29.5" height="32.0" fill="#32d074" opacity="0.9"/>
+<line x1="153.9" y1="190.0" x2="153.9" y2="230.0" stroke="#ff5c5c" stroke-width="1"/>
+<rect x="139.1" y="202.0" width="29.5" height="8.0" fill="#ff5c5c" opacity="0.9"/>
+<line x1="187.4" y1="170.0" x2="187.4" y2="222.0" stroke="#32d074" stroke-width="1"/>
+<rect x="172.6" y="170.0" width="29.5" height="40.0" fill="#32d074" opacity="0.9"/>
+<line x1="221.0" y1="166.0" x2="221.0" y2="218.0" stroke="#ff5c5c" stroke-width="1"/>
+<rect x="206.2" y="166.0" width="29.5" height="20.0" fill="#ff5c5c" opacity="0.9"/>
+<line x1="254.5" y1="142.0" x2="254.5" y2="182.0" stroke="#32d074" stroke-width="1"/>
+<rect x="239.7" y="142.0" width="29.5" height="32.0" fill="#32d074" opacity="0.9"/>
+<line x1="288.1" y1="138.0" x2="288.1" y2="178.0" stroke="#32d074" stroke-width="1"/>
+<rect x="273.3" y="142.0" width="29.5" height="4.0" fill="#32d074" opacity="0.9"/>
+<line x1="321.6" y1="122.0" x2="321.6" y2="174.0" stroke="#32d074" stroke-width="1"/>
+<rect x="306.8" y="142.0" width="29.5" height="8.0" fill="#32d074" opacity="0.9"/>
+<line x1="355.2" y1="134.0" x2="355.2" y2="226.0" stroke="#ff5c5c" stroke-width="1"/>
+<rect x="340.4" y="134.0" width="29.5" height="84.0" fill="#ff5c5c" opacity="0.9"/>
+<line x1="388.7" y1="190.0" x2="388.7" y2="282.0" stroke="#ff5c5c" stroke-width="1"/>
+<rect x="373.9" y="218.0" width="29.5" height="56.0" fill="#ff5c5c" opacity="0.9"/>
+<line x1="422.3" y1="246.0" x2="422.3" y2="298.0" stroke="#ff5c5c" stroke-width="1"/>
+<rect x="407.5" y="274.0" width="29.5" height="16.0" fill="#ff5c5c" opacity="0.9"/>
+<line x1="455.8" y1="262.0" x2="455.8" y2="390.0" stroke="#ff5c5c" stroke-width="1"/>
+<rect x="441.0" y="286.0" width="29.5" height="100.0" fill="#ff5c5c" opacity="0.9"/>
+<line x1="489.4" y1="282.0" x2="489.4" y2="410.0" stroke="#32d074" stroke-width="1"/>
+<rect x="474.6" y="330.0" width="29.5" height="60.0" fill="#32d074" opacity="0.9"/>
+<line x1="522.9" y1="198.0" x2="522.9" y2="330.0" stroke="#32d074" stroke-width="1"/>
+<rect x="508.1" y="198.0" width="29.5" height="128.0" fill="#32d074" opacity="0.9"/>
+<line x1="556.5" y1="146.0" x2="556.5" y2="274.0" stroke="#ff5c5c" stroke-width="1"/>
+<rect x="541.7" y="202.0" width="29.5" height="56.0" fill="#ff5c5c" opacity="0.9"/>
+<line x1="590.0" y1="230.0" x2="590.0" y2="318.0" stroke="#ff5c5c" stroke-width="1"/>
+<rect x="575.2" y="262.0" width="29.5" height="32.0" fill="#ff5c5c" opacity="0.9"/>
+<line x1="590.0" y1="90.0" x2="590.0" y2="590.0" stroke="#7bd88f" stroke-width="2" stroke-dasharray="4 4"/>
+<text x="596.0" y="126.0" font-size="12" fill="#a7f3b7" text-anchor="start" font-family="Arial, sans-serif">first reclaim close</text>
+<line x1="623.5" y1="258.0" x2="623.5" y2="374.0" stroke="#ff5c5c" stroke-width="1"/>
+<rect x="608.8" y="298.0" width="29.5" height="68.0" fill="#ff5c5c" opacity="0.9"/>
+<line x1="657.1" y1="350.0" x2="657.1" y2="426.0" stroke="#ff5c5c" stroke-width="1"/>
+<rect x="642.3" y="370.0" width="29.5" height="28.0" fill="#ff5c5c" opacity="0.9"/>
+<line x1="690.6" y1="310.0" x2="690.6" y2="410.0" stroke="#32d074" stroke-width="1"/>
+<rect x="675.9" y="370.0" width="29.5" height="32.0" fill="#32d074" opacity="0.9"/>
+<line x1="724.2" y1="282.0" x2="724.2" y2="370.0" stroke="#32d074" stroke-width="1"/>
+<rect x="709.4" y="298.0" width="29.5" height="72.0" fill="#32d074" opacity="0.9"/>
+<line x1="757.7" y1="246.0" x2="757.7" y2="314.0" stroke="#32d074" stroke-width="1"/>
+<rect x="743.0" y="294.0" width="29.5" height="4.0" fill="#32d074" opacity="0.9"/>
+<line x1="791.3" y1="282.0" x2="791.3" y2="338.0" stroke="#ff5c5c" stroke-width="1"/>
+<rect x="776.5" y="290.0" width="29.5" height="40.0" fill="#ff5c5c" opacity="0.9"/>
+<line x1="824.8" y1="318.0" x2="824.8" y2="378.0" stroke="#ff5c5c" stroke-width="1"/>
+<rect x="810.1" y="338.0" width="29.5" height="20.0" fill="#ff5c5c" opacity="0.9"/>
+<line x1="858.4" y1="334.0" x2="858.4" y2="394.0" stroke="#ff5c5c" stroke-width="1"/>
+<rect x="843.6" y="354.0" width="29.5" height="4.0" fill="#ff5c5c" opacity="0.9"/>
+<line x1="891.9" y1="326.0" x2="891.9" y2="374.0" stroke="#32d074" stroke-width="1"/>
+<rect x="877.2" y="354.0" width="29.5" height="8.0" fill="#32d074" opacity="0.9"/>
+<line x1="925.5" y1="326.0" x2="925.5" y2="366.0" stroke="#32d074" stroke-width="1"/>
+<rect x="910.7" y="350.0" width="29.5" height="2.0" fill="#32d074" opacity="0.9"/>
+<line x1="959.0" y1="346.0" x2="959.0" y2="394.0" stroke="#ff5c5c" stroke-width="1"/>
+<rect x="944.3" y="346.0" width="29.5" height="36.0" fill="#ff5c5c" opacity="0.9"/>
+<line x1="992.6" y1="382.0" x2="992.6" y2="458.0" stroke="#ff5c5c" stroke-width="1"/>
+<rect x="977.8" y="386.0" width="29.5" height="72.0" fill="#ff5c5c" opacity="0.9"/>
+<line x1="1026.1" y1="410.0" x2="1026.1" y2="494.0" stroke="#32d074" stroke-width="1"/>
+<rect x="1011.4" y="426.0" width="29.5" height="24.0" fill="#32d074" opacity="0.9"/>
+<line x1="1059.7" y1="426.0" x2="1059.7" y2="526.0" stroke="#ff5c5c" stroke-width="1"/>
+<rect x="1044.9" y="430.0" width="29.5" height="88.0" fill="#ff5c5c" opacity="0.9"/>
+<line x1="1093.2" y1="474.0" x2="1093.2" y2="554.0" stroke="#ff5c5c" stroke-width="1"/>
+<rect x="1078.5" y="514.0" width="29.5" height="32.0" fill="#ff5c5c" opacity="0.9"/>
+<line x1="1093.2" y1="90.0" x2="1093.2" y2="590.0" stroke="#ff8c42" stroke-width="2" stroke-dasharray="4 4"/>
+<text x="1099.2" y="108.0" font-size="12" fill="#ffb37a" text-anchor="start" font-family="Arial, sans-serif">trap candle</text>
+<rect x="70" y="610" width="1040" height="340" fill="#141922" stroke="#344156" rx="6"/>
+<text x="86.0" y="636.0" font-size="14" fill="#f1f5f9" text-anchor="start" font-family="Arial, sans-serif">source: longer-mancini-logs-2</text>
+<text x="606.0" y="636.0" font-size="14" fill="#f1f5f9" text-anchor="start" font-family="Arial, sans-serif">source kind: daily_plan_text</text>
+<text x="86.0" y="660.0" font-size="14" fill="#f1f5f9" text-anchor="start" font-family="Arial, sans-serif">timezone policy: barchart-raw</text>
+<text x="606.0" y="660.0" font-size="14" fill="#f1f5f9" text-anchor="start" font-family="Arial, sans-serif">flush points: 10.75</text>
+<text x="86.0" y="684.0" font-size="14" fill="#f1f5f9" text-anchor="start" font-family="Arial, sans-serif">reclaim minutes from trap: 0.00</text>
+<text x="606.0" y="684.0" font-size="14" fill="#f1f5f9" text-anchor="start" font-family="Arial, sans-serif">acceptance closes: 2</text>
+<text x="86.0" y="708.0" font-size="14" fill="#f1f5f9" text-anchor="start" font-family="Arial, sans-serif">non-acceptance held bars: 2</text>
+<text x="606.0" y="708.0" font-size="14" fill="#f1f5f9" text-anchor="start" font-family="Arial, sans-serif">MFE 15m: 2.00 | MAE 15m: 18.25</text>
+<text x="86.0" y="732.0" font-size="14" fill="#f1f5f9" text-anchor="start" font-family="Arial, sans-serif">research only - verify visually before OCR reuse</text>
+<text x="86.0" y="770.0" font-size="13" fill="#f4d35e" text-anchor="start" font-family="Arial, sans-serif">newsletter/source text:</text>
+<text x="86.0" y="790.0" font-size="13" fill="#f1f5f9" text-anchor="start" font-family="Arial, sans-serif">The only entries below there are of interest would be 1) The Failed Breakdown of Sunday&#x27;s opening 6658 low and 2) The Failed Breakdown of last</text>
+<text x="86.0" y="808.0" font-size="13" fill="#f1f5f9" text-anchor="start" font-family="Arial, sans-serif">weeks 6635 low, bonus if we can hit 6623 on this.</text>
+<text x="86.0" y="844.0" font-size="13" fill="#5bc0eb" text-anchor="start" font-family="Arial, sans-serif">case note:</text>
+<text x="86.0" y="864.0" font-size="13" fill="#f1f5f9" text-anchor="start" font-family="Arial, sans-serif">Source-priority real Mancini packet. Use the newsletter/source text first; OHLC metrics and deterministic labels are secondary. Source</text>
+<text x="86.0" y="882.0" font-size="13" fill="#f1f5f9" text-anchor="start" font-family="Arial, sans-serif">class=explicit_mancini_narrative; stat policy=excluded from timing statistics: missing_or_nonpositive_reclaim_minutes.</text>
+</svg>

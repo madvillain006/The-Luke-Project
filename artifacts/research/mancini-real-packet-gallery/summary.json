@@ -1,0 +1,24 @@
+{
+  "acceptance_family_counts": {
+    "classic_acceptance_backtest_from_below": 23,
+    "classic_acceptance_second_attempt_reclaim": 41,
+    "non_acceptance_protocol": 67,
+    "simple_reclaim_unclassified": 39,
+    "unmeasurable": 2
+  },
+  "accepted_timing_rows": 128,
+  "artifact_kind": "real_mancini_packet_gallery",
+  "data_class": "historical_packet_window",
+  "excluded_timing_rows": 44,
+  "index": "artifacts\\research\\mancini-real-packet-gallery\\index.md",
+  "mancini_source_priority": true,
+  "manifest": "artifacts\\research\\mancini-real-packet-gallery\\manifest.json",
+  "review_only": true,
+  "rows": 172,
+  "source_explicitness_counts": {
+    "explicit_mancini_narrative": 50,
+    "mancini_context_text": 24,
+    "support_resistance_list": 98
+  },
+  "trading_authority": "none"
+}

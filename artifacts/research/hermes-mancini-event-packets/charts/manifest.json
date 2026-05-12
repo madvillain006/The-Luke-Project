@@ -1,0 +1,110 @@
+[
+  {
+    "acceptance_family": "non_acceptance_protocol",
+    "chart_path": "artifacts\\research\\hermes-mancini-event-packets\\charts\\01_non_acceptance_protocol_7086.0.svg",
+    "level": 7086.0,
+    "mae_15m": 7.25,
+    "mfe_15m": 44.75,
+    "packet_id": "mancini-es1m:2026-04-23T1250:7086.0:bce63b515a40",
+    "review_only": true
+  },
+  {
+    "acceptance_family": "non_acceptance_protocol",
+    "chart_path": "artifacts\\research\\hermes-mancini-event-packets\\charts\\02_non_acceptance_protocol_6853.0.svg",
+    "level": 6853.0,
+    "mae_15m": 2.5,
+    "mfe_15m": 33.0,
+    "packet_id": "mancini-es1m:2026-03-04T0912:6853.0:4e1e52046e44",
+    "review_only": true
+  },
+  {
+    "acceptance_family": "non_acceptance_protocol",
+    "chart_path": "artifacts\\research\\hermes-mancini-event-packets\\charts\\03_non_acceptance_protocol_7228.0.svg",
+    "level": 7228.0,
+    "mae_15m": 1.25,
+    "mfe_15m": 23.0,
+    "packet_id": "mancini-es1m:2026-05-04T0528:7228.0:824ea98cdc78",
+    "review_only": true
+  },
+  {
+    "acceptance_family": "classic_acceptance_backtest_from_below",
+    "chart_path": "artifacts\\research\\hermes-mancini-event-packets\\charts\\04_classic_acceptance_backtest_from_below_7138.0.svg",
+    "level": 7138.0,
+    "mae_15m": 2.5,
+    "mfe_15m": 17.25,
+    "packet_id": "mancini-es1m:2026-04-30T0120:7138.0:c1394dc0e7d2",
+    "review_only": true
+  },
+  {
+    "acceptance_family": "classic_acceptance_backtest_from_below",
+    "chart_path": "artifacts\\research\\hermes-mancini-event-packets\\charts\\05_classic_acceptance_backtest_from_below_6667.0.svg",
+    "level": 6667.0,
+    "mae_15m": 1.0,
+    "mfe_15m": 15.75,
+    "packet_id": "mancini-es1m:2026-03-13T0355:6667.0:473442daff01",
+    "review_only": true
+  },
+  {
+    "acceptance_family": "classic_acceptance_backtest_from_below",
+    "chart_path": "artifacts\\research\\hermes-mancini-event-packets\\charts\\06_classic_acceptance_backtest_from_below_7137.0.svg",
+    "level": 7137.0,
+    "mae_15m": 1.25,
+    "mfe_15m": 13.0,
+    "packet_id": "mancini-es1m:2026-04-30T0117:7137.0:643da9bff5cb",
+    "review_only": true
+  },
+  {
+    "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+    "chart_path": "artifacts\\research\\hermes-mancini-event-packets\\charts\\07_classic_acceptance_second_attempt_reclaim_7221.0.svg",
+    "level": 7221.0,
+    "mae_15m": 2.25,
+    "mfe_15m": 11.5,
+    "packet_id": "mancini-es1m:2026-04-30T1249:7221.0:97231e7109c1",
+    "review_only": true
+  },
+  {
+    "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+    "chart_path": "artifacts\\research\\hermes-mancini-event-packets\\charts\\08_classic_acceptance_second_attempt_reclaim_7095.0.svg",
+    "level": 7095.0,
+    "mae_15m": 5.5,
+    "mfe_15m": 9.0,
+    "packet_id": "mancini-es1m:2026-04-21T1449:7095.0:475069d6aaa9",
+    "review_only": true
+  },
+  {
+    "acceptance_family": "classic_acceptance_second_attempt_reclaim",
+    "chart_path": "artifacts\\research\\hermes-mancini-event-packets\\charts\\09_classic_acceptance_second_attempt_reclaim_7275.0.svg",
+    "level": 7275.0,
+    "mae_15m": 4.75,
+    "mfe_15m": 6.75,
+    "packet_id": "mancini-es1m:2026-05-05T0853:7275.0:488506c4aebd",
+    "review_only": true
+  },
+  {
+    "acceptance_family": "simple_reclaim_unclassified",
+    "chart_path": "artifacts\\research\\hermes-mancini-event-packets\\charts\\10_simple_reclaim_unclassified_7214.0.svg",
+    "level": 7214.0,
+    "mae_15m": 0.75,
+    "mfe_15m": 7.25,
+    "packet_id": "mancini-es1m:2026-04-30T1233:7214.0:08789e63503b",
+    "review_only": true
+  },
+  {
+    "acceptance_family": "simple_reclaim_unclassified",
+    "chart_path": "artifacts\\research\\hermes-mancini-event-packets\\charts\\11_simple_reclaim_unclassified_7267.0.svg",
+    "level": 7267.0,
+    "mae_15m": 3.25,
+    "mfe_15m": 7.25,
+    "packet_id": "mancini-es1m:2026-05-05T0830:7267.0:bfed98aa1b3b",
+    "review_only": true
+  },
+  {
+    "acceptance_family": "simple_reclaim_unclassified",
+    "chart_path": "artifacts\\research\\hermes-mancini-event-packets\\charts\\12_simple_reclaim_unclassified_6638.0.svg",
+    "level": 6638.0,
+    "mae_15m": 3.25,
+    "mfe_15m": 6.5,
+    "packet_id": "mancini-es1m:2026-03-13T1254:6638.0:37a31f30e5e5",
+    "review_only": true
+  }
+]

@@ -1,0 +1,7 @@
+primary_role,levels,entries,complete_30m_entries,complete_60m_entries,touched,avg_mfe_15m,median_mfe_15m,avg_mfe_30m,median_mfe_30m,avg_mfe_60m,median_mfe_60m,avg_mae_30m,hit_2pt_30m_rate,hit_4pt_30m_rate,hit_8pt_30m_rate,hit_10pt_60m_rate,mae_over_5pt_30m_rate
+SUPPORT_LEVEL,653,86,81,76,89,6.78,4.75,9.38,8.25,12.31,10.75,6.04,83.95,69.14,51.85,52.63,43.21
+FAILED_BREAKDOWN_RECLAIM,269,77,74,74,81,6.77,4.25,8.83,6.625,11.37,9,7.5,91.89,64.86,41.89,47.3,45.95
+MAJOR_SUPPORT,347,15,14,13,16,9.13,5,10.55,5.25,13.98,7.25,8.79,92.86,64.29,35.71,38.46,71.43
+FIRST_SUPPORT_CAUTION,24,12,11,11,12,4.68,3.75,5.95,6.5,6.57,6.75,8.14,81.82,63.64,27.27,27.27,54.55
+DIRECT_BID_CONDITIONAL,5,0,0,0,0,0,,0,,0,,0,0,0,0,0,0
+RESISTANCE_ONLY,1158,0,0,0,0,0,,0,,0,,0,0,0,0,0,0

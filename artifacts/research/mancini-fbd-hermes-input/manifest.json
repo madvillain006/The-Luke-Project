@@ -1,0 +1,151 @@
+{
+  "counts": {
+    "feature_rows": 739,
+    "gallery_manifest_missing_png_sidecars": 0,
+    "gallery_png_files": 172,
+    "gallery_svg_files": 172,
+    "hard_rejected_rows": 693,
+    "label_rows": 739,
+    "strict_positive_training_candidate_rows": 0,
+    "training_rows": 739,
+    "unique_setups": 698
+  },
+  "files": [
+    {
+      "bytes": 26953,
+      "path": "reports\\mancini-algo-hermes-handoff-2026-05-12.md",
+      "role": "source-of-truth handoff",
+      "sha256": "6f8b0c1830ab038ac8d62fd395aa0601c282b3203e9bcebbb497243037f621e1"
+    },
+    {
+      "bytes": 2412732,
+      "path": "artifacts\\research\\mancini-direct-fbd-source-audit\\direct_fbd_source_audit.json",
+      "role": "direct source audit",
+      "sha256": "8731b7b2015443f37b8726e85d6f3101933a3dc4b4a19098a64d88667fa28a20"
+    },
+    {
+      "bytes": 495527,
+      "path": "reports\\mancini-fbd-chronological-canonical-checklist-2026-05-12.md",
+      "role": "chronological source checklist",
+      "sha256": "a833efef0357673951e64d131f6e8ff453be1da60ecb40c406418cace7d74898"
+    },
+    {
+      "bytes": 926556,
+      "path": "artifacts\\research\\mancini-context-protocol\\events.csv",
+      "role": "Mancini context level universe",
+      "sha256": "2c2a27fc5ca950426b00fed46e9e72d025a8dcdbfc4bf73b0f88fe07cf283170"
+    },
+    {
+      "bytes": 9932,
+      "path": "artifacts\\research\\hermes-mancini-event-packets\\quick_reclaim_acceptance_summary.json",
+      "role": "quick reclaim acceptance summary",
+      "sha256": "0b2c3436df853fc7f189bafac1ce4e14c3f4c4d7706621d3566178af87cf6f54"
+    },
+    {
+      "bytes": 157104,
+      "path": "artifacts\\research\\hermes-mancini-event-packets\\quick_reclaim_acceptance_rows.csv",
+      "role": "quick reclaim acceptance rows",
+      "sha256": "2139301b19f03b5f18c27f5fc7f47ba3c72ee515de9ee5fe7744a12c23f57a09"
+    },
+    {
+      "bytes": 1365159,
+      "path": "artifacts\\research\\mancini-real-packet-gallery\\manifest.json",
+      "role": "real packet gallery manifest",
+      "sha256": "fb3c5c7e353a2875f4f8942fec23e37683db6996009ef6aa8d99a0c5789ab279"
+    },
+    {
+      "bytes": 194200,
+      "path": "artifacts\\research\\mancini-visual-sanity-audit\\visual_sanity_audit.json",
+      "role": "visual sanity audit",
+      "sha256": "ae3f046578418da67f9ae6540fb4f6c18be48ff397651d46cad67d72c3ab679d"
+    },
+    {
+      "bytes": 7525,
+      "path": "docs\\FAKE_BREAKDOWN_V2_RESEARCH.md",
+      "role": "prior V2 research context",
+      "sha256": "5a8d0f33d90d83243c1b5818804ffc3675499bae61ea89109b6ef0448b453daf"
+    },
+    {
+      "bytes": 4816,
+      "path": "docs\\FAKE_BREAKDOWN_V3_LIVE_FILTERS.md",
+      "role": "prior V3 research context",
+      "sha256": "af62e8282d7cab4267b7ad93f3712a396630968827d0c826579e595ca47c95b5"
+    },
+    {
+      "bytes": 4735,
+      "path": "docs\\FAKE_BREAKDOWN_STATE_MACHINE.md",
+      "role": "state-machine research context",
+      "sha256": "18d6870c0c55c39529577c488788d7d8d1caffd0d6e43c2cd5729a4b93f7a1c7"
+    },
+    {
+      "bytes": 4131,
+      "path": "reports\\mancini-ninja-shadow-parity-spec-2026-05-12.md",
+      "role": "future Ninja shadow parity context",
+      "sha256": "4762abc6628f1b677b5e4523cef6524a4396bfb55be0a1d42681a09e9512c71b"
+    },
+    {
+      "bytes": 3364618,
+      "path": "artifacts\\research\\mancini-fbd-algo-training-table\\training_rows.jsonl",
+      "role": "generated source-first training rows",
+      "sha256": "f07ad6678063bd5d7bb2dd49b42d71e6ea3df9a63929c1d16990dac60481fdb2"
+    },
+    {
+      "bytes": 343378,
+      "path": "artifacts\\research\\mancini-fbd-algo-math\\features.csv",
+      "role": "generated deterministic feature matrix",
+      "sha256": "bba06f5ddb363e30bba663e099a83c98bbf10957981df12938931aab02e72b92"
+    },
+    {
+      "bytes": 205712,
+      "path": "artifacts\\research\\mancini-fbd-algo-math\\labels.csv",
+      "role": "generated labels and outcomes",
+      "sha256": "843a6c483a9620b85bb19a029fa0e0c5539e1dbb04e499cef573951fc16bb872"
+    },
+    {
+      "bytes": 3364618,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\selected_training_rows.jsonl",
+      "role": "Hermes selected training rows",
+      "sha256": "f07ad6678063bd5d7bb2dd49b42d71e6ea3df9a63929c1d16990dac60481fdb2"
+    },
+    {
+      "bytes": 3121,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\feature_dictionary.md",
+      "role": "Hermes feature dictionary",
+      "sha256": "24a8d023dd8c974f929a2994193a80e115744a0e040029b0f82c5925790d300d"
+    },
+    {
+      "bytes": 32094,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\candidate_rule_scores.json",
+      "role": "Hermes candidate rule scores",
+      "sha256": "aa38396b4f2492f373f1dbfeb0798daef08384ff557c8af0f908ca89102d4dd9"
+    },
+    {
+      "bytes": 3239,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\walk_forward_report.md",
+      "role": "Hermes walk-forward report",
+      "sha256": "096b6c55c5f4078ba20c7ef95f5022d07e4ae8c30492da97ff532e5784d804f8"
+    },
+    {
+      "bytes": 3527,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\HERMES_PROMPT.md",
+      "role": "Hermes prompt",
+      "sha256": "fde6c835a6660d4c52c6776363bf604a4910134e975fec5bcb832a2ac0558133"
+    },
+    {
+      "bytes": 4160,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\source_file_index.md",
+      "role": "Hermes source file index",
+      "sha256": "b9196176d6c26ad3ab54815fc101d928b1e165dce9ca7823acf979acda81efaa"
+    }
+  ],
+  "generated_at": "2026-05-12T20:13:33.193436+00:00",
+  "safety": {
+    "broker_risk_live_pine_credential_execution_touched": false,
+    "live_trading_behavior_introduced": false,
+    "ninja_gui_proof_claimed": false,
+    "sr_list_only_promoted_to_positive": false
+  },
+  "scope": "research_historical_replay_shadow_only",
+  "selected_training_rows": 739,
+  "status": "ready_for_hermes"
+}

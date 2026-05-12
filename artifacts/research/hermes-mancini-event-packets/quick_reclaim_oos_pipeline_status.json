@@ -1,0 +1,186 @@
+{
+  "accepted_timing_rows": 128,
+  "es_1m_csv_files": 8,
+  "event_status_counts": {
+    "entry_model_available": 190,
+    "no_bars_for_plan_date": 239,
+    "not_long_eligible": 1026,
+    "not_touched": 993,
+    "touched_no_entry_model": 8
+  },
+  "events_csv": "C:\\Users\\conor\\luke\\artifacts\\research\\mancini-context-protocol\\events.csv",
+  "excluded_timing_rows": 44,
+  "generated_packet_rows": 172,
+  "machine_implementation_confidence": "not_100_percent_until_acceptance_modules_and_oos_gates_pass",
+  "next_data_requirement": "Add enough ES 1m CSV coverage and Mancini plan levels to reach at least 30 accepted timing rows in 2_to_3_5 plus each populated comparison bucket.",
+  "packet_reject_reason_counts": {
+    "missing_flush_points": 2,
+    "missing_or_nonpositive_reclaim_minutes": 44
+  },
+  "packets_jsonl": "C:\\Users\\conor\\luke\\artifacts\\research\\hermes-mancini-event-packets\\hermes_packets.jsonl",
+  "pipeline_confidence": "deterministic_after_inputs_are_fixed",
+  "plan_date_status_counts": {
+    "2026-02-20": {
+      "no_bars_for_plan_date": 124
+    },
+    "2026-03-04": {
+      "entry_model_available": 10,
+      "not_long_eligible": 51,
+      "not_touched": 35
+    },
+    "2026-03-10": {
+      "entry_model_available": 4,
+      "not_long_eligible": 40,
+      "not_touched": 56
+    },
+    "2026-03-13": {
+      "entry_model_available": 17,
+      "not_long_eligible": 64,
+      "not_touched": 27
+    },
+    "2026-03-18": {
+      "entry_model_available": 25,
+      "not_long_eligible": 52,
+      "not_touched": 25,
+      "touched_no_entry_model": 3
+    },
+    "2026-03-23": {
+      "no_bars_for_plan_date": 115
+    },
+    "2026-03-26": {
+      "entry_model_available": 17,
+      "not_long_eligible": 54,
+      "not_touched": 20
+    },
+    "2026-04-06": {
+      "entry_model_available": 10,
+      "not_long_eligible": 42,
+      "not_touched": 55,
+      "touched_no_entry_model": 1
+    },
+    "2026-04-10": {
+      "entry_model_available": 4,
+      "not_long_eligible": 58,
+      "not_touched": 58
+    },
+    "2026-04-14": {
+      "not_long_eligible": 53,
+      "not_touched": 60
+    },
+    "2026-04-20": {
+      "entry_model_available": 12,
+      "not_long_eligible": 41,
+      "not_touched": 57
+    },
+    "2026-04-21": {
+      "entry_model_available": 11,
+      "not_long_eligible": 44,
+      "not_touched": 40
+    },
+    "2026-04-22": {
+      "entry_model_available": 8,
+      "not_long_eligible": 48,
+      "not_touched": 72,
+      "touched_no_entry_model": 1
+    },
+    "2026-04-23": {
+      "entry_model_available": 7,
+      "not_long_eligible": 47,
+      "not_touched": 44
+    },
+    "2026-04-27": {
+      "not_long_eligible": 52,
+      "not_touched": 45
+    },
+    "2026-04-28": {
+      "entry_model_available": 10,
+      "not_long_eligible": 38,
+      "not_touched": 36,
+      "touched_no_entry_model": 2
+    },
+    "2026-04-29": {
+      "entry_model_available": 5,
+      "not_long_eligible": 58,
+      "not_touched": 35
+    },
+    "2026-04-30": {
+      "entry_model_available": 21,
+      "not_long_eligible": 44,
+      "not_touched": 35
+    },
+    "2026-05-01": {
+      "entry_model_available": 3,
+      "not_long_eligible": 45,
+      "not_touched": 52
+    },
+    "2026-05-04": {
+      "entry_model_available": 12,
+      "not_long_eligible": 30,
+      "not_touched": 47
+    },
+    "2026-05-05": {
+      "entry_model_available": 7,
+      "not_long_eligible": 48,
+      "not_touched": 51
+    },
+    "2026-05-06": {
+      "not_long_eligible": 37,
+      "not_touched": 44
+    },
+    "2026-05-07": {
+      "entry_model_available": 3,
+      "not_long_eligible": 38,
+      "not_touched": 38,
+      "touched_no_entry_model": 1
+    },
+    "2026-05-08": {
+      "entry_model_available": 4,
+      "not_long_eligible": 42,
+      "not_touched": 61
+    }
+  },
+  "pre_packet_skipped_reason_counts": {
+    "incomplete_window": 26,
+    "missing_timestamp": 2258
+  },
+  "pre_packet_skipped_source_rows": 2284,
+  "quick_reclaim_summary": "C:\\Users\\conor\\luke\\artifacts\\research\\hermes-mancini-event-packets\\quick_reclaim_acceptance_summary.json",
+  "review_only": true,
+  "sample_gate": {
+    "0_to_1": {
+      "accepted_for_timing_test_count": 1,
+      "needs_30": 29,
+      "passes_minimum": false
+    },
+    "10_plus": {
+      "accepted_for_timing_test_count": 54,
+      "needs_30": 0,
+      "passes_minimum": true
+    },
+    "1_to_2": {
+      "accepted_for_timing_test_count": 0,
+      "needs_30": 30,
+      "passes_minimum": false
+    },
+    "2_to_3_5": {
+      "accepted_for_timing_test_count": 13,
+      "needs_30": 17,
+      "passes_minimum": false
+    },
+    "3_5_to_10": {
+      "accepted_for_timing_test_count": 60,
+      "needs_30": 0,
+      "passes_minimum": true
+    }
+  },
+  "source_event_rows": 2456,
+  "source_map_counts": {
+    "daily_plan_extraction_enabled": 2,
+    "daily_plan_text": 2,
+    "methodology_rules_enabled": 2,
+    "methodology_text": 1,
+    "mixed_ocr_and_plan_text": 1
+  },
+  "strategy_assumption": "failed_breakdown_market_pattern_assumed_viable",
+  "trading_authority": "none"
+}

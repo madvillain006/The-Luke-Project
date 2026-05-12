@@ -5,7 +5,40 @@ const path = require('path');
 const crypto = require('crypto');
 
 const ROOT = path.join(__dirname, '..');
-const LOG_PATH = path.join(ROOT, 'data', 'research', 'mancini', 'The Longer Mancini Logs.txt');
+const SOURCE_MAP = [
+  {
+    source_id: 'longer-mancini-logs',
+    source_kind: 'daily_plan_text',
+    source_path: path.join(ROOT, 'data', 'research', 'mancini', 'The Longer Mancini Logs.txt'),
+    include_in_daily_plan_extraction: true,
+    include_in_methodology_rules: false,
+    ocr_verified: false,
+  },
+  {
+    source_id: 'longer-mancini-logs-2',
+    source_kind: 'daily_plan_text',
+    source_path: path.join(ROOT, 'data', 'research', 'mancini', 'Longer Mancini Logs 2.txt'),
+    include_in_daily_plan_extraction: true,
+    include_in_methodology_rules: false,
+    ocr_verified: false,
+  },
+  {
+    source_id: 'mancini-methodology',
+    source_kind: 'methodology_text',
+    source_path: path.join(ROOT, 'data', 'research', 'mancini', 'methodology.txt'),
+    include_in_daily_plan_extraction: false,
+    include_in_methodology_rules: true,
+    ocr_verified: false,
+  },
+  {
+    source_id: 'mancini-parsing-text',
+    source_kind: 'mixed_ocr_and_plan_text',
+    source_path: path.join(ROOT, 'data', 'research', 'mancini', 'parsing text.txt'),
+    include_in_daily_plan_extraction: false,
+    include_in_methodology_rules: true,
+    ocr_verified: false,
+  },
+];
 const OUT_DIR = path.join(ROOT, 'artifacts', 'research', 'mancini-context-protocol');
 
 const MONTHS = {
@@ -68,6 +101,31 @@ function addDays(dateStr, days) {
   return date.toISOString().slice(0, 10);
 }
 
+const WEEKDAYS = {
+  sunday: 0,
+  monday: 1,
+  tuesday: 2,
+  wednesday: 3,
+  thursday: 4,
+  friday: 5,
+  saturday: 6,
+};
+
+function weekdayOf(dateStr) {
+  return new Date(`${dateStr}T12:00:00Z`).getUTCDay();
+}
+
+function isWeekend(dateStr) {
+  const weekday = weekdayOf(dateStr);
+  return weekday === 0 || weekday === 6;
+}
+
+function nextWeekdayOnOrAfter(dateStr, targetWeekday) {
+  const current = weekdayOf(dateStr);
+  const delta = (targetWeekday - current + 7) % 7;
+  return addDays(dateStr, delta);
+}
+
 function parseMonthDate(text, defaultYear = 2026) {
   const match = String(text || '').match(/\b(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t|tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+(\d{1,2})(?:st|nd|rd|th)?(?:,\s*(20\d{2}))?/i);
   if (!match) return null;
@@ -77,6 +135,23 @@ function parseMonthDate(text, defaultYear = 2026) {
   const year = Number(match[3] || defaultYear);
   if (!month || !day || !year) return null;
   return formatDate(year, month, day);
+}
+
+function parseTradePlanWeekday(text, pubDate) {
+  const match = String(text || '').match(/\bTrade\s+Plan\s+(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday)\b/i);
+  if (!match) return null;
+  const target = WEEKDAYS[match[1].toLowerCase()];
+  if (target === undefined) return null;
+  return nextWeekdayOnOrAfter(pubDate, target);
+}
+
+function choosePlanDate(title, body, pubDate) {
+  const titleDate = parseMonthDate(title, Number(pubDate.slice(0, 4)));
+  const weekdayDate = parseTradePlanWeekday(body, pubDate);
+  if (titleDate && titleDate >= pubDate && !isWeekend(titleDate)) return titleDate;
+  if (weekdayDate && !isWeekend(weekdayDate)) return weekdayDate;
+  if (titleDate) return titleDate;
+  return addDays(pubDate, 1);
 }
 
 function normalizeText(text) {
@@ -110,6 +185,27 @@ function writeCsv(filePath, rows, explicitColumns = null) {
 
 function writeJson(filePath, value) {
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
+}
+
+function sourceForOutput(source) {
+  return {
+    ...source,
+    source_path: path.relative(ROOT, source.source_path).replace(/\\/g, '/'),
+    exists: fs.existsSync(source.source_path),
+  };
+}
+
+function readDailyPlanSections() {
+  const seen = new Set();
+  const sections = SOURCE_MAP
+    .filter(source => source.include_in_daily_plan_extraction && fs.existsSync(source.source_path))
+    .flatMap((source, sourceIndex) => parseSections(fs.readFileSync(source.source_path, 'utf8'), source, sourceIndex));
+  return sections.filter(section => {
+    const key = `${section.source_id}|${section.hash}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 function splitCsvLine(line) {
@@ -238,7 +334,7 @@ function loadMergedEsBars() {
   return { files, bars };
 }
 
-function parseSections(rawText) {
+function parseSections(rawText, source = null, sourceIndex = 0) {
   const normalized = normalizeText(rawText);
   const lines = normalized.split('\n');
   const dateLineRe = /^(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t|tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{1,2},\s+20\d{2}$/i;
@@ -258,12 +354,16 @@ function parseSections(rawText) {
     }
     const title = lines[titleIndex]?.trim() || `Mancini section ${index + 1}`;
     const pubDate = parseMonthDate(lines[lineIndex].trim(), 2026);
-    const planDate = parseMonthDate(title, Number(pubDate.slice(0, 4))) || addDays(pubDate, 1);
     const next = dateLines[index + 1] ?? lines.length;
     const start = Math.max(0, titleIndex);
     const body = lines.slice(lineIndex + 1, next).join('\n').trim();
+    const planDate = choosePlanDate(title, body, pubDate);
     return {
-      id: `section_${String(index + 1).padStart(2, '0')}_${pubDate}`,
+      id: `${source?.source_id || `source_${sourceIndex + 1}`}_section_${String(index + 1).padStart(2, '0')}_${pubDate}`,
+      source_id: source?.source_id || '',
+      source_kind: source?.source_kind || '',
+      source_path: source ? path.relative(ROOT, source.source_path).replace(/\\/g, '/') : '',
+      ocr_verified: source?.ocr_verified || false,
       title,
       pub_date: pubDate,
       plan_date: planDate,
@@ -321,6 +421,10 @@ function parseLevelList(section, label, direction) {
     return {
       ...parsed,
       section_id: section.id,
+      source_id: section.source_id,
+      source_kind: section.source_kind,
+      source_path: section.source_path,
+      ocr_verified: section.ocr_verified,
       pub_date: section.pub_date,
       plan_date: section.plan_date,
       section_title: section.title,
@@ -328,7 +432,7 @@ function parseLevelList(section, label, direction) {
       base_role: direction === 'resistance' ? 'RESISTANCE_ONLY' : 'SUPPORT_LEVEL',
       source: `${label.toLowerCase()}_list`,
       tags: parsed.major ? ['major'] : [],
-      snippets: [],
+      snippets: [`${label}: ${parsed.raw_token}`],
     };
   }).filter(Boolean);
 }
@@ -341,15 +445,15 @@ function splitSentences(text) {
     .filter(Boolean);
 }
 
+function snippetAround(text, index, maxChars = 320) {
+  const start = Math.max(0, index - 120);
+  const end = Math.min(String(text).length, start + maxChars);
+  return `${start > 0 ? '...' : ''}${String(text).slice(start, end)}${end < String(text).length ? '...' : ''}`;
+}
+
 function priceRegex(price) {
   const whole = Math.round(Number(price));
-  const alternatives = [String(whole)];
-  const suffix2 = String(whole % 100).padStart(2, '0');
-  const suffix3 = String(whole % 1000).padStart(3, '0');
-  alternatives.push(suffix2.replace(/^0/, ''));
-  alternatives.push(suffix2);
-  alternatives.push(suffix3.replace(/^0+/, ''));
-  return new RegExp(`(?:^|[^\\d])(?:${[...new Set(alternatives)].filter(Boolean).join('|')})(?:\\.\\d+)?(?:[^\\d]|$)`);
+  return new RegExp(`(?:^|[^\\d])${whole}(?:\\.\\d+)?(?:[^\\d]|$)`);
 }
 
 function tagsFromSentence(sentence, direction) {
@@ -383,6 +487,7 @@ function extractNarrativeLevels(section) {
   const sentences = splitSentences(section.text);
   const records = [];
   for (const sentence of sentences) {
+    if (/(^|\b)(supports?|resistances?)\s*(are)?\s*:/i.test(sentence)) continue;
     if (!/(failed breakdown|sweep|reclaim|recover|support|bid|direct|knife|target|resistance|shelf|cluster|low|major)/i.test(sentence)) continue;
     const matches = [...sentence.matchAll(/\b(\d{4,5}(?:\.\d+)?)\b/g)];
     for (const match of matches) {
@@ -397,6 +502,10 @@ function extractNarrativeLevels(section) {
         is_zone: false,
         major: /\bmajor\b/i.test(sentence),
         section_id: section.id,
+        source_id: section.source_id,
+        source_kind: section.source_kind,
+        source_path: section.source_path,
+        ocr_verified: section.ocr_verified,
         pub_date: section.pub_date,
         plan_date: section.plan_date,
         section_title: section.title,
@@ -404,7 +513,7 @@ function extractNarrativeLevels(section) {
         base_role: 'NARRATIVE_LEVEL',
         source: 'narrative_sentence',
         tags: tagsFromSentence(sentence, /resistance|short/i.test(sentence) ? 'resistance' : 'support'),
-        snippets: [sentence.slice(0, 320)],
+        snippets: [snippetAround(sentence, match.index)],
       });
     }
   }
@@ -564,6 +673,11 @@ function analyzeLevelRecord(record, barsByDate, satyByDate) {
   const satyContext = nearestSaty(record.price, saty);
   const base = {
     level_id: record.level_id,
+    source_id: record.source_id,
+    source_kind: record.source_kind,
+    source_path: record.source_path,
+    ocr_verified: record.ocr_verified,
+    source_snippet: record.snippets[0] || '',
     plan_date: record.plan_date,
     pub_date: record.pub_date,
     price: record.price,
@@ -1003,8 +1117,7 @@ function assertCriticalExamples(levelRecords, events) {
 
 function main() {
   ensureDir(OUT_DIR);
-  const rawLog = fs.readFileSync(LOG_PATH, 'utf8');
-  const sections = parseSections(rawLog);
+  const sections = readDailyPlanSections();
   const levelRecords = buildLevelRecords(sections);
   const { files, bars } = loadMergedEsBars();
   const barsByDate = groupBarsByEtSession(bars);
@@ -1029,7 +1142,10 @@ function main() {
     generated_at: new Date().toISOString(),
     research_only: true,
     no_pine_changes: true,
-    mancini_log: path.relative(ROOT, LOG_PATH).replace(/\\/g, '/'),
+    source_map: SOURCE_MAP.map(sourceForOutput),
+    daily_plan_sources: SOURCE_MAP
+      .filter(source => source.include_in_daily_plan_extraction && fs.existsSync(source.source_path))
+      .map(source => path.relative(ROOT, source.source_path).replace(/\\/g, '/')),
     sections: sections.length,
     level_records: levelRecords.length,
     events: events.length,
@@ -1045,6 +1161,10 @@ function main() {
   writeJson(path.join(OUT_DIR, 'metadata.json'), metadata);
   writeJson(path.join(OUT_DIR, 'sections.json'), sections.map(section => ({
     id: section.id,
+    source_id: section.source_id,
+    source_kind: section.source_kind,
+    source_path: section.source_path,
+    ocr_verified: section.ocr_verified,
     title: section.title,
     pub_date: section.pub_date,
     plan_date: section.plan_date,
@@ -1054,6 +1174,10 @@ function main() {
     hash: section.hash,
   })));
   writeCsv(path.join(OUT_DIR, 'level-protocol.csv'), levelRecords.map(row => ({
+    source_id: row.source_id,
+    source_kind: row.source_kind,
+    source_path: row.source_path,
+    ocr_verified: row.ocr_verified,
     plan_date: row.plan_date,
     pub_date: row.pub_date,
     price: row.price,

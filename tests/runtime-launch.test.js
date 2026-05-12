@@ -22,4 +22,14 @@ describe('Luke launch hardening', () => {
       expect(app.stop_exit_codes).toEqual([0]);
     }
   });
+
+  it('waits for Luke health before loading the Electron shell', () => {
+    const electron = fs.readFileSync(path.join(ROOT, 'electron.js'), 'utf8');
+
+    expect(electron).toContain('/api/health');
+    expect(electron).toContain('waitForLukeHealth');
+    expect(electron).toContain('SERVER_START_TIMEOUT_MS');
+    expect(electron).toContain('127.0.0.1');
+    expect(electron).toContain('Luke startup failed');
+  });
 });

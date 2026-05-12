@@ -1,0 +1,84 @@
+{
+  "acceptance_family_counts": {
+    "classic_acceptance_backtest_from_below": 24,
+    "classic_acceptance_second_attempt_reclaim": 43,
+    "missing": 525,
+    "non_acceptance_protocol": 94,
+    "simple_reclaim_unclassified": 51,
+    "unmeasurable": 2
+  },
+  "direct_audit_positive_training_candidate_count": 0,
+  "direct_audit_verdict_counts": {
+    "data_only": 332,
+    "needs_bigger_crop": 114,
+    "negative_control": 32
+  },
+  "generated_at": "2026-05-12T20:12:00.784171+00:00",
+  "input_counts": {
+    "direct_source_audit_rows": 478,
+    "events_rows": 2456,
+    "gallery_manifest_missing_png_sidecars": 0,
+    "gallery_manifest_rows": 172,
+    "gallery_png_files": 172,
+    "gallery_svg_files": 172,
+    "indexed_session_dates": 50,
+    "quick_reclaim_rows": 172,
+    "session_json_files": 51,
+    "usable_sessions": 37
+  },
+  "input_paths": {
+    "chronological_checklist": "reports\\mancini-fbd-chronological-canonical-checklist-2026-05-12.md",
+    "direct_fbd_source_audit": "artifacts\\research\\mancini-direct-fbd-source-audit\\direct_fbd_source_audit.json",
+    "events_csv": "artifacts\\research\\mancini-context-protocol\\events.csv",
+    "gallery_manifest": "artifacts\\research\\mancini-real-packet-gallery\\manifest.json",
+    "ninja_strategy_exists_checked_only": "NinjaTrader\\LukeNativeShadowStrategy.cs",
+    "quick_reclaim_acceptance_rows": "artifacts\\research\\hermes-mancini-event-packets\\quick_reclaim_acceptance_rows.csv",
+    "quick_reclaim_acceptance_summary": "artifacts\\research\\hermes-mancini-event-packets\\quick_reclaim_acceptance_summary.json",
+    "sessions_dir": "data\\backtest\\es-long-bracket\\sessions",
+    "visual_sanity_audit": "artifacts\\research\\mancini-visual-sanity-audit\\visual_sanity_audit.json"
+  },
+  "label_counts": {
+    "chart_confirmed_non_acceptance": 95,
+    "chart_confirmed_reclaim": 214,
+    "chart_mismatch": 3,
+    "data_only": 416,
+    "needs_crop": 297,
+    "source_confirmed_fbd": 139,
+    "source_negative_control": 34,
+    "source_planned_fbd": 149,
+    "sr_list_only": 114
+  },
+  "output_paths": {
+    "summary_json": "artifacts\\research\\mancini-fbd-algo-training-table\\summary.json",
+    "summary_md": "artifacts\\research\\mancini-fbd-algo-training-table\\summary.md",
+    "training_rows_csv": "artifacts\\research\\mancini-fbd-algo-training-table\\training_rows.csv",
+    "training_rows_jsonl": "artifacts\\research\\mancini-fbd-algo-training-table\\training_rows.jsonl"
+  },
+  "row_origin_counts": {
+    "direct_source_audit": 567,
+    "packet_observation": 172
+  },
+  "safety": {
+    "broker_risk_live_pine_credential_execution_touched": false,
+    "gallery_png_sidecars_exist": true,
+    "live_trading_behavior_introduced": false,
+    "sr_list_only_promoted_to_positive": false
+  },
+  "scope": "research_historical_replay_shadow_only",
+  "source_mode_counts": {
+    "actual_recap": 96,
+    "context_recap": 260,
+    "data_context": 184,
+    "methodology_definition": 17,
+    "negative_control": 33,
+    "planned_setup": 149
+  },
+  "training_row_count": 739,
+  "visual_sanity_status_counts": {
+    "dangerous_demote_for_training": 174,
+    "insufficient_visual_context": 22,
+    "missing": 525,
+    "review_only_context": 5,
+    "training_candidate": 13
+  }
+}

@@ -560,7 +560,7 @@
     "mfe_mae": "MFE/MAE are labels/outcomes computed from session bars when possible and never used in candidate_score.",
     "non_acceptance_score": "No-lookahead version leaves post_reclaim_MAE_15 outcome gate at zero; full audit variant is non_acceptance_score_with_outcome_audit."
   },
-  "generated_at": "2026-05-12T17:19:12.858479+00:00",
+  "generated_at": "2026-05-12T20:13:37.474686+00:00",
   "hard_reject_reason_counts": {
     "chart_mismatch": 3,
     "future_target_leakage": 88,

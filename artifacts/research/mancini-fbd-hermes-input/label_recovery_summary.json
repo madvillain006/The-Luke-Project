@@ -1,0 +1,80 @@
+{
+  "by_bar_source": {
+    "raw_barchart_csv": 15,
+    "session_json": 76,
+    "window_csv": 10
+  },
+  "by_source_mode": {
+    "actual_recap": 72,
+    "data_context": 30,
+    "planned_setup": 94
+  },
+  "counts": {
+    "candidate_eligible_after_recovery_rows": 12,
+    "candidate_eligible_unique_setups": 11,
+    "recovered_flush_reclaim_rows": 101,
+    "recovered_non_acceptance_rows": 46,
+    "recovered_unique_setups": 73,
+    "rows_with_existing_session_and_level_scanned": 196,
+    "source_qualified_hard_reject_rows": 224
+  },
+  "eligible_by_family": {
+    "classic_acceptance_backtest_from_below": 3,
+    "non_acceptance_protocol": 9
+  },
+  "eligible_by_source_mode": {
+    "planned_setup": 12
+  },
+  "generated_at": "2026-05-12T20:12:19.385652+00:00",
+  "inputs": {
+    "events_csv": "artifacts/research/mancini-context-protocol/events.csv",
+    "features_csv": "artifacts/research/mancini-fbd-algo-math/features.csv",
+    "sessions_dir": "data/backtest/es-long-bracket/sessions",
+    "training_rows": "artifacts/research/mancini-fbd-hermes-input/selected_training_rows.jsonl"
+  },
+  "new_hard_reject_reason_counts": {
+    "future_target_leakage": 38,
+    "immediate_failure_after_reclaim": 45,
+    "source_after_entry_leakage": 39,
+    "target_missing_or_below_entry": 19,
+    "target_too_close_for_slippage": 11
+  },
+  "old_hard_reject_reason_counts": {
+    "future_target_leakage": 40,
+    "immediate_failure_after_reclaim": 18,
+    "missing_bars": 46,
+    "no_reclaim": 152,
+    "source_after_entry_leakage": 43,
+    "target_missing_or_below_entry": 81,
+    "target_too_close_for_slippage": 9
+  },
+  "outputs": {
+    "rows_csv": "artifacts/research/mancini-fbd-label-recovery/recovered_label_rows.csv",
+    "rows_jsonl": "artifacts/research/mancini-fbd-label-recovery/recovered_label_rows.jsonl",
+    "summary_json": "artifacts/research/mancini-fbd-label-recovery/summary.json",
+    "summary_md": "artifacts/research/mancini-fbd-label-recovery/summary.md"
+  },
+  "recovered_by_family": {
+    "classic_acceptance_backtest_from_below": 33,
+    "classic_acceptance_second_attempt_reclaim": 16,
+    "ladder_first_reclaim": 6,
+    "non_acceptance_protocol": 46
+  },
+  "recovery_status_counts": {
+    "not_recovered_no_flush_reclaim_in_session": 95,
+    "recovered_flush_reclaim": 101
+  },
+  "review_only_reason_counts": {
+    "actual_recap_review_label_not_planned_entry": 29,
+    "data_context_review_only": 29
+  },
+  "safety": {
+    "broker_risk_live_pine_credential_execution_touched": false,
+    "live_trading_behavior_introduced": false,
+    "main_hermes_package_modified": false,
+    "mfe_mae_used_as_candidate_inputs": false,
+    "ninja_code_written": false,
+    "sr_list_only_promoted_to_positive": false
+  },
+  "scope": "research_historical_replay_shadow_only"
+}

@@ -49,3 +49,20 @@ Scope: deterministic offline research features for Mancini FBD review. Candidate
 - `mfe_15m`, `mae_15m`, `mfe_60m`, `mae_60m`: Labels only.
 - `tp2_hit`, `tp3_hit`, `next_level_hit`, `stop_first`, `false_armed`: Validation labels only.
 - `expectancy_points_slippage_0_5`: Outcome label using 0.5 ES point round-trip slippage.
+
+## Completeness And Review Artifacts
+
+- `label_recovery_summary.json`: Review-only pass over source-qualified hard rejects using existing session/window/raw Barchart data.
+- `recovered_label_rows.jsonl`: Recovered review labels and remaining hard rejects. Use as supplemental evidence, not as automatic promotion.
+- `saty_protocol_comparison.json`: SATY ATR-generated side-project comparison. SATY-only/no Mancini-source rows remain negative/control/context rows.
+- `saty_protocol_rows.csv`: SATY protocol rows for geometry comparison only.
+- `chart_artifact_audit.json`: PNG/chart artifact coverage and warnings. Price-only raw-source matches are caveats, not blockers.
+- `pre_hermes_completeness_audit.md`: Final package-completeness audit and response contract.
+- `features.csv`: Full deterministic feature matrix.
+- `labels.csv`: Full label/outcome matrix. Use future/outcome fields only in validation, never in candidate formulas.
+- `training_summary.json`: Training-table counts and label counts.
+- `mancini_algo_hermes_handoff.md`: Source-of-truth handoff narrative.
+- `direct_fbd_source_audit.json`: Direct Mancini source audit.
+- `real_packet_gallery_manifest.json`: Manifest for the 172 real packet gallery cases and chart sidecars.
+- `visual_sanity_audit.json`: Visual/source sanity status for packet rows.
+- `ninja_shadow_parity_spec.md`: Later shadow telemetry context only; do not write Ninja code.

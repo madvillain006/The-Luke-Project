@@ -1,11 +1,18 @@
 {
   "counts": {
+    "chart_artifact_audit_pass": true,
+    "chart_artifact_total_png": 233,
     "feature_rows": 739,
     "gallery_manifest_missing_png_sidecars": 0,
     "gallery_png_files": 172,
     "gallery_svg_files": 172,
     "hard_rejected_rows": 693,
+    "label_recovery_candidate_eligible_rows": 12,
+    "label_recovery_candidate_eligible_unique_setups": 11,
+    "label_recovery_recovered_flush_reclaim_rows": 101,
     "label_rows": 739,
+    "saty_protocol_rows": 526,
+    "saty_valid_sessions": 22,
     "strict_positive_training_candidate_rows": 0,
     "training_rows": 739,
     "unique_setups": 698
@@ -60,6 +67,36 @@
       "sha256": "ae3f046578418da67f9ae6540fb4f6c18be48ff397651d46cad67d72c3ab679d"
     },
     {
+      "bytes": 1802,
+      "path": "artifacts\\research\\mancini-chart-artifact-audit.json",
+      "role": "chart artifact audit",
+      "sha256": "2c6f906145b6dab89109c53aa4a7f7cfc527c3122410fafa7a799c9f4d424a09"
+    },
+    {
+      "bytes": 2858,
+      "path": "artifacts\\research\\mancini-fbd-label-recovery\\summary.json",
+      "role": "label recovery summary",
+      "sha256": "c939083e4567cfd58a98435eada81d6641587a0e7898493b4055b57dc1c517ad"
+    },
+    {
+      "bytes": 309364,
+      "path": "artifacts\\research\\mancini-fbd-label-recovery\\recovered_label_rows.jsonl",
+      "role": "label recovery rows",
+      "sha256": "3a9bd52db21742957213becb51c160f0a9097b5b46226b8a9e485c6107dbe029"
+    },
+    {
+      "bytes": 32564,
+      "path": "artifacts\\research\\mancini-fbd-saty-side-project\\protocol_comparison.json",
+      "role": "SATY protocol comparison",
+      "sha256": "f7c670ef010e8bb479e17619460459bf89ec4f51b95baf4904ec7bdd49bd1eaa"
+    },
+    {
+      "bytes": 153795,
+      "path": "artifacts\\research\\mancini-fbd-saty-side-project\\saty_protocol_rows.csv",
+      "role": "SATY protocol rows",
+      "sha256": "9644d61e738a0b19d884e00d9c1c578290a745a871e6bd31fa9b670f00c11240"
+    },
+    {
       "bytes": 7525,
       "path": "docs\\FAKE_BREAKDOWN_V2_RESEARCH.md",
       "role": "prior V2 research context",
@@ -78,10 +115,10 @@
       "sha256": "18d6870c0c55c39529577c488788d7d8d1caffd0d6e43c2cd5729a4b93f7a1c7"
     },
     {
-      "bytes": 4131,
+      "bytes": 4126,
       "path": "reports\\mancini-ninja-shadow-parity-spec-2026-05-12.md",
       "role": "future Ninja shadow parity context",
-      "sha256": "4762abc6628f1b677b5e4523cef6524a4396bfb55be0a1d42681a09e9512c71b"
+      "sha256": "ec4a30afe1cb243f5b388fdbf935b7ac73c3d376e861664c71abbcb4672c6216"
     },
     {
       "bytes": 3364618,
@@ -108,41 +145,145 @@
       "sha256": "f07ad6678063bd5d7bb2dd49b42d71e6ea3df9a63929c1d16990dac60481fdb2"
     },
     {
-      "bytes": 3121,
+      "bytes": 4535,
       "path": "artifacts\\research\\mancini-fbd-hermes-input\\feature_dictionary.md",
       "role": "Hermes feature dictionary",
-      "sha256": "24a8d023dd8c974f929a2994193a80e115744a0e040029b0f82c5925790d300d"
+      "sha256": "f76388de458e43ccea8cb00b1b02dc7ec784977157f7df788f19bd3905706692"
     },
     {
       "bytes": 32094,
       "path": "artifacts\\research\\mancini-fbd-hermes-input\\candidate_rule_scores.json",
       "role": "Hermes candidate rule scores",
-      "sha256": "aa38396b4f2492f373f1dbfeb0798daef08384ff557c8af0f908ca89102d4dd9"
+      "sha256": "ab7a897dcb4f8e260506b83ef11809a7f410b881c891ff6e65697700585e2ec8"
     },
     {
       "bytes": 3239,
       "path": "artifacts\\research\\mancini-fbd-hermes-input\\walk_forward_report.md",
       "role": "Hermes walk-forward report",
-      "sha256": "096b6c55c5f4078ba20c7ef95f5022d07e4ae8c30492da97ff532e5784d804f8"
+      "sha256": "04893897cb9568eecb98d4156948cdda658284c47b44c1a374a1fb54a6eac35a"
     },
     {
-      "bytes": 3527,
+      "bytes": 3331,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\training_summary.json",
+      "role": "Hermes training summary",
+      "sha256": "9661f3aaf3b0ee82764c23650cd952daed068da0f27ccd806daf24613ae809aa"
+    },
+    {
+      "bytes": 343378,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\features.csv",
+      "role": "Hermes deterministic feature matrix",
+      "sha256": "bba06f5ddb363e30bba663e099a83c98bbf10957981df12938931aab02e72b92"
+    },
+    {
+      "bytes": 205712,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\labels.csv",
+      "role": "Hermes labels and outcomes",
+      "sha256": "843a6c483a9620b85bb19a029fa0e0c5539e1dbb04e499cef573951fc16bb872"
+    },
+    {
+      "bytes": 26953,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\mancini_algo_hermes_handoff.md",
+      "role": "Hermes source-of-truth handoff copy",
+      "sha256": "6f8b0c1830ab038ac8d62fd395aa0601c282b3203e9bcebbb497243037f621e1"
+    },
+    {
+      "bytes": 2412732,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\direct_fbd_source_audit.json",
+      "role": "Hermes direct source audit copy",
+      "sha256": "8731b7b2015443f37b8726e85d6f3101933a3dc4b4a19098a64d88667fa28a20"
+    },
+    {
+      "bytes": 1365159,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\real_packet_gallery_manifest.json",
+      "role": "Hermes real packet gallery manifest copy",
+      "sha256": "fb3c5c7e353a2875f4f8942fec23e37683db6996009ef6aa8d99a0c5789ab279"
+    },
+    {
+      "bytes": 194200,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\visual_sanity_audit.json",
+      "role": "Hermes visual sanity audit copy",
+      "sha256": "ae3f046578418da67f9ae6540fb4f6c18be48ff397651d46cad67d72c3ab679d"
+    },
+    {
+      "bytes": 4126,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\ninja_shadow_parity_spec.md",
+      "role": "Hermes future Ninja shadow parity context copy",
+      "sha256": "ec4a30afe1cb243f5b388fdbf935b7ac73c3d376e861664c71abbcb4672c6216"
+    },
+    {
+      "bytes": 7525,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\fake_breakdown_v2_research.md",
+      "role": "Hermes V2 research context copy",
+      "sha256": "5a8d0f33d90d83243c1b5818804ffc3675499bae61ea89109b6ef0448b453daf"
+    },
+    {
+      "bytes": 4816,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\fake_breakdown_v3_live_filters.md",
+      "role": "Hermes V3 research context copy",
+      "sha256": "af62e8282d7cab4267b7ad93f3712a396630968827d0c826579e595ca47c95b5"
+    },
+    {
+      "bytes": 4735,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\fake_breakdown_state_machine.md",
+      "role": "Hermes state-machine context copy",
+      "sha256": "18d6870c0c55c39529577c488788d7d8d1caffd0d6e43c2cd5729a4b93f7a1c7"
+    },
+    {
+      "bytes": 2858,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\label_recovery_summary.json",
+      "role": "Hermes label recovery summary",
+      "sha256": "c939083e4567cfd58a98435eada81d6641587a0e7898493b4055b57dc1c517ad"
+    },
+    {
+      "bytes": 309364,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\recovered_label_rows.jsonl",
+      "role": "Hermes label recovery rows",
+      "sha256": "3a9bd52db21742957213becb51c160f0a9097b5b46226b8a9e485c6107dbe029"
+    },
+    {
+      "bytes": 32564,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\saty_protocol_comparison.json",
+      "role": "Hermes SATY protocol comparison",
+      "sha256": "f7c670ef010e8bb479e17619460459bf89ec4f51b95baf4904ec7bdd49bd1eaa"
+    },
+    {
+      "bytes": 153795,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\saty_protocol_rows.csv",
+      "role": "Hermes SATY protocol rows",
+      "sha256": "9644d61e738a0b19d884e00d9c1c578290a745a871e6bd31fa9b670f00c11240"
+    },
+    {
+      "bytes": 1802,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\chart_artifact_audit.json",
+      "role": "Hermes chart artifact audit",
+      "sha256": "2c6f906145b6dab89109c53aa4a7f7cfc527c3122410fafa7a799c9f4d424a09"
+    },
+    {
+      "bytes": 2701,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\pre_hermes_completeness_audit.md",
+      "role": "Hermes completeness audit",
+      "sha256": "8da1cc167eadbd7a18fe60a8c01b89af89809a5a393ed2f567be4947f97a668c"
+    },
+    {
+      "bytes": 7421,
       "path": "artifacts\\research\\mancini-fbd-hermes-input\\HERMES_PROMPT.md",
       "role": "Hermes prompt",
-      "sha256": "fde6c835a6660d4c52c6776363bf604a4910134e975fec5bcb832a2ac0558133"
+      "sha256": "f8f51544297fd3a24935ad8d74e461f462f2640a547d0d1dc044db5df66c8c0c"
     },
     {
-      "bytes": 4160,
+      "bytes": 8759,
       "path": "artifacts\\research\\mancini-fbd-hermes-input\\source_file_index.md",
       "role": "Hermes source file index",
-      "sha256": "b9196176d6c26ad3ab54815fc101d928b1e165dce9ca7823acf979acda81efaa"
+      "sha256": "ac265a704a7aa8ba1890401ecc2c6ee260b3523ae5b4dcde9d26cd2036d8aadf"
     }
   ],
-  "generated_at": "2026-05-12T20:13:33.193436+00:00",
+  "generated_at": "2026-05-12T21:09:21.709461+00:00",
   "safety": {
     "broker_risk_live_pine_credential_execution_touched": false,
+    "hermes_should_not_request_more_local_preprocessing": true,
     "live_trading_behavior_introduced": false,
     "ninja_gui_proof_claimed": false,
+    "package_complete_for_research_math_review": true,
     "sr_list_only_promoted_to_positive": false
   },
   "scope": "research_historical_replay_shadow_only",

@@ -1,6 +1,6 @@
 # Mancini FBD Algo Math Walk-Forward Report
 
-Generated: 2026-05-12T17:19:12.858479+00:00
+Generated: 2026-05-12T20:13:37.474686+00:00
 
 Scope: deterministic offline research only. Candidate scores avoid MFE/MAE and other future outcome columns.
 

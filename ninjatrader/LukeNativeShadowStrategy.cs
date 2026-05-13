@@ -193,6 +193,10 @@ namespace NinjaTrader.NinjaScript.Strategies
         public int LimitOrderExpirySeconds { get; set; }
 
         [NinjaScriptProperty]
+        [Display(Name = "Allow historical backtest orders", GroupName = "Native Execution Safety", Order = 8)]
+        public bool AllowHistoricalBacktestOrders { get; set; }
+
+        [NinjaScriptProperty]
         [Display(Name = "Entry price mode", GroupName = "Signal Math", Order = 1)]
         public LukeNativeEntryPriceMode EntryPriceMode { get; set; }
 
@@ -329,6 +333,10 @@ namespace NinjaTrader.NinjaScript.Strategies
         public bool SplitTp1Tp2Runner { get; set; }
 
         [NinjaScriptProperty]
+        [Display(Name = "Run historical audit", GroupName = "Shadow Accounting", Order = 0)]
+        public bool RunHistoricalAudit { get; set; }
+
+        [NinjaScriptProperty]
         [Range(0.0, 10.0)]
         [Display(Name = "Entry slippage points", GroupName = "Shadow Accounting", Order = 2)]
         public double EntrySlippagePoints { get; set; }
@@ -405,6 +413,7 @@ namespace NinjaTrader.NinjaScript.Strategies
                 MaxQuantity = 2;
                 MaxMarketableEntryPoints = 0.25;
                 LimitOrderExpirySeconds = 600;
+                AllowHistoricalBacktestOrders = false;
                 EntryPriceMode = LukeNativeEntryPriceMode.ClusterPlusTick;
                 LtfValidationMode = LukeNativeLtfValidationMode.OneMinute;
                 PivotRibbonMode = LukeNativePivotRibbonMode.SoftReclaim;
@@ -434,6 +443,7 @@ namespace NinjaTrader.NinjaScript.Strategies
                 SatyAtrLength = 14;
                 SatyTriggerPct = 0.236;
                 SplitTp1Tp2Runner = true;
+                RunHistoricalAudit = false;
                 EntrySlippagePoints = 0.25;
                 ExitSlippagePoints = 0.0;
                 CommissionPerContractRoundTrip = 5.0;
@@ -468,8 +478,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 
             DrawLedgerOverlay();
 
-            if (AutonomyMode == LukeNativeAutonomyMode.Disabled)
+            // Allow strategy math and logging even if Disabled/Shadow, if audit is requested.
+            if (AutonomyMode == LukeNativeAutonomyMode.Disabled && !RunHistoricalAudit)
                 return;
+
             if (CurrentBar < Math.Max(FlushLookbackBars + 2, Math.Max(PivotSlowConvictionEma, PivotSlowEma) + 2))
                 return;
 
@@ -529,6 +541,41 @@ namespace NinjaTrader.NinjaScript.Strategies
                     + " order=" + order.Name
                     + " filled=" + filled.ToString(CultureInfo.InvariantCulture));
             }
+        }
+
+        protected override void OnExecutionUpdate(Execution execution, string executionId, double price, int quantity, MarketPosition marketPosition, string orderId, DateTime time)
+        {
+            if (execution == null || execution.Order == null)
+                return;
+
+            Order order = execution.Order;
+            string orderName = order.Name ?? string.Empty;
+            string fromEntrySignal = order.FromEntrySignal ?? string.Empty;
+            if (!IsLukeNativeExecution(orderName, fromEntrySignal))
+                return;
+
+            WriteTelemetry("ORDER_EXECUTED", null, "id=" + nativeActiveSignalId
+                + " exec_id=" + executionId
+                + " order_id=" + orderId
+                + " order=" + orderName
+                + " from_entry=" + fromEntrySignal
+                + " action=" + order.OrderAction
+                + " type=" + order.OrderType
+                + " state=" + order.OrderState
+                + " price=" + Format(price)
+                + " qty=" + quantity.ToString(CultureInfo.InvariantCulture)
+                + " filled=" + order.Filled.ToString(CultureInfo.InvariantCulture)
+                + " avg_fill=" + Format(order.AverageFillPrice)
+                + " market_position=" + marketPosition
+                + " time=" + time.ToString("O", CultureInfo.InvariantCulture));
+        }
+
+        private bool IsLukeNativeExecution(string orderName, string fromEntrySignal)
+        {
+            return string.Equals(orderName, NativeEntryT1Name, StringComparison.Ordinal)
+                || string.Equals(orderName, NativeEntryT2Name, StringComparison.Ordinal)
+                || string.Equals(fromEntrySignal, NativeEntryT1Name, StringComparison.Ordinal)
+                || string.Equals(fromEntrySignal, NativeEntryT2Name, StringComparison.Ordinal);
         }
 
         private void ResetSessionState()
@@ -931,7 +978,7 @@ namespace NinjaTrader.NinjaScript.Strategies
             currentBarBlockedSignal = decision.BlockedSignal;
             currentBarActiveLevel = IsFinite(decision.ActiveLevel) ? decision.ActiveLevel : double.NaN;
 
-            if (State != State.Realtime)
+            if (State != State.Realtime && !RunHistoricalAudit && !AllowHistoricalBacktestOrders)
                 return;
 
             if (decision.WatchEvent)
@@ -955,15 +1002,19 @@ namespace NinjaTrader.NinjaScript.Strategies
             if (decision.LongEvent && !double.IsNaN(decision.ActiveLevel))
             {
                 candidateId++;
+                string signalId = BuildSignalId(decision.ActiveEntry);
+                bool requireExecutableFill = NativeExecutionEnabled() && (State == State.Realtime || AllowHistoricalBacktestOrders);
+                if (requireExecutableFill && !TrySubmitNativeLong(decision, signalId))
+                    return;
+
                 sessionAttempts++;
                 pendingLong = true;
                 pendingLongBar = CurrentBar;
                 pendingLongLevel = decision.ActiveLevel;
                 pendingLongEntry = decision.ActiveEntry;
-                pendingLongId = BuildSignalId(decision.ActiveEntry);
+                pendingLongId = signalId;
                 StartTrackedCandidate(pendingLongId, decision);
                 WriteTelemetry("LONG", decision, "id=" + pendingLongId);
-                TrySubmitNativeLong(decision, pendingLongId);
             }
             else if (decision.CancelEvent)
             {
@@ -971,7 +1022,8 @@ namespace NinjaTrader.NinjaScript.Strategies
                 double cancelContracts = OpenContractCount(false);
                 ApplySessionCancel(cancelPoints, cancelContracts);
                 WriteTelemetry("CANCEL", decision, AccountingNote(pendingLongId, cancelPoints, cancelContracts, true));
-                CancelNativeSignal(pendingLongId, decision);
+                if (State == State.Realtime || AllowHistoricalBacktestOrders)
+                    CancelNativeSignal(pendingLongId, decision);
                 ClearTrackedCandidate();
                 pendingLong = false;
                 pendingLongBar = -1;
@@ -1441,16 +1493,16 @@ namespace NinjaTrader.NinjaScript.Strategies
                 || AutonomyMode == LukeNativeAutonomyMode.LiveGuarded;
         }
 
-        private void TrySubmitNativeLong(ShadowDecision decision, string signalId)
+        private bool TrySubmitNativeLong(ShadowDecision decision, string signalId)
         {
             if (!NativeExecutionEnabled())
-                return;
+                return false;
 
             string rejectReason;
             if (!CanSubmitNativeLong(decision, out rejectReason))
             {
                 WriteTelemetry("ORDER_BLOCKED", decision, "id=" + signalId + " reason=" + rejectReason);
-                return;
+                return false;
             }
 
             int qty = Math.Min(Math.Max(1, NativeQuantity), Math.Max(1, MaxQuantity));
@@ -1462,6 +1514,8 @@ namespace NinjaTrader.NinjaScript.Strategies
                 qtyT2 = qty - qtyT1;
             }
 
+            double orderEntry = NativeLongLimitPrice(decision);
+
             SetStopLoss(NativeEntryT1Name, CalculationMode.Price, decision.ActiveStop, false);
             SetProfitTarget(NativeEntryT1Name, CalculationMode.Price, decision.ActiveTp1);
             if (qtyT2 > 0)
@@ -1471,29 +1525,37 @@ namespace NinjaTrader.NinjaScript.Strategies
             }
 
             nativeActiveSignalId = signalId;
-            nativeActiveEntry = decision.ActiveEntry;
+            nativeActiveEntry = orderEntry;
             nativeActiveTp1 = decision.ActiveTp1;
             nativeRunnerQuantity = qtyT2;
             nativeSubmittedUtc = DateTime.UtcNow;
             nativeRunnerStopMovedToBreakEven = false;
 
-            nativeEntryOrderT1 = EnterLongLimit(qtyT1, decision.ActiveEntry, NativeEntryT1Name);
+            nativeEntryOrderT1 = EnterLongLimit(qtyT1, orderEntry, NativeEntryT1Name);
             if (qtyT2 > 0)
-                nativeEntryOrderT2 = EnterLongLimit(qtyT2, decision.ActiveEntry, NativeEntryT2Name);
+                nativeEntryOrderT2 = EnterLongLimit(qtyT2, orderEntry, NativeEntryT2Name);
 
             WriteTelemetry("ORDER_SUBMITTED", decision, "id=" + signalId
                 + " qty=" + qty.ToString(CultureInfo.InvariantCulture)
                 + " t1=" + qtyT1.ToString(CultureInfo.InvariantCulture)
                 + " t2=" + qtyT2.ToString(CultureInfo.InvariantCulture)
+                + " order_entry=" + Format(orderEntry)
                 + " account=" + GetCurrentAccountName()
                 + " mode=" + AutonomyMode);
+            return true;
+        }
+
+        private double NativeLongLimitPrice(ShadowDecision decision)
+        {
+            double lastPrice = Close[0];
+            return IsFinite(lastPrice) && lastPrice > decision.ActiveEntry ? lastPrice : decision.ActiveEntry;
         }
 
         private bool CanSubmitNativeLong(ShadowDecision decision, out string rejectReason)
         {
             rejectReason = string.Empty;
 
-            if (State != State.Realtime)
+            if (State != State.Realtime && !AllowHistoricalBacktestOrders)
             {
                 rejectReason = "not realtime";
                 return false;
@@ -1657,6 +1719,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 
             if (AutonomyMode == LukeNativeAutonomyMode.SimExecution)
             {
+                if (AllowHistoricalBacktestOrders && State != State.Realtime)
+                    return true;
                 return accountName.StartsWith("Sim", StringComparison.OrdinalIgnoreCase)
                     || accountName.StartsWith("Playback", StringComparison.OrdinalIgnoreCase);
             }

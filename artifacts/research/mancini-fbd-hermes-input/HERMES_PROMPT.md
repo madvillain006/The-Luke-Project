@@ -22,16 +22,17 @@ Completeness contract:
 Important current safety-gate fact:
 - The strict direct audit has 0 `positive_training_candidate` rows.
 - That is a safety-gate result, not proof the pattern is absent.
-- Build broader review labels from `source_confirmed_fbd`, `source_planned_fbd`, `chart_confirmed_reclaim`, `chart_confirmed_non_acceptance`, `source_negative_control`, `sr_list_only`, `chart_mismatch`, `needs_crop`, and `data_only`.
+- Build broader review labels from `source_confirmed_fbd`, `source_planned_fbd`, `chart_confirmed_reclaim`, `chart_confirmed_non_acceptance`, `source_negative_control`, `sr_list_only`, `chart_mismatch`, `needs_crop`, and `data_only`; keep `data_only` / no-source rows as hard-reject or control context.
 
 Current local counts:
-- Direct audit rows: 478
+- Direct audit rows: 842
 - Context events: 2456
 - Packet rows: 172
-- Training rows: 739
-- Feature rows: 739
-- Hard-rejected feature rows: 693
-- Unique setups: 698
+- Training rows: 1129
+- Feature rows: 1129
+- Hard-rejected feature rows: 1072
+- Unique setups: 973
+- Exact scenario strategy-grid rows: 1296
 - Real packet gallery SVG files: 172
 - Real packet gallery PNG files: 172
 - Missing gallery PNG sidecars from manifest: 0
@@ -39,23 +40,23 @@ Current local counts:
 - Chart artifact audit pass: true
 
 Current label counts:
-- `source_confirmed_fbd`: 139
-- `source_planned_fbd`: 149
-- `source_negative_control`: 34
-- `sr_list_only`: 114
-- `chart_confirmed_reclaim`: 214
-- `chart_confirmed_non_acceptance`: 95
+- `source_confirmed_fbd`: 472
+- `source_planned_fbd`: 131
+- `source_negative_control`: 30
+- `sr_list_only`: 98
+- `chart_confirmed_reclaim`: 300
+- `chart_confirmed_non_acceptance`: 158
 - `chart_mismatch`: 3
-- `needs_crop`: 297
-- `data_only`: 416
+- `needs_crop`: 591
+- `data_only`: 496
 
 Completed label-recovery review:
-- Source-qualified hard-reject rows reviewed: 224
-- Rows with available session/level scanned: 196
-- Recovered flush/reclaim rows: 101
-- Recovered non-acceptance rows: 46
-- Candidate-eligible rows after recovery: 12
-- Candidate-eligible unique setups after recovery: 11
+- Source-qualified hard-reject rows reviewed: 427
+- Rows with available session/level scanned: 263
+- Recovered flush/reclaim rows: 125
+- Recovered non-acceptance rows: 67
+- Candidate-eligible rows after recovery: 11
+- Candidate-eligible unique setups after recovery: 10
 - Recovery is review-only and did not modify the main package labels.
 
 Completed SATY side-project comparison:
@@ -63,6 +64,22 @@ Completed SATY side-project comparison:
 - Valid SATY sessions: 22
 - SATY protocol rows: 526
 - SATY-only rows are negative/control/context rows only. They are included to compare geometry against Mancini-source rules, not to promote no-source setups.
+
+Completed per-example SATY prior-close context overlay:
+- Packet examples overlaid: 172
+- Valid SATY derivations: 108
+- Invalid SATY derivations: 64
+- Prior-close reference rows: 172
+- SVG context charts: 172
+- PNG context charts: 172
+- Validation outcome label rows: 172
+- Reference-before-target failures: 0
+- Reference-field-not-close failures: 0
+- Plan-date/session mismatches: 0
+- Reference-close mismatch failures: 0
+- SATY session anchor missing rows: 16; these are 17:00-17:59 ET maintenance-gap edge cases and are hard-rejected from SATY-valid derivations.
+- MFE/MAE leakage check: feature rows contain MFE/MAE = False; labels-only outcomes are in `example_saty_validation_outcomes.csv`.
+- Per-example SATY rows compare generated prior-close levels against each Mancini packet example. This does not make SATY a source authority and does not promote S/R-list-only examples.
 
 Seed Ninja shadow telemetry field names for later, without writing Ninja code:
 - `research_session_id`
@@ -120,21 +137,28 @@ Use these package files:
 6. `recovered_label_rows.jsonl`
 7. `saty_protocol_comparison.json`
 8. `saty_protocol_rows.csv`
-9. `chart_artifact_audit.json`
-10. `features.csv`
-11. `labels.csv`
-12. `training_summary.json`
-13. `mancini_algo_hermes_handoff.md`
-14. `direct_fbd_source_audit.json`
-15. `real_packet_gallery_manifest.json`
-16. `visual_sanity_audit.json`
-17. `ninja_shadow_parity_spec.md`
-18. `fake_breakdown_state_machine.md`
-19. `fake_breakdown_v2_research.md`
-20. `fake_breakdown_v3_live_filters.md`
-21. `pre_hermes_completeness_audit.md`
-22. `manifest.json`
-23. `source_file_index.md`
+9. `example_saty_context.json`
+10. `example_saty_rows.csv`
+11. `example_saty_report.md`
+12. `example_saty_chart_manifest.json`
+13. `example_saty_validation_outcomes.csv`
+14. `chart_artifact_audit.json`
+15. `features.csv`
+16. `labels.csv`
+17. `exact_strategy_grid.csv`
+18. `exact_strategy_grid.json`
+19. `training_summary.json`
+20. `mancini_algo_hermes_handoff.md`
+21. `direct_fbd_source_audit.json`
+22. `real_packet_gallery_manifest.json`
+23. `visual_sanity_audit.json`
+24. `ninja_shadow_parity_spec.md`
+25. `fake_breakdown_state_machine.md`
+26. `fake_breakdown_v2_research.md`
+27. `fake_breakdown_v3_live_filters.md`
+28. `pre_hermes_completeness_audit.md`
+29. `manifest.json`
+30. `source_file_index.md`
 
 The files above are sufficient to produce the requested JSON. `source_file_index.md` also records source paths and checksums for provenance, but Hermes should not need additional local preprocessing before answering.
 

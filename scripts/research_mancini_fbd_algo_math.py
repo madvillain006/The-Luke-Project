@@ -247,6 +247,17 @@ def window_until(bars: list[dict[str, Any]], start_index: int, minutes: int) -> 
     return [bar for bar in bars[start_index:] if bar["timestamp"] <= end]
 
 
+def iso_timestamp(value: datetime | None) -> str:
+    return value.isoformat() if isinstance(value, datetime) else ""
+
+
+def bar_at_time(bars: list[dict[str, Any]], timestamp: datetime | None) -> dict[str, Any] | None:
+    index = first_bar_at_or_after(bars, timestamp)
+    if index is None:
+        return None
+    return bars[index]
+
+
 def median(values: list[float]) -> float | None:
     clean = [v for v in values if v is not None]
     if not clean:
@@ -282,11 +293,14 @@ def percentile_dates(dates: list[str]) -> list[tuple[str, list[str], list[str]]]
 
 
 def bars_for_row(row: dict[str, Any], sessions: dict[str, list[dict[str, Any]]]) -> list[dict[str, Any]]:
+    window_bars = load_window_bars(row.get("window_csv"))
+    if window_bars:
+        return window_bars
     session_date = row.get("session_date") or row.get("plan_date") or ""
     bars = sessions.get(str(session_date)) or []
     if bars:
         return bars
-    return load_window_bars(row.get("window_csv"))
+    return []
 
 
 def count_levels_between(events_by_plan: dict[str, list[dict[str, Any]]], plan_date: str, low: float | None, high: float | None) -> int:
@@ -337,22 +351,52 @@ def compute_prior_touch_stats(bars: list[dict[str, Any]], level: float | None, t
     }
 
 
-def compute_reclaim_metrics(bars: list[dict[str, Any]], level: float | None, reclaim_time: datetime | None) -> dict[str, Any]:
+def compute_reclaim_metrics(
+    bars: list[dict[str, Any]],
+    level: float | None,
+    reclaim_time: datetime | None,
+    trap_time: datetime | None,
+) -> dict[str, Any]:
     if level is None or not bars:
         return {
             "reclaim_close_location": None,
             "reclaim_range": None,
             "acceptance_closes_above_L": 0,
+            "acceptance_closes_used_for_score": 0,
             "non_acceptance_closes": 0,
+            "non_acceptance_closes_used_for_score": 0,
             "any_close_above_L_plus_5_within_10m": False,
             "first_retest_of_L_holds_after_crossing_L_plus_5": False,
             "no_close_back_below_L_before_entry": False,
-            "entry_price": None,
-            "entry_timestamp_et": "",
+            "reclaim_price": None,
+            "reclaim_timestamp_et": "",
+            "acceptance_score_timestamp_et": "",
+            "acceptance_classification_timestamp_et": "",
+            "non_acceptance_score_timestamp_et": "",
+            "non_acceptance_classification_timestamp_et": "",
         }
     index = first_bar_at_or_after(bars, reclaim_time) if reclaim_time else None
     if index is None:
-        for i, bar in enumerate(bars):
+        start_index = first_bar_at_or_after(bars, trap_time) if trap_time else None
+        if start_index is None:
+            return {
+                "reclaim_close_location": None,
+                "reclaim_range": None,
+                "acceptance_closes_above_L": 0,
+                "acceptance_closes_used_for_score": 0,
+                "non_acceptance_closes": 0,
+                "non_acceptance_closes_used_for_score": 0,
+                "any_close_above_L_plus_5_within_10m": False,
+                "first_retest_of_L_holds_after_crossing_L_plus_5": False,
+                "no_close_back_below_L_before_entry": False,
+                "reclaim_price": None,
+                "reclaim_timestamp_et": "",
+                "acceptance_score_timestamp_et": "",
+                "acceptance_classification_timestamp_et": "",
+                "non_acceptance_score_timestamp_et": "",
+                "non_acceptance_classification_timestamp_et": "",
+            }
+        for i, bar in enumerate(bars[start_index + 1:], start=start_index + 1):
             if bar["close"] >= level:
                 index = i
                 break
@@ -361,46 +405,97 @@ def compute_reclaim_metrics(bars: list[dict[str, Any]], level: float | None, rec
             "reclaim_close_location": None,
             "reclaim_range": None,
             "acceptance_closes_above_L": 0,
+            "acceptance_closes_used_for_score": 0,
             "non_acceptance_closes": 0,
+            "non_acceptance_closes_used_for_score": 0,
             "any_close_above_L_plus_5_within_10m": False,
             "first_retest_of_L_holds_after_crossing_L_plus_5": False,
             "no_close_back_below_L_before_entry": False,
-            "entry_price": None,
-            "entry_timestamp_et": "",
+            "reclaim_price": None,
+            "reclaim_timestamp_et": "",
+            "acceptance_score_timestamp_et": "",
+            "acceptance_classification_timestamp_et": "",
+            "non_acceptance_score_timestamp_et": "",
+            "non_acceptance_classification_timestamp_et": "",
         }
     reclaim = bars[index]
     reclaim_range = max(reclaim["high"] - reclaim["low"], TICK)
     post = bars[index:index + 16]
     ten_min = bars[index:index + 11]
     acceptance_closes = 0
+    acceptance_closes_used_for_score = 0
+    acceptance_score_time = None
+    acceptance_classification_time = None
     for bar in post:
         if bar["close"] >= level:
             acceptance_closes += 1
+            if acceptance_closes <= 3:
+                acceptance_closes_used_for_score = acceptance_closes
+                acceptance_score_time = bar["timestamp"]
+            if acceptance_closes >= 3 and acceptance_classification_time is None:
+                acceptance_classification_time = bar["timestamp"]
         else:
             break
     threshold = level + 5
     non_acceptance_closes = 0
+    non_acceptance_closes_used_for_score = 0
     threshold_started = False
     first_retest_holds = False
+    first_threshold_close_time = None
+    non_acceptance_score_time = None
+    non_acceptance_classification_time = None
     for bar in post:
         if bar["close"] >= threshold:
             threshold_started = True
+            if first_threshold_close_time is None:
+                first_threshold_close_time = bar["timestamp"]
             non_acceptance_closes += 1
+            if non_acceptance_closes <= 3:
+                non_acceptance_closes_used_for_score = non_acceptance_closes
+                non_acceptance_score_time = bar["timestamp"]
+            score_available = 0.40 + 0.30 * clamp(non_acceptance_closes / 3, 0, 1)
+            if score_available >= 0.50 and non_acceptance_classification_time is None:
+                non_acceptance_classification_time = bar["timestamp"]
         elif threshold_started and bar["low"] <= level + 0.5:
             first_retest_holds = bar["close"] >= level
+            if first_retest_holds:
+                non_acceptance_score_time = bar["timestamp"]
+            if first_retest_holds and non_acceptance_classification_time is None:
+                non_acceptance_classification_time = bar["timestamp"]
             break
         elif threshold_started:
             break
+    classification_time_candidates = [
+        parse_dt(iso_timestamp(acceptance_classification_time)),
+        parse_dt(iso_timestamp(non_acceptance_classification_time)),
+    ]
+    scored_times = [time for time in classification_time_candidates if time]
+    if scored_times:
+        latest_score_time = max(scored_times)
+    else:
+        latest_score_time = post[-1]["timestamp"] if post else reclaim["timestamp"]
+    no_close_back_below = all(
+        bar["close"] >= level
+        for bar in bars[index:]
+        if bar["timestamp"] <= latest_score_time
+    )
     return {
         "reclaim_close_location": round((reclaim["close"] - reclaim["low"]) / reclaim_range, 4),
         "reclaim_range": round(reclaim["high"] - reclaim["low"], 4),
         "acceptance_closes_above_L": acceptance_closes,
+        "acceptance_closes_used_for_score": acceptance_closes_used_for_score,
         "non_acceptance_closes": non_acceptance_closes,
+        "non_acceptance_closes_used_for_score": non_acceptance_closes_used_for_score,
         "any_close_above_L_plus_5_within_10m": any(bar["close"] >= threshold for bar in ten_min),
         "first_retest_of_L_holds_after_crossing_L_plus_5": first_retest_holds,
-        "no_close_back_below_L_before_entry": True,
-        "entry_price": reclaim["close"],
-        "entry_timestamp_et": reclaim["timestamp"].isoformat(),
+        "no_close_back_below_L_before_entry": no_close_back_below,
+        "reclaim_price": reclaim["close"],
+        "reclaim_timestamp_et": reclaim["timestamp"].isoformat(),
+        "acceptance_score_timestamp_et": iso_timestamp(acceptance_score_time),
+        "acceptance_classification_timestamp_et": iso_timestamp(acceptance_classification_time),
+        "non_acceptance_score_timestamp_et": iso_timestamp(non_acceptance_score_time),
+        "non_acceptance_classification_timestamp_et": iso_timestamp(non_acceptance_classification_time),
+        "first_threshold_close_timestamp_et": iso_timestamp(first_threshold_close_time),
     }
 
 
@@ -417,6 +512,83 @@ def compute_mfe_mae(bars: list[dict[str, Any]], entry_time: datetime | None, ent
     min_low = min(bar["low"] for bar in horizon)
     complete = horizon[-1]["timestamp"] >= bars[index]["timestamp"] + timedelta(minutes=minutes)
     return round(max_high - entry_price, 4), round(entry_price - min_low, 4), complete
+
+
+def compute_first_hit_outcome(
+    bars: list[dict[str, Any]],
+    entry_time: datetime | None,
+    entry_price: float | None,
+    stop_points: float | None,
+    target_points: float | None,
+    minutes: int = 60,
+) -> dict[str, Any]:
+    out = {
+        "first_hit_event": "none",
+        "first_hit_timestamp_et": "",
+        "first_hit_points": 0.0,
+        "stop_first": False,
+        "target_first": False,
+        "same_bar_stop_and_target": False,
+        "expectancy_points_slippage_0_5": -0.5,
+    }
+    if entry_time is None or entry_price is None or not bars:
+        out["first_hit_event"] = "missing"
+        out["first_hit_points"] = None
+        out["expectancy_points_slippage_0_5"] = None
+        return out
+    risk = stop_points if stop_points is not None and stop_points > 0 else 2.0
+    target = target_points if target_points is not None and target_points > 0 else 3.0
+    index = first_bar_at_or_after(bars, entry_time)
+    if index is None:
+        out["first_hit_event"] = "missing"
+        out["first_hit_points"] = None
+        out["expectancy_points_slippage_0_5"] = None
+        return out
+    horizon = window_until(bars, index, minutes)
+    if not horizon:
+        out["first_hit_event"] = "missing"
+        out["first_hit_points"] = None
+        out["expectancy_points_slippage_0_5"] = None
+        return out
+    stop_price = entry_price - risk
+    target_price = entry_price + target
+    for bar in horizon:
+        hit_stop = bar["low"] <= stop_price
+        hit_target = bar["high"] >= target_price
+        if hit_stop and hit_target:
+            out.update({
+                "first_hit_event": "same_bar_stop_and_target",
+                "first_hit_timestamp_et": iso_timestamp(bar["timestamp"]),
+                "first_hit_points": -risk,
+                "stop_first": True,
+                "same_bar_stop_and_target": True,
+                "expectancy_points_slippage_0_5": round(-risk - 0.5, 4),
+            })
+            return out
+        if hit_stop:
+            out.update({
+                "first_hit_event": "stop",
+                "first_hit_timestamp_et": iso_timestamp(bar["timestamp"]),
+                "first_hit_points": -risk,
+                "stop_first": True,
+                "expectancy_points_slippage_0_5": round(-risk - 0.5, 4),
+            })
+            return out
+        if hit_target:
+            out.update({
+                "first_hit_event": "target",
+                "first_hit_timestamp_et": iso_timestamp(bar["timestamp"]),
+                "first_hit_points": target,
+                "target_first": True,
+                "expectancy_points_slippage_0_5": round(target - 0.5, 4),
+            })
+            return out
+    timeout_points = horizon[-1]["close"] - entry_price
+    out["first_hit_event"] = "timeout"
+    out["first_hit_timestamp_et"] = iso_timestamp(horizon[-1]["timestamp"])
+    out["first_hit_points"] = round(timeout_points, 4)
+    out["expectancy_points_slippage_0_5"] = round(timeout_points - 0.5, 4)
+    return out
 
 
 def time_bucket(timestamp: datetime | None) -> str:
@@ -464,6 +636,8 @@ def hard_reject_reasons(row: dict[str, Any], feature: dict[str, Any]) -> list[st
         reasons.append("source_negative_control")
     if as_bool(row.get("sr_list_only")):
         reasons.append("sr_list_only")
+    if as_bool(row.get("data_only")):
+        reasons.append("no_source_data_only")
     if as_bool(row.get("chart_mismatch")):
         reasons.append("chart_mismatch")
     if feature.get("setup_level") is None:
@@ -472,11 +646,22 @@ def hard_reject_reasons(row: dict[str, Any], feature: dict[str, Any]) -> list[st
         reasons.append("missing_bars")
     if not as_bool(row.get("chart_confirmed_reclaim")):
         reasons.append("no_reclaim")
-    target_room = as_float(feature.get("target_room"))
-    if target_room is None or target_room <= 0:
-        reasons.append("target_missing_or_below_entry")
-    elif target_room < 2.0:
-        reasons.append("target_too_close_for_slippage")
+    if as_bool(row.get("source_confirmed_fbd")) or as_bool(row.get("source_planned_fbd")):
+        if not as_bool(row.get("accepted_for_timing_test")):
+            reasons.append("not_accepted_for_timing_test")
+    trap_time = parse_dt(feature.get("trap_detected_timestamp_et"))
+    reclaim_time = parse_dt(feature.get("reclaim_detected_timestamp_et"))
+    fire_time = parse_dt(feature.get("classification_complete_timestamp_et"))
+    if trap_time and reclaim_time and reclaim_time <= trap_time:
+        reasons.append("reclaim_not_after_trap")
+    if trap_time and fire_time and fire_time <= trap_time:
+        reasons.append("candidate_fire_not_after_trap")
+    if reclaim_time and fire_time and fire_time < reclaim_time:
+        reasons.append("candidate_fire_before_reclaim")
+    if as_bool(row.get("chart_confirmed_reclaim")) and not feature.get("classification_complete_timestamp_et"):
+        reasons.append("classification_incomplete")
+    if feature.get("classification_complete_timestamp_et") and not as_bool(feature.get("outcome_window_available")):
+        reasons.append("outcome_window_missing")
     pub_date = str(row.get("pub_date") or "")
     entry_date = str(feature.get("entry_timestamp_et") or "")[:10]
     target_pub = str(feature.get("next_trusted_level_pub_date") or "")
@@ -498,6 +683,28 @@ def family_model(row: dict[str, Any], feature: dict[str, Any]) -> str:
     return "simple_reclaim_unclassified"
 
 
+def passes_any_current_candidate_rule(feature: dict[str, Any]) -> bool:
+    score = as_float(feature.get("candidate_score")) or 0.0
+    family = feature.get("acceptance_family_model")
+    non_acceptance_score = as_float(feature.get("non_acceptance_score")) or 0.0
+    target_r = as_float(feature.get("target_R")) or 0.0
+    target_room = as_float(feature.get("target_room")) or 0.0
+    return (
+        score >= 0.55
+        or (family == "non_acceptance_protocol" and score >= 0.50 and non_acceptance_score >= 0.50)
+        or (family == "classic_acceptance_backtest_from_below" and score >= 0.45)
+        or (family == "classic_acceptance_second_attempt_reclaim" and score >= 0.55)
+        or (family == "ladder_first_reclaim" and score >= 0.50)
+        or (score >= 0.50 and target_r >= 1.25 and target_room >= 4)
+    )
+
+
+def score_driver_and_fire_time(reclaim: dict[str, Any], reclaim_score: float, non_acceptance_score: float) -> tuple[str, datetime | None]:
+    if non_acceptance_score >= reclaim_score and non_acceptance_score > 0:
+        return "non_acceptance_score", parse_dt(reclaim.get("non_acceptance_score_timestamp_et"))
+    return "reclaim_score", parse_dt(reclaim.get("acceptance_score_timestamp_et") or reclaim.get("reclaim_timestamp_et"))
+
+
 def compute_feature_row(
     row: dict[str, Any],
     sessions: dict[str, list[dict[str, Any]]],
@@ -512,12 +719,12 @@ def compute_feature_row(
         bars = load_window_bars(row.get("window_csv"))
     session_bars = sessions.get(str(row.get("session_date") or row.get("plan_date") or "")) or bars
     prior = compute_prior_touch_stats(bars, level, trap_time)
-    reclaim = compute_reclaim_metrics(bars, level, reclaim_time)
+    reclaim = compute_reclaim_metrics(bars, level, reclaim_time, trap_time)
     if reclaim_time is None:
-        reclaim_time = parse_dt(reclaim.get("entry_timestamp_et"))
-    entry_price = as_float(reclaim.get("entry_price")) or level
-    if entry_price is None and as_float(row.get("recovered_level")) is not None:
-        entry_price = as_float(row.get("recovered_level"))
+        reclaim_time = parse_dt(reclaim.get("reclaim_timestamp_et"))
+    reclaim_price = as_float(reclaim.get("reclaim_price")) or level
+    if reclaim_price is None and as_float(row.get("recovered_level")) is not None:
+        reclaim_price = as_float(row.get("recovered_level"))
     if swept_low is None and level is not None and as_float(row.get("flush_points")) is not None:
         swept_low = level - float(as_float(row.get("flush_points")))
     flush_depth = (level - swept_low) if level is not None and swept_low is not None else None
@@ -540,18 +747,11 @@ def compute_feature_row(
     if recent_high is not None and swept_low is not None and minutes_from_recent_high is not None:
         approach_velocity = (recent_high - swept_low) / max(minutes_from_recent_high, 1.0)
     multi_level_flush_count = count_levels_between(events_by_plan, str(row.get("plan_date") or ""), swept_low, level)
-    target_info = next_trusted_level(events_by_plan, str(row.get("plan_date") or ""), entry_price)
-    if not target_info and as_float(row.get("target_or_response_level")) is not None:
-        target_info = {
-            "next_trusted_level_above": as_float(row.get("target_or_response_level")),
-            "next_trusted_level_source": "source_row_target",
-            "next_trusted_level_role": "target_or_response",
-            "next_trusted_level_pub_date": row.get("pub_date") or "",
-        }
-    target_level = as_float(row.get("target_or_response_level")) or as_float(target_info.get("next_trusted_level_above"))
-    target_room = target_level - entry_price if target_level is not None and entry_price is not None else None
-    risk_to_sweep = entry_price - (swept_low - TICK) if entry_price is not None and swept_low is not None else None
-    target_r = target_room / max(risk_to_sweep or TICK, TICK) if target_room is not None else None
+    target_info: dict[str, Any] = {}
+    target_level = None
+    target_room = None
+    risk_to_sweep = None
+    target_r = None
     source_bonus = major_source_bonus(row)
     significant_low_score = (
         0.30 * clamp(prior["prior_touch_count"] / 3, 0, 1)
@@ -568,34 +768,55 @@ def compute_feature_row(
         + 0.20 * clamp(multi_level_flush_count / 3, 0, 1)
         + 0.20 * volume_ratio_component
     )
-    acceptance_closes = as_int(row.get("acceptance_closes"))
-    if acceptance_closes is None:
-        acceptance_closes = int(reclaim.get("acceptance_closes_above_L") or 0)
+    acceptance_closes_total = int(reclaim.get("acceptance_closes_above_L") or 0)
+    acceptance_closes = int(reclaim.get("acceptance_closes_used_for_score") or 0)
+    if acceptance_closes == 0 and as_int(row.get("acceptance_closes")) is not None:
+        acceptance_closes_total = as_int(row.get("acceptance_closes")) or 0
+        acceptance_closes = min(acceptance_closes_total, 3)
     reclaim_range = as_float(reclaim.get("reclaim_range")) or None
     reclaim_score = (
-        0.25 * indicator(entry_price is not None and level is not None and entry_price > level)
+        0.25 * indicator(reclaim_price is not None and level is not None and reclaim_price > level)
         + 0.20 * indicator((as_float(reclaim.get("reclaim_close_location")) or 0) >= 0.5)
         + 0.20 * clamp(acceptance_closes / 3, 0, 1)
         + 0.20 * indicator(as_bool(reclaim.get("no_close_back_below_L_before_entry")))
         + 0.15 * indicator(reclaim_range is not None and reclaim_range <= 6)
     )
-    non_acceptance_closes = as_int(row.get("non_acceptance_held_bars"))
-    if non_acceptance_closes is None:
-        non_acceptance_closes = int(reclaim.get("non_acceptance_closes") or 0)
-    mfe15_calc, mae15_calc, complete15 = compute_mfe_mae(session_bars, reclaim_time, entry_price, 15)
-    mfe60_calc, mae60_calc, complete60 = compute_mfe_mae(session_bars, reclaim_time, entry_price, 60)
-    mfe_15m = mfe15_calc if mfe15_calc is not None else as_float(row.get("mfe_15m"))
-    mae_15m = mae15_calc if mae15_calc is not None else as_float(row.get("mae_15m"))
-    mfe_60m = mfe60_calc if mfe60_calc is not None else as_float(row.get("mfe_60m"))
-    mae_60m = mae60_calc if mae60_calc is not None else as_float(row.get("mae_60m"))
+    non_acceptance_closes_total = int(reclaim.get("non_acceptance_closes") or 0)
+    non_acceptance_closes = int(reclaim.get("non_acceptance_closes_used_for_score") or 0)
+    if non_acceptance_closes == 0 and as_int(row.get("non_acceptance_held_bars")) is not None:
+        non_acceptance_closes_total = as_int(row.get("non_acceptance_held_bars")) or 0
+        non_acceptance_closes = min(non_acceptance_closes_total, 3)
     non_acceptance_score = (
-        0.40 * indicator(as_bool(reclaim.get("any_close_above_L_plus_5_within_10m")) or non_acceptance_closes > 0)
+        0.40 * indicator(bool(reclaim.get("first_threshold_close_timestamp_et")) or non_acceptance_closes > 0)
         + 0.30 * clamp(non_acceptance_closes / 3, 0, 1)
         + 0.20 * indicator(as_bool(reclaim.get("first_retest_of_L_holds_after_crossing_L_plus_5")))
         + 0.10 * 0.0
     )
+    timing_driver, candidate_fire_time = score_driver_and_fire_time(reclaim, reclaim_score, non_acceptance_score)
+    candidate_bar = bar_at_time(bars, candidate_fire_time) or bar_at_time(session_bars, candidate_fire_time)
+    entry_price = as_float(candidate_bar.get("close")) if candidate_bar else reclaim_price
+    if candidate_fire_time is None:
+        entry_price = None
+    target_info = next_trusted_level(events_by_plan, str(row.get("plan_date") or ""), entry_price)
+    if not target_info and as_float(row.get("target_or_response_level")) is not None:
+        target_info = {
+            "next_trusted_level_above": as_float(row.get("target_or_response_level")),
+            "next_trusted_level_source": "source_row_target",
+            "next_trusted_level_role": "target_or_response",
+            "next_trusted_level_pub_date": row.get("pub_date") or "",
+        }
+    target_level = as_float(row.get("target_or_response_level")) or as_float(target_info.get("next_trusted_level_above"))
+    target_room = target_level - entry_price if target_level is not None and entry_price is not None else None
+    risk_to_sweep = entry_price - (swept_low - TICK) if entry_price is not None and swept_low is not None else None
+    target_r = target_room / max(risk_to_sweep or TICK, TICK) if target_room is not None else None
+    mfe15_calc, mae15_calc, complete15 = compute_mfe_mae(session_bars, candidate_fire_time, entry_price, 15)
+    mfe60_calc, mae60_calc, complete60 = compute_mfe_mae(session_bars, candidate_fire_time, entry_price, 60)
+    mfe_15m = mfe15_calc
+    mae_15m = mae15_calc
+    mfe_60m = mfe60_calc
+    mae_60m = mae60_calc
     non_acceptance_score_with_outcome_audit = non_acceptance_score + 0.10 * indicator(mae_15m is not None and mae_15m <= 3)
-    bucket = time_bucket(reclaim_time)
+    bucket = time_bucket(candidate_fire_time)
     next_source = str(target_info.get("next_trusted_level_source") or "").lower()
     trusted_source = any(token in next_source for token in ("mancini", "bobby", "gex", "dubz", "saty"))
     no_trusted_level_within_2 = target_room is not None and target_room > 2
@@ -626,9 +847,20 @@ def compute_feature_row(
         "setup_level": level,
         "swept_low": swept_low,
         "recovered_level": as_float(row.get("recovered_level")) or level,
+        "trap_detected_timestamp_et": iso_timestamp(trap_time),
+        "reclaim_detected_timestamp_et": iso_timestamp(reclaim_time),
+        "classification_complete_timestamp_et": iso_timestamp(candidate_fire_time),
+        "candidate_fired_timestamp_et": "",
+        "candidate_timing_driver": timing_driver,
+        "outcome_window_available": mfe60_calc is not None and mae60_calc is not None,
+        "horizon_15m_complete": complete15,
+        "horizon_60m_complete": complete60,
+        "reclaim_price": reclaim_price if reclaim_price is not None else "",
         "entry_price": entry_price,
-        "entry_timestamp_et": reclaim.isoformat() if isinstance(reclaim, datetime) else (reclaim_time.isoformat() if reclaim_time else ""),
+        "entry_timestamp_et": iso_timestamp(candidate_fire_time),
         "source_mode": row.get("source_mode") or "",
+        "source_label_status": row.get("source_label_status") or "",
+        "accepted_for_timing_test": as_bool(row.get("accepted_for_timing_test")),
         "source_confidence_score": round(source_confidence_score, 4),
         "significant_low_score": round(significant_low_score, 4),
         "prior_touch_count": prior["prior_touch_count"],
@@ -646,13 +878,16 @@ def compute_feature_row(
         "reclaim_close_location": reclaim.get("reclaim_close_location") if reclaim.get("reclaim_close_location") is not None else "",
         "reclaim_range": round(reclaim_range, 4) if reclaim_range is not None else "",
         "acceptance_closes_above_L": acceptance_closes,
+        "acceptance_score_timestamp_et": reclaim.get("acceptance_score_timestamp_et") or "",
+        "non_acceptance_score_timestamp_et": reclaim.get("non_acceptance_score_timestamp_et") or "",
+        "first_threshold_close_timestamp_et": reclaim.get("first_threshold_close_timestamp_et") or "",
         "non_acceptance_score": round(non_acceptance_score, 4),
-        "non_acceptance_score_with_outcome_audit": round(non_acceptance_score_with_outcome_audit, 4),
         "non_acceptance_closes": non_acceptance_closes,
         "reclaim_minutes_from_trap": as_float(row.get("reclaim_minutes_from_trap")) or "",
         "squeeze_score": round(squeeze_score, 4),
         "candidate_score": round(candidate_score, 4),
         "target_room": round(target_room, 4) if target_room is not None else "",
+        "target_invalid_for_level_to_level": target_room is None or target_room < 2.0,
         "risk_to_sweep": round(risk_to_sweep, 4) if risk_to_sweep is not None else "",
         "target_R": round(target_r, 4) if target_r is not None else "",
         "next_trusted_level_above": target_level if target_level is not None else "",
@@ -670,6 +905,8 @@ def compute_feature_row(
     reasons = hard_reject_reasons(row, feature)
     feature["hard_reject"] = bool(reasons)
     feature["hard_reject_reasons"] = ";".join(reasons)
+    if not reasons and passes_any_current_candidate_rule(feature):
+        feature["candidate_fired_timestamp_et"] = feature["classification_complete_timestamp_et"]
     unique_setup_key = source_hash([
         row.get("plan_date") or row.get("session_date"),
         level,
@@ -680,11 +917,14 @@ def compute_feature_row(
     tp2 = mfe_60m is not None and mfe_60m >= 2
     tp3 = mfe_60m is not None and mfe_60m >= 3
     next_hit = target_for_next is not None and mfe_60m is not None and mfe_60m >= target_for_next
-    stop_hit = mae_60m is not None and mae_60m >= risk
-    stop_first = bool(stop_hit)
-    false_armed = bool((not tp2) and (mae_15m is not None and mae_15m >= min(risk, 3.0)))
-    gross_points = -risk if stop_first else (3.0 if tp3 else 2.0 if tp2 else (mfe_60m or 0.0))
-    expectancy_points_slippage_0_5 = gross_points - 0.5
+    adverse_excursion_stop_hit = mae_60m is not None and mae_60m >= risk
+    first_hit = compute_first_hit_outcome(session_bars, candidate_fire_time, entry_price, risk, 3.0, 60)
+    first_hit_tp2 = compute_first_hit_outcome(session_bars, candidate_fire_time, entry_price, risk, 2.0, 60)
+    first_hit_tp3 = compute_first_hit_outcome(session_bars, candidate_fire_time, entry_price, risk, 3.0, 60)
+    first_hit_next_level = compute_first_hit_outcome(session_bars, candidate_fire_time, entry_price, risk, target_for_next, 60) if target_for_next is not None else {}
+    stop_first = as_bool(first_hit.get("stop_first"))
+    false_armed = bool((not as_bool(first_hit.get("target_first"))) and (mae_15m is not None and mae_15m >= min(risk, 3.0)))
+    expectancy_points_slippage_0_5 = as_float(first_hit.get("expectancy_points_slippage_0_5"))
     label = {
         "training_row_id": row.get("training_row_id"),
         "unique_setup_key": unique_setup_key,
@@ -692,6 +932,15 @@ def compute_feature_row(
         "session_date": row.get("session_date") or "",
         "packet_id": row.get("packet_id") or "",
         "acceptance_family_model": family,
+        "source_label_status": row.get("source_label_status") or "",
+        "source_mode": row.get("source_mode") or "",
+        "accepted_for_timing_test": as_bool(row.get("accepted_for_timing_test")),
+        "trap_detected_timestamp_et": iso_timestamp(trap_time),
+        "reclaim_detected_timestamp_et": iso_timestamp(reclaim_time),
+        "classification_complete_timestamp_et": iso_timestamp(candidate_fire_time),
+        "candidate_fired_timestamp_et": feature.get("candidate_fired_timestamp_et") or "",
+        "candidate_timing_driver": timing_driver,
+        "entry_price": round(entry_price, 4) if entry_price is not None else "",
         "source_confirmed_fbd": as_bool(row.get("source_confirmed_fbd")),
         "source_planned_fbd": as_bool(row.get("source_planned_fbd")),
         "source_negative_control": as_bool(row.get("source_negative_control")),
@@ -709,13 +958,25 @@ def compute_feature_row(
         "mae_60m": round(mae_60m, 4) if mae_60m is not None else "",
         "horizon_15m_complete": complete15,
         "horizon_60m_complete": complete60,
+        "acceptance_closes_total_audit": acceptance_closes_total,
+        "non_acceptance_closes_total_audit": non_acceptance_closes_total,
         "tp2_hit": tp2,
         "tp3_hit": tp3,
         "next_level_hit": next_hit,
+        "tp2_first": first_hit_tp2.get("first_hit_event") == "target",
+        "tp3_first": first_hit_tp3.get("first_hit_event") == "target",
+        "next_level_first": first_hit_next_level.get("first_hit_event") == "target" if first_hit_next_level else "",
+        "adverse_excursion_stop_hit": adverse_excursion_stop_hit,
+        "first_hit_event": first_hit.get("first_hit_event"),
+        "first_hit_timestamp_et": first_hit.get("first_hit_timestamp_et"),
+        "first_hit_points": round(as_float(first_hit.get("first_hit_points")), 4) if as_float(first_hit.get("first_hit_points")) is not None else "",
+        "target_first": as_bool(first_hit.get("target_first")),
+        "same_bar_stop_and_target": as_bool(first_hit.get("same_bar_stop_and_target")),
         "stop_first": stop_first,
         "false_armed": false_armed,
         "median_mae_before_tp1_component": mae_15m if tp2 and mae_15m is not None else "",
-        "expectancy_points_slippage_0_5": round(expectancy_points_slippage_0_5, 4),
+        "non_acceptance_score_with_outcome_audit": round(non_acceptance_score_with_outcome_audit, 4),
+        "expectancy_points_slippage_0_5": round(expectancy_points_slippage_0_5, 4) if expectancy_points_slippage_0_5 is not None else "",
         "candidate_score": round(candidate_score, 4),
         "time_of_day_bucket": bucket,
     }
@@ -762,6 +1023,37 @@ def summarize_rows(labels: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def packet_or_setup_key(row: dict[str, Any]) -> str:
+    return str(row.get("packet_id") or row.get("unique_setup_key") or row.get("training_row_id") or "")
+
+
+def source_priority(row: dict[str, Any]) -> tuple[int, str]:
+    confirmed = as_bool(row.get("source_confirmed_fbd"))
+    planned = as_bool(row.get("source_planned_fbd"))
+    mode = str(row.get("source_mode") or "")
+    if confirmed and mode == "actual_recap":
+        rank = 0
+    elif confirmed:
+        rank = 1
+    elif planned and mode == "planned_setup":
+        rank = 2
+    elif planned:
+        rank = 3
+    else:
+        rank = 4
+    return rank, str(row.get("training_row_id") or "")
+
+
+def dedupe_packet_rows(labels: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in labels:
+        grouped[packet_or_setup_key(row)].append(row)
+    return [
+        sorted(rows, key=source_priority)[0]
+        for _, rows in sorted(grouped.items())
+    ]
+
+
 def summarize_by(labels: list[dict[str, Any]], field: str) -> dict[str, Any]:
     groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in labels:
@@ -787,6 +1079,7 @@ def build_rule_scores(features: list[dict[str, Any]], labels: list[dict[str, Any
             if feature["training_row_id"] in label_by_id and row_matches_rule(feature, label_by_id[feature["training_row_id"]], rule)
         ]
         rule_scores[rule] = summarize_rows(selected)
+        rule_scores[rule]["packet_deduped"] = summarize_rows(dedupe_packet_rows(selected))
         rule_scores[rule]["per_family"] = summarize_by(selected, "acceptance_family_model")
         rule_scores[rule]["per_time_of_day"] = summarize_by(selected, "time_of_day_bucket")
     return rule_scores
@@ -894,6 +1187,9 @@ def report_markdown(scores: dict[str, Any]) -> str:
     overall = scores["overall_non_rejected"]
     for key, value in overall.items():
         lines.append(f"- `{key}`: {value}")
+    lines.extend(["", "## Overall Packet-Deduped Results", ""])
+    for key, value in scores["overall_non_rejected_packet_deduped"].items():
+        lines.append(f"- `{key}`: {value}")
     lines.extend(["", "## Per Family", ""])
     for family, result in scores["per_family_results"].items():
         lines.append(
@@ -903,11 +1199,13 @@ def report_markdown(scores: dict[str, Any]) -> str:
         )
     lines.extend(["", "## Candidate Rules", ""])
     for rule, result in scores["candidate_rules"].items():
+        deduped = result.get("packet_deduped") or {}
         lines.append(
             f"- `{rule}`: rows={result['rows']}, unique={result['unique_setups']}, "
             f"tp2={result['tp_plus_2_hit_rate']}, tp3={result['tp_plus_3_hit_rate']}, "
             f"next={result['next_level_hit_rate']}, stop_first={result['stop_first_rate']}, "
-            f"false_armed={result['false_armed_rate']}, expectancy={result['expectancy_points_with_0_5_es_point_slippage']}"
+            f"false_armed={result['false_armed_rate']}, expectancy={result['expectancy_points_with_0_5_es_point_slippage']}; "
+            f"packet_deduped_rows={deduped.get('rows')}, packet_deduped_expectancy={deduped.get('expectancy_points_with_0_5_es_point_slippage')}"
         )
     lines.extend(["", "## Negative Controls", ""])
     for control, result in scores["negative_controls"].items():
@@ -977,6 +1275,7 @@ def main() -> int:
         },
         "family_counts": dict(Counter(str(feature.get("acceptance_family_model") or "missing") for feature in features)),
         "overall_non_rejected": summarize_rows(non_rejected),
+        "overall_non_rejected_packet_deduped": summarize_rows(dedupe_packet_rows(non_rejected)),
         "per_family_results": summarize_by(non_rejected, "acceptance_family_model"),
         "per_time_of_day_results": summarize_by(non_rejected, "time_of_day_bucket"),
         "candidate_rules": build_rule_scores(features, labels),

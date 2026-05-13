@@ -23,6 +23,7 @@ describe('LukeNativeShadowStrategy source gate', () => {
   it('defaults to shadow and gates native NinjaTrader orders', () => {
     const source = readSource();
     const audit = auditSource(source);
+    expect(source).toContain('RunHistoricalAudit');
     expect(audit.status).toBe('clean');
     expect(audit.no_banned_order_calls).toBe(true);
     expect(audit.order_calls_gated).toBe(true);
@@ -32,6 +33,7 @@ describe('LukeNativeShadowStrategy source gate', () => {
     expect(source).toContain('AllowLiveAccounts = false');
     expect(source).toContain('AllowedAccountName = "LFE050706094670001"');
     expect(source).toContain('MaxMarketableEntryPoints = 0.25');
+    expect(source).toContain('AllowHistoricalBacktestOrders = false');
     expect(source).toContain('IsNativeLongPriceContextAllowed');
     expect(source).toContain('EnterLongLimit');
     expect(source).toContain('SetStopLoss');
@@ -41,6 +43,16 @@ describe('LukeNativeShadowStrategy source gate', () => {
     expect(source).toContain('WriteTelemetry("ORDER_SUBMITTED"');
     expect(source).toContain('Calculate = Calculate.OnEachTick');
     expect(source).toContain('Math.Abs(decision.ActiveEntry - lastPrice) > MaxMarketableEntryPoints');
+    expect(source).toContain('NativeLongLimitPrice');
+    expect(source).toContain('private bool TrySubmitNativeLong');
+    expect(source).toContain('bool requireExecutableFill = NativeExecutionEnabled() && (State == State.Realtime || AllowHistoricalBacktestOrders);');
+    expect(source).toContain('if (requireExecutableFill && !TrySubmitNativeLong(decision, signalId))');
+    expect(source).toContain('protected override void OnExecutionUpdate(Execution execution, string executionId, double price, int quantity, MarketPosition marketPosition, string orderId, DateTime time)');
+    expect(source).toContain('WriteTelemetry("ORDER_EXECUTED"');
+    expect(source).toContain('pendingLongId = signalId;');
+    expect(source).toContain('return IsFinite(lastPrice) && lastPrice > decision.ActiveEntry ? lastPrice : decision.ActiveEntry;');
+    expect(source).toContain('EnterLongLimit(qtyT1, orderEntry, NativeEntryT1Name)');
+    expect(source).toContain('order_entry=');
     expect(source).not.toContain('culEyYkQrx7nqBgWopdfvDzJT40bU8Ve632tMO9N');
     expect(source).toContain('IsTradeLevelLine');
     expect(source).toContain('key == "trade" || key == "mancini" || key == "trade_levels"');
@@ -135,11 +147,15 @@ describe('LukeNativeShadowStrategy source gate', () => {
     expect(source).toContain('WriteTelemetry("TP1"');
     expect(source).toContain('WriteCancelTelemetry');
     expect(source).not.toContain('cross_bar=true');
-    expect(normalizedSource).toContain('if (State != State.Realtime)\n                return;');
+    expect(normalizedSource).toContain('RunHistoricalAudit = false;');
+    expect(normalizedSource).toContain('if (State != State.Realtime && !RunHistoricalAudit && !AllowHistoricalBacktestOrders)\n                return;');
+    expect(normalizedSource).toContain('if (State == State.Realtime || AllowHistoricalBacktestOrders)\n                    CancelNativeSignal(pendingLongId, decision);');
+    expect(normalizedSource).toContain('if (State != State.Realtime && !AllowHistoricalBacktestOrders)');
+    expect(normalizedSource).toContain('if (AllowHistoricalBacktestOrders && State != State.Realtime)\n                    return true;');
     expect(normalizedSource).toContain('Pending alert expires at bar close; tracked candidate continues to monitor TP/stop.');
     expect(source).toContain('STOP_FIRST');
     expect(source).toContain('MIXED_STOP_FIRST');
-    expect(normalizedSource).toContain('DrawLedgerOverlay();\n\n            if (AutonomyMode == LukeNativeAutonomyMode.Disabled)');
+    expect(normalizedSource).toContain('DrawLedgerOverlay();\n\n            // Allow strategy math and logging even if Disabled/Shadow, if audit is requested.\n            if (AutonomyMode == LukeNativeAutonomyMode.Disabled && !RunHistoricalAudit)');
     expect(normalizedSource).toContain('ResetSessionState();\n                DrawLedgerOverlay();');
   });
 });

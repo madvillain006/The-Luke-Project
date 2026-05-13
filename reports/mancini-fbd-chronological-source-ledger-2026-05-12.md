@@ -6,10 +6,16 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 ## Counts
 
-- rows: 478
-- `data_only`: 332
-- `needs_bigger_crop`: 114
-- `negative_control`: 32
+- rows: 842
+- `data_only`: 679
+- `needs_bigger_crop`: 133
+- `negative_control`: 30
+- `data_context`: 45
+- `methodology_definition`: 16
+- `source_confirmed_fbd`: 430
+- `source_negative_control`: 30
+- `source_planned_fbd`: 69
+- `source_unparsed_fbd`: 252
 
 ## 2026-02-20
 
@@ -17,6 +23,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6808.0; swept/lost=6791.0, 6808.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6791.0=swept_lost_low; 6808.0=actual_setup_level+swept_lost_low; 6795.0=current_price_context; 6860.0=current_price_context
 - S/R sanity: 6808.0 coincides_partially via prose L484 6808
@@ -31,6 +38,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6791.0; recovered=none; non_acceptance=none; invalidation=none; target/response=6876.0
 - Level roles: 6808.0=current_price_context; 6791.0=swept_lost_low; 6843.0=current_price_context; 6876.0=target_or_response; 6893.0=current_price_context; 6923.0=current_price_context; 6954.0=current_price_context
 - S/R sanity: none
@@ -45,6 +53,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6808.0; swept/lost=6791.0, 6808.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6808.0=actual_setup_level+swept_lost_low; 6791.0=swept_lost_low; 6877.0=current_price_context; 6904.0=current_price_context; 6925.0=current_price_context; 6939.0=current_price_context; 6954.0=current_price_context; 6849.0=current_price_context
 - S/R sanity: 6808.0 coincides_partially via prose L484 6808
@@ -59,6 +68,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6808.0, 6854.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6808.0=actual_setup_level; 6854.0=actual_setup_level
 - S/R sanity: 6808.0 coincides_partially via prose L484 6808; 6854.0 coincides_partially via prose L620 6845-6884
@@ -73,6 +83,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: data_context
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=6822.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6808.0=current_price_context; 6822.0=swept_lost_low; 6893.0=current_price_context
 - S/R sanity: none
@@ -87,6 +98,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6808.0; swept/lost=6791.0; recovered=none; non_acceptance=none; invalidation=none; target/response=6860.0
 - Level roles: 6860.0=target_or_response; 6791.0=swept_lost_low; 6808.0=actual_setup_level; 6923.0=current_price_context
 - S/R sanity: 6808.0 coincides_partially via prose L484 6808
@@ -101,6 +113,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6808.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6808.0=actual_setup_level; 6849.0=current_price_context; 6954.0=current_price_context
 - S/R sanity: 6808.0 coincides_partially via prose L486 6808
@@ -115,6 +128,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6808.0; swept/lost=6791.0, 6808.0; recovered=none; non_acceptance=none; invalidation=none; target/response=6925.0
 - Level roles: 6808.0=actual_setup_level+swept_lost_low; 6791.0=swept_lost_low; 6849.0=current_price_context; 6877.0=current_price_context; 6904.0=current_price_context; 6925.0=target_or_response; 6939.0=current_price_context; 6954.0=current_price_context
 - S/R sanity: 6808.0 coincides_partially via prose L486 6808
@@ -129,6 +143,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6872.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6872.0=actual_setup_level
 - S/R sanity: 6872.0 coincides_partially via prose L538 6872
@@ -143,6 +158,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6872.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6872.0=actual_setup_level; 6877.0=current_price_context
 - S/R sanity: 6872.0 coincides_partially via prose L538 6872
@@ -157,6 +173,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6872.0=current_price_context
 - S/R sanity: none
@@ -171,6 +188,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: planned_setup
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6872.0=current_price_context
 - S/R sanity: none
@@ -185,6 +203,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6872.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6910.0=current_price_context; 6866.0=current_price_context; 6872.0=actual_setup_level
 - S/R sanity: 6872.0 coincides_partially via prose L538 6872
@@ -199,6 +218,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6888.0=current_price_context
 - S/R sanity: none
@@ -213,6 +233,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6808.0, 6772.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6808.0=actual_setup_level; 6772.0=actual_setup_level
 - S/R sanity: 6808.0 coincides_partially via prose L486 6808; 6772.0 coincides_cleanly via support L614 6772
@@ -227,6 +248,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6861.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6861.0=actual_setup_level
 - S/R sanity: 6861.0 coincides_cleanly via support L614 6861
@@ -241,6 +263,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6857.0=current_price_context; 6856.0=current_price_context; 6861.0=current_price_context
 - S/R sanity: none
@@ -255,6 +278,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6861.0; swept/lost=none; recovered=6861.0; non_acceptance=6866.0; invalidation=none; target/response=none
 - Level roles: 6857.0=current_price_context; 6861.0=actual_setup_level+recovered_level; 6866.0=non_acceptance_threshold
 - S/R sanity: 6861.0 coincides_cleanly via support L614 6861
@@ -269,6 +293,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6857.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6857.0=actual_setup_level
 - S/R sanity: 6857.0 coincides_partially via prose L569 6857
@@ -283,6 +308,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6857.0=current_price_context
 - S/R sanity: none
@@ -297,6 +323,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6961.0=current_price_context; 6893.0=current_price_context; 6857.0=current_price_context
 - S/R sanity: none
@@ -311,6 +338,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6808.0, 6857.0; swept/lost=none; recovered=6857.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6857.0=actual_setup_level+recovered_level; 6808.0=actual_setup_level
 - S/R sanity: 6808.0 coincides_partially via prose L486 6808; 6857.0 coincides_partially via prose L583 6857
@@ -321,24 +349,26 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 - Verdict: data_only
 - Raw passage: We recovered 6857 by 1:45PM and one could’ve longed via the non-acceptance protocol or first type of acceptance. I didn’t take this one and opted to just hold my runner from Tuesday’s 6808 Failed Breakdown. I had a very low cost basis here.
 
-### data\research\mancini\Longer Mancini Logs 2.txt:616 `negative_control`
+### data\research\mancini\Longer Mancini Logs 2.txt:616 `needs_bigger_crop`
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
-- Source mode: negative_control
+- Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6848.0, 6791.0, 6808.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6808.0=actual_setup_level; 6867.0=current_price_context; 6845.0=current_price_context; 6884.0=current_price_context; 6861.0=current_price_context; 6866.0=current_price_context; 6848.0=actual_setup_level; 6838.0=current_price_context; 6822.0=current_price_context; 6813.0=current_price_context; 6791.0=actual_setup_level; 6782.0=current_price_context; 6772.0=current_price_context; 6758.0=current_price_context
 - S/R sanity: 6848.0 coincides_partially via prose L616 6845-6884; 6791.0 coincides_partially via prose L486 6791; 6808.0 coincides_partially via prose L486 6808
 - ES 1m window/chart: multi-level split required; crop each stated setup level separately
-- Blockers: source_marks_no_trigger_or_non_fbd
+- Blockers: multi_setup_row_split_required, no_existing_chart_window_match, source_mode_planned_setup
 - Support context: L614: Supports are: 6864, 6861 (major), 6855, 6851, 6845 (major), 6838, 6832, 6822 (major), 6813, 6802 (major), 6795, 6790 (major), 6782, 6777, 6772 (major), 6764, 6758 (major), 6752, 6743, 6736, 6732 (major), 6727 (major), 6716, 6710, 6704 (major), 6697 (major), 6689, 6681 (major), 6672, 6664 (major), 6657, 6652 (major), 6646, 6639, 6631 (major), 6619, 6610 (m...
 - Resistance context: L618: Resistances are: 6867-70 (major), 6876, 6880, 6884-88 (major), 6893, 6898 (major), 6907, 6913 (major), 6918, 6925-30 (major), 6935, 6944, 6950-53 (major), 6957, 6965, 6970-73 (major), 6981, 6986, 6993 (major), 6996, 7002 (major), 7007, 7011, 7017, 7022 (major), 7028, 7036 (major), 7042, 7055 (major), 7065 (major), 7080, 7088, 7096 (major), 7105, 7115, 712...
-- Verdict: negative_control
+- Verdict: needs_bigger_crop
 - Raw passage: In terms of lvls I’d bid direct: I am still holding my 10% long runner from the 10:45AM monster 6808 Failed Breakdown we had Tuesday. My most recent entry was the 6867-70 Level Reclaim long we had at 3:45PM today, which was managed level to level and tweeted out live at 3:30PM (shown above). I will warn tomorrow is OPEX day. While not always the case, OPE...
 
 ### data\research\mancini\Longer Mancini Logs 2.txt:620 `data_only`
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6808.0; swept/lost=6791.0, 6808.0; recovered=none; non_acceptance=none; invalidation=none; target/response=6884.0, 6898.0
 - Level roles: 6808.0=actual_setup_level+swept_lost_low; 6791.0=swept_lost_low; 6845.0=current_price_context; 6884.0=target_or_response; 6867.0=current_price_context; 6898.0=target_or_response; 6913.0=current_price_context; 6925.0=current_price_context; 6954.0=current_price_context
 - S/R sanity: 6808.0 coincides_partially via prose L486 6808
@@ -352,7 +382,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\Longer Mancini Logs 2.txt:622 `negative_control`
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6845.0=current_price_context; 6835.0=current_price_context
 - S/R sanity: none
@@ -367,6 +398,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Again Coiled Tightly. Move Incoming. What Way? Feb 20th Plan | pub=2026-02-19 | plan=2026-02-20
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6808.0; swept/lost=6791.0, 6808.0; recovered=none; non_acceptance=none; invalidation=none; target/response=6884.0
 - Level roles: 6808.0=actual_setup_level+swept_lost_low; 6791.0=swept_lost_low; 6845.0=current_price_context; 6884.0=target_or_response; 6898.0=current_price_context; 6913.0=current_price_context; 6925.0=current_price_context; 6954.0=current_price_context
 - S/R sanity: 6808.0 coincides_partially via prose L486 6808
@@ -384,6 +416,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Day In The Same Range For SPX. Are We Close To Breakout? February 25 Plan | pub=2026-02-24 | plan=2026-02-25
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6848.0; swept/lost=6847.25; recovered=none; non_acceptance=none; invalidation=none; target/response=6884.0
 - Level roles: 6848.0=actual_setup_level; 6847.25=swept_lost_low; 6884.0=target_or_response; 6898.0=current_price_context; 6913.0=current_price_context; 6925.0=current_price_context; 6954.0=current_price_context; 6849.0=current_price_context
 - S/R sanity: 6848.0 coincides_partially via prose L6 6848
@@ -398,6 +431,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Day In The Same Range For SPX. Are We Close To Breakout? February 25 Plan | pub=2026-02-24 | plan=2026-02-25
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6832.0; swept/lost=6822.0, 6828.0, 6832.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6832.0=actual_setup_level+swept_lost_low; 6822.0=swept_lost_low; 6828.0=swept_lost_low
 - S/R sanity: 6832.0 coincides_cleanly via support L132 6832
@@ -412,6 +446,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Day In The Same Range For SPX. Are We Close To Breakout? February 25 Plan | pub=2026-02-24 | plan=2026-02-25
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6849.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6849.0=actual_setup_level
 - S/R sanity: 6849.0 coincides_partially via prose L50 6849
@@ -426,6 +461,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Day In The Same Range For SPX. Are We Close To Breakout? February 25 Plan | pub=2026-02-24 | plan=2026-02-25
 - Source mode: actual_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6832.0; recovered=none; non_acceptance=none; invalidation=none; target/response=6890.0
 - Level roles: 6865.0=current_price_context; 6828.0=current_price_context; 6832.0=swept_lost_low; 6890.0=target_or_response
 - S/R sanity: none
@@ -440,6 +476,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Day In The Same Range For SPX. Are We Close To Breakout? February 25 Plan | pub=2026-02-24 | plan=2026-02-25
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6849.0=current_price_context
 - S/R sanity: none
@@ -454,6 +491,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Day In The Same Range For SPX. Are We Close To Breakout? February 25 Plan | pub=2026-02-24 | plan=2026-02-25
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6832.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6832.0=actual_setup_level
 - S/R sanity: 6832.0 coincides_cleanly via support L132 6832
@@ -468,6 +506,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Day In The Same Range For SPX. Are We Close To Breakout? February 25 Plan | pub=2026-02-24 | plan=2026-02-25
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6832.0; swept/lost=6822.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6832.0=actual_setup_level; 6822.0=swept_lost_low
 - S/R sanity: 6832.0 coincides_cleanly via support L132 6832
@@ -482,6 +521,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Day In The Same Range For SPX. Are We Close To Breakout? February 25 Plan | pub=2026-02-24 | plan=2026-02-25
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6828.0, 6832.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6832.0=swept_lost_low; 6828.0=swept_lost_low
 - S/R sanity: none
@@ -496,6 +536,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Day In The Same Range For SPX. Are We Close To Breakout? February 25 Plan | pub=2026-02-24 | plan=2026-02-25
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6832.0, 6880.0; swept/lost=6871.0, 6893.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6832.0=actual_setup_level; 6925.0=current_price_context; 6850.0=current_price_context; 6893.0=swept_lost_low; 6878.0=current_price_context; 6880.0=actual_setup_level; 6871.0=swept_lost_low; 6822.0=current_price_context; 6828.0=current_price_context
 - S/R sanity: 6832.0 coincides_cleanly via support L132 6832; 6880.0 coincides_partially via prose L134 6880
@@ -510,6 +551,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Day In The Same Range For SPX. Are We Close To Breakout? February 25 Plan | pub=2026-02-24 | plan=2026-02-25
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6832.0; recovered=none; non_acceptance=none; invalidation=none; target/response=6935.0
 - Level roles: 6850.0=current_price_context; 6925.0=current_price_context; 6832.0=swept_lost_low; 6871.0=current_price_context; 6935.0=target_or_response; 6953.0=current_price_context; 6973.0=current_price_context; 6893.0=current_price_context; 6908.0=current_price_context
 - S/R sanity: none
@@ -523,7 +565,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\parsing text.txt:140 `negative_control`
 
 - Plan/date context: Another Day In The Same Range For SPX. Are We Close To Breakout? February 25 Plan | pub=2026-02-24 | plan=2026-02-25
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6850.0=current_price_context; 6842.0=current_price_context
 - S/R sanity: none
@@ -538,6 +581,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Day In The Same Range For SPX. Are We Close To Breakout? February 25 Plan | pub=2026-02-24 | plan=2026-02-25
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6832.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6850.0=current_price_context; 6925.0=current_price_context; 6832.0=swept_lost_low; 6935.0=current_price_context; 6953.0=current_price_context
 - S/R sanity: none
@@ -555,6 +599,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6791.0; swept/lost=6768.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6782.0=current_price_context; 6791.0=actual_setup_level; 6768.0=swept_lost_low; 6913.0=current_price_context
 - S/R sanity: 6791.0 coincides_partially via prose L334 6791
@@ -569,6 +614,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6718.0, 6832.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6832.0=swept_lost_low; 6909.0=current_price_context; 6873.0=current_price_context; 6718.0=swept_lost_low
 - S/R sanity: none
@@ -583,6 +629,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6742.0; swept/lost=6717.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6742.0=actual_setup_level; 6717.0=swept_lost_low
 - S/R sanity: 6742.0 coincides_partially via prose L338 6742
@@ -597,6 +644,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6791.0=current_price_context; 6808.0=current_price_context
 - S/R sanity: none
@@ -611,6 +659,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: actual_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6811.0, 6809.0; recovered=none; non_acceptance=none; invalidation=none; target/response=6850.0
 - Level roles: 6811.0=swept_lost_low; 6809.0=swept_lost_low; 6850.0=target_or_response
 - S/R sanity: none
@@ -625,6 +674,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6768.0=current_price_context; 6791.0=current_price_context; 6912.0=current_price_context
 - S/R sanity: none
@@ -639,6 +689,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6718.0=current_price_context; 6742.0=current_price_context; 6800.0=current_price_context
 - S/R sanity: none
@@ -653,6 +704,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: actual_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6768.0; recovered=none; non_acceptance=none; invalidation=none; target/response=6913.0
 - Level roles: 6791.0=current_price_context; 6768.0=swept_lost_low; 6913.0=target_or_response; 6832.0=current_price_context; 6909.0=current_price_context
 - S/R sanity: none
@@ -667,6 +719,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6768.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6909.0=current_price_context; 6832.0=current_price_context; 6850.0=current_price_context; 6791.0=current_price_context; 6768.0=swept_lost_low
 - S/R sanity: none
@@ -681,6 +734,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6718.0=current_price_context; 6742.0=current_price_context; 6832.0=current_price_context
 - S/R sanity: none
@@ -695,6 +749,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6853.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6853.0=actual_setup_level
 - S/R sanity: 6853.0 coincides_partially via prose L390 6853
@@ -709,6 +764,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: actual_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6791.0, 6768.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6791.0=swept_lost_low; 6768.0=swept_lost_low
 - S/R sanity: none
@@ -723,10 +779,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6853.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6853.0=actual_setup_level; 6912.0=current_price_context
 - S/R sanity: 6853.0 coincides_partially via prose L390 6853
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-02T02:49:00-05:00 minus 60 minutes through 2026-03-02T08:48:00-05:00 plus 90 minutes; trap=6790.75; reclaim=2026-03-02T08:48:00-05:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-05T02:30:00-05:00 minus 60 minutes through 2026-03-05T02:55:00-05:00 plus 90 minutes; trap=6840.5; reclaim=2026-03-05T02:55:00-05:00; score=15.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
 - Support context: L465: Supports are: 6822 (major), 6818, 6813, 6808 (major), 6802, 6795 (major), 6790, 6782 (major), 6776, 6770 (major), 6765, 6759 (major), 6752, 6747, 6743 (major), 6736, 6732 (major), 6727, 6720 (major), 6711, 6704-6700 (major), 6695, 6690 (major), 6685, 6680 (major), 6672, 6663 (major), 6657, 6652 (major), 6646, 6639 (major), 6635, 6631 (major), 6626, 6620 (...
 - Resistance context: L469: Resistances are: 6828, 6832 (major), 6838, 6843, 6848-52 (major), 6862, 6866, 6876 (major), 6880, 6884 (major), 6894, 6899, 6904 (major), 6909, 6913 (major), 6918, 6925 (major), 6930, 6935-38 (major), 6943, 6953 (major), 6957, 6962, 6967 (major), 6973, 6985, 6991 (major), 6999, 7002, 7008 (major), 7017, 7022, 7027 (major). As readers know I don’t short ES...
@@ -737,6 +794,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6853.0=current_price_context
 - S/R sanity: none
@@ -751,6 +809,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: planned_setup
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=6912.0
 - Level roles: 6853.0=current_price_context; 6912.0=target_or_response
 - S/R sanity: none
@@ -764,7 +823,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\Longer Mancini Logs 2.txt:403 `negative_control`
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=6853.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6853.0=actual_setup_level
 - S/R sanity: 6853.0 coincides_partially via prose L390 6853
@@ -779,6 +839,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6768.0=current_price_context
 - S/R sanity: none
@@ -793,6 +854,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6759.0=current_price_context; 6768.0=current_price_context
 - S/R sanity: none
@@ -807,6 +869,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: planned_setup
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6768.0=current_price_context
 - S/R sanity: none
@@ -821,6 +884,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6759.0=current_price_context; 6768.0=current_price_context
 - S/R sanity: none
@@ -835,6 +899,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6742.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6742.0=actual_setup_level
 - S/R sanity: 6742.0 does_not_coincide
@@ -849,6 +914,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6742.0=current_price_context
 - S/R sanity: none
@@ -863,6 +929,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6742.0=current_price_context
 - S/R sanity: none
@@ -877,6 +944,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6743.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6743.0=actual_setup_level; 6808.0=current_price_context; 6795.0=current_price_context; 6904.0=current_price_context; 6848.0=current_price_context; 6876.0=current_price_context; 6925.0=current_price_context; 6943.0=current_price_context
 - S/R sanity: 6743.0 coincides_cleanly via support L465 6743
@@ -890,7 +958,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\Longer Mancini Logs 2.txt:473 `negative_control`
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
-- Source mode: negative_control
+- Source mode: planned_setup
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6808.0=current_price_context; 6795.0=current_price_context; 6789.0=current_price_context
 - S/R sanity: none
@@ -905,6 +974,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Another Big Dip In SPX That Was Again Bought. Was That The Bottom? March 4 Plan | pub=2026-03-03 | plan=2026-03-04
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6743.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6743.0=actual_setup_level; 6808.0=current_price_context; 6795.0=current_price_context; 6904.0=current_price_context; 6849.0=current_price_context; 6876.0=current_price_context
 - S/R sanity: 6743.0 coincides_cleanly via support L465 6743
@@ -922,6 +992,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip With Force. Dead Cat Bounce, or Bottom? March 10th Plan | pub=2026-03-09 | plan=2026-03-10
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6718.0; swept/lost=6718.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6718.0=actual_setup_level+swept_lost_low; 6778.0=current_price_context
 - S/R sanity: 6718.0 coincides_partially via prose L204 6718
@@ -936,6 +1007,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip With Force. Dead Cat Bounce, or Bottom? March 10th Plan | pub=2026-03-09 | plan=2026-03-10
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6612.0; swept/lost=6588.0, 6621.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6588.0=swept_lost_low; 6612.0=actual_setup_level; 6636.0=current_price_context; 6621.0=swept_lost_low; 6782.0=current_price_context
 - S/R sanity: 6612.0 coincides_cleanly via support L313 6609-12
@@ -950,10 +1022,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip With Force. Dead Cat Bounce, or Bottom? March 10th Plan | pub=2026-03-09 | plan=2026-03-10
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6739.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6718.0=current_price_context; 6739.0=actual_setup_level
 - S/R sanity: 6739.0 coincides_cleanly via support L313 6739-42
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-06T09:09:00-05:00 minus 60 minutes through 2026-03-06T09:12:00-05:00 plus 90 minutes; trap=6726.75; reclaim=2026-03-06T09:12:00-05:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-09T12:00:00-04:00 minus 60 minutes through 2026-03-09T14:19:00-04:00 plus 90 minutes; trap=6726.5; reclaim=2026-03-09T14:19:00-04:00; score=15.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L313: Supports are: 6778-82 (major), 6774, 6764, 6758 (major), 6752, 6747, 6739-42 (major), 6732, 6727, 6721, 6716 (major), 6707, 6700 (major), 6693 (major), 6682, 6676 (major), 6668, 6663 (major), 6657, 6652 (major), 6645, 6639, 6632 (major), 6623 (major), 6617, 6609-12 (major), 6605, 6597 (major), 6589, 6583, 6577, 6573 (major), 6559, 6554, 6542 (major), 6536...
 - Resistance context: L317: Resistances are: 6786, 6791, 6798 (major), 6804, 6813 (major), 6818, 6822, 6829-6832 (major), 6838, 6843, 6850-52 (major), 6861, 6865, 6873-76 (major), 6883, 6888, 6894, 6899, 6904 (major), 6904, 6913, 6918-21 (major), 6928, 6935, 6942 (major), 6953 (major). As readers know I don’t short ES - I only get my points on the long side, but I still give short e...
@@ -964,6 +1037,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip With Force. Dead Cat Bounce, or Bottom? March 10th Plan | pub=2026-03-09 | plan=2026-03-10
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6718.75; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6800.0=current_price_context; 6715.75=current_price_context; 6718.75=swept_lost_low; 6778.0=current_price_context
 - S/R sanity: none
@@ -978,6 +1052,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip With Force. Dead Cat Bounce, or Bottom? March 10th Plan | pub=2026-03-09 | plan=2026-03-10
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6612.0; swept/lost=6588.0, 6612.0; recovered=none; non_acceptance=none; invalidation=none; target/response=6800.0
 - Level roles: 6588.0=swept_lost_low; 6612.0=actual_setup_level+swept_lost_low; 6800.0=target_or_response
 - S/R sanity: 6612.0 coincides_cleanly via support L313 6609-12
@@ -992,6 +1067,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip With Force. Dead Cat Bounce, or Bottom? March 10th Plan | pub=2026-03-09 | plan=2026-03-10
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6718.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6782.0=current_price_context; 6718.0=actual_setup_level; 6778.0=current_price_context; 6800.0=current_price_context; 6813.0=current_price_context; 6829.0=current_price_context; 6850.0=current_price_context
 - S/R sanity: 6718.0 coincides_partially via prose L230 6718
@@ -1006,6 +1082,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip With Force. Dead Cat Bounce, or Bottom? March 10th Plan | pub=2026-03-09 | plan=2026-03-10
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6588.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6588.0=swept_lost_low; 6782.0=current_price_context
 - S/R sanity: none
@@ -1020,6 +1097,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip With Force. Dead Cat Bounce, or Bottom? March 10th Plan | pub=2026-03-09 | plan=2026-03-10
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6612.0=current_price_context
 - S/R sanity: none
@@ -1034,6 +1112,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip With Force. Dead Cat Bounce, or Bottom? March 10th Plan | pub=2026-03-09 | plan=2026-03-10
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6680.0=current_price_context
 - S/R sanity: none
@@ -1048,6 +1127,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip With Force. Dead Cat Bounce, or Bottom? March 10th Plan | pub=2026-03-09 | plan=2026-03-10
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6612.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6588.0=current_price_context; 6612.0=actual_setup_level; 6647.0=current_price_context
 - S/R sanity: 6612.0 coincides_cleanly via support L313 6609-12
@@ -1062,6 +1142,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip With Force. Dead Cat Bounce, or Bottom? March 10th Plan | pub=2026-03-09 | plan=2026-03-10
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6612.0=current_price_context
 - S/R sanity: none
@@ -1076,6 +1157,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip With Force. Dead Cat Bounce, or Bottom? March 10th Plan | pub=2026-03-09 | plan=2026-03-10
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6612.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6612.0=actual_setup_level
 - S/R sanity: 6612.0 coincides_cleanly via support L313 6609-12
@@ -1090,6 +1172,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip With Force. Dead Cat Bounce, or Bottom? March 10th Plan | pub=2026-03-09 | plan=2026-03-10
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6612.0; swept/lost=6732.0, 6700.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6612.0=actual_setup_level; 6778.0=current_price_context; 6739.0=current_price_context; 6732.0=swept_lost_low; 6700.0=swept_lost_low; 6693.0=current_price_context; 6676.0=current_price_context; 6663.0=current_price_context; 6641.0=current_price_context
 - S/R sanity: 6612.0 coincides_cleanly via support L313 6609-12
@@ -1104,6 +1187,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip With Force. Dead Cat Bounce, or Bottom? March 10th Plan | pub=2026-03-09 | plan=2026-03-10
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6612.0; swept/lost=6612.0, 6588.0, 6732.0; recovered=6612.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6612.0=actual_setup_level+swept_lost_low+recovered_level; 6588.0=swept_lost_low; 6778.0=current_price_context; 6738.0=current_price_context; 6732.0=swept_lost_low; 6700.0=current_price_context; 6832.0=current_price_context; 6850.0=current_price_context; 6918.0=current_price_context
 - S/R sanity: 6612.0 coincides_cleanly via support L313 6609-12
@@ -1117,7 +1201,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\Longer Mancini Logs 2.txt:321 `negative_control`
 
 - Plan/date context: Bulls Bought The Dip With Force. Dead Cat Bounce, or Bottom? March 10th Plan | pub=2026-03-09 | plan=2026-03-10
-- Source mode: negative_control
+- Source mode: planned_setup
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6738.0=current_price_context; 6726.0=current_price_context
 - S/R sanity: none
@@ -1132,6 +1217,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip With Force. Dead Cat Bounce, or Bottom? March 10th Plan | pub=2026-03-09 | plan=2026-03-10
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6612.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6612.0=actual_setup_level; 6778.0=current_price_context; 6738.0=current_price_context; 6700.0=current_price_context; 6832.0=current_price_context; 6850.0=current_price_context; 6918.0=current_price_context
 - S/R sanity: 6612.0 coincides_cleanly via support L313 6609-12
@@ -1149,6 +1235,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Breaks Down, But Is It Another Bear Trap? March 13 Plan | pub=2026-03-12 | plan=2026-03-13
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6612.0; swept/lost=6588.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6588.0=swept_lost_low; 6700.0=current_price_context; 6612.0=actual_setup_level; 6820.0=current_price_context
 - S/R sanity: 6612.0 coincides_cleanly via support L183 6612
@@ -1163,6 +1250,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Breaks Down, But Is It Another Bear Trap? March 13 Plan | pub=2026-03-12 | plan=2026-03-13
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6769.0, 6612.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6612.0=actual_setup_level; 6769.0=actual_setup_level; 6818.0=current_price_context
 - S/R sanity: 6769.0 coincides_partially via resistance L187 6769; 6612.0 coincides_cleanly via support L183 6612
@@ -1177,6 +1265,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Breaks Down, But Is It Another Bear Trap? March 13 Plan | pub=2026-03-12 | plan=2026-03-13
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6612.0; swept/lost=6588.0, 6612.0; recovered=none; non_acceptance=none; invalidation=none; target/response=6820.0
 - Level roles: 6700.0=current_price_context; 6588.0=swept_lost_low; 6612.0=actual_setup_level+swept_lost_low; 6820.0=target_or_response
 - S/R sanity: 6612.0 coincides_cleanly via support L183 6612
@@ -1191,6 +1280,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Breaks Down, But Is It Another Bear Trap? March 13 Plan | pub=2026-03-12 | plan=2026-03-13
 - Source mode: actual_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6764.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6850.0=current_price_context; 6769.0=current_price_context; 6764.0=swept_lost_low; 6818.0=current_price_context
 - S/R sanity: none
@@ -1205,6 +1295,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Breaks Down, But Is It Another Bear Trap? March 13 Plan | pub=2026-03-12 | plan=2026-03-13
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6716.0; swept/lost=6705.0, 6758.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6705.0=swept_lost_low; 6716.0=actual_setup_level; 6758.0=swept_lost_low
 - S/R sanity: 6716.0 coincides_partially via resistance L187 6716
@@ -1219,6 +1310,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Breaks Down, But Is It Another Bear Trap? March 13 Plan | pub=2026-03-12 | plan=2026-03-13
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6769.0=current_price_context
 - S/R sanity: none
@@ -1233,10 +1325,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Breaks Down, But Is It Another Bear Trap? March 13 Plan | pub=2026-03-12 | plan=2026-03-13
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6750.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6750.0=actual_setup_level; 6758.0=current_price_context; 6738.0=current_price_context; 6742.0=current_price_context
 - S/R sanity: 6750.0 coincides_partially via prose L114 6750
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-09T08:20:00-04:00 minus 60 minutes through 2026-03-09T14:19:00-04:00 plus 90 minutes; trap=6675.75; reclaim=2026-03-09T14:19:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-12T04:14:00-04:00 minus 60 minutes through 2026-03-12T04:40:00-04:00 plus 90 minutes; trap=6738.75; reclaim=2026-03-12T04:40:00-04:00; score=12.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
 - Support context: L183: Supports are: 6685 (major), 6676, 6667, 6663 (major), 6656, 6652 (major), 6646, 6638 (major), 6630, 6624 (major), 6620, 6612 (major), 6608, 6597 (major), 6593, 6585 (major), 6582, 6571 (major), 6564, 6558, 6552 (major), 6546, 6542 (major), 6536 (major), 6527, 6522, 6508 (major), 6498, 6491, 6485, 6475 (major).
 - Resistance context: L187: Resistances are: 6693, 6700 (major), 6704, 6711, 6716 (major), 6726, 6732, 6738 (major), 6752, 6758 (major), 6765 (major), 6769, 6772, 6778-82 (major), 6790, 6794, 6804 (major), 6813, 6820-6822 (major), 6828, 6832 (major), 6839, 6842 (major), 6850, 6856, 6861, 6866 (major), 6876, 6880 (major), 6888, 6893 (major), 6900, 6904, 6909 (major), 6912, 6918, 6925...
@@ -1247,6 +1340,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Breaks Down, But Is It Another Bear Trap? March 13 Plan | pub=2026-03-12 | plan=2026-03-13
 - Source mode: planned_setup
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6750.0=current_price_context
 - S/R sanity: none
@@ -1261,6 +1355,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Breaks Down, But Is It Another Bear Trap? March 13 Plan | pub=2026-03-12 | plan=2026-03-13
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6716.0=current_price_context
 - S/R sanity: none
@@ -1275,10 +1370,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Breaks Down, But Is It Another Bear Trap? March 13 Plan | pub=2026-03-12 | plan=2026-03-13
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6716.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6705.0=current_price_context; 6716.0=actual_setup_level
 - S/R sanity: 6716.0 coincides_partially via resistance L187 6716
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-09T05:04:00-04:00 minus 60 minutes through 2026-03-09T11:03:00-04:00 plus 90 minutes; trap=6677.5; reclaim=2026-03-09T11:03:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-13T07:54:00-04:00 minus 60 minutes through 2026-03-13T08:38:00-04:00 plus 90 minutes; trap=6705.75; reclaim=2026-03-13T08:38:00-04:00; score=18.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
 - Support context: L183: Supports are: 6685 (major), 6676, 6667, 6663 (major), 6656, 6652 (major), 6646, 6638 (major), 6630, 6624 (major), 6620, 6612 (major), 6608, 6597 (major), 6593, 6585 (major), 6582, 6571 (major), 6564, 6558, 6552 (major), 6546, 6542 (major), 6536 (major), 6527, 6522, 6508 (major), 6498, 6491, 6485, 6475 (major).
 - Resistance context: L187: Resistances are: 6693, 6700 (major), 6704, 6711, 6716 (major), 6726, 6732, 6738 (major), 6752, 6758 (major), 6765 (major), 6769, 6772, 6778-82 (major), 6790, 6794, 6804 (major), 6813, 6820-6822 (major), 6828, 6832 (major), 6839, 6842 (major), 6850, 6856, 6861, 6866 (major), 6876, 6880 (major), 6888, 6893 (major), 6900, 6904, 6909 (major), 6912, 6918, 6925...
@@ -1289,6 +1385,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Breaks Down, But Is It Another Bear Trap? March 13 Plan | pub=2026-03-12 | plan=2026-03-13
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=6721.0; invalidation=none; target/response=none
 - Level roles: 6716.0=current_price_context; 6721.0=non_acceptance_threshold
 - S/R sanity: none
@@ -1303,6 +1400,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Breaks Down, But Is It Another Bear Trap? March 13 Plan | pub=2026-03-12 | plan=2026-03-13
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6699.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6699.0=actual_setup_level
 - S/R sanity: 6699.0 coincides_partially via prose L145 6699
@@ -1317,10 +1415,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Breaks Down, But Is It Another Bear Trap? March 13 Plan | pub=2026-03-12 | plan=2026-03-13
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6750.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6755.0=current_price_context; 6750.0=actual_setup_level; 6760.0=current_price_context
 - S/R sanity: 6750.0 coincides_partially via prose L141 6750-6760
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-09T08:20:00-04:00 minus 60 minutes through 2026-03-09T14:19:00-04:00 plus 90 minutes; trap=6675.75; reclaim=2026-03-09T14:19:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-12T04:14:00-04:00 minus 60 minutes through 2026-03-12T04:40:00-04:00 plus 90 minutes; trap=6738.75; reclaim=2026-03-12T04:40:00-04:00; score=12.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L183: Supports are: 6685 (major), 6676, 6667, 6663 (major), 6656, 6652 (major), 6646, 6638 (major), 6630, 6624 (major), 6620, 6612 (major), 6608, 6597 (major), 6593, 6585 (major), 6582, 6571 (major), 6564, 6558, 6552 (major), 6546, 6542 (major), 6536 (major), 6527, 6522, 6508 (major), 6498, 6491, 6485, 6475 (major).
 - Resistance context: L187: Resistances are: 6693, 6700 (major), 6704, 6711, 6716 (major), 6726, 6732, 6738 (major), 6752, 6758 (major), 6765 (major), 6769, 6772, 6778-82 (major), 6790, 6794, 6804 (major), 6813, 6820-6822 (major), 6828, 6832 (major), 6839, 6842 (major), 6850, 6856, 6861, 6866 (major), 6876, 6880 (major), 6888, 6893 (major), 6900, 6904, 6909 (major), 6912, 6918, 6925...
@@ -1331,6 +1430,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Breaks Down, But Is It Another Bear Trap? March 13 Plan | pub=2026-03-12 | plan=2026-03-13
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6697.0=current_price_context; 6693.0=current_price_context; 6699.0=current_price_context
 - S/R sanity: none
@@ -1345,6 +1445,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Breaks Down, But Is It Another Bear Trap? March 13 Plan | pub=2026-03-12 | plan=2026-03-13
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6758.0=current_price_context
 - S/R sanity: none
@@ -1359,6 +1460,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Breaks Down, But Is It Another Bear Trap? March 13 Plan | pub=2026-03-12 | plan=2026-03-13
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6693.0, 6697.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6693.0=swept_lost_low; 6697.0=swept_lost_low
 - S/R sanity: none
@@ -1373,6 +1475,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Breaks Down, But Is It Another Bear Trap? March 13 Plan | pub=2026-03-12 | plan=2026-03-13
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6585.0, 6699.0; swept/lost=6680.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6699.0=actual_setup_level; 6765.0=current_price_context; 6815.0=current_price_context; 6685.0=current_price_context; 6680.0=swept_lost_low; 6663.0=current_price_context; 6652.0=current_price_context; 6641.0=current_price_context; 6624.0=current_price_context; 6612.0=current_price_context; 6585.0=actual_setup_level; 6571.0=current_price_context
 - S/R sanity: 6585.0 coincides_cleanly via support L183 6585; 6699.0 coincides_partially via prose L185 6699
@@ -1387,10 +1490,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Breaks Down, But Is It Another Bear Trap? March 13 Plan | pub=2026-03-12 | plan=2026-03-13
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6685.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6765.0=current_price_context; 6815.0=current_price_context; 6758.0=current_price_context; 6685.0=actual_setup_level; 6700.0=current_price_context; 6716.0=current_price_context; 6738.0=current_price_context; 6612.0=current_price_context
 - S/R sanity: 6685.0 coincides_cleanly via support L183 6685
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-08T22:33:00-04:00 minus 60 minutes through 2026-03-09T04:32:00-04:00 plus 90 minutes; trap=6609.5; reclaim=2026-03-09T04:32:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-13T01:45:00-04:00 minus 60 minutes through 2026-03-13T05:11:00-04:00 plus 90 minutes; trap=6674.5; reclaim=2026-03-13T05:11:00-04:00; score=15.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L183: Supports are: 6685 (major), 6676, 6667, 6663 (major), 6656, 6652 (major), 6646, 6638 (major), 6630, 6624 (major), 6620, 6612 (major), 6608, 6597 (major), 6593, 6585 (major), 6582, 6571 (major), 6564, 6558, 6552 (major), 6546, 6542 (major), 6536 (major), 6527, 6522, 6508 (major), 6498, 6491, 6485, 6475 (major).
 - Resistance context: L187: Resistances are: 6693, 6700 (major), 6704, 6711, 6716 (major), 6726, 6732, 6738 (major), 6752, 6758 (major), 6765 (major), 6769, 6772, 6778-82 (major), 6790, 6794, 6804 (major), 6813, 6820-6822 (major), 6828, 6832 (major), 6839, 6842 (major), 6850, 6856, 6861, 6866 (major), 6876, 6880 (major), 6888, 6893 (major), 6900, 6904, 6909 (major), 6912, 6918, 6925...
@@ -1400,7 +1504,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\Longer Mancini Logs 2.txt:191 `negative_control`
 
 - Plan/date context: SPX Breaks Down, But Is It Another Bear Trap? March 13 Plan | pub=2026-03-12 | plan=2026-03-13
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6612.0=current_price_context; 6608.0=current_price_context
 - S/R sanity: none
@@ -1418,6 +1523,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC Tomorrow. Can The New SPX Rally Survive? March 18 Plan | pub=2026-03-17 | plan=2026-03-18
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6689.0; swept/lost=none; recovered=6689.0; non_acceptance=none; invalidation=none; target/response=6743.0
 - Level roles: 6689.0=actual_setup_level+recovered_level; 6819.0=current_price_context; 6743.0=target_or_response; 6754.0=current_price_context; 6766.0=current_price_context
 - S/R sanity: 6689.0 coincides_partially via prose L8 6689
@@ -1432,6 +1538,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC Tomorrow. Can The New SPX Rally Survive? March 18 Plan | pub=2026-03-17 | plan=2026-03-18
 - Source mode: actual_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=6808.0
 - Level roles: 6819.0=current_price_context; 6689.0=current_price_context; 6743.0=current_price_context; 6735.0=current_price_context; 6808.0=target_or_response
 - S/R sanity: none
@@ -1446,6 +1553,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC Tomorrow. Can The New SPX Rally Survive? March 18 Plan | pub=2026-03-17 | plan=2026-03-18
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6764.0, 6658.0, 6635.0, 6689.0, 6735.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6689.0=actual_setup_level; 6735.0=actual_setup_level; 6770.0=current_price_context; 6764.0=actual_setup_level; 6749.0=current_price_context; 6727.0=current_price_context; 6716.0=current_price_context; 6703.0=current_price_context; 6673.0=current_price_context; 6658.0=actual_setup_level; 6635.0=actual_setup_level; 6623.0=current_price_context; 6593.0=current_price_context
 - S/R sanity: 6764.0 coincides_partially via prose L37 6764; 6658.0 coincides_partially via prose L37 6658; 6635.0 coincides_partially via prose L37 6635; 6689.0 coincides_partially via prose L10 6689-90; 6735.0 coincides_partially via prose L10 6735
@@ -1460,6 +1568,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC Tomorrow. Can The New SPX Rally Survive? March 18 Plan | pub=2026-03-17 | plan=2026-03-18
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6815.0=current_price_context; 6819.0=current_price_context; 6689.0=current_price_context; 6854.0=current_price_context; 6882.0=current_price_context; 6980.0=current_price_context; 6770.0=current_price_context; 6764.0=current_price_context; 6802.0=current_price_context; 6785.0=current_price_context
 - S/R sanity: none
@@ -1473,7 +1582,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\Longer Mancini Logs 2.txt:43 `negative_control`
 
 - Plan/date context: FOMC Tomorrow. Can The New SPX Rally Survive? March 18 Plan | pub=2026-03-17 | plan=2026-03-18
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6672.0=current_price_context; 6665.0=current_price_context
 - S/R sanity: none
@@ -1488,6 +1598,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC Tomorrow. Can The New SPX Rally Survive? March 18 Plan | pub=2026-03-17 | plan=2026-03-18
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6689.0; swept/lost=6689.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6689.0=actual_setup_level+swept_lost_low; 6770.0=current_price_context; 6785.0=current_price_context; 6802.0=current_price_context; 6815.0=current_price_context
 - S/R sanity: 6689.0 coincides_partially via prose L10 6689-90
@@ -1502,6 +1613,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC Tomorrow. Can The New SPX Rally Survive? March 18 Plan | pub=2026-03-17 | plan=2026-03-18
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6612.0; swept/lost=6588.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6588.0=swept_lost_low; 6700.0=current_price_context; 6612.0=actual_setup_level; 6820.0=current_price_context
 - S/R sanity: 6612.0 does_not_coincide
@@ -1519,6 +1631,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6815.0=current_price_context; 6819.0=current_price_context
 - S/R sanity: none
@@ -1533,11 +1646,12 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: context_recap
-- Exact levels: setup=none; swept/lost=6524.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
-- Level roles: 6524.0=swept_lost_low; 6532.0=current_price_context; 6623.0=current_price_context
-- S/R sanity: none
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6532.0; swept/lost=6524.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6524.0=swept_lost_low; 6532.0=actual_setup_level; 6623.0=current_price_context
+- S/R sanity: 6532.0 coincides_partially via prose L3483 6532
 - ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=2026-03-16, 2026-03-17, 2026-03-18, 2026-03-19, 2026-03-20, 2026-03-23, 2026-03-24
-- Blockers: no_actual_setup_level_extracted
+- Blockers: no_existing_chart_window_match, source_mode_context_recap
 - Support context: L3477: Supports are: 6567, 6554, 6542 (major), 6536, 6524 (major), 6519, 6512, 6507, 6500 (major), 6492 (major), 6487, 6482, 6476 (major), 6466, 6461(major), 6453, 6446, 6437 (major), 6426 (major), 6417, 6410 (major), 6400, 6393, 6386 (major).
 - Resistance context: L3481: Resistances are: 6572, 6577, 6584, 6592 (major), 6597 (major), 6609, 6614, 6623 (major), 6629, 6632, 6638, 6648 (major), 6656, 6662 (major), 6665, 6671 (major), 6674, 6685, 6690 (major), 6696, 6707, 6716 (major), 6722 (major), 6727, 6734 (major), 6743, 6751, 6755, 6766-70 (major), 6776, 6786 (major), 6793, 6803 (major), 6808, 6815-19 (major), 6823, 6828, ...
 - Verdict: data_only
@@ -1547,6 +1661,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6635.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6635.0=actual_setup_level
 - S/R sanity: 6635.0 coincides_partially via prose L3356 6635
@@ -1561,6 +1676,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6658.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6658.0=swept_lost_low; 6689.0=current_price_context; 6813.0=current_price_context
 - S/R sanity: none
@@ -1575,6 +1691,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: actual_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6623.0=current_price_context; 6635.0=current_price_context
 - S/R sanity: none
@@ -1589,6 +1706,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6608.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6608.0=swept_lost_low; 6612.0=current_price_context; 6647.0=current_price_context
 - S/R sanity: none
@@ -1603,6 +1721,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: actual_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6524.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6524.0=swept_lost_low; 6532.0=current_price_context
 - S/R sanity: none
@@ -1617,6 +1736,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6716.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6815.0=current_price_context; 6716.0=swept_lost_low; 6635.0=current_price_context
 - S/R sanity: none
@@ -1631,6 +1751,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6612.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6612.0=actual_setup_level; 6647.0=current_price_context
 - S/R sanity: 6612.0 coincides_partially via prose L3368 6612
@@ -1645,6 +1766,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6635.0=current_price_context
 - S/R sanity: none
@@ -1659,6 +1781,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=6669.0; invalidation=none; target/response=none
 - Level roles: 6663.0=current_price_context; 6669.0=non_acceptance_threshold
 - S/R sanity: none
@@ -1673,6 +1796,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6612.0=current_price_context
 - S/R sanity: none
@@ -1687,10 +1811,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6612.0; swept/lost=6608.0, 6612.0; recovered=6612.0; non_acceptance=6617.0; invalidation=none; target/response=none
 - Level roles: 6612.0=actual_setup_level+swept_lost_low+recovered_level; 6604.0=current_price_context; 6608.0=swept_lost_low; 6617.0=non_acceptance_threshold; 6620.0=current_price_context
 - S/R sanity: 6612.0 coincides_partially via prose L3428 6612
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-19T04:32:00-04:00 minus 60 minutes through 2026-03-19T04:41:00-04:00 plus 90 minutes; trap=6607.0; reclaim=2026-03-19T04:41:00-04:00; score=19.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-20T00:11:00-04:00 minus 60 minutes through 2026-03-20T00:15:00-04:00 plus 90 minutes; trap=6609.5; reclaim=2026-03-20T00:15:00-04:00; score=16.0
 - Blockers: no_existing_chart_window_match, source_mode_planned_setup
 - Support context: L3477: Supports are: 6567, 6554, 6542 (major), 6536, 6524 (major), 6519, 6512, 6507, 6500 (major), 6492 (major), 6487, 6482, 6476 (major), 6466, 6461(major), 6453, 6446, 6437 (major), 6426 (major), 6417, 6410 (major), 6400, 6393, 6386 (major).
 - Resistance context: L3481: Resistances are: 6572, 6577, 6584, 6592 (major), 6597 (major), 6609, 6614, 6623 (major), 6629, 6632, 6638, 6648 (major), 6656, 6662 (major), 6665, 6671 (major), 6674, 6685, 6690 (major), 6696, 6707, 6716 (major), 6722 (major), 6727, 6734 (major), 6743, 6751, 6755, 6766-70 (major), 6776, 6786 (major), 6793, 6803 (major), 6808, 6815-19 (major), 6823, 6828, ...
@@ -1701,6 +1826,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6634.0=current_price_context; 6608.0=current_price_context
 - S/R sanity: none
@@ -1715,10 +1841,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6612.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6623.0=current_price_context; 6612.0=actual_setup_level; 6604.0=current_price_context
 - S/R sanity: 6612.0 coincides_partially via prose L3432 6612
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-19T04:25:00-04:00 minus 60 minutes through 2026-03-19T04:41:00-04:00 plus 90 minutes; trap=6596.0; reclaim=2026-03-19T04:41:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-20T01:51:00-04:00 minus 60 minutes through 2026-03-20T02:32:00-04:00 plus 90 minutes; trap=6601.75; reclaim=2026-03-20T02:32:00-04:00; score=11.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
 - Support context: L3477: Supports are: 6567, 6554, 6542 (major), 6536, 6524 (major), 6519, 6512, 6507, 6500 (major), 6492 (major), 6487, 6482, 6476 (major), 6466, 6461(major), 6453, 6446, 6437 (major), 6426 (major), 6417, 6410 (major), 6400, 6393, 6386 (major).
 - Resistance context: L3481: Resistances are: 6572, 6577, 6584, 6592 (major), 6597 (major), 6609, 6614, 6623 (major), 6629, 6632, 6638, 6648 (major), 6656, 6662 (major), 6665, 6671 (major), 6674, 6685, 6690 (major), 6696, 6707, 6716 (major), 6722 (major), 6727, 6734 (major), 6743, 6751, 6755, 6766-70 (major), 6776, 6786 (major), 6793, 6803 (major), 6808, 6815-19 (major), 6823, 6828, ...
@@ -1729,6 +1856,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6608.0=current_price_context; 6612.0=current_price_context
 - S/R sanity: none
@@ -1743,6 +1871,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: planned_setup
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6612.0=current_price_context; 6608.0=current_price_context
 - S/R sanity: none
@@ -1757,6 +1886,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6608.0=current_price_context; 6612.0=current_price_context
 - S/R sanity: none
@@ -1771,11 +1901,12 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: actual_recap
-- Exact levels: setup=6524.0; swept/lost=6476.0, 6524.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
-- Level roles: 6532.0=current_price_context; 6524.0=actual_setup_level+swept_lost_low; 6537.0=current_price_context; 6593.0=current_price_context; 6623.0=current_price_context; 6542.0=current_price_context; 6500.0=current_price_context; 6476.0=swept_lost_low; 6461.0=current_price_context; 6426.0=current_price_context
-- S/R sanity: 6524.0 coincides_cleanly via support L3477 6524
-- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm, 3:35PM, 3:40PM; nearby_sessions=2026-03-16, 2026-03-17, 2026-03-18, 2026-03-19, 2026-03-20, 2026-03-23, 2026-03-24
-- Blockers: no_existing_chart_window_match
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6532.0, 6524.0; swept/lost=6476.0, 6524.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6532.0=actual_setup_level; 6524.0=actual_setup_level+swept_lost_low; 6537.0=current_price_context; 6593.0=current_price_context; 6623.0=current_price_context; 6542.0=current_price_context; 6500.0=current_price_context; 6476.0=swept_lost_low; 6461.0=current_price_context; 6426.0=current_price_context
+- S/R sanity: 6532.0 coincides_partially via prose L3479 6532; 6524.0 coincides_cleanly via support L3477 6524
+- ES 1m window/chart: multi-level split required; crop each stated setup level separately
+- Blockers: multi_setup_row_split_required, no_existing_chart_window_match
 - Support context: L3477: Supports are: 6567, 6554, 6542 (major), 6536, 6524 (major), 6519, 6512, 6507, 6500 (major), 6492 (major), 6487, 6482, 6476 (major), 6466, 6461(major), 6453, 6446, 6437 (major), 6426 (major), 6417, 6410 (major), 6400, 6393, 6386 (major).
 - Resistance context: L3481: Resistances are: 6572, 6577, 6584, 6592 (major), 6597 (major), 6609, 6614, 6623 (major), 6629, 6632, 6638, 6648 (major), 6656, 6662 (major), 6665, 6671 (major), 6674, 6685, 6690 (major), 6696, 6707, 6716 (major), 6722 (major), 6727, 6734 (major), 6743, 6751, 6755, 6766-70 (major), 6776, 6786 (major), 6793, 6803 (major), 6808, 6815-19 (major), 6823, 6828, ...
 - Verdict: needs_bigger_crop
@@ -1785,6 +1916,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6532.0; swept/lost=6524.0, 6532.0, 6591.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6532.0=actual_setup_level+swept_lost_low; 6524.0=swept_lost_low; 6591.0=swept_lost_low; 6623.0=current_price_context; 6648.0=current_price_context; 6671.0=current_price_context; 6690.0=current_price_context; 6716.0=current_price_context
 - S/R sanity: 6532.0 coincides_partially via prose L3479 6532
@@ -1798,7 +1930,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:3485 `negative_control`
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6524.0=current_price_context; 6624.0=current_price_context; 6618.0=current_price_context
 - S/R sanity: none
@@ -1813,6 +1946,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6532.0; swept/lost=6524.0, 6532.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6532.0=actual_setup_level+swept_lost_low; 6524.0=swept_lost_low; 6591.0=current_price_context; 6623.0=current_price_context; 6716.0=current_price_context
 - S/R sanity: 6532.0 coincides_partially via prose L3479 6532
@@ -1827,6 +1961,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7378.0=current_price_context; 7368.0=current_price_context; 7345.0=current_price_context
 - S/R sanity: none
@@ -1841,6 +1976,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After Bounces Got Sold All Week, Is SPX Ready To Sustain A Bounce Next Week? March 23 Plan | pub=2026-03-20 | plan=2026-03-23
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7337.0=current_price_context
 - S/R sanity: none
@@ -1858,6 +1994,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Still. Big Move Incoming. What Way? March 26 Plan | pub=2026-03-25 | plan=2026-03-26
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6524.0; swept/lost=6484.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6484.0=swept_lost_low; 6524.0=actual_setup_level; 6505.0=current_price_context; 6720.0=current_price_context
 - S/R sanity: 6524.0 coincides_cleanly via support L3280 6524
@@ -1872,6 +2009,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Still. Big Move Incoming. What Way? March 26 Plan | pub=2026-03-25 | plan=2026-03-26
 - Source mode: actual_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6593.0=current_price_context; 6690.0=current_price_context; 6623.0=current_price_context; 6575.0=current_price_context; 6638.0=current_price_context; 6663.0=current_price_context
 - S/R sanity: none
@@ -1886,6 +2024,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Still. Big Move Incoming. What Way? March 26 Plan | pub=2026-03-25 | plan=2026-03-26
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6586.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6593.0=current_price_context; 6586.0=actual_setup_level
 - S/R sanity: 6586.0 does_not_coincide
@@ -1900,6 +2039,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Still. Big Move Incoming. What Way? March 26 Plan | pub=2026-03-25 | plan=2026-03-26
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6623.0; swept/lost=6617.0; recovered=6623.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6700.0=current_price_context; 6617.0=swept_lost_low; 6623.0=actual_setup_level+recovered_level
 - S/R sanity: 6623.0 coincides_cleanly via support L3280 6623
@@ -1914,6 +2054,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Still. Big Move Incoming. What Way? March 26 Plan | pub=2026-03-25 | plan=2026-03-26
 - Source mode: actual_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6573.0; recovered=none; non_acceptance=none; invalidation=none; target/response=6647.0
 - Level roles: 6573.0=swept_lost_low; 6586.0=current_price_context; 6647.0=target_or_response
 - S/R sanity: none
@@ -1928,6 +2069,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Still. Big Move Incoming. What Way? March 26 Plan | pub=2026-03-25 | plan=2026-03-26
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6638.0; swept/lost=6619.0; recovered=6638.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6619.0=swept_lost_low; 6638.0=actual_setup_level+recovered_level; 6650.0=current_price_context
 - S/R sanity: 6638.0 coincides_cleanly via support L3280 6638
@@ -1942,6 +2084,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Still. Big Move Incoming. What Way? March 26 Plan | pub=2026-03-25 | plan=2026-03-26
 - Source mode: context_recap
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6593.0=current_price_context; 6690.0=current_price_context; 6623.0=current_price_context; 6638.0=current_price_context; 6575.0=current_price_context; 6662.0=current_price_context; 6716.0=current_price_context
 - S/R sanity: none
@@ -1956,6 +2099,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Still. Big Move Incoming. What Way? March 26 Plan | pub=2026-03-25 | plan=2026-03-26
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6604.0=current_price_context; 6598.0=current_price_context
 - S/R sanity: none
@@ -1969,7 +2113,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:3203 `negative_control`
 
 - Plan/date context: SPX Is Coiled Tight Still. Big Move Incoming. What Way? March 26 Plan | pub=2026-03-25 | plan=2026-03-26
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=6598.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6604.0=current_price_context; 6598.0=swept_lost_low
 - S/R sanity: none
@@ -1984,6 +2129,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Still. Big Move Incoming. What Way? March 26 Plan | pub=2026-03-25 | plan=2026-03-26
 - Source mode: planned_setup
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6598.0=current_price_context
 - S/R sanity: none
@@ -1998,6 +2144,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Still. Big Move Incoming. What Way? March 26 Plan | pub=2026-03-25 | plan=2026-03-26
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=6603.0; invalidation=none; target/response=none
 - Level roles: 6598.0=current_price_context; 6603.0=non_acceptance_threshold
 - S/R sanity: none
@@ -2012,6 +2159,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Still. Big Move Incoming. What Way? March 26 Plan | pub=2026-03-25 | plan=2026-03-26
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6623.0=current_price_context
 - S/R sanity: none
@@ -2026,6 +2174,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Still. Big Move Incoming. What Way? March 26 Plan | pub=2026-03-25 | plan=2026-03-26
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6638.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6638.0=actual_setup_level
 - S/R sanity: 6638.0 coincides_cleanly via support L3280 6638
@@ -2040,6 +2189,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Still. Big Move Incoming. What Way? March 26 Plan | pub=2026-03-25 | plan=2026-03-26
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6638.0; recovered=none; non_acceptance=none; invalidation=none; target/response=6684.0
 - Level roles: 6638.0=swept_lost_low; 6684.0=target_or_response; 6631.0=current_price_context
 - S/R sanity: none
@@ -2054,10 +2204,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Still. Big Move Incoming. What Way? March 26 Plan | pub=2026-03-25 | plan=2026-03-26
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6631.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6623.0=current_price_context; 6631.0=actual_setup_level; 6638.0=current_price_context; 6637.0=current_price_context
 - S/R sanity: 6631.0 coincides_partially via prose L3247 6631
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-19T18:25:00-04:00 minus 60 minutes through 2026-03-19T20:38:00-04:00 plus 90 minutes; trap=6621.0; reclaim=2026-03-19T20:38:00-04:00; score=10.0
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=11:15AM, 10am, 11:20AM; nearby_sessions=2026-03-23, 2026-03-24, 2026-03-25, 2026-03-26, 2026-03-27
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
 - Support context: L3280: Supports are: 6638 (major), 6630, 6623 (major), 6616, 6608, 6604 (major), 6598, 6592 (major), 6588, 6584, 6575 (major), 6572, 6564 (major), 6558, 6553 (major), 6549, 6542 (major), 6536, 6530, 6524 (major), 6519, 6506 (major), 6499 (major), 6492, 6483, 6477 (major), 6466 (major), 6461, 6454, 6445, 6432-35 (major).
 - Resistance context: L3284: Resistances are: 6642, 6647 (major), 6653, 6663 (major), 6667, 6672 (major), 6678 (major), 6684, 6690 (major), 6697, 6702 (major), 6708, 6716 (major), 6722, 6728 (major), 6735, 6742, 6749, 6760, 6766 (major), 6771, 6776, 6784 (major), 6787, 6792, 6799-6802 (major), 6809, 6815 (major), 6819, 6828, 6833 (major), 6845, 6854 (major), 6861, 6866-68 (major), 68...
@@ -2068,6 +2219,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Still. Big Move Incoming. What Way? March 26 Plan | pub=2026-03-25 | plan=2026-03-26
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6616.0, 6638.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6638.0=actual_setup_level; 6592.0=current_price_context; 6678.0=current_price_context; 6623.0=current_price_context; 6616.0=actual_setup_level; 6604.0=current_price_context; 6575.0=current_price_context; 6542.0=current_price_context; 6524.0=current_price_context
 - S/R sanity: 6616.0 coincides_cleanly via support L3280 6616; 6638.0 coincides_cleanly via support L3280 6638
@@ -2081,7 +2233,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:3288 `negative_control`
 
 - Plan/date context: SPX Is Coiled Tight Still. Big Move Incoming. What Way? March 26 Plan | pub=2026-03-25 | plan=2026-03-26
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6592.0=current_price_context; 6593.0=current_price_context; 6585.0=current_price_context
 - S/R sanity: none
@@ -2099,6 +2252,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6353.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6353.0=swept_lost_low; 6360.0=current_price_context; 6647.0=current_price_context
 - S/R sanity: none
@@ -2113,6 +2267,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6360.0; swept/lost=6353.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6360.0=actual_setup_level; 6353.0=swept_lost_low
 - S/R sanity: 6360.0 coincides_cleanly via support L3095 6360
@@ -2127,10 +2282,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6360.0=actual_setup_level
 - S/R sanity: 6360.0 coincides_cleanly via support L3095 6360
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-30T19:23:00-04:00 minus 60 minutes through 2026-03-30T19:25:00-04:00 plus 90 minutes; trap=6353.25; reclaim=2026-03-30T19:25:00-04:00; score=11.75
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=2026-03-30, 2026-03-31, 2026-04-01, 2026-04-02, 2026-04-03, 2026-04-06, 2026-04-07
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L3095: Supports are: 6616, 6609, 6604 (major), 6597, 6592 (major), 6582, 6575, 6567, 6563 (major), 6553 (major), 6549, 6543, 6537, 6525-30 (major), 6520, 6512, 6506, 6499 (major), 6490, 6484 (major), 6477, 6467 (major), 6460, 6454, 6447 (major), 6436, 6426, 6420 (major), 6411 (major), 6398, 6394, 6386 (major), 6377, 6372, 6366 (major), 6360, 6353 (major), 6348, ...
 - Resistance context: L3099: Resistances are: 6624 (major), 6638, 6646 (major), 6653, 6663, 6671, 6678 (major), 6682, 6692 (major), 6703, 6716 (major), 6722, 6735 (major), 6744, 6755, 6766 (major), 6769, 6779 (major), 6786, 6793, 6802 (major), 6809 (major), 6815, 6825, 6833 (major), 6839, 6845, 6853, 6858-60 (major). As readers know I don’t short ES - I only get my points on the long...
@@ -2141,10 +2297,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6392.0=current_price_context; 6353.0=current_price_context; 6360.0=actual_setup_level; 6647.0=current_price_context
 - S/R sanity: 6360.0 coincides_cleanly via support L3095 6360
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-30T19:23:00-04:00 minus 60 minutes through 2026-03-30T19:25:00-04:00 plus 90 minutes; trap=6353.25; reclaim=2026-03-30T19:25:00-04:00; score=11.75
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=6pm; nearby_sessions=2026-03-30, 2026-03-31, 2026-04-01, 2026-04-02, 2026-04-03, 2026-04-06, 2026-04-07
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L3095: Supports are: 6616, 6609, 6604 (major), 6597, 6592 (major), 6582, 6575, 6567, 6563 (major), 6553 (major), 6549, 6543, 6537, 6525-30 (major), 6520, 6512, 6506, 6499 (major), 6490, 6484 (major), 6477, 6467 (major), 6460, 6454, 6447 (major), 6436, 6426, 6420 (major), 6411 (major), 6398, 6394, 6386 (major), 6377, 6372, 6366 (major), 6360, 6353 (major), 6348, ...
 - Resistance context: L3099: Resistances are: 6624 (major), 6638, 6646 (major), 6653, 6663, 6671, 6678 (major), 6682, 6692 (major), 6703, 6716 (major), 6722, 6735 (major), 6744, 6755, 6766 (major), 6769, 6779 (major), 6786, 6793, 6802 (major), 6809 (major), 6815, 6825, 6833 (major), 6839, 6845, 6853, 6858-60 (major). As readers know I don’t short ES - I only get my points on the long...
@@ -2155,6 +2312,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6360.0=current_price_context
 - S/R sanity: none
@@ -2169,6 +2327,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6520.0=current_price_context; 6640.0=current_price_context
 - S/R sanity: none
@@ -2183,6 +2342,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6360.0; swept/lost=6353.0, 6360.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6360.0=actual_setup_level+swept_lost_low; 6353.0=swept_lost_low; 6647.0=current_price_context
 - S/R sanity: 6360.0 coincides_cleanly via support L3095 6360
@@ -2197,6 +2357,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6520.0; swept/lost=6503.0; recovered=6520.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6503.0=swept_lost_low; 6520.0=actual_setup_level+recovered_level; 6592.0=current_price_context; 6647.0=current_price_context; 6677.0=current_price_context; 6688.0=current_price_context; 6716.0=current_price_context; 6765.0=current_price_context
 - S/R sanity: 6520.0 coincides_cleanly via support L3095 6520
@@ -2211,6 +2372,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6603.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6603.0=actual_setup_level
 - S/R sanity: 6603.0 coincides_partially via prose L3042 6603
@@ -2225,10 +2387,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6620.0=current_price_context; 6360.0=actual_setup_level
 - S/R sanity: 6360.0 coincides_cleanly via support L3095 6360
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-30T19:23:00-04:00 minus 60 minutes through 2026-03-30T19:25:00-04:00 plus 90 minutes; trap=6353.25; reclaim=2026-03-30T19:25:00-04:00; score=11.75
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=2026-03-30, 2026-03-31, 2026-04-01, 2026-04-02, 2026-04-03, 2026-04-06, 2026-04-07
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
 - Support context: L3095: Supports are: 6616, 6609, 6604 (major), 6597, 6592 (major), 6582, 6575, 6567, 6563 (major), 6553 (major), 6549, 6543, 6537, 6525-30 (major), 6520, 6512, 6506, 6499 (major), 6490, 6484 (major), 6477, 6467 (major), 6460, 6454, 6447 (major), 6436, 6426, 6420 (major), 6411 (major), 6398, 6394, 6386 (major), 6377, 6372, 6366 (major), 6360, 6353 (major), 6348, ...
 - Resistance context: L3099: Resistances are: 6624 (major), 6638, 6646 (major), 6653, 6663, 6671, 6678 (major), 6682, 6692 (major), 6703, 6716 (major), 6722, 6735 (major), 6744, 6755, 6766 (major), 6769, 6779 (major), 6786, 6793, 6802 (major), 6809 (major), 6815, 6825, 6833 (major), 6839, 6845, 6853, 6858-60 (major). As readers know I don’t short ES - I only get my points on the long...
@@ -2239,6 +2402,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6603.0; swept/lost=6603.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6603.0=actual_setup_level+swept_lost_low; 6593.0=current_price_context
 - S/R sanity: 6603.0 coincides_partially via prose L3042 6603
@@ -2253,6 +2417,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
 - Source mode: planned_setup
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6603.0=current_price_context
 - S/R sanity: none
@@ -2267,6 +2432,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=6608.0; invalidation=none; target/response=none
 - Level roles: 6603.0=current_price_context; 6608.0=non_acceptance_threshold
 - S/R sanity: none
@@ -2281,6 +2447,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
 - Source mode: data_context
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=6603.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6603.0=swept_lost_low; 6593.0=current_price_context; 6608.0=current_price_context; 6614.0=current_price_context; 6624.0=current_price_context; 6631.0=current_price_context
 - S/R sanity: none
@@ -2295,10 +2462,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6525.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6525.0=actual_setup_level
 - S/R sanity: 6525.0 coincides_cleanly via support L3095 6525-30
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-31T05:41:00-04:00 minus 60 minutes through 2026-03-31T11:40:00-04:00 plus 90 minutes; trap=6424.5; reclaim=2026-03-31T11:40:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-02T06:37:00-04:00 minus 60 minutes through 2026-04-02T08:27:00-04:00 plus 90 minutes; trap=6514.25; reclaim=2026-04-02T08:27:00-04:00; score=15.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L3095: Supports are: 6616, 6609, 6604 (major), 6597, 6592 (major), 6582, 6575, 6567, 6563 (major), 6553 (major), 6549, 6543, 6537, 6525-30 (major), 6520, 6512, 6506, 6499 (major), 6490, 6484 (major), 6477, 6467 (major), 6460, 6454, 6447 (major), 6436, 6426, 6420 (major), 6411 (major), 6398, 6394, 6386 (major), 6377, 6372, 6366 (major), 6360, 6353 (major), 6348, ...
 - Resistance context: L3099: Resistances are: 6624 (major), 6638, 6646 (major), 6653, 6663, 6671, 6678 (major), 6682, 6692 (major), 6703, 6716 (major), 6722, 6735 (major), 6744, 6755, 6766 (major), 6769, 6779 (major), 6786, 6793, 6802 (major), 6809 (major), 6815, 6825, 6833 (major), 6839, 6845, 6853, 6858-60 (major). As readers know I don’t short ES - I only get my points on the long...
@@ -2309,10 +2477,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6520.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6514.0=current_price_context; 6520.0=actual_setup_level
 - S/R sanity: 6520.0 coincides_cleanly via support L3095 6520
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-03-31T05:41:00-04:00 minus 60 minutes through 2026-03-31T11:40:00-04:00 plus 90 minutes; trap=6424.5; reclaim=2026-03-31T11:40:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-02T06:59:00-04:00 minus 60 minutes through 2026-04-02T07:46:00-04:00 plus 90 minutes; trap=6508.0; reclaim=2026-04-02T07:46:00-04:00; score=10.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L3095: Supports are: 6616, 6609, 6604 (major), 6597, 6592 (major), 6582, 6575, 6567, 6563 (major), 6553 (major), 6549, 6543, 6537, 6525-30 (major), 6520, 6512, 6506, 6499 (major), 6490, 6484 (major), 6477, 6467 (major), 6460, 6454, 6447 (major), 6436, 6426, 6420 (major), 6411 (major), 6398, 6394, 6386 (major), 6377, 6372, 6366 (major), 6360, 6353 (major), 6348, ...
 - Resistance context: L3099: Resistances are: 6624 (major), 6638, 6646 (major), 6653, 6663, 6671, 6678 (major), 6682, 6692 (major), 6703, 6716 (major), 6722, 6735 (major), 6744, 6755, 6766 (major), 6769, 6779 (major), 6786, 6793, 6802 (major), 6809 (major), 6815, 6825, 6833 (major), 6839, 6845, 6853, 6858-60 (major). As readers know I don’t short ES - I only get my points on the long...
@@ -2323,6 +2492,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6514.0=current_price_context; 6520.0=current_price_context; 6525.0=current_price_context
 - S/R sanity: none
@@ -2337,6 +2507,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6592.0, 6505.0, 6525.0, 6520.0; swept/lost=6353.0, 6506.0, 6592.0, 6499.0, 6505.0; recovered=6520.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6525.0=actual_setup_level; 6360.0=current_price_context; 6353.0=swept_lost_low; 6506.0=swept_lost_low; 6520.0=actual_setup_level+recovered_level; 6604.0=current_price_context; 6592.0=actual_setup_level+swept_lost_low; 6586.0=current_price_context; 6593.0=current_price_context; 6553.0=current_price_context; 6563.0=current_price_context; 6499.0=swept_lost_low; 6505.0=actual_setup_level+swept_lost_low; 6484.0=current_price_context; 6447.0=current_price_context
 - S/R sanity: 6592.0 coincides_cleanly via support L3095 6592; 6505.0 coincides_partially via prose L3097 6505; 6525.0 coincides_cleanly via support L3095 6525-30; 6520.0 coincides_cleanly via support L3095 6520
@@ -2351,6 +2522,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6520.0; swept/lost=6353.0, 6506.0; recovered=6520.0; non_acceptance=none; invalidation=none; target/response=6677.0
 - Level roles: 6360.0=current_price_context; 6353.0=swept_lost_low; 6506.0=swept_lost_low; 6520.0=actual_setup_level+recovered_level; 6592.0=current_price_context; 6624.0=current_price_context; 6677.0=target_or_response; 6716.0=current_price_context
 - S/R sanity: 6520.0 coincides_cleanly via support L3095 6520
@@ -2364,7 +2536,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:3103 `negative_control`
 
 - Plan/date context: Bulls Bought The Dip Today In SPX. Can They Run It Now? April 6 Plan | pub=2026-04-02 | plan=2026-04-06
-- Source mode: negative_control
+- Source mode: planned_setup
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6500.0=current_price_context; 6593.0=current_price_context; 6585.0=current_price_context
 - S/R sanity: none
@@ -2382,6 +2555,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Massive Breakout Underway For SPX. How Much More Upside? April 10 Plan | pub=2026-04-09 | plan=2026-04-10
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6353.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6353.0=swept_lost_low; 6360.0=current_price_context; 6650.0=current_price_context
 - S/R sanity: none
@@ -2396,6 +2570,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Massive Breakout Underway For SPX. How Much More Upside? April 10 Plan | pub=2026-04-09 | plan=2026-04-10
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6595.0, 6593.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6595.0=actual_setup_level; 6593.0=actual_setup_level
 - S/R sanity: 6595.0 coincides_partially via prose L2833 6595; 6593.0 coincides_partially via prose L2831 6593
@@ -2410,6 +2585,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Massive Breakout Underway For SPX. How Much More Upside? April 10 Plan | pub=2026-04-09 | plan=2026-04-10
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6593.0; swept/lost=6565.0; recovered=6593.0; non_acceptance=none; invalidation=none; target/response=6660.0
 - Level roles: 6615.0=current_price_context; 6565.0=swept_lost_low; 6593.0=actual_setup_level+recovered_level; 6660.0=target_or_response
 - S/R sanity: 6593.0 coincides_partially via prose L2831 6593
@@ -2424,10 +2600,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Massive Breakout Underway For SPX. How Much More Upside? April 10 Plan | pub=2026-04-09 | plan=2026-04-10
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6595.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=6647.0
 - Level roles: 6572.0=current_price_context; 6595.0=actual_setup_level; 6647.0=target_or_response; 6850.0=current_price_context
 - S/R sanity: 6595.0 coincides_partially via prose L2833 6595
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-05T18:01:00-04:00 minus 60 minutes through 2026-04-05T19:01:00-04:00 plus 90 minutes; trap=6585.0; reclaim=2026-04-05T19:01:00-04:00; score=15.0
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=11am, 11:15PM; nearby_sessions=2026-04-06, 2026-04-07, 2026-04-08, 2026-04-09, 2026-04-10
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L2927: Supports are: 6861, 6853, 6848 (major), 6840, 6830, 6826-21 (Major), 6819, 6809 (major), 6802, 6793 (major), 6786, 6780 (major), 6775, 6766, 6756 (major), 6743, 6735 (major), 6728, 6722, 6716 (major), 6707, 6702, 6695, 6689 (major), 6684, 6678 (major), 6671, 6663 (major), 6653, 6647 (major), 6644, 6639, 6623-26 (major), 6616, 6611, 6604 (major), 6592 (maj...
 - Resistance context: L2931: Resistances are: 6869, 6872 (major), 6881 (major), 6892, 6900-05 (major), 6913, 6922 (major), 6927, 6937 (major), 6945, 6949, 6954, 6959 (major), 6968, 6975-80 (major), 6994, 7002 (major), 7007, 7013, 7020 (major), 7025, 7035, 7044 (major), 7057, 7063, 7068, 7073 (major), 7086, 7093, 7100, 7122, 7130 (major). As readers know I don’t short ES - I only get ...
@@ -2438,6 +2615,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Massive Breakout Underway For SPX. How Much More Upside? April 10 Plan | pub=2026-04-09 | plan=2026-04-10
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6788.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6850.0=current_price_context; 6780.0=current_price_context; 6788.0=swept_lost_low; 6873.0=current_price_context
 - S/R sanity: none
@@ -2452,6 +2630,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Massive Breakout Underway For SPX. How Much More Upside? April 10 Plan | pub=2026-04-09 | plan=2026-04-10
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6360.0; swept/lost=6353.0; recovered=none; non_acceptance=none; invalidation=none; target/response=6647.0, 6850.0
 - Level roles: 6360.0=actual_setup_level; 6353.0=swept_lost_low; 6647.0=target_or_response; 6662.0=current_price_context; 6582.0=current_price_context; 6850.0=target_or_response
 - S/R sanity: 6360.0 coincides_partially via prose L2843 6360
@@ -2466,6 +2645,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Massive Breakout Underway For SPX. How Much More Upside? April 10 Plan | pub=2026-04-09 | plan=2026-04-10
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6353.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6360.0=current_price_context; 6353.0=swept_lost_low; 6662.0=current_price_context; 6788.0=current_price_context; 6830.0=current_price_context; 6846.0=current_price_context; 6873.0=current_price_context; 6893.0=current_price_context; 6903.0=current_price_context; 6809.0=current_price_context
 - S/R sanity: none
@@ -2480,10 +2660,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Massive Breakout Underway For SPX. How Much More Upside? April 10 Plan | pub=2026-04-09 | plan=2026-04-10
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6593.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6815.0=current_price_context; 6593.0=actual_setup_level
 - S/R sanity: 6593.0 does_not_coincide
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-05T18:03:00-04:00 minus 60 minutes through 2026-04-05T19:00:00-04:00 plus 90 minutes; trap=6582.75; reclaim=2026-04-05T19:00:00-04:00; score=15.0
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=2026-04-06, 2026-04-07, 2026-04-08, 2026-04-09, 2026-04-10
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_planned_setup
 - Support context: L2927: Supports are: 6861, 6853, 6848 (major), 6840, 6830, 6826-21 (Major), 6819, 6809 (major), 6802, 6793 (major), 6786, 6780 (major), 6775, 6766, 6756 (major), 6743, 6735 (major), 6728, 6722, 6716 (major), 6707, 6702, 6695, 6689 (major), 6684, 6678 (major), 6671, 6663 (major), 6653, 6647 (major), 6644, 6639, 6623-26 (major), 6616, 6611, 6604 (major), 6592 (maj...
 - Resistance context: L2931: Resistances are: 6869, 6872 (major), 6881 (major), 6892, 6900-05 (major), 6913, 6922 (major), 6927, 6937 (major), 6945, 6949, 6954, 6959 (major), 6968, 6975-80 (major), 6994, 7002 (major), 7007, 7013, 7020 (major), 7025, 7035, 7044 (major), 7057, 7063, 7068, 7073 (major), 7086, 7093, 7100, 7122, 7130 (major). As readers know I don’t short ES - I only get ...
@@ -2494,6 +2675,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Massive Breakout Underway For SPX. How Much More Upside? April 10 Plan | pub=2026-04-09 | plan=2026-04-10
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=6814.0; invalidation=none; target/response=none
 - Level roles: 6809.0=current_price_context; 6814.0=non_acceptance_threshold
 - S/R sanity: none
@@ -2508,6 +2690,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Massive Breakout Underway For SPX. How Much More Upside? April 10 Plan | pub=2026-04-09 | plan=2026-04-10
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6793.0=current_price_context
 - S/R sanity: none
@@ -2522,6 +2705,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Massive Breakout Underway For SPX. How Much More Upside? April 10 Plan | pub=2026-04-09 | plan=2026-04-10
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6593.0, 6802.0; swept/lost=6821.0, 6826.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6593.0=actual_setup_level; 6821.0=swept_lost_low; 6848.0=current_price_context; 6826.0=swept_lost_low; 6809.0=current_price_context; 6802.0=actual_setup_level; 6793.0=current_price_context; 6780.0=current_price_context; 6756.0=current_price_context
 - S/R sanity: 6593.0 coincides_partially via prose L2929 6593; 6802.0 coincides_cleanly via support L2927 6802
@@ -2536,6 +2720,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Massive Breakout Underway For SPX. How Much More Upside? April 10 Plan | pub=2026-04-09 | plan=2026-04-10
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6353.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6360.0=current_price_context; 6353.0=swept_lost_low; 6662.0=current_price_context; 6820.0=current_price_context; 6903.0=current_price_context; 6922.0=current_price_context; 6938.0=current_price_context; 6872.0=current_price_context; 6848.0=current_price_context
 - S/R sanity: none
@@ -2549,7 +2734,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:2935 `negative_control`
 
 - Plan/date context: Massive Breakout Underway For SPX. How Much More Upside? April 10 Plan | pub=2026-04-09 | plan=2026-04-10
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6802.0=current_price_context; 6798.0=current_price_context
 - S/R sanity: none
@@ -2564,6 +2750,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Massive Breakout Underway For SPX. How Much More Upside? April 10 Plan | pub=2026-04-09 | plan=2026-04-10
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6353.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6360.0=current_price_context; 6353.0=swept_lost_low; 6826.0=current_price_context; 6903.0=current_price_context; 6922.0=current_price_context; 6938.0=current_price_context
 - S/R sanity: none
@@ -2581,6 +2768,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: actual_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6353.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6353.0=swept_lost_low; 6360.0=current_price_context; 6662.0=current_price_context
 - S/R sanity: none
@@ -2595,6 +2783,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6780.0; swept/lost=6760.0; recovered=6780.0; non_acceptance=none; invalidation=none; target/response=6880.0
 - Level roles: 6780.0=actual_setup_level+recovered_level; 6760.0=swept_lost_low; 6880.0=target_or_response; 6882.0=current_price_context; 6902.0=current_price_context; 6937.0=current_price_context
 - S/R sanity: 6780.0 coincides_partially via prose L2444 6780
@@ -2609,6 +2798,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6595.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6595.0=actual_setup_level
 - S/R sanity: 6595.0 coincides_partially via prose L2489 6595
@@ -2623,6 +2813,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6595.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=6647.0
 - Level roles: 6572.0=current_price_context; 6595.0=actual_setup_level; 6647.0=target_or_response; 6850.0=current_price_context
 - S/R sanity: 6595.0 coincides_partially via prose L2489 6595
@@ -2637,6 +2828,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6788.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6850.0=current_price_context; 6780.0=current_price_context; 6788.0=swept_lost_low; 6873.0=current_price_context; 6880.0=current_price_context
 - S/R sanity: none
@@ -2651,6 +2843,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6793.0; swept/lost=none; recovered=6793.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6793.0=actual_setup_level+recovered_level; 6900.0=current_price_context
 - S/R sanity: 6793.0 coincides_cleanly via support L2588 6793
@@ -2665,6 +2858,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6360.0; swept/lost=6353.0; recovered=none; non_acceptance=none; invalidation=none; target/response=6647.0, 6880.0
 - Level roles: 6360.0=actual_setup_level; 6353.0=swept_lost_low; 6647.0=target_or_response; 6662.0=current_price_context; 6582.0=current_price_context; 6872.0=current_price_context; 6848.0=current_price_context
 - S/R sanity: 6360.0 coincides_partially via prose L2501 6360
@@ -2679,6 +2873,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6780.0; swept/lost=6760.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6872.0=current_price_context; 6848.0=current_price_context; 6780.0=actual_setup_level; 6793.0=current_price_context; 6900.0=current_price_context
 - S/R sanity: 6780.0 coincides_partially via prose L2444 6780
@@ -2693,10 +2888,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6848.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6848.0=actual_setup_level
 - S/R sanity: 6848.0 coincides_cleanly via support L2588 6848
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-09T04:54:00-04:00 minus 60 minutes through 2026-04-09T10:53:00-04:00 plus 90 minutes; trap=6800.5; reclaim=2026-04-09T10:53:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-13T08:53:00-04:00 minus 60 minutes through 2026-04-13T08:56:00-04:00 plus 90 minutes; trap=6841.25; reclaim=2026-04-13T08:56:00-04:00; score=11.75
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L2588: Supports are: 6886, 6881, 6872 (major), 6868, 6861 (major), 6851, 6848 (major), 6839, 6832 (major), 6829, 6818-22 (major), 6807, 6804 (major), 6793 (major), 6786, 6775 (major), 6769, 6761-65 (major), 6755, 6749 (major), 6743, 6735 (major), 6725, 6716 (major), 6709, 6703, 6696, 6691 (major), 6684, 6678 (major), 6670, 6664 (major), 6653, 6647, 6639 (major),...
 - Resistance context: L2592: Resistances are: 6903 (major), 6911, 6917, 6923 (major), 6932 (major), 6938, 6945, 6949 (major), 6958, 6967 (major), 6974, 6978 (major), 6992, 7002 (major), 7008, 7012, 7016, 7021 (major), 7030, 7034, 7042, 7048 (major), 7052, 7057 (major), 7067, 7072, 7087 (major), 7093, 7101 (major), 7112, 7128 (major). As readers know I don’t short ES - I only get my p...
@@ -2707,10 +2903,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6848.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6848.0=actual_setup_level
 - S/R sanity: 6848.0 coincides_cleanly via support L2588 6848
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-09T04:54:00-04:00 minus 60 minutes through 2026-04-09T10:53:00-04:00 plus 90 minutes; trap=6800.5; reclaim=2026-04-09T10:53:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-13T08:53:00-04:00 minus 60 minutes through 2026-04-13T08:56:00-04:00 plus 90 minutes; trap=6841.25; reclaim=2026-04-13T08:56:00-04:00; score=11.75
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L2588: Supports are: 6886, 6881, 6872 (major), 6868, 6861 (major), 6851, 6848 (major), 6839, 6832 (major), 6829, 6818-22 (major), 6807, 6804 (major), 6793 (major), 6786, 6775 (major), 6769, 6761-65 (major), 6755, 6749 (major), 6743, 6735 (major), 6725, 6716 (major), 6709, 6703, 6696, 6691 (major), 6684, 6678 (major), 6670, 6664 (major), 6653, 6647, 6639 (major),...
 - Resistance context: L2592: Resistances are: 6903 (major), 6911, 6917, 6923 (major), 6932 (major), 6938, 6945, 6949 (major), 6958, 6967 (major), 6974, 6978 (major), 6992, 7002 (major), 7008, 7012, 7016, 7021 (major), 7030, 7034, 7042, 7048 (major), 7052, 7057 (major), 7067, 7072, 7087 (major), 7093, 7101 (major), 7112, 7128 (major). As readers know I don’t short ES - I only get my p...
@@ -2721,10 +2918,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6848.0; swept/lost=6840.0, 6847.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6848.0=actual_setup_level; 6847.0=swept_lost_low; 6840.0=swept_lost_low
 - S/R sanity: 6848.0 coincides_cleanly via support L2588 6848
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-09T10:42:00-04:00 minus 60 minutes through 2026-04-09T10:53:00-04:00 plus 90 minutes; trap=6839.0; reclaim=2026-04-09T10:53:00-04:00; score=23.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-13T08:53:00-04:00 minus 60 minutes through 2026-04-13T08:56:00-04:00 plus 90 minutes; trap=6841.25; reclaim=2026-04-13T08:56:00-04:00; score=20.5
 - Blockers: no_existing_chart_window_match, source_mode_planned_setup
 - Support context: L2588: Supports are: 6886, 6881, 6872 (major), 6868, 6861 (major), 6851, 6848 (major), 6839, 6832 (major), 6829, 6818-22 (major), 6807, 6804 (major), 6793 (major), 6786, 6775 (major), 6769, 6761-65 (major), 6755, 6749 (major), 6743, 6735 (major), 6725, 6716 (major), 6709, 6703, 6696, 6691 (major), 6684, 6678 (major), 6670, 6664 (major), 6653, 6647, 6639 (major),...
 - Resistance context: L2592: Resistances are: 6903 (major), 6911, 6917, 6923 (major), 6932 (major), 6938, 6945, 6949 (major), 6958, 6967 (major), 6974, 6978 (major), 6992, 7002 (major), 7008, 7012, 7016, 7021 (major), 7030, 7034, 7042, 7048 (major), 7052, 7057 (major), 7067, 7072, 7087 (major), 7093, 7101 (major), 7112, 7128 (major). As readers know I don’t short ES - I only get my p...
@@ -2735,6 +2933,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6848.0=current_price_context
 - S/R sanity: none
@@ -2749,6 +2948,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: planned_setup
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6848.0=current_price_context
 - S/R sanity: none
@@ -2763,6 +2963,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=6853.0; invalidation=none; target/response=none
 - Level roles: 6848.0=current_price_context; 6853.0=non_acceptance_threshold
 - S/R sanity: none
@@ -2777,10 +2978,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6793.0=actual_setup_level
 - S/R sanity: 6793.0 coincides_cleanly via support L2588 6793
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-08T09:56:00-04:00 minus 60 minutes through 2026-04-08T09:59:00-04:00 plus 90 minutes; trap=6780.0; reclaim=2026-04-08T09:59:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-12T18:00:00-04:00 minus 60 minutes through 2026-04-12T19:47:00-04:00 plus 90 minutes; trap=6776.5; reclaim=2026-04-12T19:47:00-04:00; score=15.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L2588: Supports are: 6886, 6881, 6872 (major), 6868, 6861 (major), 6851, 6848 (major), 6839, 6832 (major), 6829, 6818-22 (major), 6807, 6804 (major), 6793 (major), 6786, 6775 (major), 6769, 6761-65 (major), 6755, 6749 (major), 6743, 6735 (major), 6725, 6716 (major), 6709, 6703, 6696, 6691 (major), 6684, 6678 (major), 6670, 6664 (major), 6653, 6647, 6639 (major),...
 - Resistance context: L2592: Resistances are: 6903 (major), 6911, 6917, 6923 (major), 6932 (major), 6938, 6945, 6949 (major), 6958, 6967 (major), 6974, 6978 (major), 6992, 7002 (major), 7008, 7012, 7016, 7021 (major), 7030, 7034, 7042, 7048 (major), 7052, 7057 (major), 7067, 7072, 7087 (major), 7093, 7101 (major), 7112, 7128 (major). As readers know I don’t short ES - I only get my p...
@@ -2791,6 +2993,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6780.0=current_price_context
 - S/R sanity: none
@@ -2805,6 +3008,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: actual_recap
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=6770.0, 6780.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6780.0=swept_lost_low; 6793.0=current_price_context; 6770.0=swept_lost_low
 - S/R sanity: none
@@ -2819,6 +3023,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=6830.0
 - Level roles: 6830.0=target_or_response
 - S/R sanity: none
@@ -2833,6 +3038,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6793.0, 6765.0, 6595.0, 6851.0; swept/lost=6868.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6595.0=actual_setup_level; 6793.0=actual_setup_level; 6872.0=current_price_context; 6868.0=swept_lost_low; 6861.0=current_price_context; 6848.0=current_price_context; 6851.0=actual_setup_level; 6818.0=current_price_context; 6802.0=current_price_context; 6775.0=current_price_context; 6765.0=actual_setup_level
 - S/R sanity: 6793.0 coincides_cleanly via support L2588 6793; 6765.0 coincides_cleanly via support L2588 6761-65; 6595.0 coincides_partially via prose L2590 6595; 6851.0 coincides_cleanly via support L2588 6851
@@ -2846,7 +3052,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:2596 `negative_control`
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
-- Source mode: negative_control
+- Source mode: planned_setup
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6793.0=current_price_context; 6848.0=current_price_context; 6844.0=current_price_context
 - S/R sanity: none
@@ -2861,6 +3068,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: context_recap
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=6793.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6793.0=swept_lost_low; 6872.0=current_price_context; 6903.0=current_price_context; 6923.0=current_price_context; 6930.0=current_price_context; 6949.0=current_price_context; 6978.0=current_price_context
 - S/R sanity: none
@@ -2875,6 +3083,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: actual_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6353.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6353.0=swept_lost_low; 6360.0=current_price_context; 6662.0=current_price_context
 - S/R sanity: none
@@ -2889,6 +3098,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6780.0; swept/lost=6760.0; recovered=6780.0; non_acceptance=none; invalidation=none; target/response=6880.0
 - Level roles: 6780.0=actual_setup_level+recovered_level; 6760.0=swept_lost_low; 6880.0=target_or_response; 6882.0=current_price_context; 6902.0=current_price_context; 6937.0=current_price_context
 - S/R sanity: 6780.0 coincides_partially via prose L2616 6780
@@ -2903,6 +3113,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6595.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6595.0=actual_setup_level
 - S/R sanity: 6595.0 coincides_partially via prose L2661 6595
@@ -2917,6 +3128,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6595.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=6647.0
 - Level roles: 6572.0=current_price_context; 6595.0=actual_setup_level; 6647.0=target_or_response; 6850.0=current_price_context
 - S/R sanity: 6595.0 coincides_partially via prose L2661 6595
@@ -2931,6 +3143,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=6788.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6850.0=current_price_context; 6780.0=current_price_context; 6788.0=swept_lost_low; 6873.0=current_price_context; 6880.0=current_price_context
 - S/R sanity: none
@@ -2945,6 +3158,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6793.0; swept/lost=none; recovered=6793.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6793.0=actual_setup_level+recovered_level; 6900.0=current_price_context
 - S/R sanity: 6793.0 coincides_cleanly via support L2760 6793
@@ -2959,6 +3173,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6360.0; swept/lost=6353.0; recovered=none; non_acceptance=none; invalidation=none; target/response=6647.0, 6880.0
 - Level roles: 6360.0=actual_setup_level; 6353.0=swept_lost_low; 6647.0=target_or_response; 6662.0=current_price_context; 6582.0=current_price_context; 6872.0=current_price_context; 6848.0=current_price_context
 - S/R sanity: 6360.0 coincides_partially via prose L2673 6360
@@ -2973,6 +3188,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6780.0; swept/lost=6760.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6872.0=current_price_context; 6848.0=current_price_context; 6780.0=actual_setup_level; 6793.0=current_price_context; 6900.0=current_price_context
 - S/R sanity: 6780.0 coincides_partially via prose L2616 6780
@@ -2987,10 +3203,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6848.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6848.0=actual_setup_level
 - S/R sanity: 6848.0 coincides_cleanly via support L2760 6848
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-09T04:54:00-04:00 minus 60 minutes through 2026-04-09T10:53:00-04:00 plus 90 minutes; trap=6800.5; reclaim=2026-04-09T10:53:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-13T08:53:00-04:00 minus 60 minutes through 2026-04-13T08:56:00-04:00 plus 90 minutes; trap=6841.25; reclaim=2026-04-13T08:56:00-04:00; score=11.75
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L2760: Supports are: 6886, 6881, 6872 (major), 6868, 6861 (major), 6851, 6848 (major), 6839, 6832 (major), 6829, 6818-22 (major), 6807, 6804 (major), 6793 (major), 6786, 6775 (major), 6769, 6761-65 (major), 6755, 6749 (major), 6743, 6735 (major), 6725, 6716 (major), 6709, 6703, 6696, 6691 (major), 6684, 6678 (major), 6670, 6664 (major), 6653, 6647, 6639 (major),...
 - Resistance context: L2764: Resistances are: 6903 (major), 6911, 6917, 6923 (major), 6932 (major), 6938, 6945, 6949 (major), 6958, 6967 (major), 6974, 6978 (major), 6992, 7002 (major), 7008, 7012, 7016, 7021 (major), 7030, 7034, 7042, 7048 (major), 7052, 7057 (major), 7067, 7072, 7087 (major), 7093, 7101 (major), 7112, 7128 (major). As readers know I don’t short ES - I only get my p...
@@ -3001,10 +3218,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6848.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6848.0=actual_setup_level
 - S/R sanity: 6848.0 coincides_cleanly via support L2760 6848
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-09T04:54:00-04:00 minus 60 minutes through 2026-04-09T10:53:00-04:00 plus 90 minutes; trap=6800.5; reclaim=2026-04-09T10:53:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-13T08:53:00-04:00 minus 60 minutes through 2026-04-13T08:56:00-04:00 plus 90 minutes; trap=6841.25; reclaim=2026-04-13T08:56:00-04:00; score=11.75
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L2760: Supports are: 6886, 6881, 6872 (major), 6868, 6861 (major), 6851, 6848 (major), 6839, 6832 (major), 6829, 6818-22 (major), 6807, 6804 (major), 6793 (major), 6786, 6775 (major), 6769, 6761-65 (major), 6755, 6749 (major), 6743, 6735 (major), 6725, 6716 (major), 6709, 6703, 6696, 6691 (major), 6684, 6678 (major), 6670, 6664 (major), 6653, 6647, 6639 (major),...
 - Resistance context: L2764: Resistances are: 6903 (major), 6911, 6917, 6923 (major), 6932 (major), 6938, 6945, 6949 (major), 6958, 6967 (major), 6974, 6978 (major), 6992, 7002 (major), 7008, 7012, 7016, 7021 (major), 7030, 7034, 7042, 7048 (major), 7052, 7057 (major), 7067, 7072, 7087 (major), 7093, 7101 (major), 7112, 7128 (major). As readers know I don’t short ES - I only get my p...
@@ -3015,10 +3233,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6848.0; swept/lost=6840.0, 6847.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6848.0=actual_setup_level; 6847.0=swept_lost_low; 6840.0=swept_lost_low
 - S/R sanity: 6848.0 coincides_cleanly via support L2760 6848
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-09T10:42:00-04:00 minus 60 minutes through 2026-04-09T10:53:00-04:00 plus 90 minutes; trap=6839.0; reclaim=2026-04-09T10:53:00-04:00; score=23.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-13T08:53:00-04:00 minus 60 minutes through 2026-04-13T08:56:00-04:00 plus 90 minutes; trap=6841.25; reclaim=2026-04-13T08:56:00-04:00; score=20.5
 - Blockers: no_existing_chart_window_match, source_mode_planned_setup
 - Support context: L2760: Supports are: 6886, 6881, 6872 (major), 6868, 6861 (major), 6851, 6848 (major), 6839, 6832 (major), 6829, 6818-22 (major), 6807, 6804 (major), 6793 (major), 6786, 6775 (major), 6769, 6761-65 (major), 6755, 6749 (major), 6743, 6735 (major), 6725, 6716 (major), 6709, 6703, 6696, 6691 (major), 6684, 6678 (major), 6670, 6664 (major), 6653, 6647, 6639 (major),...
 - Resistance context: L2764: Resistances are: 6903 (major), 6911, 6917, 6923 (major), 6932 (major), 6938, 6945, 6949 (major), 6958, 6967 (major), 6974, 6978 (major), 6992, 7002 (major), 7008, 7012, 7016, 7021 (major), 7030, 7034, 7042, 7048 (major), 7052, 7057 (major), 7067, 7072, 7087 (major), 7093, 7101 (major), 7112, 7128 (major). As readers know I don’t short ES - I only get my p...
@@ -3029,6 +3248,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6848.0=current_price_context
 - S/R sanity: none
@@ -3043,6 +3263,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: planned_setup
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6848.0=current_price_context
 - S/R sanity: none
@@ -3057,6 +3278,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=6853.0; invalidation=none; target/response=none
 - Level roles: 6848.0=current_price_context; 6853.0=non_acceptance_threshold
 - S/R sanity: none
@@ -3071,10 +3293,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6793.0=actual_setup_level
 - S/R sanity: 6793.0 coincides_cleanly via support L2760 6793
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-08T09:56:00-04:00 minus 60 minutes through 2026-04-08T09:59:00-04:00 plus 90 minutes; trap=6780.0; reclaim=2026-04-08T09:59:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-12T18:00:00-04:00 minus 60 minutes through 2026-04-12T19:47:00-04:00 plus 90 minutes; trap=6776.5; reclaim=2026-04-12T19:47:00-04:00; score=15.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L2760: Supports are: 6886, 6881, 6872 (major), 6868, 6861 (major), 6851, 6848 (major), 6839, 6832 (major), 6829, 6818-22 (major), 6807, 6804 (major), 6793 (major), 6786, 6775 (major), 6769, 6761-65 (major), 6755, 6749 (major), 6743, 6735 (major), 6725, 6716 (major), 6709, 6703, 6696, 6691 (major), 6684, 6678 (major), 6670, 6664 (major), 6653, 6647, 6639 (major),...
 - Resistance context: L2764: Resistances are: 6903 (major), 6911, 6917, 6923 (major), 6932 (major), 6938, 6945, 6949 (major), 6958, 6967 (major), 6974, 6978 (major), 6992, 7002 (major), 7008, 7012, 7016, 7021 (major), 7030, 7034, 7042, 7048 (major), 7052, 7057 (major), 7067, 7072, 7087 (major), 7093, 7101 (major), 7112, 7128 (major). As readers know I don’t short ES - I only get my p...
@@ -3085,6 +3308,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6780.0=current_price_context
 - S/R sanity: none
@@ -3099,6 +3323,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: actual_recap
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=6770.0, 6780.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6780.0=swept_lost_low; 6793.0=current_price_context; 6770.0=swept_lost_low
 - S/R sanity: none
@@ -3113,6 +3338,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=6830.0
 - Level roles: 6830.0=target_or_response
 - S/R sanity: none
@@ -3127,6 +3353,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=6793.0, 6765.0, 6595.0, 6851.0; swept/lost=6868.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6595.0=actual_setup_level; 6793.0=actual_setup_level; 6872.0=current_price_context; 6868.0=swept_lost_low; 6861.0=current_price_context; 6848.0=current_price_context; 6851.0=actual_setup_level; 6818.0=current_price_context; 6802.0=current_price_context; 6775.0=current_price_context; 6765.0=actual_setup_level
 - S/R sanity: 6793.0 coincides_cleanly via support L2760 6793; 6765.0 coincides_cleanly via support L2760 6761-65; 6595.0 coincides_partially via prose L2762 6595; 6851.0 coincides_cleanly via support L2760 6851
@@ -3140,7 +3367,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:2768 `negative_control`
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
-- Source mode: negative_control
+- Source mode: planned_setup
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6793.0=current_price_context; 6848.0=current_price_context; 6844.0=current_price_context
 - S/R sanity: none
@@ -3155,6 +3383,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is Buy The Dip Back In SPX? April 14 Plan | pub=2026-04-13 | plan=2026-04-14
 - Source mode: context_recap
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=6793.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6793.0=swept_lost_low; 6872.0=current_price_context; 6903.0=current_price_context; 6923.0=current_price_context; 6930.0=current_price_context; 6949.0=current_price_context; 6978.0=current_price_context
 - S/R sanity: none
@@ -3172,6 +3401,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: 5 Parabolic Green Days In A Row For SPX. Will SPX Pullback Next Week? April 18 Plan | pub=2026-04-19 | plan=2026-04-18
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6780.0; swept/lost=6760.0; recovered=6780.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6760.0=swept_lost_low; 6780.0=actual_setup_level+recovered_level; 6882.0=current_price_context; 6902.0=current_price_context; 6937.0=current_price_context
 - S/R sanity: 6780.0 coincides_cleanly via support L2416 6780
@@ -3186,6 +3416,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: 5 Parabolic Green Days In A Row For SPX. Will SPX Pullback Next Week? April 18 Plan | pub=2026-04-19 | plan=2026-04-18
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6983.0=current_price_context; 7021.0=current_price_context; 7036.0=current_price_context; 7048.0=current_price_context; 7058.0=current_price_context
 - S/R sanity: none
@@ -3200,10 +3431,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: 5 Parabolic Green Days In A Row For SPX. Will SPX Pullback Next Week? April 18 Plan | pub=2026-04-19 | plan=2026-04-18
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6793.0=actual_setup_level; 7056.0=current_price_context
 - S/R sanity: 6793.0 coincides_cleanly via support L2416 6793
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-12T18:00:00-04:00 minus 60 minutes through 2026-04-12T19:47:00-04:00 plus 90 minutes; trap=6776.5; reclaim=2026-04-12T19:47:00-04:00; score=15.0
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm, 8:45PM, 10:45AM; nearby_sessions=2026-04-14, 2026-04-15, 2026-04-16, 2026-04-17, 2026-04-20
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L2416: Supports are: 7160, 7153 (major), 7147 (major), 7139, 7135, 7128, 7120 (major), 7109, 7104 (major), 7099, 7096, 7085 (major), 7078, 7074 (major), 7067, 7062, 7058 (major), 7052, 7048 (major), 7041, 7035, 7026, 7015-7020 (major), 7008, 7003, 6993, 6982 (major), 6975, 6968, 6963 (major), 6954, 6950 (major), 6939, 6930 (major), 6921 (major), 6908, 6903 (majo...
 - Resistance context: L2420: Resistances are: 7166, 7175 (major), 7186, 7192 (major), 7200, 7207, 7217 (major), 7230 (major), 7235, 7240, 7257, 7267, 7277 (major), 7287, 7291, 7300 (major), 7313 (major), 7324, 7334 (major), 7342, 7350 (major), 7361 (major). As readers know I don’t short ES - I only get my points on the long side, but I still give short entries here for those who like...
@@ -3214,6 +3446,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: 5 Parabolic Green Days In A Row For SPX. Will SPX Pullback Next Week? April 18 Plan | pub=2026-04-19 | plan=2026-04-18
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6793.0; swept/lost=6760.0; recovered=6793.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6860.0=current_price_context; 6793.0=actual_setup_level+recovered_level; 7184.0=current_price_context
 - S/R sanity: 6793.0 coincides_cleanly via support L2416 6793
@@ -3228,6 +3461,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: 5 Parabolic Green Days In A Row For SPX. Will SPX Pullback Next Week? April 18 Plan | pub=2026-04-19 | plan=2026-04-18
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7075.0
 - Level roles: 7048.0=current_price_context; 6716.0=current_price_context; 6983.0=current_price_context; 7075.0=target_or_response; 6758.0=current_price_context; 6773.0=current_price_context; 6748.0=current_price_context; 7086.0=current_price_context; 7093.0=current_price_context; 7103.0=current_price_context; 7116.0=current_price_context; 7131.0=current_price_context
 - S/R sanity: none
@@ -3242,10 +3476,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: 5 Parabolic Green Days In A Row For SPX. Will SPX Pullback Next Week? April 18 Plan | pub=2026-04-19 | plan=2026-04-18
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7058.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7058.0=actual_setup_level
 - S/R sanity: 7058.0 coincides_cleanly via support L2416 7058
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-16T09:23:00-04:00 minus 60 minutes through 2026-04-16T09:45:00-04:00 plus 90 minutes; trap=7047.75; reclaim=2026-04-16T09:45:00-04:00; score=11.0
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=2026-04-14, 2026-04-15, 2026-04-16, 2026-04-17, 2026-04-20
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
 - Support context: L2416: Supports are: 7160, 7153 (major), 7147 (major), 7139, 7135, 7128, 7120 (major), 7109, 7104 (major), 7099, 7096, 7085 (major), 7078, 7074 (major), 7067, 7062, 7058 (major), 7052, 7048 (major), 7041, 7035, 7026, 7015-7020 (major), 7008, 7003, 6993, 6982 (major), 6975, 6968, 6963 (major), 6954, 6950 (major), 6939, 6930 (major), 6921 (major), 6908, 6903 (majo...
 - Resistance context: L2420: Resistances are: 7166, 7175 (major), 7186, 7192 (major), 7200, 7207, 7217 (major), 7230 (major), 7235, 7240, 7257, 7267, 7277 (major), 7287, 7291, 7300 (major), 7313 (major), 7324, 7334 (major), 7342, 7350 (major), 7361 (major). As readers know I don’t short ES - I only get my points on the long side, but I still give short entries here for those who like...
@@ -3256,10 +3491,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: 5 Parabolic Green Days In A Row For SPX. Will SPX Pullback Next Week? April 18 Plan | pub=2026-04-19 | plan=2026-04-18
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7058.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7058.0=actual_setup_level; 7048.0=current_price_context; 7041.0=current_price_context
 - S/R sanity: 7058.0 coincides_cleanly via support L2416 7058
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-16T09:23:00-04:00 minus 60 minutes through 2026-04-16T09:45:00-04:00 plus 90 minutes; trap=7047.75; reclaim=2026-04-16T09:45:00-04:00; score=11.0
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm, 1:10PM, 2:20PM; nearby_sessions=2026-04-14, 2026-04-15, 2026-04-16, 2026-04-17, 2026-04-20
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
 - Support context: L2416: Supports are: 7160, 7153 (major), 7147 (major), 7139, 7135, 7128, 7120 (major), 7109, 7104 (major), 7099, 7096, 7085 (major), 7078, 7074 (major), 7067, 7062, 7058 (major), 7052, 7048 (major), 7041, 7035, 7026, 7015-7020 (major), 7008, 7003, 6993, 6982 (major), 6975, 6968, 6963 (major), 6954, 6950 (major), 6939, 6930 (major), 6921 (major), 6908, 6903 (majo...
 - Resistance context: L2420: Resistances are: 7166, 7175 (major), 7186, 7192 (major), 7200, 7207, 7217 (major), 7230 (major), 7235, 7240, 7257, 7267, 7277 (major), 7287, 7291, 7300 (major), 7313 (major), 7324, 7334 (major), 7342, 7350 (major), 7361 (major). As readers know I don’t short ES - I only get my points on the long side, but I still give short entries here for those who like...
@@ -3270,6 +3506,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: 5 Parabolic Green Days In A Row For SPX. Will SPX Pullback Next Week? April 18 Plan | pub=2026-04-19 | plan=2026-04-18
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7058.0=current_price_context
 - S/R sanity: none
@@ -3284,6 +3521,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: 5 Parabolic Green Days In A Row For SPX. Will SPX Pullback Next Week? April 18 Plan | pub=2026-04-19 | plan=2026-04-18
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=7063.0; invalidation=none; target/response=none
 - Level roles: 7058.0=current_price_context; 7063.0=non_acceptance_threshold
 - S/R sanity: none
@@ -3298,9 +3536,10 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: 5 Parabolic Green Days In A Row For SPX. Will SPX Pullback Next Week? April 18 Plan | pub=2026-04-19 | plan=2026-04-18
 - Source mode: planned_setup
-- Exact levels: setup=7104.0, 6793.0; swept/lost=7147.0, 7153.0, 7085.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
-- Level roles: 6793.0=actual_setup_level; 7056.0=current_price_context; 7153.0=swept_lost_low; 7147.0=swept_lost_low; 7120.0=current_price_context; 7104.0=actual_setup_level; 7085.0=swept_lost_low; 7058.0=current_price_context
-- S/R sanity: 7104.0 coincides_cleanly via support L2416 7104; 6793.0 coincides_cleanly via support L2416 6793
+- Source label: source_planned_fbd
+- Exact levels: setup=7104.0, 7058.0, 6793.0; swept/lost=7147.0, 7153.0, 7085.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7056.0=current_price_context; 7153.0=swept_lost_low; 7147.0=swept_lost_low; 7120.0=current_price_context; 7104.0=actual_setup_level; 7085.0=swept_lost_low; 7058.0=actual_setup_level
+- S/R sanity: 7104.0 coincides_cleanly via support L2416 7104; 7058.0 coincides_cleanly via support L2416 7058; 6793.0 coincides_cleanly via support L2416 6793
 - ES 1m window/chart: multi-level split required; crop each stated setup level separately
 - Blockers: multi_setup_row_split_required, no_existing_chart_window_match, source_mode_planned_setup
 - Support context: L2416: Supports are: 7160, 7153 (major), 7147 (major), 7139, 7135, 7128, 7120 (major), 7109, 7104 (major), 7099, 7096, 7085 (major), 7078, 7074 (major), 7067, 7062, 7058 (major), 7052, 7048 (major), 7041, 7035, 7026, 7015-7020 (major), 7008, 7003, 6993, 6982 (major), 6975, 6968, 6963 (major), 6954, 6950 (major), 6939, 6930 (major), 6921 (major), 6908, 6903 (majo...
@@ -3312,6 +3551,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: 5 Parabolic Green Days In A Row For SPX. Will SPX Pullback Next Week? April 18 Plan | pub=2026-04-19 | plan=2026-04-18
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7153.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7085.0=current_price_context; 7058.0=current_price_context; 7049.0=current_price_context; 7186.0=current_price_context; 7192.0=current_price_context; 7217.0=current_price_context; 7230.0=current_price_context; 7153.0=actual_setup_level; 7120.0=current_price_context
 - S/R sanity: 7153.0 coincides_cleanly via support L2416 7153
@@ -3325,7 +3565,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:2424 `negative_control`
 
 - Plan/date context: 5 Parabolic Green Days In A Row For SPX. Will SPX Pullback Next Week? April 18 Plan | pub=2026-04-19 | plan=2026-04-18
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7049.0=current_price_context; 7120.0=current_price_context; 7116.0=current_price_context
 - S/R sanity: none
@@ -3343,6 +3584,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Again In SPX. Are More New Highs Coming? April 21 Plan | pub=2026-04-20 | plan=2026-04-21
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6780.0; swept/lost=6760.0; recovered=6780.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6760.0=swept_lost_low; 6780.0=actual_setup_level+recovered_level; 6882.0=current_price_context; 6902.0=current_price_context; 6937.0=current_price_context
 - S/R sanity: 6780.0 does_not_coincide
@@ -3357,6 +3599,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Again In SPX. Are More New Highs Coming? April 21 Plan | pub=2026-04-20 | plan=2026-04-21
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7075.0=current_price_context; 7093.0=current_price_context; 7131.0=current_price_context
 - S/R sanity: none
@@ -3371,6 +3614,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Again In SPX. Are More New Highs Coming? April 21 Plan | pub=2026-04-20 | plan=2026-04-21
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6793.0=actual_setup_level
 - S/R sanity: 6793.0 coincides_partially via prose L2181 6793
@@ -3385,6 +3629,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Again In SPX. Are More New Highs Coming? April 21 Plan | pub=2026-04-20 | plan=2026-04-21
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6793.0; swept/lost=6760.0; recovered=6793.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6860.0=current_price_context; 6793.0=actual_setup_level+recovered_level; 7184.0=current_price_context
 - S/R sanity: 6793.0 coincides_partially via prose L2181 6793
@@ -3399,6 +3644,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Again In SPX. Are More New Highs Coming? April 21 Plan | pub=2026-04-20 | plan=2026-04-21
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7120.0; swept/lost=7085.0; recovered=7120.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7085.0=swept_lost_low; 7120.0=actual_setup_level+recovered_level
 - S/R sanity: 7120.0 coincides_partially via prose L2193 7120
@@ -3413,10 +3659,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Again In SPX. Are More New Highs Coming? April 21 Plan | pub=2026-04-20 | plan=2026-04-21
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7153.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7085.0=current_price_context; 7058.0=current_price_context; 7049.0=current_price_context; 7186.0=current_price_context; 7192.0=current_price_context; 7217.0=current_price_context; 7230.0=current_price_context; 7153.0=actual_setup_level; 7120.0=current_price_context
 - S/R sanity: 7153.0 coincides_partially via resistance L2279 7153
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-17T03:11:00-04:00 minus 60 minutes through 2026-04-17T09:10:00-04:00 plus 90 minutes; trap=7085.75; reclaim=2026-04-17T09:10:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-20T09:35:00-04:00 minus 60 minutes through 2026-04-20T15:34:00-04:00 plus 90 minutes; trap=7142.75; reclaim=2026-04-20T15:34:00-04:00; score=15.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L2275: Supports are: 7148, 7135 (major), 7126, 7121 (major), 7110, 7104 (major), 7095, 7086 (major), 7078 (major), 7074, 7067, 7057 (major), 7053, 7049 (major), 7041, 7036 (major), 7031, 7026, 7021, 7014 (major), 7009, 7003 (major), 6993, 6983 (major), 6967, 6963 (major), 6958, 6948, 6944, 6938 (major), 6928 (major), 6923, 6916 (major), 6908, 6903 (major), 6893,...
 - Resistance context: L2279: Resistances are: 7153 (major), 7159, 7169, 7174 (major), 7186, 7194 (major), 7204, 7217 (major), 7224, 7232 (major), 7239, 7245, 7253 (major), 7262, 7271, 7283 (major), 7290 (major), 7304, 7314, 7318 (major), 7330, 7341 (major), 7352, 7358 (major), 7362, 7369 (major). As readers know I don’t short ES - I only get my points on the long side, but I still gi...
@@ -3427,10 +3674,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Again In SPX. Are More New Highs Coming? April 21 Plan | pub=2026-04-20 | plan=2026-04-21
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7120.0=actual_setup_level
 - S/R sanity: 7120.0 coincides_partially via prose L2193 7120
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-17T01:49:00-04:00 minus 60 minutes through 2026-04-17T07:48:00-04:00 plus 90 minutes; trap=7081.25; reclaim=2026-04-17T07:48:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-21T14:41:00-04:00 minus 60 minutes through 2026-04-21T15:09:00-04:00 plus 90 minutes; trap=7109.0; reclaim=2026-04-21T15:09:00-04:00; score=17.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
 - Support context: L2275: Supports are: 7148, 7135 (major), 7126, 7121 (major), 7110, 7104 (major), 7095, 7086 (major), 7078 (major), 7074, 7067, 7057 (major), 7053, 7049 (major), 7041, 7036 (major), 7031, 7026, 7021, 7014 (major), 7009, 7003 (major), 6993, 6983 (major), 6967, 6963 (major), 6958, 6948, 6944, 6938 (major), 6928 (major), 6923, 6916 (major), 6908, 6903 (major), 6893,...
 - Resistance context: L2279: Resistances are: 7153 (major), 7159, 7169, 7174 (major), 7186, 7194 (major), 7204, 7217 (major), 7224, 7232 (major), 7239, 7245, 7253 (major), 7262, 7271, 7283 (major), 7290 (major), 7304, 7314, 7318 (major), 7330, 7341 (major), 7352, 7358 (major), 7362, 7369 (major). As readers know I don’t short ES - I only get my points on the long side, but I still gi...
@@ -3441,6 +3689,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Again In SPX. Are More New Highs Coming? April 21 Plan | pub=2026-04-20 | plan=2026-04-21
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7153.0=current_price_context; 7120.0=current_price_context
 - S/R sanity: none
@@ -3455,6 +3704,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Again In SPX. Are More New Highs Coming? April 21 Plan | pub=2026-04-20 | plan=2026-04-21
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7120.0=current_price_context
 - S/R sanity: none
@@ -3469,6 +3719,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Again In SPX. Are More New Highs Coming? April 21 Plan | pub=2026-04-20 | plan=2026-04-21
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=7125.0; invalidation=none; target/response=none
 - Level roles: 7120.0=current_price_context; 7125.0=non_acceptance_threshold
 - S/R sanity: none
@@ -3483,10 +3734,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Again In SPX. Are More New Highs Coming? April 21 Plan | pub=2026-04-20 | plan=2026-04-21
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7120.0=actual_setup_level
 - S/R sanity: 7120.0 coincides_partially via prose L2193 7120
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-17T01:49:00-04:00 minus 60 minutes through 2026-04-17T07:48:00-04:00 plus 90 minutes; trap=7081.25; reclaim=2026-04-17T07:48:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-21T14:41:00-04:00 minus 60 minutes through 2026-04-21T15:09:00-04:00 plus 90 minutes; trap=7109.0; reclaim=2026-04-21T15:09:00-04:00; score=17.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
 - Support context: L2275: Supports are: 7148, 7135 (major), 7126, 7121 (major), 7110, 7104 (major), 7095, 7086 (major), 7078 (major), 7074, 7067, 7057 (major), 7053, 7049 (major), 7041, 7036 (major), 7031, 7026, 7021, 7014 (major), 7009, 7003 (major), 6993, 6983 (major), 6967, 6963 (major), 6958, 6948, 6944, 6938 (major), 6928 (major), 6923, 6916 (major), 6908, 6903 (major), 6893,...
 - Resistance context: L2279: Resistances are: 7153 (major), 7159, 7169, 7174 (major), 7186, 7194 (major), 7204, 7217 (major), 7224, 7232 (major), 7239, 7245, 7253 (major), 7262, 7271, 7283 (major), 7290 (major), 7304, 7314, 7318 (major), 7330, 7341 (major), 7352, 7358 (major), 7362, 7369 (major). As readers know I don’t short ES - I only get my points on the long side, but I still gi...
@@ -3497,6 +3749,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Again In SPX. Are More New Highs Coming? April 21 Plan | pub=2026-04-20 | plan=2026-04-21
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7120.0, 6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7147.0
 - Level roles: 6793.0=actual_setup_level; 7120.0=actual_setup_level; 7147.0=target_or_response; 7085.0=current_price_context; 7135.0=current_price_context; 7121.0=current_price_context; 7110.0=current_price_context; 7104.0=current_price_context; 7058.0=current_price_context
 - S/R sanity: 7120.0 coincides_partially via prose L2193 7120; 6793.0 coincides_partially via prose L2277 6793
@@ -3511,10 +3764,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Dip Again In SPX. Are More New Highs Coming? April 21 Plan | pub=2026-04-20 | plan=2026-04-21
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7085.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7160.0
 - Level roles: 7147.0=current_price_context; 7085.0=actual_setup_level; 7120.0=current_price_context; 7160.0=target_or_response; 7174.0=current_price_context; 7194.0=current_price_context; 7217.0=current_price_context
 - S/R sanity: 7085.0 coincides_partially via prose L2137 7085
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-16T05:01:00-04:00 minus 60 minutes through 2026-04-16T11:00:00-04:00 plus 90 minutes; trap=7068.75; reclaim=2026-04-16T11:00:00-04:00; score=10.0
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=6pm; nearby_sessions=2026-04-16, 2026-04-17, 2026-04-20, 2026-04-21, 2026-04-22
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L2275: Supports are: 7148, 7135 (major), 7126, 7121 (major), 7110, 7104 (major), 7095, 7086 (major), 7078 (major), 7074, 7067, 7057 (major), 7053, 7049 (major), 7041, 7036 (major), 7031, 7026, 7021, 7014 (major), 7009, 7003 (major), 6993, 6983 (major), 6967, 6963 (major), 6958, 6948, 6944, 6938 (major), 6928 (major), 6923, 6916 (major), 6908, 6903 (major), 6893,...
 - Resistance context: L2279: Resistances are: 7153 (major), 7159, 7169, 7174 (major), 7186, 7194 (major), 7204, 7217 (major), 7224, 7232 (major), 7239, 7245, 7253 (major), 7262, 7271, 7283 (major), 7290 (major), 7304, 7314, 7318 (major), 7330, 7341 (major), 7352, 7358 (major), 7362, 7369 (major). As readers know I don’t short ES - I only get my points on the long side, but I still gi...
@@ -3524,7 +3778,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:2283 `negative_control`
 
 - Plan/date context: Bulls Bought The Dip Again In SPX. Are More New Highs Coming? April 21 Plan | pub=2026-04-20 | plan=2026-04-21
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7085.0=current_price_context; 7074.0=current_price_context
 - S/R sanity: none
@@ -3542,6 +3797,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After 3 Weeks of Upside, SPX Is Coiled. Another Breakout Coming? April 22nd Plan | pub=2026-04-21 | plan=2026-04-22
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7180.0=current_price_context; 7100.0=current_price_context; 7085.0=current_price_context
 - S/R sanity: none
@@ -3556,6 +3812,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After 3 Weeks of Upside, SPX Is Coiled. Another Breakout Coming? April 22nd Plan | pub=2026-04-21 | plan=2026-04-22
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7120.0, 6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6793.0=actual_setup_level; 7120.0=actual_setup_level
 - S/R sanity: 7120.0 coincides_cleanly via support L2109 7120; 6793.0 coincides_cleanly via support L2109 6793
@@ -3570,6 +3827,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After 3 Weeks of Upside, SPX Is Coiled. Another Breakout Coming? April 22nd Plan | pub=2026-04-21 | plan=2026-04-22
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=6793.0; swept/lost=6760.0; recovered=6793.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6860.0=current_price_context; 6793.0=actual_setup_level+recovered_level; 7184.0=current_price_context
 - S/R sanity: 6793.0 coincides_cleanly via support L2109 6793
@@ -3584,6 +3842,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After 3 Weeks of Upside, SPX Is Coiled. Another Breakout Coming? April 22nd Plan | pub=2026-04-21 | plan=2026-04-22
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7120.0; swept/lost=7085.0; recovered=7120.0; non_acceptance=none; invalidation=none; target/response=7160.0
 - Level roles: 7085.0=swept_lost_low; 7120.0=actual_setup_level+recovered_level; 7160.0=target_or_response; 7180.0=current_price_context
 - S/R sanity: 7120.0 coincides_cleanly via support L2109 7120
@@ -3598,6 +3857,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After 3 Weeks of Upside, SPX Is Coiled. Another Breakout Coming? April 22nd Plan | pub=2026-04-21 | plan=2026-04-22
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7085.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7160.0
 - Level roles: 7147.0=current_price_context; 7085.0=actual_setup_level; 7120.0=current_price_context; 7160.0=target_or_response; 7174.0=current_price_context; 7194.0=current_price_context; 7217.0=current_price_context
 - S/R sanity: 7085.0 coincides_cleanly via support L2109 7085
@@ -3612,10 +3872,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After 3 Weeks of Upside, SPX Is Coiled. Another Breakout Coming? April 22nd Plan | pub=2026-04-21 | plan=2026-04-22
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7120.0=actual_setup_level
 - S/R sanity: 7120.0 coincides_cleanly via support L2109 7120
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-17T01:49:00-04:00 minus 60 minutes through 2026-04-17T07:48:00-04:00 plus 90 minutes; trap=7081.25; reclaim=2026-04-17T07:48:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-22T19:16:00-04:00 minus 60 minutes through 2026-04-22T19:17:00-04:00 plus 90 minutes; trap=7105.5; reclaim=2026-04-22T19:17:00-04:00; score=15.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
 - Support context: L2109: Supports are: 7127, 7120 (major), 7110, 7100-05 (major), 7095, 7085 (major), 7082, 7082, 7075 (major), 7067, 7057 (major), 7053, 7048 (major), 7040 (major), 7036, 7030, 7025, 7021 (major), 7014, 7008, 7002 (major), 6990 (major), 6984, 6971, 6963, 6955, 6942 (major), 6938, 6928, 6915-20 (major), 6907, 6903, 6889 (major), 6882, 6872 (major), 6867, 6862, 685...
 - Resistance context: L2113: Resistances are: 7134, 7147 (major), 7153, 7165, 7171, 7180 (major), 7185, 7196, 7202 (major), 7212, 7220 (major), 7226, 7235-38 (major), 7245, 7251, 7262 (major), 7274, 7282, 7290 (major), 7294, 7300 (major), 7306, 7312, 7317, 7323 (major), 7331, 7339, 7347 (major), 7351, 7359 (major), 7362, 7374 (major). As readers know I don’t short ES - I only get my ...
@@ -3626,6 +3887,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After 3 Weeks of Upside, SPX Is Coiled. Another Breakout Coming? April 22nd Plan | pub=2026-04-21 | plan=2026-04-22
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7140.0=current_price_context
 - S/R sanity: none
@@ -3640,10 +3902,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After 3 Weeks of Upside, SPX Is Coiled. Another Breakout Coming? April 22nd Plan | pub=2026-04-21 | plan=2026-04-22
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7147.0
 - Level roles: 7120.0=actual_setup_level; 7121.0=current_price_context; 7147.0=target_or_response
 - S/R sanity: 7120.0 coincides_cleanly via support L2109 7120
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-17T01:49:00-04:00 minus 60 minutes through 2026-04-17T07:48:00-04:00 plus 90 minutes; trap=7081.25; reclaim=2026-04-17T07:48:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-22T19:16:00-04:00 minus 60 minutes through 2026-04-22T19:17:00-04:00 plus 90 minutes; trap=7105.5; reclaim=2026-04-22T19:17:00-04:00; score=15.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
 - Support context: L2109: Supports are: 7127, 7120 (major), 7110, 7100-05 (major), 7095, 7085 (major), 7082, 7082, 7075 (major), 7067, 7057 (major), 7053, 7048 (major), 7040 (major), 7036, 7030, 7025, 7021 (major), 7014, 7008, 7002 (major), 6990 (major), 6984, 6971, 6963, 6955, 6942 (major), 6938, 6928, 6915-20 (major), 6907, 6903, 6889 (major), 6882, 6872 (major), 6867, 6862, 685...
 - Resistance context: L2113: Resistances are: 7134, 7147 (major), 7153, 7165, 7171, 7180 (major), 7185, 7196, 7202 (major), 7212, 7220 (major), 7226, 7235-38 (major), 7245, 7251, 7262 (major), 7274, 7282, 7290 (major), 7294, 7300 (major), 7306, 7312, 7317, 7323 (major), 7331, 7339, 7347 (major), 7351, 7359 (major), 7362, 7374 (major). As readers know I don’t short ES - I only get my ...
@@ -3654,6 +3917,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After 3 Weeks of Upside, SPX Is Coiled. Another Breakout Coming? April 22nd Plan | pub=2026-04-21 | plan=2026-04-22
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7120.0=current_price_context
 - S/R sanity: none
@@ -3668,6 +3932,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After 3 Weeks of Upside, SPX Is Coiled. Another Breakout Coming? April 22nd Plan | pub=2026-04-21 | plan=2026-04-22
 - Source mode: planned_setup
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7120.0=current_price_context
 - S/R sanity: none
@@ -3682,6 +3947,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After 3 Weeks of Upside, SPX Is Coiled. Another Breakout Coming? April 22nd Plan | pub=2026-04-21 | plan=2026-04-22
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=7125.0; invalidation=none; target/response=none
 - Level roles: 7120.0=current_price_context; 7125.0=non_acceptance_threshold
 - S/R sanity: none
@@ -3696,10 +3962,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After 3 Weeks of Upside, SPX Is Coiled. Another Breakout Coming? April 22nd Plan | pub=2026-04-21 | plan=2026-04-22
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7120.0=actual_setup_level
 - S/R sanity: 7120.0 coincides_cleanly via support L2109 7120
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-17T01:49:00-04:00 minus 60 minutes through 2026-04-17T07:48:00-04:00 plus 90 minutes; trap=7081.25; reclaim=2026-04-17T07:48:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-22T19:16:00-04:00 minus 60 minutes through 2026-04-22T19:17:00-04:00 plus 90 minutes; trap=7105.5; reclaim=2026-04-22T19:17:00-04:00; score=15.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L2109: Supports are: 7127, 7120 (major), 7110, 7100-05 (major), 7095, 7085 (major), 7082, 7082, 7075 (major), 7067, 7057 (major), 7053, 7048 (major), 7040 (major), 7036, 7030, 7025, 7021 (major), 7014, 7008, 7002 (major), 6990 (major), 6984, 6971, 6963, 6955, 6942 (major), 6938, 6928, 6915-20 (major), 6907, 6903, 6889 (major), 6882, 6872 (major), 6867, 6862, 685...
 - Resistance context: L2113: Resistances are: 7134, 7147 (major), 7153, 7165, 7171, 7180 (major), 7185, 7196, 7202 (major), 7212, 7220 (major), 7226, 7235-38 (major), 7245, 7251, 7262 (major), 7274, 7282, 7290 (major), 7294, 7300 (major), 7306, 7312, 7317, 7323 (major), 7331, 7339, 7347 (major), 7351, 7359 (major), 7362, 7374 (major). As readers know I don’t short ES - I only get my ...
@@ -3710,10 +3977,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After 3 Weeks of Upside, SPX Is Coiled. Another Breakout Coming? April 22nd Plan | pub=2026-04-21 | plan=2026-04-22
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7120.0; swept/lost=7120.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7120.0=actual_setup_level+swept_lost_low; 7121.75=current_price_context; 7121.5=current_price_context
 - S/R sanity: 7120.0 coincides_cleanly via support L2109 7120
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-17T01:49:00-04:00 minus 60 minutes through 2026-04-17T07:48:00-04:00 plus 90 minutes; trap=7081.25; reclaim=2026-04-17T07:48:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-22T19:16:00-04:00 minus 60 minutes through 2026-04-22T19:17:00-04:00 plus 90 minutes; trap=7105.5; reclaim=2026-04-22T19:17:00-04:00; score=15.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L2109: Supports are: 7127, 7120 (major), 7110, 7100-05 (major), 7095, 7085 (major), 7082, 7082, 7075 (major), 7067, 7057 (major), 7053, 7048 (major), 7040 (major), 7036, 7030, 7025, 7021 (major), 7014, 7008, 7002 (major), 6990 (major), 6984, 6971, 6963, 6955, 6942 (major), 6938, 6928, 6915-20 (major), 6907, 6903, 6889 (major), 6882, 6872 (major), 6867, 6862, 685...
 - Resistance context: L2113: Resistances are: 7134, 7147 (major), 7153, 7165, 7171, 7180 (major), 7185, 7196, 7202 (major), 7212, 7220 (major), 7226, 7235-38 (major), 7245, 7251, 7262 (major), 7274, 7282, 7290 (major), 7294, 7300 (major), 7306, 7312, 7317, 7323 (major), 7331, 7339, 7347 (major), 7351, 7359 (major), 7362, 7374 (major). As readers know I don’t short ES - I only get my ...
@@ -3724,6 +3992,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After 3 Weeks of Upside, SPX Is Coiled. Another Breakout Coming? April 22nd Plan | pub=2026-04-21 | plan=2026-04-22
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7130.0=current_price_context; 7135.0=current_price_context
 - S/R sanity: none
@@ -3738,6 +4007,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After 3 Weeks of Upside, SPX Is Coiled. Another Breakout Coming? April 22nd Plan | pub=2026-04-21 | plan=2026-04-22
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7120.0, 7097.0, 7085.0, 6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6793.0=actual_setup_level; 7120.0=actual_setup_level; 7100.0=current_price_context; 7180.0=current_price_context; 7147.0=current_price_context; 7110.0=current_price_context; 7097.0=actual_setup_level; 7105.0=current_price_context; 7085.0=actual_setup_level; 7058.0=current_price_context; 7021.0=current_price_context
 - S/R sanity: 7120.0 coincides_cleanly via support L2109 7120; 7097.0 coincides_partially via prose L2111 7097; 7085.0 coincides_cleanly via support L2109 7085; 6793.0 coincides_cleanly via support L2109 6793
@@ -3752,6 +4022,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: After 3 Weeks of Upside, SPX Is Coiled. Another Breakout Coming? April 22nd Plan | pub=2026-04-21 | plan=2026-04-22
 - Source mode: context_recap
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=7097.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7202.0
 - Level roles: 7180.0=current_price_context; 7100.0=current_price_context; 7120.0=current_price_context; 7147.0=current_price_context; 7097.0=swept_lost_low; 7202.0=target_or_response; 7220.0=current_price_context; 7235.0=current_price_context
 - S/R sanity: none
@@ -3765,7 +4036,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:2117 `negative_control`
 
 - Plan/date context: After 3 Weeks of Upside, SPX Is Coiled. Another Breakout Coming? April 22nd Plan | pub=2026-04-21 | plan=2026-04-22
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7100.0=current_price_context; 7095.0=current_price_context
 - S/R sanity: none
@@ -3783,6 +4055,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Continues To Coil Tighter. Is A Breakout Close? April 23rd Plan | pub=2026-04-22 | plan=2026-04-23
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7097.0; swept/lost=7085.0, 7097.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7160.0
 - Level roles: 7085.0=swept_lost_low; 7097.0=actual_setup_level+swept_lost_low; 7160.0=target_or_response
 - S/R sanity: 7097.0 coincides_partially via prose L1826 7097
@@ -3797,6 +4070,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Continues To Coil Tighter. Is A Breakout Close? April 23rd Plan | pub=2026-04-22 | plan=2026-04-23
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7180.0=current_price_context; 7085.0=current_price_context
 - S/R sanity: none
@@ -3811,6 +4085,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Continues To Coil Tighter. Is A Breakout Close? April 23rd Plan | pub=2026-04-22 | plan=2026-04-23
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7120.0, 6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6793.0=actual_setup_level; 7120.0=actual_setup_level
 - S/R sanity: 7120.0 coincides_cleanly via support L1950 7120; 6793.0 coincides_cleanly via support L1950 6793
@@ -3825,6 +4100,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Continues To Coil Tighter. Is A Breakout Close? April 23rd Plan | pub=2026-04-22 | plan=2026-04-23
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7120.0; swept/lost=7085.0; recovered=7120.0; non_acceptance=none; invalidation=none; target/response=7180.0
 - Level roles: 7160.0=current_price_context; 7085.0=swept_lost_low; 7120.0=actual_setup_level+recovered_level; 7180.0=target_or_response
 - S/R sanity: 7120.0 coincides_cleanly via support L1950 7120
@@ -3839,6 +4115,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Continues To Coil Tighter. Is A Breakout Close? April 23rd Plan | pub=2026-04-22 | plan=2026-04-23
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7097.0; swept/lost=none; recovered=7097.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7097.0=actual_setup_level+recovered_level; 7147.0=current_price_context
 - S/R sanity: 7097.0 coincides_partially via prose L1870 7097
@@ -3853,6 +4130,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Continues To Coil Tighter. Is A Breakout Close? April 23rd Plan | pub=2026-04-22 | plan=2026-04-23
 - Source mode: data_context
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=7097.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7202.0
 - Level roles: 7100.0=current_price_context; 7180.0=current_price_context; 7120.0=current_price_context; 7147.0=current_price_context; 7097.0=swept_lost_low; 7202.0=target_or_response; 7220.0=current_price_context; 7235.0=current_price_context
 - S/R sanity: none
@@ -3867,6 +4145,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Continues To Coil Tighter. Is A Breakout Close? April 23rd Plan | pub=2026-04-22 | plan=2026-04-23
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7097.0; swept/lost=7085.0, 7097.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7097.0=actual_setup_level+swept_lost_low; 7085.0=swept_lost_low
 - S/R sanity: 7097.0 coincides_partially via prose L1870 7097
@@ -3881,6 +4160,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Continues To Coil Tighter. Is A Breakout Close? April 23rd Plan | pub=2026-04-22 | plan=2026-04-23
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7097.0=actual_setup_level
 - S/R sanity: 7097.0 coincides_partially via prose L1880 7097
@@ -3895,10 +4175,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Continues To Coil Tighter. Is A Breakout Close? April 23rd Plan | pub=2026-04-22 | plan=2026-04-23
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7097.0=actual_setup_level; 7105.0=current_price_context
 - S/R sanity: 7097.0 coincides_partially via prose L1906 7097
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-21T14:44:00-04:00 minus 60 minutes through 2026-04-21T14:47:00-04:00 plus 90 minutes; trap=7085.0; reclaim=2026-04-21T14:47:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-23T12:45:00-04:00 minus 60 minutes through 2026-04-23T12:53:00-04:00 plus 90 minutes; trap=7085.0; reclaim=2026-04-23T12:53:00-04:00; score=18.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
 - Support context: L1950: Supports are: 7147 (major), 7134, 7129 (major), 7120, 7111-08 (major), 7093, 7086 (major), 7072 (major), 7063, 7057 (major), 7048, 7041, 7036 (major), 7030, 7026 (major), 7020, 7016 (major), 7007, 7002 (major), 6990, 6983 (major), 6970, 6960 (major), 6955, 6949 (major), 6943, 6938, 6927, 6920 (major), 6908, 6903 (major), 6887, 6883 (major), 6880, 6872 (ma...
 - Resistance context: L1954: Resistances are: 7147 (major), 7154, 7160 (major), 7166, 7175, 7180 (major), 7184, 7192, 7200 (major), 7206, 7216 (major), 7220, 7235 (major), 7243, 7249, 7258, 7263, 7280 (major), 7285, 7291, 7300 (major), 7306, 7310, 7320, 7330 (major), 7336, 7344, 7348, 7353 (major), 7357, 7363 (major). As readers know I don’t short ES - I only get my points on the lon...
@@ -3909,6 +4190,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Continues To Coil Tighter. Is A Breakout Close? April 23rd Plan | pub=2026-04-22 | plan=2026-04-23
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7097.0=current_price_context
 - S/R sanity: none
@@ -3923,6 +4205,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Continues To Coil Tighter. Is A Breakout Close? April 23rd Plan | pub=2026-04-22 | plan=2026-04-23
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=7105.0; invalidation=none; target/response=none
 - Level roles: 7097.0=current_price_context; 7105.0=non_acceptance_threshold
 - S/R sanity: none
@@ -3937,6 +4220,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Continues To Coil Tighter. Is A Breakout Close? April 23rd Plan | pub=2026-04-22 | plan=2026-04-23
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7058.0, 6793.0, 7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6793.0=actual_setup_level; 7097.0=actual_setup_level; 7180.0=current_price_context; 7085.0=current_price_context; 7147.0=current_price_context; 7111.0=current_price_context; 7129.0=current_price_context; 7058.0=actual_setup_level
 - S/R sanity: 7058.0 coincides_partially via prose L1952 7058; 6793.0 coincides_cleanly via support L1950 6793; 7097.0 coincides_partially via prose L1952 7097
@@ -3950,7 +4234,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:1958 `negative_control`
 
 - Plan/date context: SPX Continues To Coil Tighter. Is A Breakout Close? April 23rd Plan | pub=2026-04-22 | plan=2026-04-23
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7111.0=current_price_context; 7099.0=current_price_context
 - S/R sanity: none
@@ -3968,6 +4253,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: A Full Week Of Coil For SPX. Do We Trend Next Week? April 27 Pan | pub=2026-04-26 | plan=None
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=7085.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7147.0
 - Level roles: 7160.0=current_price_context; 7080.0=current_price_context; 7085.0=swept_lost_low; 7147.0=target_or_response
 - S/R sanity: none
@@ -3982,6 +4268,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: A Full Week Of Coil For SPX. Do We Trend Next Week? April 27 Pan | pub=2026-04-26 | plan=None
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7085.0, 6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6793.0=actual_setup_level; 7085.0=actual_setup_level
 - S/R sanity: 7085.0 coincides_cleanly via support L1800 7085; 6793.0 does_not_coincide
@@ -3996,6 +4283,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: A Full Week Of Coil For SPX. Do We Trend Next Week? April 27 Pan | pub=2026-04-26 | plan=None
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7120.0; swept/lost=7085.0; recovered=7120.0; non_acceptance=none; invalidation=none; target/response=7180.0
 - Level roles: 7160.0=current_price_context; 7085.0=swept_lost_low; 7120.0=actual_setup_level+recovered_level; 7180.0=target_or_response
 - S/R sanity: 7120.0 coincides_partially via prose L1668 7120
@@ -4010,6 +4298,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: A Full Week Of Coil For SPX. Do We Trend Next Week? April 27 Pan | pub=2026-04-26 | plan=None
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7097.0; swept/lost=none; recovered=7097.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7097.0=actual_setup_level+recovered_level; 7160.0=current_price_context
 - S/R sanity: 7097.0 coincides_partially via prose L1716 7097
@@ -4024,6 +4313,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: A Full Week Of Coil For SPX. Do We Trend Next Week? April 27 Pan | pub=2026-04-26 | plan=None
 - Source mode: actual_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=7129.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7180.0
 - Level roles: 7160.0=current_price_context; 7105.0=current_price_context; 7129.0=swept_lost_low; 7180.0=target_or_response
 - S/R sanity: none
@@ -4038,10 +4328,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: A Full Week Of Coil For SPX. Do We Trend Next Week? April 27 Pan | pub=2026-04-26 | plan=None
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7085.0; swept/lost=7080.0; recovered=7085.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7080.0=swept_lost_low; 7085.0=actual_setup_level+recovered_level; 7185.0=current_price_context
 - S/R sanity: 7085.0 coincides_cleanly via support L1800 7085
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-23T12:46:00-04:00 minus 60 minutes through 2026-04-23T12:47:00-04:00 plus 90 minutes; trap=7079.25; reclaim=2026-04-23T12:47:00-04:00; score=20.0
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=1pm, 1:50PM; nearby_sessions=2026-04-22, 2026-04-23, 2026-04-24, 2026-04-27
 - Blockers: no_existing_chart_window_match, source_mode_context_recap
 - Support context: L1800: Supports are: 7180 (major), 7166, 7159 (major), 7153, 7147 (major), 7135 (major), 7129, 7121 (major), 7111, 7105 (major), 7095, 7085 (major), 7080, 7074 (major), 7067, 7063, 7058 (major), 7048 (major), 7041, 7036, 7026 (major), 7020, 7016 (major), 7013, 7008 (major), 6999, 6990 (major), 6983, 6975 (major), 6970, 6963, 6956, 6949 (major), 6943, 6938, 6928 ...
 - Resistance context: L1804: Resistances are: 7185, 7193, 7204 (major), 7209, 7218, 7224 (major), 7234, 7242 (major), 7249, 7256 (major), 7261, 7269, 7280 (major), 7294, 7305 (major), 7311, 7316, 7323, 7333 (major), 7342 (major), 7348, 7359, 7365-68 (major), 7377, 7387 (major). As readers know I don’t short ES - I only get my points on the long side, but I still give short entries he...
@@ -4052,6 +4343,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: A Full Week Of Coil For SPX. Do We Trend Next Week? April 27 Pan | pub=2026-04-26 | plan=None
 - Source mode: actual_recap
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=7129.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7178.0
 - Level roles: 7129.0=swept_lost_low; 7178.0=target_or_response
 - S/R sanity: none
@@ -4066,10 +4358,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: A Full Week Of Coil For SPX. Do We Trend Next Week? April 27 Pan | pub=2026-04-26 | plan=None
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7129.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7129.0=actual_setup_level
 - S/R sanity: 7129.0 coincides_cleanly via support L1800 7129
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-21T11:43:00-04:00 minus 60 minutes through 2026-04-21T14:12:00-04:00 plus 90 minutes; trap=7118.25; reclaim=2026-04-21T14:12:00-04:00; score=15.0
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=3:55PM; nearby_sessions=2026-04-22, 2026-04-23, 2026-04-24, 2026-04-27
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L1800: Supports are: 7180 (major), 7166, 7159 (major), 7153, 7147 (major), 7135 (major), 7129, 7121 (major), 7111, 7105 (major), 7095, 7085 (major), 7080, 7074 (major), 7067, 7063, 7058 (major), 7048 (major), 7041, 7036, 7026 (major), 7020, 7016 (major), 7013, 7008 (major), 6999, 6990 (major), 6983, 6975 (major), 6970, 6963, 6956, 6949 (major), 6943, 6938, 6928 ...
 - Resistance context: L1804: Resistances are: 7185, 7193, 7204 (major), 7209, 7218, 7224 (major), 7234, 7242 (major), 7249, 7256 (major), 7261, 7269, 7280 (major), 7294, 7305 (major), 7311, 7316, 7323, 7333 (major), 7342 (major), 7348, 7359, 7365-68 (major), 7377, 7387 (major). As readers know I don’t short ES - I only get my points on the long side, but I still give short entries he...
@@ -4080,6 +4373,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: A Full Week Of Coil For SPX. Do We Trend Next Week? April 27 Pan | pub=2026-04-26 | plan=None
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=7105.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7180.0
 - Level roles: 7105.0=swept_lost_low; 7180.0=target_or_response; 7080.0=current_price_context; 7085.0=current_price_context
 - S/R sanity: none
@@ -4094,10 +4388,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: A Full Week Of Coil For SPX. Do We Trend Next Week? April 27 Pan | pub=2026-04-26 | plan=None
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7129.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7129.0=actual_setup_level; 7125.0=current_price_context
 - S/R sanity: 7129.0 coincides_cleanly via support L1800 7129
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-21T11:43:00-04:00 minus 60 minutes through 2026-04-21T14:12:00-04:00 plus 90 minutes; trap=7118.25; reclaim=2026-04-21T14:12:00-04:00; score=15.0
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm, 2:55PM; nearby_sessions=2026-04-22, 2026-04-23, 2026-04-24, 2026-04-27
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
 - Support context: L1800: Supports are: 7180 (major), 7166, 7159 (major), 7153, 7147 (major), 7135 (major), 7129, 7121 (major), 7111, 7105 (major), 7095, 7085 (major), 7080, 7074 (major), 7067, 7063, 7058 (major), 7048 (major), 7041, 7036, 7026 (major), 7020, 7016 (major), 7013, 7008 (major), 6999, 6990 (major), 6983, 6975 (major), 6970, 6963, 6956, 6949 (major), 6943, 6938, 6928 ...
 - Resistance context: L1804: Resistances are: 7185, 7193, 7204 (major), 7209, 7218, 7224 (major), 7234, 7242 (major), 7249, 7256 (major), 7261, 7269, 7280 (major), 7294, 7305 (major), 7311, 7316, 7323, 7333 (major), 7342 (major), 7348, 7359, 7365-68 (major), 7377, 7387 (major). As readers know I don’t short ES - I only get my points on the long side, but I still give short entries he...
@@ -4108,6 +4403,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: A Full Week Of Coil For SPX. Do We Trend Next Week? April 27 Pan | pub=2026-04-26 | plan=None
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7125.0=current_price_context
 - S/R sanity: none
@@ -4122,6 +4418,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: A Full Week Of Coil For SPX. Do We Trend Next Week? April 27 Pan | pub=2026-04-26 | plan=None
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=7130.0; invalidation=none; target/response=none
 - Level roles: 7125.0=current_price_context; 7130.0=non_acceptance_threshold
 - S/R sanity: none
@@ -4136,6 +4433,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: A Full Week Of Coil For SPX. Do We Trend Next Week? April 27 Pan | pub=2026-04-26 | plan=None
 - Source mode: data_context
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=7120.0, 7125.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7125.0=swept_lost_low; 7120.0=swept_lost_low; 7130.0=current_price_context; 7138.0=current_price_context; 7133.0=current_price_context; 7143.0=current_price_context
 - S/R sanity: none
@@ -4150,9 +4448,10 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: A Full Week Of Coil For SPX. Do We Trend Next Week? April 27 Pan | pub=2026-04-26 | plan=None
 - Source mode: planned_setup
-- Exact levels: setup=7085.0, 7129.0, 7135.0, 7121.0, 7080.0, 6793.0; swept/lost=7074.0, 7180.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
-- Level roles: 6793.0=actual_setup_level; 7085.0=actual_setup_level; 7129.0=actual_setup_level; 7180.0=swept_lost_low; 7185.0=current_price_context; 7147.0=current_price_context; 7135.0=actual_setup_level; 7121.0=actual_setup_level; 7080.0=actual_setup_level; 7074.0=swept_lost_low; 7058.0=current_price_context
-- S/R sanity: 7085.0 coincides_cleanly via support L1800 7085; 7129.0 coincides_cleanly via support L1800 7129; 7135.0 coincides_cleanly via support L1800 7135; 7121.0 coincides_cleanly via support L1800 7121; 7080.0 coincides_cleanly via support L1800 7080; 6793.0 coincides_partially via prose L1802 6793
+- Source label: source_planned_fbd
+- Exact levels: setup=7085.0, 7129.0, 7135.0, 7121.0, 7080.0, 7058.0, 6793.0; swept/lost=7074.0, 7180.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7085.0=actual_setup_level; 7129.0=actual_setup_level; 7180.0=swept_lost_low; 7185.0=current_price_context; 7147.0=current_price_context; 7135.0=actual_setup_level; 7121.0=actual_setup_level; 7080.0=actual_setup_level; 7074.0=swept_lost_low; 7058.0=actual_setup_level
+- S/R sanity: 7085.0 coincides_cleanly via support L1800 7085; 7129.0 coincides_cleanly via support L1800 7129; 7135.0 coincides_cleanly via support L1800 7135; 7121.0 coincides_cleanly via support L1800 7121; 7080.0 coincides_cleanly via support L1800 7080; 7058.0 coincides_cleanly via support L1800 7058; 6793.0 coincides_partially via prose L1802 6793
 - ES 1m window/chart: multi-level split required; crop each stated setup level separately
 - Blockers: multi_setup_row_split_required, no_existing_chart_window_match, source_mode_planned_setup
 - Support context: L1800: Supports are: 7180 (major), 7166, 7159 (major), 7153, 7147 (major), 7135 (major), 7129, 7121 (major), 7111, 7105 (major), 7095, 7085 (major), 7080, 7074 (major), 7067, 7063, 7058 (major), 7048 (major), 7041, 7036, 7026 (major), 7020, 7016 (major), 7013, 7008 (major), 6999, 6990 (major), 6983, 6975 (major), 6970, 6963, 6956, 6949 (major), 6943, 6938, 6928 ...
@@ -4164,10 +4463,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: A Full Week Of Coil For SPX. Do We Trend Next Week? April 27 Pan | pub=2026-04-26 | plan=None
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7147.0; swept/lost=7080.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7204.0
 - Level roles: 7180.0=current_price_context; 7085.0=current_price_context; 7160.0=current_price_context; 7080.0=swept_lost_low; 7204.0=target_or_response; 7224.0=current_price_context; 7242.0=current_price_context; 7259.0=current_price_context; 7147.0=actual_setup_level
 - S/R sanity: 7147.0 coincides_cleanly via support L1800 7147
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-23T12:47:00-04:00 minus 60 minutes through 2026-04-23T13:33:00-04:00 plus 90 minutes; trap=7079.75; reclaim=2026-04-23T13:33:00-04:00; score=19.75
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=1:55PM; nearby_sessions=2026-04-22, 2026-04-23, 2026-04-24, 2026-04-27
 - Blockers: no_existing_chart_window_match, source_mode_context_recap
 - Support context: L1800: Supports are: 7180 (major), 7166, 7159 (major), 7153, 7147 (major), 7135 (major), 7129, 7121 (major), 7111, 7105 (major), 7095, 7085 (major), 7080, 7074 (major), 7067, 7063, 7058 (major), 7048 (major), 7041, 7036, 7026 (major), 7020, 7016 (major), 7013, 7008 (major), 6999, 6990 (major), 6983, 6975 (major), 6970, 6963, 6956, 6949 (major), 6943, 6938, 6928 ...
 - Resistance context: L1804: Resistances are: 7185, 7193, 7204 (major), 7209, 7218, 7224 (major), 7234, 7242 (major), 7249, 7256 (major), 7261, 7269, 7280 (major), 7294, 7305 (major), 7311, 7316, 7323, 7333 (major), 7342 (major), 7348, 7359, 7365-68 (major), 7377, 7387 (major). As readers know I don’t short ES - I only get my points on the long side, but I still give short entries he...
@@ -4177,7 +4477,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:1808 `negative_control`
 
 - Plan/date context: A Full Week Of Coil For SPX. Do We Trend Next Week? April 27 Pan | pub=2026-04-26 | plan=None
-- Source mode: negative_control
+- Source mode: planned_setup
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7147.0=current_price_context; 7133.0=current_price_context
 - S/R sanity: none
@@ -4192,10 +4493,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: A Full Week Of Coil For SPX. Do We Trend Next Week? April 27 Pan | pub=2026-04-26 | plan=None
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7085.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7180.0=current_price_context; 7085.0=actual_setup_level; 7147.0=current_price_context; 7204.0=current_price_context; 7224.0=current_price_context; 7242.0=current_price_context; 7259.0=current_price_context
 - S/R sanity: 7085.0 coincides_cleanly via support L1800 7085
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-23T12:46:00-04:00 minus 60 minutes through 2026-04-23T12:47:00-04:00 plus 90 minutes; trap=7079.25; reclaim=2026-04-23T12:47:00-04:00; score=10.75
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=2026-04-22, 2026-04-23, 2026-04-24, 2026-04-27
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L1800: Supports are: 7180 (major), 7166, 7159 (major), 7153, 7147 (major), 7135 (major), 7129, 7121 (major), 7111, 7105 (major), 7095, 7085 (major), 7080, 7074 (major), 7067, 7063, 7058 (major), 7048 (major), 7041, 7036, 7026 (major), 7020, 7016 (major), 7013, 7008 (major), 6999, 6990 (major), 6983, 6975 (major), 6970, 6963, 6956, 6949 (major), 6943, 6938, 6928 ...
 - Resistance context: L1804: Resistances are: 7185, 7193, 7204 (major), 7209, 7218, 7224 (major), 7234, 7242 (major), 7249, 7256 (major), 7261, 7269, 7280 (major), 7294, 7305 (major), 7311, 7316, 7323, 7333 (major), 7342 (major), 7348, 7359, 7365-68 (major), 7377, 7387 (major). As readers know I don’t short ES - I only get my points on the long side, but I still give short entries he...
@@ -4209,6 +4511,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is the Next Leg Higher About To Start In SPX? Or Pullback Soon? April 28 Plan | pub=2026-04-27 | plan=2026-04-28
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=7085.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7200.0
 - Level roles: 7160.0=current_price_context; 7080.0=current_price_context; 7085.0=swept_lost_low; 7200.0=target_or_response
 - S/R sanity: none
@@ -4223,6 +4526,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is the Next Leg Higher About To Start In SPX? Or Pullback Soon? April 28 Plan | pub=2026-04-27 | plan=2026-04-28
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7085.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7204.0
 - Level roles: 7180.0=current_price_context; 7085.0=actual_setup_level; 7147.0=current_price_context; 7204.0=target_or_response; 7224.0=current_price_context; 7242.0=current_price_context
 - S/R sanity: 7085.0 coincides_cleanly via support L1642 7085
@@ -4237,6 +4541,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is the Next Leg Higher About To Start In SPX? Or Pullback Soon? April 28 Plan | pub=2026-04-27 | plan=2026-04-28
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7085.0, 7185.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7085.0=actual_setup_level; 7185.0=actual_setup_level
 - S/R sanity: 7085.0 coincides_cleanly via support L1642 7085; 7185.0 coincides_partially via prose L1544 7185
@@ -4251,10 +4556,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is the Next Leg Higher About To Start In SPX? Or Pullback Soon? April 28 Plan | pub=2026-04-27 | plan=2026-04-28
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7085.0; swept/lost=7080.0; recovered=7085.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7080.0=swept_lost_low; 7085.0=actual_setup_level+recovered_level; 7200.0=current_price_context
 - S/R sanity: 7085.0 coincides_cleanly via support L1642 7085
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-23T12:46:00-04:00 minus 60 minutes through 2026-04-23T12:47:00-04:00 plus 90 minutes; trap=7079.25; reclaim=2026-04-23T12:47:00-04:00; score=20.0
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=1pm, 1:50PM; nearby_sessions=2026-04-23, 2026-04-24, 2026-04-27, 2026-04-28, 2026-04-29
 - Blockers: no_existing_chart_window_match, source_mode_context_recap
 - Support context: L1642: Supports are: 7198 (major), 7193, 7186, 7175-80 (major), 7167, 7161 (major), 7153, 7147 (major), 7135 , 7127, 7121 (major), 7104, 7095, 7085 (major), 7079, 7074, 7068 (major), 7058 (major), 7054, 7048 (major), 7041, 7035 (major), 7021, 7016 (major), 7013, 7007 (major), 7003, 7000 (major), 6990, 6984 (major), 6975, 6962, 6952, 6949 (major), 6943, 6938 (maj...
 - Resistance context: L1646: Resistances are: 7205 (major), 7213, 7221 (major), 7233, 7244 (major), 7252, 7260 (major), 7266, 7274 (major), 7284, 7295, 7302 (major), 7315 (major), 7320, 7330, 7343 (major), 7352, 7363 (major), 7372 (major), 7385, 7392 (major). As readers know I don’t short ES - I only get my points on the long side, but I still give short entries here for those who li...
@@ -4265,6 +4571,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is the Next Leg Higher About To Start In SPX? Or Pullback Soon? April 28 Plan | pub=2026-04-27 | plan=2026-04-28
 - Source mode: data_context
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7085.0=current_price_context; 7180.0=current_price_context
 - S/R sanity: none
@@ -4279,10 +4586,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is the Next Leg Higher About To Start In SPX? Or Pullback Soon? April 28 Plan | pub=2026-04-27 | plan=2026-04-28
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7147.0; swept/lost=7080.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7204.0
 - Level roles: 7180.0=current_price_context; 7085.0=current_price_context; 7160.0=current_price_context; 7080.0=swept_lost_low; 7204.0=target_or_response; 7224.0=current_price_context; 7242.0=current_price_context; 7259.0=current_price_context; 7147.0=actual_setup_level
 - S/R sanity: 7147.0 coincides_cleanly via support L1642 7147
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-23T12:47:00-04:00 minus 60 minutes through 2026-04-23T13:33:00-04:00 plus 90 minutes; trap=7079.75; reclaim=2026-04-23T13:33:00-04:00; score=19.75
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=1:55PM; nearby_sessions=2026-04-23, 2026-04-24, 2026-04-27, 2026-04-28, 2026-04-29
 - Blockers: no_existing_chart_window_match, source_mode_context_recap
 - Support context: L1642: Supports are: 7198 (major), 7193, 7186, 7175-80 (major), 7167, 7161 (major), 7153, 7147 (major), 7135 , 7127, 7121 (major), 7104, 7095, 7085 (major), 7079, 7074, 7068 (major), 7058 (major), 7054, 7048 (major), 7041, 7035 (major), 7021, 7016 (major), 7013, 7007 (major), 7003, 7000 (major), 6990, 6984 (major), 6975, 6962, 6952, 6949 (major), 6943, 6938 (maj...
 - Resistance context: L1646: Resistances are: 7205 (major), 7213, 7221 (major), 7233, 7244 (major), 7252, 7260 (major), 7266, 7274 (major), 7284, 7295, 7302 (major), 7315 (major), 7320, 7330, 7343 (major), 7352, 7363 (major), 7372 (major), 7385, 7392 (major). As readers know I don’t short ES - I only get my points on the long side, but I still give short entries here for those who li...
@@ -4293,10 +4601,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is the Next Leg Higher About To Start In SPX? Or Pullback Soon? April 28 Plan | pub=2026-04-27 | plan=2026-04-28
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7185.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7185.0=actual_setup_level
 - S/R sanity: 7185.0 does_not_coincide
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-24T10:44:00-04:00 minus 60 minutes through 2026-04-24T10:45:00-04:00 plus 90 minutes; trap=7172.5; reclaim=2026-04-24T10:45:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-26T18:31:00-04:00 minus 60 minutes through 2026-04-26T19:42:00-04:00 plus 90 minutes; trap=7175.0; reclaim=2026-04-26T19:42:00-04:00; score=15.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
 - Support context: L1642: Supports are: 7198 (major), 7193, 7186, 7175-80 (major), 7167, 7161 (major), 7153, 7147 (major), 7135 , 7127, 7121 (major), 7104, 7095, 7085 (major), 7079, 7074, 7068 (major), 7058 (major), 7054, 7048 (major), 7041, 7035 (major), 7021, 7016 (major), 7013, 7007 (major), 7003, 7000 (major), 6990, 6984 (major), 6975, 6962, 6952, 6949 (major), 6943, 6938 (maj...
 - Resistance context: L1646: Resistances are: 7205 (major), 7213, 7221 (major), 7233, 7244 (major), 7252, 7260 (major), 7266, 7274 (major), 7284, 7295, 7302 (major), 7315 (major), 7320, 7330, 7343 (major), 7352, 7363 (major), 7372 (major), 7385, 7392 (major). As readers know I don’t short ES - I only get my points on the long side, but I still give short entries here for those who li...
@@ -4307,6 +4616,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is the Next Leg Higher About To Start In SPX? Or Pullback Soon? April 28 Plan | pub=2026-04-27 | plan=2026-04-28
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7085.0=current_price_context; 7180.0=current_price_context
 - S/R sanity: none
@@ -4321,6 +4631,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is the Next Leg Higher About To Start In SPX? Or Pullback Soon? April 28 Plan | pub=2026-04-27 | plan=2026-04-28
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=7105.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7180.0
 - Level roles: 7105.0=swept_lost_low; 7180.0=target_or_response; 7080.0=current_price_context; 7085.0=current_price_context
 - S/R sanity: none
@@ -4335,6 +4646,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is the Next Leg Higher About To Start In SPX? Or Pullback Soon? April 28 Plan | pub=2026-04-27 | plan=2026-04-28
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7147.0, 7135.0; swept/lost=7180.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7147.0=actual_setup_level; 7180.0=swept_lost_low; 7135.0=actual_setup_level
 - S/R sanity: 7147.0 coincides_cleanly via support L1642 7147; 7135.0 coincides_cleanly via support L1642 7135
@@ -4349,6 +4661,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is the Next Leg Higher About To Start In SPX? Or Pullback Soon? April 28 Plan | pub=2026-04-27 | plan=2026-04-28
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7147.0=current_price_context
 - S/R sanity: none
@@ -4363,6 +4676,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is the Next Leg Higher About To Start In SPX? Or Pullback Soon? April 28 Plan | pub=2026-04-27 | plan=2026-04-28
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=7153.0; invalidation=none; target/response=none
 - Level roles: 7147.0=current_price_context; 7153.0=non_acceptance_threshold
 - S/R sanity: none
@@ -4377,6 +4691,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is the Next Leg Higher About To Start In SPX? Or Pullback Soon? April 28 Plan | pub=2026-04-27 | plan=2026-04-28
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7180.0, 7147.0; swept/lost=7180.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7147.0=actual_setup_level; 7180.0=actual_setup_level+swept_lost_low; 7185.0=current_price_context
 - S/R sanity: 7180.0 coincides_cleanly via support L1642 7175-80; 7147.0 coincides_cleanly via support L1642 7147
@@ -4391,10 +4706,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is the Next Leg Higher About To Start In SPX? Or Pullback Soon? April 28 Plan | pub=2026-04-27 | plan=2026-04-28
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7185.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7185.0=actual_setup_level
 - S/R sanity: 7185.0 coincides_partially via prose L1601 7185
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-24T10:44:00-04:00 minus 60 minutes through 2026-04-24T10:45:00-04:00 plus 90 minutes; trap=7172.5; reclaim=2026-04-24T10:45:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-26T18:31:00-04:00 minus 60 minutes through 2026-04-26T19:42:00-04:00 plus 90 minutes; trap=7175.0; reclaim=2026-04-26T19:42:00-04:00; score=15.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
 - Support context: L1642: Supports are: 7198 (major), 7193, 7186, 7175-80 (major), 7167, 7161 (major), 7153, 7147 (major), 7135 , 7127, 7121 (major), 7104, 7095, 7085 (major), 7079, 7074, 7068 (major), 7058 (major), 7054, 7048 (major), 7041, 7035 (major), 7021, 7016 (major), 7013, 7007 (major), 7003, 7000 (major), 6990, 6984 (major), 6975, 6962, 6952, 6949 (major), 6943, 6938 (maj...
 - Resistance context: L1646: Resistances are: 7205 (major), 7213, 7221 (major), 7233, 7244 (major), 7252, 7260 (major), 7266, 7274 (major), 7284, 7295, 7302 (major), 7315 (major), 7320, 7330, 7343 (major), 7352, 7363 (major), 7372 (major), 7385, 7392 (major). As readers know I don’t short ES - I only get my points on the long side, but I still give short entries here for those who li...
@@ -4405,10 +4721,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is the Next Leg Higher About To Start In SPX? Or Pullback Soon? April 28 Plan | pub=2026-04-27 | plan=2026-04-28
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7180.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7180.0=actual_setup_level
 - S/R sanity: 7180.0 coincides_cleanly via support L1642 7175-80
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-24T06:53:00-04:00 minus 60 minutes through 2026-04-24T10:44:00-04:00 plus 90 minutes; trap=7169.0; reclaim=2026-04-24T10:44:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-28T06:27:00-04:00 minus 60 minutes through 2026-04-28T08:42:00-04:00 plus 90 minutes; trap=7168.0; reclaim=2026-04-28T08:42:00-04:00; score=10.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L1642: Supports are: 7198 (major), 7193, 7186, 7175-80 (major), 7167, 7161 (major), 7153, 7147 (major), 7135 , 7127, 7121 (major), 7104, 7095, 7085 (major), 7079, 7074, 7068 (major), 7058 (major), 7054, 7048 (major), 7041, 7035 (major), 7021, 7016 (major), 7013, 7007 (major), 7003, 7000 (major), 6990, 6984 (major), 6975, 6962, 6952, 6949 (major), 6943, 6938 (maj...
 - Resistance context: L1646: Resistances are: 7205 (major), 7213, 7221 (major), 7233, 7244 (major), 7252, 7260 (major), 7266, 7274 (major), 7284, 7295, 7302 (major), 7315 (major), 7320, 7330, 7343 (major), 7352, 7363 (major), 7372 (major), 7385, 7392 (major). As readers know I don’t short ES - I only get my points on the long side, but I still give short entries here for those who li...
@@ -4419,10 +4736,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is the Next Leg Higher About To Start In SPX? Or Pullback Soon? April 28 Plan | pub=2026-04-27 | plan=2026-04-28
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7147.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7208.0=current_price_context; 7147.0=actual_setup_level
 - S/R sanity: 7147.0 coincides_cleanly via support L1642 7147
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-22T01:08:00-04:00 minus 60 minutes through 2026-04-22T07:04:00-04:00 plus 90 minutes; trap=7137.0; reclaim=2026-04-22T07:04:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-28T09:51:00-04:00 minus 60 minutes through 2026-04-28T09:52:00-04:00 plus 90 minutes; trap=7146.25; reclaim=2026-04-28T09:52:00-04:00; score=5.75
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
 - Support context: L1642: Supports are: 7198 (major), 7193, 7186, 7175-80 (major), 7167, 7161 (major), 7153, 7147 (major), 7135 , 7127, 7121 (major), 7104, 7095, 7085 (major), 7079, 7074, 7068 (major), 7058 (major), 7054, 7048 (major), 7041, 7035 (major), 7021, 7016 (major), 7013, 7007 (major), 7003, 7000 (major), 6990, 6984 (major), 6975, 6962, 6952, 6949 (major), 6943, 6938 (maj...
 - Resistance context: L1646: Resistances are: 7205 (major), 7213, 7221 (major), 7233, 7244 (major), 7252, 7260 (major), 7266, 7274 (major), 7284, 7295, 7302 (major), 7315 (major), 7320, 7330, 7343 (major), 7352, 7363 (major), 7372 (major), 7385, 7392 (major). As readers know I don’t short ES - I only get my points on the long side, but I still give short entries here for those who li...
@@ -4433,6 +4751,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is the Next Leg Higher About To Start In SPX? Or Pullback Soon? April 28 Plan | pub=2026-04-27 | plan=2026-04-28
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=7177.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7180.0=current_price_context; 7147.0=current_price_context; 7177.0=swept_lost_low
 - S/R sanity: none
@@ -4447,9 +4766,10 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Is the Next Leg Higher About To Start In SPX? Or Pullback Soon? April 28 Plan | pub=2026-04-27 | plan=2026-04-28
 - Source mode: actual_recap
-- Exact levels: setup=7085.0, 7161.0, 7135.0, 7080.0, 7185.0; swept/lost=7161.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
-- Level roles: 7085.0=actual_setup_level; 7185.0=actual_setup_level; 7175.0=current_price_context; 7200.0=current_price_context; 7198.0=current_price_context; 7180.0=current_price_context; 7177.0=current_price_context; 7161.0=actual_setup_level+swept_lost_low; 7149.0=current_price_context; 7135.0=actual_setup_level; 7121.0=current_price_context; 7080.0=actual_setup_level
-- S/R sanity: 7085.0 coincides_cleanly via support L1642 7085; 7161.0 coincides_cleanly via support L1642 7161; 7135.0 coincides_cleanly via support L1642 7135; 7080.0 coincides_partially via prose L1554 7080; 7185.0 coincides_partially via prose L1644 7185
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7085.0, 7175.0, 7161.0, 7135.0, 7080.0, 7185.0; swept/lost=7161.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=actual_setup_level; 7185.0=actual_setup_level; 7175.0=actual_setup_level; 7200.0=current_price_context; 7198.0=current_price_context; 7180.0=current_price_context; 7177.0=current_price_context; 7161.0=actual_setup_level+swept_lost_low; 7149.0=current_price_context; 7135.0=actual_setup_level; 7121.0=current_price_context; 7080.0=actual_setup_level
+- S/R sanity: 7085.0 coincides_cleanly via support L1642 7085; 7175.0 coincides_cleanly via support L1642 7175-80; 7161.0 coincides_cleanly via support L1642 7161; 7135.0 coincides_cleanly via support L1642 7135; 7080.0 coincides_partially via prose L1554 7080; 7185.0 coincides_partially via prose L1644 7185
 - ES 1m window/chart: multi-level split required; local matches by level only: 7185.0:artifacts\research\mancini-real-packet-gallery\122_excluded_simple_reclaim_unclassified_20260428_0607_7185.0.svg visual=dangerous_demote_for_training; 7185.0:artifacts\research\mancini-real-packet-gallery\131_accepted_classic_acceptance_second_attempt_reclaim_20260428_1916_7185.0.svg visual=dangerous_demote_for_training; 7185.0:artifacts\research\mancini-real-packet-gallery\136_accepted_non_acceptance_protocol_20260429_1717_7185.0.svg visual=insufficient_visual_context
 - Blockers: multi_setup_row_split_required
 - Support context: L1642: Supports are: 7198 (major), 7193, 7186, 7175-80 (major), 7167, 7161 (major), 7153, 7147 (major), 7135 , 7127, 7121 (major), 7104, 7095, 7085 (major), 7079, 7074, 7068 (major), 7058 (major), 7054, 7048 (major), 7041, 7035 (major), 7021, 7016 (major), 7013, 7007 (major), 7003, 7000 (major), 6990, 6984 (major), 6975, 6962, 6952, 6949 (major), 6943, 6938 (maj...
@@ -4460,7 +4780,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:1650 `negative_control`
 
 - Plan/date context: Is the Next Leg Higher About To Start In SPX? Or Pullback Soon? April 28 Plan | pub=2026-04-27 | plan=2026-04-28
-- Source mode: negative_control
+- Source mode: planned_setup
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7147.0=current_price_context; 7133.0=current_price_context
 - S/R sanity: none
@@ -4478,6 +4799,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC + Earnings Tomorrow. Expect Volatility In SPX. Will The Rally Continue? April 29 Plan | pub=2026-04-28 | plan=2026-04-29
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=7085.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7200.0
 - Level roles: 7160.0=current_price_context; 7080.0=current_price_context; 7085.0=swept_lost_low; 7200.0=target_or_response
 - S/R sanity: none
@@ -4492,6 +4814,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC + Earnings Tomorrow. Expect Volatility In SPX. Will The Rally Continue? April 29 Plan | pub=2026-04-28 | plan=2026-04-29
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7085.0, 7185.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7085.0=actual_setup_level; 7185.0=actual_setup_level
 - S/R sanity: 7085.0 coincides_cleanly via support L1474 7085; 7185.0 coincides_partially via prose L1377 7185
@@ -4506,10 +4829,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC + Earnings Tomorrow. Expect Volatility In SPX. Will The Rally Continue? April 29 Plan | pub=2026-04-28 | plan=2026-04-29
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7085.0; swept/lost=7080.0; recovered=7085.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7080.0=swept_lost_low; 7085.0=actual_setup_level+recovered_level; 7200.0=current_price_context
 - S/R sanity: 7085.0 coincides_cleanly via support L1474 7085
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-23T12:46:00-04:00 minus 60 minutes through 2026-04-23T12:47:00-04:00 plus 90 minutes; trap=7079.25; reclaim=2026-04-23T12:47:00-04:00; score=20.0
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=1pm, 1:50PM; nearby_sessions=2026-04-24, 2026-04-27, 2026-04-28, 2026-04-29, 2026-04-30
 - Blockers: no_existing_chart_window_match, source_mode_context_recap
 - Support context: L1474: Supports are: 7161 (major), 7153, 7147 (major), 7136, 7127, 7120 (major), 7111, 7104 (major), 7095, 7085 (major), 7078 (major), 7074, 7068 (major), 7063, 7058 (major), 7054, 7048 (major), 7041, 7031, 7026, 7016-20 (major), 7013, 7008, 7002 (major), 6991, 6985 (major), 6975, 6971, 6966 (major), 6961, 6956, 6949 (major).
 - Resistance context: L1478: Resistances are: 7160 (major), 7166, 7174 (major), 7181, 7186 (major), 7194, 7198, 7204 (major), 7214 (major), 7219, 7225, 7234, 7246 (major), 7254, 7267 (major), 7272, 7279, 7288, 7298 (major), 7303, 7317 (major), 7322, 7334, 7346 (major), 7354, 7362, 7375 (major), 7383, 7387, 7394, 7400 (major), 7408, 7420, 7424, 7432 (major), 7443, 7448 (major), 7458, ...
@@ -4520,6 +4844,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC + Earnings Tomorrow. Expect Volatility In SPX. Will The Rally Continue? April 29 Plan | pub=2026-04-28 | plan=2026-04-29
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7224.0=current_price_context; 7147.0=current_price_context
 - S/R sanity: none
@@ -4534,6 +4859,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC + Earnings Tomorrow. Expect Volatility In SPX. Will The Rally Continue? April 29 Plan | pub=2026-04-28 | plan=2026-04-29
 - Source mode: data_context
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=7080.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7085.0=current_price_context; 7180.0=current_price_context; 7080.0=swept_lost_low; 7205.0=current_price_context
 - S/R sanity: none
@@ -4548,10 +4874,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC + Earnings Tomorrow. Expect Volatility In SPX. Will The Rally Continue? April 29 Plan | pub=2026-04-28 | plan=2026-04-29
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7180.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7180.0=actual_setup_level
 - S/R sanity: 7180.0 coincides_partially via prose L1387 7180
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-24T06:53:00-04:00 minus 60 minutes through 2026-04-24T10:44:00-04:00 plus 90 minutes; trap=7169.0; reclaim=2026-04-24T10:44:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-28T06:27:00-04:00 minus 60 minutes through 2026-04-28T08:42:00-04:00 plus 90 minutes; trap=7168.0; reclaim=2026-04-28T08:42:00-04:00; score=10.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L1474: Supports are: 7161 (major), 7153, 7147 (major), 7136, 7127, 7120 (major), 7111, 7104 (major), 7095, 7085 (major), 7078 (major), 7074, 7068 (major), 7063, 7058 (major), 7054, 7048 (major), 7041, 7031, 7026, 7016-20 (major), 7013, 7008, 7002 (major), 6991, 6985 (major), 6975, 6971, 6966 (major), 6961, 6956, 6949 (major).
 - Resistance context: L1478: Resistances are: 7160 (major), 7166, 7174 (major), 7181, 7186 (major), 7194, 7198, 7204 (major), 7214 (major), 7219, 7225, 7234, 7246 (major), 7254, 7267 (major), 7272, 7279, 7288, 7298 (major), 7303, 7317 (major), 7322, 7334, 7346 (major), 7354, 7362, 7375 (major), 7383, 7387, 7394, 7400 (major), 7408, 7420, 7424, 7432 (major), 7443, 7448 (major), 7458, ...
@@ -4562,6 +4889,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC + Earnings Tomorrow. Expect Volatility In SPX. Will The Rally Continue? April 29 Plan | pub=2026-04-28 | plan=2026-04-29
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7180.0, 7161.0; swept/lost=7161.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7180.0=actual_setup_level; 7175.0=current_price_context; 7177.0=current_price_context; 7161.0=actual_setup_level+swept_lost_low
 - S/R sanity: 7180.0 coincides_partially via prose L1389 7175-80; 7161.0 coincides_cleanly via support L1474 7161
@@ -4576,6 +4904,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC + Earnings Tomorrow. Expect Volatility In SPX. Will The Rally Continue? April 29 Plan | pub=2026-04-28 | plan=2026-04-29
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7175.0=current_price_context
 - S/R sanity: none
@@ -4590,6 +4919,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC + Earnings Tomorrow. Expect Volatility In SPX. Will The Rally Continue? April 29 Plan | pub=2026-04-28 | plan=2026-04-29
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=7185.0; invalidation=none; target/response=none
 - Level roles: 7180.0=current_price_context; 7185.0=non_acceptance_threshold
 - S/R sanity: none
@@ -4604,6 +4934,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC + Earnings Tomorrow. Expect Volatility In SPX. Will The Rally Continue? April 29 Plan | pub=2026-04-28 | plan=2026-04-29
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7135.0, 7180.0, 7149.0; swept/lost=7149.0, 7224.0, 7180.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7224.0=swept_lost_low; 7149.0=actual_setup_level+swept_lost_low; 7180.0=actual_setup_level+swept_lost_low; 7135.0=actual_setup_level
 - S/R sanity: 7135.0 coincides_partially via prose L1442 7135; 7180.0 coincides_partially via prose L1389 7175-80; 7149.0 coincides_partially via prose L1434 7149
@@ -4618,6 +4949,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC + Earnings Tomorrow. Expect Volatility In SPX. Will The Rally Continue? April 29 Plan | pub=2026-04-28 | plan=2026-04-29
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7147.0=current_price_context
 - S/R sanity: none
@@ -4632,10 +4964,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC + Earnings Tomorrow. Expect Volatility In SPX. Will The Rally Continue? April 29 Plan | pub=2026-04-28 | plan=2026-04-29
 - Source mode: data_context
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7147.0; swept/lost=7146.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7180.0=current_price_context; 7146.0=swept_lost_low; 7147.0=actual_setup_level; 7153.0=current_price_context; 7155.0=current_price_context
 - S/R sanity: 7147.0 coincides_cleanly via support L1474 7147
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-22T19:27:00-04:00 minus 60 minutes through 2026-04-22T19:28:00-04:00 plus 90 minutes; trap=7145.5; reclaim=2026-04-22T19:28:00-04:00; score=16.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-28T09:51:00-04:00 minus 60 minutes through 2026-04-28T09:52:00-04:00 plus 90 minutes; trap=7146.25; reclaim=2026-04-28T09:52:00-04:00; score=12.5
 - Blockers: no_existing_chart_window_match, source_mode_data_context
 - Support context: L1474: Supports are: 7161 (major), 7153, 7147 (major), 7136, 7127, 7120 (major), 7111, 7104 (major), 7095, 7085 (major), 7078 (major), 7074, 7068 (major), 7063, 7058 (major), 7054, 7048 (major), 7041, 7031, 7026, 7016-20 (major), 7013, 7008, 7002 (major), 6991, 6985 (major), 6975, 6971, 6966 (major), 6961, 6956, 6949 (major).
 - Resistance context: L1478: Resistances are: 7160 (major), 7166, 7174 (major), 7181, 7186 (major), 7194, 7198, 7204 (major), 7214 (major), 7219, 7225, 7234, 7246 (major), 7254, 7267 (major), 7272, 7279, 7288, 7298 (major), 7303, 7317 (major), 7322, 7334, 7346 (major), 7354, 7362, 7375 (major), 7383, 7387, 7394, 7400 (major), 7408, 7420, 7424, 7432 (major), 7443, 7448 (major), 7458, ...
@@ -4646,9 +4979,10 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC + Earnings Tomorrow. Expect Volatility In SPX. Will The Rally Continue? April 29 Plan | pub=2026-04-28 | plan=2026-04-29
 - Source mode: planned_setup
-- Exact levels: setup=7085.0, 7104.0, 7068.0, 7147.0; swept/lost=7068.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
-- Level roles: 7085.0=actual_setup_level; 7147.0=actual_setup_level; 7205.0=current_price_context; 7180.0=current_price_context; 7161.0=current_price_context; 7136.0=current_price_context; 7120.0=current_price_context; 7104.0=actual_setup_level; 7078.0=current_price_context; 7068.0=actual_setup_level+swept_lost_low; 7048.0=current_price_context; 7016.0=current_price_context
-- S/R sanity: 7085.0 coincides_cleanly via support L1474 7085; 7104.0 coincides_cleanly via support L1474 7104; 7068.0 coincides_cleanly via support L1474 7068; 7147.0 coincides_cleanly via support L1474 7147
+- Source label: source_planned_fbd
+- Exact levels: setup=7085.0, 7104.0, 7068.0, 7048.0, 7147.0; swept/lost=7068.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=actual_setup_level; 7147.0=actual_setup_level; 7205.0=current_price_context; 7180.0=current_price_context; 7161.0=current_price_context; 7136.0=current_price_context; 7120.0=current_price_context; 7104.0=actual_setup_level; 7078.0=current_price_context; 7068.0=actual_setup_level+swept_lost_low; 7048.0=actual_setup_level; 7016.0=current_price_context
+- S/R sanity: 7085.0 coincides_cleanly via support L1474 7085; 7104.0 coincides_cleanly via support L1474 7104; 7068.0 coincides_cleanly via support L1474 7068; 7048.0 coincides_cleanly via support L1474 7048; 7147.0 coincides_cleanly via support L1474 7147
 - ES 1m window/chart: multi-level split required; crop each stated setup level separately
 - Blockers: multi_setup_row_split_required, no_existing_chart_window_match, source_mode_planned_setup
 - Support context: L1474: Supports are: 7161 (major), 7153, 7147 (major), 7136, 7127, 7120 (major), 7111, 7104 (major), 7095, 7085 (major), 7078 (major), 7074, 7068 (major), 7063, 7058 (major), 7054, 7048 (major), 7041, 7031, 7026, 7016-20 (major), 7013, 7008, 7002 (major), 6991, 6985 (major), 6975, 6971, 6966 (major), 6961, 6956, 6949 (major).
@@ -4660,10 +4994,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: FOMC + Earnings Tomorrow. Expect Volatility In SPX. Will The Rally Continue? April 29 Plan | pub=2026-04-28 | plan=2026-04-29
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7180.0; swept/lost=7180.0; recovered=7180.0; non_acceptance=none; invalidation=none; target/response=7225.0
 - Level roles: 7080.0=current_price_context; 7180.0=actual_setup_level+swept_lost_low+recovered_level; 7225.0=target_or_response; 7147.0=current_price_context; 7186.0=current_price_context; 7204.0=current_price_context; 7214.0=current_price_context; 7234.0=current_price_context; 7246.0=current_price_context
 - S/R sanity: 7180.0 coincides_partially via prose L1389 7175-80
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-24T06:53:00-04:00 minus 60 minutes through 2026-04-24T10:44:00-04:00 plus 90 minutes; trap=7169.0; reclaim=2026-04-24T10:44:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-28T06:27:00-04:00 minus 60 minutes through 2026-04-28T08:42:00-04:00 plus 90 minutes; trap=7168.0; reclaim=2026-04-28T08:42:00-04:00; score=10.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L1474: Supports are: 7161 (major), 7153, 7147 (major), 7136, 7127, 7120 (major), 7111, 7104 (major), 7095, 7085 (major), 7078 (major), 7074, 7068 (major), 7063, 7058 (major), 7054, 7048 (major), 7041, 7031, 7026, 7016-20 (major), 7013, 7008, 7002 (major), 6991, 6985 (major), 6975, 6971, 6966 (major), 6961, 6956, 6949 (major).
 - Resistance context: L1478: Resistances are: 7160 (major), 7166, 7174 (major), 7181, 7186 (major), 7194, 7198, 7204 (major), 7214 (major), 7219, 7225, 7234, 7246 (major), 7254, 7267 (major), 7272, 7279, 7288, 7298 (major), 7303, 7317 (major), 7322, 7334, 7346 (major), 7354, 7362, 7375 (major), 7383, 7387, 7394, 7400 (major), 7408, 7420, 7424, 7432 (major), 7443, 7448 (major), 7458, ...
@@ -4673,7 +5008,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:1482 `negative_control`
 
 - Plan/date context: FOMC + Earnings Tomorrow. Expect Volatility In SPX. Will The Rally Continue? April 29 Plan | pub=2026-04-28 | plan=2026-04-29
-- Source mode: negative_control
+- Source mode: planned_setup
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7147.0=current_price_context; 7133.0=current_price_context
 - S/R sanity: none
@@ -4691,6 +5027,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Again. Is Another Move Coming? What Way? April 30 Plan | pub=2026-04-29 | plan=2026-04-30
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=7085.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7200.0
 - Level roles: 7160.0=current_price_context; 7080.0=current_price_context; 7085.0=swept_lost_low; 7200.0=target_or_response
 - S/R sanity: none
@@ -4705,6 +5042,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Again. Is Another Move Coming? What Way? April 30 Plan | pub=2026-04-29 | plan=2026-04-30
 - Source mode: actual_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=7137.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7160.0
 - Level roles: 7147.0=current_price_context; 7137.0=swept_lost_low; 7160.0=target_or_response
 - S/R sanity: none
@@ -4719,6 +5057,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Again. Is Another Move Coming? What Way? April 30 Plan | pub=2026-04-29 | plan=2026-04-30
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7085.0, 7147.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7085.0=actual_setup_level; 7147.0=actual_setup_level
 - S/R sanity: 7085.0 coincides_cleanly via support L1291 7085; 7147.0 coincides_cleanly via support L1291 7147
@@ -4733,6 +5072,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Again. Is Another Move Coming? What Way? April 30 Plan | pub=2026-04-29 | plan=2026-04-30
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7085.0; swept/lost=7080.0; recovered=7085.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7080.0=swept_lost_low; 7085.0=actual_setup_level+recovered_level; 7200.0=current_price_context
 - S/R sanity: 7085.0 coincides_cleanly via support L1291 7085
@@ -4747,6 +5087,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Again. Is Another Move Coming? What Way? April 30 Plan | pub=2026-04-29 | plan=2026-04-30
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7187.0
 - Level roles: 7224.0=current_price_context; 7147.0=current_price_context; 7187.0=target_or_response
 - S/R sanity: none
@@ -4761,6 +5102,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Again. Is Another Move Coming? What Way? April 30 Plan | pub=2026-04-29 | plan=2026-04-30
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7147.0; swept/lost=7137.0; recovered=7147.0; non_acceptance=none; invalidation=none; target/response=7161.0
 - Level roles: 7137.0=swept_lost_low; 7147.0=actual_setup_level+recovered_level; 7161.0=target_or_response
 - S/R sanity: 7147.0 coincides_cleanly via support L1291 7147
@@ -4775,6 +5117,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Again. Is Another Move Coming? What Way? April 30 Plan | pub=2026-04-29 | plan=2026-04-30
 - Source mode: data_context
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7225.0
 - Level roles: 7080.0=current_price_context; 7180.0=current_price_context; 7225.0=target_or_response
 - S/R sanity: none
@@ -4789,10 +5132,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Again. Is Another Move Coming? What Way? April 30 Plan | pub=2026-04-29 | plan=2026-04-30
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7180.0; swept/lost=7180.0; recovered=7180.0; non_acceptance=none; invalidation=none; target/response=7225.0
 - Level roles: 7080.0=current_price_context; 7180.0=actual_setup_level+swept_lost_low+recovered_level; 7225.0=target_or_response; 7147.0=current_price_context; 7186.0=current_price_context; 7204.0=current_price_context; 7214.0=current_price_context; 7234.0=current_price_context; 7246.0=current_price_context
 - S/R sanity: 7180.0 coincides_partially via prose L1205 7180
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-24T06:53:00-04:00 minus 60 minutes through 2026-04-24T10:44:00-04:00 plus 90 minutes; trap=7169.0; reclaim=2026-04-24T10:44:00-04:00; score=15.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-28T06:27:00-04:00 minus 60 minutes through 2026-04-28T08:42:00-04:00 plus 90 minutes; trap=7168.0; reclaim=2026-04-28T08:42:00-04:00; score=10.0
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L1291: Supports are: 7153, 7147 (major), 7137, 7135 (major), 7126, 7121 (major), 7111, 7102, 7096, 7085 (major), 7078, 7074, 7058 (major), 7054, 7048 (major), 7040 (major), 7035, 7026, 7016-20 (major), 7008, 7003, 6990 (major), 6985, 6975, 6971, 6961 (major), 6955, 6949 (major), 6938, 6927, 6920 (major), 6917, 6907, 6902 (major), 6996, 6887 (major), 6882, 6872 (...
 - Resistance context: L1295: Resistances are: 7160 (major), 7166, 7174 (major), 7181, 7189 (major), 7192, 7198, 7204 (major), 7211, 7220 (major), 7225, 7232, 7238 (major), 7248 (major), 7255, 7264 (major), 7273 (major), 7281, 7287, 7293, 7300 (major), 7312, 7324 (major), 7337, 7349 (major), 7359 (major), 7368, 7377, 7381 (major). As readers know I don’t short ES - I only get my point...
@@ -4803,6 +5147,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Again. Is Another Move Coming? What Way? April 30 Plan | pub=2026-04-29 | plan=2026-04-30
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7147.0=current_price_context
 - S/R sanity: none
@@ -4817,10 +5162,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Again. Is Another Move Coming? What Way? April 30 Plan | pub=2026-04-29 | plan=2026-04-30
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7147.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7147.0=actual_setup_level; 7136.0=current_price_context
 - S/R sanity: 7147.0 coincides_cleanly via support L1291 7147
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-23T22:30:00-04:00 minus 60 minutes through 2026-04-24T00:32:00-04:00 plus 90 minutes; trap=7137.0; reclaim=2026-04-24T00:32:00-04:00; score=10.0
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm, 1pm; nearby_sessions=2026-04-27, 2026-04-28, 2026-04-29, 2026-04-30, 2026-05-01
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
 - Support context: L1291: Supports are: 7153, 7147 (major), 7137, 7135 (major), 7126, 7121 (major), 7111, 7102, 7096, 7085 (major), 7078, 7074, 7058 (major), 7054, 7048 (major), 7040 (major), 7035, 7026, 7016-20 (major), 7008, 7003, 6990 (major), 6985, 6975, 6971, 6961 (major), 6955, 6949 (major), 6938, 6927, 6920 (major), 6917, 6907, 6902 (major), 6996, 6887 (major), 6882, 6872 (...
 - Resistance context: L1295: Resistances are: 7160 (major), 7166, 7174 (major), 7181, 7189 (major), 7192, 7198, 7204 (major), 7211, 7220 (major), 7225, 7232, 7238 (major), 7248 (major), 7255, 7264 (major), 7273 (major), 7281, 7287, 7293, 7300 (major), 7312, 7324 (major), 7337, 7349 (major), 7359 (major), 7368, 7377, 7381 (major). As readers know I don’t short ES - I only get my point...
@@ -4831,6 +5177,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Again. Is Another Move Coming? What Way? April 30 Plan | pub=2026-04-29 | plan=2026-04-30
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7147.0=current_price_context
 - S/R sanity: none
@@ -4845,6 +5192,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Again. Is Another Move Coming? What Way? April 30 Plan | pub=2026-04-29 | plan=2026-04-30
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=7152.0; invalidation=none; target/response=none
 - Level roles: 7147.0=current_price_context; 7152.0=non_acceptance_threshold
 - S/R sanity: none
@@ -4859,10 +5207,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Again. Is Another Move Coming? What Way? April 30 Plan | pub=2026-04-29 | plan=2026-04-30
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7147.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7147.0=actual_setup_level
 - S/R sanity: 7147.0 coincides_cleanly via support L1291 7147
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-23T22:30:00-04:00 minus 60 minutes through 2026-04-24T00:32:00-04:00 plus 90 minutes; trap=7137.0; reclaim=2026-04-24T00:32:00-04:00; score=10.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-28T09:51:00-04:00 minus 60 minutes through 2026-04-28T09:52:00-04:00 plus 90 minutes; trap=7146.25; reclaim=2026-04-28T09:52:00-04:00; score=2.75
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L1291: Supports are: 7153, 7147 (major), 7137, 7135 (major), 7126, 7121 (major), 7111, 7102, 7096, 7085 (major), 7078, 7074, 7058 (major), 7054, 7048 (major), 7040 (major), 7035, 7026, 7016-20 (major), 7008, 7003, 6990 (major), 6985, 6975, 6971, 6961 (major), 6955, 6949 (major), 6938, 6927, 6920 (major), 6917, 6907, 6902 (major), 6996, 6887 (major), 6882, 6872 (...
 - Resistance context: L1295: Resistances are: 7160 (major), 7166, 7174 (major), 7181, 7189 (major), 7192, 7198, 7204 (major), 7211, 7220 (major), 7225, 7232, 7238 (major), 7248 (major), 7255, 7264 (major), 7273 (major), 7281, 7287, 7293, 7300 (major), 7312, 7324 (major), 7337, 7349 (major), 7359 (major), 7368, 7377, 7381 (major). As readers know I don’t short ES - I only get my point...
@@ -4873,6 +5222,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Again. Is Another Move Coming? What Way? April 30 Plan | pub=2026-04-29 | plan=2026-04-30
 - Source mode: data_context
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=7145.0, 7147.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7147.0=swept_lost_low; 7145.0=swept_lost_low; 7154.0=current_price_context; 7161.0=current_price_context
 - S/R sanity: none
@@ -4887,10 +5237,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Again. Is Another Move Coming? What Way? April 30 Plan | pub=2026-04-29 | plan=2026-04-30
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7147.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7147.0=actual_setup_level
 - S/R sanity: 7147.0 coincides_cleanly via support L1291 7147
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-23T22:30:00-04:00 minus 60 minutes through 2026-04-24T00:32:00-04:00 plus 90 minutes; trap=7137.0; reclaim=2026-04-24T00:32:00-04:00; score=10.0
+- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-28T09:51:00-04:00 minus 60 minutes through 2026-04-28T09:52:00-04:00 plus 90 minutes; trap=7146.25; reclaim=2026-04-28T09:52:00-04:00; score=2.75
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L1291: Supports are: 7153, 7147 (major), 7137, 7135 (major), 7126, 7121 (major), 7111, 7102, 7096, 7085 (major), 7078, 7074, 7058 (major), 7054, 7048 (major), 7040 (major), 7035, 7026, 7016-20 (major), 7008, 7003, 6990 (major), 6985, 6975, 6971, 6961 (major), 6955, 6949 (major), 6938, 6927, 6920 (major), 6917, 6907, 6902 (major), 6996, 6887 (major), 6882, 6872 (...
 - Resistance context: L1295: Resistances are: 7160 (major), 7166, 7174 (major), 7181, 7189 (major), 7192, 7198, 7204 (major), 7211, 7220 (major), 7225, 7232, 7238 (major), 7248 (major), 7255, 7264 (major), 7273 (major), 7281, 7287, 7293, 7300 (major), 7312, 7324 (major), 7337, 7349 (major), 7359 (major), 7368, 7377, 7381 (major). As readers know I don’t short ES - I only get my point...
@@ -4901,6 +5252,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Again. Is Another Move Coming? What Way? April 30 Plan | pub=2026-04-29 | plan=2026-04-30
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=7138.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7138.0=swept_lost_low; 7147.0=current_price_context; 7152.0=current_price_context
 - S/R sanity: none
@@ -4915,9 +5267,10 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Is Coiled Tight Again. Is Another Move Coming? What Way? April 30 Plan | pub=2026-04-29 | plan=2026-04-30
 - Source mode: planned_setup
-- Exact levels: setup=7085.0, 7137.0, 7068.0, 7147.0; swept/lost=7068.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
-- Level roles: 7085.0=actual_setup_level; 7147.0=actual_setup_level; 7189.0=current_price_context; 7174.0=current_price_context; 7137.0=actual_setup_level; 7135.0=current_price_context; 7121.0=current_price_context; 7105.0=current_price_context; 7078.0=current_price_context; 7068.0=actual_setup_level+swept_lost_low; 7048.0=current_price_context; 7016.0=current_price_context
-- S/R sanity: 7085.0 coincides_cleanly via support L1291 7085; 7137.0 coincides_cleanly via support L1291 7137; 7068.0 coincides_partially via prose L1293 7068; 7147.0 coincides_cleanly via support L1291 7147
+- Source label: source_planned_fbd
+- Exact levels: setup=7085.0, 7137.0, 7068.0, 7048.0, 7147.0; swept/lost=7068.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=actual_setup_level; 7147.0=actual_setup_level; 7189.0=current_price_context; 7174.0=current_price_context; 7137.0=actual_setup_level; 7135.0=current_price_context; 7121.0=current_price_context; 7105.0=current_price_context; 7078.0=current_price_context; 7068.0=actual_setup_level+swept_lost_low; 7048.0=actual_setup_level; 7016.0=current_price_context
+- S/R sanity: 7085.0 coincides_cleanly via support L1291 7085; 7137.0 coincides_cleanly via support L1291 7137; 7068.0 coincides_partially via prose L1293 7068; 7048.0 coincides_cleanly via support L1291 7048; 7147.0 coincides_cleanly via support L1291 7147
 - ES 1m window/chart: multi-level split required; crop each stated setup level separately
 - Blockers: multi_setup_row_split_required, no_existing_chart_window_match, source_mode_planned_setup
 - Support context: L1291: Supports are: 7153, 7147 (major), 7137, 7135 (major), 7126, 7121 (major), 7111, 7102, 7096, 7085 (major), 7078, 7074, 7058 (major), 7054, 7048 (major), 7040 (major), 7035, 7026, 7016-20 (major), 7008, 7003, 6990 (major), 6985, 6975, 6971, 6961 (major), 6955, 6949 (major), 6938, 6927, 6920 (major), 6917, 6907, 6902 (major), 6996, 6887 (major), 6882, 6872 (...
@@ -4928,7 +5281,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:1299 `negative_control`
 
 - Plan/date context: SPX Is Coiled Tight Again. Is Another Move Coming? What Way? April 30 Plan | pub=2026-04-29 | plan=2026-04-30
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7135.0=current_price_context; 7132.0=current_price_context
 - S/R sanity: none
@@ -4946,6 +5300,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Earnings Dip In SPX. Has The Next Leg Up Begun? May 1st Plan | pub=2026-04-30 | plan=2026-05-01
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=7085.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7221.0
 - Level roles: 7160.0=current_price_context; 7080.0=current_price_context; 7085.0=swept_lost_low; 7221.0=target_or_response
 - S/R sanity: none
@@ -4960,6 +5315,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Earnings Dip In SPX. Has The Next Leg Up Begun? May 1st Plan | pub=2026-04-30 | plan=2026-05-01
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7137.0; swept/lost=7132.0; recovered=7137.0; non_acceptance=none; invalidation=none; target/response=7200.0
 - Level roles: 7137.0=actual_setup_level+recovered_level; 7132.0=swept_lost_low; 7200.0=target_or_response
 - S/R sanity: 7137.0 coincides_partially via prose L1127 7137
@@ -4974,6 +5330,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Earnings Dip In SPX. Has The Next Leg Up Begun? May 1st Plan | pub=2026-04-30 | plan=2026-05-01
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7085.0, 7147.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7085.0=actual_setup_level; 7147.0=actual_setup_level
 - S/R sanity: 7085.0 coincides_cleanly via support L1121 7085; 7147.0 coincides_cleanly via support L1121 7147
@@ -4988,6 +5345,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Earnings Dip In SPX. Has The Next Leg Up Begun? May 1st Plan | pub=2026-04-30 | plan=2026-05-01
 - Source mode: actual_recap
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=7137.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7200.0
 - Level roles: 7132.0=current_price_context; 7137.0=swept_lost_low; 7200.0=target_or_response
 - S/R sanity: none
@@ -5002,6 +5360,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Earnings Dip In SPX. Has The Next Leg Up Begun? May 1st Plan | pub=2026-04-30 | plan=2026-05-01
 - Source mode: actual_recap
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=7137.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7147.0=current_price_context; 7137.0=swept_lost_low; 7189.0=current_price_context
 - S/R sanity: none
@@ -5016,6 +5375,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Earnings Dip In SPX. Has The Next Leg Up Begun? May 1st Plan | pub=2026-04-30 | plan=2026-05-01
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7137.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7137.0=actual_setup_level
 - S/R sanity: 7137.0 coincides_partially via prose L1030 7137
@@ -5030,6 +5390,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Earnings Dip In SPX. Has The Next Leg Up Begun? May 1st Plan | pub=2026-04-30 | plan=2026-05-01
 - Source mode: actual_recap
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=7137.0, 7147.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7147.0=swept_lost_low; 7137.0=swept_lost_low; 7189.0=current_price_context
 - S/R sanity: none
@@ -5044,6 +5405,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Earnings Dip In SPX. Has The Next Leg Up Begun? May 1st Plan | pub=2026-04-30 | plan=2026-05-01
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7147.0=current_price_context
 - S/R sanity: none
@@ -5058,6 +5420,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Earnings Dip In SPX. Has The Next Leg Up Begun? May 1st Plan | pub=2026-04-30 | plan=2026-05-01
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7137.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7137.0=actual_setup_level; 7147.0=current_price_context
 - S/R sanity: 7137.0 coincides_partially via prose L1052 7137
@@ -5072,6 +5435,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Earnings Dip In SPX. Has The Next Leg Up Begun? May 1st Plan | pub=2026-04-30 | plan=2026-05-01
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7137.0=current_price_context
 - S/R sanity: none
@@ -5086,6 +5450,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Earnings Dip In SPX. Has The Next Leg Up Begun? May 1st Plan | pub=2026-04-30 | plan=2026-05-01
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=7142.0; invalidation=none; target/response=none
 - Level roles: 7137.0=current_price_context; 7142.0=non_acceptance_threshold
 - S/R sanity: none
@@ -5100,6 +5465,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Earnings Dip In SPX. Has The Next Leg Up Begun? May 1st Plan | pub=2026-04-30 | plan=2026-05-01
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7137.0; swept/lost=7132.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7189.0=current_price_context; 7132.0=swept_lost_low; 7137.0=actual_setup_level
 - S/R sanity: 7137.0 coincides_partially via prose L1060 7137
@@ -5114,10 +5480,11 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Earnings Dip In SPX. Has The Next Leg Up Begun? May 1st Plan | pub=2026-04-30 | plan=2026-05-01
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7160.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7160.0=actual_setup_level
 - S/R sanity: 7160.0 coincides_partially via prose L1095 7160
-- ES 1m window/chart: session scan crop: render ES 1m from 2026-04-28T10:31:00-04:00 minus 60 minutes through 2026-04-28T12:35:00-04:00 plus 90 minutes; trap=7148.75; reclaim=2026-04-28T12:35:00-04:00; score=12.0
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=10:18AM; nearby_sessions=2026-04-27, 2026-04-28, 2026-04-29, 2026-04-30, 2026-05-01
 - Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
 - Support context: L1121: Supports are: 7233 (major), 7228, 7224, 7219 (major), 7212 (major), 7208, 7204, 7198, 7193, 7188 (major), 7180, 7174, 7165, 7161 (major), 7152, 7147, 7141 (major), 7135 (major), 7129, 7121 (major), 7111, 7103, 7095 (major), 7085, 7080 (major), 7073, 7068, 7058 (major), 7054, 7048 (major), 7042, 7035, 7029, 7016-20 (major), 7013, 7008, 7002 (major), 6999, ...
 - Resistance context: L1125: Resistances are: 7238, 7242 (major), 7251 (major), 7265, 7272, 7276 (major), 7287, 7297 (major), 7305, 7310, 7328 (major), 7343, 7351 (major), 7358, 7366 (major), 7380, 7384 (major), 7390 (major), 7398, 7406 (major), 7416 (major), 7421, 7427, 7435 (major). As readers know I don’t short ES - I only get my points on the long side, but I still give short ent...
@@ -5128,9 +5495,10 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Earnings Dip In SPX. Has The Next Leg Up Begun? May 1st Plan | pub=2026-04-30 | plan=2026-05-01
 - Source mode: planned_setup
-- Exact levels: setup=7085.0, 7137.0, 7135.0, 7180.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Source label: source_planned_fbd
+- Exact levels: setup=7085.0, 7137.0, 7180.0, 7135.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7085.0=actual_setup_level; 7137.0=actual_setup_level; 7160.0=current_price_context; 7219.0=current_price_context; 7212.0=current_price_context; 7188.0=current_price_context; 7198.0=current_price_context; 7161.0=current_price_context; 7157.0=current_price_context; 7167.0=current_price_context; 7141.0=current_price_context; 7135.0=actual_setup_level; 7095.0=current_price_context; 7180.0=actual_setup_level
-- S/R sanity: 7085.0 coincides_cleanly via support L1121 7085; 7137.0 coincides_partially via prose L1123 7137; 7135.0 coincides_cleanly via support L1121 7135; 7180.0 coincides_cleanly via support L1121 7180
+- S/R sanity: 7085.0 coincides_cleanly via support L1121 7085; 7137.0 coincides_partially via prose L1123 7137; 7180.0 coincides_cleanly via support L1121 7180; 7135.0 coincides_cleanly via support L1121 7135
 - ES 1m window/chart: multi-level split required; crop each stated setup level separately
 - Blockers: multi_setup_row_split_required, no_existing_chart_window_match, source_mode_planned_setup
 - Support context: L1121: Supports are: 7233 (major), 7228, 7224, 7219 (major), 7212 (major), 7208, 7204, 7198, 7193, 7188 (major), 7180, 7174, 7165, 7161 (major), 7152, 7147, 7141 (major), 7135 (major), 7129, 7121 (major), 7111, 7103, 7095 (major), 7085, 7080 (major), 7073, 7068, 7058 (major), 7054, 7048 (major), 7042, 7035, 7029, 7016-20 (major), 7013, 7008, 7002 (major), 6999, ...
@@ -5142,6 +5510,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Earnings Dip In SPX. Has The Next Leg Up Begun? May 1st Plan | pub=2026-04-30 | plan=2026-05-01
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7252.0
 - Level roles: 7137.0=current_price_context; 7188.0=current_price_context; 7198.0=current_price_context; 7135.0=current_price_context; 7252.0=target_or_response; 7267.0=current_price_context; 7297.0=current_price_context
 - S/R sanity: none
@@ -5155,7 +5524,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:1129 `negative_control`
 
 - Plan/date context: Bulls Bought The Earnings Dip In SPX. Has The Next Leg Up Begun? May 1st Plan | pub=2026-04-30 | plan=2026-05-01
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7188.0=current_price_context; 7180.0=current_price_context; 7176.0=current_price_context
 - S/R sanity: none
@@ -5170,6 +5540,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Bulls Bought The Earnings Dip In SPX. Has The Next Leg Up Begun? May 1st Plan | pub=2026-04-30 | plan=2026-05-01
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7137.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7253.0
 - Level roles: 7137.0=actual_setup_level; 7188.0=current_price_context; 7198.0=current_price_context; 7135.0=current_price_context; 7253.0=target_or_response; 7267.0=current_price_context; 7297.0=current_price_context; 7189.0=current_price_context
 - S/R sanity: 7137.0 coincides_partially via prose L1123 7137
@@ -5187,6 +5558,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-03 | plan=2026-05-04
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7137.0; swept/lost=7132.0; recovered=7137.0; non_acceptance=none; invalidation=none; target/response=7248.0
 - Level roles: 7137.0=actual_setup_level+recovered_level; 7190.0=current_price_context; 7132.0=swept_lost_low; 7248.0=target_or_response
 - S/R sanity: 7137.0 coincides_partially via prose L668 7137
@@ -5201,6 +5573,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-03 | plan=2026-05-04
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7137.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7253.0
 - Level roles: 7137.0=actual_setup_level; 7188.0=current_price_context; 7198.0=current_price_context; 7135.0=current_price_context; 7253.0=target_or_response; 7267.0=current_price_context; 7297.0=current_price_context
 - S/R sanity: 7137.0 coincides_partially via prose L668 7137
@@ -5215,6 +5588,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-03 | plan=2026-05-04
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7085.0, 7137.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7085.0=actual_setup_level; 7137.0=actual_setup_level
 - S/R sanity: 7085.0 does_not_coincide; 7137.0 coincides_partially via prose L728 7137
@@ -5229,6 +5603,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-03 | plan=2026-05-04
 - Source mode: actual_recap
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=7137.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7275.0
 - Level roles: 7132.0=current_price_context; 7137.0=swept_lost_low; 7275.0=target_or_response
 - S/R sanity: none
@@ -5243,6 +5618,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-03 | plan=2026-05-04
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7252.0
 - Level roles: 7137.0=current_price_context; 7188.0=current_price_context; 7198.0=current_price_context; 7135.0=current_price_context; 7252.0=target_or_response; 7267.0=current_price_context; 7297.0=current_price_context
 - S/R sanity: none
@@ -5257,6 +5633,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-03 | plan=2026-05-04
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7198.0=current_price_context; 7035.0=current_price_context; 7188.0=current_price_context
 - S/R sanity: none
@@ -5271,6 +5648,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-03 | plan=2026-05-04
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7188.0=current_price_context
 - S/R sanity: none
@@ -5285,6 +5663,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-03 | plan=2026-05-04
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7188.0=current_price_context
 - S/R sanity: none
@@ -5299,6 +5678,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-03 | plan=2026-05-04
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=7193.0; invalidation=none; target/response=none
 - Level roles: 7188.0=current_price_context; 7193.0=non_acceptance_threshold
 - S/R sanity: none
@@ -5313,11 +5693,12 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-03 | plan=2026-05-04
 - Source mode: planned_setup
-- Exact levels: setup=7085.0, 7137.0; swept/lost=7193.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
-- Level roles: 7085.0=actual_setup_level; 7137.0=actual_setup_level; 7264.0=current_price_context; 7259.0=current_price_context; 7248.0=current_price_context; 7300.0=current_price_context; 7237.0=current_price_context; 7212.0=current_price_context; 7198.0=current_price_context; 7193.0=swept_lost_low; 7160.0=current_price_context; 7157.0=current_price_context; 7167.0=current_price_context
-- S/R sanity: 7085.0 coincides_partially via prose L796 7085; 7137.0 coincides_partially via prose L728 7137
-- ES 1m window/chart: multi-level split required; crop each stated setup level separately
-- Blockers: multi_setup_row_split_required, no_existing_chart_window_match, source_mode_planned_setup
+- Source label: source_planned_fbd
+- Exact levels: setup=7085.0, 7237.0, 7160.0, 7137.0; swept/lost=7193.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=actual_setup_level; 7137.0=actual_setup_level; 7264.0=current_price_context; 7259.0=current_price_context; 7248.0=current_price_context; 7300.0=current_price_context; 7237.0=actual_setup_level; 7212.0=current_price_context; 7198.0=current_price_context; 7193.0=swept_lost_low; 7160.0=actual_setup_level; 7157.0=current_price_context; 7167.0=current_price_context
+- S/R sanity: 7085.0 coincides_partially via prose L796 7085; 7237.0 coincides_cleanly via support L794 7237; 7160.0 coincides_cleanly via support L794 7160; 7137.0 coincides_partially via prose L728 7137
+- ES 1m window/chart: multi-level split required; local matches by level only: 7237.0:artifacts\research\mancini-real-packet-gallery\163_accepted_simple_reclaim_unclassified_20260504_2128_7237.0.svg visual=insufficient_visual_context
+- Blockers: multi_setup_row_split_required, source_mode_planned_setup
 - Support context: L794: Supports are: 7264 (major), 7257, 7253, 7248 (major), 7241, 7237 (major), 7228, 7220, 7212 (major), 7205, 7198 (major), 7194, 7188, 7181 (major), 7172, 7165, 7160 (major), 7153, 7153, 7147 (major), 7142 (major), 7135, 7129, 7121 (major), 7111, 7103, 7094, 7086 (major), 7080, 7074 (major), 7063, 7058, 7054 (major), 7049 (major), 7041, 7034, 7025 (major), 7...
 - Resistance context: L798: Resistances are: 7275, 7285 (major), 7296, 7300, 7308 (major), 7313, 7323 (major), 7329, 7337 (major), 7350, 7355 (major), 7365, 7371 (major), 7382, 7387 (major), 7395, 7403, 7411 (major), 7415 (major), 7422, 7427, 7440-43 (major). As readers know I don’t short ES - I only get my points on the long side, but I still give short entries here for those who l...
 - Verdict: needs_bigger_crop
@@ -5327,6 +5708,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-03 | plan=2026-05-04
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7137.0=current_price_context; 7198.0=current_price_context; 7135.0=current_price_context; 7248.0=current_price_context; 7300.0=current_price_context; 7285.0=current_price_context; 7323.0=current_price_context; 7337.0=current_price_context
 - S/R sanity: none
@@ -5340,7 +5722,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:802 `negative_control`
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-03 | plan=2026-05-04
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7248.0=current_price_context; 7241.0=current_price_context
 - S/R sanity: none
@@ -5355,6 +5738,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-03 | plan=2026-05-04
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7137.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7137.0=actual_setup_level; 7300.0=current_price_context; 7323.0=current_price_context; 7337.0=current_price_context; 7198.0=current_price_context; 7248.0=current_price_context
 - S/R sanity: 7137.0 coincides_partially via prose L728 7137
@@ -5369,6 +5753,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-01 | plan=2026-05-04
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7137.0; swept/lost=7132.0; recovered=7137.0; non_acceptance=none; invalidation=none; target/response=7248.0
 - Level roles: 7137.0=actual_setup_level+recovered_level; 7190.0=current_price_context; 7132.0=swept_lost_low; 7248.0=target_or_response
 - S/R sanity: 7137.0 coincides_partially via prose L819 7137
@@ -5383,6 +5768,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-01 | plan=2026-05-04
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7137.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7253.0
 - Level roles: 7137.0=actual_setup_level; 7188.0=current_price_context; 7198.0=current_price_context; 7135.0=current_price_context; 7253.0=target_or_response; 7267.0=current_price_context; 7297.0=current_price_context
 - S/R sanity: 7137.0 coincides_partially via prose L819 7137
@@ -5397,6 +5783,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-01 | plan=2026-05-04
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7085.0, 7137.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7085.0=actual_setup_level; 7137.0=actual_setup_level
 - S/R sanity: 7085.0 does_not_coincide; 7137.0 coincides_partially via prose L879 7137
@@ -5411,6 +5798,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-01 | plan=2026-05-04
 - Source mode: actual_recap
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=7137.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7275.0
 - Level roles: 7132.0=current_price_context; 7137.0=swept_lost_low; 7275.0=target_or_response
 - S/R sanity: none
@@ -5425,6 +5813,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-01 | plan=2026-05-04
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7252.0
 - Level roles: 7137.0=current_price_context; 7188.0=current_price_context; 7198.0=current_price_context; 7135.0=current_price_context; 7252.0=target_or_response; 7267.0=current_price_context; 7297.0=current_price_context
 - S/R sanity: none
@@ -5439,6 +5828,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-01 | plan=2026-05-04
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7198.0=current_price_context; 7035.0=current_price_context; 7188.0=current_price_context
 - S/R sanity: none
@@ -5453,6 +5843,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-01 | plan=2026-05-04
 - Source mode: planned_setup
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7188.0=current_price_context
 - S/R sanity: none
@@ -5467,6 +5858,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-01 | plan=2026-05-04
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7188.0=current_price_context
 - S/R sanity: none
@@ -5481,6 +5873,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-01 | plan=2026-05-04
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=7193.0; invalidation=none; target/response=none
 - Level roles: 7188.0=current_price_context; 7193.0=non_acceptance_threshold
 - S/R sanity: none
@@ -5495,11 +5888,12 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-01 | plan=2026-05-04
 - Source mode: planned_setup
-- Exact levels: setup=7085.0, 7137.0; swept/lost=7193.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
-- Level roles: 7085.0=actual_setup_level; 7137.0=actual_setup_level; 7264.0=current_price_context; 7259.0=current_price_context; 7248.0=current_price_context; 7300.0=current_price_context; 7237.0=current_price_context; 7212.0=current_price_context; 7198.0=current_price_context; 7193.0=swept_lost_low; 7160.0=current_price_context; 7157.0=current_price_context; 7167.0=current_price_context
-- S/R sanity: 7085.0 coincides_partially via prose L947 7085; 7137.0 coincides_partially via prose L879 7137
-- ES 1m window/chart: multi-level split required; crop each stated setup level separately
-- Blockers: multi_setup_row_split_required, no_existing_chart_window_match, source_mode_planned_setup
+- Source label: source_planned_fbd
+- Exact levels: setup=7085.0, 7237.0, 7160.0, 7137.0; swept/lost=7193.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=actual_setup_level; 7137.0=actual_setup_level; 7264.0=current_price_context; 7259.0=current_price_context; 7248.0=current_price_context; 7300.0=current_price_context; 7237.0=actual_setup_level; 7212.0=current_price_context; 7198.0=current_price_context; 7193.0=swept_lost_low; 7160.0=actual_setup_level; 7157.0=current_price_context; 7167.0=current_price_context
+- S/R sanity: 7085.0 coincides_partially via prose L947 7085; 7237.0 coincides_cleanly via support L945 7237; 7160.0 coincides_cleanly via support L945 7160; 7137.0 coincides_partially via prose L879 7137
+- ES 1m window/chart: multi-level split required; local matches by level only: 7237.0:artifacts\research\mancini-real-packet-gallery\163_accepted_simple_reclaim_unclassified_20260504_2128_7237.0.svg visual=insufficient_visual_context
+- Blockers: multi_setup_row_split_required, source_mode_planned_setup
 - Support context: L945: Supports are: 7264 (major), 7257, 7253, 7248 (major), 7241, 7237 (major), 7228, 7220, 7212 (major), 7205, 7198 (major), 7194, 7188, 7181 (major), 7172, 7165, 7160 (major), 7153, 7153, 7147 (major), 7142 (major), 7135, 7129, 7121 (major), 7111, 7103, 7094, 7086 (major), 7080, 7074 (major), 7063, 7058, 7054 (major), 7049 (major), 7041, 7034, 7025 (major), 7...
 - Resistance context: L949: Resistances are: 7275, 7285 (major), 7296, 7300, 7308 (major), 7313, 7323 (major), 7329, 7337 (major), 7350, 7355 (major), 7365, 7371 (major), 7382, 7387 (major), 7395, 7403, 7411 (major), 7415 (major), 7422, 7427, 7440-43 (major). As readers know I don’t short ES - I only get my points on the long side, but I still give short entries here for those who l...
 - Verdict: needs_bigger_crop
@@ -5509,6 +5903,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-01 | plan=2026-05-04
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7137.0=current_price_context; 7198.0=current_price_context; 7135.0=current_price_context; 7248.0=current_price_context; 7300.0=current_price_context; 7285.0=current_price_context; 7323.0=current_price_context; 7337.0=current_price_context
 - S/R sanity: none
@@ -5522,7 +5917,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:953 `negative_control`
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-01 | plan=2026-05-04
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7248.0=current_price_context; 7241.0=current_price_context
 - S/R sanity: none
@@ -5537,6 +5933,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Closes At Major ATHs. Pullback Next Week, or More Upside Ahead? May 4th Plan | pub=2026-05-01 | plan=2026-05-04
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7137.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7137.0=actual_setup_level; 7300.0=current_price_context; 7323.0=current_price_context; 7337.0=current_price_context; 7198.0=current_price_context; 7248.0=current_price_context
 - S/R sanity: 7137.0 coincides_partially via prose L879 7137
@@ -5554,6 +5951,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7137.0; swept/lost=7132.0; recovered=7137.0; non_acceptance=none; invalidation=none; target/response=7248.0
 - Level roles: 7137.0=actual_setup_level+recovered_level; 7190.0=current_price_context; 7132.0=swept_lost_low; 7248.0=target_or_response
 - S/R sanity: 7137.0 coincides_partially via prose L493 7137
@@ -5568,6 +5966,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7137.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7253.0
 - Level roles: 7198.0=current_price_context; 7135.0=current_price_context; 7137.0=actual_setup_level; 7188.0=current_price_context; 7253.0=target_or_response; 7267.0=current_price_context; 7297.0=current_price_context
 - S/R sanity: 7137.0 coincides_partially via prose L493 7137
@@ -5582,6 +5981,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7085.0, 7137.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7085.0=actual_setup_level; 7137.0=actual_setup_level
 - S/R sanity: 7085.0 coincides_cleanly via support L641 7085; 7137.0 coincides_partially via prose L559 7137
@@ -5596,6 +5996,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: actual_recap
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=7137.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7297.0
 - Level roles: 7132.0=current_price_context; 7137.0=swept_lost_low; 7297.0=target_or_response
 - S/R sanity: none
@@ -5610,6 +6011,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: actual_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=7240.0, 7248.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7275.0
 - Level roles: 7240.0=swept_lost_low; 7248.0=swept_lost_low; 7275.0=target_or_response
 - S/R sanity: none
@@ -5624,6 +6026,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7135.0=current_price_context; 7198.0=current_price_context
 - S/R sanity: none
@@ -5638,6 +6041,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7137.0=current_price_context; 7198.0=current_price_context; 7135.0=current_price_context; 7248.0=current_price_context; 7300.0=current_price_context; 7285.0=current_price_context; 7323.0=current_price_context; 7337.0=current_price_context
 - S/R sanity: none
@@ -5652,6 +6056,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7248.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7248.0=actual_setup_level
 - S/R sanity: 7248.0 coincides_partially via resistance L645 7248
@@ -5666,6 +6071,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7248.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7248.0=actual_setup_level
 - S/R sanity: 7248.0 coincides_partially via resistance L645 7248
@@ -5680,6 +6086,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7247.0=current_price_context
 - S/R sanity: none
@@ -5694,6 +6101,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: planned_setup
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7248.0=current_price_context
 - S/R sanity: none
@@ -5708,6 +6116,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=7253.0; invalidation=none; target/response=none
 - Level roles: 7248.0=current_price_context; 7253.0=non_acceptance_threshold
 - S/R sanity: none
@@ -5722,6 +6131,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: actual_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7267.0=current_price_context; 7248.0=current_price_context; 7253.0=current_price_context
 - S/R sanity: none
@@ -5736,6 +6146,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7240.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7240.0=actual_setup_level
 - S/R sanity: 7240.0 coincides_partially via prose L610 7240
@@ -5750,6 +6161,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7266.0=current_price_context; 7213.0=current_price_context
 - S/R sanity: none
@@ -5760,24 +6172,26 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 - Verdict: data_only
 - Raw passage: When I woke up and checked price at 730AM, I noticed we got a nice elevator down sell at 6am from 7266 to 7213. If you want to see what an elevator down sell looks like - this is what they look like. A fast flush that cuts every support and often covers 20-200 points in no time at all. There is a sentiment component as well, if you are on social media you...
 
-### data\research\mancini\The Longer Mancini Logs.txt:608 `data_only`
+### data\research\mancini\The Longer Mancini Logs.txt:608 `needs_bigger_crop`
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: planned_setup
-- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
-- Level roles: 7237.0=current_price_context; 7212.0=current_price_context
-- S/R sanity: none
-- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=2026-04-30, 2026-05-01
-- Blockers: no_actual_setup_level_extracted
+- Source label: source_planned_fbd
+- Exact levels: setup=7237.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7237.0=actual_setup_level; 7212.0=current_price_context
+- S/R sanity: 7237.0 does_not_coincide
+- ES 1m window/chart: artifacts\research\mancini-real-packet-gallery\163_accepted_simple_reclaim_unclassified_20260504_2128_7237.0.svg trap=7234.75 reclaim=2026-05-04T21:25:00-04:00 threshold_hold=0 visual=insufficient_visual_context overlap=17
+- Blockers: no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_planned_setup, visual_sanity_insufficient_visual_context
 - Support context: L641: Supports are: 7230, 7220 (major), 7212, 7208 (major), 7199, 7194 (major), 7188, 7181 (major), 7172, 7165, 7160 (major), 7154, 7148, 7142 (major), 7135 (major), 7128, 7121 (major), 7110, 7104 (major), 7094, 7085 (major), 7080, 7074 (major), 7067, 7057 (major), 7054, 7049 (major), 7041, 7034, 7026, 7020, 7016 (major), 7007, 7002 (major), 6990, 6983, 6979 (m...
 - Resistance context: L645: Resistances are: 7238, 7242 (major), 7248 (major), 7258, 7263, 7268 (major), 7272, 7277 (major), 7282, 7289 (major), 7296, 7302 (major), 7311, 7319, 7326, 7333 (major), 7341, 7348 (major), 7358, 7368, 7375 (major), 7385, 7392 (major), 7400, 7408, 7416 (major), 7420, 7426, 7438, 7444 (major). As readers know I don’t short ES - I only get my points on the l...
-- Verdict: data_only
+- Verdict: needs_bigger_crop
 - Raw passage: I wrote Friday at 4pm: “Watch for Failed Breakdowns of 7237 (take profits fast on this one) and not much under there until 7212. If its a slow, controlled grind into 7212 one can try a bid here but remember my core rule in ES: No knife catching allowed. If we are selling vertically you never long.”
 
 ### data\research\mancini\The Longer Mancini Logs.txt:610 `data_only`
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7240.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7213.0=current_price_context; 7240.0=actual_setup_level; 7275.0=current_price_context
 - S/R sanity: 7240.0 coincides_partially via prose L610 7240
@@ -5792,6 +6206,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7213.0=actual_setup_level
 - S/R sanity: 7213.0 coincides_partially via prose L606 7213
@@ -5806,6 +6221,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7198.0=current_price_context; 7213.0=actual_setup_level; 7218.0=current_price_context; 7228.0=current_price_context
 - S/R sanity: 7213.0 coincides_partially via prose L610 7213
@@ -5820,9 +6236,10 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: planned_setup
-- Exact levels: setup=7199.0, 7137.0, 7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
-- Level roles: 7137.0=actual_setup_level; 7213.0=actual_setup_level; 7198.0=current_price_context; 7194.0=current_price_context; 7220.0=current_price_context; 7217.0=current_price_context; 7199.0=actual_setup_level; 7181.0=current_price_context; 7160.0=current_price_context; 7157.0=current_price_context; 7154.0=current_price_context; 7134.0=current_price_context
-- S/R sanity: 7199.0 coincides_cleanly via support L641 7199; 7137.0 coincides_partially via prose L559 7137; 7213.0 coincides_partially via prose L643 7213
+- Source label: source_planned_fbd
+- Exact levels: setup=7199.0, 7154.0, 7137.0, 7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7137.0=actual_setup_level; 7213.0=actual_setup_level; 7198.0=current_price_context; 7194.0=current_price_context; 7220.0=current_price_context; 7217.0=current_price_context; 7199.0=actual_setup_level; 7181.0=current_price_context; 7160.0=current_price_context; 7157.0=current_price_context; 7154.0=actual_setup_level; 7134.0=current_price_context
+- S/R sanity: 7199.0 coincides_cleanly via support L641 7199; 7154.0 coincides_cleanly via support L641 7154; 7137.0 coincides_partially via prose L559 7137; 7213.0 coincides_partially via prose L643 7213
 - ES 1m window/chart: multi-level split required; local matches by level only: 7213.0:artifacts\research\mancini-real-packet-gallery\142_accepted_non_acceptance_protocol_20260430_1233_7213.0.svg visual=dangerous_demote_for_training
 - Blockers: multi_setup_row_split_required, source_mode_planned_setup
 - Support context: L641: Supports are: 7230, 7220 (major), 7212, 7208 (major), 7199, 7194 (major), 7188, 7181 (major), 7172, 7165, 7160 (major), 7154, 7148, 7142 (major), 7135 (major), 7128, 7121 (major), 7110, 7104 (major), 7094, 7085 (major), 7080, 7074 (major), 7067, 7057 (major), 7054, 7049 (major), 7041, 7034, 7026, 7020, 7016 (major), 7007, 7002 (major), 6990, 6983, 6979 (m...
@@ -5834,6 +6251,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7199.0=current_price_context; 7213.0=actual_setup_level; 7240.0=current_price_context; 7268.0=current_price_context; 7194.0=current_price_context; 7177.0=current_price_context
 - S/R sanity: 7213.0 coincides_partially via prose L643 7213
@@ -5847,7 +6265,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:649 `negative_control`
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7194.0=current_price_context; 7190.0=current_price_context
 - S/R sanity: none
@@ -5862,6 +6281,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: Today's Small SPX Dip Was Bought. Are The Lows Already In? May 5th Plan | pub=2026-05-04 | plan=2026-05-05
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7213.0; swept/lost=7199.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7300.0
 - Level roles: 7199.0=swept_lost_low; 7300.0=target_or_response; 7213.0=actual_setup_level; 7240.0=current_price_context; 7268.0=current_price_context; 7194.0=current_price_context; 7177.0=current_price_context
 - S/R sanity: 7213.0 coincides_partially via prose L643 7213
@@ -5879,6 +6299,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: [Re-Send] Bulls Bought The SPX Dip Yesterday. Will There Be Another This Week? May 6th Plan | pub=2026-05-05 | plan=2026-05-06
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7213.0; swept/lost=none; recovered=7213.0; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7199.0=current_price_context; 7213.0=actual_setup_level+recovered_level
 - S/R sanity: 7213.0 coincides_cleanly via support L464 7213
@@ -5893,6 +6314,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: [Re-Send] Bulls Bought The SPX Dip Yesterday. Will There Be Another This Week? May 6th Plan | pub=2026-05-05 | plan=2026-05-06
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7213.0; swept/lost=7199.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7213.0=actual_setup_level; 7199.0=swept_lost_low; 7240.0=current_price_context; 7268.0=current_price_context; 7194.0=current_price_context; 7177.0=current_price_context
 - S/R sanity: 7213.0 coincides_cleanly via support L464 7213
@@ -5907,6 +6329,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: [Re-Send] Bulls Bought The SPX Dip Yesterday. Will There Be Another This Week? May 6th Plan | pub=2026-05-05 | plan=2026-05-06
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7137.0, 7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7137.0=actual_setup_level; 7213.0=actual_setup_level
 - S/R sanity: 7137.0 does_not_coincide; 7213.0 coincides_cleanly via support L464 7213
@@ -5921,6 +6344,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: [Re-Send] Bulls Bought The SPX Dip Yesterday. Will There Be Another This Week? May 6th Plan | pub=2026-05-05 | plan=2026-05-06
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7213.0; swept/lost=none; recovered=7213.0; non_acceptance=none; invalidation=none; target/response=7300.0
 - Level roles: 7199.0=current_price_context; 7300.0=target_or_response; 7213.0=actual_setup_level+recovered_level
 - S/R sanity: 7213.0 coincides_cleanly via support L464 7213
@@ -5935,6 +6359,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: [Re-Send] Bulls Bought The SPX Dip Yesterday. Will There Be Another This Week? May 6th Plan | pub=2026-05-05 | plan=2026-05-06
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7199.0=current_price_context; 7213.0=actual_setup_level; 7240.0=current_price_context; 7268.0=current_price_context; 7194.0=current_price_context; 7177.0=current_price_context
 - S/R sanity: 7213.0 coincides_cleanly via support L464 7213
@@ -5949,6 +6374,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: [Re-Send] Bulls Bought The SPX Dip Yesterday. Will There Be Another This Week? May 6th Plan | pub=2026-05-05 | plan=2026-05-06
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7220.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7220.0=actual_setup_level
 - S/R sanity: 7220.0 coincides_partially via prose L424 7220
@@ -5963,6 +6389,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: [Re-Send] Bulls Bought The SPX Dip Yesterday. Will There Be Another This Week? May 6th Plan | pub=2026-05-05 | plan=2026-05-06
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7213.0=current_price_context
 - S/R sanity: none
@@ -5977,6 +6404,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: [Re-Send] Bulls Bought The SPX Dip Yesterday. Will There Be Another This Week? May 6th Plan | pub=2026-05-05 | plan=2026-05-06
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7220.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7220.0=actual_setup_level; 7217.0=current_price_context
 - S/R sanity: 7220.0 coincides_partially via prose L424 7220
@@ -5991,6 +6419,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: [Re-Send] Bulls Bought The SPX Dip Yesterday. Will There Be Another This Week? May 6th Plan | pub=2026-05-05 | plan=2026-05-06
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7220.0=current_price_context
 - S/R sanity: none
@@ -6005,6 +6434,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: [Re-Send] Bulls Bought The SPX Dip Yesterday. Will There Be Another This Week? May 6th Plan | pub=2026-05-05 | plan=2026-05-06
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=7225.0; invalidation=none; target/response=none
 - Level roles: 7220.0=current_price_context; 7225.0=non_acceptance_threshold
 - S/R sanity: none
@@ -6015,24 +6445,26 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 - Verdict: data_only
 - Raw passage: Remember the non-acceptance protocol automatically activates when price recovers the significant low (7220) by 5 points (7225) and holds at or above 7225 for a few minutes. The non-acceptance protocol typically triggers for shallow (under 10 point flush of the significant low) and fast Failed Breakdowns, but you can use it for any Failed Breakdown. Typica...
 
-### data\research\mancini\The Longer Mancini Logs.txt:439 `negative_control`
+### data\research\mancini\The Longer Mancini Logs.txt:439 `needs_bigger_crop`
 
 - Plan/date context: [Re-Send] Bulls Bought The SPX Dip Yesterday. Will There Be Another This Week? May 6th Plan | pub=2026-05-05 | plan=2026-05-06
-- Source mode: negative_control
+- Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7213.0; swept/lost=7199.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7213.0=actual_setup_level; 7199.0=swept_lost_low; 7240.0=current_price_context; 7268.0=current_price_context
 - S/R sanity: 7213.0 coincides_cleanly via support L464 7213
 - ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=2026-05-01
-- Blockers: source_marks_no_trigger_or_non_fbd
+- Blockers: no_existing_chart_window_match
 - Support context: L464: Supports are: 7287 (major), 7283, 7279 (major), 7274, 7268 (major), 7263, 7258 (major), 7254, 7248 (major), 7242, 7236, 7223 (major), 7213 (major), 7204, 7200, 7194, 7189 (major), 7181, 7173, 7165 (major), 7153, 7147 (major), 7136, 7128, 7122, 7111 (major), 7104, 7096, 7085, 7079 (major), 7074, 7068, 7058 (major), 7052, 7049 (major), 7042, 7036 (major), 7...
 - Resistance context: L468: Resistances are: 7296, 7300 (major), 7304, 7309, 7313 (major), 7317, 7322, 7328, 7336 (major), 7340, 7349 (major), 7353, 7359, 7366 (major), 7374, 7382 (major), 7388, 7395 (major), 7405, 7412, 7422 (major). As readers know I don’t short ES - I only get my points on the long side, but I still give short entries here for those who like them and don’t mind h...
-- Verdict: negative_control
+- Verdict: needs_bigger_crop
 - Raw passage: Unfortunately we never got this and we simply continued grinding up into the evening, and runners paid on this. I wrote yesterday at 4pm: “Today, we backtested it and defended. Shortly after this back-test - a little after noon today - ES put in a Failed Breakdown where we lost a major 620AM 7213 low down to 7199 as stated, recovered, and ripped. My gener...
 
 ### data\research\mancini\The Longer Mancini Logs.txt:466 `needs_bigger_crop`
 
 - Plan/date context: [Re-Send] Bulls Bought The SPX Dip Yesterday. Will There Be Another This Week? May 6th Plan | pub=2026-05-05 | plan=2026-05-06
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7213.0, 7199.0, 7137.0; swept/lost=7213.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7137.0=actual_setup_level; 7213.0=actual_setup_level+swept_lost_low; 7289.0=current_price_context; 7279.0=current_price_context; 7258.0=current_price_context; 7248.0=current_price_context; 7199.0=actual_setup_level
 - S/R sanity: 7213.0 coincides_cleanly via support L464 7213; 7199.0 coincides_partially via prose L344 7199; 7137.0 coincides_partially via prose L466 7137
@@ -6047,6 +6479,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: [Re-Send] Bulls Bought The SPX Dip Yesterday. Will There Be Another This Week? May 6th Plan | pub=2026-05-05 | plan=2026-05-06
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7313.0
 - Level roles: 7199.0=current_price_context; 7213.0=current_price_context; 7212.0=current_price_context; 7300.0=current_price_context; 7248.0=current_price_context; 7313.0=target_or_response; 7336.0=current_price_context; 7366.0=current_price_context
 - S/R sanity: none
@@ -6060,7 +6493,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:472 `negative_control`
 
 - Plan/date context: [Re-Send] Bulls Bought The SPX Dip Yesterday. Will There Be Another This Week? May 6th Plan | pub=2026-05-05 | plan=2026-05-06
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7248.0=current_price_context; 7241.0=current_price_context
 - S/R sanity: none
@@ -6075,6 +6509,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: [Re-Send] Bulls Bought The SPX Dip Yesterday. Will There Be Another This Week? May 6th Plan | pub=2026-05-05 | plan=2026-05-06
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7313.0
 - Level roles: 7213.0=current_price_context; 7212.0=current_price_context; 7300.0=current_price_context; 7313.0=target_or_response; 7336.0=current_price_context; 7366.0=current_price_context
 - S/R sanity: none
@@ -6092,6 +6527,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Has Gone Fully Parabolic. Is There Another Entry? May 7 Plan | pub=2026-05-06 | plan=2026-05-07
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7213.0; swept/lost=none; recovered=7213.0; non_acceptance=none; invalidation=none; target/response=7300.0
 - Level roles: 7199.0=current_price_context; 7213.0=actual_setup_level+recovered_level; 7300.0=target_or_response
 - S/R sanity: 7213.0 coincides_partially via prose L189 7213
@@ -6106,6 +6542,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Has Gone Fully Parabolic. Is There Another Entry? May 7 Plan | pub=2026-05-06 | plan=2026-05-07
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7137.0, 7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7137.0=actual_setup_level; 7213.0=actual_setup_level
 - S/R sanity: 7137.0 does_not_coincide; 7213.0 coincides_partially via prose L233 7213
@@ -6120,6 +6557,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Has Gone Fully Parabolic. Is There Another Entry? May 7 Plan | pub=2026-05-06 | plan=2026-05-07
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7213.0; swept/lost=none; recovered=7213.0; non_acceptance=none; invalidation=none; target/response=7300.0
 - Level roles: 7199.0=current_price_context; 7300.0=target_or_response; 7213.0=actual_setup_level+recovered_level
 - S/R sanity: 7213.0 coincides_partially via prose L233 7213
@@ -6134,6 +6572,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Has Gone Fully Parabolic. Is There Another Entry? May 7 Plan | pub=2026-05-06 | plan=2026-05-07
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7313.0
 - Level roles: 7199.0=current_price_context; 7213.0=current_price_context; 7212.0=current_price_context; 7300.0=current_price_context; 7248.0=current_price_context; 7313.0=target_or_response; 7336.0=current_price_context; 7366.0=current_price_context
 - S/R sanity: none
@@ -6148,6 +6587,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Has Gone Fully Parabolic. Is There Another Entry? May 7 Plan | pub=2026-05-06 | plan=2026-05-07
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7213.0=current_price_context
 - S/R sanity: none
@@ -6162,6 +6602,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Has Gone Fully Parabolic. Is There Another Entry? May 7 Plan | pub=2026-05-06 | plan=2026-05-07
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7137.0, 7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7137.0=actual_setup_level; 7213.0=actual_setup_level
 - S/R sanity: 7137.0 does_not_coincide; 7213.0 coincides_partially via prose L243 7213
@@ -6176,6 +6617,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Has Gone Fully Parabolic. Is There Another Entry? May 7 Plan | pub=2026-05-06 | plan=2026-05-07
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7279.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7279.0=actual_setup_level
 - S/R sanity: 7279.0 coincides_cleanly via support L317 7279
@@ -6190,6 +6632,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Has Gone Fully Parabolic. Is There Another Entry? May 7 Plan | pub=2026-05-06 | plan=2026-05-07
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7279.0=current_price_context
 - S/R sanity: none
@@ -6204,6 +6647,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Has Gone Fully Parabolic. Is There Another Entry? May 7 Plan | pub=2026-05-06 | plan=2026-05-07
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=7284.0; invalidation=none; target/response=none
 - Level roles: 7279.0=current_price_context; 7284.0=non_acceptance_threshold
 - S/R sanity: none
@@ -6218,6 +6662,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Has Gone Fully Parabolic. Is There Another Entry? May 7 Plan | pub=2026-05-06 | plan=2026-05-07
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7213.0=actual_setup_level
 - S/R sanity: 7213.0 coincides_partially via prose L243 7213
@@ -6232,9 +6677,10 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Has Gone Fully Parabolic. Is There Another Entry? May 7 Plan | pub=2026-05-06 | plan=2026-05-07
 - Source mode: planned_setup
-- Exact levels: setup=7137.0, 7213.0; swept/lost=7327.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
-- Level roles: 7137.0=actual_setup_level; 7213.0=actual_setup_level; 7369.0=current_price_context; 7345.0=current_price_context; 7355.0=current_price_context; 7332.0=current_price_context; 7327.0=swept_lost_low; 7311.0=current_price_context; 7284.0=current_price_context
-- S/R sanity: 7137.0 coincides_partially via prose L319 7137; 7213.0 coincides_partially via prose L243 7213
+- Source label: source_planned_fbd
+- Exact levels: setup=7284.0, 7137.0, 7213.0; swept/lost=7327.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7137.0=actual_setup_level; 7213.0=actual_setup_level; 7369.0=current_price_context; 7345.0=current_price_context; 7355.0=current_price_context; 7332.0=current_price_context; 7327.0=swept_lost_low; 7311.0=current_price_context; 7284.0=actual_setup_level
+- S/R sanity: 7284.0 coincides_cleanly via support L317 7284; 7137.0 coincides_partially via prose L319 7137; 7213.0 coincides_partially via prose L243 7213
 - ES 1m window/chart: multi-level split required; crop each stated setup level separately
 - Blockers: multi_setup_row_split_required, no_existing_chart_window_match, source_mode_planned_setup
 - Support context: L317: Supports are: 7369 (major), 7356, 7345 (major), 7338, 7332(major), 7326, 7311 (major), 7309, 7300 (major), 7297, 7295 (major), 7289, 7284 (major), 7279, 7273, 7268 (major), 7262, 7257 (major), 7248 (major), 7242, 7233 (major), 7225, 7218 (major), 7214, 7209 (major), 7204, 7200 (major), 7194, 7186 (major), 7181, 7173 (major), 7165 (major), 7159, 7147 (majo...
@@ -6246,6 +6692,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Has Gone Fully Parabolic. Is There Another Entry? May 7 Plan | pub=2026-05-06 | plan=2026-05-07
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7332.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7400.0
 - Level roles: 7199.0=current_price_context; 7213.0=current_price_context; 7345.0=current_price_context; 7332.0=actual_setup_level; 7400.0=target_or_response; 7426.0=current_price_context; 7451.0=current_price_context
 - S/R sanity: 7332.0 coincides_cleanly via support L317 7332
@@ -6259,7 +6706,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:325 `negative_control`
 
 - Plan/date context: SPX Has Gone Fully Parabolic. Is There Another Entry? May 7 Plan | pub=2026-05-06 | plan=2026-05-07
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7332.0=current_price_context; 7322.0=current_price_context
 - S/R sanity: none
@@ -6274,6 +6722,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Has Gone Fully Parabolic. Is There Another Entry? May 7 Plan | pub=2026-05-06 | plan=2026-05-07
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7199.0=current_price_context; 7213.0=current_price_context; 7332.0=current_price_context; 7400.0=current_price_context; 7426.0=current_price_context; 7451.0=current_price_context; 7345.0=current_price_context
 - S/R sanity: none
@@ -6284,6 +6733,81 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 - Verdict: data_only
 - Raw passage: In summary for tomorrow: ES is parabolic and there is nothing to do - longs are still working from Monday’s setup. Last Thursday ES broke out of a week long range that roughly had resistance at 7199. Monday, we backtested it and defended. Then Monday at 12:20PM - shortly after this backtest - ES put in a monster Failed Breakdown of Monday’s 6:20AM 7213 ma...
 
+### data\research\mancini\daily-plans\2026-05-07-thursday-es-plan.md:12 `data_only`
+
+- Plan/date context: # 2026-05-07 Thursday ES Plan | pub=2026-05-07 | plan=2026-05-07
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7137.0, 7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7137.0=actual_setup_level; 7213.0=actual_setup_level
+- S/R sanity: 7137.0 does_not_coincide; 7213.0 does_not_coincide
+- ES 1m window/chart: multi-level split required; crop each stated setup level separately
+- Blockers: multi_setup_row_split_required, no_existing_chart_window_match, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: - Existing long context was from the prior 7137 failed breakdown and the more recent 7213 failed breakdown.
+
+### data\research\mancini\daily-plans\2026-05-07-thursday-es-plan.md:35 `data_only`
+
+- Plan/date context: # 2026-05-07 Thursday ES Plan | pub=2026-05-07 | plan=2026-05-07
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7284.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: | 7284 | yes | Deeper failed-breakdown watch level. |
+
+### data\research\mancini\daily-plans\2026-05-07-thursday-es-plan.md:94 `data_only`
+
+- Plan/date context: # 2026-05-07 Thursday ES Plan | pub=2026-05-07 | plan=2026-05-07
+- Source mode: planned_setup
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7332.0=current_price_context; 7327.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: - 7332: strong failed-breakdown candidate; watch the whole 7332 to 7327 shelf sweep and reclaim.
+
+### data\research\mancini\daily-plans\2026-05-07-thursday-es-plan.md:96 `data_only`
+
+- Plan/date context: # 2026-05-07 Thursday ES Plan | pub=2026-05-07 | plan=2026-05-07
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7284.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: - 7284: deeper failed-breakdown watch level if selloff extends.
+
+### data\research\mancini\daily-plans\2026-05-07-thursday-es-plan.md:104 `data_only`
+
+- Plan/date context: # 2026-05-07 Thursday ES Plan | pub=2026-05-07 | plan=2026-05-07
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7322.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7332.0=current_price_context; 7322.0=actual_setup_level
+- S/R sanity: 7322.0 coincides_partially via prose L104 7322
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: - The 7332 breakdown short was described as advanced and lower win-rate. Preferred short structure: final bounce or failed breakdown at the support zone first, then short below the structure, roughly around a 7322 trigger.
+
 
 ## 2026-05-08
 
@@ -6291,6 +6815,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Takes A Small Breather Today. Is More Pullback Ahead? May 8 Plan | pub=2026-05-07 | plan=2026-05-08
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7213.0; swept/lost=none; recovered=7213.0; non_acceptance=none; invalidation=none; target/response=7390.0
 - Level roles: 7199.0=current_price_context; 7213.0=actual_setup_level+recovered_level; 7390.0=target_or_response
 - S/R sanity: 7213.0 coincides_partially via prose L17 7213
@@ -6305,6 +6830,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Takes A Small Breather Today. Is More Pullback Ahead? May 8 Plan | pub=2026-05-07 | plan=2026-05-08
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7137.0, 7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7137.0=actual_setup_level; 7213.0=actual_setup_level
 - S/R sanity: 7137.0 does_not_coincide; 7213.0 coincides_partially via prose L61 7213
@@ -6319,6 +6845,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Takes A Small Breather Today. Is More Pullback Ahead? May 8 Plan | pub=2026-05-07 | plan=2026-05-08
 - Source mode: data_context
+- Source label: data_context
 - Exact levels: setup=none; swept/lost=7355.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7345.0=current_price_context; 7355.0=swept_lost_low
 - S/R sanity: none
@@ -6333,6 +6860,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Takes A Small Breather Today. Is More Pullback Ahead? May 8 Plan | pub=2026-05-07 | plan=2026-05-08
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7213.0; swept/lost=none; recovered=7213.0; non_acceptance=none; invalidation=none; target/response=7300.0
 - Level roles: 7199.0=current_price_context; 7300.0=target_or_response; 7213.0=actual_setup_level+recovered_level
 - S/R sanity: 7213.0 coincides_partially via prose L61 7213
@@ -6347,6 +6875,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Takes A Small Breather Today. Is More Pullback Ahead? May 8 Plan | pub=2026-05-07 | plan=2026-05-08
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7332.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7400.0
 - Level roles: 7199.0=current_price_context; 7213.0=current_price_context; 7345.0=current_price_context; 7332.0=actual_setup_level; 7400.0=target_or_response; 7426.0=current_price_context; 7451.0=current_price_context
 - S/R sanity: 7332.0 coincides_cleanly via support L156 7332
@@ -6361,6 +6890,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Takes A Small Breather Today. Is More Pullback Ahead? May 8 Plan | pub=2026-05-07 | plan=2026-05-08
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7355.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7355.0=actual_setup_level
 - S/R sanity: 7355.0 coincides_cleanly via support L156 7355
@@ -6375,6 +6905,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Takes A Small Breather Today. Is More Pullback Ahead? May 8 Plan | pub=2026-05-07 | plan=2026-05-08
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7213.0=current_price_context
 - S/R sanity: none
@@ -6389,6 +6920,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Takes A Small Breather Today. Is More Pullback Ahead? May 8 Plan | pub=2026-05-07 | plan=2026-05-08
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7355.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7355.0=actual_setup_level; 7345.0=current_price_context
 - S/R sanity: 7355.0 coincides_cleanly via support L156 7355
@@ -6403,6 +6935,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Takes A Small Breather Today. Is More Pullback Ahead? May 8 Plan | pub=2026-05-07 | plan=2026-05-08
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7355.0=current_price_context
 - S/R sanity: none
@@ -6417,6 +6950,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Takes A Small Breather Today. Is More Pullback Ahead? May 8 Plan | pub=2026-05-07 | plan=2026-05-08
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=7360.0; invalidation=none; target/response=none
 - Level roles: 7355.0=current_price_context; 7360.0=non_acceptance_threshold
 - S/R sanity: none
@@ -6431,6 +6965,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Takes A Small Breather Today. Is More Pullback Ahead? May 8 Plan | pub=2026-05-07 | plan=2026-05-08
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7213.0=actual_setup_level
 - S/R sanity: 7213.0 coincides_partially via prose L73 7213
@@ -6445,6 +6980,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Takes A Small Breather Today. Is More Pullback Ahead? May 8 Plan | pub=2026-05-07 | plan=2026-05-08
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7355.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7355.0=actual_setup_level
 - S/R sanity: 7355.0 coincides_cleanly via support L156 7355
@@ -6459,6 +6995,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Takes A Small Breather Today. Is More Pullback Ahead? May 8 Plan | pub=2026-05-07 | plan=2026-05-08
 - Source mode: context_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7355.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7400.0=current_price_context; 7355.0=actual_setup_level
 - S/R sanity: 7355.0 coincides_cleanly via support L156 7355
@@ -6473,6 +7010,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Takes A Small Breather Today. Is More Pullback Ahead? May 8 Plan | pub=2026-05-07 | plan=2026-05-08
 - Source mode: actual_recap
+- Source label: source_confirmed_fbd
 - Exact levels: setup=7355.0; swept/lost=7345.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7355.0=actual_setup_level; 7345.0=swept_lost_low
 - S/R sanity: 7355.0 coincides_cleanly via support L156 7355
@@ -6487,6 +7025,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Takes A Small Breather Today. Is More Pullback Ahead? May 8 Plan | pub=2026-05-07 | plan=2026-05-08
 - Source mode: planned_setup
+- Source label: source_planned_fbd
 - Exact levels: setup=7327.0, 7306.0, 7213.0, 7255.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7213.0=actual_setup_level; 7255.0=actual_setup_level; 7402.0=current_price_context; 7340.0=current_price_context; 7327.0=actual_setup_level; 7311.0=current_price_context; 7306.0=actual_setup_level; 7279.0=current_price_context; 7283.0=current_price_context; 7257.0=current_price_context
 - S/R sanity: 7327.0 coincides_cleanly via support L156 7327; 7306.0 coincides_cleanly via support L156 7306; 7213.0 coincides_partially via prose L73 7213; 7255.0 coincides_partially via prose L158 7255
@@ -6501,6 +7040,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Takes A Small Breather Today. Is More Pullback Ahead? May 8 Plan | pub=2026-05-07 | plan=2026-05-08
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7199.0=current_price_context; 7213.0=current_price_context; 7345.0=current_price_context; 7311.0=current_price_context; 7393.0=current_price_context; 7402.0=current_price_context; 7345.75=current_price_context; 7383.0=current_price_context; 7418.0=current_price_context; 7430.0=current_price_context; 7369.0=current_price_context
 - S/R sanity: none
@@ -6514,7 +7054,8 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 ### data\research\mancini\The Longer Mancini Logs.txt:164 `negative_control`
 
 - Plan/date context: SPX Takes A Small Breather Today. Is More Pullback Ahead? May 8 Plan | pub=2026-05-07 | plan=2026-05-08
-- Source mode: negative_control
+- Source mode: context_recap
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7345.0=current_price_context; 7337.0=current_price_context
 - S/R sanity: none
@@ -6529,6 +7070,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: SPX Takes A Small Breather Today. Is More Pullback Ahead? May 8 Plan | pub=2026-05-07 | plan=2026-05-08
 - Source mode: context_recap
+- Source label: source_unparsed_fbd
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 7199.0=current_price_context; 7213.0=current_price_context; 7402.0=current_price_context; 7345.0=current_price_context; 7311.0=current_price_context; 7383.0=current_price_context; 7393.0=current_price_context
 - S/R sanity: none
@@ -6539,13 +7081,5399 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 - Verdict: data_only
 - Raw passage: In summary for tomorrow: Last Thursday ES broke out of a week long range that roughly had resistance at 7199. Monday, we backtested it and defended. Then Monday at 12:20PM - shortly after this backtest - ES put in a monster Failed Breakdown of Monday’s 6:20AM 7213 major low, and we ripped non-stop since. Today, ES finally took a small breather. My general...
 
+### data\research\mancini\daily-plans\2026-05-08-may-11-es-plan.json:348 `data_only`
+
+- Plan/date context: 2026-05-08 | pub=2026-05-08 | plan=2026-05-08
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7391.0=current_price_context; 7402.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Does 7391 shelf failed-breakdown outperform shallow 7402 backtests near all-time highs?
+
+### data\research\mancini\daily-plans\2026-05-08-may-11-es-plan.json:349 `data_only`
+
+- Plan/date context: 2026-05-08 | pub=2026-05-08 | plan=2026-05-08
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7337.0=current_price_context; 7345.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Does the 7337 prior-low failed breakdown retain high expectancy if 7345 has already failed?
+
+### data\research\mancini\daily-plans\2026-05-08-may-11-es-plan.md:13 `data_only`
+
+- Plan/date context: # 2026-05-08 May 11 ES Plan | pub=2026-05-08 | plan=2026-05-08
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7213.0=actual_setup_level
+- S/R sanity: 7213.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: - The prior working examples were the 7213 failed breakdown on Monday and the
+
+### data\research\mancini\daily-plans\2026-05-08-may-11-es-plan.md:14 `data_only`
+
+- Plan/date context: # 2026-05-08 May 11 ES Plan | pub=2026-05-08 | plan=2026-05-08
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7345.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 7345 shelf failed breakdown after the Thursday evening pullback.
+
+### data\research\mancini\daily-plans\2026-05-08-may-11-es-plan.md:27 `data_only`
+
+- Plan/date context: # 2026-05-08 May 11 ES Plan | pub=2026-05-08 | plan=2026-05-08
+- Source mode: planned_setup
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7391.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=5:50, 8:50; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: | 7391 | yes | Shelf from 5:50-8:50; failed breakdown is actionable. |
+
+### data\research\mancini\daily-plans\2026-05-08-may-11-es-plan.md:34 `data_only`
+
+- Plan/date context: # 2026-05-08 May 11 ES Plan | pub=2026-05-08 | plan=2026-05-08
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7337.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: | 7337 | yes | Quality prior-low failed-breakdown long if flushed and recovered. |
+
+### data\research\mancini\daily-plans\2026-05-08-may-11-es-plan.md:113 `data_only`
+
+- Plan/date context: # 2026-05-08 May 11 ES Plan | pub=2026-05-08 | plan=2026-05-08
+- Source mode: planned_setup
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7391.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: - 7391: actionable failed-breakdown shelf.
+
+### data\research\mancini\daily-plans\2026-05-08-may-11-es-plan.md:115 `data_only`
+
+- Plan/date context: # 2026-05-08 May 11 ES Plan | pub=2026-05-08 | plan=2026-05-08
+- Source mode: data_context
+- Source label: data_context
+- Exact levels: setup=none; swept/lost=7378.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7378.0=swept_lost_low
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: low to flush and recover back through 7378.
+
+### data\research\mancini\daily-plans\2026-05-08-may-11-es-plan.md:117 `data_only`
+
+- Plan/date context: # 2026-05-08 May 11 ES Plan | pub=2026-05-08 | plan=2026-05-08
+- Source mode: data_context
+- Source label: data_context
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7337.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: - 7337: quality long if yesterday's low flushes and recovers.
+
+### data\research\mancini\daily-plans\2026-05-08-may-11-es-plan.md:146 `data_only`
+
+- Plan/date context: # 2026-05-08 May 11 ES Plan | pub=2026-05-08 | plan=2026-05-08
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7391.0=current_price_context; 7402.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: - Does 7391 shelf failed-breakdown outperform shallow 7402 backtests near all-time highs?
+
+### data\research\mancini\daily-plans\2026-05-08-may-11-es-plan.md:147 `data_only`
+
+- Plan/date context: # 2026-05-08 May 11 ES Plan | pub=2026-05-08 | plan=2026-05-08
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7337.0=current_price_context; 7345.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: - Does the 7337 prior-low failed breakdown retain high expectancy after 7345 fails?
+
 
 ## undated
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:18 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7180.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7180.0=actual_setup_level; 7200.0=current_price_context; 7204.0=current_price_context
+- S/R sanity: 7180.0 coincides_partially via prose L3 7180
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-28 Closing update #ES_F: Nothing to do now but ride runner. ES is in a tight flag again mostly 7180-7200/05 now. 7204 was target for the failed breakdown of 7180 given here/in newsletter. Hold runner for breakout leg. Newsletter out soon with next entry, and the next macro target
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:33 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=7185.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7208.0
+- Level roles: 7185.0=swept_lost_low; 7208.0=target_or_response
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-27 Last eve - 6th Sunday in a row - we got another gap down, into Failed Breakdown in #ES_F. Per Friday newsletter, we swept 7185, recovered, ripped to 7208 overnight.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:36 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7085.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7200.0=current_price_context; 7085.0=actual_setup_level; 7160.0=current_price_context; 7174.0=current_price_context; 7178.0=current_price_context; 7193.0=current_price_context; 7211.0=current_price_context
+- S/R sanity: 7085.0 coincides_partially via prose L44 7085
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-25 Closing update #ES_F: Nice tag of 7200. We got long on the 7085 Failed Breakdown yesterday (7160 reclaim also a long given this morning). Today's targets were 7174, 7178, 7193, 7200 (hit). 7211+ next week. Newsletter out soon with the next set of entries from here for Sunday
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:37 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7085.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=actual_setup_level; 7160.0=current_price_context
+- S/R sanity: 7085.0 coincides_partially via prose L44 7085
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=1:55PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-25 With work done today - just let the runner pay now. Primary entry was the textbook (use this to study the setup) Failed breakdown of 7085 at 1:55PM yesterday. We are +110 now. I also gave 7160 reclaim this AM.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:39 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7085.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=actual_setup_level; 7160.0=current_price_context
+- S/R sanity: 7085.0 coincides_partially via prose L44 7085
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=1:50PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-25 We our running targets nicely now. Two entries were given live & in newsletter: 1) The 1:50PM 7085 Failed Breakdown yesterday. +110 points now 2) The 7160 reclaim, given this morning.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:41 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7085.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7174.0=current_price_context; 7085.0=actual_setup_level
+- S/R sanity: 7085.0 coincides_partially via prose L44 7085
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=1:50PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-25 There's 7174 1st target hit in #ES_F. The main long was the textbook Failed Breakdown of 7085 at 1:50PM yesterday given live AND in newsletter in advance. We went +100 on it
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:44 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7160.0=current_price_context; 7174.0=current_price_context; 7178.0=current_price_context; 7186.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-25 Good level to level scalp in #ES_F for those who missed yesterday's monster 100 point Failed Breakdown. Our trigger yesterday was the bear trap and recovery of the 7085 shelf (Sun/Tues lows). 1hr ago, I posted 7160 reclaims see 7174 (almost), 7178, 7186+
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:46 `needs_bigger_crop`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7085.0; swept/lost=7085.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=actual_setup_level+swept_lost_low; 7180.0=current_price_context
+- S/R sanity: 7085.0 coincides_partially via prose L44 7085
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=1:50PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup
+- Support context: none
+- Resistance context: none
+- Verdict: needs_bigger_crop
+- Raw passage: 2026-04-25 Volatility low. We got our long yesterday though 1:50PM in #ES_F: We went "elevator down", flushed the 7085 shelf, recovered (Failed Breakdown), rallied +100. 7085-7180=massive flag.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:49 `needs_bigger_crop`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: planned_setup
+- Source label: source_planned_fbd
+- Exact levels: setup=7085.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=actual_setup_level
+- S/R sanity: 7085.0 coincides_partially via prose L44 7085
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
+- Support context: none
+- Resistance context: none
+- Verdict: needs_bigger_crop
+- Raw passage: 2026-04-25 We got paid on a 100 point long yesterday: Textbook Failed Breakdown of the Sunday/Tuesday 7085 shelf of lows. #ES_F swept it, trapped bears, went +100. Now, do nothing but wait for next trap
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:52 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:53AM, 1:50PM; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-24 04/24/2026 07:53AM - Yesterday 1:50PM we got a textbook Failed Breakdown long. Given live + in newsletter, the trigger was trap of 7085 shelf. The long paid 100 points in #ES_F
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:54 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7122.0=current_price_context; 7135.0=current_price_context; 7147.0=current_price_context; 7160.0=current_price_context; 7180.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-24 Closing update #ES_F: Textbook failed breakdown on the sweep and recovery of 7085. Targets were 7122, 7135, 7147, 7160 (3/4 hit). Just ride runner now. 7085-7180=a massive bull flag to setup next trend leg. Newsletter out soon with next entries
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:55 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-24 For those new to Failed Breakdowns, what we just saw was textbook - given live 30mins ago and in newsletter at 4pm. 7085 was a big shelf of lows (Sunday low + Tuesday low). We flushed it by 5 points, recovered, longed.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:58 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: data_context
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7122.0=current_price_context; 7129.0=current_price_context; 7135.0=current_price_context; 7147.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-24 I posted watch traps of 7085. We swept it, recovered, and ran. 7122 1st target - hit. 7129, 7135, 7147 above
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:61 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7129.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7129.0=actual_setup_level; 7160.0=current_price_context; 7166.0=current_price_context; 7180.0=current_price_context
+- S/R sanity: 7129.0 coincides_partially via prose L46 7085-7180
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-24 Action is as precise as it gets today in #ES_F. 7129 Failed Breakdown got us long last evening. Today's targets given 8am were 7160, 7166, 7180 final. We hit 7180 exact, topped out.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:64 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7129.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7129.0=actual_setup_level; 7147.0=current_price_context; 7160.0=current_price_context; 7166.0=current_price_context; 7180.0=current_price_context
+- S/R sanity: 7129.0 coincides_partially via prose L46 7085-7180
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-24 Perfect trade plan today in #ES_F. Today's targets off the 7129 Failed Breakdown last evening OR the 7147 sweep this morning were 7160 (hit), 7166 (hit), 7180 final (hit exact, dipped). 7180 is resistance of a week long bull flag.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:68 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7129.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7160.0=current_price_context; 7166.0=current_price_context; 7180.0=current_price_context; 7129.0=actual_setup_level; 7147.0=current_price_context
+- S/R sanity: 7129.0 coincides_partially via prose L62 7129
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-24 It took its time but #ES_F arriving at today's final target. Three targets were given for today's session at 8am: 7160 (hit), 7166 (hit), 7180 (hit). Entries were either the 7129 Failed Breakdown last evening OR the 7147 sweep this morning.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:70 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: data_context
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7129.0; swept/lost=7129.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7129.0=actual_setup_level+swept_lost_low; 7147.0=current_price_context
+- S/R sanity: 7129.0 coincides_partially via prose L62 7129
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_data_context
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-24 We are grinding up slowly in another 0 volatility session. We did get a nice burst ~8pm last evening. We flushed Wednesday's big 7129 low, recovered, longed. 7147 then became support today, just swept it 845AM & recovered.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:72 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7129.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7129.0=actual_setup_level; 7149.0=current_price_context; 7160.0=current_price_context; 7166.0=current_price_context; 7180.0=current_price_context
+- S/R sanity: 7129.0 coincides_partially via prose L62 7129
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-24 Low vol continues in #ES_F but just keep riding that runner. Nothing to trade in tight congestion. The 7129 Failed Breakdown was our long trigger last evening and went +40. 7149 was support today, we just trapped it, and ran. Targets were 7160 (hit), 7166 (hit), 7180 (not yet)
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:76 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=7105.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7129.0=current_price_context; 7105.0=swept_lost_low
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:57AM, 8pm, 4pm; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-23 04/23/2026 07:57AM - After hours traders getting all action this week. After 8pm last night we got a perfect Failed Breakdown, given in 4pm newsletter. #ES_F swept a big low at 7129 down to 7105, recovered, long +30 now
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:78 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7153.0=current_price_context; 7165.0=current_price_context; 7180.0=current_price_context; 7230.0=current_price_context; 7147.0=current_price_context
+- S/R sanity: 7097.0 coincides_partially via prose L78 7097
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-23 CLosing update #ES_F: Long continues to pay from the 7097 Failed Breakdown yesterday. Today's targets were 7153, 7165, then 7180. We've hit all but 7180. Once 7180 clears we begin the breakout leg to 7230+. 7147 remains support. Newsletter out soon with next entries
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:79 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7147.0=current_price_context; 7153.0=current_price_context; 7165.0=current_price_context; 7180.0=current_price_context
+- S/R sanity: 7097.0 coincides_partially via prose L78 7097
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-23 Little to do now but just hold runners. We got long on the 7097 Failed Breakdown in #ES_F yesterday. Today's targets were 7147, 7153, 7165, 7180. 3/4 are hit.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:81 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7147.0=current_price_context; 7153.0=current_price_context; 7165.0=current_price_context; 7180.0=current_price_context
+- S/R sanity: 7097.0 coincides_partially via prose L78 7097
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-23 Still no volatility in #ES_F but levels respecting well. After the 7097 Failed Breakdown long yesterday, today's targets were 7147 (hit), 7153 (hit), 7165 (high of day), 7180 (not yet)
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:83 `needs_bigger_crop`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: planned_setup
+- Source label: source_planned_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7147.0=current_price_context; 7153.0=current_price_context; 7165.0=current_price_context; 7180.0=current_price_context; 7085.0=current_price_context; 7185.0=current_price_context
+- S/R sanity: 7097.0 coincides_partially via prose L78 7097
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
+- Support context: none
+- Resistance context: none
+- Verdict: needs_bigger_crop
+- Raw passage: 2026-04-23 No volatility at all today in #ES_F, midday chop. Wait for a vol spike to engage. 7097 Failed Breakdown yesterday was our long trigger. Targets were 7147, 7153 (hit), 7165 (high of day), 7180. 7085-7185= a massive flag
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:86 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7147.0=current_price_context; 7153.0=current_price_context; 7165.0=current_price_context; 7180.0=current_price_context; 7085.0=current_price_context; 7100.0=current_price_context
+- S/R sanity: 7097.0 coincides_partially via prose L78 7097
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=11:50AM, 8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-23 04/22/2026 11:50AM - Mid-day chop in #ES_F. 7097 Failed Breakdown was our long trigger with 7147 target. Today's targets given 8am were 7153 (hit), 7165 (hit), 7180. 7085-7100 now is a massive flag - do not overtrade in this range. It sets up an enormous trend leg
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:88 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=current_price_context; 7147.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-23 Targets continue to hit precisely in #ES_F. Long trigger was the 7097 low Failed Breakdown we got after 4pm yesterday (given in newsletter). Main target was 7147.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:90 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7147.0=current_price_context
+- S/R sanity: 7097.0 coincides_partially via prose L78 7097
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-23 We continue to run in #ES_F & work through today's target slate. 7097 Failed Breakdown was the long trigger given 30mins in advance in newsletter. Target was 7147 - stuck there all night.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:92 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7147.0=current_price_context
+- S/R sanity: 7097.0 coincides_partially via prose L78 7097
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-23 As always the moves come after hours/eve & daytime traders get chop in #ES_F. Hold runner. Our long trigger was the 7097 Failed Breakdown after 4pm yesterday (given in advance in newsletter). Target was 7147. Stuck here for hours
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:94 `needs_bigger_crop`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=7147.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7147.0
+- Level roles: 7097.0=actual_setup_level; 7147.0=swept_lost_low+target_or_response
+- S/R sanity: 7097.0 coincides_partially via prose L78 7097
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=3:40PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup
+- Support context: none
+- Resistance context: none
+- Verdict: needs_bigger_crop
+- Raw passage: 2026-04-23 Back to low volatility in #ES_F - wait patiently for the next big trap. Long setup was given in newsletter at 3:40PM yesterday: Failed Breakdown of yesterday's big 7097 low. We lost it, recovered, ripped to 7147 target.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:98 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7085.0=current_price_context; 7147.0=current_price_context
+- S/R sanity: 7097.0 coincides_partially via prose L78 7097
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:56AM, 4pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-22 04/22/2026 07:56AM - Last eve after 4pm we got a textbook Failed Breakdown. Newsletter readers got it 30mins prior. Setup was Failed Breakdown of 7097. We trapped it to 7085, recovered, bought. Target was 7147, hit
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:103 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7180.0
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level
+- S/R sanity: 7120.0 coincides_partially via prose L84 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=11:30AM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-22 Very good to see some mild volatility returning in #ES_F. After Sunday's 7085 backtest long OR 7120 Failed Breakdown, we ripped to 7180s this morning. 7120 then became support. Held exact 11:30AM for 20 points, failed
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:106 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7180.0
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level
+- S/R sanity: 7120.0 coincides_partially via prose L87 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=11:30AM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-22 Vol slowing again in #ES_F after a morning burst but lvls still respecting. 7085 backtest or 7120 Failed Breakdown got us long Sunday. We rallied to 7180s. 7120 then became support as posted, held exact 11:30AM, just swept
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:108 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7147.0=current_price_context
+- S/R sanity: 7120.0 coincides_partially via prose L89 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-22 We finally got a little volatility in #ES_F after non-stop grind up from Sunday's 7085 direct long OR 7120 Failed Breakdown. 7120 was support as posted & we just sold down there and held exact for 20 points. Bulls must recover 7147-53 to progress
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:110 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7180.0
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7180.0=target_or_response; 7147.0=current_price_context
+- S/R sanity: 7120.0 coincides_partially via prose L93 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-22 Some mild volatility now in #ES_F. Long trigger was Sunday's 7085 backtest OR the 7120 Failed Breakdown. We ran to 7180's. 7147-53 was today's support as posted. Held exact on test #1, bounced 24 points. Now flushed
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:112 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7147.0=current_price_context
+- S/R sanity: 7120.0 coincides_partially via prose L93 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-22 While volatility is low, lvls are ultra precise in #ES_F. Our long trigger given here + newsletter was the 7085 Backtest/7120 Failed Breakdown Sunday evening. I just posted 7147-50 was support today. Held exact
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:114 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7147.0=current_price_context; 7160.0=current_price_context; 7178.0=current_price_context
+- S/R sanity: 7120.0 coincides_partially via prose L95 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-22 0 to do but ride runner in #ES_F until we get vol. Long still working from Sunday's entry given here & newsletter (7085 backtest long OR 7120 Failed Breakdown both worked). Targets were 7147-53, 7160, 7178 (all hit)
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:116 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level
+- S/R sanity: 7120.0 coincides_partially via prose L99 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:58AM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-21 04/21/2026 07:58AM - Note: Once again there is nothing to do now until we get an "elevator down sell" to the entries given in the newsletter. This weeks long was - as always - given to readers before/at the Sunday open. We are long from the 7085 backtest OR the 7120 Failed Breakdown. Ride runner
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:117 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7147.0=current_price_context; 7160.0=current_price_context; 7166.0=current_price_context; 7178.0=current_price_context
+- S/R sanity: 7120.0 coincides_partially via prose L99 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:57AM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-21 04/21/2026 07:57AM - Every week the same in #ES_F. Sunday gap down. We long on the Failed Breakdown (7085 backtest long or 7120 Failed Breakdown), then ride runner all week. Targets I gave were 7147-53 (hit), 7160, 7166, 7178 (all hit)
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:128 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7137.0=current_price_context; 7147.0=current_price_context; 7160.0=current_price_context; 7166.0=current_price_context; 7178.0=current_price_context
+- S/R sanity: 7120.0 coincides_partially via prose L108 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-21 All targets hit in #ES_F. 7085 was support given in Friday's newsletter (held exact). 7120 Failed Breakdown was another entry. Targets were 7137 (hit), 7147-53 (hit). 7160 was 1st bonus, hit. 7166, 7178 above.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:130 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=current_price_context; 7137.0=current_price_context; 7147.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-21 This is Deja Vu from last Sunday and for last month all we had to do is long the Sunday trap & take the week off in #ES_F. 7085 was the Friday breakout backtest long. 7120 was the Failed Breakdown. Targets were 7137 (hit), 7147-53 (hit).
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:132 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7137.0=current_price_context; 7147.0=current_price_context
+- S/R sanity: 7120.0 coincides_partially via prose L112 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=6pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-21 Every Sunday is exact same in #ES_F, gap down, bear trap, Failed Breakdown. 7085 was the backtest long given in newsletter. Held to the tick. 7120 Failed Breakdown was given here 6pm. Targets were 7137 (hit), 7147-53 (hit).
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:141 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7131.0=current_price_context; 7154.0=current_price_context; 7177.0=current_price_context; 7149.0=current_price_context; 7120.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-18 Closing update #ES_F: Its been +386 points from Sunday's 6793 Failed Breakdown. Today's target was 7131 (hit) with 7154, 7177 first bonus set. ES is tired now - let it retrace as warned 1hr ago. 7149 then 7120 are 1st retracement zones. Newsletter out soon with how to trade them
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:142 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7131.0=current_price_context; 7154.0=current_price_context; 7177.0=current_price_context; 7188.0=current_price_context; 7200.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-18 After +386 points from Sunday's 6793 Failed Breakdown, we've run almost all available targets today in #ES_F. Given at 8am they were 7131 main target (hit). Bonus were 7154 (hit), 7177 (hit), 7188 (almost), 7200.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:144 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7131.0=current_price_context; 7154.0=current_price_context; 7177.0=current_price_context; 7188.0=current_price_context; 7200.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-18 We continue to print as best long of 2026 pays, now +386 points since our Sunday 6793 Failed Breakdown in #ES_F. Today's targets were given at 8am as always. 7131 was main target (hit). Bonus were 7154 (hit), 7177 (hit), 7188, then 7200
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:146 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=current_price_context; 7103.0=current_price_context; 7116.0=current_price_context; 7131.0=current_price_context; 7154.0=current_price_context; 7177.0=current_price_context; 7188.0=current_price_context; 7200.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-18 Lockout rally continues in #ES_F from our original 6793 Sunday Failed Breakdown. We are now completing bonus targets. Targets given 8am were 7103, 7116, 7131 (all hit). Bonus were 7154, 7177 (2 points shy). 7188, 7200 above
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:148 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7103.0=current_price_context; 7116.0=current_price_context; 7131.0=current_price_context; 7154.0=current_price_context; 7162.0=current_price_context; 7177.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-18 The best long in years continues to print in #ES_F from our original 6793 Failed Breakdown on Sunday. Today's targets given 8am + newsletter were 7103, 7116, 7131 (all hit). Bonus slate today was 7154 (just hit), 7162, 7177.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:155 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7058.0=current_price_context; 7073.0=current_price_context; 7086.0=current_price_context; 7093.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:54AM, 10am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-17 04/17/2026 07:54AM - Day #5 of Lockout Rally in #ES_F. Long still paying from Sunday's 6793 Failed Breakdown. We did get a rare add yesterday though. I posted 10am 7058 reclaim triggers up. Targets were 7073, 7086, 7093. All hit
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:157 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7058.0=current_price_context; 7073.0=current_price_context; 7086.0=current_price_context; 7093.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=10am; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-17 Closing update #ES_F: 7058 support continues to defend nicely. At 10am I posted 7058 reclaims see 7073, 7086, 7093. 2/3 tagged. We then backtested 7058 2x exactly. Same upsides. We can start a dip under 7058. Newsletter out soon with next failed breakdown entries for that dip
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:165 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-17 Our runner from Sunday's 6793 Failed Breakdown is still paying
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:168 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7073.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-17 Micro injection of vol in #ES_F finally but we need much red more to get interested. After a 280 point rally from Sunday's 6793 failed breakdown, 7073 was today's 1st target.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:170 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7073.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-17 Micro injection of volatility in #ES_F finally but we need much red more to get interested. After a 280 point rally from Sunday's 6793 failed breakdown, 7073 was today's 1st target.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:172 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7073.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-17 0 volatility lockout rally continues in #ES_F and 0 to do but hold our runner from Sunday's 6793 Failed Breakdown. We need a deep sell to open new entries. Yesterday's bonus target was 7073, stuck here
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:174 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7048.0=current_price_context; 7073.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-16 Day 4 lockout rally in #ES_F after Sunday evenings 6793 Failed Breakdown, given live & in newsletter. Yesterdays targets gven 8am were 7048 main (hit), 7073 bonus (hit)
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:176 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6948.0=current_price_context; 6958.0=current_price_context; 6967.0=current_price_context; 7002.0=current_price_context; 7021.0=current_price_context; 7050.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-15 Closing update #ES_F: +230 points from Sunday's 6793 Failed Breakdown. Again - nothing to do but ride runner until we get a dip. Today's 8am targets were 6948, 6958, 6967 (all hit). Bonus target was 7002 (exact high). 7021 next then 7050. Newsletter out soon with entries
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:177 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6792.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6792.0=actual_setup_level; 6948.0=current_price_context; 6958.0=current_price_context; 6967.0=current_price_context; 6978.0=current_price_context; 6994.0=current_price_context; 7002.0=current_price_context
+- S/R sanity: 6792.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-15 The best long of 2026 just keeps paying. 6792 Failed Breakdown Sunday was our recent major add in #ES_F. Today's targets given 8am were 6948, 6958, 6967 (all hit). I then gave a bonus slate of 6978 (hit), 6994 (hit), 7002 (just hit)
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:179 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6948.0=current_price_context; 6958.0=current_price_context; 6967.0=current_price_context; 6978.0=current_price_context; 6994.0=current_price_context; 7002.0=current_price_context; 7021.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-15 0 volatility, 0 to do in #ES_F but ride runner until we get next pullback to trap bears again. We are +200 points from the Sunday 6793 Failed Breakdown, given live. Today's targets were 6948, 6958, 6967 (all hit). Bonus were 6978, 6994 (here). 7002, 7021 next
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:181 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6948.0=current_price_context; 6958.0=current_price_context; 6967.0=current_price_context; 6978.0=current_price_context; 6994.0=current_price_context; 7002.0=current_price_context; 7021.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-15 We are still running targets in #ES_F now +200 from Sunday evenings 6793 Failed Breakdown given live. Today's targets given 8am were 6948, 6958, 6967 (all hit). Bonus set were 6978 (hit), 6994 (hit), 7002, then 7021 still bonus.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:184 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6948.0=current_price_context; 6858.0=current_price_context; 6967.0=current_price_context; 6978.0=current_price_context; 7002.0=current_price_context; 7021.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-15 Still nothing to do but let our runner work, now +184 point from Sunday's 6793 Failed Breakdown given live in #ES_F. Today's target slate was given at 8am: 6948 (hit), 6858 (hit), 6967 (hit). Bonus slate was 6978 (hit), 7002 then 7021 if ES wants more.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:186 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=2:55PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-15 Biggest long of 2026 continues to pay and we are working today's targets in #ES_F. 6793 Failed Breakdown was our entry Sunday. I warned yesterday 2:55PM that much more upside was coming
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:188 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0, 6809.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6809.0=actual_setup_level; 6937.0=current_price_context
+- S/R sanity: 6793.0 coincides_partially via prose L208 6793; 6809.0 coincides_partially via prose L208 6809
+- ES 1m window/chart: multi-level split required; crop each stated setup level separately
+- Blockers: multi_setup_row_split_required, no_existing_chart_window_match, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-15 Little to do now in #ES_F. Entries were the Sunday 6793 Failed Breakdown (given live Sunday 6pm) and the 6809 Failed Breakdown yesterday. I posted 2:55PM yesterday lots more green ahead with 6937 next, and we hit
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:190 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6593.0, 6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6593.0=actual_setup_level; 6360.0=actual_setup_level
+- S/R sanity: 6593.0 does_not_coincide; 6360.0 does_not_coincide
+- ES 1m window/chart: multi-level split required; crop each stated setup level separately
+- Blockers: multi_setup_row_split_required, no_existing_chart_window_match, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-14 04/14/2026 07:59AM - Note: There is just nothing to do now. Most of us have been long at least since last Tuesday's 6593 Failed Breadkown, but many since the 6360 Failed Breakdown. Now, we just let the runner pay. There are no setups until we get the next deep sell/bear trap per newsletter
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:191 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6809.0=current_price_context; 6912.0=current_price_context; 6937.0=current_price_context
+- S/R sanity: 6793.0 coincides_partially via prose L208 6793
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:58AM, 2:55PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-14 04/14/2026 07:58AM - Best long of 2026 keeps paying in #ES_F. Recent adds were 6793 Failed Breakdown Sunday (given live) and 6809 reclaim ystd (given live). I posted 2:55PM lots more was ahead with 6912, 6937 targets (hit).
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:194 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6903.0=current_price_context; 6912.0=current_price_context; 6937.0=current_price_context
+- S/R sanity: 6793.0 coincides_partially via prose L208 6793
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-14 CLosing update #ES_F: +100 points now on the long from the 6793 Failed Breakdown last eve. Now nothing to do but ride runner as we rally. 6903, 6912, then 6937 are next from here. This is what a 1 month flag breakout from last Tuesday looks like. Newsletter out soon with entries
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:195 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6809.0=current_price_context; 6848.0=current_price_context; 6872.0=current_price_context; 6886.0=current_price_context; 6903.0=current_price_context
+- S/R sanity: 6793.0 coincides_partially via prose L208 6793
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-14 We are officially +100 points on our long from the 6793 Failed Breakdown last evening in #ES_F (for those who missed it, I gave the 6809 Reclaim at 8am). Targets given were 6848 main (hit). Bonus were 6872 (hit), 6886 (hit), 6903 (almost).
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:197 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6809.0=current_price_context; 6592.0=current_price_context; 6848.0=current_price_context; 6872.0=current_price_context; 6886.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-14 Runners still paying. 0 to do until the next selloff then bear trap/Failed Breakdown in #ES_F. 6809 reclaim was long trigger given live 8am (newsletter readers been long since 6592 last week). Targets given 8am were 6848 main (hit), 6872, 6886 bonus (hit)
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:207 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=current_price_context; 6802.0=current_price_context; 6818.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=6:01PM, 8:45PM; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-13 In #ES_F, all Sunday gaps down produces a bear trap/Failed Breakdown. I tweeted 6:01PM that 6793 reclaim triggers up. We triggered 8:45PM. Targets were 6802 1st (hit), 6818-22 2nd (hit)
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:209 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 coincides_partially via prose L220 6592
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-13 Gap down open for #ES_F as we finally get a healthy retrace after last weeks relentless 280+ point rally following Tuesday's 6592 Failed Breakdown.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:211 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 coincides_partially via prose L220 6592
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=11:30AM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-13 Last Tuesday 11:30AM a Failed Breakdown of 6592 got us long in #ES_F for +280 point rally, given live here/in newsletter (this was before Iran deal headline, as institutions front run). Gap down likely today on "No deal".
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:220 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=current_price_context; 6848.0=current_price_context; 6872.0=current_price_context; 6882.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-11 Volatility remains 0 in #ES_F. As warned, no volatility=no trades. Runners still working from Tuesday's 6592 Macro Failed Breakdown. 6848-6872=a tight flag. Today's 1st target was 6882, we ran there, rejected back into the range.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:222 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=current_price_context; 6809.0=current_price_context; 6848.0=current_price_context; 6872.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-11 There continues to be 0 volatility in #ES_F. No volatility=no trades, hold runners. Runners still working from 1) Tuesdays 6592 Macro Failed Breakdown and 2) Yesterdays 6809 reclaim. 6848-6872=a new bull flag.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:224 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 coincides_partially via prose L220 6592
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-11 Volatility still dead in #ES_F & simply let runners work now. On Tuesday we saw a massive macro Failed Breakdown of 6592 (given live + in newsletter) & we've been long since for 280+ points
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:226 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6809.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=current_price_context; 6809.0=actual_setup_level; 6872.0=current_price_context; 6848.0=current_price_context; 6882.0=current_price_context
+- S/R sanity: 6809.0 coincides_partially via prose L208 6809
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-11 No volatility in #ES_F and 0 to do until we get some. Runners still paying from Tuesday's 6592 reclaim and yesterday's 6809 Failed Breakdown. 6872-6848=chop/flag. Today's 1st target was 6882, and we ran there, and dipped.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:232 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 coincides_partially via prose L220 6592
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-10 While longs continue to pay in (now +280 points from the 6592 Failed Breakdown on Tuesday given out live) good time to zoom out. As posted Saturday, #ES_F spent a month in a clean downtrend channel/flag. Tuesday, it broke out.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:249 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6593.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6593.0=actual_setup_level
+- S/R sanity: 6593.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-10 No volatility now as #ES_F is in day 2 of digesting Tuesday's 250 point 6593 Failed Breakdown long. Be very careful trading 0 vol - traps and fakeouts are extreme.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:251 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6593.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6593.0=actual_setup_level
+- S/R sanity: 6593.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-09 Tuesday saw a 250 point rally, and we were long via the 6593 Failed Breakdown. After, I warned all yesterday that it takes #ES_F days to "digest" the move. This was ystd
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:256 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level; 6809.0=current_price_context; 6819.0=current_price_context; 6833.0=current_price_context; 6844.0=current_price_context; 6853.0=current_price_context
+- S/R sanity: 6592.0 coincides_partially via prose L264 6592
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-09 Slow day as #ES_F digests yesterday's 250 point rally, which was triggered by the 6592 Failed Breakdown (given both here and in newsletter). We are getting scalps today. I posted at noon 6809 reclaims trigger long. Targets were 6819 (hit), 6833, 6844, 6853 above.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:258 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 coincides_partially via prose L264 6592
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-09 After yesterday's 250 point long off the 6592 Failed Breakdown (given to readers in newsletter and here for free) in #ES_F, today is a structure building day. We are still getting scalps.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:260 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 coincides_partially via prose L264 6592
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-09 As warned #ES_F is very generous - it gave us a 250 point long on the 6592 Failed Breakdown yesterday. The day after though, ES usually just gives chop, traps, poor quality as price builds structure
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:262 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 coincides_partially via prose L264 6592
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-09 After yesterday's 6592 Failed Breakdown played out for 250 points #ES_F now beginning the digestion/structure building phase. As warned, this takes hours before we get new trade
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:264 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 coincides_partially via prose L264 6592
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-09 As posted after +250 points from yesterday's 6592 Failed breakdown long, it takes a long time for #ES_F to "digest" the move and establish a new range. Until then, low quality
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:279 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: data_context
+- Source label: data_context
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=current_price_context; 6593.0=current_price_context; 6604.0=current_price_context; 6622.0=current_price_context; 6638.0=current_price_context; 6647.0=current_price_context; 6662.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=12:25PM; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-08 04/07/2026 12:25PM - The 6592 level remains an ATM machine today, flushing and recovering over and over in #ES_F. 6593 reclaim was the long trigger posted 40mins ago. Yet again, it recovered. Targets given were 6604 (hit), 6622 (hit). 6638, 6647, 6662+ if ES want more.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:292 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=6660.0
+- Level roles: 6592.0=actual_setup_level; 6622.0=current_price_context; 6660.0=target_or_response
+- S/R sanity: 6592.0 coincides_partially via prose L278 6592
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:53AM, 4pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-08 04/07/2026 07:53AM - After Sunday's 6592 Failed Breakdown triggered long in #ES_F, we spent ystd basing around 6622 magnet. After hrs traders got a fantastic long. Per 4pm newsletter, 6622 reclaims trigger up. We ran to 6660, dipped
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:294 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6593.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6593.0=actual_setup_level; 6624.0=current_price_context; 6638.0=current_price_context; 6647.0=current_price_context; 6670.0=current_price_context
+- S/R sanity: 6593.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-07 Closing update #ES_F: Very slow day but we've had two long triggers. The 6593 Failed Breakdown (given live 615PM last eve) and the 6624 trap (given a few hrs ago). Targets were 6638, 6647 (big res), then 6670 which is still outstanding. Newsletter out soon with next entries
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:305 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: planned_setup
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=current_price_context; 6604.0=current_price_context; 6616.0=current_price_context; 6624.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-06 After last nights 58 point long, 0 to do in #ES_F but wait for next sell. Every Sunday the same: We gap down into Failed Breakdown. Long trigger was 6592 reclaim given live. Targets were 6604, 6616, 6624. All hit
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:307 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=current_price_context; 6604.0=current_price_context; 6616.0=current_price_context; 6624.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=6:15PM; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-06 Last night, we got the standard Sunday long trigger in #ES_F, given live 6:15PM and in Friday's newsletter. Gap down, into Failed Breakdown. I posted 6592 recovery sees 6604, 6616, 6624. All hit
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:321 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6525.0=current_price_context; 6544.0=current_price_context; 6562.0=current_price_context; 6592.0=current_price_context; 6624.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-03 This market is handing out 100 point Failed Breakdowns like nothing in #ES_F & enormous payout here. 6525 reclaim long was given live here 8am + newsletter. Targets given were 6544 (hit), 6562 (hit), 6592 (hit), 6624 (hit)
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:323 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: planned_setup
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6520.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-03 Yet again, today's planned Failed Breakdown long played out in #ES_F. Beginning at 8am I posted to start today's rally 6520-25 had to recover. We spent 1.5hrs basing right below, then recovered.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:325 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6520.0=current_price_context; 6525.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L329 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-03 After a 290 point rally from Monday's 830pm 6360 Failed Breakdown, #ES_F finally dipped last evening. Levels respecting well so far today. 6520-25 had to reclaim as posted to start rally. We've been backtesting 6525 for 1hr
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:327 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6647.0=current_price_context; 6592.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L329 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-02 Monday 830pm, longs triggered on the 6360 Failed Breakdown in #ES_F and took us 290 points to do 6647 target yesterday. Last eve, we finally got a sell trigger. I posted 6592 fails we sell, down we went
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:329 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6467.0=current_price_context; 6490.0=current_price_context; 6524.0=current_price_context; 6575.0=current_price_context; 6592.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L329 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-01 Closing update #ES_F: Today's rip was caused by the same thing that causes all squeezes: A big Failed Breakdown of 6360 last evening. Targets today were 6467, 6490, 6524. 6575, 6592 next. Just hold runner for now. 6524=support. Newsletter out soon with next entries from here
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:331 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6467.0=current_price_context; 6490.0=current_price_context; 6524.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L329 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm, 8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-01 Absolutely incredible follow through on last nights 6360 Failed Breakdown in #ES_F, given in yesterday's 4pm newsletter. I warned at 8am to just hold runners today with targets being 6467 (hit), 6490 (hit), 6524 (hit).
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:333 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=current_price_context; 6467.0=current_price_context; 6490.0=current_price_context; 6524.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-01 Mid day chop time in #ES_F now, just hold runner. Long trigger was the 6360 (Sunday/Monday low) Failed Breakdown 830pm last eve. Targets were 6467 (hit), 6490 (hit), 6524 (not yet).
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:335 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6467.0=current_price_context; 6490.0=current_price_context; 6524.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L329 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-01 We went +134 points from last evenings 6360 Failed Breakdown in #ES_F, given in advance. 6360 was a shelf of lows from Sunday. We swept it, trapped bears, recovered. Targets were 6467 (hit), 6490 (hit), 6524 stretch target (not yet). Ride runner
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:337 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=6360.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level+swept_lost_low
+- S/R sanity: 6360.0 coincides_partially via prose L329 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-04-01 We are running the targets. Readers know I trade 1 setup: The Failed Breakdown. We got it 830pm last evening when we swept the 6360 shelf, trapped shorts, and recovered in #ES_F
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:339 `needs_bigger_crop`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=6353.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6353.0=swept_lost_low; 6447.0=current_price_context; 6467.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L329 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match
+- Support context: none
+- Resistance context: none
+- Verdict: needs_bigger_crop
+- Raw passage: 2026-04-01 Little to do now but ride runners. Per 4pm newsletter, our #ES_F long setup last eve was the Failed Breakdown of 6360 (down to 6353). We 6360 at 830pm, recovered, and ripped. Targets were 6447 (hit), 6467 (hit).
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:342 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6353.0=current_price_context; 6447.0=current_price_context; 6467.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L329 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-03-31 Last night 830pm, #ES_F got a textbook Failed Breakdown given to newsletter readers 4pm. Setup was Failed Breakdown of 6360 to 6353. We hit 6353 exact, recovered 6360. Targets were 6447, 6467 (hit)
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:344 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6367.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L329 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-03-31 Closing update #ES_F: Decent volatility today and plenty of setups. Watch for the Failed Breakdown of yesterday's 6360 low and bulls will need to recover 6367 to start us back up the range. Newsletter out soon with setups for tomorrow
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:355 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6367.0=current_price_context; 6385.0=current_price_context; 6411.0=current_price_context; 6454.0=current_price_context; 6476.0=current_price_context; 6492.0=current_price_context; 6520.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 2026-03-31 Push continues in #ES_F. Same drill every week: Thurs/Friday crash, Sunday gap down/Failed Breakdown/Monday rip. Per Friday 4pm newsletter 6367, 6385 & 6411 reclaims were ALL triggers. Targets were 6454 (hit). 6476, 6492, 6520 above
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:394 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: data_context
+- Source label: data_context
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6575.0=current_price_context; 6564.0=current_price_context; 6542.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Now flushing 6575 finally. 6564, 6542 below. 75 must reclaim to pop. Bears control<92
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:403 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6616.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6616.0=actual_setup_level; 6647.0=current_price_context; 6592.0=current_price_context; 6575.0=current_price_context; 6952.0=current_price_context
+- S/R sanity: 6616.0 coincides_partially via prose L405 6616
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Slow start to the day, but levels respecting well. After a strong evening Failed Breakdown of 6616 to 6647, #ES_F sold. 6592 and 6575 are key today as posted 8am. We held 6575 exact, bounced to 6952. 6592 will be a trappy region/magnet today
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:405 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=6616.0; recovered=none; non_acceptance=none; invalidation=none; target/response=6647.0
+- Level roles: 6616.0=swept_lost_low; 6647.0=target_or_response
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 6 days #ES_F was stuck in the same range, now expanding mildly. Last eve, we got a quality Failed Breakdown from 4pm newsletter: Swept 6616 daily low, recovered, ripped to 6647, sold.
+
+### data\backtest\es-long-bracket\derived\mancini-posts.jsonl:428 `data_only`
+
+- Plan/date context: 2026-04-29 Today is FOMC + earnings 2-4pm. Noise until then. Yesterday was all about 7147 though in #ES_F and tests/traps of it were our long. Held 5x. Targets were 7180 (hit last eve), 7186 (hit), 7193 | pub=None | plan=None
+- Source mode: planned_setup
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6623.0=current_price_context; 6592.0=current_price_context; 6647.0=current_price_context; 6690.0=current_price_context; 6638.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: I said all day that 6623 would be a magnet, and it has been. We are now rangebound with 6592 support (it was the Failed Breakdown here that triggered long to 6647 target), 6623 magnet, 6690 resistance. 6638, 6647, 6690 next. Newsletter out soon with entries
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:84 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7180.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7180.0=actual_setup_level; 7200.0=current_price_context; 7204.0=current_price_context
+- S/R sanity: 7180.0 coincides_partially via prose L66 7180
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: Nothing to do now but ride runner. ES is in a tight flag again mostly 7180-7200/05 now. 7204 was target for the failed breakdown of 7180 given here/in newsletter. Hold runner for breakout leg. Newsletter out soon with next entry, and the next macro target
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:154 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=7185.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7208.0
+- Level roles: 7185.0=swept_lost_low; 7208.0=target_or_response
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Last eve - 6th Sunday in a row - we got another gap down, into Failed Breakdown in #ES_F. Per Friday newsletter, we swept 7185, recovered, ripped to 7208 overnight.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:170 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7085.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7200.0=current_price_context; 7085.0=actual_setup_level; 7160.0=current_price_context; 7174.0=current_price_context; 7178.0=current_price_context; 7193.0=current_price_context; 7211.0=current_price_context
+- S/R sanity: 7085.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: Nice tag of 7200. We got long on the 7085 Failed Breakdown yesterday (7160 reclaim also a long given this morning). Today's targets were 7174, 7178, 7193, 7200 (hit). 7211+ next week. Newsletter out soon with the next set of entries from here for Sunday
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:177 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7085.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=actual_setup_level; 7160.0=current_price_context
+- S/R sanity: 7085.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=1:55PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: With work done today - just let the runner pay now. Primary entry was the textbook (use this to study the setup) Failed breakdown of 7085 at 1:55PM yesterday. We are +110 now. I also gave 7160 reclaim this AM.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:186 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7085.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=actual_setup_level; 7160.0=current_price_context
+- S/R sanity: 7085.0 coincides_partially via prose L206 7085
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=1:50PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We our running targets nicely now. Two entries were given live & in newsletter: 1) The 1:50PM 7085 Failed Breakdown yesterday. +110 points now 2) The 7160 reclaim, given this morning.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:195 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7085.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7174.0=current_price_context; 7085.0=actual_setup_level
+- S/R sanity: 7085.0 coincides_partially via prose L206 7085
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=1:50PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: There's 7174 1st target hit in #ES_F. The main long was the textbook Failed Breakdown of 7085 at 1:50PM yesterday given live AND in newsletter in advance. We went +100 on it
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:206 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7160.0=current_price_context; 7174.0=current_price_context; 7178.0=current_price_context; 7186.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Good level to level scalp in #ES_F for those who missed yesterday's monster 100 point Failed Breakdown. Our trigger yesterday was the bear trap and recovery of the 7085 shelf (Sun/Tues lows). 1hr ago, I posted 7160 reclaims see 7174 (almost), 7178, 7186+
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:215 `needs_bigger_crop`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7085.0; swept/lost=7085.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=actual_setup_level+swept_lost_low; 7180.0=current_price_context
+- S/R sanity: 7085.0 coincides_partially via prose L206 7085
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=1:50PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup
+- Support context: none
+- Resistance context: none
+- Verdict: needs_bigger_crop
+- Raw passage: Volatility low. We got our long yesterday though 1:50PM in #ES_F: We went "elevator down", flushed the 7085 shelf, recovered (Failed Breakdown), rallied +100. 7085-7180=massive flag.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:223 `needs_bigger_crop`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: planned_setup
+- Source label: source_planned_fbd
+- Exact levels: setup=7085.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=actual_setup_level
+- S/R sanity: 7085.0 coincides_partially via prose L206 7085
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
+- Support context: none
+- Resistance context: none
+- Verdict: needs_bigger_crop
+- Raw passage: We got paid on a 100 point long yesterday: Textbook Failed Breakdown of the Sunday/Tuesday 7085 shelf of lows. #ES_F swept it, trapped bears, went +100. Now, do nothing but wait for next trap
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:234 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:53AM, 1:50PM; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/24/2026 07:53AM - Yesterday 1:50PM we got a textbook Failed Breakdown long. Given live + in newsletter, the trigger was trap of 7085 shelf. The long paid 100 points in #ES_F
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:243 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7122.0=current_price_context; 7135.0=current_price_context; 7147.0=current_price_context; 7160.0=current_price_context; 7180.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: Textbook failed breakdown on the sweep and recovery of 7085. Targets were 7122, 7135, 7147, 7160 (3/4 hit). Just ride runner now. 7085-7180=a massive bull flag to setup next trend leg. Newsletter out soon with next entries
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:250 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: For those new to Failed Breakdowns, what we just saw was textbook - given live 30mins ago and in newsletter at 4pm. 7085 was a big shelf of lows (Sunday low + Tuesday low). We flushed it by 5 points, recovered, longed.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:261 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: data_context
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7122.0=current_price_context; 7129.0=current_price_context; 7135.0=current_price_context; 7147.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: I posted watch traps of 7085. We swept it, recovered, and ran. 7122 1st target - hit. 7129, 7135, 7147 above
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:277 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7129.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7129.0=actual_setup_level; 7160.0=current_price_context; 7166.0=current_price_context; 7180.0=current_price_context
+- S/R sanity: 7129.0 coincides_partially via prose L279 7129
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Action is as precise as it gets today in #ES_F. 7129 Failed Breakdown got us long last evening. Today's targets given 8am were 7160, 7166, 7180 final. We hit 7180 exact, topped out.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:293 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7129.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7129.0=actual_setup_level; 7147.0=current_price_context; 7160.0=current_price_context; 7166.0=current_price_context; 7180.0=current_price_context
+- S/R sanity: 7129.0 coincides_partially via prose L279 7129
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Perfect trade plan today in #ES_F. Today's targets off the 7129 Failed Breakdown last evening OR the 7147 sweep this morning were 7160 (hit), 7166 (hit), 7180 final (hit exact, dipped). 7180 is resistance of a week long bull flag.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:311 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7129.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7160.0=current_price_context; 7166.0=current_price_context; 7180.0=current_price_context; 7129.0=actual_setup_level; 7147.0=current_price_context
+- S/R sanity: 7129.0 coincides_partially via prose L293 7129
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: It took its time but #ES_F arriving at today's final target. Three targets were given for today's session at 8am: 7160 (hit), 7166 (hit), 7180 (hit). Entries were either the 7129 Failed Breakdown last evening OR the 7147 sweep this morning.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:320 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: data_context
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7129.0; swept/lost=7129.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7129.0=actual_setup_level+swept_lost_low; 7147.0=current_price_context
+- S/R sanity: 7129.0 coincides_partially via prose L320 7129
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_data_context
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We are grinding up slowly in another 0 volatility session. We did get a nice burst ~8pm last evening. We flushed Wednesday's big 7129 low, recovered, longed. 7147 then became support today, just swept it 845AM & recovered.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:329 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7129.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7129.0=actual_setup_level; 7149.0=current_price_context; 7160.0=current_price_context; 7166.0=current_price_context; 7180.0=current_price_context
+- S/R sanity: 7129.0 coincides_partially via prose L320 7129
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Low vol continues in #ES_F but just keep riding that runner. Nothing to trade in tight congestion. The 7129 Failed Breakdown was our long trigger last evening and went +40. 7149 was support today, we just trapped it, and ran. Targets were 7160 (hit), 7166 (hit), 7180 (not yet)
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:347 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=7105.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7129.0=current_price_context; 7105.0=swept_lost_low
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:57AM, 8pm, 4pm; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/23/2026 07:57AM - After hours traders getting all action this week. After 8pm last night we got a perfect Failed Breakdown, given in 4pm newsletter. #ES_F swept a big low at 7129 down to 7105, recovered, long +30 now
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:356 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7153.0=current_price_context; 7165.0=current_price_context; 7180.0=current_price_context; 7230.0=current_price_context; 7147.0=current_price_context
+- S/R sanity: 7097.0 coincides_partially via prose L356 7097
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: CLosing update #ES_F: Long continues to pay from the 7097 Failed Breakdown yesterday. Today's targets were 7153, 7165, then 7180. We've hit all but 7180. Once 7180 clears we begin the breakout leg to 7230+. 7147 remains support. Newsletter out soon with next entries
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:363 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7147.0=current_price_context; 7153.0=current_price_context; 7165.0=current_price_context; 7180.0=current_price_context
+- S/R sanity: 7097.0 coincides_partially via prose L356 7097
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Little to do now but just hold runners. We got long on the 7097 Failed Breakdown in #ES_F yesterday. Today's targets were 7147, 7153, 7165, 7180. 3/4 are hit.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:372 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7147.0=current_price_context; 7153.0=current_price_context; 7165.0=current_price_context; 7180.0=current_price_context
+- S/R sanity: 7097.0 coincides_partially via prose L356 7097
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Still no volatility in #ES_F but levels respecting well. After the 7097 Failed Breakdown long yesterday, today's targets were 7147 (hit), 7153 (hit), 7165 (high of day), 7180 (not yet)
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:381 `needs_bigger_crop`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: planned_setup
+- Source label: source_planned_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7147.0=current_price_context; 7153.0=current_price_context; 7165.0=current_price_context; 7180.0=current_price_context; 7085.0=current_price_context; 7185.0=current_price_context
+- S/R sanity: 7097.0 coincides_partially via prose L365 7180-7085
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
+- Support context: none
+- Resistance context: none
+- Verdict: needs_bigger_crop
+- Raw passage: No volatility at all today in #ES_F, midday chop. Wait for a vol spike to engage. 7097 Failed Breakdown yesterday was our long trigger. Targets were 7147, 7153 (hit), 7165 (high of day), 7180. 7085-7185= a massive flag
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:392 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7147.0=current_price_context; 7153.0=current_price_context; 7165.0=current_price_context; 7180.0=current_price_context; 7085.0=current_price_context; 7100.0=current_price_context
+- S/R sanity: 7097.0 coincides_partially via prose L374 7085-7185
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=11:50AM, 8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/22/2026 11:50AM - Mid-day chop in #ES_F. 7097 Failed Breakdown was our long trigger with 7147 target. Today's targets given 8am were 7153 (hit), 7165 (hit), 7180. 7085-7100 now is a massive flag - do not overtrade in this range. It sets up an enormous trend leg
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:401 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=current_price_context; 7147.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Targets continue to hit precisely in #ES_F. Long trigger was the 7097 low Failed Breakdown we got after 4pm yesterday (given in newsletter). Main target was 7147.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:410 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7147.0=current_price_context
+- S/R sanity: 7097.0 coincides_partially via prose L392 7085-7100
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We continue to run in #ES_F & work through today's target slate. 7097 Failed Breakdown was the long trigger given 30mins in advance in newsletter. Target was 7147 - stuck there all night.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:419 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7147.0=current_price_context
+- S/R sanity: 7097.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: As always the moves come after hours/eve & daytime traders get chop in #ES_F. Hold runner. Our long trigger was the 7097 Failed Breakdown after 4pm yesterday (given in advance in newsletter). Target was 7147. Stuck here for hours
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:428 `needs_bigger_crop`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=7147.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7147.0
+- Level roles: 7097.0=actual_setup_level; 7147.0=swept_lost_low+target_or_response
+- S/R sanity: 7097.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=3:40PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context
+- Support context: none
+- Resistance context: none
+- Verdict: needs_bigger_crop
+- Raw passage: Back to low volatility in #ES_F - wait patiently for the next big trap. Long setup was given in newsletter at 3:40PM yesterday: Failed Breakdown of yesterday's big 7097 low. We lost it, recovered, ripped to 7147 target.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:441 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7085.0=current_price_context; 7147.0=current_price_context
+- S/R sanity: 7097.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:56AM, 4pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/22/2026 07:56AM - Last eve after 4pm we got a textbook Failed Breakdown. Newsletter readers got it 30mins prior. Setup was Failed Breakdown of 7097. We trapped it to 7085, recovered, bought. Target was 7147, hit
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:467 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7180.0
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level
+- S/R sanity: 7120.0 coincides_partially via prose L451 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=11:30AM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Very good to see some mild volatility returning in #ES_F. After Sunday's 7085 backtest long OR 7120 Failed Breakdown, we ripped to 7180s this morning. 7120 then became support. Held exact 11:30AM for 20 points, failed
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:483 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7180.0
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level
+- S/R sanity: 7120.0 coincides_partially via prose L467 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=11:30AM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Vol slowing again in #ES_F after a morning burst but lvls still respecting. 7085 backtest or 7120 Failed Breakdown got us long Sunday. We rallied to 7180s. 7120 then became support as posted, held exact 11:30AM, just swept
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:492 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7147.0=current_price_context
+- S/R sanity: 7120.0 coincides_partially via prose L483 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We finally got a little volatility in #ES_F after non-stop grind up from Sunday's 7085 direct long OR 7120 Failed Breakdown. 7120 was support as posted & we just sold down there and held exact for 20 points. Bulls must recover 7147-53 to progress
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:501 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7180.0
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7180.0=target_or_response; 7147.0=current_price_context
+- S/R sanity: 7120.0 coincides_partially via prose L483 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Some mild volatility now in #ES_F. Long trigger was Sunday's 7085 backtest OR the 7120 Failed Breakdown. We ran to 7180's. 7147-53 was today's support as posted. Held exact on test #1, bounced 24 points. Now flushed
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:510 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7147.0=current_price_context
+- S/R sanity: 7120.0 coincides_partially via prose L492 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: While volatility is low, lvls are ultra precise in #ES_F. Our long trigger given here + newsletter was the 7085 Backtest/7120 Failed Breakdown Sunday evening. I just posted 7147-50 was support today. Held exact
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:519 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7147.0=current_price_context; 7160.0=current_price_context; 7178.0=current_price_context
+- S/R sanity: 7120.0 coincides_partially via prose L501 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 0 to do but ride runner in #ES_F until we get vol. Long still working from Sunday's entry given here & newsletter (7085 backtest long OR 7120 Failed Breakdown both worked). Targets were 7147-53, 7160, 7178 (all hit)
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:528 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level
+- S/R sanity: 7120.0 coincides_partially via prose L510 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:58AM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/21/2026 07:58AM - Note: Once again there is nothing to do now until we get an "elevator down sell" to the entries given in the newsletter. This weeks long was - as always - given to readers before/at the Sunday open. We are long from the 7085 backtest OR the 7120 Failed Breakdown. Ride runner
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:530 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7147.0=current_price_context; 7160.0=current_price_context; 7166.0=current_price_context; 7178.0=current_price_context
+- S/R sanity: 7120.0 coincides_partially via prose L510 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:57AM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/21/2026 07:57AM - Every week the same in #ES_F. Sunday gap down. We long on the Failed Breakdown (7085 backtest long or 7120 Failed Breakdown), then ride runner all week. Targets I gave were 7147-53 (hit), 7160, 7166, 7178 (all hit)
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:582 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7137.0=current_price_context; 7147.0=current_price_context; 7160.0=current_price_context; 7166.0=current_price_context; 7178.0=current_price_context
+- S/R sanity: 7120.0 coincides_partially via prose L564 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: All targets hit in #ES_F. 7085 was support given in Friday's newsletter (held exact). 7120 Failed Breakdown was another entry. Targets were 7137 (hit), 7147-53 (hit). 7160 was 1st bonus, hit. 7166, 7178 above.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:591 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=current_price_context; 7137.0=current_price_context; 7147.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: This is Deja Vu from last Sunday and for last month all we had to do is long the Sunday trap & take the week off in #ES_F. 7085 was the Friday breakout backtest long. 7120 was the Failed Breakdown. Targets were 7137 (hit), 7147-53 (hit).
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:600 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7137.0=current_price_context; 7147.0=current_price_context
+- S/R sanity: 7120.0 coincides_partially via prose L582 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=6pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Every Sunday is exact same in #ES_F, gap down, bear trap, Failed Breakdown. 7085 was the backtest long given in newsletter. Held to the tick. 7120 Failed Breakdown was given here 6pm. Targets were 7137 (hit), 7147-53 (hit).
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:643 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7131.0=current_price_context; 7154.0=current_price_context; 7177.0=current_price_context; 7149.0=current_price_context; 7120.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: Its been +386 points from Sunday's 6793 Failed Breakdown. Today's target was 7131 (hit) with 7154, 7177 first bonus set. ES is tired now - let it retrace as warned 1hr ago. 7149 then 7120 are 1st retracement zones. Newsletter out soon with how to trade them
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:650 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7131.0=current_price_context; 7154.0=current_price_context; 7177.0=current_price_context; 7188.0=current_price_context; 7200.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: After +386 points from Sunday's 6793 Failed Breakdown, we've run almost all available targets today in #ES_F. Given at 8am they were 7131 main target (hit). Bonus were 7154 (hit), 7177 (hit), 7188 (almost), 7200.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:659 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7131.0=current_price_context; 7154.0=current_price_context; 7177.0=current_price_context; 7188.0=current_price_context; 7200.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We continue to print as best long of 2026 pays, now +386 points since our Sunday 6793 Failed Breakdown in #ES_F. Today's targets were given at 8am as always. 7131 was main target (hit). Bonus were 7154 (hit), 7177 (hit), 7188, then 7200
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:691 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=current_price_context; 7103.0=current_price_context; 7116.0=current_price_context; 7131.0=current_price_context; 7154.0=current_price_context; 7177.0=current_price_context; 7188.0=current_price_context; 7200.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Lockout rally continues in #ES_F from our original 6793 Sunday Failed Breakdown. We are now completing bonus targets. Targets given 8am were 7103, 7116, 7131 (all hit). Bonus were 7154, 7177 (2 points shy). 7188, 7200 above
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:700 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7103.0=current_price_context; 7116.0=current_price_context; 7131.0=current_price_context; 7154.0=current_price_context; 7162.0=current_price_context; 7177.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: The best long in years continues to print in #ES_F from our original 6793 Failed Breakdown on Sunday. Today's targets given 8am + newsletter were 7103, 7116, 7131 (all hit). Bonus slate today was 7154 (just hit), 7162, 7177.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:734 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7058.0=current_price_context; 7073.0=current_price_context; 7086.0=current_price_context; 7093.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:54AM, 10am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/17/2026 07:54AM - Day #5 of Lockout Rally in #ES_F. Long still paying from Sunday's 6793 Failed Breakdown. We did get a rare add yesterday though. I posted 10am 7058 reclaim triggers up. Targets were 7073, 7086, 7093. All hit
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:743 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7058.0=current_price_context; 7073.0=current_price_context; 7086.0=current_price_context; 7093.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=10am; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: 7058 support continues to defend nicely. At 10am I posted 7058 reclaims see 7073, 7086, 7093. 2/3 tagged. We then backtested 7058 2x exactly. Same upsides. We can start a dip under 7058. Newsletter out soon with next failed breakdown entries for that dip
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:779 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Our runner from Sunday's 6793 Failed Breakdown is still paying
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:795 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7073.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Micro injection of vol in #ES_F finally but we need much red more to get interested. After a 280 point rally from Sunday's 6793 failed breakdown, 7073 was today's 1st target.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:804 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7073.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Micro injection of volatility in #ES_F finally but we need much red more to get interested. After a 280 point rally from Sunday's 6793 failed breakdown, 7073 was today's 1st target.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:813 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7073.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 0 volatility lockout rally continues in #ES_F and 0 to do but hold our runner from Sunday's 6793 Failed Breakdown. We need a deep sell to open new entries. Yesterday's bonus target was 7073, stuck here
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:822 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7048.0=current_price_context; 7073.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Day 4 lockout rally in #ES_F after Sunday evenings 6793 Failed Breakdown, given live & in newsletter. Yesterdays targets gven 8am were 7048 main (hit), 7073 bonus (hit)
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:831 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6948.0=current_price_context; 6958.0=current_price_context; 6967.0=current_price_context; 7002.0=current_price_context; 7021.0=current_price_context; 7050.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: +230 points from Sunday's 6793 Failed Breakdown. Again - nothing to do but ride runner until we get a dip. Today's 8am targets were 6948, 6958, 6967 (all hit). Bonus target was 7002 (exact high). 7021 next then 7050. Newsletter out soon with entries
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:838 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6792.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6792.0=actual_setup_level; 6948.0=current_price_context; 6958.0=current_price_context; 6967.0=current_price_context; 6978.0=current_price_context; 6994.0=current_price_context; 7002.0=current_price_context
+- S/R sanity: 6792.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: The best long of 2026 just keeps paying. 6792 Failed Breakdown Sunday was our recent major add in #ES_F. Today's targets given 8am were 6948, 6958, 6967 (all hit). I then gave a bonus slate of 6978 (hit), 6994 (hit), 7002 (just hit)
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:847 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6948.0=current_price_context; 6958.0=current_price_context; 6967.0=current_price_context; 6978.0=current_price_context; 6994.0=current_price_context; 7002.0=current_price_context; 7021.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 0 volatility, 0 to do in #ES_F but ride runner until we get next pullback to trap bears again. We are +200 points from the Sunday 6793 Failed Breakdown, given live. Today's targets were 6948, 6958, 6967 (all hit). Bonus were 6978, 6994 (here). 7002, 7021 next
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:856 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6948.0=current_price_context; 6958.0=current_price_context; 6967.0=current_price_context; 6978.0=current_price_context; 6994.0=current_price_context; 7002.0=current_price_context; 7021.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We are still running targets in #ES_F now +200 from Sunday evenings 6793 Failed Breakdown given live. Today's targets given 8am were 6948, 6958, 6967 (all hit). Bonus set were 6978 (hit), 6994 (hit), 7002, then 7021 still bonus.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:872 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6948.0=current_price_context; 6858.0=current_price_context; 6967.0=current_price_context; 6978.0=current_price_context; 7002.0=current_price_context; 7021.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Still nothing to do but let our runner work, now +184 point from Sunday's 6793 Failed Breakdown given live in #ES_F. Today's target slate was given at 8am: 6948 (hit), 6858 (hit), 6967 (hit). Bonus slate was 6978 (hit), 7002 then 7021 if ES wants more.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:881 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=2:55PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Biggest long of 2026 continues to pay and we are working today's targets in #ES_F. 6793 Failed Breakdown was our entry Sunday. I warned yesterday 2:55PM that much more upside was coming
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:890 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0, 6809.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6809.0=actual_setup_level; 6937.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide; 6809.0 does_not_coincide
+- ES 1m window/chart: multi-level split required; crop each stated setup level separately
+- Blockers: multi_setup_row_split_required, no_existing_chart_window_match, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Little to do now in #ES_F. Entries were the Sunday 6793 Failed Breakdown (given live Sunday 6pm) and the 6809 Failed Breakdown yesterday. I posted 2:55PM yesterday lots more green ahead with 6937 next, and we hit
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:899 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6593.0, 6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6593.0=actual_setup_level; 6360.0=actual_setup_level
+- S/R sanity: 6593.0 does_not_coincide; 6360.0 does_not_coincide
+- ES 1m window/chart: multi-level split required; crop each stated setup level separately
+- Blockers: multi_setup_row_split_required, no_existing_chart_window_match, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/14/2026 07:59AM - Note: There is just nothing to do now. Most of us have been long at least since last Tuesday's 6593 Failed Breadkown, but many since the 6360 Failed Breakdown. Now, we just let the runner pay. There are no setups until we get the next deep sell/bear trap per newsletter
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:901 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6809.0=current_price_context; 6912.0=current_price_context; 6937.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:58AM, 2:55PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/14/2026 07:58AM - Best long of 2026 keeps paying in #ES_F. Recent adds were 6793 Failed Breakdown Sunday (given live) and 6809 reclaim ystd (given live). I posted 2:55PM lots more was ahead with 6912, 6937 targets (hit).
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:909 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6903.0=current_price_context; 6912.0=current_price_context; 6937.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: CLosing update #ES_F: +100 points now on the long from the 6793 Failed Breakdown last eve. Now nothing to do but ride runner as we rally. 6903, 6912, then 6937 are next from here. This is what a 1 month flag breakout from last Tuesday looks like. Newsletter out soon with entries
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:916 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6809.0=current_price_context; 6848.0=current_price_context; 6872.0=current_price_context; 6886.0=current_price_context; 6903.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We are officially +100 points on our long from the 6793 Failed Breakdown last evening in #ES_F (for those who missed it, I gave the 6809 Reclaim at 8am). Targets given were 6848 main (hit). Bonus were 6872 (hit), 6886 (hit), 6903 (almost).
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:925 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6809.0=current_price_context; 6592.0=current_price_context; 6848.0=current_price_context; 6872.0=current_price_context; 6886.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Runners still paying. 0 to do until the next selloff then bear trap/Failed Breakdown in #ES_F. 6809 reclaim was long trigger given live 8am (newsletter readers been long since 6592 last week). Targets given 8am were 6848 main (hit), 6872, 6886 bonus (hit)
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:970 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=current_price_context; 6802.0=current_price_context; 6818.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=6:01PM, 8:45PM; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: In #ES_F, all Sunday gaps down produces a bear trap/Failed Breakdown. I tweeted 6:01PM that 6793 reclaim triggers up. We triggered 8:45PM. Targets were 6802 1st (hit), 6818-22 2nd (hit)
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:979 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Gap down open for #ES_F as we finally get a healthy retrace after last weeks relentless 280+ point rally following Tuesday's 6592 Failed Breakdown.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:988 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=11:30AM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Last Tuesday 11:30AM a Failed Breakdown of 6592 got us long in #ES_F for +280 point rally, given live here/in newsletter (this was before Iran deal headline, as institutions front run). Gap down likely today on "No deal".
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1031 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=current_price_context; 6848.0=current_price_context; 6872.0=current_price_context; 6882.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Volatility remains 0 in #ES_F. As warned, no volatility=no trades. Runners still working from Tuesday's 6592 Macro Failed Breakdown. 6848-6872=a tight flag. Today's 1st target was 6882, we ran there, rejected back into the range.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1040 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=current_price_context; 6809.0=current_price_context; 6848.0=current_price_context; 6872.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: There continues to be 0 volatility in #ES_F. No volatility=no trades, hold runners. Runners still working from 1) Tuesdays 6592 Macro Failed Breakdown and 2) Yesterdays 6809 reclaim. 6848-6872=a new bull flag.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1049 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 coincides_partially via prose L1031 6592
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Volatility still dead in #ES_F & simply let runners work now. On Tuesday we saw a massive macro Failed Breakdown of 6592 (given live + in newsletter) & we've been long since for 280+ points
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1058 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6809.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=current_price_context; 6809.0=actual_setup_level; 6872.0=current_price_context; 6848.0=current_price_context; 6882.0=current_price_context
+- S/R sanity: 6809.0 coincides_partially via prose L1078 6809
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: No volatility in #ES_F and 0 to do until we get some. Runners still paying from Tuesday's 6592 reclaim and yesterday's 6809 Failed Breakdown. 6872-6848=chop/flag. Today's 1st target was 6882, and we ran there, and dipped.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1085 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: While longs continue to pay in (now +280 points from the 6592 Failed Breakdown on Tuesday given out live) good time to zoom out. As posted Saturday, #ES_F spent a month in a clean downtrend channel/flag. Tuesday, it broke out.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1187 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6593.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6593.0=actual_setup_level
+- S/R sanity: 6593.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: No volatility now as #ES_F is in day 2 of digesting Tuesday's 250 point 6593 Failed Breakdown long. Be very careful trading 0 vol - traps and fakeouts are extreme.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1196 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6593.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6593.0=actual_setup_level
+- S/R sanity: 6593.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Tuesday saw a 250 point rally, and we were long via the 6593 Failed Breakdown. After, I warned all yesterday that it takes #ES_F days to "digest" the move. This was ystd
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1221 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level; 6809.0=current_price_context; 6819.0=current_price_context; 6833.0=current_price_context; 6844.0=current_price_context; 6853.0=current_price_context
+- S/R sanity: 6592.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Slow day as #ES_F digests yesterday's 250 point rally, which was triggered by the 6592 Failed Breakdown (given both here and in newsletter). We are getting scalps today. I posted at noon 6809 reclaims trigger long. Targets were 6819 (hit), 6833, 6844, 6853 above.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1230 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: After yesterday's 250 point long off the 6592 Failed Breakdown (given to readers in newsletter and here for free) in #ES_F, today is a structure building day. We are still getting scalps.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1239 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 coincides_partially via prose L1257 6592
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: As warned #ES_F is very generous - it gave us a 250 point long on the 6592 Failed Breakdown yesterday. The day after though, ES usually just gives chop, traps, poor quality as price builds structure
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1248 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 coincides_partially via prose L1257 6592
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: After yesterday's 6592 Failed Breakdown played out for 250 points #ES_F now beginning the digestion/structure building phase. As warned, this takes hours before we get new trade
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1257 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 coincides_partially via prose L1257 6592
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: As posted after +250 points from yesterday's 6592 Failed breakdown long, it takes a long time for #ES_F to "digest" the move and establish a new range. Until then, low quality
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1307 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: data_context
+- Source label: data_context
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=current_price_context; 6593.0=current_price_context; 6604.0=current_price_context; 6622.0=current_price_context; 6638.0=current_price_context; 6647.0=current_price_context; 6662.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=12:25PM; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/07/2026 12:25PM - The 6592 level remains an ATM machine today, flushing and recovering over and over in #ES_F. 6593 reclaim was the long trigger posted 40mins ago. Yet again, it recovered. Targets given were 6604 (hit), 6622 (hit). 6638, 6647, 6662+ if ES want more.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1333 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=6660.0
+- Level roles: 6592.0=actual_setup_level; 6622.0=current_price_context; 6660.0=target_or_response
+- S/R sanity: 6592.0 coincides_partially via prose L1329 6592
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:53AM, 4pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/07/2026 07:53AM - After Sunday's 6592 Failed Breakdown triggered long in #ES_F, we spent ystd basing around 6622 magnet. After hrs traders got a fantastic long. Per 4pm newsletter, 6622 reclaims trigger up. We ran to 6660, dipped
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1342 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6593.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6593.0=actual_setup_level; 6624.0=current_price_context; 6638.0=current_price_context; 6647.0=current_price_context; 6670.0=current_price_context
+- S/R sanity: 6593.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: Very slow day but we've had two long triggers. The 6593 Failed Breakdown (given live 615PM last eve) and the 6624 trap (given a few hrs ago). Targets were 6638, 6647 (big res), then 6670 which is still outstanding. Newsletter out soon with next entries
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1394 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: planned_setup
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=current_price_context; 6604.0=current_price_context; 6616.0=current_price_context; 6624.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: After last nights 58 point long, 0 to do in #ES_F but wait for next sell. Every Sunday the same: We gap down into Failed Breakdown. Long trigger was 6592 reclaim given live. Targets were 6604, 6616, 6624. All hit
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1403 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=current_price_context; 6604.0=current_price_context; 6616.0=current_price_context; 6624.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=6:15PM; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Last night, we got the standard Sunday long trigger in #ES_F, given live 6:15PM and in Friday's newsletter. Gap down, into Failed Breakdown. I posted 6592 recovery sees 6604, 6616, 6624. All hit
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1494 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6525.0=current_price_context; 6544.0=current_price_context; 6562.0=current_price_context; 6592.0=current_price_context; 6624.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: This market is handing out 100 point Failed Breakdowns like nothing in #ES_F & enormous payout here. 6525 reclaim long was given live here 8am + newsletter. Targets given were 6544 (hit), 6562 (hit), 6592 (hit), 6624 (hit)
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1503 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: planned_setup
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6520.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Yet again, today's planned Failed Breakdown long played out in #ES_F. Beginning at 8am I posted to start today's rally 6520-25 had to recover. We spent 1.5hrs basing right below, then recovered.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1512 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6520.0=current_price_context; 6525.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L1530 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: After a 290 point rally from Monday's 830pm 6360 Failed Breakdown, #ES_F finally dipped last evening. Levels respecting well so far today. 6520-25 had to reclaim as posted to start rally. We've been backtesting 6525 for 1hr
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1521 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6647.0=current_price_context; 6592.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L1530 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Monday 830pm, longs triggered on the 6360 Failed Breakdown in #ES_F and took us 290 points to do 6647 target yesterday. Last eve, we finally got a sell trigger. I posted 6592 fails we sell, down we went
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1530 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6467.0=current_price_context; 6490.0=current_price_context; 6524.0=current_price_context; 6575.0=current_price_context; 6592.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L1530 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: Today's rip was caused by the same thing that causes all squeezes: A big Failed Breakdown of 6360 last evening. Targets today were 6467, 6490, 6524. 6575, 6592 next. Just hold runner for now. 6524=support. Newsletter out soon with next entries from here
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1544 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6467.0=current_price_context; 6490.0=current_price_context; 6524.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L1530 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm, 8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Absolutely incredible follow through on last nights 6360 Failed Breakdown in #ES_F, given in yesterday's 4pm newsletter. I warned at 8am to just hold runners today with targets being 6467 (hit), 6490 (hit), 6524 (hit).
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1553 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=current_price_context; 6467.0=current_price_context; 6490.0=current_price_context; 6524.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Mid day chop time in #ES_F now, just hold runner. Long trigger was the 6360 (Sunday/Monday low) Failed Breakdown 830pm last eve. Targets were 6467 (hit), 6490 (hit), 6524 (not yet).
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1562 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6467.0=current_price_context; 6490.0=current_price_context; 6524.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L1562 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We went +134 points from last evenings 6360 Failed Breakdown in #ES_F, given in advance. 6360 was a shelf of lows from Sunday. We swept it, trapped bears, recovered. Targets were 6467 (hit), 6490 (hit), 6524 stretch target (not yet). Ride runner
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1571 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=6360.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level+swept_lost_low
+- S/R sanity: 6360.0 coincides_partially via prose L1562 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We are running the targets. Readers know I trade 1 setup: The Failed Breakdown. We got it 830pm last evening when we swept the 6360 shelf, trapped shorts, and recovered in #ES_F
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1580 `needs_bigger_crop`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=6353.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6353.0=swept_lost_low; 6447.0=current_price_context; 6467.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L1562 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match
+- Support context: none
+- Resistance context: none
+- Verdict: needs_bigger_crop
+- Raw passage: Little to do now but ride runners. Per 4pm newsletter, our #ES_F long setup last eve was the Failed Breakdown of 6360 (down to 6353). We 6360 at 830pm, recovered, and ripped. Targets were 6447 (hit), 6467 (hit).
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1596 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6353.0=current_price_context; 6447.0=current_price_context; 6467.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L1605 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Last night 830pm, #ES_F got a textbook Failed Breakdown given to newsletter readers 4pm. Setup was Failed Breakdown of 6360 to 6353. We hit 6353 exact, recovered 6360. Targets were 6447, 6467 (hit)
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1605 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6367.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L1605 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: Decent volatility today and plenty of setups. Watch for the Failed Breakdown of yesterday's 6360 low and bulls will need to recover 6367 to start us back up the range. Newsletter out soon with setups for tomorrow
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1658 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6367.0=current_price_context; 6385.0=current_price_context; 6411.0=current_price_context; 6454.0=current_price_context; 6476.0=current_price_context; 6492.0=current_price_context; 6520.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Push continues in #ES_F. Same drill every week: Thurs/Friday crash, Sunday gap down/Failed Breakdown/Monday rip. Per Friday 4pm newsletter 6367, 6385 & 6411 reclaims were ALL triggers. Targets were 6454 (hit). 6476, 6492, 6520 above
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1841 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: data_context
+- Source label: data_context
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6575.0=current_price_context; 6564.0=current_price_context; 6542.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Now flushing 6575 finally. 6564, 6542 below. 75 must reclaim to pop. Bears control<92
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1907 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6616.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6616.0=actual_setup_level; 6647.0=current_price_context; 6592.0=current_price_context; 6575.0=current_price_context; 6952.0=current_price_context
+- S/R sanity: 6616.0 coincides_partially via prose L1916 6616
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Slow start to the day, but levels respecting well. After a strong evening Failed Breakdown of 6616 to 6647, #ES_F sold. 6592 and 6575 are key today as posted 8am. We held 6575 exact, bounced to 6952. 6592 will be a trappy region/magnet today
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:1916 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=6616.0; recovered=none; non_acceptance=none; invalidation=none; target/response=6647.0
+- Level roles: 6616.0=swept_lost_low; 6647.0=target_or_response
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 6 days #ES_F was stuck in the same range, now expanding mildly. Last eve, we got a quality Failed Breakdown from 4pm newsletter: Swept 6616 daily low, recovered, ripped to 6647, sold.
+
+### data\backtest\es-long-bracket\raw\mancini\Mancini.txt:2022 `data_only`
+
+- Plan/date context: The Duck Boat for Week of 4/26/2026 by tpdthreadmanager in ThePiratesDen | pub=None | plan=None
+- Source mode: planned_setup
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6623.0=current_price_context; 6592.0=current_price_context; 6647.0=current_price_context; 6690.0=current_price_context; 6638.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: I said all day that 6623 would be a magnet, and it has been. We are now rangebound with 6592 support (it was the Failed Breakdown here that triggered long to 6647 target), 6623 magnet, 6690 resistance. 6638, 6647, 6690 next. Newsletter out soon with entries
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:7 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7213.0=actual_setup_level; 7279.0=current_price_context; 7248.0=current_price_context
+- S/R sanity: 7213.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=12:20PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: CLosing update #ES_F: ES gives short bursts of volatility (yesterday's 12:20PM Failed Breakdown of the big 7213 low) and afterwards, we just grind up for days. Not much to do but ride runner. Newsletter out soon with entries for the next dip, but 7279 and 7248 are key tmrw
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:15 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7298.0=current_price_context; 7213.0=actual_setup_level; 7268.0=current_price_context; 7277.0=current_price_context
+- S/R sanity: 7213.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am, 12:20PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: There's 7298 final target hit in #ES_F. As posted at 8am, nothing to do today but stay long and ride runner from yesterday's 12:20PM 7213 failed breakown. Targets I gave were 7268 (hit), 7277 (hit), 7298 (hit). Anymore=bonus
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:25 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7213.0=actual_setup_level; 7268.0=current_price_context; 7277.0=current_price_context; 7298.0=current_price_context
+- S/R sanity: 7213.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Very slow action now in #ES_F and nothing at all do but ride runner. Entry was during yesterday's spike in volatility where we went "elevator down" got the 7213 failed breakdown. Targets today were 7268 (hit), 7277 (hit), 7298.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:35 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7199.0=current_price_context; 7213.0=actual_setup_level; 7268.0=current_price_context; 7277.0=current_price_context; 7298.0=current_price_context
+- S/R sanity: 7213.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We waited patiently yesterday for an "elevator down" sell to backtest 7199 (which held exact). 7213 Failed breakdown then triggered us long 24hrs ago. Now, ride runner. Today's targets given 8am and in last nights newsletter were 7268 (hit), 7277 (hit), 7298
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:45 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7213.0=actual_setup_level; 7268.0=current_price_context; 7277.0=current_price_context; 7298.0=current_price_context
+- S/R sanity: 7213.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Little to do unfortunately now but ride runner in #ES_F. We enter only when we get an "elevator down" dip. We got it yesterday, the 7213 failed breakdown triggered long. Targets given at 8am for next leg up 7268 (hit), 7277 (hit), 7298-302 above.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:63 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: planned_setup
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7199.0=current_price_context; 7213.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Yesterday we got our dip buy. Plan was simple and given live/in advance in newsletter: Wait for 7199 backtest (held exact), then the 7213 low Failed Breakdown to trigger up in #ES_F.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:73 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7213.0; swept/lost=7213.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7213.0=actual_setup_level+swept_lost_low; 7240.0=current_price_context
+- S/R sanity: 7213.0 coincides_partially via prose L83 7213
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: The current leg up was caused by the same thing that causes every leg up in #ES_F: A bear trap/Failed Breakdown. Yesterday we swept the big 7213 low, recovered, triggered up. Target given was 7240, hit
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:93 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7213.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7240.0
+- Level roles: 7199.0=current_price_context; 7213.0=actual_setup_level; 7240.0=target_or_response; 7265.0=current_price_context; 7277.0=current_price_context
+- S/R sanity: 7213.0 coincides_partially via prose L83 7213
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: Today was a clean session. We backtested the Thursday breakout at ~7199 exact. We then put in a Failed Breakdown of the 7213 early morning low after, and ripped to 7240 target. Bulls must recover that to rip to 7265, 7277+. Newsletter out soon with entries
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:111 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7199.0=current_price_context; 7213.0=current_price_context; 7240.0=current_price_context; 7248.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Very clean technicals today in #ES_F. Support given was 7199. It held exact. 7213 reclaim was the long trigger given for a big failed breakdown of the morning low. We are +22 on that. 7240 remains big resistance and 1st hurdle. 7248 above then back up the levels.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:167 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7248.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7248.0=actual_setup_level
+- S/R sanity: 7248.0 coincides_partially via prose L187 7248
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Perfect follow through in #ES_F. This weeks setup was 7248 Failed Breakdown - newsletter readers got it Friday at 4pmI also live tweeted it at 8am.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:203 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7137.0, 7248.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7137.0=actual_setup_level; 7248.0=actual_setup_level
+- S/R sanity: 7137.0 does_not_coincide; 7248.0 coincides_partially via prose L187 7248
+- ES 1m window/chart: multi-level split required; crop each stated setup level separately
+- Blockers: multi_setup_row_split_required, no_existing_chart_window_match, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Last Wednesday the 7137 Failed breakdown got us long in #ES_F for +150 points. This week is all about digesting that leg. Per newsletter Friday 4pm, 7248 Failed breakdown's are this weeks trigger, also printed many points
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:272 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7248.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7248.0=actual_setup_level
+- S/R sanity: 7248.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Perfect follow through in #ES_F. This weeks setup was 7248 Failed Breakdown - newsletter readers got it Friday at 4pmI also live tweeted it at 8am.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:284 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7248.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7248.0=actual_setup_level
+- S/R sanity: 7248.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Perfect follow through in #ES_F. This weeks setup was 7248 Failed Breakdown - newsletter readers got it Friday at 4pmI also live tweeted it at 8am.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:318 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7137.0, 7248.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7137.0=actual_setup_level; 7248.0=actual_setup_level
+- S/R sanity: 7137.0 does_not_coincide; 7248.0 coincides_partially via prose L307 7248
+- ES 1m window/chart: multi-level split required; crop each stated setup level separately
+- Blockers: multi_setup_row_split_required, no_existing_chart_window_match, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Last Wednesday the 7137 Failed breakdown got us long in #ES_F for +150 points. This week is all about digesting that leg. Per newsletter Friday 4pm, 7248 Failed breakdown's are this weeks trigger, also printed many points
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:325 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7137.0, 7248.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7137.0=actual_setup_level; 7248.0=actual_setup_level
+- S/R sanity: 7137.0 does_not_coincide; 7248.0 coincides_partially via prose L307 7248
+- ES 1m window/chart: multi-level split required; crop each stated setup level separately
+- Blockers: multi_setup_row_split_required, no_existing_chart_window_match, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Last Wednesday the 7137 Failed breakdown got us long in #ES_F for +150 points. This week is all about digesting that leg. Per newsletter Friday 4pm, 7248 Failed breakdown's are this weeks trigger, also printed many points
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:409 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7137.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7137.0=actual_setup_level
+- S/R sanity: 7137.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Just ride runner, now +155 from the most recent 7137 Failed Breakdown Wednesday
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:425 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7265.0=current_price_context; 7276.0=current_price_context; 7287.0=current_price_context; 7297.0=current_price_context; 7310.0=current_price_context; 7328.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Untradable mid-day chop in #ES_F. Today's targets given at 8am were 7265, 7276, 7287 (all hit). Bonus set were 7297 (high of day), 7310, 7328. Just nothing to do but hold runner until we get a sell. We are +154 points from Wednesday's 420PM Failed Breakdown
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:443 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7137.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7297.0=current_price_context; 7137.0=actual_setup_level; 7265.0=current_price_context; 7276.0=current_price_context; 7287.0=current_price_context; 7310.0=current_price_context; 7328.0=current_price_context
+- S/R sanity: 7137.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: There's 7297 1st bonus target today hit exact in #ES_F. Original entry was the Wednesday 7137 Failed Breakdown. Today's targets given at 8am were 7265, 7276, 7287. Bonus were 7297 (hit), 7310, 7328.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:477 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7137.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7137.0=actual_setup_level; 7265.0=current_price_context; 7276.0=current_price_context; 7287.0=current_price_context
+- S/R sanity: 7137.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4:20PM, 8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We are now up a staggering 152 points on our most recent Failed Breakdown long (7137 Failed Breakdown 4:20PM Wednesday) - though we are up 600+ points on our original longs. Today's slate of targets given at 8am were 7265, 7276, 7287. All done
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:515 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7137.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7137.0=actual_setup_level; 7232.0=current_price_context; 7238.0=current_price_context; 7248.0=current_price_context; 7264.0=current_price_context
+- S/R sanity: 7137.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:58AM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 05/01/2026 07:58AM - Runners paying from our Wednesday's 7137 Failed Breakdown long at 420pm. As posted, next set of targets were 7232, 7238, 7248, 7264. 7264 hit exact
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:533 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7137.0, 7160.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7137.0=actual_setup_level; 7160.0=actual_setup_level; 7248.0=current_price_context; 7264.0=current_price_context; 7297.0=current_price_context
+- S/R sanity: 7137.0 does_not_coincide; 7160.0 does_not_coincide
+- ES 1m window/chart: multi-level split required; crop each stated setup level separately
+- Blockers: multi_setup_row_split_required, no_existing_chart_window_match, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: Now +110 points on our 7137 Failed Breakdown and +85 points on our 7160 Failed Breakdown. Today has been a goldmine for my core setup. We just tagged 7248 next up. 7264, 7297 next. Newsletter was just sent with the next Failed Breakdown from here
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:551 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7137.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7137.0=actual_setup_level; 7160.0=current_price_context; 7189.0=current_price_context; 7220.0=current_price_context
+- S/R sanity: 7137.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=02:39PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/30/2026 02:39PM - We are +100 points from yesterday's post-earnings 7137 Failed Breakdown at 420PM given in newsletter. For those who missed it, we got the 7160 trap this morning. Targets for this leg were 7189 (hit), 7220 bonus (hit)
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:571 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7137.0, 7160.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7220.0=current_price_context; 7137.0=actual_setup_level; 7160.0=actual_setup_level
+- S/R sanity: 7137.0 coincides_partially via prose L589 7137; 7160.0 coincides_partially via prose L589 7160
+- ES 1m window/chart: multi-level split required; crop each stated setup level separately
+- Blockers: multi_setup_row_split_required, no_existing_chart_window_match, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/30/2026 01:38PM - There's 7220 final target hit exact in #ES_F. We are now +82 points from yesterday's 420PM 7137 Failed Breakdown +60 points from this mornings 7160 Failed Breakdown. Same setup every single day for me. Don't overcomplicate it
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:589 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7137.0, 7160.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7204.0=current_price_context; 7137.0=actual_setup_level; 7160.0=actual_setup_level
+- S/R sanity: 7137.0 coincides_partially via prose L589 7137; 7160.0 coincides_partially via prose L589 7160
+- ES 1m window/chart: multi-level split required; crop each stated setup level separately
+- Blockers: multi_setup_row_split_required, no_existing_chart_window_match, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: There's 7204 hit in #ES_F. I gave two entries for this leg. 1) Given in newsletter 320pm ystd. Failed Breakdown of 7137 daily low after earnings. 2) The 7160 Failed breakdown given at 8am, triggered 10:20AM.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:607 `needs_bigger_crop`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: planned_setup
+- Source label: source_planned_fbd
+- Exact levels: setup=7160.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7160.0=actual_setup_level; 7173.0=current_price_context; 7181.0=current_price_context; 7189.0=current_price_context
+- S/R sanity: 7160.0 coincides_partially via prose L589 7160
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am, 10:20AM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
+- Support context: none
+- Resistance context: none
+- Verdict: needs_bigger_crop
+- Raw passage: We got our trade today in #ES_F - now its midday chop. Sit back, and wait for the next trap. Today's long was the failed breakdown of 7160 given at 8am. We swept it at 10:20AM, and ran. Targets given were 7173, 7181, 7189 (hit).
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:625 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7160.0=current_price_context; 7173.0=current_price_context; 7181.0=current_price_context; 7189.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am, 10:20AM; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Today is straightforward in #ES_F. We get 1-3 Failed Breakdowns daily. Todays was given 8am when I posted watch traps of the 7160 shelf. We swept it & recovered 10:20AM.Targets given 7173, 7181, 7189(hit)
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:643 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7137.0, 7160.0; swept/lost=7157.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7137.0=actual_setup_level; 7160.0=actual_setup_level; 7157.0=swept_lost_low
+- S/R sanity: 7137.0 coincides_partially via prose L661 7137; 7160.0 coincides_partially via prose L625 7160
+- ES 1m window/chart: multi-level split required; crop each stated setup level separately
+- Blockers: multi_setup_row_split_required, no_existing_chart_window_match, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: As always in #ES_F, if you miss a setup, another comes. For those who missed the 70+ point 7137 Failed Breakdown at 4:20PM last eve, today's long given live was 7160 Failed Breakdown. We swept it 7157, recovered.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:661 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7137.0=current_price_context; 7160.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4:20PM; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Yesterday's #ES_F long was the 7137 daily low Failed Breakdown at 4:20PM - given to newsletter readers in advance. We ran 70+ points. Today's Failed Breakdown was given here. I posted watch traps of 7160. We just trapped by 3 points
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:695 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7137.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4:20PM; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Yesterday's 4:20PM earnings Failed Breakdown paid over 70 points in #ES_F. Setup was given in advance in newsletter as always and it was the trap of 7137 daily low. Now, 1st "elevator down" dip.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:729 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7137.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7137.0=actual_setup_level; 7204.0=current_price_context; 7211.0=current_price_context; 7220.0=current_price_context
+- S/R sanity: 7137.0 coincides_partially via prose L749 7137
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=3:30PM, 4:20PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We are now +70 from yesterday's long trigger. Earnings releases always trap in #ES_F: Setup was the 7137 Failed Breakdown given to newsletter readers 3:30PM, triggered 4:20PM. Today's 1st target was 7204 (hit). 7211, 7220 if ES wants more
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:749 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=7132.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7137.0=current_price_context; 7132.0=swept_lost_low
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:57AM, 4:30PM, 3:30PM; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/30/2026 07:57AM - Yesterday 4:30PM, we got a textbook earnings Failed Breakdown in #ES_F. Newsletter readers got it 3:30PM. Setup was trap of the 7137 daily low. We swept it 7132, reclaimed, went +54
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:767 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=7137.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7137.0=swept_lost_low; 7161.0=current_price_context; 7173.0=current_price_context; 7189.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=3:30PM; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: One good thing about earnings in #ES_F is they provide Failed Breakdowns. Per 3:30PM newsletter, flushes of 7137 daily low and recoveries trigger long. We flushed 7137 to 7137, recovered, ran. Upside targets unchanged: 7161 (hit), 7173, 7189+.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:785 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=7137.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7147.0=current_price_context; 7137.0=swept_lost_low; 7161.0=current_price_context; 7173.0=current_price_context; 7180.0=current_price_context; 7186.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=2:58PM; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Excellent follow through after earnings and we finally got our full run in #ES_F. 7147 was the Failed Breakdown after FOMC, given numerous times. We swept it to 7137, recovered 2:58PM. Target set was 7161 (hit), 7173 (hit), 7180 (hit), 7186 (hit). Next entries given in newsletter
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1119 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7180.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7180.0=actual_setup_level; 7200.0=current_price_context; 7204.0=current_price_context
+- S/R sanity: 7180.0 coincides_partially via prose L1101 7180-7200
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: Nothing to do now but ride runner. ES is in a tight flag again mostly 7180-7200/05 now. 7204 was target for the failed breakdown of 7180 given here/in newsletter. Hold runner for breakout leg. Newsletter out soon with next entry, and the next macro target
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1261 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=7185.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7208.0
+- Level roles: 7185.0=swept_lost_low; 7208.0=target_or_response
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Last eve - 6th Sunday in a row - we got another gap down, into Failed Breakdown in #ES_F. Per Friday newsletter, we swept 7185, recovered, ripped to 7208 overnight.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1295 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7085.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7200.0=current_price_context; 7085.0=actual_setup_level; 7160.0=current_price_context; 7174.0=current_price_context; 7178.0=current_price_context; 7193.0=current_price_context; 7211.0=current_price_context
+- S/R sanity: 7085.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: Nice tag of 7200. We got long on the 7085 Failed Breakdown yesterday (7160 reclaim also a long given this morning). Today's targets were 7174, 7178, 7193, 7200 (hit). 7211+ next week. Newsletter out soon with the next set of entries from here for Sunday
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1311 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7085.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=actual_setup_level; 7160.0=current_price_context
+- S/R sanity: 7085.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=1:55PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: With work done today - just let the runner pay now. Primary entry was the textbook (use this to study the setup) Failed breakdown of 7085 at 1:55PM yesterday. We are +110 now. I also gave 7160 reclaim this AM.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1329 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7085.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=actual_setup_level; 7160.0=current_price_context
+- S/R sanity: 7085.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=1:50PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We our running targets nicely now. Two entries were given live & in newsletter: 1) The 1:50PM 7085 Failed Breakdown yesterday. +110 points now 2) The 7160 reclaim, given this morning.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1347 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7085.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7174.0=current_price_context; 7085.0=actual_setup_level
+- S/R sanity: 7085.0 coincides_partially via prose L1367 7085
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=1:50PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: There's 7174 1st target hit in #ES_F. The main long was the textbook Failed Breakdown of 7085 at 1:50PM yesterday given live AND in newsletter in advance. We went +100 on it
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1367 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7160.0=current_price_context; 7174.0=current_price_context; 7178.0=current_price_context; 7186.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Good level to level scalp in #ES_F for those who missed yesterday's monster 100 point Failed Breakdown. Our trigger yesterday was the bear trap and recovery of the 7085 shelf (Sun/Tues lows). 1hr ago, I posted 7160 reclaims see 7174 (almost), 7178, 7186+
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1385 `needs_bigger_crop`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7085.0; swept/lost=7085.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=actual_setup_level+swept_lost_low; 7180.0=current_price_context
+- S/R sanity: 7085.0 coincides_partially via prose L1367 7085
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=1:50PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup
+- Support context: none
+- Resistance context: none
+- Verdict: needs_bigger_crop
+- Raw passage: Volatility low. We got our long yesterday though 1:50PM in #ES_F: We went "elevator down", flushed the 7085 shelf, recovered (Failed Breakdown), rallied +100. 7085-7180=massive flag.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1403 `needs_bigger_crop`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: planned_setup
+- Source label: source_planned_fbd
+- Exact levels: setup=7085.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=actual_setup_level
+- S/R sanity: 7085.0 coincides_partially via prose L1385 7085-7180
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
+- Support context: none
+- Resistance context: none
+- Verdict: needs_bigger_crop
+- Raw passage: We got paid on a 100 point long yesterday: Textbook Failed Breakdown of the Sunday/Tuesday 7085 shelf of lows. #ES_F swept it, trapped bears, went +100. Now, do nothing but wait for next trap
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1423 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:53AM, 1:50PM; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/24/2026 07:53AM - Yesterday 1:50PM we got a textbook Failed Breakdown long. Given live + in newsletter, the trigger was trap of 7085 shelf. The long paid 100 points in #ES_F
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1441 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7122.0=current_price_context; 7135.0=current_price_context; 7147.0=current_price_context; 7160.0=current_price_context; 7180.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: Textbook failed breakdown on the sweep and recovery of 7085. Targets were 7122, 7135, 7147, 7160 (3/4 hit). Just ride runner now. 7085-7180=a massive bull flag to setup next trend leg. Newsletter out soon with next entries
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1457 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: For those new to Failed Breakdowns, what we just saw was textbook - given live 30mins ago and in newsletter at 4pm. 7085 was a big shelf of lows (Sunday low + Tuesday low). We flushed it by 5 points, recovered, longed.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1477 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: data_context
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7122.0=current_price_context; 7129.0=current_price_context; 7135.0=current_price_context; 7147.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: I posted watch traps of 7085. We swept it, recovered, and ran. 7122 1st target - hit. 7129, 7135, 7147 above
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1511 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7129.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7129.0=actual_setup_level; 7160.0=current_price_context; 7166.0=current_price_context; 7180.0=current_price_context
+- S/R sanity: 7129.0 coincides_partially via prose L1513 7129
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Action is as precise as it gets today in #ES_F. 7129 Failed Breakdown got us long last evening. Today's targets given 8am were 7160, 7166, 7180 final. We hit 7180 exact, topped out.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1545 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7129.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7129.0=actual_setup_level; 7147.0=current_price_context; 7160.0=current_price_context; 7166.0=current_price_context; 7180.0=current_price_context
+- S/R sanity: 7129.0 coincides_partially via prose L1545 7129
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Perfect trade plan today in #ES_F. Today's targets off the 7129 Failed Breakdown last evening OR the 7147 sweep this morning were 7160 (hit), 7166 (hit), 7180 final (hit exact, dipped). 7180 is resistance of a week long bull flag.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1581 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7129.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7160.0=current_price_context; 7166.0=current_price_context; 7180.0=current_price_context; 7129.0=actual_setup_level; 7147.0=current_price_context
+- S/R sanity: 7129.0 coincides_partially via prose L1599 7129
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: It took its time but #ES_F arriving at today's final target. Three targets were given for today's session at 8am: 7160 (hit), 7166 (hit), 7180 (hit). Entries were either the 7129 Failed Breakdown last evening OR the 7147 sweep this morning.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1599 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: data_context
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7129.0; swept/lost=7129.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7129.0=actual_setup_level+swept_lost_low; 7147.0=current_price_context
+- S/R sanity: 7129.0 coincides_partially via prose L1599 7129
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_data_context
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We are grinding up slowly in another 0 volatility session. We did get a nice burst ~8pm last evening. We flushed Wednesday's big 7129 low, recovered, longed. 7147 then became support today, just swept it 845AM & recovered.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1617 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7129.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7129.0=actual_setup_level; 7149.0=current_price_context; 7160.0=current_price_context; 7166.0=current_price_context; 7180.0=current_price_context
+- S/R sanity: 7129.0 coincides_partially via prose L1599 7129
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Low vol continues in #ES_F but just keep riding that runner. Nothing to trade in tight congestion. The 7129 Failed Breakdown was our long trigger last evening and went +40. 7149 was support today, we just trapped it, and ran. Targets were 7160 (hit), 7166 (hit), 7180 (not yet)
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1653 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=7105.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7129.0=current_price_context; 7105.0=swept_lost_low
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:57AM, 8pm, 4pm; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/23/2026 07:57AM - After hours traders getting all action this week. After 8pm last night we got a perfect Failed Breakdown, given in 4pm newsletter. #ES_F swept a big low at 7129 down to 7105, recovered, long +30 now
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1671 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7153.0=current_price_context; 7165.0=current_price_context; 7180.0=current_price_context; 7230.0=current_price_context; 7147.0=current_price_context
+- S/R sanity: 7097.0 coincides_partially via prose L1671 7097
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: CLosing update #ES_F: Long continues to pay from the 7097 Failed Breakdown yesterday. Today's targets were 7153, 7165, then 7180. We've hit all but 7180. Once 7180 clears we begin the breakout leg to 7230+. 7147 remains support. Newsletter out soon with next entries
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1687 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7147.0=current_price_context; 7153.0=current_price_context; 7165.0=current_price_context; 7180.0=current_price_context
+- S/R sanity: 7097.0 coincides_partially via prose L1671 7097
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Little to do now but just hold runners. We got long on the 7097 Failed Breakdown in #ES_F yesterday. Today's targets were 7147, 7153, 7165, 7180. 3/4 are hit.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1705 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7147.0=current_price_context; 7153.0=current_price_context; 7165.0=current_price_context; 7180.0=current_price_context
+- S/R sanity: 7097.0 coincides_partially via prose L1689 7180-7085
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Still no volatility in #ES_F but levels respecting well. After the 7097 Failed Breakdown long yesterday, today's targets were 7147 (hit), 7153 (hit), 7165 (high of day), 7180 (not yet)
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1723 `needs_bigger_crop`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: planned_setup
+- Source label: source_planned_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7147.0=current_price_context; 7153.0=current_price_context; 7165.0=current_price_context; 7180.0=current_price_context; 7085.0=current_price_context; 7185.0=current_price_context
+- S/R sanity: 7097.0 coincides_partially via prose L1707 7085-7185
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_planned_setup
+- Support context: none
+- Resistance context: none
+- Verdict: needs_bigger_crop
+- Raw passage: No volatility at all today in #ES_F, midday chop. Wait for a vol spike to engage. 7097 Failed Breakdown yesterday was our long trigger. Targets were 7147, 7153 (hit), 7165 (high of day), 7180. 7085-7185= a massive flag
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1743 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7147.0=current_price_context; 7153.0=current_price_context; 7165.0=current_price_context; 7180.0=current_price_context; 7085.0=current_price_context; 7100.0=current_price_context
+- S/R sanity: 7097.0 coincides_partially via prose L1743 7085-7100
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=11:50AM, 8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/22/2026 11:50AM - Mid-day chop in #ES_F. 7097 Failed Breakdown was our long trigger with 7147 target. Today's targets given 8am were 7153 (hit), 7165 (hit), 7180. 7085-7100 now is a massive flag - do not overtrade in this range. It sets up an enormous trend leg
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1761 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=current_price_context; 7147.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Targets continue to hit precisely in #ES_F. Long trigger was the 7097 low Failed Breakdown we got after 4pm yesterday (given in newsletter). Main target was 7147.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1779 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7147.0=current_price_context
+- S/R sanity: 7097.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We continue to run in #ES_F & work through today's target slate. 7097 Failed Breakdown was the long trigger given 30mins in advance in newsletter. Target was 7147 - stuck there all night.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1797 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7147.0=current_price_context
+- S/R sanity: 7097.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: As always the moves come after hours/eve & daytime traders get chop in #ES_F. Hold runner. Our long trigger was the 7097 Failed Breakdown after 4pm yesterday (given in advance in newsletter). Target was 7147. Stuck here for hours
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1815 `needs_bigger_crop`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=7147.0; recovered=none; non_acceptance=none; invalidation=none; target/response=7147.0
+- Level roles: 7097.0=actual_setup_level; 7147.0=swept_lost_low+target_or_response
+- S/R sanity: 7097.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=3:40PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context
+- Support context: none
+- Resistance context: none
+- Verdict: needs_bigger_crop
+- Raw passage: Back to low volatility in #ES_F - wait patiently for the next big trap. Long setup was given in newsletter at 3:40PM yesterday: Failed Breakdown of yesterday's big 7097 low. We lost it, recovered, ripped to 7147 target.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1837 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7097.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7097.0=actual_setup_level; 7085.0=current_price_context; 7147.0=current_price_context
+- S/R sanity: 7097.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:56AM, 4pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/22/2026 07:56AM - Last eve after 4pm we got a textbook Failed Breakdown. Newsletter readers got it 30mins prior. Setup was Failed Breakdown of 7097. We trapped it to 7085, recovered, bought. Target was 7147, hit
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1889 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7180.0
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level
+- S/R sanity: 7120.0 coincides_partially via prose L1873 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=11:30AM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Very good to see some mild volatility returning in #ES_F. After Sunday's 7085 backtest long OR 7120 Failed Breakdown, we ripped to 7180s this morning. 7120 then became support. Held exact 11:30AM for 20 points, failed
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1923 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7180.0
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level
+- S/R sanity: 7120.0 coincides_partially via prose L1923 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=11:30AM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Vol slowing again in #ES_F after a morning burst but lvls still respecting. 7085 backtest or 7120 Failed Breakdown got us long Sunday. We rallied to 7180s. 7120 then became support as posted, held exact 11:30AM, just swept
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1941 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7147.0=current_price_context
+- S/R sanity: 7120.0 coincides_partially via prose L1923 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We finally got a little volatility in #ES_F after non-stop grind up from Sunday's 7085 direct long OR 7120 Failed Breakdown. 7120 was support as posted & we just sold down there and held exact for 20 points. Bulls must recover 7147-53 to progress
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1959 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=7180.0
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7180.0=target_or_response; 7147.0=current_price_context
+- S/R sanity: 7120.0 coincides_partially via prose L1941 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Some mild volatility now in #ES_F. Long trigger was Sunday's 7085 backtest OR the 7120 Failed Breakdown. We ran to 7180's. 7147-53 was today's support as posted. Held exact on test #1, bounced 24 points. Now flushed
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1977 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7147.0=current_price_context
+- S/R sanity: 7120.0 coincides_partially via prose L1959 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: While volatility is low, lvls are ultra precise in #ES_F. Our long trigger given here + newsletter was the 7085 Backtest/7120 Failed Breakdown Sunday evening. I just posted 7147-50 was support today. Held exact
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:1995 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7147.0=current_price_context; 7160.0=current_price_context; 7178.0=current_price_context
+- S/R sanity: 7120.0 coincides_partially via prose L1977 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 0 to do but ride runner in #ES_F until we get vol. Long still working from Sunday's entry given here & newsletter (7085 backtest long OR 7120 Failed Breakdown both worked). Targets were 7147-53, 7160, 7178 (all hit)
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2013 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level
+- S/R sanity: 7120.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:58AM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/21/2026 07:58AM - Note: Once again there is nothing to do now until we get an "elevator down sell" to the entries given in the newsletter. This weeks long was - as always - given to readers before/at the Sunday open. We are long from the 7085 backtest OR the 7120 Failed Breakdown. Ride runner
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2015 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7147.0=current_price_context; 7160.0=current_price_context; 7166.0=current_price_context; 7178.0=current_price_context
+- S/R sanity: 7120.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:57AM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/21/2026 07:57AM - Every week the same in #ES_F. Sunday gap down. We long on the Failed Breakdown (7085 backtest long or 7120 Failed Breakdown), then ride runner all week. Targets I gave were 7147-53 (hit), 7160, 7166, 7178 (all hit)
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2121 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7137.0=current_price_context; 7147.0=current_price_context; 7160.0=current_price_context; 7166.0=current_price_context; 7178.0=current_price_context
+- S/R sanity: 7120.0 coincides_partially via prose L2121 7120
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: All targets hit in #ES_F. 7085 was support given in Friday's newsletter (held exact). 7120 Failed Breakdown was another entry. Targets were 7137 (hit), 7147-53 (hit). 7160 was 1st bonus, hit. 7166, 7178 above.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2139 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=current_price_context; 7137.0=current_price_context; 7147.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: This is Deja Vu from last Sunday and for last month all we had to do is long the Sunday trap & take the week off in #ES_F. 7085 was the Friday breakout backtest long. 7120 was the Failed Breakdown. Targets were 7137 (hit), 7147-53 (hit).
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2157 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=7120.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7085.0=current_price_context; 7120.0=actual_setup_level; 7137.0=current_price_context; 7147.0=current_price_context
+- S/R sanity: 7120.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=6pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Every Sunday is exact same in #ES_F, gap down, bear trap, Failed Breakdown. 7085 was the backtest long given in newsletter. Held to the tick. 7120 Failed Breakdown was given here 6pm. Targets were 7137 (hit), 7147-53 (hit).
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2245 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7131.0=current_price_context; 7154.0=current_price_context; 7177.0=current_price_context; 7149.0=current_price_context; 7120.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: Its been +386 points from Sunday's 6793 Failed Breakdown. Today's target was 7131 (hit) with 7154, 7177 first bonus set. ES is tired now - let it retrace as warned 1hr ago. 7149 then 7120 are 1st retracement zones. Newsletter out soon with how to trade them
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2261 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7131.0=current_price_context; 7154.0=current_price_context; 7177.0=current_price_context; 7188.0=current_price_context; 7200.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: After +386 points from Sunday's 6793 Failed Breakdown, we've run almost all available targets today in #ES_F. Given at 8am they were 7131 main target (hit). Bonus were 7154 (hit), 7177 (hit), 7188 (almost), 7200.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2279 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7131.0=current_price_context; 7154.0=current_price_context; 7177.0=current_price_context; 7188.0=current_price_context; 7200.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We continue to print as best long of 2026 pays, now +386 points since our Sunday 6793 Failed Breakdown in #ES_F. Today's targets were given at 8am as always. 7131 was main target (hit). Bonus were 7154 (hit), 7177 (hit), 7188, then 7200
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2297 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=current_price_context; 7103.0=current_price_context; 7116.0=current_price_context; 7131.0=current_price_context; 7154.0=current_price_context; 7177.0=current_price_context; 7188.0=current_price_context; 7200.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Lockout rally continues in #ES_F from our original 6793 Sunday Failed Breakdown. We are now completing bonus targets. Targets given 8am were 7103, 7116, 7131 (all hit). Bonus were 7154, 7177 (2 points shy). 7188, 7200 above
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2315 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7103.0=current_price_context; 7116.0=current_price_context; 7131.0=current_price_context; 7154.0=current_price_context; 7162.0=current_price_context; 7177.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: The best long in years continues to print in #ES_F from our original 6793 Failed Breakdown on Sunday. Today's targets given 8am + newsletter were 7103, 7116, 7131 (all hit). Bonus slate today was 7154 (just hit), 7162, 7177.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2385 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7058.0=current_price_context; 7073.0=current_price_context; 7086.0=current_price_context; 7093.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:54AM, 10am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/17/2026 07:54AM - Day #5 of Lockout Rally in #ES_F. Long still paying from Sunday's 6793 Failed Breakdown. We did get a rare add yesterday though. I posted 10am 7058 reclaim triggers up. Targets were 7073, 7086, 7093. All hit
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2403 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 7058.0=current_price_context; 7073.0=current_price_context; 7086.0=current_price_context; 7093.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=10am; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: 7058 support continues to defend nicely. At 10am I posted 7058 reclaims see 7073, 7086, 7093. 2/3 tagged. We then backtested 7058 2x exactly. Same upsides. We can start a dip under 7058. Newsletter out soon with next failed breakdown entries for that dip
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2475 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Our runner from Sunday's 6793 Failed Breakdown is still paying
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2509 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7073.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Micro injection of vol in #ES_F finally but we need much red more to get interested. After a 280 point rally from Sunday's 6793 failed breakdown, 7073 was today's 1st target.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2527 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7073.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Micro injection of volatility in #ES_F finally but we need much red more to get interested. After a 280 point rally from Sunday's 6793 failed breakdown, 7073 was today's 1st target.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2545 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7073.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 0 volatility lockout rally continues in #ES_F and 0 to do but hold our runner from Sunday's 6793 Failed Breakdown. We need a deep sell to open new entries. Yesterday's bonus target was 7073, stuck here
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2563 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 7048.0=current_price_context; 7073.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Day 4 lockout rally in #ES_F after Sunday evenings 6793 Failed Breakdown, given live & in newsletter. Yesterdays targets gven 8am were 7048 main (hit), 7073 bonus (hit)
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2581 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6948.0=current_price_context; 6958.0=current_price_context; 6967.0=current_price_context; 7002.0=current_price_context; 7021.0=current_price_context; 7050.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: +230 points from Sunday's 6793 Failed Breakdown. Again - nothing to do but ride runner until we get a dip. Today's 8am targets were 6948, 6958, 6967 (all hit). Bonus target was 7002 (exact high). 7021 next then 7050. Newsletter out soon with entries
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2597 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6792.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6792.0=actual_setup_level; 6948.0=current_price_context; 6958.0=current_price_context; 6967.0=current_price_context; 6978.0=current_price_context; 6994.0=current_price_context; 7002.0=current_price_context
+- S/R sanity: 6792.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: The best long of 2026 just keeps paying. 6792 Failed Breakdown Sunday was our recent major add in #ES_F. Today's targets given 8am were 6948, 6958, 6967 (all hit). I then gave a bonus slate of 6978 (hit), 6994 (hit), 7002 (just hit)
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2615 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6948.0=current_price_context; 6958.0=current_price_context; 6967.0=current_price_context; 6978.0=current_price_context; 6994.0=current_price_context; 7002.0=current_price_context; 7021.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 0 volatility, 0 to do in #ES_F but ride runner until we get next pullback to trap bears again. We are +200 points from the Sunday 6793 Failed Breakdown, given live. Today's targets were 6948, 6958, 6967 (all hit). Bonus were 6978, 6994 (here). 7002, 7021 next
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2633 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6948.0=current_price_context; 6958.0=current_price_context; 6967.0=current_price_context; 6978.0=current_price_context; 6994.0=current_price_context; 7002.0=current_price_context; 7021.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We are still running targets in #ES_F now +200 from Sunday evenings 6793 Failed Breakdown given live. Today's targets given 8am were 6948, 6958, 6967 (all hit). Bonus set were 6978 (hit), 6994 (hit), 7002, then 7021 still bonus.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2667 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6948.0=current_price_context; 6858.0=current_price_context; 6967.0=current_price_context; 6978.0=current_price_context; 7002.0=current_price_context; 7021.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Still nothing to do but let our runner work, now +184 point from Sunday's 6793 Failed Breakdown given live in #ES_F. Today's target slate was given at 8am: 6948 (hit), 6858 (hit), 6967 (hit). Bonus slate was 6978 (hit), 7002 then 7021 if ES wants more.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2685 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=2:55PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Biggest long of 2026 continues to pay and we are working today's targets in #ES_F. 6793 Failed Breakdown was our entry Sunday. I warned yesterday 2:55PM that much more upside was coming
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2703 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0, 6809.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6809.0=actual_setup_level; 6937.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide; 6809.0 does_not_coincide
+- ES 1m window/chart: multi-level split required; crop each stated setup level separately
+- Blockers: multi_setup_row_split_required, no_existing_chart_window_match, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Little to do now in #ES_F. Entries were the Sunday 6793 Failed Breakdown (given live Sunday 6pm) and the 6809 Failed Breakdown yesterday. I posted 2:55PM yesterday lots more green ahead with 6937 next, and we hit
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2721 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6593.0, 6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6593.0=actual_setup_level; 6360.0=actual_setup_level
+- S/R sanity: 6593.0 does_not_coincide; 6360.0 does_not_coincide
+- ES 1m window/chart: multi-level split required; crop each stated setup level separately
+- Blockers: multi_setup_row_split_required, no_existing_chart_window_match, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/14/2026 07:59AM - Note: There is just nothing to do now. Most of us have been long at least since last Tuesday's 6593 Failed Breadkown, but many since the 6360 Failed Breakdown. Now, we just let the runner pay. There are no setups until we get the next deep sell/bear trap per newsletter
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2723 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6809.0=current_price_context; 6912.0=current_price_context; 6937.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:58AM, 2:55PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/14/2026 07:58AM - Best long of 2026 keeps paying in #ES_F. Recent adds were 6793 Failed Breakdown Sunday (given live) and 6809 reclaim ystd (given live). I posted 2:55PM lots more was ahead with 6912, 6937 targets (hit).
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2741 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6903.0=current_price_context; 6912.0=current_price_context; 6937.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: CLosing update #ES_F: +100 points now on the long from the 6793 Failed Breakdown last eve. Now nothing to do but ride runner as we rally. 6903, 6912, then 6937 are next from here. This is what a 1 month flag breakout from last Tuesday looks like. Newsletter out soon with entries
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2757 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6793.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=actual_setup_level; 6809.0=current_price_context; 6848.0=current_price_context; 6872.0=current_price_context; 6886.0=current_price_context; 6903.0=current_price_context
+- S/R sanity: 6793.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We are officially +100 points on our long from the 6793 Failed Breakdown last evening in #ES_F (for those who missed it, I gave the 6809 Reclaim at 8am). Targets given were 6848 main (hit). Bonus were 6872 (hit), 6886 (hit), 6903 (almost).
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2775 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6809.0=current_price_context; 6592.0=current_price_context; 6848.0=current_price_context; 6872.0=current_price_context; 6886.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Runners still paying. 0 to do until the next selloff then bear trap/Failed Breakdown in #ES_F. 6809 reclaim was long trigger given live 8am (newsletter readers been long since 6592 last week). Targets given 8am were 6848 main (hit), 6872, 6886 bonus (hit)
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2865 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6793.0=current_price_context; 6802.0=current_price_context; 6818.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=6:01PM, 8:45PM; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: In #ES_F, all Sunday gaps down produces a bear trap/Failed Breakdown. I tweeted 6:01PM that 6793 reclaim triggers up. We triggered 8:45PM. Targets were 6802 1st (hit), 6818-22 2nd (hit)
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2883 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Gap down open for #ES_F as we finally get a healthy retrace after last weeks relentless 280+ point rally following Tuesday's 6592 Failed Breakdown.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2901 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=11:30AM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Last Tuesday 11:30AM a Failed Breakdown of 6592 got us long in #ES_F for +280 point rally, given live here/in newsletter (this was before Iran deal headline, as institutions front run). Gap down likely today on "No deal".
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:2989 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=current_price_context; 6848.0=current_price_context; 6872.0=current_price_context; 6882.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Volatility remains 0 in #ES_F. As warned, no volatility=no trades. Runners still working from Tuesday's 6592 Macro Failed Breakdown. 6848-6872=a tight flag. Today's 1st target was 6882, we ran there, rejected back into the range.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3007 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=current_price_context; 6809.0=current_price_context; 6848.0=current_price_context; 6872.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: There continues to be 0 volatility in #ES_F. No volatility=no trades, hold runners. Runners still working from 1) Tuesdays 6592 Macro Failed Breakdown and 2) Yesterdays 6809 reclaim. 6848-6872=a new bull flag.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3025 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Volatility still dead in #ES_F & simply let runners work now. On Tuesday we saw a massive macro Failed Breakdown of 6592 (given live + in newsletter) & we've been long since for 280+ points
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3043 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6809.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=current_price_context; 6809.0=actual_setup_level; 6872.0=current_price_context; 6848.0=current_price_context; 6882.0=current_price_context
+- S/R sanity: 6809.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: No volatility in #ES_F and 0 to do until we get some. Runners still paying from Tuesday's 6592 reclaim and yesterday's 6809 Failed Breakdown. 6872-6848=chop/flag. Today's 1st target was 6882, and we ran there, and dipped.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3097 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: While longs continue to pay in (now +280 points from the 6592 Failed Breakdown on Tuesday given out live) good time to zoom out. As posted Saturday, #ES_F spent a month in a clean downtrend channel/flag. Tuesday, it broke out.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3257 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6593.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6593.0=actual_setup_level
+- S/R sanity: 6593.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: No volatility now as #ES_F is in day 2 of digesting Tuesday's 250 point 6593 Failed Breakdown long. Be very careful trading 0 vol - traps and fakeouts are extreme.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3275 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6593.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6593.0=actual_setup_level
+- S/R sanity: 6593.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Tuesday saw a 250 point rally, and we were long via the 6593 Failed Breakdown. After, I warned all yesterday that it takes #ES_F days to "digest" the move. This was ystd
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3327 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level; 6809.0=current_price_context; 6819.0=current_price_context; 6833.0=current_price_context; 6844.0=current_price_context; 6853.0=current_price_context
+- S/R sanity: 6592.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Slow day as #ES_F digests yesterday's 250 point rally, which was triggered by the 6592 Failed Breakdown (given both here and in newsletter). We are getting scalps today. I posted at noon 6809 reclaims trigger long. Targets were 6819 (hit), 6833, 6844, 6853 above.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3345 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: After yesterday's 250 point long off the 6592 Failed Breakdown (given to readers in newsletter and here for free) in #ES_F, today is a structure building day. We are still getting scalps.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3363 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: As warned #ES_F is very generous - it gave us a 250 point long on the 6592 Failed Breakdown yesterday. The day after though, ES usually just gives chop, traps, poor quality as price builds structure
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3381 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 coincides_partially via prose L3399 6592
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: After yesterday's 6592 Failed Breakdown played out for 250 points #ES_F now beginning the digestion/structure building phase. As warned, this takes hours before we get new trade
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3399 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=actual_setup_level
+- S/R sanity: 6592.0 coincides_partially via prose L3399 6592
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: As posted after +250 points from yesterday's 6592 Failed breakdown long, it takes a long time for #ES_F to "digest" the move and establish a new range. Until then, low quality
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3485 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: data_context
+- Source label: data_context
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=current_price_context; 6593.0=current_price_context; 6604.0=current_price_context; 6622.0=current_price_context; 6638.0=current_price_context; 6647.0=current_price_context; 6662.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=12:25PM; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/07/2026 12:25PM - The 6592 level remains an ATM machine today, flushing and recovering over and over in #ES_F. 6593 reclaim was the long trigger posted 40mins ago. Yet again, it recovered. Targets given were 6604 (hit), 6622 (hit). 6638, 6647, 6662+ if ES want more.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3511 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6592.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=6660.0
+- Level roles: 6592.0=actual_setup_level; 6622.0=current_price_context; 6660.0=target_or_response
+- S/R sanity: 6592.0 coincides_partially via prose L3507 6592
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=07:53AM, 4pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 04/07/2026 07:53AM - After Sunday's 6592 Failed Breakdown triggered long in #ES_F, we spent ystd basing around 6622 magnet. After hrs traders got a fantastic long. Per 4pm newsletter, 6622 reclaims trigger up. We ran to 6660, dipped
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3529 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6593.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6593.0=actual_setup_level; 6624.0=current_price_context; 6638.0=current_price_context; 6647.0=current_price_context; 6670.0=current_price_context
+- S/R sanity: 6593.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: Very slow day but we've had two long triggers. The 6593 Failed Breakdown (given live 615PM last eve) and the 6624 trap (given a few hrs ago). Targets were 6638, 6647 (big res), then 6670 which is still outstanding. Newsletter out soon with next entries
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3635 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: planned_setup
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=current_price_context; 6604.0=current_price_context; 6616.0=current_price_context; 6624.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: After last nights 58 point long, 0 to do in #ES_F but wait for next sell. Every Sunday the same: We gap down into Failed Breakdown. Long trigger was 6592 reclaim given live. Targets were 6604, 6616, 6624. All hit
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3653 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6592.0=current_price_context; 6604.0=current_price_context; 6616.0=current_price_context; 6624.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=6:15PM; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Last night, we got the standard Sunday long trigger in #ES_F, given live 6:15PM and in Friday's newsletter. Gap down, into Failed Breakdown. I posted 6592 recovery sees 6604, 6616, 6624. All hit
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3793 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6525.0=current_price_context; 6544.0=current_price_context; 6562.0=current_price_context; 6592.0=current_price_context; 6624.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: This market is handing out 100 point Failed Breakdowns like nothing in #ES_F & enormous payout here. 6525 reclaim long was given live here 8am + newsletter. Targets given were 6544 (hit), 6562 (hit), 6592 (hit), 6624 (hit)
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3811 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: planned_setup
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6520.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Yet again, today's planned Failed Breakdown long played out in #ES_F. Beginning at 8am I posted to start today's rally 6520-25 had to recover. We spent 1.5hrs basing right below, then recovered.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3829 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6520.0=current_price_context; 6525.0=current_price_context
+- S/R sanity: 6360.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: After a 290 point rally from Monday's 830pm 6360 Failed Breakdown, #ES_F finally dipped last evening. Levels respecting well so far today. 6520-25 had to reclaim as posted to start rally. We've been backtesting 6525 for 1hr
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3847 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6647.0=current_price_context; 6592.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L3865 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Monday 830pm, longs triggered on the 6360 Failed Breakdown in #ES_F and took us 290 points to do 6647 target yesterday. Last eve, we finally got a sell trigger. I posted 6592 fails we sell, down we went
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3865 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6467.0=current_price_context; 6490.0=current_price_context; 6524.0=current_price_context; 6575.0=current_price_context; 6592.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L3865 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: Today's rip was caused by the same thing that causes all squeezes: A big Failed Breakdown of 6360 last evening. Targets today were 6467, 6490, 6524. 6575, 6592 next. Just hold runner for now. 6524=support. Newsletter out soon with next entries from here
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3897 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6467.0=current_price_context; 6490.0=current_price_context; 6524.0=current_price_context
+- S/R sanity: 6360.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm, 8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Absolutely incredible follow through on last nights 6360 Failed Breakdown in #ES_F, given in yesterday's 4pm newsletter. I warned at 8am to just hold runners today with targets being 6467 (hit), 6490 (hit), 6524 (hit).
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3915 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=current_price_context; 6467.0=current_price_context; 6490.0=current_price_context; 6524.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Mid day chop time in #ES_F now, just hold runner. Long trigger was the 6360 (Sunday/Monday low) Failed Breakdown 830pm last eve. Targets were 6467 (hit), 6490 (hit), 6524 (not yet).
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3933 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6467.0=current_price_context; 6490.0=current_price_context; 6524.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L3933 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We went +134 points from last evenings 6360 Failed Breakdown in #ES_F, given in advance. 6360 was a shelf of lows from Sunday. We swept it, trapped bears, recovered. Targets were 6467 (hit), 6490 (hit), 6524 stretch target (not yet). Ride runner
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3951 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=6360.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level+swept_lost_low
+- S/R sanity: 6360.0 coincides_partially via prose L3933 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We are running the targets. Readers know I trade 1 setup: The Failed Breakdown. We got it 830pm last evening when we swept the 6360 shelf, trapped shorts, and recovered in #ES_F
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:3969 `needs_bigger_crop`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=6353.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6353.0=swept_lost_low; 6447.0=current_price_context; 6467.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L3951 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match
+- Support context: none
+- Resistance context: none
+- Verdict: needs_bigger_crop
+- Raw passage: Little to do now but ride runners. Per 4pm newsletter, our #ES_F long setup last eve was the Failed Breakdown of 6360 (down to 6353). We 6360 at 830pm, recovered, and ripped. Targets were 6447 (hit), 6467 (hit).
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:4003 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6353.0=current_price_context; 6447.0=current_price_context; 6467.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L4021 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Last night 830pm, #ES_F got a textbook Failed Breakdown given to newsletter readers 4pm. Setup was Failed Breakdown of 6360 to 6353. We hit 6353 exact, recovered 6360. Targets were 6447, 6467 (hit)
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:4021 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6360.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6360.0=actual_setup_level; 6367.0=current_price_context
+- S/R sanity: 6360.0 coincides_partially via prose L4021 6360
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: Decent volatility today and plenty of setups. Watch for the Failed Breakdown of yesterday's 6360 low and bulls will need to recover 6367 to start us back up the range. Newsletter out soon with setups for tomorrow
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:4127 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6367.0=current_price_context; 6385.0=current_price_context; 6411.0=current_price_context; 6454.0=current_price_context; 6476.0=current_price_context; 6492.0=current_price_context; 6520.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Push continues in #ES_F. Same drill every week: Thurs/Friday crash, Sunday gap down/Failed Breakdown/Monday rip. Per Friday 4pm newsletter 6367, 6385 & 6411 reclaims were ALL triggers. Targets were 6454 (hit). 6476, 6492, 6520 above
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:4499 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: data_context
+- Source label: data_context
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6575.0=current_price_context; 6564.0=current_price_context; 6542.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Now flushing 6575 finally. 6564, 6542 below. 75 must reclaim to pop. Bears control<92
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:4587 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6616.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6616.0=actual_setup_level; 6647.0=current_price_context; 6592.0=current_price_context; 6575.0=current_price_context; 6952.0=current_price_context
+- S/R sanity: 6616.0 coincides_partially via prose L4605 6616
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Slow start to the day, but levels respecting well. After a strong evening Failed Breakdown of 6616 to 6647, #ES_F sold. 6592 and 6575 are key today as posted 8am. We held 6575 exact, bounced to 6952. 6592 will be a trappy region/magnet today
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:4605 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=6616.0; recovered=none; non_acceptance=none; invalidation=none; target/response=6647.0
+- Level roles: 6616.0=swept_lost_low; 6647.0=target_or_response
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: 6 days #ES_F was stuck in the same range, now expanding mildly. Last eve, we got a quality Failed Breakdown from 4pm newsletter: Swept 6616 daily low, recovered, ripped to 6647, sold.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:4819 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: planned_setup
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6623.0=current_price_context; 6592.0=current_price_context; 6647.0=current_price_context; 6690.0=current_price_context; 6638.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: I said all day that 6623 would be a magnet, and it has been. We are now rangebound with 6592 support (it was the Failed Breakdown here that triggered long to 6647 target), 6623 magnet, 6690 resistance. 6638, 6647, 6690 next. Newsletter out soon with entries
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:5035 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6623.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6623.0=actual_setup_level; 6648.0=current_price_context; 6664.0=current_price_context; 6690.0=current_price_context; 6716.0=current_price_context
+- S/R sanity: 6623.0 coincides_partially via prose L5019 6623
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am, 11:38AM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Closing update #ES_F: Latest setup was the Failed Breakdown of the 6623-25 8am low, given at 11:38AM. Targets were 6648 (hit), 6664 (hit). 6690, then 6716 next up. 6623-6690 is a huge flag now to setup next leg. Newsletter out soon with next batch of entries
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:5051 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6623.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6623.0=actual_setup_level; 6648.0=current_price_context; 6664.0=current_price_context; 6690.0=current_price_context; 6716.0=current_price_context
+- S/R sanity: 6623.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=11:38AM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Nonstop setups in #ES_F given both live here & in newsletter for big run from last eve/this morning. Most recent trade given at 11:38AM: Failed Breakdown of 6623. We swept it & ran. Targets were 6648 (hit), 6664, 6690, then 6716
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:5123 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6524.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6524.0=actual_setup_level; 6648.0=current_price_context; 6664.0=current_price_context; 6690.0=current_price_context; 6707.0=current_price_context; 6716.0=current_price_context
+- S/R sanity: 6524.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=8am; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Runner paying #ES_F. For those who missed the big 655 or 6524 Failed Breakdown's given to newsletter readers, I gave the 6648 reclaim 8am. Targets given were 6664 (hit), 6690 (hit). Bonus were 6707 (almost), then 6716.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:5195 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=6560.0
+- Level roles: 6524.0=current_price_context; 6560.0=target_or_response
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm, 6pm, 7am; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Today we saw the power of the Failed Breakdown in #ES_F. Given to newsletter readers 4pm Friday & here 6pm, traps of 6524 trigger up. We got it at 6pm and rallied to 6560. We got it again 7am and rallied 220 points
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:5213 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=6524.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6524.0=swept_lost_low
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Standard weekly gap down in #ES_F, and as usual it triggered a quick Failed Breakdown. Per Friday's 4pm newsletter, flushes and recoveries of Friday's 6524 daily low trigger up. We flushed it, recovered, popped 12 points. Protect gains level to level
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:5247 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6532.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6716.0=current_price_context; 6532.0=actual_setup_level
+- S/R sanity: 6532.0 coincides_partially via prose L5247 6532
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=3:40PM; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Big Picture View: Since Feb 25th, #ES_F is in a downtrend channel with 6716 resistance. Friday 3:40PM, newsletter readers got the 6532 Failed Breakdown, triggering up
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:5283 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6532.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=4pm; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: It's classic #ES_F to trigger a high quality long mins before the close. In yesterday's 4pm newsletter I posted Failed Breakdowns of the big September 2025 low ~6532 would trigger up. We just triggered, and went +30. With war headlines over the weekend though lock in most gains - https://pbs.twimg.com/media/HD4Rzj2boAUShVo?format=jpg&name=orig
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:5315 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6612.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6612.0=actual_setup_level; 6647.0=current_price_context; 6592.0=current_price_context; 6608.0=current_price_context
+- S/R sanity: 6612.0 coincides_partially via prose L5315 6612
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: As posted little to do and its been a lucrative session in #ES_F. Setup #1 was 6612 Failed Breakdown (hit 6647 1st target. Setup #2 was 6592 support (hit 6608). Identical to last two Friday's where we sold into close ripped Monday
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:5333 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6612.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6612.0=actual_setup_level; 6647.0=current_price_context; 6592.0=current_price_context; 6608.0=current_price_context
+- S/R sanity: 6612.0 coincides_partially via prose L5315 6612
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Its been a lucrative session today (despite being OPEX) and little to do now as we slowly grind down. Setup #1 was 6612 Failed breakdown. We got to 6647 1st target exact. Setup #2 was the 6592 support. We got to 6608 1st target.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:5367 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: actual_recap
+- Source label: data_context
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=6608.0
+- Level roles: 6592.0=current_price_context; 6608.0=target_or_response; 6623.0=current_price_context; 6635.0=current_price_context; 6647.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: We are now have 0 volatility in #ES_F. 6592 was support as posted with sweeps and recoveries actionable. We swept it, rallied to 6608 1st resistance which has ben a ceiling since. If we get vol again and it clears, 6623 magnet is above. From there, we bottom to 6635, 6647+
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:5383 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: context_recap
+- Source label: source_confirmed_fbd
+- Exact levels: setup=6612.0; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=6647.0, 6608.0
+- Level roles: 6612.0=actual_setup_level; 6647.0=target_or_response; 6592.0=current_price_context; 6608.0=target_or_response
+- S/R sanity: 6612.0 does_not_coincide
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_existing_chart_window_match, no_source_stated_swept_low_below_setup, setup_level_does_not_coincide_with_sr_or_prose_context, source_mode_context_recap
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: After incredible volatility (and 3 setups) to start the day, its now pure chop in #ES_F. Setup #1 was the 6612 Failed breakdown, triggered 630AM. We ran to 6647 target. Setup #2 was 6592 sweep (held nicely), and we ran to 6608.
+
+### data\research\mancini\The Mancini Logs 3-15-2026 - 5-6-2026.txt:5417 `data_only`
+
+- Plan/date context: The Mancini Logs 3-15-2026 - 5-6-2026 | pub=None | plan=None
+- Source mode: planned_setup
+- Source label: source_unparsed_fbd
+- Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
+- Level roles: 6574.0=current_price_context; 6552.0=current_price_context; 6591.0=current_price_context
+- S/R sanity: none
+- ES 1m window/chart: crop required from ES 1m around source time; source_times=none; nearby_sessions=none
+- Blockers: no_actual_setup_level_extracted
+- Support context: none
+- Resistance context: none
+- Verdict: data_only
+- Raw passage: Note: 6574, 6552 are below here 6591. As always when the routine daily "elevator dwn" is underway, do not knife catch. Wait for the Failed Breakdown per newsletter which will generate the next squeeze leg later on
 
 ### data\research\mancini\methodology.txt:67 `data_only`
 
 - Plan/date context: My Trade Methodology - Fundamentals | pub=None | plan=None
 - Source mode: methodology_definition
+- Source label: methodology_definition
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: none
 - S/R sanity: none
@@ -6560,6 +12488,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: My Trade Methodology - Fundamentals | pub=None | plan=None
 - Source mode: methodology_definition
+- Source label: methodology_definition
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: none
 - S/R sanity: none
@@ -6574,6 +12503,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: My Trade Methodology - Fundamentals | pub=None | plan=None
 - Source mode: methodology_definition
+- Source label: methodology_definition
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: none
 - S/R sanity: none
@@ -6588,6 +12518,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: My Trade Methodology - Fundamentals | pub=None | plan=None
 - Source mode: methodology_definition
+- Source label: methodology_definition
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: none
 - S/R sanity: none
@@ -6602,6 +12533,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: My Trade Methodology - Fundamentals | pub=None | plan=None
 - Source mode: methodology_definition
+- Source label: methodology_definition
 - Exact levels: setup=none; swept/lost=6765.0; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: 6765.0=swept_lost_low
 - S/R sanity: none
@@ -6616,6 +12548,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: My Trade Methodology - Fundamentals | pub=None | plan=None
 - Source mode: methodology_definition
+- Source label: methodology_definition
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: none
 - S/R sanity: none
@@ -6630,6 +12563,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: My Trade Methodology - Fundamentals | pub=None | plan=None
 - Source mode: methodology_definition
+- Source label: methodology_definition
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: none
 - S/R sanity: none
@@ -6644,6 +12578,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: My Trade Methodology - Fundamentals | pub=None | plan=None
 - Source mode: methodology_definition
+- Source label: methodology_definition
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: none
 - S/R sanity: none
@@ -6658,6 +12593,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: My Trade Methodology - Fundamentals | pub=None | plan=None
 - Source mode: methodology_definition
+- Source label: methodology_definition
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: none
 - S/R sanity: none
@@ -6672,6 +12608,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: My Trade Methodology - Fundamentals | pub=None | plan=None
 - Source mode: methodology_definition
+- Source label: methodology_definition
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: none
 - S/R sanity: none
@@ -6686,6 +12623,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: My Trade Methodology - Fundamentals | pub=None | plan=None
 - Source mode: methodology_definition
+- Source label: methodology_definition
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: none
 - S/R sanity: none
@@ -6700,6 +12638,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: My Trade Methodology - Fundamentals | pub=None | plan=None
 - Source mode: methodology_definition
+- Source label: methodology_definition
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: none
 - S/R sanity: none
@@ -6714,6 +12653,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: My Trade Methodology - Fundamentals | pub=None | plan=None
 - Source mode: methodology_definition
+- Source label: methodology_definition
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: none
 - S/R sanity: none
@@ -6728,6 +12668,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: My Trade Methodology - Fundamentals | pub=None | plan=None
 - Source mode: methodology_definition
+- Source label: source_negative_control
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: none
 - S/R sanity: none
@@ -6742,6 +12683,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: My Trade Methodology - Fundamentals | pub=None | plan=None
 - Source mode: methodology_definition
+- Source label: methodology_definition
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: none
 - S/R sanity: none
@@ -6756,6 +12698,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: My Trade Methodology - Fundamentals | pub=None | plan=None
 - Source mode: methodology_definition
+- Source label: methodology_definition
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: none
 - S/R sanity: none
@@ -6770,6 +12713,7 @@ Chronological, source-first ledger of raw Mancini passages that directly mention
 
 - Plan/date context: My Trade Methodology - Fundamentals | pub=None | plan=None
 - Source mode: methodology_definition
+- Source label: methodology_definition
 - Exact levels: setup=none; swept/lost=none; recovered=none; non_acceptance=none; invalidation=none; target/response=none
 - Level roles: none
 - S/R sanity: none

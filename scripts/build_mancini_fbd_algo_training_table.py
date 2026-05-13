@@ -270,6 +270,8 @@ def source_confidence(
     text = quote.lower()
     if source_negative or verdict == "negative_control":
         return 0.0
+    if verdict == "data_only" and not source_confirmed and not source_planned and not sr_list_only:
+        return 0.0
     if sr_list_only:
         return 0.2
     if source_confirmed and has_swept_low and has_recovered_level:
@@ -338,13 +340,16 @@ def direct_training_rows(
             quote = source_row.get("snippet") or ""
             mode = source_row.get("mode") or ""
             verdict = source_row.get("verdict") or ""
+            source_label_status = source_row.get("source_label_status") or ""
+            session_scan = source_row.get("session_scan") or []
+            scan_metrics = (session_scan[0] if session_scan else {}) if not match else {}
             visual_status = (
                 match.get("visual_sanity_status")
                 or visual.get("status")
                 or manifest.get("visual_sanity_status")
                 or ""
             )
-            window_metrics = match.get("window_metrics") or {}
+            window_metrics = match.get("window_metrics") or scan_metrics or {}
             swept_low = (
                 first_number(levels.get("swept_lost_low"))
                 or as_float(window_metrics.get("trap_low"))
@@ -373,22 +378,19 @@ def direct_training_rows(
             chart_confirmed_non_acceptance = bool(
                 as_int(window_metrics.get("threshold_hold_closes")) and as_int(window_metrics.get("threshold_hold_closes")) >= 2
             ) or as_int(quick.get("non_acceptance_held_bars")) is not None and as_int(quick.get("non_acceptance_held_bars")) >= 2
-            source_negative = mode == "negative_control" or verdict == "negative_control" or "source_marks_no_trigger_or_non_fbd" in blockers
-            quote_lower = quote.lower()
-            source_confirmed = (
-                mode == "actual_recap"
-                and not source_negative
-                and (
-                    "failed breakdown" in quote_lower
-                    or "failed break down" in quote_lower
-                    or "recover" in quote_lower
-                    or "reclaim" in quote_lower
-                )
-                and setup_level is not None
+            source_negative = (
+                source_label_status == "source_negative_control"
+                or mode == "negative_control"
+                or verdict == "negative_control"
+                or "source_marks_no_trigger_or_non_fbd" in blockers
             )
-            source_planned = mode == "planned_setup" and not source_negative
-            sr_list_only = support_resistance_list_text(quote) or all(
-                bool(item.get("support_list_only")) for item in source_row.get("level_role_map") or []
+            source_confirmed = source_label_status == "source_confirmed_fbd" and not source_negative
+            source_planned = source_label_status == "source_planned_fbd" and not source_negative
+            role_map = source_row.get("level_role_map") or []
+            sr_list_only = (
+                source_label_status == "sr_list_only"
+                or support_resistance_list_text(quote)
+                or bool(role_map) and all(bool(item.get("support_list_only")) for item in role_map)
             )
             needs_crop = verdict == "needs_bigger_crop" or "no_existing_chart_window_match" in blockers or visual_status == "insufficient_visual_context"
             data_only = verdict == "data_only" or mode in {"context_recap", "methodology_definition", "data_context"}
@@ -396,9 +398,8 @@ def direct_training_rows(
             session_date = ""
             if match.get("source_timestamp_et"):
                 session_date = row_date_from_timestamp(match.get("source_timestamp_et"))
-            if not session_date and source_row.get("session_scan"):
-                first_scan = (source_row.get("session_scan") or [{}])[0]
-                session_date = first_scan.get("session_date") or ""
+            if not session_date and session_scan:
+                session_date = (session_scan[0] or {}).get("session_date") or ""
             if not session_date:
                 session_date = source_row.get("plan_date") or ""
             window_csv = match.get("window_csv") or quick.get("window_csv") or manifest.get("window_csv") or ""
@@ -434,6 +435,19 @@ def direct_training_rows(
                 has_swept_low=swept_low is not None,
                 has_recovered_level=recovered_level is not None,
             )
+            scan_packet_id = ""
+            if scan_metrics and setup_level is not None:
+                scan_packet_id = "source-scan:" + source_hash([
+                    source_row.get("raw_file"),
+                    source_row.get("line"),
+                    setup_level,
+                    scan_metrics.get("session_date"),
+                    scan_metrics.get("trap_timestamp_et"),
+                ])
+            accepted_for_timing_test = as_bool(quick.get("accepted_for_timing_test") or manifest.get("accepted_for_timing_test")) or bool(
+                scan_metrics and (source_confirmed or source_planned) and chart_confirmed_reclaim
+            )
+            scan_family = "non_acceptance_protocol" if (as_int(window_metrics.get("threshold_hold_closes")) or 0) >= 2 else ""
             row = {
                 "training_row_id": "direct-" + source_hash([source_row.get("raw_file"), source_row.get("line"), setup_index, setup_level]),
                 "row_origin": "direct_source_audit",
@@ -451,9 +465,10 @@ def direct_training_rows(
                 "invalidation_level": invalidation_level,
                 "target_or_response_level": target_level,
                 "source_mode": mode,
+                "source_label_status": source_label_status,
                 "source_audit_verdict": verdict,
                 "source_confidence_score": round(confidence, 4),
-                "level_role_map": source_row.get("level_role_map") or [],
+                "level_role_map": role_map,
                 "sr_coincidence": source_row.get("sr_coincidence"),
                 "support_context": source_row.get("support_context") or [],
                 "resistance_context": source_row.get("resistance_context") or [],
@@ -471,24 +486,24 @@ def direct_training_rows(
                 "session_usable": session_info.get("usable"),
                 "session_excluded_reason": session_info.get("excluded_reason") or "",
                 "bars_available": bars_available,
-                "packet_id": packet_id,
-                "acceptance_family": match.get("acceptance_family") or quick.get("acceptance_family") or manifest.get("acceptance_family") or "",
-                "candidate_acceptance_family": quick.get("candidate_acceptance_family") or manifest.get("candidate_acceptance_family") or "",
-                "accepted_for_timing_test": as_bool(quick.get("accepted_for_timing_test") or manifest.get("accepted_for_timing_test")),
+                "packet_id": packet_id or scan_packet_id,
+                "acceptance_family": match.get("acceptance_family") or quick.get("acceptance_family") or manifest.get("acceptance_family") or scan_family,
+                "candidate_acceptance_family": quick.get("candidate_acceptance_family") or manifest.get("candidate_acceptance_family") or scan_family,
+                "accepted_for_timing_test": accepted_for_timing_test,
                 "positive_training_example_from_packet": as_bool(quick.get("positive_training_example")),
                 "first_reclaim_close_timestamp_et": window_metrics.get("first_reclaim_close_timestamp_et") or quick.get("first_reclaim_close_timestamp_et") or "",
                 "trap_candle_timestamp_et": window_metrics.get("trap_timestamp_et") or quick.get("trap_candle_timestamp_et") or "",
                 "flush_points": as_float(window_metrics.get("flush_points")) or as_float(quick.get("flush_points")),
                 "acceptance_closes": as_int(quick.get("acceptance_closes")),
-                "non_acceptance_held_bars": as_int(quick.get("non_acceptance_held_bars")),
+                "non_acceptance_held_bars": as_int(quick.get("non_acceptance_held_bars")) or as_int(window_metrics.get("threshold_hold_closes")),
                 "prior_level_tests_before_trap": as_int(quick.get("prior_level_tests_before_trap")),
                 "reclaim_hold_closes": as_int(quick.get("reclaim_hold_closes")),
                 "reclaim_minutes_from_trap": as_float(quick.get("reclaim_minutes_from_trap")),
                 "immediate_failure_after_reclaim": as_bool(quick.get("immediate_failure_after_reclaim")),
-                "mfe_15m": as_float(quick.get("mfe_15m")),
-                "mae_15m": as_float(quick.get("mae_15m")),
-                "mfe_60m": as_float(quick.get("mfe_60m")),
-                "mae_60m": as_float(quick.get("mae_60m")),
+                "legacy_packet_mfe_15m_audit": as_float(quick.get("mfe_15m")),
+                "legacy_packet_mae_15m_audit": as_float(quick.get("mae_15m")),
+                "legacy_packet_mfe_60m_audit": as_float(quick.get("mfe_60m")),
+                "legacy_packet_mae_60m_audit": as_float(quick.get("mae_60m")),
                 **target_info,
                 **labels,
             }
@@ -528,16 +543,7 @@ def packet_training_rows(
             or support_resistance_list_text(quote)
         )
         source_negative = False
-        quote_lower = quote.lower()
-        source_confirmed = bool(
-            not sr_list_only
-            and (
-                "failed breakdown" in quote_lower
-                or "recover" in quote_lower
-                or "reclaim" in quote_lower
-                or explicitness == "explicit_mancini_narrative"
-            )
-        )
+        source_confirmed = False
         source_planned = False
         chart_confirmed_reclaim = bool(quick.get("first_reclaim_close_timestamp_et"))
         chart_confirmed_non_acceptance = as_int(quick.get("non_acceptance_held_bars")) is not None and as_int(quick.get("non_acceptance_held_bars")) >= 2
@@ -640,10 +646,10 @@ def packet_training_rows(
             "reclaim_hold_closes": as_int(quick.get("reclaim_hold_closes")),
             "reclaim_minutes_from_trap": as_float(quick.get("reclaim_minutes_from_trap")),
             "immediate_failure_after_reclaim": as_bool(quick.get("immediate_failure_after_reclaim")),
-            "mfe_15m": as_float(quick.get("mfe_15m")),
-            "mae_15m": as_float(quick.get("mae_15m")),
-            "mfe_60m": as_float(quick.get("mfe_60m")),
-            "mae_60m": as_float(quick.get("mae_60m")),
+            "legacy_packet_mfe_15m_audit": as_float(quick.get("mfe_15m")),
+            "legacy_packet_mae_15m_audit": as_float(quick.get("mae_15m")),
+            "legacy_packet_mfe_60m_audit": as_float(quick.get("mfe_60m")),
+            "legacy_packet_mae_60m_audit": as_float(quick.get("mae_60m")),
             "source_setup_evidence_status": source_setup_status,
             "mancini_explicitness": explicitness,
             **target_info,
@@ -716,6 +722,13 @@ def summary_markdown(summary: dict[str, Any]) -> str:
         lines.append(f"- `{key}`: {value}")
     lines.extend([
         "",
+        "## Direct Source Labels",
+        "",
+    ])
+    for key, value in summary.get("direct_audit_source_label_counts", {}).items():
+        lines.append(f"- `{key}`: {value}")
+    lines.extend([
+        "",
         "## Safety Notes",
         "",
         "- Support/resistance-list-only packet rows are labeled as `sr_list_only` and are not promoted into positive examples.",
@@ -744,6 +757,7 @@ def build_summary(
             missing_png += 1
     label_counts = {label: sum(1 for row in rows if bool(row.get(label))) for label in LABEL_FIELDS}
     direct_verdict_counts = dict(Counter(str(row.get("verdict") or "missing") for row in direct_rows))
+    direct_source_label_counts = dict(Counter(str(row.get("source_label_status") or "missing") for row in direct_rows))
     direct_positive_count = sum(1 for row in direct_rows if row.get("verdict") == "positive_training_candidate")
     summary = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -783,6 +797,7 @@ def build_summary(
         "acceptance_family_counts": dict(Counter(str(row.get("acceptance_family") or "missing") for row in rows)),
         "visual_sanity_status_counts": dict(Counter(str(row.get("visual_sanity_status") or "missing") for row in rows)),
         "direct_audit_verdict_counts": direct_verdict_counts,
+        "direct_audit_source_label_counts": direct_source_label_counts,
         "direct_audit_positive_training_candidate_count": direct_positive_count,
         "label_counts": label_counts,
         "safety": {

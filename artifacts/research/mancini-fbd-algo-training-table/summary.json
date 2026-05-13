@@ -2,20 +2,28 @@
   "acceptance_family_counts": {
     "classic_acceptance_backtest_from_below": 24,
     "classic_acceptance_second_attempt_reclaim": 43,
-    "missing": 525,
-    "non_acceptance_protocol": 94,
-    "simple_reclaim_unclassified": 51,
+    "missing": 842,
+    "non_acceptance_protocol": 157,
+    "simple_reclaim_unclassified": 61,
     "unmeasurable": 2
   },
   "direct_audit_positive_training_candidate_count": 0,
-  "direct_audit_verdict_counts": {
-    "data_only": 332,
-    "needs_bigger_crop": 114,
-    "negative_control": 32
+  "direct_audit_source_label_counts": {
+    "data_context": 45,
+    "methodology_definition": 16,
+    "source_confirmed_fbd": 430,
+    "source_negative_control": 30,
+    "source_planned_fbd": 69,
+    "source_unparsed_fbd": 252
   },
-  "generated_at": "2026-05-12T20:12:00.784171+00:00",
+  "direct_audit_verdict_counts": {
+    "data_only": 679,
+    "needs_bigger_crop": 133,
+    "negative_control": 30
+  },
+  "generated_at": "2026-05-13T11:11:41.624989+00:00",
   "input_counts": {
-    "direct_source_audit_rows": 478,
+    "direct_source_audit_rows": 842,
     "events_rows": 2456,
     "gallery_manifest_missing_png_sidecars": 0,
     "gallery_manifest_rows": 172,
@@ -38,15 +46,15 @@
     "visual_sanity_audit": "artifacts\\research\\mancini-visual-sanity-audit\\visual_sanity_audit.json"
   },
   "label_counts": {
-    "chart_confirmed_non_acceptance": 95,
-    "chart_confirmed_reclaim": 214,
+    "chart_confirmed_non_acceptance": 158,
+    "chart_confirmed_reclaim": 300,
     "chart_mismatch": 3,
-    "data_only": 416,
-    "needs_crop": 297,
-    "source_confirmed_fbd": 139,
-    "source_negative_control": 34,
-    "source_planned_fbd": 149,
-    "sr_list_only": 114
+    "data_only": 496,
+    "needs_crop": 591,
+    "source_confirmed_fbd": 472,
+    "source_negative_control": 30,
+    "source_planned_fbd": 131,
+    "sr_list_only": 98
   },
   "output_paths": {
     "summary_json": "artifacts\\research\\mancini-fbd-algo-training-table\\summary.json",
@@ -55,7 +63,7 @@
     "training_rows_jsonl": "artifacts\\research\\mancini-fbd-algo-training-table\\training_rows.jsonl"
   },
   "row_origin_counts": {
-    "direct_source_audit": 567,
+    "direct_source_audit": 957,
     "packet_observation": 172
   },
   "safety": {
@@ -66,18 +74,17 @@
   },
   "scope": "research_historical_replay_shadow_only",
   "source_mode_counts": {
-    "actual_recap": 96,
-    "context_recap": 260,
-    "data_context": 184,
+    "actual_recap": 119,
+    "context_recap": 607,
+    "data_context": 195,
     "methodology_definition": 17,
-    "negative_control": 33,
-    "planned_setup": 149
+    "planned_setup": 191
   },
-  "training_row_count": 739,
+  "training_row_count": 1129,
   "visual_sanity_status_counts": {
-    "dangerous_demote_for_training": 174,
-    "insufficient_visual_context": 22,
-    "missing": 525,
+    "dangerous_demote_for_training": 176,
+    "insufficient_visual_context": 31,
+    "missing": 904,
     "review_only_context": 5,
     "training_candidate": 13
   }

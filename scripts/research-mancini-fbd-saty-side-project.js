@@ -104,6 +104,24 @@ function satyLevelsForDate(satyByDate, date) {
     .sort((a, b) => a.price - b.price);
 }
 
+function satyReferenceForDate(satyByDate, date) {
+  const row = satyByDate[date];
+  if (!row?.valid) return null;
+  return {
+    target_session_date: row.target_session_date || date,
+    reference_date: row.reference_date || '',
+    reference_field: row.reference_field || '',
+    reference_close: asNumber(row.prev_close),
+    reference_session_open: row.reference_session_open || '',
+    reference_session_close: row.reference_session_close || '',
+    reference_bar_count: row.reference_bar_count || '',
+    atr_value: asNumber(row.atr_value),
+    valid_from: row.valid_from || '',
+    valid_until: row.valid_until || '',
+    formula_provenance: row.formula_provenance || '',
+  };
+}
+
 function priorTouchGroups(bars, endIndex, level) {
   let groups = 0;
   let touching = false;
@@ -264,7 +282,7 @@ function classifyProtocols({ bars, flushIndex, reclaimIndex, sweptLow, level, le
   return { protocols, acceptanceCloses, thresholdCloses, multiLevelFlushCount };
 }
 
-function findProtocolRows(session, levels) {
+function findProtocolRows(session, levels, satyReference) {
   const rows = [];
   const bars = session.bars;
   for (const levelInfo of levels) {
@@ -303,6 +321,17 @@ function findProtocolRows(session, levels) {
         rows.push({
           protocol: item.protocol,
           date: session.date,
+          saty_target_session_date: satyReference?.target_session_date || session.date,
+          saty_reference_date: satyReference?.reference_date || '',
+          saty_reference_field: satyReference?.reference_field || '',
+          saty_reference_close: satyReference?.reference_close ?? '',
+          saty_reference_session_open: satyReference?.reference_session_open || '',
+          saty_reference_session_close: satyReference?.reference_session_close || '',
+          saty_reference_bar_count: satyReference?.reference_bar_count || '',
+          saty_atr_value: satyReference?.atr_value ?? '',
+          saty_valid_from: satyReference?.valid_from || '',
+          saty_valid_until: satyReference?.valid_until || '',
+          saty_formula_provenance: satyReference?.formula_provenance || '',
           level_name: levelInfo.name,
           level: round2(level),
           flush_timestamp: bars[flushIndex].timestamp,
@@ -318,6 +347,8 @@ function findProtocolRows(session, levels) {
           confirmation: item.confirmation,
           source_confidence_score: 0,
           source_classification: 'saty_only_no_mancini_source_setup',
+          chart_svg_path: '',
+          chart_png_path: '',
           ...outcome,
         });
       }
@@ -448,7 +479,11 @@ function main() {
   })));
   const targetDates = sessions.map((session) => session.date);
   const satyByDate = deriveLevelsByDate(intradayBars, targetDates);
-  const rows = sessions.flatMap((session) => findProtocolRows(session, satyLevelsForDate(satyByDate, session.date)));
+  const rows = sessions.flatMap((session) => findProtocolRows(
+    session,
+    satyLevelsForDate(satyByDate, session.date),
+    satyReferenceForDate(satyByDate, session.date),
+  ));
   const original = JSON.parse(fs.readFileSync(ORIGINAL_SCORES, 'utf8'));
   const summary = {
     generated_at: new Date().toISOString(),

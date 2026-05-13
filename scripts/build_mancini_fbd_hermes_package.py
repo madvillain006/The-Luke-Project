@@ -30,6 +30,11 @@ LABEL_RECOVERY_SUMMARY = ROOT / "artifacts/research/mancini-fbd-label-recovery/s
 LABEL_RECOVERY_ROWS = ROOT / "artifacts/research/mancini-fbd-label-recovery/recovered_label_rows.jsonl"
 SATY_COMPARISON = ROOT / "artifacts/research/mancini-fbd-saty-side-project/protocol_comparison.json"
 SATY_ROWS = ROOT / "artifacts/research/mancini-fbd-saty-side-project/saty_protocol_rows.csv"
+SATY_EXAMPLE_CONTEXT = ROOT / "artifacts/research/mancini-fbd-example-saty-context/example_saty_context.json"
+SATY_EXAMPLE_ROWS = ROOT / "artifacts/research/mancini-fbd-example-saty-context/example_saty_rows.csv"
+SATY_EXAMPLE_REPORT = ROOT / "artifacts/research/mancini-fbd-example-saty-context/example_saty_report.md"
+SATY_EXAMPLE_CHART_MANIFEST = ROOT / "artifacts/research/mancini-fbd-example-saty-context/chart_manifest.json"
+SATY_EXAMPLE_VALIDATION_OUTCOMES = ROOT / "artifacts/research/mancini-fbd-example-saty-context/example_saty_validation_outcomes.csv"
 V2_DOC = ROOT / "docs/FAKE_BREAKDOWN_V2_RESEARCH.md"
 V3_DOC = ROOT / "docs/FAKE_BREAKDOWN_V3_LIVE_FILTERS.md"
 STATE_DOC = ROOT / "docs/FAKE_BREAKDOWN_STATE_MACHINE.md"
@@ -41,6 +46,8 @@ FEATURES = ROOT / "artifacts/research/mancini-fbd-algo-math/features.csv"
 LABELS = ROOT / "artifacts/research/mancini-fbd-algo-math/labels.csv"
 CANDIDATE_RULE_SCORES = ROOT / "artifacts/research/mancini-fbd-algo-math/candidate_rule_scores.json"
 WALK_FORWARD_REPORT = ROOT / "artifacts/research/mancini-fbd-algo-math/walk_forward_report.md"
+EXACT_STRATEGY_GRID_CSV = ROOT / "artifacts/research/mancini-fbd-algo-math/exact_strategy_grid.csv"
+EXACT_STRATEGY_GRID_JSON = ROOT / "artifacts/research/mancini-fbd-algo-math/exact_strategy_grid.json"
 
 OUT_DIR = ROOT / "artifacts/research/mancini-fbd-hermes-input"
 OUT_PROMPT = OUT_DIR / "HERMES_PROMPT.md"
@@ -49,12 +56,30 @@ OUT_SELECTED_ROWS = OUT_DIR / "selected_training_rows.jsonl"
 OUT_FEATURE_DICT = OUT_DIR / "feature_dictionary.md"
 OUT_RULE_SCORES = OUT_DIR / "candidate_rule_scores.json"
 OUT_WALK_FORWARD = OUT_DIR / "walk_forward_report.md"
+OUT_EXACT_STRATEGY_GRID_CSV = OUT_DIR / "exact_strategy_grid.csv"
+OUT_EXACT_STRATEGY_GRID_JSON = OUT_DIR / "exact_strategy_grid.json"
 OUT_SOURCE_INDEX = OUT_DIR / "source_file_index.md"
 OUT_COMPLETENESS_AUDIT = OUT_DIR / "pre_hermes_completeness_audit.md"
 OUT_LABEL_RECOVERY_SUMMARY = OUT_DIR / "label_recovery_summary.json"
 OUT_LABEL_RECOVERY_ROWS = OUT_DIR / "recovered_label_rows.jsonl"
 OUT_SATY_COMPARISON = OUT_DIR / "saty_protocol_comparison.json"
 OUT_SATY_ROWS = OUT_DIR / "saty_protocol_rows.csv"
+OUT_SATY_EXAMPLE_CONTEXT = OUT_DIR / "example_saty_context.json"
+OUT_SATY_EXAMPLE_ROWS = OUT_DIR / "example_saty_rows.csv"
+OUT_SATY_EXAMPLE_REPORT = OUT_DIR / "example_saty_report.md"
+OUT_SATY_EXAMPLE_CHART_MANIFEST = OUT_DIR / "example_saty_chart_manifest.json"
+OUT_SATY_EXAMPLE_VALIDATION_OUTCOMES = OUT_DIR / "example_saty_validation_outcomes.csv"
+OUT_NINJA_SHADOW_STUDY = OUT_DIR / "ManciniFbdShadowStudy.cs"
+OUT_FLAGSHIP_RESULT = OUT_DIR / "FLAGSHIP_RESULT_2026-05-13.json"
+OUT_FINAL_HERMES_AUDIT_PROMPT = OUT_DIR / "FINAL_HERMES_AUDIT_PROMPT_2026-05-13.md"
+OUT_NINJATRADER_SHADOW_AUDIT_PROMPT = OUT_DIR / "NINJATRADER_SHADOW_AUDIT_PROMPT_2026-05-13.md"
+OUT_MORNING_SANITY_REPORT = OUT_DIR / "MORNING_SANITY_REPORT_2026-05-13.md"
+OUT_EXECUTIVE_REPORT_HTML = OUT_DIR / "MANCINI_FBD_EXECUTIVE_REPORT_2026-05-13.html"
+OUT_EXECUTIVE_REPORT_PDF = OUT_DIR / "MANCINI_FBD_EXECUTIVE_REPORT_2026-05-13.pdf"
+OUT_EXECUTIVE_REPORT_PNG = OUT_DIR / "MANCINI_FBD_EXECUTIVE_REPORT_2026-05-13.png"
+OUT_BUILD_CANDIDATE_REPORT_HTML = OUT_DIR / "MANCINI_FBD_BUILD_CANDIDATE_REPORT_2026-05-13.html"
+OUT_BUILD_CANDIDATE_REPORT_PDF = OUT_DIR / "MANCINI_FBD_BUILD_CANDIDATE_REPORT_2026-05-13.pdf"
+OUT_BUILD_CANDIDATE_REPORT_PNG = OUT_DIR / "MANCINI_FBD_BUILD_CANDIDATE_REPORT_2026-05-13.png"
 OUT_CHART_ARTIFACT_AUDIT = OUT_DIR / "chart_artifact_audit.json"
 OUT_TRAINING_SUMMARY = OUT_DIR / "training_summary.json"
 OUT_FEATURES = OUT_DIR / "features.csv"
@@ -123,6 +148,11 @@ def required_inputs() -> list[Path]:
         LABEL_RECOVERY_ROWS,
         SATY_COMPARISON,
         SATY_ROWS,
+        SATY_EXAMPLE_CONTEXT,
+        SATY_EXAMPLE_ROWS,
+        SATY_EXAMPLE_REPORT,
+        SATY_EXAMPLE_CHART_MANIFEST,
+        SATY_EXAMPLE_VALIDATION_OUTCOMES,
         V2_DOC,
         V3_DOC,
         STATE_DOC,
@@ -133,6 +163,8 @@ def required_inputs() -> list[Path]:
         LABELS,
         CANDIDATE_RULE_SCORES,
         WALK_FORWARD_REPORT,
+        EXACT_STRATEGY_GRID_CSV,
+        EXACT_STRATEGY_GRID_JSON,
     ]
 
 
@@ -141,13 +173,17 @@ def prompt_text(
     scores: dict[str, Any],
     label_recovery: dict[str, Any],
     saty_comparison: dict[str, Any],
+    saty_example_context: dict[str, Any],
     chart_audit: dict[str, Any],
 ) -> str:
     counts = training_summary["input_counts"]
     labels = training_summary["label_counts"]
     math_counts = scores["input_counts"]
+    exact_strategy_grid = read_json(EXACT_STRATEGY_GRID_JSON)
     recovery_counts = label_recovery["counts"]
     saty_coverage = saty_comparison["coverage"]
+    saty_example_coverage = saty_example_context["coverage"]
+    saty_example_sanity = saty_example_context["sanity"]
     chart_counts = chart_audit["counts"]
     return f"""# Hermes Prompt: Mancini Fake-Breakdown Algorithm Math
 
@@ -173,7 +209,7 @@ Completeness contract:
 Important current safety-gate fact:
 - The strict direct audit has 0 `positive_training_candidate` rows.
 - That is a safety-gate result, not proof the pattern is absent.
-- Build broader review labels from `source_confirmed_fbd`, `source_planned_fbd`, `chart_confirmed_reclaim`, `chart_confirmed_non_acceptance`, `source_negative_control`, `sr_list_only`, `chart_mismatch`, `needs_crop`, and `data_only`.
+- Build broader review labels from `source_confirmed_fbd`, `source_planned_fbd`, `chart_confirmed_reclaim`, `chart_confirmed_non_acceptance`, `source_negative_control`, `sr_list_only`, `chart_mismatch`, `needs_crop`, and `data_only`; keep `data_only` / no-source rows as hard-reject or control context.
 
 Current local counts:
 - Direct audit rows: {counts["direct_source_audit_rows"]}
@@ -183,6 +219,7 @@ Current local counts:
 - Feature rows: {math_counts["feature_rows"]}
 - Hard-rejected feature rows: {math_counts["hard_rejected_rows"]}
 - Unique setups: {math_counts["unique_setups"]}
+- Exact scenario strategy-grid rows: {len(exact_strategy_grid.get("rows", []))}
 - Real packet gallery SVG files: {counts["gallery_svg_files"]}
 - Real packet gallery PNG files: {counts["gallery_png_files"]}
 - Missing gallery PNG sidecars from manifest: {counts["gallery_manifest_missing_png_sidecars"]}
@@ -214,6 +251,22 @@ Completed SATY side-project comparison:
 - Valid SATY sessions: {saty_coverage["valid_saty_sessions"]}
 - SATY protocol rows: {saty_coverage["saty_protocol_rows"]}
 - SATY-only rows are negative/control/context rows only. They are included to compare geometry against Mancini-source rules, not to promote no-source setups.
+
+Completed per-example SATY prior-close context overlay:
+- Packet examples overlaid: {saty_example_coverage["packet_examples"]}
+- Valid SATY derivations: {saty_example_coverage["valid_saty_rows"]}
+- Invalid SATY derivations: {saty_example_coverage["invalid_saty_rows"]}
+- Prior-close reference rows: {saty_example_coverage["prior_close_reference_rows"]}
+- SVG context charts: {saty_example_coverage["svg_charts_written"]}
+- PNG context charts: {saty_example_coverage["png_sidecars_present"]}
+- Validation outcome label rows: {saty_example_coverage.get("validation_outcome_label_rows", 0)}
+- Reference-before-target failures: {saty_example_sanity["reference_before_target_failures"]}
+- Reference-field-not-close failures: {saty_example_sanity["reference_field_not_close_failures"]}
+- Plan-date/session mismatches: {saty_example_sanity["plan_date_target_session_mismatch_rows"]}
+- Reference-close mismatch failures: {saty_example_sanity["reference_close_mismatch_failures"]}
+- SATY session anchor missing rows: {saty_example_sanity["saty_session_anchor_missing_rows"]}; these are 17:00-17:59 ET maintenance-gap edge cases and are hard-rejected from SATY-valid derivations.
+- MFE/MAE leakage check: feature rows contain MFE/MAE = {saty_example_sanity.get("mfe_mae_present_in_feature_rows", "unknown")}; labels-only outcomes are in `example_saty_validation_outcomes.csv`.
+- Per-example SATY rows compare generated prior-close levels against each Mancini packet example. This does not make SATY a source authority and does not promote S/R-list-only examples.
 
 Seed Ninja shadow telemetry field names for later, without writing Ninja code:
 - `research_session_id`
@@ -271,21 +324,28 @@ Use these package files:
 6. `recovered_label_rows.jsonl`
 7. `saty_protocol_comparison.json`
 8. `saty_protocol_rows.csv`
-9. `chart_artifact_audit.json`
-10. `features.csv`
-11. `labels.csv`
-12. `training_summary.json`
-13. `mancini_algo_hermes_handoff.md`
-14. `direct_fbd_source_audit.json`
-15. `real_packet_gallery_manifest.json`
-16. `visual_sanity_audit.json`
-17. `ninja_shadow_parity_spec.md`
-18. `fake_breakdown_state_machine.md`
-19. `fake_breakdown_v2_research.md`
-20. `fake_breakdown_v3_live_filters.md`
-21. `pre_hermes_completeness_audit.md`
-22. `manifest.json`
-23. `source_file_index.md`
+9. `example_saty_context.json`
+10. `example_saty_rows.csv`
+11. `example_saty_report.md`
+12. `example_saty_chart_manifest.json`
+13. `example_saty_validation_outcomes.csv`
+14. `chart_artifact_audit.json`
+15. `features.csv`
+16. `labels.csv`
+17. `exact_strategy_grid.csv`
+18. `exact_strategy_grid.json`
+19. `training_summary.json`
+20. `mancini_algo_hermes_handoff.md`
+21. `direct_fbd_source_audit.json`
+22. `real_packet_gallery_manifest.json`
+23. `visual_sanity_audit.json`
+24. `ninja_shadow_parity_spec.md`
+25. `fake_breakdown_state_machine.md`
+26. `fake_breakdown_v2_research.md`
+27. `fake_breakdown_v3_live_filters.md`
+28. `pre_hermes_completeness_audit.md`
+29. `manifest.json`
+30. `source_file_index.md`
 
 The files above are sufficient to produce the requested JSON. `source_file_index.md` also records source paths and checksums for provenance, but Hermes should not need additional local preprocessing before answering.
 
@@ -329,7 +389,7 @@ Scope: deterministic offline research features for Mancini FBD review. Candidate
 - `row_origin`: `direct_source_audit` or `packet_observation`.
 - `raw_file`, `line`, `plan_date`, `pub_date`, `source_quote`: Mancini source provenance.
 - `source_mode`: Source mode from direct audit or packet context.
-- `source_confidence_score`: Source-first confidence. Negative controls score 0, support/resistance list-only rows score 0.20, direct actual recaps can score up to 1.0.
+- `source_confidence_score`: Source-first confidence. Negative controls and no-source `data_only` rows score 0, support/resistance list-only rows score 0.20, direct actual recaps can score up to 1.0.
 - `level_role_map`, `sr_coincidence`: Source role and S/R context evidence.
 
 ## Level And Chart Fields
@@ -353,23 +413,24 @@ Scope: deterministic offline research features for Mancini FBD review. Candidate
 - `chart_confirmed_non_acceptance`: ES 1m confirms reclaim plus threshold behavior near `level + 5`.
 - `chart_mismatch`: Chart/trap timing contradicts source.
 - `needs_crop`: Usable source but chart/window is missing or too narrow.
-- `data_only`: Context row, not a training positive.
+- `data_only`: No-source/context row; hard-reject or control context, never a training positive.
 
 ## Deterministic Feature Math
 
 - `significant_low_score`: Prior touches, prior hold time, prior bounce points, and major-source bonus.
 - `flush_score`: Flush depth, approach velocity, multi-level flush count, and trap-bar volume ratio.
-- `reclaim_score`: Close above level, reclaim close location, acceptance closes, no immediate close back below, and reclaim range.
+- `reclaim_score`: Close above level, reclaim close location, acceptance closes known by classification time, no close back below the level before classification, and reclaim range.
 - `non_acceptance_score`: No-lookahead threshold/hold/retest score. The 15m MAE outcome gate is excluded from candidate scoring.
-- `non_acceptance_score_with_outcome_audit`: Full audit score with the 15m MAE gate included for analysis only.
 - `squeeze_score`: Target room, target R, trusted source level, no nearby overhead level, and time-of-day bonus.
-- `candidate_score`: `0.25 significant_low + 0.20 flush + 0.25 max(reclaim, non_acceptance_no_lookahead) + 0.20 squeeze + 0.10 source_confidence`.
+- `candidate_score`: `0.25 significant_low + 0.20 flush + 0.25 max(reclaim, non_acceptance_no_lookahead) + 0.20 squeeze + 0.10 source_confidence`, after source-label gates exclude `data_only` / no-source rows from candidate selection.
 
 ## Outcome Labels
 
 - `mfe_15m`, `mae_15m`, `mfe_60m`, `mae_60m`: Labels only.
 - `tp2_hit`, `tp3_hit`, `next_level_hit`, `stop_first`, `false_armed`: Validation labels only.
-- `expectancy_points_slippage_0_5`: Outcome label using 0.5 ES point round-trip slippage.
+- `tp2_first`, `tp3_first`, `next_level_first`, `same_bar_stop_and_target`, `first_hit_event`: Chronological validation labels. Same-bar stop/target ambiguity is handled as conservative stop-first unless later tick replay proves otherwise.
+- `expectancy_points_slippage_0_5`: Outcome label using 0.5 ES point round-trip slippage and chronological first-hit/timeout logic.
+- `non_acceptance_score_with_outcome_audit`: Labels-only diagnostic score with the 15m MAE gate included for audit comparison. It is forbidden for candidate selection and absent from `features.csv`.
 
 ## Completeness And Review Artifacts
 
@@ -377,8 +438,17 @@ Scope: deterministic offline research features for Mancini FBD review. Candidate
 - `recovered_label_rows.jsonl`: Recovered review labels and remaining hard rejects. Use as supplemental evidence, not as automatic promotion.
 - `saty_protocol_comparison.json`: SATY ATR-generated side-project comparison. SATY-only/no Mancini-source rows remain negative/control/context rows.
 - `saty_protocol_rows.csv`: SATY protocol rows for geometry comparison only.
+- `example_saty_context.json`: Per-Mancini-packet SATY context overlay summary and rows. SATY levels are generated from the example's SATY session anchor using the prior completed ES session close and ATR(14).
+- `example_saty_rows.csv`: Per-example SATY nearest-level distances and no-lookahead provenance checks.
+- `example_saty_report.md`: Human sanity report for per-example prior-close SATY overlays.
+- `example_saty_chart_manifest.json`: Paths and provenance for the corrected per-example SATY SVG/PNG chart overlays.
+- `example_saty_validation_outcomes.csv`: Labels-only per-example MFE/MAE outcome export. Do not use these fields in candidate formulas.
 - `chart_artifact_audit.json`: PNG/chart artifact coverage and warnings. Price-only raw-source matches are caveats, not blockers.
 - `pre_hermes_completeness_audit.md`: Final package-completeness audit and response contract.
+- `candidate_rule_scores.json`: Candidate rule scores and walk-forward summaries.
+- `walk_forward_report.md`: Human-readable walk-forward report.
+- `exact_strategy_grid.csv`: Parameter grid for Strategy Analyzer/Playback replay planning across rule scope, timeframe, target, and stop variants.
+- `exact_strategy_grid.json`: JSON version of the exact strategy grid and aggregate metrics.
 - `features.csv`: Full deterministic feature matrix.
 - `labels.csv`: Full label/outcome matrix. Use future/outcome fields only in validation, never in candidate formulas.
 - `training_summary.json`: Training-table counts and label counts.
@@ -395,10 +465,13 @@ def completeness_audit_text(
     scores: dict[str, Any],
     label_recovery: dict[str, Any],
     saty_comparison: dict[str, Any],
+    saty_example_context: dict[str, Any],
     chart_audit: dict[str, Any],
 ) -> str:
     recovery_counts = label_recovery["counts"]
     saty_coverage = saty_comparison["coverage"]
+    saty_example_coverage = saty_example_context["coverage"]
+    saty_example_sanity = saty_example_context["sanity"]
     chart_counts = chart_audit["counts"]
     return f"""# Pre-Hermes Completeness Audit
 
@@ -413,6 +486,7 @@ Hermes should not ask for more local work before producing the required JSON. An
 ## Included Evidence
 
 - Training rows: {training_summary['training_row_count']}
+- Direct audit rows: {training_summary['input_counts']['direct_source_audit_rows']}
 - Feature rows: {scores['input_counts']['feature_rows']}
 - Label rows: {scores['input_counts']['label_rows']}
 - Hard-rejected rows: {scores['input_counts']['hard_rejected_rows']}
@@ -443,6 +517,22 @@ Recovery remains supplemental review evidence. It does not erase the strict dire
 
 SATY-only rows are geometry controls. They can compare protocol behavior against Mancini-source setups, but they are not positive training examples without Mancini source confirmation.
 
+## Per-Example SATY Prior-Close Context
+
+- Packet examples overlaid: {saty_example_coverage['packet_examples']}
+- Valid SATY derivations: {saty_example_coverage['valid_saty_rows']}
+- Invalid SATY derivations: {saty_example_coverage['invalid_saty_rows']}
+- Prior-close reference rows: {saty_example_coverage['prior_close_reference_rows']}
+- SVG context charts: {saty_example_coverage['svg_charts_written']}
+- PNG context charts: {saty_example_coverage['png_sidecars_present']}
+- Reference-before-target failures: {saty_example_sanity['reference_before_target_failures']}
+- Reference-field-not-close failures: {saty_example_sanity['reference_field_not_close_failures']}
+- Plan-date/session mismatches: {saty_example_sanity['plan_date_target_session_mismatch_rows']}
+- Reference-close mismatch failures: {saty_example_sanity['reference_close_mismatch_failures']}
+- SATY session anchor missing rows: {saty_example_sanity['saty_session_anchor_missing_rows']}
+
+Rows with missing SATY session anchors are 17:00-17:59 ET maintenance-gap edge cases and remain review-only context. The per-example overlays use generated prior-close SATY levels for context comparison only; SATY proximity does not promote a row to Mancini source authority.
+
 ## Known Limits Already Accounted For
 
 - 1m OHLC cannot prove intraminute order.
@@ -467,6 +557,7 @@ def source_index_text(training_summary: dict[str, Any], scores: dict[str, Any], 
         "",
         "## Counts",
         "",
+        f"- Direct audit rows: {training_summary['input_counts']['direct_source_audit_rows']}",
         f"- Training rows: {training_summary['training_row_count']}",
         f"- Feature rows: {scores['input_counts']['feature_rows']}",
         f"- Label rows: {scores['input_counts']['label_rows']}",
@@ -505,17 +596,25 @@ def main() -> int:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     training_summary = read_json(TRAINING_SUMMARY)
     scores = read_json(CANDIDATE_RULE_SCORES)
+    exact_strategy_grid = read_json(EXACT_STRATEGY_GRID_JSON)
     label_recovery = read_json(LABEL_RECOVERY_SUMMARY)
     saty_comparison = read_json(SATY_COMPARISON)
+    saty_example_context = read_json(SATY_EXAMPLE_CONTEXT)
     chart_audit = read_json(CHART_ARTIFACT_AUDIT)
     rows = jsonl_rows(TRAINING_ROWS)
     with OUT_SELECTED_ROWS.open("w", encoding="utf-8", newline="\n") as handle:
         for row in rows:
             handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
-    OUT_PROMPT.write_text(prompt_text(training_summary, scores, label_recovery, saty_comparison, chart_audit), encoding="utf-8", newline="\n")
+    OUT_PROMPT.write_text(
+        prompt_text(training_summary, scores, label_recovery, saty_comparison, saty_example_context, chart_audit),
+        encoding="utf-8",
+        newline="\n",
+    )
     OUT_FEATURE_DICT.write_text(feature_dictionary_text(), encoding="utf-8", newline="\n")
     shutil.copy2(CANDIDATE_RULE_SCORES, OUT_RULE_SCORES)
     shutil.copy2(WALK_FORWARD_REPORT, OUT_WALK_FORWARD)
+    shutil.copy2(EXACT_STRATEGY_GRID_CSV, OUT_EXACT_STRATEGY_GRID_CSV)
+    shutil.copy2(EXACT_STRATEGY_GRID_JSON, OUT_EXACT_STRATEGY_GRID_JSON)
     shutil.copy2(TRAINING_SUMMARY, OUT_TRAINING_SUMMARY)
     shutil.copy2(FEATURES, OUT_FEATURES)
     shutil.copy2(LABELS, OUT_LABELS)
@@ -531,9 +630,14 @@ def main() -> int:
     shutil.copy2(LABEL_RECOVERY_ROWS, OUT_LABEL_RECOVERY_ROWS)
     shutil.copy2(SATY_COMPARISON, OUT_SATY_COMPARISON)
     shutil.copy2(SATY_ROWS, OUT_SATY_ROWS)
+    shutil.copy2(SATY_EXAMPLE_CONTEXT, OUT_SATY_EXAMPLE_CONTEXT)
+    shutil.copy2(SATY_EXAMPLE_ROWS, OUT_SATY_EXAMPLE_ROWS)
+    shutil.copy2(SATY_EXAMPLE_REPORT, OUT_SATY_EXAMPLE_REPORT)
+    shutil.copy2(SATY_EXAMPLE_CHART_MANIFEST, OUT_SATY_EXAMPLE_CHART_MANIFEST)
+    shutil.copy2(SATY_EXAMPLE_VALIDATION_OUTCOMES, OUT_SATY_EXAMPLE_VALIDATION_OUTCOMES)
     shutil.copy2(CHART_ARTIFACT_AUDIT, OUT_CHART_ARTIFACT_AUDIT)
     OUT_COMPLETENESS_AUDIT.write_text(
-        completeness_audit_text(training_summary, scores, label_recovery, saty_comparison, chart_audit),
+        completeness_audit_text(training_summary, scores, label_recovery, saty_comparison, saty_example_context, chart_audit),
         encoding="utf-8",
         newline="\n",
     )
@@ -552,6 +656,11 @@ def main() -> int:
         file_entry(LABEL_RECOVERY_ROWS, "label recovery rows"),
         file_entry(SATY_COMPARISON, "SATY protocol comparison"),
         file_entry(SATY_ROWS, "SATY protocol rows"),
+        file_entry(SATY_EXAMPLE_CONTEXT, "per-example SATY prior-close context"),
+        file_entry(SATY_EXAMPLE_ROWS, "per-example SATY prior-close rows"),
+        file_entry(SATY_EXAMPLE_REPORT, "per-example SATY sanity report"),
+        file_entry(SATY_EXAMPLE_CHART_MANIFEST, "per-example SATY chart manifest"),
+        file_entry(SATY_EXAMPLE_VALIDATION_OUTCOMES, "per-example SATY labels-only validation outcomes"),
         file_entry(V2_DOC, "prior V2 research context"),
         file_entry(V3_DOC, "prior V3 research context"),
         file_entry(STATE_DOC, "state-machine research context"),
@@ -559,10 +668,14 @@ def main() -> int:
         file_entry(TRAINING_ROWS, "generated source-first training rows"),
         file_entry(FEATURES, "generated deterministic feature matrix"),
         file_entry(LABELS, "generated labels and outcomes"),
+        file_entry(EXACT_STRATEGY_GRID_CSV, "generated exact Strategy Analyzer/Playback grid CSV"),
+        file_entry(EXACT_STRATEGY_GRID_JSON, "generated exact Strategy Analyzer/Playback grid JSON"),
         file_entry(OUT_SELECTED_ROWS, "Hermes selected training rows"),
         file_entry(OUT_FEATURE_DICT, "Hermes feature dictionary"),
         file_entry(OUT_RULE_SCORES, "Hermes candidate rule scores"),
         file_entry(OUT_WALK_FORWARD, "Hermes walk-forward report"),
+        file_entry(OUT_EXACT_STRATEGY_GRID_CSV, "Hermes exact Strategy Analyzer/Playback grid CSV"),
+        file_entry(OUT_EXACT_STRATEGY_GRID_JSON, "Hermes exact Strategy Analyzer/Playback grid JSON"),
         file_entry(OUT_TRAINING_SUMMARY, "Hermes training summary"),
         file_entry(OUT_FEATURES, "Hermes deterministic feature matrix"),
         file_entry(OUT_LABELS, "Hermes labels and outcomes"),
@@ -578,23 +691,87 @@ def main() -> int:
         file_entry(OUT_LABEL_RECOVERY_ROWS, "Hermes label recovery rows"),
         file_entry(OUT_SATY_COMPARISON, "Hermes SATY protocol comparison"),
         file_entry(OUT_SATY_ROWS, "Hermes SATY protocol rows"),
+        file_entry(OUT_SATY_EXAMPLE_CONTEXT, "Hermes per-example SATY prior-close context"),
+        file_entry(OUT_SATY_EXAMPLE_ROWS, "Hermes per-example SATY prior-close rows"),
+        file_entry(OUT_SATY_EXAMPLE_REPORT, "Hermes per-example SATY sanity report"),
+        file_entry(OUT_SATY_EXAMPLE_CHART_MANIFEST, "Hermes per-example SATY chart manifest"),
+        file_entry(OUT_SATY_EXAMPLE_VALIDATION_OUTCOMES, "Hermes per-example SATY labels-only validation outcomes"),
+        file_entry(OUT_NINJA_SHADOW_STUDY, "NinjaTrader shadow-only telemetry study artifact"),
+        file_entry(OUT_FLAGSHIP_RESULT, "flagship deterministic research math JSON"),
+        file_entry(OUT_FINAL_HERMES_AUDIT_PROMPT, "Final Hermes audit prompt for flagship JSON and package"),
+        file_entry(OUT_NINJATRADER_SHADOW_AUDIT_PROMPT, "NinjaTrader shadow audit prompt"),
+        file_entry(OUT_MORNING_SANITY_REPORT, "Morning sanity report for package handoff"),
+        file_entry(OUT_EXECUTIVE_REPORT_HTML, "Human-friendly executive report HTML"),
+        file_entry(OUT_EXECUTIVE_REPORT_PDF, "Human-friendly executive report PDF"),
+        file_entry(OUT_EXECUTIVE_REPORT_PNG, "Human-friendly executive report PNG preview"),
+        file_entry(OUT_BUILD_CANDIDATE_REPORT_HTML, "Human-readable build candidate audit and roadmap HTML"),
+        file_entry(OUT_BUILD_CANDIDATE_REPORT_PDF, "Human-readable build candidate audit and roadmap PDF"),
+        file_entry(OUT_BUILD_CANDIDATE_REPORT_PNG, "Human-readable build candidate audit and roadmap PNG preview"),
         file_entry(OUT_CHART_ARTIFACT_AUDIT, "Hermes chart artifact audit"),
         file_entry(OUT_COMPLETENESS_AUDIT, "Hermes completeness audit"),
         file_entry(OUT_PROMPT, "Hermes prompt"),
     ]
     OUT_SOURCE_INDEX.write_text(source_index_text(training_summary, scores, source_files), encoding="utf-8", newline="\n")
     source_files.append(file_entry(OUT_SOURCE_INDEX, "Hermes source file index"))
+    outputs = {
+        "HERMES_PROMPT": rel(OUT_PROMPT),
+        "manifest": rel(OUT_MANIFEST),
+        "selected_training_rows": rel(OUT_SELECTED_ROWS),
+        "feature_dictionary": rel(OUT_FEATURE_DICT),
+        "candidate_rule_scores": rel(OUT_RULE_SCORES),
+        "walk_forward_report": rel(OUT_WALK_FORWARD),
+        "exact_strategy_grid_csv": rel(OUT_EXACT_STRATEGY_GRID_CSV),
+        "exact_strategy_grid_json": rel(OUT_EXACT_STRATEGY_GRID_JSON),
+        "training_summary": rel(OUT_TRAINING_SUMMARY),
+        "features": rel(OUT_FEATURES),
+        "labels": rel(OUT_LABELS),
+        "handoff": rel(OUT_HANDOFF),
+        "direct_source_audit": rel(OUT_DIRECT_AUDIT),
+        "real_packet_gallery_manifest": rel(OUT_GALLERY_MANIFEST),
+        "visual_sanity_audit": rel(OUT_VISUAL_AUDIT),
+        "ninja_shadow_parity_spec": rel(OUT_NINJA_PARITY_SPEC),
+        "v2_research_context": rel(OUT_V2_DOC),
+        "v3_research_context": rel(OUT_V3_DOC),
+        "state_machine_context": rel(OUT_STATE_DOC),
+        "label_recovery_summary": rel(OUT_LABEL_RECOVERY_SUMMARY),
+        "recovered_label_rows": rel(OUT_LABEL_RECOVERY_ROWS),
+        "saty_protocol_comparison": rel(OUT_SATY_COMPARISON),
+        "saty_protocol_rows": rel(OUT_SATY_ROWS),
+        "example_saty_context": rel(OUT_SATY_EXAMPLE_CONTEXT),
+        "example_saty_rows": rel(OUT_SATY_EXAMPLE_ROWS),
+        "example_saty_report": rel(OUT_SATY_EXAMPLE_REPORT),
+        "example_saty_chart_manifest": rel(OUT_SATY_EXAMPLE_CHART_MANIFEST),
+        "example_saty_validation_outcomes": rel(OUT_SATY_EXAMPLE_VALIDATION_OUTCOMES),
+        "ninja_shadow_study": rel(OUT_NINJA_SHADOW_STUDY),
+        "flagship_result": rel(OUT_FLAGSHIP_RESULT),
+        "final_hermes_audit_prompt": rel(OUT_FINAL_HERMES_AUDIT_PROMPT),
+        "ninjatrader_shadow_audit_prompt": rel(OUT_NINJATRADER_SHADOW_AUDIT_PROMPT),
+        "morning_sanity_report": rel(OUT_MORNING_SANITY_REPORT),
+        "executive_report_html": rel(OUT_EXECUTIVE_REPORT_HTML),
+        "executive_report_pdf": rel(OUT_EXECUTIVE_REPORT_PDF),
+        "executive_report_png": rel(OUT_EXECUTIVE_REPORT_PNG),
+        "build_candidate_report_html": rel(OUT_BUILD_CANDIDATE_REPORT_HTML),
+        "build_candidate_report_pdf": rel(OUT_BUILD_CANDIDATE_REPORT_PDF),
+        "build_candidate_report_png": rel(OUT_BUILD_CANDIDATE_REPORT_PNG),
+        "chart_artifact_audit": rel(OUT_CHART_ARTIFACT_AUDIT),
+        "pre_hermes_completeness_audit": rel(OUT_COMPLETENESS_AUDIT),
+        "source_file_index": rel(OUT_SOURCE_INDEX),
+    }
     manifest = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "scope": "research_historical_replay_shadow_only",
         "status": "ready_for_hermes",
         "selected_training_rows": len(rows),
         "counts": {
+            "direct_audit_rows": training_summary["input_counts"]["direct_source_audit_rows"],
+            "direct_audit_source_label_counts": training_summary.get("direct_audit_source_label_counts", {}),
             "training_rows": training_summary["training_row_count"],
             "feature_rows": scores["input_counts"]["feature_rows"],
             "label_rows": scores["input_counts"]["label_rows"],
+            "training_label_counts": training_summary.get("label_counts", {}),
             "hard_rejected_rows": scores["input_counts"]["hard_rejected_rows"],
             "unique_setups": scores["input_counts"]["unique_setups"],
+            "exact_strategy_grid_rows": len(exact_strategy_grid.get("rows", [])),
             "strict_positive_training_candidate_rows": training_summary["direct_audit_positive_training_candidate_count"],
             "gallery_svg_files": training_summary["input_counts"]["gallery_svg_files"],
             "gallery_png_files": training_summary["input_counts"]["gallery_png_files"],
@@ -604,6 +781,14 @@ def main() -> int:
             "label_recovery_recovered_flush_reclaim_rows": label_recovery["counts"]["recovered_flush_reclaim_rows"],
             "saty_protocol_rows": saty_comparison["coverage"]["saty_protocol_rows"],
             "saty_valid_sessions": saty_comparison["coverage"]["valid_saty_sessions"],
+            "example_saty_packet_examples": saty_example_context["coverage"]["packet_examples"],
+            "example_saty_valid_derivations": saty_example_context["coverage"]["valid_saty_rows"],
+            "example_saty_invalid_derivations": saty_example_context["coverage"]["invalid_saty_rows"],
+            "example_saty_prior_close_reference_rows": saty_example_context["coverage"]["prior_close_reference_rows"],
+            "example_saty_svg_charts": saty_example_context["coverage"]["svg_charts_written"],
+            "example_saty_png_charts": saty_example_context["coverage"]["png_sidecars_present"],
+            "example_saty_anchor_missing_rows": saty_example_context["sanity"]["saty_session_anchor_missing_rows"],
+            "example_saty_validation_outcome_label_rows": saty_example_context["coverage"].get("validation_outcome_label_rows", 0),
             "chart_artifact_audit_pass": chart_audit["pass"],
             "chart_artifact_total_png": chart_audit["counts"]["total_png"],
         },
@@ -611,10 +796,12 @@ def main() -> int:
             "live_trading_behavior_introduced": False,
             "broker_risk_live_pine_credential_execution_touched": False,
             "sr_list_only_promoted_to_positive": False,
+            "data_only_promoted_to_positive": False,
             "ninja_gui_proof_claimed": False,
             "package_complete_for_research_math_review": True,
             "hermes_should_not_request_more_local_preprocessing": True,
         },
+        "outputs": outputs,
         "files": source_files,
     }
     OUT_MANIFEST.write_text(json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -622,32 +809,7 @@ def main() -> int:
         "status": "ready_for_hermes",
         "package_dir": rel(OUT_DIR),
         "selected_training_rows": len(rows),
-        "outputs": {
-            "HERMES_PROMPT": rel(OUT_PROMPT),
-            "manifest": rel(OUT_MANIFEST),
-            "selected_training_rows": rel(OUT_SELECTED_ROWS),
-            "feature_dictionary": rel(OUT_FEATURE_DICT),
-            "candidate_rule_scores": rel(OUT_RULE_SCORES),
-            "walk_forward_report": rel(OUT_WALK_FORWARD),
-            "training_summary": rel(OUT_TRAINING_SUMMARY),
-            "features": rel(OUT_FEATURES),
-            "labels": rel(OUT_LABELS),
-            "handoff": rel(OUT_HANDOFF),
-            "direct_source_audit": rel(OUT_DIRECT_AUDIT),
-            "real_packet_gallery_manifest": rel(OUT_GALLERY_MANIFEST),
-            "visual_sanity_audit": rel(OUT_VISUAL_AUDIT),
-            "ninja_shadow_parity_spec": rel(OUT_NINJA_PARITY_SPEC),
-            "v2_research_context": rel(OUT_V2_DOC),
-            "v3_research_context": rel(OUT_V3_DOC),
-            "state_machine_context": rel(OUT_STATE_DOC),
-            "label_recovery_summary": rel(OUT_LABEL_RECOVERY_SUMMARY),
-            "recovered_label_rows": rel(OUT_LABEL_RECOVERY_ROWS),
-            "saty_protocol_comparison": rel(OUT_SATY_COMPARISON),
-            "saty_protocol_rows": rel(OUT_SATY_ROWS),
-            "chart_artifact_audit": rel(OUT_CHART_ARTIFACT_AUDIT),
-            "pre_hermes_completeness_audit": rel(OUT_COMPLETENESS_AUDIT),
-            "source_file_index": rel(OUT_SOURCE_INDEX),
-        },
+        "outputs": outputs,
     }, indent=2, sort_keys=True))
     return 0
 

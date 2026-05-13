@@ -68,14 +68,26 @@ Newest direct source audit:
 
 Current direct audit counts:
 
-- `478` direct rows
-- `332 data_only`
-- `114 needs_bigger_crop`
-- `32 negative_control`
-- `0 positive_training_candidate`
+- `842` direct rows
+- Verdict counts:
+  - `679 data_only`
+  - `133 needs_bigger_crop`
+  - `30 negative_control`
+  - `0 positive_training_candidate`
+- Source-label counts:
+  - `430 source_confirmed_fbd`
+  - `69 source_planned_fbd`
+  - `252 source_unparsed_fbd`
+  - `30 source_negative_control`
+  - `45 data_context`
+  - `16 methodology_definition`
 - Raw-file row split:
+  - `data\backtest\es-long-bracket\derived\mancini-posts.jsonl`: `101`
+  - `data\backtest\es-long-bracket\raw\mancini\Mancini.txt`: `101`
   - `The Longer Mancini Logs.txt`: `355`
+  - `The Mancini Logs 3-15-2026 - 5-6-2026.txt`: `146`
   - `Longer Mancini Logs 2.txt`: `94`
+  - `daily-plans` parsed plan files: `16`
   - `methodology.txt`: `17`
   - `parsing text.txt`: `12`
 - Broad `Supports are:` / `Resistances are:` rows in the direct audit: `0`
@@ -118,8 +130,8 @@ Full real packet gallery:
 - `C:\Users\conor\luke\artifacts\research\mancini-real-packet-gallery\summary.json`
 - Current sanity:
   - `172` SVG charts exist.
-  - The gallery `index.md` references PNG files, but the directory currently has `0` PNG files.
-  - Do not claim gallery PNGs exist until `scripts\export_svg_charts_to_png.js` is run for that directory or the PNGs are restored.
+  - `172` PNG chart sidecars exist.
+  - Gallery manifest rows missing PNG sidecars: `0`.
 
 Visual sanity audit:
 
@@ -671,7 +683,7 @@ Use this ready-made `/goal` prompt for a fresh Codex session:
 
 1. The strict direct source audit has `0` positives after visual/trap agreement gates.
 2. Many good-looking source rows need larger or better crop windows.
-3. The real packet gallery has SVGs but missing PNG sidecars.
+3. The real packet gallery has both SVGs and PNG sidecars; current manifest missing PNG sidecars: `0`.
 4. Existing Ninja strategy does not implement Mancini source-priority fake-breakdown math yet.
 5. Current research uses OHLC 1m bars; Ninja tick replay still has to confirm fills and same-bar ambiguity.
 6. Level-to-level continuation exists in the data, but current mechanical rules have not yet proven a robust continuation edge.

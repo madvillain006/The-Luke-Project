@@ -10,11 +10,12 @@ Hermes should not ask for more local work before producing the required JSON. An
 
 ## Included Evidence
 
-- Training rows: 739
-- Feature rows: 739
-- Label rows: 739
-- Hard-rejected rows: 693
-- Unique setups: 698
+- Training rows: 1129
+- Direct audit rows: 842
+- Feature rows: 1129
+- Label rows: 1129
+- Hard-rejected rows: 1072
+- Unique setups: 973
 - Strict direct positive training candidates: 0
 - Real packet gallery SVG files: 172
 - Real packet gallery PNG files: 172
@@ -24,12 +25,12 @@ Hermes should not ask for more local work before producing the required JSON. An
 
 ## Label Recovery Coverage
 
-- Source-qualified hard-reject rows reviewed: 224
-- Rows with existing session and level scanned: 196
-- Recovered flush/reclaim rows: 101
-- Recovered non-acceptance rows: 46
-- Candidate-eligible rows after recovery: 12
-- Candidate-eligible unique setups after recovery: 11
+- Source-qualified hard-reject rows reviewed: 427
+- Rows with existing session and level scanned: 263
+- Recovered flush/reclaim rows: 125
+- Recovered non-acceptance rows: 67
+- Candidate-eligible rows after recovery: 11
+- Candidate-eligible unique setups after recovery: 10
 
 Recovery remains supplemental review evidence. It does not erase the strict direct-audit safety gate and does not promote S/R-list-only rows.
 
@@ -40,6 +41,22 @@ Recovery remains supplemental review evidence. It does not erase the strict dire
 - SATY protocol rows: 526
 
 SATY-only rows are geometry controls. They can compare protocol behavior against Mancini-source setups, but they are not positive training examples without Mancini source confirmation.
+
+## Per-Example SATY Prior-Close Context
+
+- Packet examples overlaid: 172
+- Valid SATY derivations: 108
+- Invalid SATY derivations: 64
+- Prior-close reference rows: 172
+- SVG context charts: 172
+- PNG context charts: 172
+- Reference-before-target failures: 0
+- Reference-field-not-close failures: 0
+- Plan-date/session mismatches: 0
+- Reference-close mismatch failures: 0
+- SATY session anchor missing rows: 16
+
+Rows with missing SATY session anchors are 17:00-17:59 ET maintenance-gap edge cases and remain review-only context. The per-example overlays use generated prior-close SATY levels for context comparison only; SATY proximity does not promote a row to Mancini source authority.
 
 ## Known Limits Already Accounted For
 

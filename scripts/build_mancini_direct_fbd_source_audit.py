@@ -20,12 +20,15 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-RAW_FILES = [
-    ROOT / "data/research/mancini/Longer Mancini Logs 2.txt",
-    ROOT / "data/research/mancini/The Longer Mancini Logs.txt",
-    ROOT / "data/research/mancini/methodology.txt",
-    ROOT / "data/research/mancini/parsing text.txt",
-]
+MANCINI_DIR = ROOT / "data/research/mancini"
+RAW_SOURCE_GLOBS = (
+    MANCINI_DIR.glob("*.txt"),
+    (MANCINI_DIR / "daily-plans").glob("*.md"),
+    (MANCINI_DIR / "daily-plans").glob("*.json"),
+    (ROOT / "data/backtest/es-long-bracket/raw/mancini").glob("*.txt"),
+    (ROOT / "data/backtest/es-long-bracket/derived").glob("mancini-posts.jsonl"),
+)
+RAW_FILES = sorted({path for glob in RAW_SOURCE_GLOBS for path in glob})
 ROWS_CSV = ROOT / "artifacts/research/hermes-mancini-event-packets/quick_reclaim_acceptance_rows.csv"
 GALLERY_MANIFEST = ROOT / "artifacts/research/mancini-real-packet-gallery/manifest.json"
 VISUAL_AUDIT = ROOT / "artifacts/research/mancini-visual-sanity-audit/visual_sanity_audit.json"
@@ -107,14 +110,55 @@ NEGATIVE_MARKERS = (
     "breakdown trades",
     "breakdown shorts",
 )
+FBD_TEXT_RE = re.compile(
+    r"\b(?:failed|fake)[\s_-]*b(?:reak[\s_-]*downs?|reakdowns?|reakowns?|readkowns?)\b",
+    re.IGNORECASE,
+)
+DATE_FILENAME_RE = re.compile(r"(20\d{2})-(\d{2})-(\d{2})")
+
+
+def mentions_failed_breakdown(text: str) -> bool:
+    return bool(FBD_TEXT_RE.search(text))
+
+
+def sentence_spans(text: str) -> list[str]:
+    spans = re.split(r"(?<=[.!?])\s+|(?<=\”)\s+", text)
+    return [span.strip() for span in spans if span.strip()]
+
+
+def negative_control_applies(text: str, roles: dict[str, list[float]]) -> bool:
+    lowered = text.lower()
+    if not any(marker in lowered for marker in NEGATIVE_MARKERS):
+        return False
+    setup_levels = roles.get("actual_setup_level") or []
+    if not setup_levels:
+        return True
+    has_positive_structure = mentions_failed_breakdown(text) and (
+        bool(roles.get("swept_lost_low"))
+        or bool(roles.get("recovered_level"))
+        or any(marker in lowered for marker in ("recovered", "reclaim", "ripped", "squeezed", "rallied"))
+    )
+    for sentence in sentence_spans(text):
+        sentence_lower = sentence.lower()
+        if not any(marker in sentence_lower for marker in NEGATIVE_MARKERS):
+            continue
+        sentence_prices = prices(sentence)
+        mentions_setup_level = any(
+            abs(price - setup_level) <= 0.25
+            for price in sentence_prices
+            for setup_level in setup_levels
+        )
+        if mentions_setup_level:
+            return True
+        if not sentence_prices and not has_positive_structure:
+            return True
+    return False
 
 
 def line_mode(line: str, path: Path) -> str:
     lowered = line.lower()
     if path.name == "methodology.txt":
         return "methodology_definition"
-    if any(marker in lowered for marker in NEGATIVE_MARKERS):
-        return "negative_control"
     if lowered.startswith("bull case") or lowered.startswith("in summary"):
         return "context_recap"
     actual_loss = any(
@@ -134,7 +178,7 @@ def line_mode(line: str, path: Path) -> str:
         return "actual_recap"
     if any(marker in lowered for marker in ("wait for", "if we", "would be", "would want", "possible", "candidate", "planned", "actionable")):
         return "planned_setup"
-    if "failed breakdown" in lowered:
+    if mentions_failed_breakdown(line):
         return "context_recap"
     return "data_context"
 
@@ -175,7 +219,52 @@ def parse_pub_date(text: str) -> str | None:
         return None
 
 
+def parse_date_from_filename(path: Path) -> str | None:
+    match = DATE_FILENAME_RE.search(path.name)
+    if not match:
+        return None
+    return f"{match.group(1)}-{match.group(2)}-{match.group(3)}"
+
+
+def flatten_json_text(value: Any) -> list[str]:
+    lines: list[str] = []
+    if isinstance(value, dict):
+        for item in value.values():
+            lines.extend(flatten_json_text(item))
+    elif isinstance(value, list):
+        for item in value:
+            lines.extend(flatten_json_text(item))
+    elif isinstance(value, (str, int, float)):
+        text = str(value).strip()
+        if text:
+            lines.append(text)
+    return lines
+
+
 def read_lines(path: Path) -> list[str]:
+    if path.suffix.lower() == ".jsonl":
+        out: list[str] = []
+        for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+            if not line.strip():
+                continue
+            try:
+                item = json.loads(line)
+            except json.JSONDecodeError:
+                out.append(line)
+                continue
+            content = item.get("content") if isinstance(item, dict) else None
+            if content:
+                date = item.get("estimatedDate") or ""
+                out.extend([f"{date} {part}".strip() for part in str(content).splitlines() if part.strip()])
+            else:
+                out.extend(flatten_json_text(item))
+        return out
+    if path.suffix.lower() == ".json":
+        try:
+            data = json.loads(path.read_text(encoding="utf-8", errors="replace"))
+        except json.JSONDecodeError:
+            return path.read_text(encoding="utf-8", errors="replace").splitlines()
+        return flatten_json_text(data)
     return path.read_text(encoding="utf-8", errors="replace").splitlines()
 
 
@@ -197,8 +286,8 @@ def detect_articles(path: Path, lines: list[str]) -> list[Article]:
                 start=start,
                 end=end,
                 title=title,
-                pub_date=pub,
-                plan_date=parse_plan_date(title),
+                pub_date=pub or parse_date_from_filename(path),
+                plan_date=parse_plan_date(title) or parse_date_from_filename(path),
             )
         )
     return articles
@@ -272,10 +361,10 @@ def level_in_zone(level: float, zone: dict[str, Any], tolerance: float = 0.25) -
 def direct_candidate(line: str, path: Path) -> bool:
     lowered = line.lower()
     if path.name == "methodology.txt":
-        return "failed breakdown" in lowered and any(term in lowered for term in ("support", "trap", "low", "recover", "acceptance"))
+        return mentions_failed_breakdown(line) and any(term in lowered for term in ("support", "trap", "low", "recover", "acceptance"))
     if lowered.startswith("supports are") or lowered.startswith("resistances are"):
         return False
-    has_fbd = "failed breakdown" in lowered or "failed break down" in lowered
+    has_fbd = mentions_failed_breakdown(line)
     has_action_pair = any(term in lowered for term in ("flush", "swept", "lost")) and any(
         term in lowered for term in ("recover", "recovered", "reclaim", "reclaimed", "ripped")
     )
@@ -291,8 +380,8 @@ def direct_candidate(line: str, path: Path) -> bool:
 def extract_roles(text: str) -> dict[str, list[float]]:
     role_patterns = {
         "actual_setup_level": [
-            r"failed\s+breakdown(?:\s+long)?\s+(?:of|at)\s+(?:[^\d]{0,80})?([4-8]\d{3}(?:\.\d{1,2})?)",
-            r"([4-8]\d{3}(?:\.\d{1,2})?)\s+failed\s+breakdown",
+            r"failed\s+b(?:reak\s*down|reakdown|reakown|readkown)s?(?:\s+long)?\s+(?:of|at)\s+(?:[^\d]{0,80})?([4-8]\d{3}(?:\.\d{1,2})?)",
+            r"([4-8]\d{3}(?:\.\d{1,2})?)\s+failed\s+b(?:reak\s*down|reakdown|reakown|readkown)s?",
             r"(?:flushed|swept|lost)\s+(?:the\s+|that\s+|a\s+|an\s+|yesterday's\s+|today's\s+|friday's\s+|monday's\s+|tuesday's\s+|wednesday's\s+|thursday's\s+|sunday's\s+)?(?:major\s+|massive\s+|big\s+)?([4-8]\d{3}(?:\.\d{1,2})?)\s+(?:low|shelf|level)",
             r"(?:lost|swept|flushed)\s+(?:a\s+|the\s+)?[^.]{0,80}?\b([4-8]\d{3}(?:\.\d{1,2})?)\s+(?:low|shelf|level)",
             r"recovered\s+(?:that\s+|the\s+)?([4-8]\d{3}(?:\.\d{1,2})?)\s+(?:shelf|low|level)?",
@@ -610,13 +699,19 @@ def session_availability(article: Article) -> list[str]:
     return sorted(date for date in dates if (SESSIONS_DIR / f"{date}.json").exists())
 
 
-def candidate_dates(article: Article) -> list[str]:
+def candidate_dates(article: Article, mode: str) -> list[str]:
     dates: set[str] = set()
     for value in (article.pub_date, article.plan_date):
         dt = parse_iso_date(value)
         if not dt:
             continue
-        for delta in range(-5, 2):
+        if mode == "planned_setup":
+            deltas = range(0, 3)
+        elif mode == "actual_recap":
+            deltas = range(-5, 2)
+        else:
+            deltas = range(-1, 2)
+        for delta in deltas:
             dates.add((dt + timedelta(days=delta)).strftime("%Y-%m-%d"))
     return sorted(dates)
 
@@ -635,6 +730,7 @@ def load_session_bars(date: str) -> list[dict[str, Any]]:
 
 def scan_session_for_setup(
     article: Article,
+    mode: str,
     setup_levels: list[float],
     swept_lows: list[float],
 ) -> list[dict[str, Any]]:
@@ -643,7 +739,7 @@ def scan_session_for_setup(
     level = setup_levels[0]
     stated_sweeps = [low for low in swept_lows if level - low >= 0.25]
     candidates: list[dict[str, Any]] = []
-    for date in candidate_dates(article):
+    for date in candidate_dates(article, mode):
         bars = load_session_bars(date)
         if not bars:
             continue
@@ -678,6 +774,8 @@ def scan_session_for_setup(
             score = 0.0
             if stated_sweeps:
                 score += max(0.0, 10.0 - min(abs(low - sweep) for sweep in stated_sweeps))
+            if mode == "planned_setup" and article.plan_date and date == article.plan_date:
+                score += 3.0
             score += min(10.0, max(0.0, level - low))
             score += min(5.0, threshold_hold)
             candidates.append(
@@ -707,7 +805,7 @@ def source_verdict(
     charts: list[dict[str, Any]],
 ) -> str:
     lowered = line.lower()
-    if any(marker in lowered for marker in NEGATIVE_MARKERS):
+    if negative_control_applies(line, roles):
         return "negative_control"
     if lowered.startswith("supports are") or lowered.startswith("resistances are"):
         return "reject"
@@ -732,7 +830,7 @@ def source_verdict(
     matching_windows = []
     for match in charts:
         visual_status = match.get("visual_sanity_status")
-        if visual_status and visual_status != "training_candidate":
+        if visual_status != "training_candidate":
             continue
         metrics = match.get("window_metrics") or {}
         if not metrics.get("first_reclaim_close_timestamp_et"):
@@ -749,6 +847,33 @@ def source_verdict(
     return "data_only"
 
 
+def source_label_status(
+    line: str,
+    mode: str,
+    roles: dict[str, list[float]],
+) -> str:
+    lowered = line.lower()
+    if negative_control_applies(line, roles) or mode == "negative_control":
+        return "source_negative_control"
+    if lowered.startswith("supports are") or lowered.startswith("resistances are"):
+        return "sr_list_only"
+    if mode == "methodology_definition":
+        return "methodology_definition"
+    has_setup_level = bool(roles.get("actual_setup_level"))
+    has_setup_price_action = has_setup_level and (
+        mentions_failed_breakdown(line)
+        or bool(roles.get("swept_lost_low"))
+        or bool(roles.get("recovered_level"))
+    )
+    if mode == "planned_setup" and has_setup_price_action:
+        return "source_planned_fbd"
+    if mode in {"actual_recap", "context_recap", "data_context"} and has_setup_price_action:
+        return "source_confirmed_fbd"
+    if mentions_failed_breakdown(line):
+        return "source_unparsed_fbd"
+    return "data_context"
+
+
 def source_blockers(
     line: str,
     mode: str,
@@ -758,7 +883,7 @@ def source_blockers(
 ) -> list[str]:
     lowered = line.lower()
     blockers: list[str] = []
-    if any(marker in lowered for marker in NEGATIVE_MARKERS):
+    if negative_control_applies(line, roles):
         return ["source_marks_no_trigger_or_non_fbd"]
     if lowered.startswith("supports are") or lowered.startswith("resistances are"):
         return ["support_resistance_list_only"]
@@ -785,8 +910,8 @@ def source_blockers(
             blockers.append("no_source_stated_swept_low_below_setup")
         for match in charts:
             visual_status = match.get("visual_sanity_status")
-            if visual_status and visual_status != "training_candidate":
-                blockers.append(f"visual_sanity_{visual_status}")
+            if visual_status != "training_candidate":
+                blockers.append(f"visual_sanity_{visual_status or 'missing'}")
             metrics = match.get("window_metrics") or {}
             if not metrics.get("first_reclaim_close_timestamp_et"):
                 blockers.append("chart_missing_reclaim_close")
@@ -819,9 +944,10 @@ def build_audit() -> list[dict[str, Any]]:
             coincidence = sr_coincidence(actual_levels, context)
             charts = chart_matches(actual_levels + roles["non_acceptance_threshold"], article, line, rows, manifest, visual_audit)
             mode = line_mode(line, path)
-            session_scan = scan_session_for_setup(article, actual_levels, roles["swept_lost_low"])
+            session_scan = scan_session_for_setup(article, mode, actual_levels, roles["swept_lost_low"])
             verdict = source_verdict(line, mode, roles, coincidence, charts)
             blockers = source_blockers(line, mode, roles, coincidence, charts)
+            label_status = source_label_status(line, mode, roles)
             audit.append(
                 {
                     "raw_file": rel(path),
@@ -850,6 +976,7 @@ def build_audit() -> list[dict[str, Any]]:
                     "chart_matches": charts,
                     "session_scan": session_scan,
                     "session_files_available": session_availability(article),
+                    "source_label_status": label_status,
                     "verdict": verdict,
                     "blockers": blockers,
                 }
@@ -948,14 +1075,25 @@ def context_summary(rows: list[dict[str, Any]]) -> str:
 
 def write_markdown(audit: list[dict[str, Any]], path: Path) -> None:
     verdict_counts: dict[str, int] = {}
+    source_label_counts: dict[str, int] = {}
+    raw_file_counts: dict[str, int] = {}
     for item in audit:
         verdict_counts[item["verdict"]] = verdict_counts.get(item["verdict"], 0) + 1
+        source_label = item.get("source_label_status") or "missing"
+        source_label_counts[source_label] = source_label_counts.get(source_label, 0) + 1
+        raw_file = item.get("raw_file") or "missing"
+        raw_file_counts[raw_file] = raw_file_counts.get(raw_file, 0) + 1
     lines = [
         "# Mancini Direct Failed-Breakdown Source Audit",
         "",
         "Generated: 2026-05-12",
         "",
         "Scope: raw-source review only. No trading authority. No Ninja/shadow trigger promotion.",
+        "",
+        "Important distinction:",
+        "- `source_label_status` is the raw Mancini source classification.",
+        "- `verdict` is the stricter chart/visual validation gate for training promotion.",
+        "- A non-positive `verdict` does not mean the source passage is not a Mancini failed-breakdown case.",
         "",
         "Quant gate used here:",
         "- direct raw passage must identify failed-breakdown style price action, not only a support/resistance row",
@@ -970,6 +1108,12 @@ def write_markdown(audit: list[dict[str, Any]], path: Path) -> None:
     ]
     for verdict, count in sorted(verdict_counts.items()):
         lines.append(f"- `{verdict}`: {count}")
+    lines.extend(["", "## Source Label Counts", ""])
+    for source_label, count in sorted(source_label_counts.items()):
+        lines.append(f"- `{source_label}`: {count}")
+    lines.extend(["", "## Raw File Counts", ""])
+    for raw_file, count in sorted(raw_file_counts.items()):
+        lines.append(f"- `{raw_file}`: {count}")
     lines.extend(["", "## Strict Positive Groups", ""])
     groups: dict[tuple[tuple[float, ...], str], list[dict[str, Any]]] = {}
     for item in audit:
@@ -1022,6 +1166,7 @@ def write_markdown(audit: list[dict[str, Any]], path: Path) -> None:
                 "",
                 f"- Context: {item['article_title']} | pub={item['pub_date']} | plan={item['plan_date']}",
                 f"- Source mode: {item['mode']}",
+                f"- Source label: {item.get('source_label_status') or 'missing'}",
                 f"- Levels: setup={setup}; swept/lost={sweep}; recovered={recovered}; non_acceptance={threshold}; invalidation={invalidation}; target/response={target}",
                 f"- Level roles: {level_role_summary(item)}",
                 f"- Time mentions: {', '.join(item.get('time_mentions') or []) or 'none'}",
@@ -1057,8 +1202,11 @@ def write_markdown(audit: list[dict[str, Any]], path: Path) -> None:
 def write_chronological_ledger(audit: list[dict[str, Any]], path: Path) -> None:
     sorted_rows = sorted(audit, key=chronological_key)
     verdict_counts: dict[str, int] = {}
+    source_label_counts: dict[str, int] = {}
     for item in sorted_rows:
         verdict_counts[item["verdict"]] = verdict_counts.get(item["verdict"], 0) + 1
+        source_label = item.get("source_label_status") or "missing"
+        source_label_counts[source_label] = source_label_counts.get(source_label, 0) + 1
     lines = [
         "# Mancini FBD Chronological Source Ledger",
         "",
@@ -1072,6 +1220,8 @@ def write_chronological_ledger(audit: list[dict[str, Any]], path: Path) -> None:
     ]
     for verdict, count in sorted(verdict_counts.items()):
         lines.append(f"- `{verdict}`: {count}")
+    for source_label, count in sorted(source_label_counts.items()):
+        lines.append(f"- `{source_label}`: {count}")
     current_date = None
     for item in sorted_rows:
         date = item_date(item)
@@ -1085,6 +1235,7 @@ def write_chronological_ledger(audit: list[dict[str, Any]], path: Path) -> None:
                 "",
                 f"- Plan/date context: {item['article_title']} | pub={item['pub_date']} | plan={item['plan_date']}",
                 f"- Source mode: {item['mode']}",
+                f"- Source label: {item.get('source_label_status') or 'missing'}",
                 f"- Exact levels: setup={fmt_values(levels.get('actual_setup_level'))}; swept/lost={fmt_values(levels.get('swept_lost_low'))}; recovered={fmt_values(levels.get('recovered_level'))}; non_acceptance={fmt_values(levels.get('non_acceptance_threshold'))}; invalidation={fmt_values(levels.get('invalidation'))}; target/response={fmt_values(levels.get('target_or_response'))}",
                 f"- Level roles: {level_role_summary(item)}",
                 f"- S/R sanity: {sr_summary(item)}",
@@ -1106,6 +1257,8 @@ def write_chronological_checklist(audit: list[dict[str, Any]], path: Path) -> No
     positives = [item for item in sorted_rows if item["verdict"] == "positive_training_candidate"]
     crop_needed = [item for item in sorted_rows if item["verdict"] == "needs_bigger_crop"]
     negatives = [item for item in sorted_rows if item["verdict"] == "negative_control"]
+    source_confirmed = [item for item in sorted_rows if item.get("source_label_status") == "source_confirmed_fbd"]
+    source_planned = [item for item in sorted_rows if item.get("source_label_status") == "source_planned_fbd"]
     lines = [
         "# Mancini FBD Chronological Canonical Checklist",
         "",
@@ -1114,6 +1267,8 @@ def write_chronological_checklist(audit: list[dict[str, Any]], path: Path) -> No
         "Working checklist in chronological order. A row is not a Ninja/shadow trigger unless the source role and price-action window both pass. Review/shadow/replay only.",
         "",
         f"Rows: {len(sorted_rows)}",
+        f"Source-confirmed FBD rows: {len(source_confirmed)}",
+        f"Source-planned FBD rows: {len(source_planned)}",
         f"Strict positives: {len(positives)}",
         f"Needs bigger crop: {len(crop_needed)}",
         f"Negative controls: {len(negatives)}",
@@ -1132,6 +1287,7 @@ def write_chronological_checklist(audit: list[dict[str, Any]], path: Path) -> No
             [
                 f"- `{item['verdict']}` {ref}",
                 f"  - context: {item['article_title']} | pub={item['pub_date']} | plan={item['plan_date']} | mode={item['mode']}",
+                f"  - source_label: {item.get('source_label_status') or 'missing'}",
                 f"  - levels: setup={fmt_values(levels.get('actual_setup_level'))}; swept/lost={fmt_values(levels.get('swept_lost_low'))}; recovered={fmt_values(levels.get('recovered_level'))}; +5={fmt_values(levels.get('non_acceptance_threshold'))}; invalidation={fmt_values(levels.get('invalidation'))}; target={fmt_values(levels.get('target_or_response'))}; source_times={source_times}",
                 f"  - roles: {level_role_summary(item)}",
                 f"  - S/R: {sr_summary(item)}",

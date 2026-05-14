@@ -53,6 +53,7 @@ const {
   fetchPublicHistoryJobLeads,
   recordOpportunity,
 } = require('../lib/brain/history-career-spine');
+const { _internal: brainAgentInternal } = require('../agents/agent-00-brain');
 
 function makePaths() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'luke-brain-'));
@@ -495,6 +496,50 @@ describe('Luke brain agent core', () => {
       'cost-guard',
       'privacy-guard',
     ]);
+  });
+
+  it('builds the review-lane route from read-only radar evidence without writing a radar snapshot', () => {
+    const paths = makePaths();
+    appendJsonl(paths.events.radarIngest, {
+      id: 'radar_item_review_lane',
+      ts: '2026-05-14T18:00:00.000Z',
+      source_type: 'reference_idea',
+      source_label: 'luke-radar',
+      title: 'Review lane evidence',
+      raw_text_preview: 'Read-only evidence for the dashboard lane.',
+      review_priority: 'review',
+      review_only: true,
+      status: 'review_only',
+      recall_reason: 'reference_idea_review_lane',
+      themes: ['reminder'],
+    });
+    appendJsonl(paths.events.radarReviews, {
+      id: 'radar_review_review_lane',
+      ts: '2026-05-14T18:01:00.000Z',
+      item_id: 'radar_item_review_lane',
+      review_state: 'accepted',
+      next_action: 'Hold for Main review',
+      reviewer: 'qa',
+    });
+
+    const reviewLane = brainAgentInternal.buildReviewLaneSnapshot({
+      paths,
+      now: new Date('2026-05-14T18:02:00.000Z'),
+      env: {
+        GEMINI_API_KEY: 'gemini-test',
+      },
+    });
+
+    expect(reviewLane.ok).toBe(true);
+    expect(reviewLane.read_only).toBe(true);
+    expect(reviewLane.evidence.count).toBe(1);
+    expect(reviewLane.evidence.items[0]).toEqual(expect.objectContaining({
+      id: 'radar_item_review_lane',
+      review_state: 'accepted',
+      detail_route: '/agent/brain/radar/item/radar_item_review_lane',
+    }));
+    expect(reviewLane.ai_readiness.configured_providers).toContain('gemini');
+    expect(fs.existsSync(paths.snapshots.radarState)).toBe(false);
   });
 
   it('records developer stack events and refreshes its snapshot', () => {

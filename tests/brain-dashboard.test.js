@@ -47,6 +47,7 @@ describe('/brain dashboard shell', () => {
     expect(agent).toContain('res.json(buildRadarSnapshot(paths));');
     expect(agent).toContain("router.get('/radar/item/:id'");
     expect(agent).toContain("router.get('/radar/brief'");
+    expect(agent).toContain("router.get('/review-lane'");
     expect(agent).toContain("router.post('/radar/ingest'");
     expect(agent).toContain("router.post('/radar/review'");
   });
@@ -77,13 +78,16 @@ describe('/brain dashboard shell', () => {
       'Brain Section Output',
       'Developer AI Stack Spine',
       'History-Career Search Spine',
+      'Subconscious / QA Monitor',
       'Blockers',
     ]) {
       expect(html).toContain(label);
     }
 
+    expect(html).toContain('id="subconscious-monitor"');
     expect(html).toContain('/agent/brain/status');
     expect(html).toContain('/agent/brain/brief');
+    expect(html).toContain('/agent/brain/review-lane');
     expect(html).toContain('/agent/brain/automation-business');
     expect(html).toContain('/agent/brain/automation-business/plan');
     expect(html).toContain('/agent/brain/developer-stack');
@@ -92,6 +96,12 @@ describe('/brain dashboard shell', () => {
     expect(html).toContain('/agent/brain/daily/brief?kind=afternoon');
     expect(html).toContain('/agent/brain/daily');
     expect(html).toContain('/agent/brain/history-career');
+    expect(html).toContain('snapshot.subagents?.review_lane');
+    expect(html).toContain('reviewLane.monitor.status');
+    expect(html).toContain('reviewLane.evidence.items');
+    expect(html).toContain('reviewLane.ai_readiness');
+    expect(html).toContain('Latest Evidence');
+    expect(html).toContain('AI Readiness');
     expect(html).toContain('provider.lane');
     expect(html).toContain('developer.blockers');
     expect(html).toContain('daily.blockers');

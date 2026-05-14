@@ -403,6 +403,10 @@
             <ul id="next-actions"></ul>
           </div>
         </div>
+        <div class="panel" id="subconscious-monitor">
+          <div class="panel-header">Subconscious / QA Monitor</div>
+          <div class="panel-body" id="subconscious-monitor-body"></div>
+        </div>
         <div class="panel">
           <div class="panel-header">AI Automation Business Spine</div>
           <div class="panel-body" id="automation-actions"></div>
@@ -506,7 +510,82 @@
       return `<div class="search-row blockers"><strong>Blockers</strong>${list(items)}</div>`;
     }
 
-    function render(snapshot, daily, history, automation, developer) {
+    function renderReviewLane(reviewLane) {
+      const policy = reviewLane.policy || {};
+      const subconscious = reviewLane.subconscious || {};
+      const qa = reviewLane.qa || {};
+      const monitor = reviewLane.monitor || {};
+      const evidence = reviewLane.evidence || {};
+      const aiReadiness = reviewLane.ai_readiness || {};
+      const laneStatus = reviewLane.monitor.status || reviewLane.status || 'review_only';
+      $('subconscious-monitor-body').innerHTML = `
+        <div class="search-row">
+          <div class="node-top">
+            <div>
+              <strong>${escapeHtml(reviewLane.label || 'Review lane')}</strong>
+              <div class="muted">${escapeHtml(reviewLane.summary_line || 'Review status unavailable.')}</div>
+            </div>
+            <span class="${statusClass(laneStatus)}">${escapeHtml(laneStatus)}</span>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="metric"><div class="metric-label">Mode</div><div class="metric-value">${escapeHtml(reviewLane.status || 'review_only')}</div></div>
+          <div class="metric"><div class="metric-label">Signals</div><div class="metric-value">${subconscious.board_counts?.total ?? 0}</div></div>
+          <div class="metric"><div class="metric-label">Latest QA</div><div class="metric-value">${escapeHtml(qa.latest_result || 'none')}</div></div>
+          <div class="metric"><div class="metric-label">Evidence</div><div class="metric-value">${evidence.count ?? 0}</div></div>
+          <div class="metric"><div class="metric-label">AI Ready</div><div class="metric-value">${aiReadiness.configured_providers?.length ?? 0}</div></div>
+          <div class="metric"><div class="metric-label">Monitor</div><div class="metric-value">${escapeHtml(laneStatus || 'waiting')}</div></div>
+        </div>
+        <div class="search-row">
+          <strong>Policy</strong>
+          ${list([
+            `review_only=${policy.review_only === true}`,
+            `dispatch=${policy.dispatch === true}`,
+            `runtime_state_writes=${policy.runtime_state_writes === true}`,
+            `creates_main_approvals=${policy.creates_main_approvals === true}`,
+          ])}
+        </div>
+        <div class="search-row">
+          <strong>Subconscious</strong>
+          ${list([
+            subconscious.summary_line || 'No summary.',
+            ...(subconscious.missing_inputs || []).map(item => `missing: ${item}`),
+          ])}
+        </div>
+        <div class="search-row">
+          <strong>QA Packet</strong>
+          ${list([
+            qa.summary_line || 'No summary.',
+            ...(qa.missing_inputs || []).map(item => `missing: ${item}`),
+          ])}
+        </div>
+        <div class="search-row">
+          <strong>Monitor</strong>
+          ${list([
+            monitor.summary_line || 'No summary.',
+            ...(monitor.missing_inputs || []).map(item => `missing: ${item}`),
+          ])}
+        </div>
+        <div class="search-row">
+          <strong>AI Readiness</strong>
+          ${list([
+            aiReadiness.summary_line || 'No AI readiness summary.',
+            ...(aiReadiness.providers || []).map(provider => `${provider.id} [${provider.lane}]: ${provider.status}`),
+            ...(aiReadiness.blocked_features || []).slice(0, 4).map(feature => `blocked: ${feature}`),
+          ])}
+        </div>
+        <div class="search-row">
+          <strong>Latest Evidence</strong>
+          ${list(
+            evidence.items?.length
+              ? reviewLane.evidence.items.map(item => `${item.title} [${item.review_state}]${item.next_action ? ` -> ${item.next_action}` : ''}${item.detail_route ? ` | ${item.detail_route}` : ''}`)
+              : [evidence.summary_line || 'No evidence.']
+          )}
+        </div>
+      `;
+    }
+
+    function render(snapshot, daily, history, automation, developer, reviewLane) {
       $('brain-title').textContent = snapshot.label || 'Luke brain';
       $('brain-meta').textContent = snapshot.role || '';
       setStatus($('brain-status'), snapshot.attention?.length ? 'attention' : 'nominal');
@@ -596,6 +675,7 @@
           <span>${escapeHtml(item.url)}</span>
         </div>
       `).join('');
+      renderReviewLane(reviewLane);
     }
 
     async function load() {
@@ -607,13 +687,14 @@
       try {
         const snapshot = await fetchJson('/agent/brain/status');
         const subagents = snapshot.subagents || {};
-        const [daily, history, automation, developer] = await Promise.all([
+        const [daily, history, automation, developer, reviewLane] = await Promise.all([
           fetchOptional('/agent/brain/daily' + weatherQuery, subagents.daily || {}),
           fetchOptional('/agent/brain/history-career', subagents.history_career || {}),
           fetchOptional('/agent/brain/automation-business', subagents.automation_business || {}),
           fetchOptional('/agent/brain/developer-stack', subagents.developer_stack || {}),
+          fetchOptional('/agent/brain/review-lane', snapshot.subagents?.review_lane || {}),
         ]);
-        render(snapshot, daily, history, automation, developer);
+        render(snapshot, daily, history, automation, developer, reviewLane);
         requestAnimationFrame(() => {
           if (location.hash) document.querySelector(location.hash)?.scrollIntoView({ block: 'start' });
         });

@@ -19,10 +19,25 @@ const { buildDailySpine, fetchWeather, fetchWeatherForLocations, recordDailyChec
 const { buildDeveloperStackSpine, recordDeveloperStackEvent } = require('../lib/brain/developer-stack-spine');
 const { buildHistoryCareerSpine, fetchPublicHistoryJobLeads, recordOpportunity } = require('../lib/brain/history-career-spine');
 const { buildRadarBrief, buildRadarItemDetail, buildRadarItems, buildRadarSnapshot, recordRadarIngest, recordRadarReview } = require('../lib/brain/radar-layer');
+const { buildReviewLaneStatusReport } = require('../lib/radar/review-lane-status');
 const { syncDirectDailyIntegrations } = require('../lib/google-direct');
 const paths = require('../lib/paths');
 
 const router = express.Router();
+
+function buildReviewLaneSnapshot(options = {}) {
+  const routePaths = options.paths || paths;
+  const now = options.now instanceof Date ? options.now : new Date();
+  const radarItems = buildRadarItems({
+    paths: routePaths,
+    limit: Number(options.limit || 50),
+  }).items || [];
+  return buildReviewLaneStatusReport({
+    now,
+    env: options.env || process.env,
+    radar_items: radarItems,
+  });
+}
 
 router.get('/status', (req, res) => {
   res.json(buildBrainSnapshot());
@@ -38,6 +53,14 @@ router.get('/brief', (req, res) => {
     next_actions: snapshot.next_actions,
     trading: snapshot.subagents.trading,
   });
+});
+
+router.get('/review-lane', (req, res) => {
+  res.json(buildReviewLaneSnapshot({
+    env: process.env,
+    limit: Number(req.query.limit || 50),
+    paths,
+  }));
 });
 
 router.get('/trading-report', (req, res) => {
@@ -274,6 +297,7 @@ module.exports = router;
 module.exports._internal = {
   answerInquiry,
   buildBrainSnapshot,
+  buildReviewLaneSnapshot,
   buildTradingReport,
   buildDeveloperStackSpine,
   recordSubagentReport,

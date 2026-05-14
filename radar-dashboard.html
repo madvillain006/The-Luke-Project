@@ -429,7 +429,9 @@
   </div>
 
   <script>
-    if (new URLSearchParams(location.search).get('embed')) document.body.classList.add('embed');
+    const searchParams = new URLSearchParams(location.search);
+    if (searchParams.get('embed')) document.body.classList.add('embed');
+    const requestedDetailId = searchParams.get('detail');
 
     const $ = id => document.getElementById(id);
     let latestStatus = null;
@@ -633,7 +635,11 @@
         ? brief.ideas_to_verify.map(briefHtml).join('')
         : empty(brief.empty_note || 'No Radar brief yet.');
       renderRecentInbox(status);
-      if (!$('detail-body').innerHTML.trim()) renderDetail(null);
+      if (requestedDetailId) {
+        await loadDetail(requestedDetailId);
+      } else if (!$('detail-body').innerHTML.trim()) {
+        renderDetail(null);
+      }
     }
 
     $('capture-form').addEventListener('submit', async event => {

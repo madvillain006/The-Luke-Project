@@ -112,10 +112,49 @@ describe('review lane status report', () => {
     expect(report.evidence.count).toBe(1);
     expect(report.evidence.items[0].id).toBe('radar_item_qa-monitor-signal');
     expect(report.evidence.items[0].detail_route).toBe('/agent/brain/radar/item/radar_item_qa-monitor-signal');
+    expect(report.evidence.items[0].ui_detail_route).toBe('/radar?detail=radar_item_qa-monitor-signal');
     expect(report.qa.latest_result).toBe('pass');
+    expect(report.qa.summary_line).toContain('supplied input');
+    expect(report.qa.persisted_state_available).toBe(true);
+    expect(report.qa.feed[0]).toEqual(expect.objectContaining({
+      job_id: 'subconscious_job_qa-monitor-signal',
+      phase_id: 'phase-qa',
+      result: 'pass',
+      valid: true,
+      files_changed_count: 2,
+      tests_run_count: 1,
+      rollback_path: 'Revert review-lane status module and dashboard panel changes.',
+    }));
     expect(report.ai_readiness.configured_providers).toContain('gemini');
     expect(report.ai_readiness.summary_line).toContain('configured provider');
     expect(report.monitor.summary_line).toContain('healthy');
+  });
+
+  it('extracts persisted QA packets from brain reports when explicit qa_packets are not provided', () => {
+    const report = buildReviewLaneStatusReport({
+      now: new Date('2026-05-14T17:12:00.000Z'),
+      reports: [
+        {
+          ts: '2026-05-14T17:10:30.000Z',
+          agent: 'qa',
+          data: {
+            qa_packet: qaPacket({
+              timestamp: '2026-05-14T17:10:00.000Z',
+            }),
+          },
+        },
+      ],
+    });
+
+    expect(report.qa.latest_result).toBe('pass');
+    expect(report.persisted_state_available).toBe(true);
+    expect(report.summary_line).toContain('Persisted review artifacts are available for read-only inspection.');
+    expect(report.qa.feed).toHaveLength(1);
+    expect(report.qa.feed[0]).toEqual(expect.objectContaining({
+      source_agent: 'qa',
+      source_reported_at: '2026-05-14T17:10:30.000Z',
+      valid: true,
+    }));
   });
 
   it('marks missing persisted evidence explicitly when no live inputs are wired', () => {

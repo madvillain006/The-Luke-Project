@@ -25,6 +25,25 @@ const paths = require('../lib/paths');
 
 const router = express.Router();
 
+function readJsonlTail(file, limit = 20) {
+  try {
+    return require('fs').readFileSync(file, 'utf8')
+      .split('\n')
+      .filter(Boolean)
+      .slice(-limit)
+      .map(line => {
+        try {
+          return JSON.parse(line);
+        } catch {
+          return null;
+        }
+      })
+      .filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
 function buildReviewLaneSnapshot(options = {}) {
   const routePaths = options.paths || paths;
   const now = options.now instanceof Date ? options.now : new Date();
@@ -32,10 +51,12 @@ function buildReviewLaneSnapshot(options = {}) {
     paths: routePaths,
     limit: Number(options.limit || 50),
   }).items || [];
+  const reports = readJsonlTail(routePaths.events?.brainReports, Number(options.reportLimit || 40));
   return buildReviewLaneStatusReport({
     now,
     env: options.env || process.env,
     radar_items: radarItems,
+    reports,
   });
 }
 

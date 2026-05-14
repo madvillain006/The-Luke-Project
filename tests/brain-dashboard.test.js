@@ -100,6 +100,9 @@ describe('/brain dashboard shell', () => {
     expect(html).toContain('reviewLane.monitor.status');
     expect(html).toContain('reviewLane.evidence.items');
     expect(html).toContain('reviewLane.ai_readiness');
+    expect(html).toContain('qa.feed || []');
+    expect(html).toContain('monitor.reasons || []');
+    expect(html).toContain('item.ui_detail_route');
     expect(html).toContain('Latest Evidence');
     expect(html).toContain('AI Readiness');
     expect(html).toContain('provider.lane');
@@ -112,6 +115,14 @@ describe('/brain dashboard shell', () => {
     expect(html).toContain('async function runSection(kind)');
     expect(html).toContain("'42.8864'");
     expect(html).toContain("'-78.8784'");
+  });
+
+  it('supports radar detail deep-links for review-lane drilldown', () => {
+    const radarHtml = fs.readFileSync(RADAR_FILE, 'utf8');
+
+    expect(radarHtml).toContain('const searchParams = new URLSearchParams(location.search);');
+    expect(radarHtml).toContain("const requestedDetailId = searchParams.get('detail');");
+    expect(radarHtml).toContain('await loadDetail(requestedDetailId);');
   });
 
   it('does not expose trading execution controls', () => {

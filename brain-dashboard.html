@@ -556,6 +556,14 @@
           <strong>QA Packet</strong>
           ${list([
             qa.summary_line || 'No summary.',
+            ...(qa.feed || []).slice(0, 4).map(packet => {
+              const proofStamp = packet.timestamp || packet.deterministic_equivalent || packet.source_reported_at || 'no-proof-time';
+              const scope = packet.job_id || packet.plan_id || 'unknown-scope';
+              const proof = (packet.behavior_proven || []).slice(0, 2).join('; ') || 'no behavior proof recorded';
+              const risks = (packet.regression_risks || []).slice(0, 2).join('; ') || 'no regression risks recorded';
+              const issues = (packet.errors || []).map(error => `${error.field}: ${error.message}`).join('; ');
+              return `${scope}${packet.phase_id ? ` / ${packet.phase_id}` : ''} [${packet.valid ? (packet.result || 'valid') : 'invalid'}] @ ${proofStamp} | reviewer=${packet.reviewer || 'unknown'} | files=${packet.files_changed_count} | tests=${packet.tests_run_count} | skipped=${packet.tests_skipped_count} | proof=${proof} | risks=${risks} | rollback=${packet.rollback_path || 'missing'}${packet.blocker ? ` | blocker=${packet.blocker}` : ''}${issues ? ` | issues=${issues}` : ''}`;
+            }),
             ...(qa.missing_inputs || []).map(item => `missing: ${item}`),
           ])}
         </div>
@@ -563,6 +571,7 @@
           <strong>Monitor</strong>
           ${list([
             monitor.summary_line || 'No summary.',
+            ...(monitor.reasons || []).map(reason => `${reason.code || 'reason'}: ${reason.message || reason.detail || 'no detail'}`),
             ...(monitor.missing_inputs || []).map(item => `missing: ${item}`),
           ])}
         </div>
@@ -578,7 +587,7 @@
           <strong>Latest Evidence</strong>
           ${list(
             evidence.items?.length
-              ? reviewLane.evidence.items.map(item => `${item.title} [${item.review_state}]${item.next_action ? ` -> ${item.next_action}` : ''}${item.detail_route ? ` | ${item.detail_route}` : ''}`)
+              ? reviewLane.evidence.items.map(item => `${item.title} [${item.review_state}]${item.next_action ? ` -> ${item.next_action}` : ''}${item.ui_detail_route ? ` | ${item.ui_detail_route}` : item.detail_route ? ` | ${item.detail_route}` : ''}`)
               : [evidence.summary_line || 'No evidence.']
           )}
         </div>

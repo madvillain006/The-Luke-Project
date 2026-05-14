@@ -521,6 +521,41 @@ describe('Luke brain agent core', () => {
       next_action: 'Hold for Main review',
       reviewer: 'qa',
     });
+    appendJsonl(paths.events.brainReports, {
+      ts: '2026-05-14T18:01:30.000Z',
+      agent: 'qa',
+      status: 'reported',
+      summary: 'QA evidence captured for review lane.',
+      severity: 'info',
+      data: {
+        qa_packet: {
+          job_id: 'subconscious_job_review_lane',
+          phase_id: 'phase-review-lane',
+          files_changed: ['lib/radar/review-lane-status.js', 'brain-dashboard.html'],
+          tests_run: ['npx vitest run tests/review-lane-status.test.js tests/brain-agent.test.js'],
+          test_output_summary: 'Focused review-lane tests passed.',
+          tests_skipped_with_reason: [],
+          behavior_proven: ['Review lane reports persisted QA evidence without runtime writes.'],
+          regression_risks: ['Monitor inputs still depend on explicit workflow context.'],
+          rollback_path: 'Revert review-lane report wiring.',
+          safety_boundary_confirmation: {
+            pine_untouched_unless_approved: true,
+            ninjatrader_untouched_unless_approved: true,
+            market_hours_untouched_unless_approved: true,
+            live_trading_paths_untouched: true,
+            risk_checks_not_weakened: true,
+            credentials_secrets_untouched: true,
+            broker_account_routing_untouched: true,
+            order_execution_unchanged: true,
+            runtime_state_not_overwritten: true,
+            no_unsafe_dependency_added: true,
+          },
+          result: 'pass',
+          reviewer: 'qa',
+          timestamp: '2026-05-14T18:01:15.000Z',
+        },
+      },
+    });
 
     const reviewLane = brainAgentInternal.buildReviewLaneSnapshot({
       paths,
@@ -537,6 +572,14 @@ describe('Luke brain agent core', () => {
       id: 'radar_item_review_lane',
       review_state: 'accepted',
       detail_route: '/agent/brain/radar/item/radar_item_review_lane',
+      ui_detail_route: '/radar?detail=radar_item_review_lane',
+    }));
+    expect(reviewLane.qa.latest_result).toBe('pass');
+    expect(reviewLane.qa.feed[0]).toEqual(expect.objectContaining({
+      job_id: 'subconscious_job_review_lane',
+      phase_id: 'phase-review-lane',
+      valid: true,
+      source_agent: 'qa',
     }));
     expect(reviewLane.ai_readiness.configured_providers).toContain('gemini');
     expect(fs.existsSync(paths.snapshots.radarState)).toBe(false);

@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
 using NinjaTrader.Cbi;
 using NinjaTrader.Data;
@@ -140,29 +139,25 @@ namespace NinjaTrader.NinjaScript.Strategies
         public string LevelFilePath { get; set; }
 
         [NinjaScriptProperty]
-        [Display(Name = "Central Mancini event CSV path", GroupName = "Luke Native", Order = 3)]
-        public string ManciniEventCsvPath { get; set; }
-
-        [NinjaScriptProperty]
-        [Display(Name = "Telemetry file path", GroupName = "Luke Native", Order = 4)]
+        [Display(Name = "Telemetry file path", GroupName = "Luke Native", Order = 3)]
         public string TelemetryFilePath { get; set; }
 
         [NinjaScriptProperty]
         [Range(1, 3600)]
-        [Display(Name = "Level refresh seconds", GroupName = "Luke Native", Order = 5)]
+        [Display(Name = "Level refresh seconds", GroupName = "Luke Native", Order = 4)]
         public int LevelRefreshSeconds { get; set; }
 
         [NinjaScriptProperty]
-        [Display(Name = "Show parity ledger overlay", GroupName = "Luke Native", Order = 6)]
+        [Display(Name = "Show parity ledger overlay", GroupName = "Luke Native", Order = 5)]
         public bool ShowParityLedgerOverlay { get; set; }
 
         [NinjaScriptProperty]
         [Range(3, 20)]
-        [Display(Name = "Ledger overlay rows", GroupName = "Luke Native", Order = 7)]
+        [Display(Name = "Ledger overlay rows", GroupName = "Luke Native", Order = 6)]
         public int LedgerOverlayRows { get; set; }
 
         [NinjaScriptProperty]
-        [Display(Name = "Pine bridge events path", GroupName = "Luke Native", Order = 8)]
+        [Display(Name = "Pine bridge events path", GroupName = "Luke Native", Order = 7)]
         public string PineBridgeEventsPath { get; set; }
 
         [NinjaScriptProperty]
@@ -396,7 +391,7 @@ namespace NinjaTrader.NinjaScript.Strategies
             if (State == State.SetDefaults)
             {
                 Name = "LukeNativeShadowStrategy";
-                Description = "Ninja-native port of the Luke v4 reclaim/bridge signal engine. Exact-account guarded modes can submit limit orders.";
+                Description = "Ninja-native port of the Luke v4 reclaim/bridge signal engine. Defaults to shadow; guarded modes can submit limit orders.";
                 Calculate = Calculate.OnEachTick;
                 EntriesPerDirection = 2;
                 EntryHandling = EntryHandling.UniqueEntries;
@@ -404,17 +399,16 @@ namespace NinjaTrader.NinjaScript.Strategies
                 ExitOnSessionCloseSeconds = 30;
                 IsInstantiatedOnEachOptimizationIteration = false;
 
-                AutonomyMode = LukeNativeAutonomyMode.LiveGuarded;
+                AutonomyMode = LukeNativeAutonomyMode.Shadow;
                 LevelFilePath = @"C:\Users\conor\luke\data\ninjatrader\luke-native-levels.txt";
-                ManciniEventCsvPath = @"C:\Users\conor\luke\artifacts\research\mancini-context-protocol\events.csv";
                 TelemetryFilePath = @"C:\Users\conor\luke\state\events\ninja-native-shadow.jsonl";
                 LevelRefreshSeconds = 5;
                 ShowParityLedgerOverlay = true;
                 LedgerOverlayRows = 8;
                 PineBridgeEventsPath = @"C:\Users\conor\luke\state\events\ninjatrader-bridge.jsonl";
                 RequireFlatPosition = true;
-                AllowLiveAccounts = true;
-                AllowedAccountName = "APEX752020000018";
+                AllowLiveAccounts = false;
+                AllowedAccountName = "LFE050706094670001";
                 NativeQuantity = 2;
                 MaxQuantity = 2;
                 MaxMarketableEntryPoints = 0.25;
@@ -635,20 +629,11 @@ namespace NinjaTrader.NinjaScript.Strategies
 
         private void LoadLevelsIfNeeded()
         {
+            if (string.IsNullOrWhiteSpace(LevelFilePath))
+                return;
             if ((DateTime.UtcNow - lastLevelLoadUtc).TotalSeconds < Math.Max(1, LevelRefreshSeconds))
                 return;
             lastLevelLoadUtc = DateTime.UtcNow;
-
-            DateTime chartSessionDate = ChartFuturesSessionDate();
-            LevelLoadResult centralLevels = TryLoadCentralManciniLevels(chartSessionDate);
-            if (centralLevels != null)
-            {
-                ApplyLevelLoad(centralLevels, chartSessionDate);
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(LevelFilePath))
-                return;
 
             string text;
             try
@@ -660,6 +645,7 @@ namespace NinjaTrader.NinjaScript.Strategies
                 WriteTelemetry("LEVEL_LOAD_ERROR", null, ex.Message);
                 return;
             }
+            DateTime chartSessionDate = ChartFuturesSessionDate();
             DateTime targetSessionDate = ExtractTargetSessionDate(text);
             if (string.Equals(text, lastLevelFileText, StringComparison.Ordinal)
                 && chartSessionDate == lastLevelSessionDate)
@@ -673,44 +659,15 @@ namespace NinjaTrader.NinjaScript.Strategies
                 WriteTelemetry("LEVEL_SESSION_MISMATCH", null,
                     "target_session=" + targetSessionDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
                     + " chart_session=" + chartSessionDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
-                    + " source=level_file"
                     + " path=" + LevelFilePath);
                 return;
             }
 
-            LevelLoadResult levelFile = ParseTextLevelFile(text, targetSessionDate, LevelFilePath);
-            ApplyLevelLoad(levelFile, chartSessionDate);
-        }
-
-        private void ApplyLevelLoad(LevelLoadResult result, DateTime chartSessionDate)
-        {
-            if (result == null)
-                return;
-            if (string.Equals(result.CacheText, lastLevelFileText, StringComparison.Ordinal)
-                && chartSessionDate == lastLevelSessionDate)
-                return;
-
             rawLevels.Clear();
-            rawLevels.AddRange(result.Levels);
-            lastLevelFileText = result.CacheText;
+            lastLevelFileText = text;
             lastLevelSessionDate = chartSessionDate;
-
-            WriteTelemetry("LEVELS_LOADED", null, "count=" + rawLevels.Count.ToString(CultureInfo.InvariantCulture)
-                + " raw_count=" + result.RawMatches.ToString(CultureInfo.InvariantCulture)
-                + " rejected_count=" + result.RejectedMatches.ToString(CultureInfo.InvariantCulture)
-                + " target_session=" + (result.TargetSessionDate == DateTime.MinValue ? "" : result.TargetSessionDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture))
-                + " chart_session=" + (chartSessionDate == DateTime.MinValue ? "" : chartSessionDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture))
-                + " bytes=" + result.Bytes.ToString(CultureInfo.InvariantCulture)
-                + " has_sections=" + (result.HasSections ? "true" : "false")
-                + " source=" + result.Source
-                + " path=" + result.Path);
-        }
-
-        private LevelLoadResult ParseTextLevelFile(string text, DateTime targetSessionDate, string sourcePath)
-        {
-            string[] lines = (text ?? string.Empty).Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
-            bool hasSections = Regex.IsMatch(text ?? string.Empty, @"(?im)^\s*(trade|mancini|major|focus_long|target_only|read_reaction|caution|trigger|reclaim)\s*:");
-            List<LevelInput> levels = new List<LevelInput>();
+            string[] lines = text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+            bool hasSections = Regex.IsMatch(text, @"(?im)^\s*(trade|mancini|major|focus_long|target_only|read_reaction|caution|trigger|reclaim)\s*:");
             int rawMatches = 0;
             int rejectedMatches = 0;
             for (int lineIndex = 0; lineIndex < lines.Length; lineIndex++)
@@ -731,137 +688,17 @@ namespace NinjaTrader.NinjaScript.Strategies
                         rejectedMatches++;
                         continue;
                     }
-                    InsertSorted(levels, new LevelInput(RoundPrice(value), "mancini"));
+                    InsertSorted(rawLevels, new LevelInput(RoundPrice(value), "mancini"));
                 }
             }
-            return new LevelLoadResult(levels, text ?? string.Empty, targetSessionDate, rawMatches, rejectedMatches, (text ?? string.Empty).Length, hasSections, "level_file", sourcePath);
-        }
-
-        private LevelLoadResult TryLoadCentralManciniLevels(DateTime chartSessionDate)
-        {
-            if (chartSessionDate == DateTime.MinValue || string.IsNullOrWhiteSpace(ManciniEventCsvPath))
-                return null;
-
-            string path = ManciniEventCsvPath.Trim();
-            string text;
-            try
-            {
-                if (!File.Exists(path))
-                    return null;
-                text = File.ReadAllText(path);
-            }
-            catch (Exception ex)
-            {
-                WriteTelemetry("LEVEL_LOAD_ERROR", null, "source=central_events_csv path=" + path + " error=" + ex.Message);
-                return null;
-            }
-
-            string[] lines = (text ?? string.Empty).Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
-            if (lines.Length < 2)
-                return null;
-
-            List<string> headers = SplitCsvLine(lines[0]);
-            Dictionary<string, int> headerIndex = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-            for (int i = 0; i < headers.Count; i++)
-            {
-                string key = (headers[i] ?? string.Empty).Trim();
-                if (key.Length > 0 && !headerIndex.ContainsKey(key))
-                    headerIndex[key] = i;
-            }
-
-            if (!headerIndex.ContainsKey("plan_date") || !headerIndex.ContainsKey("price"))
-                return null;
-
-            string sessionKey = chartSessionDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-            List<LevelInput> levels = new List<LevelInput>();
-            StringBuilder cache = new StringBuilder();
-            int rawMatches = 0;
-            int rejectedMatches = 0;
-
-            for (int lineIndex = 1; lineIndex < lines.Length; lineIndex++)
-            {
-                string line = lines[lineIndex] ?? string.Empty;
-                if (line.Trim().Length == 0)
-                    continue;
-
-                List<string> columns = SplitCsvLine(line);
-                if (!string.Equals(CsvValue(columns, headerIndex, "plan_date"), sessionKey, StringComparison.Ordinal))
-                    continue;
-                if (!string.Equals(CsvValue(columns, headerIndex, "direction"), "support", StringComparison.OrdinalIgnoreCase))
-                    continue;
-                if (!CsvTruthy(CsvValue(columns, headerIndex, "long_eligible")))
-                    continue;
-
-                rawMatches++;
-                double price;
-                if (!double.TryParse(CsvValue(columns, headerIndex, "price"), NumberStyles.Float, CultureInfo.InvariantCulture, out price)
-                    || !IsValidExternalEsLevel(price))
-                {
-                    rejectedMatches++;
-                    continue;
-                }
-
-                InsertSorted(levels, new LevelInput(RoundPrice(price), "mancini"));
-                cache.AppendLine(line);
-            }
-
-            if (levels.Count == 0)
-                return null;
-
-            string cacheText = "central_events_csv|" + path + "|" + sessionKey + Environment.NewLine + cache.ToString();
-            return new LevelLoadResult(levels, cacheText, chartSessionDate.Date, rawMatches, rejectedMatches, text.Length, false, "central_events_csv", path);
-        }
-
-        private static List<string> SplitCsvLine(string line)
-        {
-            List<string> values = new List<string>();
-            StringBuilder cell = new StringBuilder();
-            bool inQuotes = false;
-            string text = line ?? string.Empty;
-            for (int i = 0; i < text.Length; i++)
-            {
-                char c = text[i];
-                if (c == '"')
-                {
-                    if (inQuotes && i + 1 < text.Length && text[i + 1] == '"')
-                    {
-                        cell.Append('"');
-                        i++;
-                    }
-                    else
-                    {
-                        inQuotes = !inQuotes;
-                    }
-                }
-                else if (c == ',' && !inQuotes)
-                {
-                    values.Add(cell.ToString());
-                    cell.Length = 0;
-                }
-                else
-                {
-                    cell.Append(c);
-                }
-            }
-            values.Add(cell.ToString());
-            return values;
-        }
-
-        private static string CsvValue(List<string> columns, Dictionary<string, int> headerIndex, string key)
-        {
-            int index;
-            if (columns == null || headerIndex == null || !headerIndex.TryGetValue(key, out index) || index < 0 || index >= columns.Count)
-                return string.Empty;
-            return (columns[index] ?? string.Empty).Trim();
-        }
-
-        private static bool CsvTruthy(string value)
-        {
-            string text = (value ?? string.Empty).Trim();
-            return string.Equals(text, "true", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(text, "1", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(text, "yes", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(text, "y", StringComparison.OrdinalIgnoreCase);
+            WriteTelemetry("LEVELS_LOADED", null, "count=" + rawLevels.Count.ToString(CultureInfo.InvariantCulture)
+                + " raw_count=" + rawMatches.ToString(CultureInfo.InvariantCulture)
+                + " rejected_count=" + rejectedMatches.ToString(CultureInfo.InvariantCulture)
+                + " target_session=" + (targetSessionDate == DateTime.MinValue ? "" : targetSessionDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture))
+                + " chart_session=" + (chartSessionDate == DateTime.MinValue ? "" : chartSessionDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture))
+                + " bytes=" + text.Length.ToString(CultureInfo.InvariantCulture)
+                + " has_sections=" + (hasSections ? "true" : "false")
+                + " path=" + LevelFilePath);
         }
 
         private DateTime ExtractTargetSessionDate(string text)
@@ -2291,32 +2128,6 @@ namespace NinjaTrader.NinjaScript.Strategies
         private static string Escape(string value)
         {
             return (value ?? string.Empty).Replace("\\", "\\\\").Replace("\"", "'");
-        }
-
-        private class LevelLoadResult
-        {
-            public LevelLoadResult(List<LevelInput> levels, string cacheText, DateTime targetSessionDate, int rawMatches, int rejectedMatches, int bytes, bool hasSections, string source, string path)
-            {
-                Levels = levels ?? new List<LevelInput>();
-                CacheText = cacheText ?? string.Empty;
-                TargetSessionDate = targetSessionDate;
-                RawMatches = rawMatches;
-                RejectedMatches = rejectedMatches;
-                Bytes = bytes;
-                HasSections = hasSections;
-                Source = string.IsNullOrWhiteSpace(source) ? "unknown" : source;
-                Path = path ?? string.Empty;
-            }
-
-            public List<LevelInput> Levels;
-            public string CacheText;
-            public DateTime TargetSessionDate;
-            public int RawMatches;
-            public int RejectedMatches;
-            public int Bytes;
-            public bool HasSections;
-            public string Source;
-            public string Path;
         }
 
         private class LevelInput

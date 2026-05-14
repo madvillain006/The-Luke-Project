@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Ninja Live Readiness Sanity Report</title>
+<style>
+  @page { size: Letter; margin: 0.45in; }
+  body { font-family: Segoe UI, Arial, sans-serif; color: #121417; margin: 0; background: #f5f6f8; }
+  .page { max-width: 1060px; margin: 0 auto; padding: 30px; background: white; }
+  h1 { font-size: 30px; margin: 0 0 8px; letter-spacing: 0; }
+  h2 { font-size: 18px; margin: 24px 0 10px; border-bottom: 1px solid #d9dde3; padding-bottom: 6px; }
+  h3 { font-size: 15px; margin: 18px 0 8px; }
+  p { line-height: 1.42; margin: 8px 0; }
+  code { font-family: Consolas, monospace; background: #eef1f5; padding: 1px 4px; border-radius: 3px; }
+  .meta { color: #4d5663; font-size: 12px; }
+  .banner { margin: 18px 0; padding: 14px 16px; border-left: 5px solid #1b7f46; background: #eef8f2; }
+  .warn { border-left-color: #9a5b00; background: #fff5e6; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .card { border: 1px solid #d9dde3; border-radius: 6px; padding: 12px; background: #fbfcfd; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 8px 0 16px; }
+  th, td { text-align: left; vertical-align: top; padding: 7px 8px; border-bottom: 1px solid #e2e5ea; }
+  th { background: #eef1f5; font-weight: 650; }
+  .pass { color: #0b6b36; font-weight: 700; }
+  .fail { color: #a02720; font-weight: 700; }
+  .mono { font-family: Consolas, monospace; font-size: 11px; word-break: break-all; }
+  .small { font-size: 12px; color: #4d5663; }
+  .pagebreak { page-break-before: always; }
+</style>
+</head>
+<body><main class="page">
+  <h1>Ninja Live Readiness Sanity Report</h1>
+  <div class="meta">Generated 2026-05-14 11:29 ET from <code>C:\Users\conor\luke</code></div>
+
+  <div class="banner">
+    <strong>File-level verdict:</strong> 13/13 checks pass. The local code/install/workspace/level inputs are set for <code>LukeNativeShadowStrategy</code> to run exact-account guarded on <code>APEX752020000018</code> and load 2026-05-14 Mancini levels from the central event CSV.
+  </div>
+  <div class="banner warn">
+    <strong>Runtime boundary:</strong> NinjaTrader GUI compile/reload has not been observed after this patch; runtime proof requires ENGINE_READY then LEVELS_LOADED source=central_events_csv. This is the remaining operator/Ninja GUI boundary, not a source-file uncertainty.
+  </div>
+
+  <h2>Why This Should Work This Time</h2>
+  <table>
+    <thead><tr><th>Failure Mode From Earlier</th><th>Current Control</th><th>Evidence</th></tr></thead>
+    <tbody>
+      <tr><td>Stale 5/11 level file could drive today.</td><td>Native now tries <code>artifacts/research/mancini-context-protocol/events.csv</code> by chart futures session before falling back to text.</td><td class="mono">TryLoadCentralManciniLevels + source=central_events_csv</td></tr>
+      <tr><td>Workspace could reload old account/autonomy gates.</td><td>Saved workspace strategy block is <code>LiveGuarded</code>, <code>AllowLiveAccounts=true</code>, exact <code>APEX752020000018</code>.</td><td class="mono">{&quot;AutonomyMode&quot;:&quot;LiveGuarded&quot;,&quot;ManciniEventCsvPath&quot;:&quot;C:\\Users\\conor\\luke\\artifacts\\research\\mancini-context-protocol\\events.csv&quot;,&quot;AllowLiveAccounts&quot;:&quot;true&quot;,&quot;AllowedAccountName&quot;:&quot;APEX752020000018&quot;,&quot;NativeQuantity&quot;:&quot;2&quot;,&quot;MaxQuantity&quot;:&quot;2&quot;,&quot;MaxMarketableEntryPoints&quot;:&quot;0.25&quot;,&quot;AllowHistoricalBacktestOrders&quot;:&quot;false&quot;}</td></tr>
+      <tr><td>Historical processing could submit strategy orders before realtime.</td><td>Saved workspace and source default keep <code>AllowHistoricalBacktestOrders=false</code>.</td><td class="mono">AllowHistoricalBacktestOrders=false</td></tr>
+      <tr><td>Installed Ninja copy might lag repo.</td><td>Repo and installed Native strategy hash match exactly.</td><td class="mono">28E781556301FF133C628503270CC28BF6E18E7E3B91ABD31C29A3F7A93589B7</td></tr>
+      <tr><td>Order path might be blocked by removed bridge behavior.</td><td>Native uses managed Ninja calls: preloaded stop/target, then <code>EnterLongLimit</code>, same viable order model as the old bridge path.</td><td class="mono">SetStopLoss / SetProfitTarget / EnterLongLimit(qtyT1, orderEntry, ...)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Evidence Checklist</h2>
+  <table>
+    <thead><tr><th>Status</th><th>Check</th><th>Evidence</th></tr></thead>
+    <tbody>
+      <tr><td class="pass">PASS</td><td>Installed Native equals repo</td><td class="mono">28E781556301 repo / 28E781556301 installed</td></tr>
+<tr><td class="pass">PASS</td><td>Installed Analyzer unchanged and equal</td><td class="mono">AEE03AA6D186 repo / AEE03AA6D186 installed</td></tr>
+<tr><td class="pass">PASS</td><td>Native source gate clean</td><td class="mono">blockers=0</td></tr>
+<tr><td class="pass">PASS</td><td>Native install dry-run clean</td><td class="mono">target_same=true, actions=0</td></tr>
+<tr><td class="pass">PASS</td><td>Analyzer install dry-run clean</td><td class="mono">target_same=true, actions=0</td></tr>
+<tr><td class="pass">PASS</td><td>Central Mancini source wired in source</td><td class="mono">central CSV is loaded before text fallback</td></tr>
+<tr><td class="pass">PASS</td><td>Level file is current session</td><td class="mono">target=2026-05-14, trade_count=48, first=7111, last=7467</td></tr>
+<tr><td class="pass">PASS</td><td>Required posted levels present</td><td class="mono">7467, 7455, and 7111 all present</td></tr>
+<tr><td class="pass">PASS</td><td>Workspace exact APEX guarded</td><td class="mono">LiveGuarded, true, APEX752020000018</td></tr>
+<tr><td class="pass">PASS</td><td>Workspace historical orders disabled</td><td class="mono">AllowHistoricalBacktestOrders=false</td></tr>
+<tr><td class="pass">PASS</td><td>Managed order path still present</td><td class="mono">preload bracket then EnterLongLimit</td></tr>
+<tr><td class="pass">PASS</td><td>Broad/unmanaged order calls absent</td><td class="mono">no SubmitOrder/SubmitOrderUnmanaged/short calls</td></tr>
+<tr><td class="pass">PASS</td><td>Analyzer manual post-bar exits still banned</td><td class="mono">banned Analyzer exit strings absent</td></tr>
+    </tbody>
+  </table>
+
+  <div class="grid">
+    <div class="card"><h3>Current Levels</h3><p><strong>Source:</strong> <code>artifacts/research/mancini-context-protocol/events.csv</code></p><p><strong>Target:</strong> <code>2026-05-14</code></p><p><strong>Trade levels:</strong> 48, range 7111 to 7467</p><p class="small">Hash: <span class="mono">32EF2A80B95CF0264A23B5BC763659FA83356990D612EE27C871D6A54B4C8EB9</span></p></div>
+    <div class="card"><h3>Install State</h3><p>Native install dry-run: <code>target_same=true</code>, <code>actions=0</code></p><p>Analyzer install dry-run: <code>target_same=true</code>, <code>actions=0</code></p><p>Focused tests: <code>5 files passed, 19 tests passed</code></p></div>
+  </div>
+
+  <h2>Runtime Acceptance Criteria</h2>
+  <p>After NinjaScript compile and strategy reload, the first valid runtime proof should be these telemetry rows in <code>C:\Users\conor\luke\state\events\ninja-native-shadow.jsonl</code>:</p>
+  <table><tbody>
+    <tr><td><code>ENGINE_READY</code></td><td>mode should be <code>LiveGuarded</code>, account should be <code>APEX752020000018</code>, guard should say exact APEX.</td></tr>
+    <tr><td><code>LEVELS_LOADED</code></td><td>must include <code>source=central_events_csv</code>, <code>count=48</code>, <code>target_session=2026-05-14</code>, <code>chart_session=2026-05-14</code>.</td></tr>
+    <tr><td><code>ORDER_SUBMITTED</code></td><td>only after the existing signal math fires; order entry must pass the 0.25-point marketable-entry guard and flat-position guard.</td></tr>
+  </tbody></table>
+
+  <h2>Hostile Audit</h2>
+  <table><tbody>
+    <tr><th>Question</th><th>Answer</th></tr>
+    <tr><td>Can this still trade stale 5/11 levels?</td><td>No by source design: central CSV is checked first by chart session. Text fallback is current 5/14 as of this report.</td></tr>
+    <tr><td>Can a broad live account pass?</td><td>No. <code>LiveGuarded</code> requires <code>AllowLiveAccounts=true</code> and exact string match to <code>APEX752020000018</code>.</td></tr>
+    <tr><td>Can historical Analyzer math be mistaken for live proof?</td><td>The report does not use Analyzer PnL as proof. It requires Native realtime telemetry after compile/reload.</td></tr>
+    <tr><td>Can I honestly say Ninja has compiled and reloaded this exact installed file?</td><td>No. That has to happen in the Ninja GUI. File hashes and install state are proven; GUI compile/reload is the remaining boundary.</td></tr>
+    <tr><td>Can I honestly say the next signal will be profitable?</td><td>No. The claim is only that the implementation/input/gates are aligned to fire when the existing math confirms a setup.</td></tr>
+  </tbody></table>
+
+  <h2>Files</h2>
+  <table><tbody>
+    <tr><td>Repo Native</td><td class="mono">C:\Users\conor\luke\ninjatrader\LukeNativeShadowStrategy.cs</td><td class="mono">28E781556301FF133C628503270CC28BF6E18E7E3B91ABD31C29A3F7A93589B7</td></tr>
+    <tr><td>Installed Native</td><td class="mono">C:\Users\conor\OneDrive\Documents\NinjaTrader 8\bin\Custom\Strategies\LukeNativeShadowStrategy.cs</td><td class="mono">28E781556301FF133C628503270CC28BF6E18E7E3B91ABD31C29A3F7A93589B7</td></tr>
+    <tr><td>Central levels</td><td class="mono">C:\Users\conor\luke\artifacts\research\mancini-context-protocol\events.csv</td><td>exists</td></tr>
+    <tr><td>Saved workspace</td><td class="mono">C:\Users\conor\OneDrive\Documents\NinjaTrader 8\workspaces\The Luke Project - trading.xml</td><td>patched with backup</td></tr>
+  </tbody></table>
+</main></body></html>

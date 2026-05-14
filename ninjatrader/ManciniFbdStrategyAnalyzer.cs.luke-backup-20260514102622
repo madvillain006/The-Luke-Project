@@ -1,0 +1,1847 @@
+#region Using declarations
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.IO;
+using System.Text;
+using NinjaTrader.Cbi;
+using NinjaTrader.Data;
+using NinjaTrader.NinjaScript;
+#endregion
+
+namespace NinjaTrader.NinjaScript.Strategies
+{
+    public class ManciniFbdStrategyAnalyzer : Strategy
+    {
+        private const double Tick = 0.25;
+        private const string PrimaryRule = "non_acceptance_only";
+        private const string PrimaryFillMode = "pine_next_bar_limit_split";
+        private const string PrimaryStopPolicy = "level_minus_3";
+
+        private readonly Dictionary<string, List<ManciniLevel>> levelsByPlanDate = new Dictionary<string, List<ManciniLevel>>(StringComparer.Ordinal);
+        private readonly List<ManciniLevel> allManciniLevels = new List<ManciniLevel>();
+        private readonly Dictionary<double, LevelRuntimeState> levelStates = new Dictionary<double, LevelRuntimeState>();
+        private readonly List<ManciniLevel> activeLevels = new List<ManciniLevel>();
+        private readonly List<PendingSignal> pendingSignals = new List<PendingSignal>();
+        private readonly List<ActiveSimulation> activeSimulations = new List<ActiveSimulation>();
+        private readonly Dictionary<string, RunnerOrderState> runnerOrderStates = new Dictionary<string, RunnerOrderState>(StringComparer.Ordinal);
+        private readonly Dictionary<string, string> t1EntryToSignal = new Dictionary<string, string>(StringComparer.Ordinal);
+        private readonly Dictionary<string, AnalyzerEntryOrderState> analyzerEntryOrders = new Dictionary<string, AnalyzerEntryOrderState>(StringComparer.Ordinal);
+        private readonly Dictionary<string, ManagedExecutionState> managedExecutionStates = new Dictionary<string, ManagedExecutionState>(StringComparer.Ordinal);
+
+        private string activeSessionDate = string.Empty;
+        private int sessionStartBar;
+        private int candidateCounter;
+        private string actualRunId = string.Empty;
+        private bool telemetryHeaderChecked;
+        private bool warnedBadTimeframe;
+        private bool warnedNoLevels;
+        private bool warnedRealtimeDisabled;
+        private bool warnedRealtimeAccountRejected;
+
+        [NinjaScriptProperty]
+        [Display(Name = "Mancini events CSV path", GroupName = "Mancini FBD", Order = 0)]
+        public string EventsCsvPath { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Telemetry CSV path", GroupName = "Mancini FBD", Order = 1)]
+        public string TelemetryCsvPath { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Run id", GroupName = "Mancini FBD", Order = 2)]
+        public string RunId { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Submit historical analyzer orders", GroupName = "Strategy Analyzer Orders", Order = 0)]
+        public bool SubmitHistoricalAnalyzerOrders { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Analyzer quantity", GroupName = "Strategy Analyzer Orders", Order = 1)]
+        public int AnalyzerQuantity { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Allow realtime playback sim", GroupName = "Strategy Analyzer Orders", Order = 2)]
+        public bool AllowRealtimePlaybackSim { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Permitted realtime accounts", GroupName = "Strategy Analyzer Orders", Order = 3)]
+        public string PermittedRealtimeAccounts { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Split TP1/runner", GroupName = "Strategy Analyzer Orders", Order = 4)]
+        public bool SplitTp1Tp2Runner { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "TP1 points", GroupName = "Pine Prop Bracket", Order = 0)]
+        public double Tp1Points { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Stop below level points", GroupName = "Pine Prop Bracket", Order = 1)]
+        public double StopBelowLevelPoints { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Hard stop risk gate points", GroupName = "Pine Prop Bracket", Order = 2)]
+        public double HardStopRiskGatePoints { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Runner fallback points", GroupName = "Pine Prop Bracket", Order = 3)]
+        public double RunnerFallbackPoints { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Limit fill timeout bars", GroupName = "Pine Prop Bracket", Order = 4)]
+        public int LimitFillTimeoutBars { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Outcome horizon bars", GroupName = "Pine Prop Bracket", Order = 5)]
+        public int OutcomeHorizonBars { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Accounting cost points/contract", GroupName = "Pine Prop Bracket", Order = 6)]
+        public double AccountingCostPointsPerContract { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Minimum candidate score", GroupName = "Candidate Gates", Order = 0)]
+        public double MinimumCandidateScore { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Minimum non-acceptance score", GroupName = "Candidate Gates", Order = 1)]
+        public double MinimumNonAcceptanceScore { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Non-acceptance points", GroupName = "Candidate Gates", Order = 2)]
+        public double NonAcceptancePoints { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Require 1 minute bars", GroupName = "Candidate Gates", Order = 3)]
+        public bool RequireOneMinuteBars { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Session rollover hour", GroupName = "Session Mapping", Order = 0)]
+        public int SessionRolloverHour { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Use baked level universe", GroupName = "Level Universe", Order = 0)]
+        public bool UseBakedLevelUniverse { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Respect level publication date", GroupName = "Level Universe", Order = 1)]
+        public bool RespectLevelPublicationDate { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Active level window points", GroupName = "Level Universe", Order = 2)]
+        public double ActiveLevelWindowPoints { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Minimum level confidence", GroupName = "Level Universe", Order = 3)]
+        public double MinimumLevelSourceConfidence { get; set; }
+
+        protected override void OnStateChange()
+        {
+            if (State == State.SetDefaults)
+            {
+                Name = "ManciniFbdStrategyAnalyzer";
+                Description = "Historical-only Mancini FBD non-acceptance candidate for NinjaTrader Strategy Analyzer. Primary reference: Pine-style limit entry, level-minus-3 stop, TP1 plus runner.";
+                Calculate = Calculate.OnBarClose;
+                BarsRequiredToTrade = 120;
+                EntriesPerDirection = 20;
+                EntryHandling = EntryHandling.AllEntries;
+                StopTargetHandling = StopTargetHandling.PerEntryExecution;
+                IsExitOnSessionCloseStrategy = true;
+                ExitOnSessionCloseSeconds = 30;
+                IsInstantiatedOnEachOptimizationIteration = true;
+
+                EventsCsvPath = @"C:\Users\conor\luke\artifacts\research\mancini-context-protocol\events.csv";
+                TelemetryCsvPath = @"C:\Users\conor\luke\state\events\mancini-fbd-strategy-analyzer.csv";
+                RunId = "mancini-fbd-sa";
+                SubmitHistoricalAnalyzerOrders = true;
+                AnalyzerQuantity = 2;
+                AllowRealtimePlaybackSim = false;
+                PermittedRealtimeAccounts = string.Empty;
+                SplitTp1Tp2Runner = true;
+
+                Tp1Points = 2.0;
+                StopBelowLevelPoints = 3.0;
+                HardStopRiskGatePoints = 5.0;
+                RunnerFallbackPoints = 4.0;
+                LimitFillTimeoutBars = 60;
+                OutcomeHorizonBars = 60;
+                AccountingCostPointsPerContract = 0.35;
+                MinimumCandidateScore = 0.50;
+                MinimumNonAcceptanceScore = 0.50;
+                NonAcceptancePoints = 5.0;
+                RequireOneMinuteBars = false;
+                SessionRolloverHour = 17;
+                UseBakedLevelUniverse = true;
+                RespectLevelPublicationDate = false;
+                ActiveLevelWindowPoints = 250.0;
+                MinimumLevelSourceConfidence = 0.45;
+            }
+            else if (State == State.DataLoaded)
+            {
+                actualRunId = string.IsNullOrWhiteSpace(RunId)
+                    ? "mancini-fbd-sa-" + DateTime.UtcNow.ToString("yyyyMMddHHmmss", CultureInfo.InvariantCulture)
+                    : RunId.Trim() + "-" + DateTime.UtcNow.ToString("yyyyMMddHHmmss", CultureInfo.InvariantCulture);
+                LoadManciniLevels();
+                EnsureTelemetryHeader();
+            }
+            else if (State == State.Terminated)
+            {
+                WriteTelemetry("TERMINATED", null, null, "strategy_terminated");
+            }
+        }
+
+        protected override void OnBarUpdate()
+        {
+            if (CurrentBar < BarsRequiredToTrade)
+                return;
+
+            if (RequireOneMinuteBars && !IsOneMinutePrimary())
+            {
+                if (!warnedBadTimeframe)
+                {
+                    warnedBadTimeframe = true;
+                    WriteTelemetry("REJECT", null, null, "requires_1m_bars_for_primary_build_path primary_bars_period=" + PrimaryBarsPeriodDebug());
+                }
+                return;
+            }
+
+            if (State == State.Realtime && !AllowRealtimePlaybackSim)
+            {
+                if (!warnedRealtimeDisabled)
+                {
+                    warnedRealtimeDisabled = true;
+                    WriteTelemetry("REJECT", null, null, "realtime_disabled_allow_realtime_playback_sim_false");
+                }
+                return;
+            }
+
+            if (State == State.Realtime && AllowRealtimePlaybackSim && !IsPermittedRealtimeAccount())
+            {
+                if (!warnedRealtimeAccountRejected)
+                {
+                    warnedRealtimeAccountRejected = true;
+                    WriteTelemetry("REJECT", null, null, "realtime_account_not_permitted account_policy=sim_playback_or_exact_permitted_realtime_accounts");
+                }
+                return;
+            }
+
+            string sessionDate = ChartSessionDate(Time[0]);
+            if (!string.Equals(sessionDate, activeSessionDate, StringComparison.Ordinal))
+                ResetSession(sessionDate);
+
+            ProcessPendingSignals();
+            ProcessActiveSimulations();
+            ProcessManagedTimeoutExits();
+            CancelExpiredAnalyzerEntryOrders();
+
+            if (activeLevels.Count == 0)
+            {
+                if (!warnedNoLevels)
+                {
+                    warnedNoLevels = true;
+                    WriteTelemetry("NO_LEVELS", null, null, "no_source_eligible_mancini_levels_for_session=" + sessionDate);
+                }
+                return;
+            }
+
+            for (int i = 0; i < activeLevels.Count; i++)
+                UpdateLevel(activeLevels[i], levelStates[activeLevels[i].Price]);
+        }
+
+        protected override void OnExecutionUpdate(Execution execution, string executionId, double price, int quantity, MarketPosition marketPosition, string orderId, DateTime time)
+        {
+            if (execution == null || execution.Order == null)
+                return;
+
+            TrackManagedExecution(execution, price, quantity, time);
+
+            string fromEntrySignal = execution.Order.FromEntrySignal ?? string.Empty;
+            string signalName;
+            if (!t1EntryToSignal.TryGetValue(fromEntrySignal, out signalName))
+                return;
+
+            RunnerOrderState state;
+            if (!runnerOrderStates.TryGetValue(signalName, out state) || state.RunnerQuantity <= 0 || state.RunnerStopMovedToBreakeven)
+                return;
+
+            if (execution.Order.OrderAction != OrderAction.Sell)
+                return;
+            if (price < state.Tp1Price - Tick)
+                return;
+
+            SetStopLoss(state.EntryNameT2, CalculationMode.Price, state.EntryPrice, false);
+            state.RunnerStopMovedToBreakeven = true;
+            WriteTelemetry("RUNNER_STOP_BREAKEVEN", state.Feature, null, "signal=" + signalName + " entry=" + Format(state.EntryPrice) + " tp1=" + Format(state.Tp1Price));
+        }
+
+        protected override void OnOrderUpdate(Order order, double limitPrice, double stopPrice, int quantity, int filled, double averageFillPrice, OrderState orderState, DateTime time, ErrorCode error, string nativeError)
+        {
+            if (order == null)
+                return;
+
+            string orderName = order.Name ?? string.Empty;
+            AnalyzerEntryOrderState state;
+            if (!analyzerEntryOrders.TryGetValue(orderName, out state))
+                return;
+
+            state.Order = order;
+            if (orderState == OrderState.Filled)
+            {
+                analyzerEntryOrders.Remove(orderName);
+                WriteTelemetry("ORDER_FILLED", state.Feature, null, "signal=" + state.SignalName + " order=" + orderName + " order_update_time=" + FormatDate(time) + " avg_fill=" + Format(averageFillPrice));
+            }
+            else if (orderState == OrderState.Cancelled || orderState == OrderState.Rejected)
+            {
+                analyzerEntryOrders.Remove(orderName);
+                if (filled <= 0)
+                    managedExecutionStates.Remove(orderName);
+                WriteTelemetry(orderState == OrderState.Cancelled ? "ORDER_CANCELLED" : "ORDER_REJECTED", state.Feature, null,
+                    "signal=" + state.SignalName + " order=" + orderName + " order_update_time=" + FormatDate(time) + " filled=" + filled.ToString(CultureInfo.InvariantCulture) + " error=" + error + " native_error=" + nativeError);
+            }
+        }
+
+        private void ResetSession(string sessionDate)
+        {
+            CancelAllAnalyzerEntryOrders("session_reset_before_level_reload");
+            activeSessionDate = sessionDate;
+            sessionStartBar = CurrentBar;
+            warnedNoLevels = false;
+            levelStates.Clear();
+            activeLevels.Clear();
+            pendingSignals.Clear();
+            activeSimulations.Clear();
+            runnerOrderStates.Clear();
+            t1EntryToSignal.Clear();
+            analyzerEntryOrders.Clear();
+
+            List<ManciniLevel> levels;
+            bool hasExactPlanLevels = levelsByPlanDate.TryGetValue(sessionDate, out levels);
+            string levelMode;
+            if (UseBakedLevelUniverse)
+                levels = BuildActiveLevelUniverse(sessionDate, Close[0], hasExactPlanLevels ? levels : null, out levelMode);
+            else if (!hasExactPlanLevels)
+            {
+                WriteTelemetry("SESSION_READY", null, null, "session=" + sessionDate + " levels=0 level_mode=exact_plan_date_only");
+                return;
+            }
+            else
+            {
+                levelMode = "exact_plan_date_only";
+            }
+
+            for (int i = 0; i < levels.Count; i++)
+            {
+                ManciniLevel level = levels[i];
+                if (RespectLevelPublicationDate && StringCompareDate(level.PubDate, sessionDate) > 0)
+                    continue;
+                activeLevels.Add(level);
+                levelStates[level.Price] = new LevelRuntimeState();
+            }
+            WriteTelemetry("SESSION_READY", null, null, "session=" + sessionDate
+                + " levels=" + activeLevels.Count.ToString(CultureInfo.InvariantCulture)
+                + " level_mode=" + levelMode
+                + " exact_plan_levels=" + (hasExactPlanLevels ? "true" : "false")
+                + " reference_price=" + Format(Close[0])
+                + " window_points=" + Format(ActiveLevelWindowPoints)
+                + " respect_pub_date=" + (RespectLevelPublicationDate ? "true" : "false"));
+        }
+
+        private List<ManciniLevel> BuildActiveLevelUniverse(string sessionDate, double referencePrice, List<ManciniLevel> exactPlanLevels, out string levelMode)
+        {
+            levelMode = "baked_level_universe";
+            Dictionary<double, ManciniLevel> byPrice = new Dictionary<double, ManciniLevel>();
+            AddLevelUniverseCandidates(byPrice, allManciniLevels, sessionDate, referencePrice, true);
+            if (exactPlanLevels != null)
+                AddLevelUniverseCandidates(byPrice, exactPlanLevels, sessionDate, referencePrice, false);
+
+            List<ManciniLevel> levels = new List<ManciniLevel>(byPrice.Values);
+            levels.Sort(delegate(ManciniLevel left, ManciniLevel right) { return left.Price.CompareTo(right.Price); });
+            return levels;
+        }
+
+        private void AddLevelUniverseCandidates(Dictionary<double, ManciniLevel> byPrice, List<ManciniLevel> candidates, string sessionDate, double referencePrice, bool applyWindow)
+        {
+            if (candidates == null)
+                return;
+
+            double window = Math.Max(0.0, ActiveLevelWindowPoints);
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                ManciniLevel level = candidates[i];
+                if (level.SourceConfidence < MinimumLevelSourceConfidence)
+                    continue;
+                if (RespectLevelPublicationDate && StringCompareDate(level.PubDate, sessionDate) > 0)
+                    continue;
+                if (applyWindow && window > 0.0 && Math.Abs(level.Price - referencePrice) > window)
+                    continue;
+
+                ManciniLevel existing;
+                if (!byPrice.TryGetValue(level.Price, out existing) || level.SourceConfidence > existing.SourceConfidence)
+                    byPrice[level.Price] = level;
+            }
+        }
+
+        private void UpdateLevel(ManciniLevel level, LevelRuntimeState state)
+        {
+            if (state.Done)
+                return;
+
+            if (state.Phase == RuntimePhase.Watching)
+            {
+                if (CurrentBar - state.LastTrapBar < 20)
+                    return;
+                double previousClose = CurrentBar > 0 ? Close[1] : Open[0];
+                if (previousClose >= level.Price - Tick && Low[0] <= level.Price - Tick)
+                    CaptureTrap(level, state);
+                return;
+            }
+
+            if (state.Phase == RuntimePhase.BreakdownDetected)
+            {
+                if (Low[0] < state.SweptLow)
+                    state.SweptLow = Low[0];
+
+                if (CurrentBar - state.TrapBarIndex > 90)
+                {
+                    ResetLevelState(state);
+                    return;
+                }
+
+                if (Close[0] >= level.Price)
+                {
+                    state.PendingReclaimBarIndex = CurrentBar;
+                    state.PendingReclaimTime = Time[0];
+                    state.PendingReclaimClose = Close[0];
+                    state.Phase = RuntimePhase.PendingReclaimConfirm;
+                }
+                return;
+            }
+
+            if (state.Phase == RuntimePhase.PendingReclaimConfirm)
+            {
+                if (Low[0] < state.SweptLow)
+                    state.SweptLow = Low[0];
+
+                if (CurrentBar == state.PendingReclaimBarIndex)
+                    return;
+
+                if (Close[0] < level.Price)
+                {
+                    state.FirstReclaimFailed = true;
+                    state.PendingReclaimBarIndex = -1;
+                    state.Phase = RuntimePhase.BreakdownDetected;
+                    return;
+                }
+
+                state.ReclaimBarIndex = state.PendingReclaimBarIndex;
+                state.ReclaimTime = state.PendingReclaimTime;
+                state.FirstReclaimClose = state.PendingReclaimClose;
+                state.Phase = RuntimePhase.ReclaimWatch;
+                EvaluateCandidate(level, state);
+                return;
+            }
+
+            if (state.Phase == RuntimePhase.ReclaimWatch)
+            {
+                if (Low[0] < state.SweptLow)
+                    state.SweptLow = Low[0];
+                EvaluateCandidate(level, state);
+                if (!state.Done && CurrentBar - state.ReclaimBarIndex > 15)
+                    ResetLevelState(state);
+            }
+        }
+
+        private void CaptureTrap(ManciniLevel level, LevelRuntimeState state)
+        {
+            state.Phase = RuntimePhase.BreakdownDetected;
+            state.TrapBarIndex = CurrentBar;
+            state.LastTrapBar = CurrentBar;
+            state.TrapTime = Time[0];
+            state.SweptLow = Low[0];
+            state.FirstReclaimFailed = false;
+            state.PendingReclaimBarIndex = -1;
+            state.ReclaimBarIndex = -1;
+            state.Done = false;
+            WriteTelemetry("TRAP", BuildFeature(level, state, false), null, "trap_detected");
+        }
+
+        private void EvaluateCandidate(ManciniLevel level, LevelRuntimeState state)
+        {
+            Feature feature = BuildFeature(level, state, true);
+            if (feature == null)
+                return;
+            if (!RuleMatches(feature))
+                return;
+
+            state.Done = true;
+            candidateCounter++;
+            string signalName = "MFBD" + candidateCounter.ToString(CultureInfo.InvariantCulture);
+            WriteTelemetry("SIGNAL", feature, null, "signal=" + signalName + " candidate_fired");
+            pendingSignals.Add(new PendingSignal
+            {
+                Feature = feature,
+                SignalName = signalName,
+                SignalBarIndex = CurrentBar,
+            });
+        }
+
+        private void SubmitAnalyzerOrders(string signalName, Feature feature)
+        {
+            int qty = Math.Max(1, AnalyzerQuantity);
+            int qtyT1 = qty;
+            int qtyT2 = 0;
+            if (SplitTp1Tp2Runner && qty >= 2)
+            {
+                qtyT1 = Math.Max(1, qty / 2);
+                qtyT2 = qty - qtyT1;
+            }
+
+            double entry = PlannedEntryPrice(feature);
+            double stop = PlannedStopPrice(feature);
+            double tp1 = PlannedTp1Price(entry);
+            double tp2 = PlannedTp2Price(feature, entry, tp1);
+            string t1Name = signalName + "T1";
+            string t2Name = signalName + "T2";
+
+            SetStopLoss(t1Name, CalculationMode.Price, stop, false);
+            SetProfitTarget(t1Name, CalculationMode.Price, tp1);
+            if (qtyT2 > 0)
+            {
+                SetStopLoss(t2Name, CalculationMode.Price, stop, false);
+                SetProfitTarget(t2Name, CalculationMode.Price, tp2);
+                runnerOrderStates[signalName] = new RunnerOrderState
+                {
+                    Feature = feature,
+                    SignalName = signalName,
+                    EntryNameT1 = t1Name,
+                    EntryNameT2 = t2Name,
+                    EntryPrice = entry,
+                    Tp1Price = tp1,
+                    RunnerQuantity = qtyT2,
+                };
+                t1EntryToSignal[t1Name] = signalName;
+            }
+
+            Order orderT1 = EnterLongLimit(0, true, qtyT1, entry, t1Name);
+            TrackAnalyzerEntryOrder(t1Name, signalName, feature, orderT1);
+            if (qtyT2 > 0)
+            {
+                Order orderT2 = EnterLongLimit(0, true, qtyT2, entry, t2Name);
+                TrackAnalyzerEntryOrder(t2Name, signalName, feature, orderT2);
+            }
+        }
+
+        private void TrackAnalyzerEntryOrder(string entryName, string signalName, Feature feature, Order order)
+        {
+            analyzerEntryOrders[entryName] = new AnalyzerEntryOrderState
+            {
+                Feature = feature,
+                SignalName = signalName,
+                EntryName = entryName,
+                Order = order,
+                SubmittedBarIndex = CurrentBar,
+            };
+            managedExecutionStates[entryName] = new ManagedExecutionState
+            {
+                Feature = feature,
+                SignalName = signalName,
+                EntryName = entryName,
+            };
+        }
+
+        private Feature BuildFeature(ManciniLevel level, LevelRuntimeState state, bool requireReclaim)
+        {
+            if (state.TrapBarIndex < 0)
+                return null;
+            if (requireReclaim && state.ReclaimBarIndex < 0)
+                return null;
+
+            double setupLevel = level.Price;
+            int trapIndex = state.TrapBarIndex;
+            int reclaimIndex = state.ReclaimBarIndex >= 0 ? state.ReclaimBarIndex : CurrentBar;
+            double sweptLow = MinimumLow(trapIndex, Math.Min(reclaimIndex, CurrentBar));
+            double flushDepth = setupLevel - sweptLow;
+            int recentStart = Math.Max(sessionStartBar, trapIndex - 30);
+            int highIndex = HighestHighIndex(recentStart, trapIndex);
+            double highPrice = BarHigh(highIndex);
+            double medianVolume = MedianVolume(recentStart, trapIndex);
+            double trapVolume = BarVolume(trapIndex);
+            double minutesFromRecentHigh = Math.Max((BarTime(trapIndex) - BarTime(highIndex)).TotalMinutes, 1.0);
+            double approachVelocity = (highPrice - sweptLow) / minutesFromRecentHigh;
+            PriorStats prior = ComputePriorTouchStats(setupLevel, trapIndex);
+            ReclaimMetrics reclaim = ComputeReclaimMetrics(setupLevel, reclaimIndex);
+
+            double volumeRatioComponent = medianVolume > 0 ? Clamp(trapVolume / medianVolume, 0, 2) / 2.0 : 0.0;
+            int multiLevelFlushCount = CountLevelsBetween(sweptLow, setupLevel);
+            double significantLowScore =
+                0.30 * Clamp(prior.PriorTouchCount / 3.0, 0, 1)
+                + 0.25 * Clamp(prior.PriorHoldMinutes / 120.0, 0, 1)
+                + 0.25 * Clamp(prior.PriorBouncePoints / 20.0, 0, 1)
+                + 0.20 * level.MajorSourceBonus;
+
+            double flushScore =
+                0.35 * Clamp(flushDepth / 8.0, 0, 1)
+                + 0.25 * Clamp(approachVelocity / 2.0, 0, 1)
+                + 0.20 * Clamp(multiLevelFlushCount / 3.0, 0, 1)
+                + 0.20 * volumeRatioComponent;
+
+            double reclaimScore =
+                0.25 * Indicator(CloseAt(reclaimIndex) > setupLevel)
+                + 0.20 * Indicator(reclaim.ReclaimCloseLocation >= 0.5)
+                + 0.20 * Clamp(reclaim.AcceptanceClosesUsedForScore / 3.0, 0, 1)
+                + 0.20 * Indicator(reclaim.NoCloseBackBelowBeforeEntry)
+                + 0.15 * Indicator(reclaim.ReclaimRange <= 6.0);
+
+            double nonAcceptanceScore =
+                0.40 * Indicator(reclaim.FirstThresholdCloseTime != DateTime.MinValue || reclaim.NonAcceptanceClosesUsedForScore > 0)
+                + 0.30 * Clamp(reclaim.NonAcceptanceClosesUsedForScore / 3.0, 0, 1)
+                + 0.20 * Indicator(reclaim.FirstRetestHolds)
+                + 0.10 * 0.0;
+
+            string timingDriver = nonAcceptanceScore >= reclaimScore && nonAcceptanceScore > 0.0
+                ? "non_acceptance_score"
+                : "reclaim_score";
+            DateTime candidateFireTime = timingDriver == "non_acceptance_score"
+                ? reclaim.NonAcceptanceScoreTime
+                : reclaim.AcceptanceScoreTime;
+            if (candidateFireTime == DateTime.MinValue)
+                candidateFireTime = BarTime(reclaimIndex);
+            int candidateFireIndex = BarIndexAtOrAfter(candidateFireTime);
+            if (candidateFireIndex < 0 || candidateFireIndex > CurrentBar)
+                return null;
+
+            double entryPrice = setupLevel + Tick;
+            double plannedStop = setupLevel - StopBelowLevelPoints;
+            ManciniLevel targetLevel = NextLevelAbove(entryPrice);
+            double targetRoom = targetLevel == null ? double.NaN : targetLevel.Price - entryPrice;
+            double riskToStop = entryPrice - plannedStop;
+            double targetR = double.IsNaN(targetRoom) ? double.NaN : targetRoom / Math.Max(riskToStop, Tick);
+            string bucket = TimeBucket(candidateFireTime);
+            string nextSource = targetLevel == null ? string.Empty : (targetLevel.SourceKind ?? string.Empty).ToLowerInvariant();
+            bool trustedSource = nextSource.IndexOf("mancini", StringComparison.Ordinal) >= 0
+                || nextSource.IndexOf("bobby", StringComparison.Ordinal) >= 0
+                || nextSource.IndexOf("gex", StringComparison.Ordinal) >= 0
+                || nextSource.IndexOf("dubz", StringComparison.Ordinal) >= 0
+                || nextSource.IndexOf("saty", StringComparison.Ordinal) >= 0
+                || nextSource.IndexOf("protocol", StringComparison.Ordinal) >= 0
+                || nextSource.IndexOf("daily_plan_text", StringComparison.Ordinal) >= 0;
+            bool noTrustedLevelWithinTwo = !double.IsNaN(targetRoom) && targetRoom > 2.0;
+
+            double squeezeScore =
+                0.30 * Clamp(double.IsNaN(targetRoom) ? 0 : targetRoom / 8.0, 0, 1)
+                + 0.25 * Clamp(double.IsNaN(targetR) ? 0 : targetR / 2.0, 0, 1)
+                + 0.20 * Indicator(trustedSource)
+                + 0.15 * Indicator(noTrustedLevelWithinTwo)
+                + 0.10 * TimeBonus(bucket);
+
+            double candidateScore =
+                0.25 * significantLowScore
+                + 0.20 * flushScore
+                + 0.25 * Math.Max(reclaimScore, nonAcceptanceScore)
+                + 0.20 * squeezeScore
+                + 0.10 * level.SourceConfidence;
+
+            string family = AcceptanceFamily(state.FirstReclaimFailed, multiLevelFlushCount, flushDepth, reclaim.AcceptanceClosesUsedForScore, nonAcceptanceScore);
+
+            return new Feature
+            {
+                Level = level,
+                SessionDate = activeSessionDate,
+                SetupLevel = setupLevel,
+                SweptLow = sweptLow,
+                TrapTime = state.TrapTime,
+                ReclaimTime = state.ReclaimTime,
+                ClassificationCompleteTime = candidateFireTime,
+                CandidateFiredTime = candidateFireTime,
+                CandidateTimingDriver = timingDriver,
+                EntryPrice = entryPrice,
+                EntryTimestamp = candidateFireTime,
+                AcceptanceFamilyModel = family,
+                SignificantLowScore = significantLowScore,
+                FlushScore = flushScore,
+                ReclaimScore = reclaimScore,
+                NonAcceptanceScore = nonAcceptanceScore,
+                NonAcceptanceCloses = reclaim.NonAcceptanceClosesUsedForScore,
+                CandidateScore = candidateScore,
+                TargetRoom = targetRoom,
+                RiskToSweep = riskToStop,
+                TargetR = targetR,
+                NextTrustedLevelAbove = targetLevel == null ? double.NaN : targetLevel.Price,
+                NextTrustedLevelSource = targetLevel == null ? string.Empty : targetLevel.SourceKind,
+                NextTrustedLevelRole = targetLevel == null ? string.Empty : targetLevel.PrimaryRole,
+                TimeOfDayBucket = bucket,
+                FirstReclaimFailedBeforeCandidate = state.FirstReclaimFailed,
+            };
+        }
+
+        private bool RuleMatches(Feature feature)
+        {
+            return string.Equals(feature.AcceptanceFamilyModel, "non_acceptance_protocol", StringComparison.Ordinal)
+                && feature.CandidateScore >= MinimumCandidateScore
+                && feature.NonAcceptanceScore >= MinimumNonAcceptanceScore
+                && feature.RiskToSweep <= HardStopRiskGatePoints;
+        }
+
+        private double PlannedEntryPrice(Feature feature)
+        {
+            return feature.SetupLevel + Tick;
+        }
+
+        private double PlannedStopPrice(Feature feature)
+        {
+            return feature.SetupLevel - StopBelowLevelPoints;
+        }
+
+        private double PlannedTp1Price(double entry)
+        {
+            return entry + Tp1Points;
+        }
+
+        private double PlannedTp2Price(Feature feature, double entry, double tp1)
+        {
+            if (!double.IsNaN(feature.NextTrustedLevelAbove) && feature.NextTrustedLevelAbove > tp1)
+                return feature.NextTrustedLevelAbove;
+            return entry + RunnerFallbackPoints;
+        }
+
+        private void ProcessPendingSignals()
+        {
+            for (int i = pendingSignals.Count - 1; i >= 0; i--)
+            {
+                PendingSignal pending = pendingSignals[i];
+                if (CurrentBar <= pending.SignalBarIndex)
+                    continue;
+                if (!pending.OrdersSubmitted && CanSubmitAnalyzerOrder())
+                {
+                    SubmitAnalyzerOrders(pending.SignalName, pending.Feature);
+                    pending.OrdersSubmitted = true;
+                }
+                if (CurrentBar - pending.SignalBarIndex > Math.Max(1, LimitFillTimeoutBars))
+                {
+                    WriteTelemetry("NO_FILL", pending.Feature, null, "signal=" + pending.SignalName + " pine_limit_not_touched_within_bars=" + Math.Max(1, LimitFillTimeoutBars).ToString(CultureInfo.InvariantCulture));
+                    CancelAnalyzerEntryOrdersForSignal(pending.SignalName, pending.Feature, "pine_limit_timeout_no_fill");
+                    pendingSignals.RemoveAt(i);
+                    continue;
+                }
+
+                double entry = PlannedEntryPrice(pending.Feature);
+                if (Low[0] > entry || High[0] < entry)
+                    continue;
+
+                int contracts = Math.Max(1, AnalyzerQuantity);
+                int tp1Contracts = contracts;
+                int runnerContracts = 0;
+                if (SplitTp1Tp2Runner && contracts >= 2)
+                {
+                    tp1Contracts = Math.Max(1, contracts / 2);
+                    runnerContracts = contracts - tp1Contracts;
+                }
+                double stop = PlannedStopPrice(pending.Feature);
+                double tp1 = PlannedTp1Price(entry);
+                ActiveSimulation simulation = new ActiveSimulation
+                {
+                    Feature = pending.Feature,
+                    SignalName = pending.SignalName,
+                    EntryBarIndex = CurrentBar,
+                    EntryTime = Time[0],
+                    EntryPrice = entry,
+                    ActiveStopPrice = stop,
+                    InitialStopPrice = stop,
+                    Tp1Price = tp1,
+                    Tp2Price = PlannedTp2Price(pending.Feature, entry, tp1),
+                    Contracts = contracts,
+                    Tp1Contracts = tp1Contracts,
+                    RunnerContracts = runnerContracts,
+                    RemainingContracts = contracts,
+                };
+                activeSimulations.Add(simulation);
+                WriteTelemetry("ENTRY", pending.Feature, simulation, "signal=" + pending.SignalName + " pine_next_bar_limit_fill");
+                pendingSignals.RemoveAt(i);
+            }
+        }
+
+        private void CancelExpiredAnalyzerEntryOrders()
+        {
+            if (analyzerEntryOrders.Count == 0)
+                return;
+
+            int timeoutBars = Math.Max(1, LimitFillTimeoutBars);
+            List<AnalyzerEntryOrderState> expired = new List<AnalyzerEntryOrderState>();
+            foreach (KeyValuePair<string, AnalyzerEntryOrderState> item in analyzerEntryOrders)
+            {
+                AnalyzerEntryOrderState state = item.Value;
+                if (state.CancelRequested || CurrentBar - state.SubmittedBarIndex <= timeoutBars)
+                    continue;
+                expired.Add(state);
+            }
+
+            for (int i = 0; i < expired.Count; i++)
+                CancelAnalyzerEntryOrder(expired[i], "limit_timeout_bars=" + timeoutBars.ToString(CultureInfo.InvariantCulture));
+        }
+
+        private void CancelAnalyzerEntryOrdersForSignal(string signalName, Feature feature, string reason)
+        {
+            List<AnalyzerEntryOrderState> matches = new List<AnalyzerEntryOrderState>();
+            foreach (KeyValuePair<string, AnalyzerEntryOrderState> item in analyzerEntryOrders)
+            {
+                if (string.Equals(item.Value.SignalName, signalName, StringComparison.Ordinal))
+                    matches.Add(item.Value);
+            }
+
+            for (int i = 0; i < matches.Count; i++)
+                CancelAnalyzerEntryOrder(matches[i], reason);
+            if (matches.Count == 0)
+                WriteTelemetry("ORDER_CANCEL_SKIPPED", feature, null, "signal=" + signalName + " reason=" + reason + " active_entry_orders=0");
+        }
+
+        private void CancelAllAnalyzerEntryOrders(string reason)
+        {
+            if (analyzerEntryOrders.Count == 0)
+                return;
+
+            List<AnalyzerEntryOrderState> orders = new List<AnalyzerEntryOrderState>(analyzerEntryOrders.Values);
+            for (int i = 0; i < orders.Count; i++)
+                CancelAnalyzerEntryOrder(orders[i], reason);
+        }
+
+        private void CancelAnalyzerEntryOrder(AnalyzerEntryOrderState state, string reason)
+        {
+            state.CancelRequested = true;
+            if (IsActive(state.Order))
+            {
+                CancelOrder(state.Order);
+                WriteTelemetry("ORDER_CANCEL_REQUESTED", state.Feature, null, "signal=" + state.SignalName + " order=" + state.EntryName + " reason=" + reason);
+                return;
+            }
+
+            analyzerEntryOrders.Remove(state.EntryName);
+            WriteTelemetry("ORDER_CANCEL_SKIPPED", state.Feature, null, "signal=" + state.SignalName + " order=" + state.EntryName + " reason=" + reason + " order_not_active");
+        }
+
+        private void ProcessActiveSimulations()
+        {
+            for (int i = activeSimulations.Count - 1; i >= 0; i--)
+            {
+                ActiveSimulation simulation = activeSimulations[i];
+                bool hitStop = Low[0] <= simulation.ActiveStopPrice;
+                bool hitTp1 = High[0] >= simulation.Tp1Price;
+                bool hitTp2 = simulation.RunnerContracts > 0 && High[0] >= simulation.Tp2Price;
+                bool timedOut = CurrentBar - simulation.EntryBarIndex > Math.Max(1, OutcomeHorizonBars);
+                if (!hitStop && !hitTp1 && !hitTp2 && !timedOut)
+                    continue;
+
+                simulation.FirstHitTimestamp = Time[0];
+                if (!simulation.Tp1Hit)
+                {
+                    simulation.SameBarStopAndTarget = hitStop && (hitTp1 || hitTp2);
+                    double riskPoints = simulation.EntryPrice - simulation.InitialStopPrice;
+                    if (hitStop && (hitTp1 || hitTp2))
+                    {
+                        simulation.FirstHitEvent = "same_bar_stop_first_before_tp1";
+                        simulation.GrossContractPoints += -riskPoints * simulation.RemainingContracts;
+                        simulation.RemainingContracts = 0;
+                        simulation.StopFirst = true;
+                    }
+                    else if (hitStop)
+                    {
+                        simulation.FirstHitEvent = "stop_before_tp1";
+                        simulation.GrossContractPoints += -riskPoints * simulation.RemainingContracts;
+                        simulation.RemainingContracts = 0;
+                        simulation.StopFirst = true;
+                    }
+                    else if (hitTp2 && simulation.RunnerContracts > 0)
+                    {
+                        simulation.FirstHitEvent = "tp2_before_tp1_branch";
+                        simulation.GrossContractPoints += Tp1Points * simulation.Tp1Contracts
+                            + (simulation.Tp2Price - simulation.EntryPrice) * simulation.RunnerContracts;
+                        simulation.RemainingContracts = 0;
+                        simulation.TargetFirst = true;
+                    }
+                    else if (hitTp1)
+                    {
+                        simulation.FirstHitEvent = "tp1";
+                        simulation.Tp1Hit = true;
+                        simulation.GrossContractPoints += Tp1Points * simulation.Tp1Contracts;
+                        simulation.RemainingContracts = simulation.RunnerContracts;
+                        simulation.ActiveStopPrice = simulation.EntryPrice;
+                        simulation.TargetFirst = true;
+                    }
+                    else if (timedOut)
+                    {
+                        simulation.FirstHitEvent = "timeout_close";
+                        simulation.GrossContractPoints += (Close[0] - simulation.EntryPrice) * simulation.RemainingContracts;
+                        simulation.RemainingContracts = 0;
+                    }
+                }
+                else
+                {
+                    bool hitRunnerStop = Low[0] <= simulation.ActiveStopPrice;
+                    bool hitRunnerTarget = High[0] >= simulation.Tp2Price;
+                    if (hitRunnerTarget)
+                    {
+                        simulation.FirstHitEvent = "tp1_then_tp2";
+                        simulation.GrossContractPoints += (simulation.Tp2Price - simulation.EntryPrice) * simulation.RemainingContracts;
+                        simulation.RemainingContracts = 0;
+                    }
+                    else if (hitRunnerStop)
+                    {
+                        simulation.FirstHitEvent = "tp1_then_runner_be";
+                        simulation.RemainingContracts = 0;
+                    }
+                    else if (timedOut)
+                    {
+                        simulation.FirstHitEvent = "tp1_then_timeout_close";
+                        simulation.GrossContractPoints += (Close[0] - simulation.EntryPrice) * simulation.RemainingContracts;
+                        simulation.RemainingContracts = 0;
+                    }
+                }
+                if (simulation.RemainingContracts <= 0)
+                {
+                    simulation.FirstHitPoints = simulation.GrossContractPoints;
+                    double netContractPoints = simulation.GrossContractPoints - AccountingCostPointsPerContract * simulation.Contracts;
+                    WriteTelemetry("OUTCOME", simulation.Feature, simulation, "signal=" + simulation.SignalName + " net_contract_points_after_cost=" + Format(netContractPoints));
+                    activeSimulations.RemoveAt(i);
+                }
+            }
+        }
+
+        private void ProcessManagedTimeoutExits()
+        {
+            if (managedExecutionStates.Count == 0)
+                return;
+
+            int timeoutBars = Math.Max(1, OutcomeHorizonBars);
+            List<ManagedExecutionState> timedOut = new List<ManagedExecutionState>();
+            foreach (KeyValuePair<string, ManagedExecutionState> item in managedExecutionStates)
+            {
+                ManagedExecutionState state = item.Value;
+                if (state.TimeoutExitRequested || state.EntryQuantity <= state.ExitQuantity || state.EntryBarIndex < 0)
+                    continue;
+                if (CurrentBar - state.EntryBarIndex <= timeoutBars)
+                    continue;
+                timedOut.Add(state);
+            }
+
+            for (int i = 0; i < timedOut.Count; i++)
+            {
+                ManagedExecutionState state = timedOut[i];
+                int quantityToExit = Math.Max(0, state.EntryQuantity - state.ExitQuantity);
+                if (quantityToExit <= 0)
+                    continue;
+
+                state.TimeoutExitRequested = true;
+                string timeoutExitName = "MFBDTimeout" + state.EntryName;
+                ExitLong(0, quantityToExit, timeoutExitName, state.EntryName);
+                WriteTelemetry("MANAGED_TIMEOUT_EXIT_SUBMITTED", state.Feature, null,
+                    "signal=" + state.SignalName
+                    + " entry_order=" + state.EntryName
+                    + " exit_order=" + timeoutExitName
+                    + " quantity=" + quantityToExit.ToString(CultureInfo.InvariantCulture)
+                    + " timeout_bars=" + timeoutBars.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
+        private void TrackManagedExecution(Execution execution, double price, int quantity, DateTime time)
+        {
+            Order order = execution.Order;
+            string orderName = order.Name ?? string.Empty;
+            string fromEntrySignal = order.FromEntrySignal ?? string.Empty;
+            if (order.OrderAction == OrderAction.Buy)
+            {
+                ManagedExecutionState state;
+                if (!managedExecutionStates.TryGetValue(orderName, out state))
+                    return;
+
+                int previousQuantity = state.EntryQuantity;
+                state.EntryPrice = WeightedAverage(state.EntryPrice, previousQuantity, price, quantity);
+                state.EntryQuantity += quantity;
+                if (previousQuantity <= 0)
+                    state.EntryBarIndex = CurrentBar;
+                state.EntryTime = time;
+                WriteTelemetry("MANAGED_ENTRY_EXECUTION", state.Feature, null,
+                    "signal=" + state.SignalName
+                    + " order=" + orderName
+                    + " execution_time=" + FormatDate(time)
+                    + " price=" + Format(price)
+                    + " quantity=" + quantity.ToString(CultureInfo.InvariantCulture));
+                return;
+            }
+
+            if (order.OrderAction != OrderAction.Sell)
+                return;
+
+            ManagedExecutionState exitState;
+            string resolvedEntrySignal = fromEntrySignal;
+            if (!managedExecutionStates.TryGetValue(fromEntrySignal, out exitState))
+            {
+                if (!TryResolveSingleOpenManagedExit(fromEntrySignal, out resolvedEntrySignal, out exitState))
+                {
+                    WriteTelemetry("MANAGED_EXIT_UNMATCHED", null, null,
+                        "from_entry=" + fromEntrySignal
+                        + " order=" + orderName
+                        + " execution_time=" + FormatDate(time)
+                        + " price=" + Format(price)
+                        + " quantity=" + quantity.ToString(CultureInfo.InvariantCulture));
+                    return;
+                }
+            }
+            if (exitState.EntryQuantity <= 0)
+            {
+                WriteTelemetry("MANAGED_EXIT_BEFORE_ENTRY", exitState.Feature, null,
+                    "signal=" + exitState.SignalName
+                    + " entry_order=" + exitState.EntryName
+                    + " exit_order=" + orderName
+                    + " from_entry=" + fromEntrySignal
+                    + " execution_time=" + FormatDate(time)
+                    + " exit_price=" + Format(price)
+                    + " quantity=" + quantity.ToString(CultureInfo.InvariantCulture));
+                return;
+            }
+
+            double grossPoints = (price - exitState.EntryPrice) * quantity;
+            exitState.ExitQuantity += quantity;
+            exitState.ExitPrice = price;
+            exitState.ExitTime = time;
+            exitState.GrossContractPoints += grossPoints;
+            bool complete = exitState.EntryQuantity > 0 && exitState.ExitQuantity >= exitState.EntryQuantity;
+            double netPoints = exitState.GrossContractPoints - AccountingCostPointsPerContract * exitState.EntryQuantity;
+            WriteTelemetry(complete ? "MANAGED_OUTCOME" : "MANAGED_EXIT_EXECUTION", exitState.Feature, null,
+                "signal=" + exitState.SignalName
+                + " entry_order=" + exitState.EntryName
+                + " exit_order=" + orderName
+                + " from_entry=" + fromEntrySignal
+                + " resolved_from_entry=" + resolvedEntrySignal
+                + " execution_time=" + FormatDate(time)
+                + " exit_price=" + Format(price)
+                + " quantity=" + quantity.ToString(CultureInfo.InvariantCulture)
+                + " entry_price=" + Format(exitState.EntryPrice)
+                + " gross_contract_points=" + Format(exitState.GrossContractPoints)
+                + " net_contract_points_after_cost=" + Format(netPoints));
+            if (complete)
+                managedExecutionStates.Remove(resolvedEntrySignal);
+        }
+
+        private bool TryResolveSingleOpenManagedExit(string fromEntrySignal, out string resolvedEntrySignal, out ManagedExecutionState exitState)
+        {
+            resolvedEntrySignal = string.Empty;
+            exitState = null;
+            if (!string.IsNullOrWhiteSpace(fromEntrySignal))
+                return false;
+
+            int openCount = 0;
+            foreach (KeyValuePair<string, ManagedExecutionState> item in managedExecutionStates)
+            {
+                ManagedExecutionState candidate = item.Value;
+                if (candidate.EntryQuantity <= candidate.ExitQuantity)
+                    continue;
+                openCount++;
+                resolvedEntrySignal = item.Key;
+                exitState = candidate;
+                if (openCount > 1)
+                {
+                    resolvedEntrySignal = string.Empty;
+                    exitState = null;
+                    return false;
+                }
+            }
+            return openCount == 1 && exitState != null;
+        }
+
+        private bool CanSubmitAnalyzerOrder()
+        {
+            if (!SubmitHistoricalAnalyzerOrders)
+                return false;
+            if (State == State.Historical)
+                return true;
+            return State == State.Realtime && AllowRealtimePlaybackSim && IsPermittedRealtimeAccount();
+        }
+
+        private bool IsPermittedRealtimeAccount()
+        {
+            string name = Account == null ? string.Empty : (Account.Name ?? string.Empty).Trim();
+            if (name.StartsWith("Sim", StringComparison.OrdinalIgnoreCase)
+                || name.StartsWith("Playback", StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (string.IsNullOrWhiteSpace(PermittedRealtimeAccounts))
+                return false;
+
+            string[] permitted = PermittedRealtimeAccounts.Split(new char[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < permitted.Length; i++)
+            {
+                if (string.Equals(name, permitted[i].Trim(), StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+            return false;
+        }
+
+        private static bool IsActive(Order order)
+        {
+            if (order == null)
+                return false;
+            return order.OrderState == OrderState.Accepted
+                || order.OrderState == OrderState.Submitted
+                || order.OrderState == OrderState.Working
+                || order.OrderState == OrderState.PartFilled;
+        }
+
+        private bool IsOneMinutePrimary()
+        {
+            return BarsPeriod != null
+                && BarsPeriod.BarsPeriodType == BarsPeriodType.Minute
+                && BarsPeriod.Value == 1;
+        }
+
+        private string PrimaryBarsPeriodTelemetry()
+        {
+            if (BarsPeriod == null)
+                return string.Empty;
+            if (BarsPeriod.BarsPeriodType == BarsPeriodType.Minute)
+                return BarsPeriod.Value.ToString(CultureInfo.InvariantCulture);
+            return PrimaryBarsPeriodDebug();
+        }
+
+        private string PrimaryBarsPeriodDebug()
+        {
+            if (BarsPeriod == null)
+                return "null";
+            return BarsPeriod.BarsPeriodType.ToString() + ":" + BarsPeriod.Value.ToString(CultureInfo.InvariantCulture);
+        }
+
+        private string ChartSessionDate(DateTime timestamp)
+        {
+            DateTime date = timestamp;
+            if (timestamp.Hour >= SessionRolloverHour)
+                date = timestamp.AddDays(1);
+            return date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+        }
+
+        private void LoadManciniLevels()
+        {
+            levelsByPlanDate.Clear();
+            allManciniLevels.Clear();
+            if (string.IsNullOrWhiteSpace(EventsCsvPath) || !File.Exists(EventsCsvPath))
+            {
+                WriteTelemetry("LEVEL_LOAD_ERROR", null, null, "missing_events_csv=" + EventsCsvPath);
+                return;
+            }
+
+            string[] lines = File.ReadAllLines(EventsCsvPath);
+            if (lines.Length < 2)
+                return;
+            List<string> header = SplitCsvLine(lines[0]);
+            Dictionary<string, Dictionary<double, ManciniLevel>> grouped = new Dictionary<string, Dictionary<double, ManciniLevel>>(StringComparer.Ordinal);
+            for (int i = 1; i < lines.Length; i++)
+            {
+                if (string.IsNullOrWhiteSpace(lines[i]))
+                    continue;
+                Dictionary<string, string> row = BuildCsvRow(header, SplitCsvLine(lines[i]));
+                string direction = Get(row, "direction").Trim().ToLowerInvariant();
+                bool longEligible = ParseBool(Get(row, "long_eligible"));
+                string planDate = Get(row, "plan_date").Trim();
+                double price = ParseDouble(Get(row, "price"));
+                if (double.IsNaN(price))
+                    price = ParseDouble(Get(row, "zone_low"));
+                if (double.IsNaN(price))
+                    price = ParseDouble(Get(row, "zone_high"));
+                if (string.IsNullOrWhiteSpace(planDate) || direction != "support" || !longEligible || double.IsNaN(price))
+                    continue;
+
+                ManciniLevel level = new ManciniLevel
+                {
+                    PlanDate = planDate,
+                    PubDate = string.IsNullOrWhiteSpace(Get(row, "pub_date")) ? planDate : Get(row, "pub_date").Trim(),
+                    Price = RoundToTick(price),
+                    Direction = direction,
+                    PrimaryRole = Get(row, "primary_role"),
+                    SourceKind = Get(row, "source_kind"),
+                    SourcePath = Get(row, "source_path"),
+                    SourceId = Get(row, "source_id"),
+                    SourceSnippet = Get(row, "source_snippet"),
+                    Tags = Get(row, "tags"),
+                    OcrVerified = ParseBool(Get(row, "ocr_verified")),
+                };
+                level.SourceConfidence = ComputeSourceConfidence(level);
+                level.MajorSourceBonus = ComputeMajorSourceBonus(level);
+                allManciniLevels.Add(level);
+
+                Dictionary<double, ManciniLevel> byPrice;
+                if (!grouped.TryGetValue(planDate, out byPrice))
+                {
+                    byPrice = new Dictionary<double, ManciniLevel>();
+                    grouped[planDate] = byPrice;
+                }
+                ManciniLevel existing;
+                if (!byPrice.TryGetValue(level.Price, out existing) || level.SourceConfidence > existing.SourceConfidence)
+                    byPrice[level.Price] = level;
+            }
+
+            foreach (KeyValuePair<string, Dictionary<double, ManciniLevel>> item in grouped)
+            {
+                List<ManciniLevel> levels = new List<ManciniLevel>(item.Value.Values);
+                levels.Sort(delegate(ManciniLevel left, ManciniLevel right) { return left.Price.CompareTo(right.Price); });
+                levelsByPlanDate[item.Key] = levels;
+            }
+            WriteTelemetry("LEVELS_LOADED", null, null, "plan_dates=" + levelsByPlanDate.Count.ToString(CultureInfo.InvariantCulture)
+                + " baked_levels=" + allManciniLevels.Count.ToString(CultureInfo.InvariantCulture));
+        }
+
+        private double ComputeSourceConfidence(ManciniLevel level)
+        {
+            string text = (level.SourceKind + " " + level.SourcePath + " " + level.SourceSnippet + " " + level.Tags + " " + level.PrimaryRole).ToLowerInvariant();
+            double score = 0.45;
+            if (level.OcrVerified)
+                score += 0.10;
+            if (ContainsAny(text, "mancini", "daily", "plan", "support"))
+                score += 0.10;
+            if (ContainsAny(text, "major", "key", "must hold", "line in sand", "supports", "big"))
+                score += 0.10;
+            if (ContainsAny(text, "negative", "sr_list_only", "data_only"))
+                score -= 0.20;
+            return Math.Round(Clamp(score, 0.0, 0.85), 4);
+        }
+
+        private double ComputeMajorSourceBonus(ManciniLevel level)
+        {
+            string text = (level.SourceSnippet + " " + level.PrimaryRole + " " + level.Tags).ToLowerInvariant();
+            return Indicator(ContainsAny(text, "major", "massive", "significant", "daily low", "shelf", "low held", "big shelf", "must hold"));
+        }
+
+        private ReclaimMetrics ComputeReclaimMetrics(double level, int reclaimIndex)
+        {
+            ReclaimMetrics result = new ReclaimMetrics();
+            if (reclaimIndex < 0 || reclaimIndex > CurrentBar)
+                return result;
+
+            double range = Math.Max(BarHigh(reclaimIndex) - BarLow(reclaimIndex), Tick);
+            result.ReclaimCloseLocation = (CloseAt(reclaimIndex) - BarLow(reclaimIndex)) / range;
+            result.ReclaimRange = BarHigh(reclaimIndex) - BarLow(reclaimIndex);
+
+            int end = Math.Min(CurrentBar, reclaimIndex + 15);
+            int tenMinuteEnd = Math.Min(CurrentBar, reclaimIndex + 10);
+            int acceptanceCloses = 0;
+            DateTime acceptanceScoreTime = DateTime.MinValue;
+            DateTime acceptanceClassificationTime = DateTime.MinValue;
+            for (int index = reclaimIndex; index <= end; index++)
+            {
+                if (CloseAt(index) >= level)
+                {
+                    acceptanceCloses++;
+                    if (acceptanceCloses <= 3)
+                    {
+                        result.AcceptanceClosesUsedForScore = acceptanceCloses;
+                        acceptanceScoreTime = BarTime(index);
+                    }
+                    if (acceptanceCloses >= 3 && acceptanceClassificationTime == DateTime.MinValue)
+                        acceptanceClassificationTime = BarTime(index);
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            double threshold = level + NonAcceptancePoints;
+            bool thresholdStarted = false;
+            for (int index = reclaimIndex; index <= end; index++)
+            {
+                if (CloseAt(index) >= threshold)
+                {
+                    thresholdStarted = true;
+                    if (result.FirstThresholdCloseTime == DateTime.MinValue)
+                        result.FirstThresholdCloseTime = BarTime(index);
+                    result.NonAcceptanceCloses++;
+                    if (result.NonAcceptanceCloses <= 3)
+                    {
+                        result.NonAcceptanceClosesUsedForScore = result.NonAcceptanceCloses;
+                        result.NonAcceptanceScoreTime = BarTime(index);
+                    }
+                    double scoreAvailable = 0.40 + 0.30 * Clamp(result.NonAcceptanceCloses / 3.0, 0, 1);
+                    if (scoreAvailable >= MinimumNonAcceptanceScore && result.NonAcceptanceClassificationTime == DateTime.MinValue)
+                        result.NonAcceptanceClassificationTime = BarTime(index);
+                }
+                else if (thresholdStarted && BarLow(index) <= level + 0.5)
+                {
+                    result.FirstRetestHolds = CloseAt(index) >= level;
+                    if (result.FirstRetestHolds)
+                        result.NonAcceptanceScoreTime = BarTime(index);
+                    if (result.FirstRetestHolds && result.NonAcceptanceClassificationTime == DateTime.MinValue)
+                        result.NonAcceptanceClassificationTime = BarTime(index);
+                    break;
+                }
+                else if (thresholdStarted)
+                {
+                    break;
+                }
+            }
+
+            for (int index = reclaimIndex; index <= tenMinuteEnd; index++)
+            {
+                if (CloseAt(index) >= threshold)
+                {
+                    result.AnyCloseAboveThresholdWithinTenMinutes = true;
+                    break;
+                }
+            }
+
+            DateTime latestScoreTime = MaxDate(acceptanceClassificationTime, result.NonAcceptanceClassificationTime);
+            if (latestScoreTime == DateTime.MinValue)
+                latestScoreTime = BarTime(Math.Min(end, CurrentBar));
+            result.NoCloseBackBelowBeforeEntry = true;
+            for (int index = reclaimIndex; index <= CurrentBar; index++)
+            {
+                if (BarTime(index) > latestScoreTime)
+                    break;
+                if (CloseAt(index) < level)
+                {
+                    result.NoCloseBackBelowBeforeEntry = false;
+                    break;
+                }
+            }
+            result.AcceptanceScoreTime = acceptanceScoreTime;
+            return result;
+        }
+
+        private PriorStats ComputePriorTouchStats(double level, int trapIndex)
+        {
+            PriorStats stats = new PriorStats();
+            int firstTouch = -1;
+            int lastTouch = -1;
+            for (int index = sessionStartBar; index < trapIndex; index++)
+            {
+                if (BarLow(index) <= level + 1.0 && BarHigh(index) >= level - 1.0)
+                {
+                    stats.PriorTouchCount++;
+                    if (firstTouch < 0)
+                        firstTouch = index;
+                    lastTouch = index;
+                }
+            }
+            if (firstTouch < 0 || lastTouch < 0)
+                return stats;
+            stats.PriorHoldMinutes = Math.Max((BarTime(lastTouch) - BarTime(firstTouch)).TotalMinutes, 0.0);
+            double highest = level;
+            for (int index = firstTouch; index < trapIndex; index++)
+                highest = Math.Max(highest, BarHigh(index));
+            stats.PriorBouncePoints = Math.Max(highest - level, 0.0);
+            return stats;
+        }
+
+        private string AcceptanceFamily(bool firstReclaimFailed, int multiLevelFlushCount, double flushDepth, int acceptanceCloses, double nonAcceptanceScore)
+        {
+            if (nonAcceptanceScore >= MinimumNonAcceptanceScore)
+                return "non_acceptance_protocol";
+            if (firstReclaimFailed && acceptanceCloses >= 2)
+                return "classic_acceptance_second_attempt_reclaim";
+            if (multiLevelFlushCount >= 2 && flushDepth >= 4.0)
+                return "ladder_first_reclaim";
+            if (acceptanceCloses >= 3)
+                return "classic_acceptance_backtest_from_below";
+            return "simple_reclaim_unclassified";
+        }
+
+        private ManciniLevel NextLevelAbove(double entryPrice)
+        {
+            ManciniLevel chosen = null;
+            for (int i = 0; i < activeLevels.Count; i++)
+            {
+                ManciniLevel level = activeLevels[i];
+                if (level.Price <= entryPrice + Tick)
+                    continue;
+                if (RespectLevelPublicationDate && StringCompareDate(level.PubDate, activeSessionDate) > 0)
+                    continue;
+                if (chosen == null || level.Price < chosen.Price)
+                    chosen = level;
+            }
+            return chosen;
+        }
+
+        private int CountLevelsBetween(double low, double high)
+        {
+            double lower = Math.Min(low, high);
+            double upper = Math.Max(low, high);
+            int count = 0;
+            for (int i = 0; i < activeLevels.Count; i++)
+            {
+                double price = activeLevels[i].Price;
+                if (price > lower && price < upper)
+                    count++;
+            }
+            return count;
+        }
+
+        private void ResetLevelState(LevelRuntimeState state)
+        {
+            state.Phase = RuntimePhase.Watching;
+            state.TrapBarIndex = -1;
+            state.PendingReclaimBarIndex = -1;
+            state.ReclaimBarIndex = -1;
+            state.SweptLow = double.NaN;
+            state.FirstReclaimFailed = false;
+        }
+
+        private int HighestHighIndex(int start, int end)
+        {
+            int chosen = start;
+            double high = double.MinValue;
+            for (int index = start; index <= end; index++)
+            {
+                if (BarHigh(index) > high)
+                {
+                    high = BarHigh(index);
+                    chosen = index;
+                }
+            }
+            return chosen;
+        }
+
+        private double MinimumLow(int start, int end)
+        {
+            double low = double.MaxValue;
+            for (int index = start; index <= end; index++)
+                low = Math.Min(low, BarLow(index));
+            return low == double.MaxValue ? Low[0] : low;
+        }
+
+        private double MedianVolume(int start, int end)
+        {
+            List<double> values = new List<double>();
+            for (int index = start; index <= end; index++)
+                values.Add(BarVolume(index));
+            if (values.Count == 0)
+                return 0.0;
+            values.Sort();
+            int mid = values.Count / 2;
+            if (values.Count % 2 == 1)
+                return values[mid];
+            return (values[mid - 1] + values[mid]) / 2.0;
+        }
+
+        private int BarIndexAtOrAfter(DateTime timestamp)
+        {
+            for (int index = sessionStartBar; index <= CurrentBar; index++)
+            {
+                if (BarTime(index) >= timestamp)
+                    return index;
+            }
+            return -1;
+        }
+
+        private double BarHigh(int absoluteIndex)
+        {
+            return High[CurrentBar - absoluteIndex];
+        }
+
+        private double BarLow(int absoluteIndex)
+        {
+            return Low[CurrentBar - absoluteIndex];
+        }
+
+        private double CloseAt(int absoluteIndex)
+        {
+            return Close[CurrentBar - absoluteIndex];
+        }
+
+        private double BarVolume(int absoluteIndex)
+        {
+            return Volume[CurrentBar - absoluteIndex];
+        }
+
+        private DateTime BarTime(int absoluteIndex)
+        {
+            return Time[CurrentBar - absoluteIndex];
+        }
+
+        private string TimeBucket(DateTime timestamp)
+        {
+            int minutes = timestamp.Hour * 60 + timestamp.Minute;
+            if (minutes < 9 * 60 + 30)
+                return "overnight_premarket";
+            if (minutes < 11 * 60)
+                return "rth_open";
+            if (minutes < 14 * 60)
+                return "midday";
+            if (minutes < 15 * 60)
+                return "afternoon";
+            if (minutes < 16 * 60)
+                return "power_hour";
+            return "post_rth";
+        }
+
+        private double TimeBonus(string bucket)
+        {
+            if (bucket == "rth_open")
+                return 0.6;
+            if (bucket == "power_hour")
+                return 1.0;
+            if (bucket == "afternoon")
+                return 0.4;
+            if (bucket == "overnight_premarket")
+                return 0.35;
+            if (bucket == "midday")
+                return 0.15;
+            return 0.0;
+        }
+
+        private void EnsureTelemetryHeader()
+        {
+            if (telemetryHeaderChecked || string.IsNullOrWhiteSpace(TelemetryCsvPath))
+                return;
+            telemetryHeaderChecked = true;
+            string dir = Path.GetDirectoryName(TelemetryCsvPath);
+            if (!string.IsNullOrWhiteSpace(dir))
+                Directory.CreateDirectory(dir);
+            if (File.Exists(TelemetryCsvPath) && new FileInfo(TelemetryCsvPath).Length > 0)
+                return;
+            File.AppendAllText(TelemetryCsvPath,
+                "event_type,run_id,instrument,bar_period_minutes,session_date,rule,fill_mode,setup_level,swept_low,trap_detected_timestamp_et,reclaim_detected_timestamp_et,classification_complete_timestamp_et,candidate_fired_timestamp_et,candidate_score,non_acceptance_score,target_points,stop_policy,entry_timestamp_et,entry_price,first_hit_event,first_hit_timestamp_et,first_hit_points,target_first,stop_first,same_bar_stop_and_target,notes" + Environment.NewLine);
+        }
+
+        private void WriteTelemetry(string eventType, Feature feature, ActiveSimulation simulation, string notes)
+        {
+            if (string.IsNullOrWhiteSpace(TelemetryCsvPath))
+                return;
+            try
+            {
+                EnsureTelemetryHeader();
+                string instrument = Instrument == null ? string.Empty : Instrument.FullName;
+                string sessionDate = feature == null ? activeSessionDate : feature.SessionDate;
+                string line = string.Join(",", new[]
+                {
+                    Csv(eventType),
+                    Csv(actualRunId),
+                    Csv(instrument),
+                    Csv(PrimaryBarsPeriodTelemetry()),
+                    Csv(sessionDate),
+                    Csv(PrimaryRule),
+                    Csv(PrimaryFillMode),
+                    Csv(feature == null ? "" : Format(feature.SetupLevel)),
+                    Csv(feature == null ? "" : Format(feature.SweptLow)),
+                    Csv(feature == null ? "" : FormatDate(feature.TrapTime)),
+                    Csv(feature == null ? "" : FormatDate(feature.ReclaimTime)),
+                    Csv(feature == null ? "" : FormatDate(feature.ClassificationCompleteTime)),
+                    Csv(feature == null ? "" : FormatDate(feature.CandidateFiredTime)),
+                    Csv(feature == null ? "" : Format(feature.CandidateScore)),
+                    Csv(feature == null ? "" : Format(feature.NonAcceptanceScore)),
+                    Csv(Format(Tp1Points)),
+                    Csv(PrimaryStopPolicy),
+                    Csv(simulation == null ? (feature == null ? "" : FormatDate(feature.EntryTimestamp)) : FormatDate(simulation.EntryTime)),
+                    Csv(simulation == null ? (feature == null ? "" : Format(feature.EntryPrice)) : Format(simulation.EntryPrice)),
+                    Csv(simulation == null ? "" : simulation.FirstHitEvent),
+                    Csv(simulation == null ? "" : FormatDate(simulation.FirstHitTimestamp)),
+                    Csv(simulation == null ? "" : Format(simulation.FirstHitPoints)),
+                    Csv(simulation != null && simulation.TargetFirst ? "true" : "false"),
+                    Csv(simulation != null && simulation.StopFirst ? "true" : "false"),
+                    Csv(simulation != null && simulation.SameBarStopAndTarget ? "true" : "false"),
+                    Csv(notes ?? string.Empty),
+                });
+                File.AppendAllText(TelemetryCsvPath, line + Environment.NewLine);
+            }
+            catch (Exception ex)
+            {
+                Print("ManciniFbdStrategyAnalyzer telemetry error: " + ex.Message);
+            }
+        }
+
+        private static string Csv(string value)
+        {
+            string text = value ?? string.Empty;
+            if (text.IndexOfAny(new[] { ',', '"', '\r', '\n' }) < 0)
+                return text;
+            return "\"" + text.Replace("\"", "\"\"") + "\"";
+        }
+
+        private static string FormatDate(DateTime value)
+        {
+            return value == DateTime.MinValue ? string.Empty : value.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
+        }
+
+        private static string Format(double value)
+        {
+            if (double.IsNaN(value) || double.IsInfinity(value))
+                return string.Empty;
+            return value.ToString("0.####", CultureInfo.InvariantCulture);
+        }
+
+        private static double WeightedAverage(double currentAverage, int currentQuantity, double newPrice, int newQuantity)
+        {
+            if (currentQuantity <= 0)
+                return newPrice;
+            int totalQuantity = currentQuantity + newQuantity;
+            if (totalQuantity <= 0)
+                return newPrice;
+            return (currentAverage * currentQuantity + newPrice * newQuantity) / totalQuantity;
+        }
+
+        private static bool ContainsAny(string text, params string[] needles)
+        {
+            for (int i = 0; i < needles.Length; i++)
+            {
+                if (text.IndexOf(needles[i], StringComparison.OrdinalIgnoreCase) >= 0)
+                    return true;
+            }
+            return false;
+        }
+
+        private static double Indicator(bool value)
+        {
+            return value ? 1.0 : 0.0;
+        }
+
+        private static double Clamp(double value, double low, double high)
+        {
+            if (double.IsNaN(value))
+                return low;
+            return Math.Max(low, Math.Min(high, value));
+        }
+
+        private static DateTime MaxDate(DateTime left, DateTime right)
+        {
+            if (left == DateTime.MinValue)
+                return right;
+            if (right == DateTime.MinValue)
+                return left;
+            return left > right ? left : right;
+        }
+
+        private static double RoundToTick(double price)
+        {
+            return Math.Round(price / Tick, MidpointRounding.AwayFromZero) * Tick;
+        }
+
+        private static double ParseDouble(string value)
+        {
+            double parsed;
+            return double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out parsed) ? parsed : double.NaN;
+        }
+
+        private static bool ParseBool(string value)
+        {
+            string text = (value ?? string.Empty).Trim();
+            return text.Equals("true", StringComparison.OrdinalIgnoreCase)
+                || text.Equals("1", StringComparison.OrdinalIgnoreCase)
+                || text.Equals("yes", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static int StringCompareDate(string left, string right)
+        {
+            return string.Compare(left ?? string.Empty, right ?? string.Empty, StringComparison.Ordinal);
+        }
+
+        private static string Get(Dictionary<string, string> row, string key)
+        {
+            string value;
+            return row.TryGetValue(key, out value) ? value : string.Empty;
+        }
+
+        private static Dictionary<string, string> BuildCsvRow(List<string> header, List<string> values)
+        {
+            Dictionary<string, string> row = new Dictionary<string, string>(StringComparer.Ordinal);
+            for (int i = 0; i < header.Count; i++)
+                row[header[i]] = i < values.Count ? values[i] : string.Empty;
+            return row;
+        }
+
+        private static List<string> SplitCsvLine(string line)
+        {
+            List<string> values = new List<string>();
+            StringBuilder current = new StringBuilder();
+            bool inQuotes = false;
+            for (int i = 0; i < line.Length; i++)
+            {
+                char ch = line[i];
+                if (ch == '"')
+                {
+                    if (inQuotes && i + 1 < line.Length && line[i + 1] == '"')
+                    {
+                        current.Append('"');
+                        i++;
+                    }
+                    else
+                    {
+                        inQuotes = !inQuotes;
+                    }
+                }
+                else if (ch == ',' && !inQuotes)
+                {
+                    values.Add(current.ToString());
+                    current.Length = 0;
+                }
+                else
+                {
+                    current.Append(ch);
+                }
+            }
+            values.Add(current.ToString());
+            return values;
+        }
+
+        private enum RuntimePhase
+        {
+            Watching,
+            BreakdownDetected,
+            PendingReclaimConfirm,
+            ReclaimWatch
+        }
+
+        private sealed class ManciniLevel
+        {
+            public string PlanDate;
+            public string PubDate;
+            public double Price;
+            public string Direction;
+            public string PrimaryRole;
+            public string SourceKind;
+            public string SourcePath;
+            public string SourceId;
+            public string SourceSnippet;
+            public string Tags;
+            public bool OcrVerified;
+            public double SourceConfidence;
+            public double MajorSourceBonus;
+        }
+
+        private sealed class LevelRuntimeState
+        {
+            public RuntimePhase Phase = RuntimePhase.Watching;
+            public int LastTrapBar = -100000;
+            public int TrapBarIndex = -1;
+            public int PendingReclaimBarIndex = -1;
+            public int ReclaimBarIndex = -1;
+            public DateTime TrapTime = DateTime.MinValue;
+            public DateTime PendingReclaimTime = DateTime.MinValue;
+            public DateTime ReclaimTime = DateTime.MinValue;
+            public double PendingReclaimClose = double.NaN;
+            public double FirstReclaimClose = double.NaN;
+            public double SweptLow = double.NaN;
+            public bool FirstReclaimFailed;
+            public bool Done;
+        }
+
+        private sealed class PriorStats
+        {
+            public int PriorTouchCount;
+            public double PriorHoldMinutes;
+            public double PriorBouncePoints;
+        }
+
+        private sealed class ReclaimMetrics
+        {
+            public double ReclaimCloseLocation;
+            public double ReclaimRange;
+            public int AcceptanceClosesUsedForScore;
+            public int NonAcceptanceCloses;
+            public int NonAcceptanceClosesUsedForScore;
+            public bool AnyCloseAboveThresholdWithinTenMinutes;
+            public bool FirstRetestHolds;
+            public bool NoCloseBackBelowBeforeEntry;
+            public DateTime AcceptanceScoreTime = DateTime.MinValue;
+            public DateTime NonAcceptanceScoreTime = DateTime.MinValue;
+            public DateTime NonAcceptanceClassificationTime = DateTime.MinValue;
+            public DateTime FirstThresholdCloseTime = DateTime.MinValue;
+        }
+
+        private sealed class Feature
+        {
+            public ManciniLevel Level;
+            public string SessionDate;
+            public double SetupLevel;
+            public double SweptLow;
+            public DateTime TrapTime;
+            public DateTime ReclaimTime;
+            public DateTime ClassificationCompleteTime;
+            public DateTime CandidateFiredTime;
+            public string CandidateTimingDriver;
+            public double EntryPrice;
+            public DateTime EntryTimestamp;
+            public string AcceptanceFamilyModel;
+            public double SignificantLowScore;
+            public double FlushScore;
+            public double ReclaimScore;
+            public double NonAcceptanceScore;
+            public int NonAcceptanceCloses;
+            public double CandidateScore;
+            public double TargetRoom;
+            public double RiskToSweep;
+            public double TargetR;
+            public double NextTrustedLevelAbove;
+            public string NextTrustedLevelSource;
+            public string NextTrustedLevelRole;
+            public string TimeOfDayBucket;
+            public bool FirstReclaimFailedBeforeCandidate;
+        }
+
+        private sealed class PendingSignal
+        {
+            public Feature Feature;
+            public string SignalName;
+            public int SignalBarIndex;
+            public bool OrdersSubmitted;
+        }
+
+        private sealed class ActiveSimulation
+        {
+            public Feature Feature;
+            public string SignalName;
+            public int EntryBarIndex;
+            public DateTime EntryTime;
+            public double EntryPrice;
+            public double InitialStopPrice;
+            public double ActiveStopPrice;
+            public double Tp1Price;
+            public double Tp2Price;
+            public int Contracts;
+            public int Tp1Contracts;
+            public int RunnerContracts;
+            public int RemainingContracts;
+            public bool Tp1Hit;
+            public double GrossContractPoints;
+            public string FirstHitEvent;
+            public DateTime FirstHitTimestamp = DateTime.MinValue;
+            public double FirstHitPoints;
+            public bool TargetFirst;
+            public bool StopFirst;
+            public bool SameBarStopAndTarget;
+        }
+
+        private sealed class RunnerOrderState
+        {
+            public Feature Feature;
+            public string SignalName;
+            public string EntryNameT1;
+            public string EntryNameT2;
+            public double EntryPrice;
+            public double Tp1Price;
+            public int RunnerQuantity;
+            public bool RunnerStopMovedToBreakeven;
+        }
+
+        private sealed class AnalyzerEntryOrderState
+        {
+            public Feature Feature;
+            public string SignalName;
+            public string EntryName;
+            public Order Order;
+            public int SubmittedBarIndex;
+            public bool CancelRequested;
+        }
+
+        private sealed class ManagedExecutionState
+        {
+            public Feature Feature;
+            public string SignalName;
+            public string EntryName;
+            public int EntryQuantity;
+            public double EntryPrice;
+            public DateTime EntryTime = DateTime.MinValue;
+            public int EntryBarIndex = -1;
+            public int ExitQuantity;
+            public double ExitPrice;
+            public DateTime ExitTime = DateTime.MinValue;
+            public double GrossContractPoints;
+            public bool TimeoutExitRequested;
+        }
+    }
+}

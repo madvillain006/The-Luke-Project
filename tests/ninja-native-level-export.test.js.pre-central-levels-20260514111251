@@ -1,10 +1,6 @@
-const fs = require('fs');
-const os = require('os');
-const path = require('path');
 const {
   activeNativeLevel,
   exportNativeLevels,
-  loadCentralManciniEventLevels,
   loadDailyPlanLevels,
   renderNativeLevelFile,
   historicalSatyLevels,
@@ -12,10 +8,6 @@ const {
 } = require('../scripts/export-ninja-native-levels');
 const { loadIntraday } = require('../lib/historical-data');
 const { deriveLevelsByDate } = require('../lib/backtest-data/saty-historical');
-
-function tempLevelFile() {
-  return path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'luke-native-level-export-')), 'levels.txt');
-}
 
 describe('Ninja-native level export', () => {
   it('keeps the native level file to external Mancini levels only', () => {
@@ -51,9 +43,7 @@ describe('Ninja-native level export', () => {
     expect(text).toContain('target_only: ');
     expect(text).toContain('read_reaction: ');
     expect(text).toContain('target_session: 2026-05-11 ES');
-    expect(text).toContain('last matching tag wins');
-    expect(text.indexOf('read_reaction: ')).toBeLessThan(text.indexOf('trade: '));
-    expect(text.indexOf('trigger: ')).toBeLessThan(text.indexOf('major: '));
+    expect(text).toContain('Strategy parser trades only the trade/mancini section');
   });
 
   it('selects Mancini trade levels by explicit target session for replay dates', () => {
@@ -65,36 +55,17 @@ describe('Ninja-native level export', () => {
     expect(daily.levels.trade).toContain(7402);
   });
 
-  it('loads current Mancini levels from the centralized event ledger', () => {
-    const central = loadCentralManciniEventLevels({ targetSession: '2026-05-14' });
-
-    expect(central.target_session).toBe('2026-05-14');
-    expect(central.file_path).toContain('mancini-context-protocol');
-    expect(central.levels.trade).toContain(7467);
-    expect(central.levels.trade).toContain(7455);
-    expect(central.levels.trade).toContain(7111);
-    expect(central.levels.trade.length).toBe(48);
-  });
-
-  it('prefers the centralized event ledger for native level exports', () => {
-    const result = exportNativeLevels({ targetSession: '2026-05-14', includeContext: true, outFile: tempLevelFile() });
-
-    expect(result.source).toBe('mancini_event_csv');
-    expect(result.target_session).toBe('2026-05-14');
-    expect(result.daily_plan.trade).toBe(48);
-    expect(result.prices).toBe(48);
-  });
-
   it('fails closed instead of reusing stale levels for an unknown target session', () => {
     expect(() => loadDailyPlanLevels({ targetSession: '2026-05-12' }))
       .toThrow('No Mancini daily plan found for target session 2026-05-12');
   });
 
   it('uses --historical-date as the Mancini target session instead of emitting Saty-only levels', () => {
-    const result = exportNativeLevels({ historicalDate: '2026-05-11', includeContext: true, outFile: tempLevelFile() });
+    const result = exportNativeLevels({ historicalDate: '2026-05-11', includeContext: true });
 
-    expect(['mancini_event_csv', 'mancini_daily_plan']).toContain(result.source);
+    expect(result.source).toBe('mancini_daily_plan');
     expect(result.target_session).toBe('2026-05-11');
+    expect(result.daily_plan.date).toBe('2026-05-08');
     expect(result.by_family.saty || 0).toBe(0);
   });
 

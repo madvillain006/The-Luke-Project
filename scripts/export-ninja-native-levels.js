@@ -9,6 +9,7 @@ const { deriveLevelsByDate } = require("../lib/backtest-data/saty-historical");
 
 const ROOT = path.join(__dirname, "..");
 const DEFAULT_OUT = path.join(ROOT, "data", "ninjatrader", "luke-native-levels.txt");
+const DEFAULT_MANCINI_EVENTS_CSV = path.join(ROOT, "artifacts", "research", "mancini-context-protocol", "events.csv");
 const SATY_FIELDS = [
   "atr_minus_1",
   "ext_minus_4",
@@ -92,6 +93,91 @@ function pricesFrom(values, fieldName = "levels") {
   return uniqueSortedPrices(values.map((price) => ({ price })));
 }
 
+function splitCsvLine(line = "") {
+  const values = [];
+  let cell = "";
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i += 1) {
+    const char = line[i];
+    if (char === '"') {
+      if (inQuotes && line[i + 1] === '"') {
+        cell += '"';
+        i += 1;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (char === "," && !inQuotes) {
+      values.push(cell);
+      cell = "";
+    } else {
+      cell += char;
+    }
+  }
+  values.push(cell);
+  return values;
+}
+
+function truthyCsv(value) {
+  return /^(true|1|yes|y)$/i.test(String(value || "").trim());
+}
+
+function loadCentralManciniEventLevels({ rootDir = ROOT, targetSession = null, csvPath = DEFAULT_MANCINI_EVENTS_CSV } = {}) {
+  const resolvedCsv = path.isAbsolute(csvPath) ? csvPath : path.join(rootDir, csvPath);
+  if (!fs.existsSync(resolvedCsv)) return null;
+
+  const lines = fs.readFileSync(resolvedCsv, "utf8").split(/\r?\n/).filter((line) => line.trim().length > 0);
+  if (lines.length < 2) return null;
+
+  const headers = splitCsvLine(lines[0]).map((header) => header.trim());
+  const index = new Map(headers.map((header, i) => [header, i]));
+  const get = (columns, key) => {
+    const i = index.get(key);
+    return Number.isInteger(i) && i < columns.length ? String(columns[i] || "").trim() : "";
+  };
+  if (!index.has("plan_date") || !index.has("price")) return null;
+
+  const rows = lines.slice(1)
+    .map((line) => ({ line, columns: splitCsvLine(line) }))
+    .filter(({ columns }) => (
+      get(columns, "direction").toLowerCase() === "support"
+      && truthyCsv(get(columns, "long_eligible"))
+      && Number.isFinite(Number(get(columns, "price")))
+    ));
+  if (!rows.length) return null;
+
+  const selectedSession = targetSession || [...new Set(rows.map(({ columns }) => get(columns, "plan_date")).filter(isIsoDate))].sort().at(-1);
+  if (!selectedSession) return null;
+  if (!isIsoDate(selectedSession)) throw new Error(`Invalid target session date: ${selectedSession}`);
+
+  const sessionRows = rows.filter(({ columns }) => get(columns, "plan_date") === selectedSession);
+  if (!sessionRows.length) return null;
+
+  const prices = pricesFrom(sessionRows.map(({ columns }) => Number(get(columns, "price"))), "central_event_prices");
+  const major = pricesFrom(sessionRows
+    .filter(({ columns }) => /major/i.test(`${get(columns, "primary_role")} ${get(columns, "tags")}`))
+    .map(({ columns }) => Number(get(columns, "price"))), "central_event_major_levels");
+  const focus = pricesFrom(sessionRows
+    .filter(({ columns }) => /focus|trigger|reclaim|manual_user_supports/i.test(`${get(columns, "primary_role")} ${get(columns, "tags")} ${get(columns, "event_status")}`))
+    .map(({ columns }) => Number(get(columns, "price"))), "central_event_focus_levels");
+
+  return {
+    file_path: resolvedCsv,
+    date: selectedSession,
+    target_session: selectedSession,
+    instrument: "ES",
+    levels: {
+      trade: prices,
+      major,
+      focus_long: focus.length ? focus : prices,
+      trigger: focus.length ? focus : prices,
+      target_only: [],
+      read_reaction: prices,
+    },
+    prices,
+    rows: sessionRows.length,
+  };
+}
+
 function loadDailyPlanLevels({ rootDir = ROOT, targetSession = null } = {}) {
   const selected = selectDailyPlan({ rootDir, targetSession });
   if (!selected) return null;
@@ -151,18 +237,18 @@ function renderNativeLevelFile({
   const lines = [
     "# Luke Ninja native external levels",
     `# generated_at: ${generatedAt}`,
-    "# Strategy parser trades only the trade/mancini section. Context sections are overlay-only.",
+    "# Strategy parser uses last matching tag wins. Generated context sections come first so trade levels remain executable.",
   ];
   if (dailyPlan) {
     lines.push(`# source: ${path.relative(ROOT, dailyPlan.file_path).replace(/\\/g, "/")}`);
     lines.push(`# source_date: ${dailyPlan.date}`);
     lines.push(`# target_session: ${dailyPlan.target_session || dailyPlan.date} ${dailyPlan.instrument}`);
-    lines.push(formatSection("trade", dailyPlan.levels.trade));
-    lines.push(formatSection("major", dailyPlan.levels.major));
-    lines.push(formatSection("focus_long", dailyPlan.levels.focus_long));
-    lines.push(formatSection("trigger", dailyPlan.levels.trigger));
     lines.push(formatSection("target_only", dailyPlan.levels.target_only));
     lines.push(formatSection("read_reaction", dailyPlan.levels.read_reaction));
+    lines.push(formatSection("trade", dailyPlan.levels.trade));
+    lines.push(formatSection("focus_long", dailyPlan.levels.focus_long));
+    lines.push(formatSection("trigger", dailyPlan.levels.trigger));
+    lines.push(formatSection("major", dailyPlan.levels.major));
   } else {
     lines.push(formatSection("trade", prices));
   }
@@ -189,7 +275,8 @@ function historicalSatyLevels(targetDate, instrument = "ES") {
 function exportNativeLevels({ rootDir = ROOT, outFile = DEFAULT_OUT, historicalDate = null, targetSession = null, includeContext = false } = {}) {
   const effectiveTargetSession = targetSession || historicalDate || null;
   const exportData = buildTradingViewLevelExport({ rootDir });
-  const dailyPlan = loadDailyPlanLevels({ rootDir, targetSession: effectiveTargetSession });
+  const dailyPlan = loadCentralManciniEventLevels({ rootDir, targetSession: effectiveTargetSession })
+    || loadDailyPlanLevels({ rootDir, targetSession: effectiveTargetSession });
   const levels = exportData.levels.filter(activeNativeLevel);
   const prices = dailyPlan?.levels?.trade?.length ? dailyPlan.levels.trade : uniqueSortedPrices(levels);
   const byFamily = {};
@@ -202,7 +289,7 @@ function exportNativeLevels({ rootDir = ROOT, outFile = DEFAULT_OUT, historicalD
     ok: true,
     generated_at: new Date().toISOString(),
     out_file: outFile,
-    source: dailyPlan ? "mancini_daily_plan" : "tradingview_level_export",
+    source: dailyPlan ? (dailyPlan.file_path.endsWith(".csv") ? "mancini_event_csv" : "mancini_daily_plan") : "tradingview_level_export",
     level_file_mode: includeContext ? "sectioned_context" : "trade_levels_only",
     target_session: effectiveTargetSession || dailyPlan?.target_session || dailyPlan?.date || null,
     historical_date: historicalDate,
@@ -240,6 +327,7 @@ if (require.main === module) {
 
 module.exports = {
   activeNativeLevel,
+  loadCentralManciniEventLevels,
   discoverDailyPlans,
   discoverLatestDailyPlan,
   exportNativeLevels,

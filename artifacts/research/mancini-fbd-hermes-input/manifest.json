@@ -66,10 +66,10 @@
       "sha256": "7d856a9073319d5aa5c42bd575ded9637dfa081be02ddb140e637ee3750c3020"
     },
     {
-      "bytes": 926556,
+      "bytes": 941396,
       "path": "artifacts\\research\\mancini-context-protocol\\events.csv",
       "role": "Mancini context level universe",
-      "sha256": "2c2a27fc5ca950426b00fed46e9e72d025a8dcdbfc4bf73b0f88fe07cf283170"
+      "sha256": "a99bdbf840a0c9b128cc0ec579049c9d83dacdaf14e13bdfc9f1df18a8c51cb0"
     },
     {
       "bytes": 9932,
@@ -450,13 +450,19 @@
       "sha256": "dfff377dd9cb03fe386b5430e8b553d439450bb0dd328e105d3708dda6df55b4"
     },
     {
-      "bytes": 14145,
+      "bytes": 13563,
+      "path": "artifacts\\research\\mancini-fbd-hermes-input\\HERMES_CODEX_LIVE_WIRING_UPDATE_2026-05-14.md",
+      "role": "Codex live NinjaTrader wiring update for Hermes",
+      "sha256": "7262cc801a9d5099183ef788c271807abed317b71b39e75dae70f05a4f6446dc"
+    },
+    {
+      "bytes": 14374,
       "path": "artifacts\\research\\mancini-fbd-hermes-input\\source_file_index.md",
       "role": "Hermes source file index",
-      "sha256": "260276ff2d9718fca612a22ae534503c44670735dfaf4fde3e0c21f0312419ef"
+      "sha256": "c10819d9ac06b48d3189504defeda8b8ffd2f302ab464d731858559d08bbeab0"
     }
   ],
-  "generated_at": "2026-05-13T11:50:03.483966+00:00",
+  "generated_at": "2026-05-14T19:13:18.338389+00:00",
   "outputs": {
     "HERMES_PROMPT": "artifacts\\research\\mancini-fbd-hermes-input\\HERMES_PROMPT.md",
     "build_candidate_report_html": "artifacts\\research\\mancini-fbd-hermes-input\\MANCINI_FBD_BUILD_CANDIDATE_REPORT_2026-05-13.html",
@@ -464,6 +470,7 @@
     "build_candidate_report_png": "artifacts\\research\\mancini-fbd-hermes-input\\MANCINI_FBD_BUILD_CANDIDATE_REPORT_2026-05-13.png",
     "candidate_rule_scores": "artifacts\\research\\mancini-fbd-hermes-input\\candidate_rule_scores.json",
     "chart_artifact_audit": "artifacts\\research\\mancini-fbd-hermes-input\\chart_artifact_audit.json",
+    "codex_live_wiring_update": "artifacts\\research\\mancini-fbd-hermes-input\\HERMES_CODEX_LIVE_WIRING_UPDATE_2026-05-14.md",
     "direct_source_audit": "artifacts\\research\\mancini-fbd-hermes-input\\direct_fbd_source_audit.json",
     "exact_strategy_grid_csv": "artifacts\\research\\mancini-fbd-hermes-input\\exact_strategy_grid.csv",
     "exact_strategy_grid_json": "artifacts\\research\\mancini-fbd-hermes-input\\exact_strategy_grid.json",

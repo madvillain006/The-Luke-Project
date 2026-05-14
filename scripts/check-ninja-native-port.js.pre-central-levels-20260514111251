@@ -23,14 +23,11 @@ const BANNED_ORDER_CALLS = [
 
 const REQUIRED_SNIPPETS = [
   "Calculate = Calculate.OnEachTick",
-  "AutonomyMode = LukeNativeAutonomyMode.LiveGuarded",
+  "AutonomyMode = LukeNativeAutonomyMode.Shadow",
   "SimExecution",
   "LiveGuarded",
-  "AllowLiveAccounts = true",
-  "AllowedAccountName = \"APEX752020000018\"",
-  "ManciniEventCsvPath = @\"C:\\Users\\conor\\luke\\artifacts\\research\\mancini-context-protocol\\events.csv\"",
-  "source=central_events_csv",
-  "TryLoadCentralManciniLevels",
+  "AllowLiveAccounts = false",
+  "AllowedAccountName = \"LFE050706094670001\"",
   "MaxMarketableEntryPoints = 0.25",
   "AddDataSeries(BarsPeriodType.Minute, 1)",
   "AddDataSeries(BarsPeriodType.Minute, 3)",

@@ -20,18 +20,18 @@ function defaultValue(source, property) {
 }
 
 describe('LukeNativeShadowStrategy source gate', () => {
-  it('defaults to exact-account guarded native NinjaTrader orders', () => {
+  it('defaults to shadow and gates native NinjaTrader orders', () => {
     const source = readSource();
     const audit = auditSource(source);
     expect(source).toContain('RunHistoricalAudit');
     expect(audit.status).toBe('clean');
     expect(audit.no_banned_order_calls).toBe(true);
     expect(audit.order_calls_gated).toBe(true);
-    expect(source).toContain('AutonomyMode = LukeNativeAutonomyMode.LiveGuarded');
+    expect(source).toContain('AutonomyMode = LukeNativeAutonomyMode.Shadow');
     expect(source).toContain('SimExecution');
     expect(source).toContain('LiveGuarded');
-    expect(source).toContain('AllowLiveAccounts = true');
-    expect(source).toContain('AllowedAccountName = "APEX752020000018"');
+    expect(source).toContain('AllowLiveAccounts = false');
+    expect(source).toContain('AllowedAccountName = "LFE050706094670001"');
     expect(source).toContain('MaxMarketableEntryPoints = 0.25');
     expect(source).toContain('AllowHistoricalBacktestOrders = false');
     expect(source).toContain('IsNativeLongPriceContextAllowed');
@@ -56,10 +56,6 @@ describe('LukeNativeShadowStrategy source gate', () => {
     expect(source).not.toContain('culEyYkQrx7nqBgWopdfvDzJT40bU8Ve632tMO9N');
     expect(source).toContain('IsTradeLevelLine');
     expect(source).toContain('key == "trade" || key == "mancini" || key == "trade_levels"');
-    expect(source).toContain('ManciniEventCsvPath = @"C:\\Users\\conor\\luke\\artifacts\\research\\mancini-context-protocol\\events.csv"');
-    expect(source).toContain('TryLoadCentralManciniLevels');
-    expect(source).toContain('source=central_events_csv');
-    expect(source).toContain('ParseTextLevelFile');
     expect(source).toContain('ExtractTargetSessionDate');
     expect(source).toContain('ChartFuturesSessionDate');
     expect(source).toContain('LEVEL_SESSION_MISMATCH');

@@ -60,6 +60,7 @@ OUT_EXACT_STRATEGY_GRID_CSV = OUT_DIR / "exact_strategy_grid.csv"
 OUT_EXACT_STRATEGY_GRID_JSON = OUT_DIR / "exact_strategy_grid.json"
 OUT_SOURCE_INDEX = OUT_DIR / "source_file_index.md"
 OUT_COMPLETENESS_AUDIT = OUT_DIR / "pre_hermes_completeness_audit.md"
+OUT_CODEX_LIVE_WIRING_UPDATE = OUT_DIR / "HERMES_CODEX_LIVE_WIRING_UPDATE_2026-05-14.md"
 OUT_LABEL_RECOVERY_SUMMARY = OUT_DIR / "label_recovery_summary.json"
 OUT_LABEL_RECOVERY_ROWS = OUT_DIR / "recovered_label_rows.jsonl"
 OUT_SATY_COMPARISON = OUT_DIR / "saty_protocol_comparison.json"
@@ -711,6 +712,8 @@ def main() -> int:
         file_entry(OUT_COMPLETENESS_AUDIT, "Hermes completeness audit"),
         file_entry(OUT_PROMPT, "Hermes prompt"),
     ]
+    if OUT_CODEX_LIVE_WIRING_UPDATE.exists():
+        source_files.append(file_entry(OUT_CODEX_LIVE_WIRING_UPDATE, "Codex live NinjaTrader wiring update for Hermes"))
     OUT_SOURCE_INDEX.write_text(source_index_text(training_summary, scores, source_files), encoding="utf-8", newline="\n")
     source_files.append(file_entry(OUT_SOURCE_INDEX, "Hermes source file index"))
     outputs = {
@@ -757,6 +760,8 @@ def main() -> int:
         "pre_hermes_completeness_audit": rel(OUT_COMPLETENESS_AUDIT),
         "source_file_index": rel(OUT_SOURCE_INDEX),
     }
+    if OUT_CODEX_LIVE_WIRING_UPDATE.exists():
+        outputs["codex_live_wiring_update"] = rel(OUT_CODEX_LIVE_WIRING_UPDATE)
     manifest = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "scope": "research_historical_replay_shadow_only",

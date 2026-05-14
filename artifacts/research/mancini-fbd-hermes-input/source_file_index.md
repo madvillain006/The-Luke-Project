@@ -19,7 +19,7 @@ Scope: source-first Mancini FBD Hermes package.
 - `reports\mancini-algo-hermes-handoff-2026-05-12.md`: source-of-truth handoff; bytes=27315; sha256=b8047ba4f1bd8d921ac4bc002d4b3fc720f900fb6408eb553233b58d05158e75
 - `artifacts\research\mancini-direct-fbd-source-audit\direct_fbd_source_audit.json`: direct source audit; bytes=3355131; sha256=8894de8f7e90409536454f8e0b630d4c864f34e6635758cd03b8c0d58af98d19
 - `reports\mancini-fbd-chronological-canonical-checklist-2026-05-12.md`: chronological source checklist; bytes=872744; sha256=7d856a9073319d5aa5c42bd575ded9637dfa081be02ddb140e637ee3750c3020
-- `artifacts\research\mancini-context-protocol\events.csv`: Mancini context level universe; bytes=926556; sha256=2c2a27fc5ca950426b00fed46e9e72d025a8dcdbfc4bf73b0f88fe07cf283170
+- `artifacts\research\mancini-context-protocol\events.csv`: Mancini context level universe; bytes=941396; sha256=a99bdbf840a0c9b128cc0ec579049c9d83dacdaf14e13bdfc9f1df18a8c51cb0
 - `artifacts\research\hermes-mancini-event-packets\quick_reclaim_acceptance_summary.json`: quick reclaim acceptance summary; bytes=9932; sha256=0b2c3436df853fc7f189bafac1ce4e14c3f4c4d7706621d3566178af87cf6f54
 - `artifacts\research\hermes-mancini-event-packets\quick_reclaim_acceptance_rows.csv`: quick reclaim acceptance rows; bytes=157104; sha256=2139301b19f03b5f18c27f5fc7f47ba3c72ee515de9ee5fe7744a12c23f57a09
 - `artifacts\research\mancini-real-packet-gallery\manifest.json`: real packet gallery manifest; bytes=1365159; sha256=fb3c5c7e353a2875f4f8942fec23e37683db6996009ef6aa8d99a0c5789ab279
@@ -83,6 +83,7 @@ Scope: source-first Mancini FBD Hermes package.
 - `artifacts\research\mancini-fbd-hermes-input\chart_artifact_audit.json`: Hermes chart artifact audit; bytes=1802; sha256=2c6f906145b6dab89109c53aa4a7f7cfc527c3122410fafa7a799c9f4d424a09
 - `artifacts\research\mancini-fbd-hermes-input\pre_hermes_completeness_audit.md`: Hermes completeness audit; bytes=3418; sha256=80dd68b744b3ce41a44f58d5212cb0aa751c8884a5d7646ece61d91064f8e04c
 - `artifacts\research\mancini-fbd-hermes-input\HERMES_PROMPT.md`: Hermes prompt; bytes=8651; sha256=dfff377dd9cb03fe386b5430e8b553d439450bb0dd328e105d3708dda6df55b4
+- `artifacts\research\mancini-fbd-hermes-input\HERMES_CODEX_LIVE_WIRING_UPDATE_2026-05-14.md`: Codex live NinjaTrader wiring update for Hermes; bytes=13563; sha256=7262cc801a9d5099183ef788c271807abed317b71b39e75dae70f05a4f6446dc
 
 ## Package Contract
 

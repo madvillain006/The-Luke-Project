@@ -47,6 +47,24 @@ function appendRawFeed(entry) {
   fs.appendFileSync(RAW_FEED, JSON.stringify(entry) + '\n', 'utf8');
 }
 
+function recordKatCaptureToRadar(entry, signal) {
+  try {
+    const { recordKatAnalystCapture } = require('../lib/kat-radar-bridge');
+    recordKatAnalystCapture(entry, signal || null);
+  } catch (e) {
+    console.error('[kat] radar capture ingest error:', e.message);
+  }
+}
+
+function recordKatVisionToRadar(record, processed) {
+  try {
+    const { recordKatVisionCapture } = require('../lib/kat-radar-bridge');
+    recordKatVisionCapture(record, processed || null);
+  } catch (e) {
+    console.error('[kat-vision] radar ingest error:', e.message);
+  }
+}
+
 function updateActivity(username) {
   ensureDir();
   let activity = {};
@@ -893,6 +911,7 @@ if (process.env.KAT_BOT_TOKEN) {
       } else if (hasAttachments) {
         broadcastKatCapture(entry, null);
       }
+      recordKatCaptureToRadar(entry, signal);
 
       // Real-time vision  fires on new live captures with images
       // Market hours only. Fire-and-forget. Enriches active session.
@@ -959,6 +978,7 @@ if (process.env.KAT_BOT_TOKEN) {
           if (hasImg) broadcastKatCapture(entry, null);
           console.log('[kat] Edit captured (no signal): ' + entry.username + '  ' + entry.content.slice(0,60));
         }
+        recordKatCaptureToRadar(entry, signal);
         if (hasImg && entry.attachments.some(att => att && att.url) && katLiveVisionAllowed(config)) {
           const { isMarketOpen } = require('../lib/market-hours');
           if (isMarketOpen().open) {
@@ -1079,6 +1099,7 @@ async function processLiveVision(entry, parsedSignal) {
         model,
       });
       const stored = appendKatVisionRecord(record);
+      recordKatVisionToRadar(record, stored.processed);
 
       console.log('[kat-vision] Live:', entry.username,
         '', record.chart_type, '| bias:', record.bias,
@@ -1240,7 +1261,7 @@ function checkKatConfluence() {
           source_label: 'katbot-confluence',
           source_type: 'katbot_paste',
           title: biasTag + ' ' + instrument + ' confluence',
-          text: lines.join('\n'),
+          text: lines,
           relationship_ids: dominantAnalysts.map(a => 'kat:' + a),
         });
       } catch (e) {

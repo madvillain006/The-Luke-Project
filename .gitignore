@@ -71,6 +71,7 @@ sweeper-costs.json
 runs/
 screenshot.png
 artifacts/
+build/
 tmp/
 tools/cloudflared/
 tools/reference-repos/

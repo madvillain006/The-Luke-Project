@@ -6,19 +6,21 @@ const replay = require('../scripts/run-historical-operator-replay');
 
 describe('historical operator replay harness', () => {
   it('builds operator-pasteable Saty and Bobby commands from historical fixtures', () => {
-    const session = require('../data/backtest/es-long-bracket/sessions/2026-04-23.json');
-    const parses = fs.readFileSync(path.join(ROOT, 'data/backtest/es-long-bracket/derived/bobby-image-parses.jsonl'), 'utf8')
-      .trim()
-      .split(/\r?\n/)
-      .map(JSON.parse);
+    // Synthetic, committed test inputs keep the harness independent of private history.
+    const session = require('./fixtures/ci-isolation/historical-session.json');
+    const parses = require('./fixtures/ci-isolation/bobby-image-parses.json');
 
     const saty = replay.satyCommand(session);
     const bobby = replay.bobbyCommand(session, parses, '2026-04-23T12:13:00-04:00');
 
     expect(saty).toMatch(/^\/saty /);
     expect(saty.match(/\d+(?:\.\d+)?/g)).toHaveLength(13);
+    expect(saty).toBe('/saty 7190.00 7180.00 7170.00 7160.00 7150.00 7140.00 7130.00 7120.00 7110.00 7100.00 7090.00 7080.00 7070.00');
     expect(bobby).toContain('/heatmap');
-    expect(bobby).toContain('SPX king nodes');
+    expect(bobby).toContain('SPX king nodes: 7085, 7115, 7120.');
+    expect(bobby).not.toContain('9999');
+    expect(bobby).not.toContain('9998');
+    expect(bobby).not.toContain('9997');
     expect(replay.flattenCommand(bobby)).not.toContain('\n');
   });
 

@@ -1,14 +1,30 @@
 const {
   parseBridgeEvents,
   parseLukeIdTimestamp,
+  parseNinjaLocalTimestamp,
   parseNinjaLogEvents,
   summarizeLatency,
 } = require('../lib/ninja-bridge-latency');
+
+// Ninja logs use the log host's local wall time. Keep fixture instants explicit
+// while formatting them for the test host, instead of assuming New York time.
+function ninjaLocalTimestamp(iso) {
+  const date = new Date(iso);
+  const pad = (value, width = 2) => String(value).padStart(width, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} `
+    + `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}:${pad(date.getMilliseconds(), 3)}`;
+}
 
 describe('Ninja bridge latency analysis', () => {
   it('extracts Pine realtime milliseconds from Luke signal ids', () => {
     expect(parseLukeIdTimestamp('luke-long-1778251200372-22-7413.25')).toBe('2026-05-08T14:40:00.372Z');
     expect(parseLukeIdTimestamp('doctor-ping-1778251979255')).toBe(null);
+  });
+
+  it('parses log-host local time without changing fixture instants or milliseconds', () => {
+    for (const iso of ['2026-01-08T14:40:04.562Z', '2026-05-08T14:40:04.562Z']) {
+      expect(parseNinjaLocalTimestamp(`${ninjaLocalTimestamp(iso)}|1|16|fixture`)).toBe(iso);
+    }
   });
 
   it('summarizes source-to-Luke and Luke-to-Ninja latency', () => {
@@ -36,8 +52,8 @@ describe('Ninja bridge latency analysis', () => {
     ].join('\n'));
 
     const ninjaEvents = parseNinjaLogEvents([
-      "2026-05-08 10:40:04:562|1|16|LUKE SIM LONG luke-long-1778251200372-22-7413.25 qty=2 t1=1 t2=1 entry=7413.25 stop=7410.00 tp1=7415.25 tp2=7418.25 mode=LimitAtLukeEntry class=SCALP_VALID profile=default model=confirmed_retest_limit expiry=600s pollMs=100",
-      "2026-05-08 10:40:32:489|1|16|LUKE SIM CANCEL luke-long-1778251200372-22-7413.25 no active order or long position",
+      `${ninjaLocalTimestamp('2026-05-08T14:40:04.562Z')}|1|16|LUKE SIM LONG luke-long-1778251200372-22-7413.25 qty=2 t1=1 t2=1 entry=7413.25 stop=7410.00 tp1=7415.25 tp2=7418.25 mode=LimitAtLukeEntry class=SCALP_VALID profile=default model=confirmed_retest_limit expiry=600s pollMs=100`,
+      `${ninjaLocalTimestamp('2026-05-08T14:40:32.489Z')}|1|16|LUKE SIM CANCEL luke-long-1778251200372-22-7413.25 no active order or long position`,
     ].join('\n'));
 
     const summary = summarizeLatency(bridgeEvents, ninjaEvents);
@@ -91,9 +107,9 @@ describe('Ninja bridge latency analysis', () => {
     ].join('\n'));
 
     const ninjaEvents = parseNinjaLogEvents([
-      `2026-05-08 10:40:04:562|1|16|LUKE SIM LONG ${duplicateId} qty=2 entry=7413.25`,
-      `2026-05-08 10:40:05:250|1|16|LUKE SIM LONG ${duplicateId} qty=2 entry=7413.25`,
-      `2026-05-08 10:40:32:489|1|16|LUKE SIM CANCEL ${duplicateId} no active order or long position`,
+      `${ninjaLocalTimestamp('2026-05-08T14:40:04.562Z')}|1|16|LUKE SIM LONG ${duplicateId} qty=2 entry=7413.25`,
+      `${ninjaLocalTimestamp('2026-05-08T14:40:05.250Z')}|1|16|LUKE SIM LONG ${duplicateId} qty=2 entry=7413.25`,
+      `${ninjaLocalTimestamp('2026-05-08T14:40:32.489Z')}|1|16|LUKE SIM CANCEL ${duplicateId} no active order or long position`,
     ].join('\n'));
 
     const summary = summarizeLatency(bridgeEvents, ninjaEvents);

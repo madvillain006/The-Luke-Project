@@ -72,15 +72,25 @@ describe('Kat agent live surface', () => {
 
   it('monitors heatmap-requests by channel id and keeps name fallback alive', () => {
     const source = fs.readFileSync(path.join(ROOT, 'agents', 'agent-14-kat.js'), 'utf8');
-    const config = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'kat', 'monitored-users.json'), 'utf8'));
+    const { isMonitoredChannel, isMonitoredUser } = require('../agents/agent-14-kat')._test;
+    // Synthetic allowlist; the real account's private configuration is not a test dependency.
+    const config = {
+      monitored_channels: ['heatmap-requests'],
+      monitored_channel_ids: ['synthetic-heatmap-id', 'synthetic-second-id'],
+      monitored_users: [{ discord_id: 'synthetic-analyst-id', username: 'fixture-analyst' }],
+    };
 
     expect(source).toContain('return ids.includes(channelId) || names.includes(channelName);');
     expect(source).toContain('if (req.body.monitored_channel_ids) config.monitored_channel_ids = req.body.monitored_channel_ids;');
     expect(source).toContain('targetSet.has(c.name) || targetSet.has(c.id)');
-    expect(config.monitored_channels).toContain('heatmap-requests');
-    expect(config.monitored_channel_ids).toContain('1482431257441996850');
-    expect(config.monitored_channel_ids).toContain('1491514754387411085');
-    expect(config.monitored_users.map(user => user.username)).toContain('El Jefe');
+    expect(isMonitoredChannel('synthetic-heatmap-id', 'renamed-channel', config)).toBe(true);
+    expect(isMonitoredChannel('synthetic-second-id', 'another-name', config)).toBe(true);
+    expect(isMonitoredChannel('unconfigured-id', 'heatmap-requests', config)).toBe(true);
+    expect(isMonitoredChannel('unconfigured-id', 'general', config)).toBe(false);
+    expect(isMonitoredChannel('synthetic-heatmap-id', 'heatmap-requests', {})).toBe(false);
+    expect(isMonitoredUser('synthetic-analyst-id', config)).toBe(true);
+    expect(isMonitoredUser('unconfigured-user', config)).toBe(false);
+    expect(isMonitoredUser('synthetic-analyst-id', {})).toBe(false);
   });
 
   it('keeps public Kat commands scoped to SPX and chart-backed equities', () => {

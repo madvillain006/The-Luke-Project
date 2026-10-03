@@ -1,0 +1,34 @@
+[
+  {
+    "attachmentId": "synthetic-prior-parse",
+    "tradingDateET": "2026-04-23",
+    "timestamp": "2026-04-23T09:45:00-04:00",
+    "parseStatus": "ok",
+    "levels": [
+      { "ticker": "SPX", "price": 7085, "role": "king_node" },
+      { "ticker": "SPX", "price": 7115, "role": "king_node" }
+    ]
+  },
+  {
+    "attachmentId": "synthetic-future-parse",
+    "tradingDateET": "2026-04-23",
+    "timestamp": "2026-04-23T12:14:00-04:00",
+    "parseStatus": "ok",
+    "levels": [{ "ticker": "SPX", "price": 9999, "role": "king_node" }]
+  },
+  {
+    "attachmentId": "synthetic-other-session-parse",
+    "tradingDateET": "2026-04-24",
+    "timestamp": "2026-04-22T10:00:00-04:00",
+    "parseStatus": "ok",
+    "levels": [{ "ticker": "SPX", "price": 9998, "role": "king_node" }]
+  },
+  {
+    "attachmentId": "synthetic-unparsed-image",
+    "tradingDateET": "2026-04-23",
+    "timestamp": "2026-04-23T10:00:00-04:00",
+    "parseStatus": "unparsed",
+    "localPath": "tests/fixtures/ci-isolation/synthetic-chart.png",
+    "levels": [{ "ticker": "SPX", "price": 9997, "role": "unconfirmed_candidate" }]
+  }
+]

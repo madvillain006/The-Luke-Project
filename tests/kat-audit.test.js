@@ -61,7 +61,7 @@ describe('Kat audit', () => {
     ]);
     fs.writeFileSync(path.join(root, 'data', 'historical', 'spx_intraday.csv'), 'Time,Close\n2026-05-01 09:30,5600\n', 'utf8');
 
-    const audit = buildKatAudit({ rootDir: root });
+    const audit = buildKatAudit({ rootDir: root, now: new Date('2026-05-01T14:00:00.000Z') });
     expect(audit.raw.total).toBe(3);
     expect(audit.raw.heatmap_candidates).toBe(1);
     expect(audit.raw.lane_counts.spx_options_direct).toBe(1);

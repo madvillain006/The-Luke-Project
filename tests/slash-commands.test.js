@@ -13,6 +13,30 @@ const DAILY_CTX_FILE = path.join(DATA_DIR, 'daily-context.json');
 const TODAY_LEVELS_FILE = path.join(DATA_DIR, 'today-levels.json');
 const SATY_LEVELS_FILE = path.join(DATA_DIR, 'saty-levels.json');
 const APEX_STATE_FILE  = path.join(DATA_DIR, 'apex-state.json');
+const { events } = require('../lib/paths');
+
+let originalSideEffects;
+
+beforeEach(() => {
+  // Commands require CommonJS quote modules, so vi.mock() would not intercept
+  // their fetches. Keep command tests offline and prevent delayed writes from
+  // completing after the next test has started.
+  vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('test_market_data_unavailable'));
+  originalSideEffects = new Map([events.bobbyContext, events.lukeLog, path.join(DATA_DIR, 'last-signal.json')]
+    .map(file => [file, fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : null]));
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
+  for (const [file, original] of originalSideEffects) {
+    if (original === null) {
+      if (fs.existsSync(file)) fs.unlinkSync(file);
+    } else {
+      fs.mkdirSync(path.dirname(file), { recursive: true });
+      fs.writeFileSync(file, original, 'utf8');
+    }
+  }
+});
 
 describe('slash-commands Phase 2 workflow status', () => {
   let originals;

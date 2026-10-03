@@ -1,0 +1,28 @@
+{
+  "fixture_note": "Synthetic unit-test inputs, not captured market data or production history.",
+  "date": "2026-04-23",
+  "saty": {
+    "levels": {
+      "valid": true,
+      "valid_from": "2026-04-23T09:25:00-04:00",
+      "formula_provenance": "synthetic_ci_fixture",
+      "atr_plus_1": 7190,
+      "ext_plus_4": 7180,
+      "ext_plus_3": 7170,
+      "ext_plus_2": 7160,
+      "ext_plus_1": 7150,
+      "call_trigger": 7140,
+      "prev_close": 7130,
+      "put_trigger": 7120,
+      "ext_minus_1": 7110,
+      "ext_minus_2": 7100,
+      "ext_minus_3": 7090,
+      "ext_minus_4": 7080,
+      "atr_minus_1": 7070
+    }
+  },
+  "levels": [
+    { "source": "bobby_text", "price": 7115, "role": "support" },
+    { "source": "bobby_text", "price": 7120, "role": "resistance" }
+  ]
+}

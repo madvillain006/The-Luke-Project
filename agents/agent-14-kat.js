@@ -2250,6 +2250,8 @@ router._test = {
   getKatOwnerOnlyMessage,
   getKatWelcomeMessage,
   handleKatCommand,
+  isMonitoredChannel,
+  isMonitoredUser,
   isKatOwnerCommandAllowed,
   latestCaptureTimestampFromLines,
   queueHeatmapTicker,

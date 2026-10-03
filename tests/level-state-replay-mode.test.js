@@ -2,6 +2,7 @@
 
 const { buildTradingState } = require('../lib/trading-state/level-state-engine');
 const { getLocalCsvCandles } = require('../lib/market-data/providers/local-csv-candles');
+const { createChartLevelFixtures } = require('./helpers/ci-chart-level-fixtures');
 
 function row(price, source = 'mancini') {
   return {
@@ -113,11 +114,23 @@ describe('level-state replay mode', () => {
   });
 
   it('does not substitute SPX candles for ES replay requests', async () => {
-    const es = await getLocalCsvCandles('ES', { mode: 'replay', date: '2026-04-20', time: '09:49', limit: 1 });
-    const spx = await getLocalCsvCandles('SPX', { mode: 'replay', date: '2026-04-20', time: '09:49', limit: 1 });
+    const fixture = createChartLevelFixtures();
+    try {
+      const options = { mode: 'replay', date: '2026-04-29', time: '08:33', limit: 1, searchDirs: [fixture.candleDir] };
+      const es = await getLocalCsvCandles('ES', options);
+      const spx = await getLocalCsvCandles('SPX', options);
 
-    expect(es.symbol).toBe('ES');
-    expect(spx.symbol).toBe('SPX');
-    expect(es.candles[0]?.source_file).not.toBe(spx.candles[0]?.source_file);
+      expect(es.symbol).toBe('ES');
+      expect(spx.symbol).toBe('SPX');
+      expect(es.candles).toHaveLength(1);
+      expect(spx.candles).toHaveLength(1);
+      expect(es.candles[0].close).toBe(7224.5);
+      expect(spx.candles[0].close).toBe(6102);
+      expect(es.candles[0].source_file).toContain('ES_1m_synthetic_ci.csv');
+      expect(spx.candles[0].source_file).toContain('SPX_1m_synthetic_ci.csv');
+      expect(es.candles[0].source_file).not.toBe(spx.candles[0].source_file);
+    } finally {
+      fixture.cleanup();
+    }
   });
 });

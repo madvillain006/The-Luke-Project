@@ -62,7 +62,58 @@ describe('research existing-data inventory', () => {
   });
 
   it('orders source timeline events and deduplicates repeated source events', () => {
-    const timeline = buildSourceTimeline({ usableOnly: false });
+    const writeFixture = (relativePath, value, jsonl = false) => {
+      const file = path.join(tempDir, relativePath);
+      fs.mkdirSync(path.dirname(file), { recursive: true });
+      fs.writeFileSync(file, jsonl
+        ? value.map(row => JSON.stringify(row)).join('\n') + '\n'
+        : JSON.stringify(value), 'utf8');
+    };
+    // All source families use a temporary repository with synthetic unit-test inputs.
+    writeFixture('data/backtest/es-long-bracket/sessions/2026-04-23.json', require('./fixtures/ci-isolation/historical-session.json'));
+    writeFixture('data/backtest/es-long-bracket/derived/bobby-image-parses.jsonl', require('./fixtures/ci-isolation/bobby-image-parses.json'), true);
+    const bobbyMessage = {
+      id: 'synthetic-original',
+      timestamp: '2026-04-23T09:40:00-04:00',
+      mentionedInstruments: ['SPX'],
+      content: 'Synthetic support context',
+      levelCandidates: [{ price: 7105, role: 'support' }],
+    };
+    writeFixture('data/backtest/es-long-bracket/derived/bobby-messages.jsonl', [
+      { ...bobbyMessage, id: 'synthetic-later', timestamp: '2026-04-23T10:05:00-04:00' },
+      bobbyMessage,
+      { ...bobbyMessage, id: 'synthetic-duplicate' },
+    ], true);
+    writeFixture('data/backtest/es-long-bracket/derived/mancini-posts.jsonl', [{
+      postIndex: 1,
+      content: 'Synthetic undated context',
+      levels: [{ price: 7100 }],
+    }], true);
+    writeFixture('artifacts/research/mancini-normalized.json', { events: [{
+      id: 'synthetic-mancini-import',
+      timestamp_et: '2026-04-23T09:20:00-04:00',
+      available_at_et: '2026-04-23T09:20:00-04:00',
+      levels: [{ price: 7095, role: 'support' }],
+      timestamp_quality: 'exact',
+      usable_for_replay: true,
+    }] });
+    writeFixture('data/kat/raw-feed.jsonl', [{ id: 'synthetic-undated-kat', content: 'Synthetic undated chart' }], true);
+    writeFixture('data/kat/processed-signals.jsonl', [{
+      id: 'synthetic-dated-kat',
+      ts: '2026-04-23T09:50:00-04:00',
+      symbol: 'SPX',
+      text: 'Synthetic processed context',
+    }], true);
+
+    const timeline = buildSourceTimeline({ rootDir: tempDir, usableOnly: false });
+    expect(timeline.events.length).toBeGreaterThan(0);
+    expect(timeline.events.map(event => event.id)).toContain('bobby-message:synthetic-original');
+    expect(timeline.events.map(event => event.id)).not.toContain('bobby-message:synthetic-duplicate');
+    expect(timeline.events.map(event => event.source_type)).toEqual(expect.arrayContaining([
+      'saty_generated_levels', 'session_derived_levels', 'bobby_text',
+      'bobby_cached_parsed_heatmap', 'bobby_image_unparsed',
+      'raw_date_only_mancini_post', 'mancini_imported_archive', 'katbot_context',
+    ]));
     const keys = new Set();
     for (const event of timeline.events) {
       const key = `${event.source}|${event.source_type}|${event.instrument}|${event.available_at_et}|${JSON.stringify(event.levels)}`;
@@ -73,6 +124,19 @@ describe('research existing-data inventory', () => {
     const sorted = [...usable].sort((a, b) => new Date(a.available_at_et) - new Date(b.available_at_et));
     expect(usable.map(event => event.id)).toEqual(sorted.map(event => event.id));
     expect(timeline.missing.some(item => item.unusable_reason === 'image_unparsed' || item.unusable_reason === 'missing_timestamp')).toBe(true);
+    expect(timeline.missing.map(item => item.unusable_reason)).toEqual(expect.arrayContaining(['image_unparsed', 'missing_timestamp']));
+    const usableOnly = buildSourceTimeline({ rootDir: tempDir, usableOnly: true });
+    expect(usableOnly.events.map(event => event.id)).toEqual(usable.map(event => event.id));
+    expect(usableOnly.event_count).toBe(timeline.event_count);
+    expect(usableOnly.usable_event_count).toBe(usable.length);
+  });
+
+  it('keeps an empty injected timeline root independent of local production history', () => {
+    const timeline = buildSourceTimeline({ rootDir: tempDir });
+    expect(timeline.events).toEqual([]);
+    expect(timeline.missing).toEqual([]);
+    expect(timeline.event_count).toBe(0);
+    expect(timeline.usable_event_count).toBe(0);
   });
 
   it('filters no-lookahead context at checkpoint time', () => {

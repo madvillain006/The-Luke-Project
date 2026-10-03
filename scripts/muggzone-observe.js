@@ -23,11 +23,12 @@ function argumentsFor(argv) {
 
 async function loadPlaywright() {
   // Offline replay and tests never load a browser dependency or start Electron.
-  try { return await import("playwright"); }
+  try { const loaded = await import("playwright"); return loaded.default || loaded; }
   catch (original) {
     try {
       const scoped = createRequire(path.join(__dirname, "../deploy/muggzone/package.json"));
-      return await import(pathToFileURL(scoped.resolve("playwright")).href);
+      const loaded = await import(pathToFileURL(scoped.resolve("playwright")).href);
+      return loaded.default || loaded;
     } catch { throw new Error(`Playwright unavailable. Install the scoped deploy/muggzone runtime. ${original.code || ""}`); }
   }
 }

@@ -1,0 +1,22 @@
+{
+  "evidence":"synthetic_offline_replay_not_live_discord_or_broker",
+  "channel_id":"synthetic-muggzone-options",
+  "author_ids":["synthetic-analyst"],
+  "account_concept_usd":300,
+  "snapshots":[
+    {"channel_id":"synthetic-muggzone-options","observed_at":"2026-10-05T13:28:00Z","at_tail":true,"history_complete":true,"messages":[]},
+    {"channel_id":"synthetic-muggzone-options","observed_at":"2026-10-05T13:34:00Z","at_tail":true,"history_complete":true,"messages":[
+      {"message_id":"entry-1","channel_id":"synthetic-muggzone-options","author_id":"synthetic-analyst","timestamp_utc":"2026-10-05T13:30:00Z","raw_text":"Buying SPY 10/9/2026 600c @ 1.25 stop .80 TP1 2.00 TP2 2.50 TP3 3.00"}
+    ]},
+    {"channel_id":"synthetic-muggzone-options","observed_at":"2026-10-05T13:38:00Z","at_tail":true,"history_complete":true,"messages":[
+      {"message_id":"entry-1","channel_id":"synthetic-muggzone-options","author_id":"synthetic-analyst","timestamp_utc":"2026-10-05T13:30:00Z","raw_text":"Buying SPY 10/9/2026 600c @ 1.25 stop .80 TP1 2.00 TP2 2.50 TP3 3.00"},
+      {"message_id":"management-1","reply_to_message_id":"entry-1","channel_id":"synthetic-muggzone-options","author_id":"synthetic-analyst","timestamp_utc":"2026-10-05T13:36:00Z","raw_text":"TP1 hit trim 50% move stops to breakeven"}
+    ]},
+    {"channel_id":"synthetic-muggzone-options","observed_at":"2026-10-05T13:42:00Z","at_tail":true,"history_complete":true,"messages":[
+      {"message_id":"stop-1","reply_to_message_id":"entry-1","channel_id":"synthetic-muggzone-options","author_id":"synthetic-analyst","timestamp_utc":"2026-10-05T13:40:00Z","raw_text":"move stop to 1.60"}
+    ]},
+    {"channel_id":"synthetic-muggzone-options","observed_at":"2026-10-05T13:46:00Z","at_tail":true,"history_complete":true,"messages":[
+      {"message_id":"close-1","reply_to_message_id":"entry-1","channel_id":"synthetic-muggzone-options","author_id":"synthetic-analyst","timestamp_utc":"2026-10-05T13:44:00Z","raw_text":"closed all"}
+    ]}
+  ]
+}

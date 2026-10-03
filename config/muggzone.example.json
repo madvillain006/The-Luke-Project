@@ -1,0 +1,16 @@
+{
+  "channel_url": "https://discord.com/channels/REPLACE_SERVER_ID/REPLACE_CHANNEL_ID",
+  "channel_id": "REPLACE_CHANNEL_ID",
+  "author_ids": ["REPLACE_MUGGZONE_AUTHOR_ID"],
+  "cdp_url": "http://127.0.0.1:9222",
+  "data_dir": "/workspace/muggzone-data/observer",
+  "max_scroll_steps": 40,
+  "schedule": {
+    "timezone": "America/New_York",
+    "start": "08:00",
+    "end": "17:00",
+    "weekdays": [1, 2, 3, 4, 5],
+    "closed_dates": [],
+    "poll_interval_ms": 240000
+  }
+}

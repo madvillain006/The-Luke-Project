@@ -56,7 +56,14 @@ function wait(ms, stopSignal) {
   });
 }
 
-async function main(argv = process.argv.slice(2)) {
+function borrowedBrowser(context) {
+  if (!context || typeof context.pages !== "function") throw new Error("A live browser context is required");
+  // The desktop owns this persistent session. Observer halts disconnect observation,
+  // leaving the browser open for the user to review or reauthenticate.
+  return { contexts: () => [context], close: async () => {} };
+}
+
+async function main(argv = process.argv.slice(2), { browserContext = null } = {}) {
   const args = argumentsFor(argv);
   const config = validateConfig(JSON.parse(fs.readFileSync(args.config, "utf8")));
   const repo = path.resolve(__dirname, "..");
@@ -91,8 +98,11 @@ async function main(argv = process.argv.slice(2)) {
       if (ledgerState.health?.status === "halted") throw new ObserverHalt("ledger_review", "Ledger is halted for review; restore continuity before observing more signals");
       if (ledgerState.review_required) throw new ObserverHalt("source_review", "A source instruction requires manual reconciliation before polling can continue");
       if (!browser) {
-        const { chromium } = await loadPlaywright();
-        browser = await chromium.connectOverCDP(config.cdp_url);
+        if (browserContext) browser = borrowedBrowser(browserContext);
+        else {
+          const { chromium } = await loadPlaywright();
+          browser = await chromium.connectOverCDP(config.cdp_url);
+        }
         const pages = browser.contexts().flatMap(context => context.pages());
         const matches = pages.filter(page => exactChannel(page.url(), config.channel_url));
         if (matches.length !== 1) {
@@ -121,5 +131,5 @@ async function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { main, argumentsFor, loadPlaywright, claimLock };
+module.exports = { main, argumentsFor, loadPlaywright, claimLock, borrowedBrowser };
 if (require.main === module) main().catch(error => { console.error(error.message); process.exitCode = 1; });
